@@ -1,0 +1,774 @@
+📍️✳️#98hh8ak
+🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️
+💹️💹️💹️💹️💹️💹️💹️💹️💹️💹️💹️💹️💹️💹️💹️💹️💹️💹️🐚️
+if u want the "charts" (and u do) + u wanna do "TOOLS" u need 2 save historical prices 
+in corporations/generated/<name>/history
+(later we can IAP sell the charts 2 the user (even tho they have them) thru tools
+💹️💹️💹️💹️💹️💹️💹️💹️💹️💹️💹️💹️💹️💹️💹️💹️💹️💹️🐚️❗️have to do this !
+_____________
+0.(setup)done ++
+1. Management push 2 ai
+2. game ai <- do 📌️✳️#0902ii
+{player corp man loop, then buy indi/player }
+3. playtest: buy companies at low book value and try to flip till double (pre-options/futures)]MON
+(aim 4 ownership control <reliance>  (obv ai-module(s) should be 'doing alot'] GROK FOCUS?)
+modify r&d / marketing/HR/PR/accounting,blahblah(wgu-sim.pdf) / asset expansion -- ]CEO SALARY]IPO/PRIV
+
+4. start a company / bank. make sure the pacing is/was realistic (2 WSR)
+
+
+5. pay quarterly tax , sweep cash 4 loans etc <-are these "options"in a sub?
+
+6. time to do "OPTIONS" / futures / INDEX FUTURES. 
+7. buy some Tbonds/junkbonds (issue/buyback some from ur company)/ sell corp-assets. 
+
+8. should be in fun loop by now , whats missing? (refine/polish ai FSM till new feats)🔃️
+
+should get here buy AUG]20  {should only take a week = aug19. lets see how we do ☺️}
+👨🏽‍🏫️KISS , speed thru like u have a deadline. u do . do it , but take ez wins/skip bs]++ED👨🏽‍🏫️
+🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️
+
+
+😻️
+there never has to be any flicker, u know cuz nino doesn't (grok can fix) {gemini has nofliq}
+😻️
+🤔️
+u cold still do it ur way . 
+3d primative  , jjust building a bank b4 they start one etc. (money bag? robbed?)
+but just do this first. , like scaffolding 4 tomato plants🍅️maybe we wont need them cuz the shoots R strong w/e
+🤔️
+
+
+
+🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️🪞️
+
+
+🏓️
+were probably gonna run the game loop and impliment
+"most used features first as they pop up
+🏓️
+
+
+1. 1rst thing u do is ALWAYS , look at database search -> look at the companies financials
+💬️
+
+in @db_search.c
+14. Display Results
+should actually look through the financials and display a list meeting users 
+search criteria 
+@
+💬️
+
+
+
+2. NEWS : all company moves seem 2 show up in "news" + player stuff.
+<news is only fake cuz no "charas" however do a few 2 fill the space. /🏦️🖨️.wsr-asm]PURE/wsr.ALL🏦️🖨️[asm-src].txt>
+[runs like a ticker. do we go live cli?  
+Q: does commodity update every "turn/5?" 
+show news from last turn in submenu? +.txt; they dont "trade" during ur turn right?  ]
++watch list... hide in submenu? 
+<i think prices do change while u sit there & time goes by has nothing 2 do with ur turn?>
+<even in multiplayer? u should be testing with 2 human players {in both ;)}>
+{{i really rather not redraw in main : sub-screen/sub-menu. aim 2 orb so it doesn't matter}}
+🔴️its on mars so we will run 24/7 market 4 now w/e; or only night w/e🔴️
+
+🏗️
+honestly this is where most of the heavy lifting/time spent {not in menus}; so  just make sure it gets done correctly 
+{cuz theoretically we can use this w/o menu; tho menu is ui  which helps}
+🏗️
+
+
+💰️.2do📍️🥇️]a0.txt = tips for ai banks. 
+
+
+
+💡️i wanna try having just "1 main submenu" for multiple trivial submenu options. 💡️
+❣️
+🤖️
+❣️
+u should def do "AI FIRST" cuz data(before player can buy/sell. odly enough that is the plan already ,stick 2 it ]TRUST🕵🏽️🔎️
+🤖️
+❣️
+📅️📅️📅️📅️📅️📅️📅️📅️
+📅️ [AUG_15-2:19] 📅️
+📅️📅️📅️📅️📅️📅️📅️📅️
+each day that passes, companies should do business with other companies. 
+🎖️🥇️
+first , they should buy and sell goverment long/short bonds. period . (nothing fancy , just sim superficial - b-but we have govs, they have a budget? sure it should be bought from the gov 2 help their REAL budget. and maybe yes we will tax population? - but were not gonna go much deeper than that right now)
+🥇️
+🥈️
+then? they should give loans to others to do so (first based on nothing , then credit etc) 
+
+  + margin calls, w/e etc
+  + bond issuance (diff from loan)
+🥈️
+
+🥉️
+then? we may differentiate between "banks/insurance; and other companies.
+start ipo/ buying selling , stocks(short) / options/futures
+ may even do locations realty sub menus
+but make sure other 7day reqs are done first. 
+
+def employees 2 a certain extent. ceo w/e making room for wu . cuz wu is goal. 
+
+🥅️
+if u get this far uve done most of the heavy lifting.
+🥅️
+🥉️
+u should meet basic wsr requirements first tho so u dont get confused b4 adding desires.😵‍💫️
+🌽️
+commodities should be moving based on supply demand population employment w/e 
+but were just gonna wait on that till after.
+🌽️ 
+🎖️
+🚩️
+it occurs 2 me that this would be easer 2 reason about
+(esp the gov stuff etc if it started from "nothing' <-but it does...
+like 1 company . 2 population <-or something reasonably small / manageable. 
+fine w/e 
+
+are plan waas always 2 fake gen company names/genre based on supply demand of ppl tbh. 
+like , population is increasing? more farming companies, more demand 4 grain. etc.
+(but if they produce 2 much , prices go down, get into the nitty gritty 
+or else till then keep it super high level and intentionally avoid these hooks.
+or make the hooks very abstract imo thats the best even tho it requires "TINY BIT OF THOT"☯️🪝️🎣️
+
+even tho that my sound A BIT more complicated architecturally 
+it maybe helplful but that is no reason not 2 do the basics now...😵‍💫️🪝️🎣️🚩️
+👑️
+i do want some minimal bases for t-bond prices, in place. from gov's 
+(us'ss govs will show on menu, but other gov bonds ofc should be avail 4x later 2)s
+👑️
+🦉️📲️
+file:///media/no/b7ced73c-5231-4462-b98d-64e38fe2df9e/home/jbez/Desktop/%5E.📶️.SHARE%5D/%5E.🦾️%5Dfullsharezip/💪🏾️%5D.no-desk.sharezip/📲️📵️.GTFO.flxbx.📦️arcbit♏️/%23.⛷️LOOSE-TANGENT%5D2wild%5D🎄️⛷️/🪆️.a0/📟️.a0/💻️🏓️/1.W$R-tifacts🏦️/%23.econ.review%0A👑️%0A🦉️.txt
+
+1️⃣️
+ @db_search.c shows companies. id like to add functionality to option │
+│     16.Help , so that it searches through all the companies , and finds │
+│     the most common average and sets @data/db_search.txt to the         │
+│    settings that will yeild the most results. get it? 
+2️⃣️2️⃣️2️⃣️2️⃣️
+✳️#0902ii
+📌️plan? just get them trading ipoing stocks 4 now
+(we may literally mess with population pool 2 make r&d/marketing assets make sense
+make companies allocating and start growing assets the way u would do ...
+wanna thing that maybe a short cut? 
+
+make it so (YOU) can start a startup , then build out the "surface/mgmt logic 4 that"
+
++ it  will pay taxes, do reports, etc. (have searchable market share all that stuff u 4get)
+📌️🔬️we may focus and even do wu stuff (Like hiring from pool etc) 🔬️
+
+----------------
+💬️💬️💬️💬️💬️💬️💬️💬️🥇️
+>nuance : "menu focus" can be on "player , or a company"
+
+>pre = focus? (should we add p1 buying stock first just 2 sort that?)]yes
+
+(u dont have to buy yet u just need 2 have "ways" to populated
+"ACTIVE ENTITY SELECTED" (should know where in data it is)
+
+
+*28. db search or 
+8. Select Corp.
+(id actually like to add a {show all option} 2 db search 
+and make sure it shows by index's so i can pick 1 2 set 2 "ACTIVE_ENTITY"
+✅️
+❣️
+❗️
+we now need to allocate "percentages owned by who, and do public "? 
+(dont NEED too...) <- 4 buy? cant if not public? 
+
+i want the public 2 own things inits own "account" <-! 
+(it will do its own ai stuff 2 , get it? ; its like a country = biggest?)
+💌️this can wait till after u start ur own corp etc. & start buying🔍️💌️
+(skip 2 🥈️✳️#9h33 4 now
+❣️
+❗️
+-------
+
+
+______________________________________________________________________________
+----------------
+
+so... wuts that all about? (data wise) = currently all are 100% owned?
+(so not public? thats not good , who would we buy, 
+need 2 distribute some amount 2 public/ diff corps
+
+whos public? = literal human bank. so sus that out (with this focus goal)
+📩️
+when we wanna add new fields(body count) 2 finstatement i suggest we add them to 
+"bottom" under everything 4 now...
+
+(also u may make a better parser later or w/e so dont sweat it)
+
+📩️
+how else should it interact with data? 
+(show list of all stocks = no but theres diff ways 2 view
+besides filler ie most cash etc)
+_____________________________________________✳️#9h33
+
+
+
+
+
+
+ 
+🛗️
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+🛗️🛗️🛗️🛗️🛗️🛗️🛗️🛗️🛗️🛗️🛗️🛗️🛗️🛗️🛗️🛗️🛗️🛗️🛗️🛗️🛗️🛗️
+🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️
+> i tested it it runs, but the search results should also display the    │
+│    industry the entity is in . also are we sure the filter is working     │
+│    correctly , i entered vastly different options and got the same        │
+│    values, u know the balance sheets look different for banks/insurance   │
+│    and regular corporations?
+{bugged out last ask. it maybe ok, we will try later . no biggie}     
+🗒️this is translucent. ignore it imo tbh.till multi-ai🗒️
+
+🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️
+✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️
+✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️✅️
+
+
+
+📅️aug19 : 
+
+
+📅️
+
+
+> id actually like to treat players as companies long term ; 
+just stick the players in there (where else are they ; or else put the in "players/" but treat the same)
+{players/ <- just created <- now they get their own dir/ which will contian "portfolio"}
+
+>   system("kill $(cat data/wsr_clock.pid) 2>/dev/null");   <- do this b4 all submenu's
+
+
+⁉️⁉️⁉️⁉️⁉️⁉️⁉️⁉️⁉️⁉️⁉️⁉️⁉️⁉️⁉️⁉️⁉️⁉️⁉️⁉️⁉️
+📬️
+🇨🇭️📍️✳️#98hh8ak
+🪜️
+setup the player portfolio in data or w/e 📌️ players/ 📌️
+
+>24. List Portfolio Holdings
+
+
+📣️
+2 do this ? show it game_setup.c + w/e schema u wanted. 
+(just do here and forget about previos starting_data.txt ; )
+
+schema = players/<player_name>/<player_name>_portfolio.txt
+
+one holds "corporate_fin_data & other holds "holdings.txt" may do opt/fut/commod seperate w/e.
+
+🪜️
+
+companies just update on their own in ai or w/e based on MGMT_FX() etc. 
+🪜️
+💬️
+📣️
+ we are building a stock market simultion game. first we are        │
+│   setting up the players. when the players are setup they're         │
+│   players/<name>.balance_sheet.txt and                               │
+│   players/<name>.portfolio.txt should be updated     
+📣️
+ we are building a stock market simultion game. first │
+│     we are setting up the players. when the players are │
+│     setup they're players/<name>.balance_sheet.txt and  │
+│    players/<name>.portfolio.txt should be created. look │
+│     @example:balance_sheet_0.txt and                    │
+│    @example:portfolio_0.txt for how .then the player    │
+│    menu in  game.c can look at balance sheet and        │
+│    refresh its value if it changes.                     │
+╰───────────────────────────────────s
+💬️💬️💬️💬️💬️💬️💬️
+
+📅️📅️📅️📅️📅️📅️📅️📅️
+
+✅️✅️✅️✅️
+
+🥈️
+>selecting "13.FINANCING"  = 
+
+A.
+if "player_focus" = 1. 2.  
+B.
+if "owned_corp_focus" = 
+1-8
+
+(theres also "MANAGEMENT"for corps 2 do r&d/marketing/dividend...)
+🪲️
+{also when u just load starting_data.txt, dosen't mean its loading a save file , just fyi. make sure ur "saving & loading works" >[:+]
+eyeball test possible? }🪲️
+
+what if "not owned_focus?" what does it show?
+
+C. if its not controlled by you? 
+shows "entity is not controlled by u , then shows "you options"
+assumes u want
+"you"{active player}  or w/e 
+<just show the other one for now>
+
+💬️💬️💬️💬️💬️💬️💬️
+first , in game.c
+we need to make "active_entity.txt" switch 2 "active player name"
+ on choice of "5. Select Player"
+
+💬️
+in game.c i want to create a sub-module (launches same as the others)
+for option "13.FINANCING".
+
+in financing.c {
+if it is selected with 
+active_entity.txt same as user name , show index menu = 
+"
+1.Startup New Corp
+2.Capital Contribution
+" 
+if active_entity.txt is anything other than user name ,show index menu = 
+"
+1.Startup New Corp
+2.Capital Contribution
+3.Public Stock Offering
+4.Issue Bonds
+5.Buy Back or Call Bonds
+6.Extraordinary Dividend
+7.Tax-Free Liquidation
+8.Spin Off Subsidiary 
+"
+
+(there needs to be a way to check if active entity is owned by player)
+
+✅️done ✅️
+
+📌️
+now lets start a corp. manage it with surface. 
+(merge in employees/customers from public b4 anything, 
+honestly we could keep pushing this rabit hole, but multi sholdn't be 2 hard.)
+<may wait for employees but customers is a must , right? no...
+yes for marketing, but not for the other 2 "r&d/ cap growth"
+(altho i think cap growth is % of sales...)--------
+
+let it generate bvp, but "who values it" 4 share price
+(we could do a dcf for now, but later let the auction decide)
+
+
+
+
+✅️✅️✅️✅️
+___________________
+
+🪜️
+do the options 4 startup (naked_player)
+🇨🇭️
+🪟️0.blah blah blah (100 & 1000 sure u wanna start?) -> skip
+🪟️1.select the industry your company will enter? -> index's [list?]
+
+{71 industries ; 3 are 'important'}
+<may want to modify "corp_setup.c" to only use from 36_industries_wsr.txt>
+
+🪟️2.you will need 100|1000 to start : enter amount to fund corp with -> #
+🪟️3.enter name for <industry> corp (5-25 chars) [check against existing] 
+🪟️4.enter ticker symbol for <name> corp (1-6 chars) [check 4 existing] 
+🪟️5.congrats -> back to main.c 
+
+
+ok , lets build out the submenu pipline for option 1 
+ (will open the following submenu's sequentially , one at a time)
+1. Startup New Corp 
+
+1.select the industry your company will enter? -> index's @corporations/36
+2. (minimum to fund regular corp is 100, min to fund bank or insurance is 1000)
+enter amount to fund corp with -> #
+3.enter name for <industry> corp (5-25 chars) ->"" [check against existing] 
+4.enter ticker symbol for <name> corp (1-6 chars) [check 4 existing] 
+
+append to martian_corporations.txt and @corporations/generated/<new.txt>
+(mind that banks / insurance have slightly different .txt structures than
+regular corps) 
+5.congrats -> back to main.c 
+
+📬️
+ > i just created "test bank ;ticker :tesb" , it should           │
+│   have recorded to @corporations/martian_corporations.txt        │
+│   in the same format as the others instead it is as :            │
+│   MARSMOVIL TELECOM (MMV) Ind: GLOBAL TELECOMMUNICATIONS         │
+│   VOIDCARGO SHIPPING (VCG) Ind: SHIPPING  
+ tesb <- should have converted to uppercase , etc. also         │
+│   when instantiating the new company all financials should       │
+│   be basically blank except for the cash the player              │
+│   infused into the company ... also the                          │
+│   @corporations/generated/tesb.txt should have been made         │
+│   uppercase and have the name the user chose (not the            │
+│   template dummy name) . finally after asking the industry       │
+│   we should have also asked what country user wishes to          │
+│   incorporate in using @governments/gov-list.txt , and add       │
+│   that to generated/<new>.txt in the proper field   
+📬️
+──────────────────────────────────────────────────────────────╮
+│ > ok now in @data/<name>_portfolio.txt (create if none) we       │
+│   should append the newly created company to their               │
+│   portfolio. example of portfolios =                             │
+│   @menu_rips/portfolio_0.txt & @menu_rips/portfolio_1.txt        │
+╰────────────────────────────────────────────────────────────
+⁉️⁉️⁉️⁉️⁉️⁉️⁉️⁉️⁉️⁉️⁉️⁉️⁉️⁉️⁉️⁉️⁉️⁉️⁉️⁉️
+
+> what about corporate portfolios ? where are they stored? 
+>they shoulda been in there own dirs ;
+but go ahead and save 2 'portfolio. or do it later we/)
+
+🔦️
+i may just have it redo them in their own dirs/ before this gets
+out of hand, then come back and finish this, 
+cuz all corporations have to also have "portfolios"
+and god knows what else...
+📂️
+which folders are called 2 ? 
+(just on generation , then db search 4 now)
+📂️
+
+i really wanted to do this aug19:2;59 , but violence and potty and bed. should do bright and early
+
+$.🛑️🏎️🏍️👩🏻‍🦼️.Mars$treetRaceRaider]X47
+🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️
+
+@db_search.c no longer finds any corporations even    │
+│    when 16.help is used, we must have broken it during   │
+│    the schema update. fix    
+
+
+@financing.c isn't saving newly created corporations  │
+│    to their own dir. it just does things the old way .   │
+│    can we fix it to be updated to new schema?   
+
+💹️DONE😄️✅️
+
+
+⬇️⬇️⬇️⬇️
+⬇️⬇️⬇️⬇️
+⬇️⬇️⬇️⬇️
+⬇️⬇️⬇️⬇️
+📅️aug13
+---------------------------------------------------------------------
+
+aug13. 2do :
+db_search.c 
+
+1.we need to have a way to edit the search criteria input.
+once user choose the index to edit, let them enter their numerical or text entry 
+
+[^change]
+these search preferences should be stored in data/ dir as db_search.txt
+
+[lets just do options 1-10 for now, and see where we are at that point]
+
+
+(*after we will update save/load 2 load them 2)
+
+
+
+
+>optimizations that would make this easier? not really its fine
+
+
+
+ (should open a submenu to edit the  
+    chosen index)                                                                        
+╰───────────────────────────────────────────────────────
+
+ no. it still isnt' working. heres the fix:                   
+   @src/file_submenu.c handles sub-sub menu display and         
+   input correctly. modify @db_search.c to do what              
+   @src/file_submenu.c is doing   
+🅰️says its cause subs call clear_screen()? 
+but shouldn't they be allowed to do that? ; 
+oh well we will address when needed, these are still modules after all.
+♟️
+<the 2nd peice menu is really good..@ running w/e sub programs its given so
+its def this prog, but those should have a copyable fix
+♟️
+
+
+👩🏻‍🏭️
+both of these are multi tier nested menu screens run as child processes of "main.c" however file_submenu.c's sub menus show up in cli , but db_searchs.c's dont show up as child of main.c (they do show up on their own) ; we know the problem isn't main.c because file_submenu.c's submenus show up when run as child.  how do we fix db_searches.c ? 
+👩🏻‍🏭️
+i was just pressing 22 , instead of 27 ] 
+
+Enter your choice: ^CExiting submenu...
+Press Enter to return to main menu...
+(gonna leave this , maybe i will want it w/e ez 2 remove later.) 
+🅰️
+🪠️+ main.c literally compiles the files b4 running them , lmfao, ok cool wtf...
+no. 
+infact i want to "kvp" them since subs may be updating alot...
+🪠️
+
+
+b.
+should actually look through the financials and display a list meeting users 
+search criteria 
+
+
+-------------
+-----------------------------------------
+💎️💎️💎️💎️💎️💎️💎️💎️💎️💎️
+ > we are in  @db_search.c ;what do we have to do so that Enter your      
+    choice: 14                                                    
+    Displaying results...                                         
+    Press Enter to continue...                                    
+                                                                  
+    displays actual results... (its just a placeholder for now,   
+    lets write the code)    ---------------
+    
+    
+    ✦ Okay, I understand. You want to implement the actual search and
+  display functionality for option 14 in db_search.c.
+
+  Here's my plan:
+
+   1. Enhance `parse_corporation_file()`: I will modify this
+      function to read and parse the data from individual
+      corporation files (e.g., AAPL.txt) located in
+      corporations/generated/. I'll assume these files have a
+      consistent format for corporation details.
+   2. Implement `display_search_results()`: This function will:
+       * Scan the corporations/generated/ directory for all
+         corporation data files.
+       * For each file, it will call the enhanced
+         parse_corporation_file() to load the corporation's data.
+       * It will then apply the currently set search criteria
+         (e.g., high_return_on_equity, low_pe_ratio, etc.) to
+         filter the corporations.
+       * Finally, it will display the details of all corporations
+         that match the criteria.
+   3. Integrate: I will update the display_db_search_menu() to call
+      the display_search_results() function when the user selects
+      option 14.
+
+  I will assume the corporation files in corporations/generated/
+  have the following format:
+
+   1 Name: <Corporation Name>
+   2 Ticker: <Ticker Symbol>
+   3 Net Worth Per Share: <double value>
+   4 Current Stock Price: <double value>
+   5 Total Stock Capitalization (Millions): <double value>
+   6 Long Term Bonds Issued: <double value>
+💎️💎️💎️💎️
+📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️
+
+
+----
+aug12 . to do : 
+
+add save/load to "file submenu" as file_submenu.c
+but in order to do that we need to fix
+"menu index to start at "File" as 1. ie : 1.File , etc
+----
+(also lets add the other executables to @\#.compile.sh )    
+
+----
+--------------------------------------------------------
+📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️
+⬇️⬇️⬇️⬇️
+🕰️🕰️🕰️🕰️🕰️🕰️🕰️🕰️
+📅️aug14_17-52: { ./+x/1.read_calendar.+x wgu_ctdn📅️🦉️.txt 17 days remaining until 2025-09-01  }
+
+ok, just getting days 2 pass and show on screen is goal 4 now ; redraw is no big deal cuz mino does it ez.
+🥇️⏱️ok new task : under 3.settings  @settings_submenu.c 1.ticker_speed (should show options: [cent, sec,min, hour, day])  allow user to change (based on index) when chosen as 1.ticker_speed
+
+ then save user choice to saves/settings.txt 
+
+(default should be cent) <-✅️]DONE!
+
+
+ ok.this is how long it will take to pass a full 24 hours in game. = 24 seconds.
+(this is the speed the game clock will go (normal 24 hour clock but at this speed) 
+24 centisec = .24 sec
+
+time should be shown , for example as : Date: January 1, 2025 24:00:00:00  
+(with last field being centiseconds)
+
+
+currently this is passing a year everytime turn is ended. however thats not how this simulation is supposed to work. 
+the days are supposed to just step by based on "Ticker Speed"(and pause if ticker on/off is set to off as option 22. in game.c
+
+the turns dont affect time at all. players simply wait for eachother to finish . those are the game rules. dont ask.get it?
+
+-✅️]DONE!
+
+🕰️🕰️🕰️🕰️🕰️🕰️🕰️🕰️🕰️🕰️🕰️
+📅️aug14_1-32: starting on "2 > news " now. 
+
+
+each turn is passing "years" instead of "days. obv want to fix that. 
+(also the days are just supposed to pass without affecting the turn . 
+2 explain 2 gemini how wsr actually passes time | grok...
+(literally while u are sitting there) <- "WHAT!?" (just do it) 
+
+
+>days just pass (ai should be doing 'news') , "SETTINGS (changes speed of time 1-99) [ticker on/off]=paws
+ and honestly should just beable to step thru . <-first mod. youll want 4 dev... no biggi.]w84reg tho]
+ {later can save every state & step back (point of saves tho tbh) <-trunk w/e diff match etc}
+(also are we showing dynamic ticker? <can refresh on days, w/e>
+(when is humanplayer 2 turn? never. will just keep running time. w/e copy THAT )
+
+
+{i may even do this in grok, if its modular enough. if not, maybe make it so. this is a big deal. }-✅️]DONE!
+⬇️⬇️⬇️⬇️
+📅️aug14_1-20: maybe do "time passing" (but wait on ai ) do human "buy/sell" etc first. 
+then let ai do it... (or both at same time 2 make sure the functions can be reused as "sub module"
+(if not w/e its ez 2 rewire later; never works out magically 1rst time anyways, just push)
+
+
+i may "detach startup setup screens as a seperate module that calls game.c after"
+ have them pass as optional args or default starting_data.txt 
+(then we can start fast each debug <- do this. 
+
+then we can decide to start with "different screens (even usr could decide)
+im thinking of seperating "main display" from "main menu"
+not sure which should show first (leaning 2 menu, but u should experiment) ofc u can do both 2 but has 2 refresh
+so u may as well have diff options in case 2 breaks
+
+
+📭️
+✦ You've got it. The current setup prioritizes the quick start if
+  starting_data.txt exists. I'll adjust it so that manual setup is the
+  default.
+
+  I will modify main.c to delete starting_data.txt before it runs the
+  setup module. This means:
+   - Running ./wsr will always give you the manual, interactive setup.
+   - To get the fast, debug startup, you can run ./game_setup
+     directly, which will use an existing starting_data.txt file.
+
+  I'll make that change now.
+📭️
+cat starting_data.
+txt 
+num_players:1
+game_length:5
+starting_cash:50000
+player_0_name:Human
+player_0_type:0
+
+||
+cat starting_data.
+txt 
+num_players:2
+game_length:10
+starting_cash:10000.00
+player_0_name:p1
+player_0_type:0
+player_1_name:p2
+player_1_type:0
+-------------------------------------------------------------📭️✅️
+🥷🏽️ i also made nino(mino) "toggle tabs" ; will it be easier 2 use than screen scroll| sub menu? w/e try both  
+
+(could toggle terminal ; were already in one (could place "news at top?)
+(watch list on side?) 
+🥷🏽️ <- otherwise hold off on dynamic data in main 4 now. ; other than date/ commodities (will prob do away with soon)📟️
+⬇️⬇️⬇️⬇️
+🔄️
+!.noticed:
+!. [esc] key is more intuive than ctrl+c by a long shot
+💬️
+currently we use ctrl+c to back out of menus
+, can we add the same functionality for [esc]? 
+(its more user intuitive
+
+also if user [esc]'s main menu(would quit), pls ask them 
+if they want to exit without saving to confirm
+
+(suggested using ncurses;ignore this 4 now )
+💬️
+
+0. load game or new / sort out save  {difficulty doesn't seem 2 matter}
+<ez inject pre "picker screens" instances/ <- load file (copy 2/from generated/)>
+
+☑️(done-ish ) theres some things that look weird
+like its not saving enough corps... , im gonna punch thru tho. , this isn't even necessarily necissary 4 punching thru
+just proof of "SPACE_avail" ☑️
+
+⚠️(post-0.)
+things dont happen when turn ends, its  game over. 
+(should be going to another turn. 
+, wait 2 do in order (ie step 2-ish?)yea 
+
+-> i may advance turns b4 i do db search, 
+i think it has more momentum...but if i fails, 
+maybe ill rollback.
+
+2nd thot, its gonna be a big task involving multiple
+ai interactions, u may just wanna keep "organized"
+⚠️
+
+⬇️⬇️⬇️⬇️
+⬇️⬇️⬇️⬇️
+⬇️⬇️⬇️⬇️
+⬇️⬇️⬇️⬇️
+⬇️⬇️⬇️⬇️
+⬇️⬇️⬇️⬇️
+⬇️⬇️⬇️⬇️
+
+
+

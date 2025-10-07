@@ -1,0 +1,3955 @@
+Hello, Multiverse!
+50 corporation sheets generated successfully.
+Corporation files updated and martian_corporations.txt created.
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice: [?25h[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice: 1[?25h[?25hRunning game setup...
+Executing: ./+x/day_loop.+x
+Executing: ./+x/tax_loop.+x
+Executing: ./+x/dividend_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/payroll_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/salary_loop.+x
+sh: 1: ./+x/salary_loop.+x: not found
+Hello, Multiverse!
+50 corporation sheets generated successfully.
+Corporation files updated and martian_corporations.txt created.
+Found starting_data.txt, loading settings.
+Executing: ./+x/game.+x 2 100 1000.00 "xo" 0 "jb" 0
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice: [?25h[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice: 1[?25h[?25h[2J[H
+--- File Menu ---
+1. Save Game
+2. Load Game
+3. Back to Main Menu
+Enter your choice: Running game setup...
+Executing: ./+x/day_loop.+x
+Executing: ./+x/tax_loop.+x
+Executing: ./+x/dividend_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/payroll_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/salary_loop.+x
+sh: 1: ./+x/salary_loop.+x: not found
+Hello, Multiverse!
+50 corporation sheets generated successfully.
+Corporation files updated and martian_corporations.txt created.
+Found starting_data.txt, loading settings.
+Executing: ./+x/game.+x 2 100 1000.00 "xo" 0 "jb" 0
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice: [?25h[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice: 1[?25h[?25h[2J[H
+--- File Menu ---
+1. Save Game
+2. Load Game
+3. Back to Main Menu
+Enter your choice: Executing: ./+x/day_loop.+x
+Running game setup...
+Executing: ./+x/tax_loop.+x
+Executing: ./+x/dividend_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/payroll_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/salary_loop.+x
+sh: 1: ./+x/salary_loop.+x: not found
+Hello, Multiverse!
+50 corporation sheets generated successfully.
+Corporation files updated and martian_corporations.txt created.
+Found starting_data.txt, loading settings.
+Executing: ./+x/game.+x 2 100 1000.00 "xo" 0 "jb" 0
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice: [?25h[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice: 1[?25h[?25h[2J[H
+--- File Menu ---
+1. Save Game
+2. Load Game
+3. Back to Main Menu
+Enter your choice: [?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice: [?25h[?25h[?25h[?25hRunning game setup...
+Executing: ./+x/day_loop.+x
+Executing: ./+x/tax_loop.+x
+Executing: ./+x/dividend_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/payroll_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/salary_loop.+x
+sh: 1: ./+x/salary_loop.+x: not found
+Hello, Multiverse!
+50 corporation sheets generated successfully.
+Corporation files updated and martian_corporations.txt created.
+Found starting_data.txt, loading settings.
+Executing: ./+x/game.+x 2 100 1000.00 "xo" 0 "jb" 0
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice: [?25h[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice: 1[?25h[?25h[2J[H
+--- File Menu ---
+1. Save Game
+2. Load Game
+3. Back to Main Menu
+Enter your choice: [?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice: [?25h[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice: 1[?25h[?25h[2J[H
+--- File Menu ---
+1. Save Game
+2. Load Game
+3. Back to Main Menu
+Enter your choice: [?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice: [?25hRunning game setup...
+Executing: ./+x/day_loop.+x
+Executing: ./+x/tax_loop.+x
+Executing: ./+x/dividend_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/payroll_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/salary_loop.+x
+sh: 1: ./+x/salary_loop.+x: not found
+Hello, Multiverse!
+50 corporation sheets generated successfully.
+Corporation files updated and martian_corporations.txt created.
+Found starting_data.txt, loading settings.
+Executing: ./+x/game.+x 2 100 1000.00 "xo" 0 "jb" 0
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25h[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 1[?25h[?25h[2J[H
+--- File Menu ---
+1. Save Game
+2. Load Game
+3. Back to Main Menu
+Enter your choice: [?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25h[?25h[?25h[?25h[?25hExecuting: ./+x/day_loop.+x
+Running game setup...
+Executing: ./+x/tax_loop.+x
+Executing: ./+x/dividend_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/payroll_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/salary_loop.+x
+sh: 1: ./+x/salary_loop.+x: not found
+Hello, Multiverse!
+50 corporation sheets generated successfully.
+Corporation files updated and martian_corporations.txt created.
+Found starting_data.txt, loading settings.
+Executing: ./+x/game.+x 2 100 1000.00 "xo" 0 "jb" 0
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25h[?25h[?25hRunning game setup...
+Executing: ./+x/day_loop.+x
+Executing: ./+x/tax_loop.+x
+Executing: ./+x/dividend_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/payroll_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/salary_loop.+x
+sh: 1: ./+x/salary_loop.+x: not found
+Hello, Multiverse!
+50 corporation sheets generated successfully.
+Corporation files updated and martian_corporations.txt created.
+Found starting_data.txt, loading settings.
+Executing: ./+x/game.+x 2 100 1000.00 "xo" 0 "jb" 0
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hInput received: 49 (pid 123102)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 1[?25hInput received: 10 (pid 123102)
+[?25hRunning file_submenu.+x (pid 123102)
+[2J[H
+--- File Menu ---
+1. Save Game
+2. Load Game
+3. Back to Main Menu
+Enter your choice: [?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hSIGINT received in game.c (pid 123102)
+[?25h[?25h[?25h[?25hExecuting: ./+x/day_loop.+x
+Running game setup...
+Executing: ./+x/tax_loop.+x
+Executing: ./+x/dividend_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/payroll_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/salary_loop.+x
+sh: 1: ./+x/salary_loop.+x: not found
+Hello, Multiverse!
+50 corporation sheets generated successfully.
+Corporation files updated and martian_corporations.txt created.
+Found starting_data.txt, loading settings.
+Executing: ./+x/game.+x 2 100 1000.00 "xo" 0 "jb" 0
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hInput received: 49 (pid 123469)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 1[?25hInput received: 10 (pid 123469)
+[?25hRunning file_submenu.+x (pid 123469)
+[2J[H
+--- File Menu ---
+1. Save Game
+2. Load Game
+3. Back to Main Menu
+Enter your choice: [?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hSIGINT received in game.c (pid 123469)
+[?25h[?25h[?25h[?25hRunning game setup...
+Executing: ./+x/day_loop.+x
+Executing: ./+x/tax_loop.+x
+Executing: ./+x/dividend_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/payroll_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/salary_loop.+x
+sh: 1: ./+x/salary_loop.+x: not found
+Hello, Multiverse!
+50 corporation sheets generated successfully.
+Corporation files updated and martian_corporations.txt created.
+Found starting_data.txt, loading settings.
+Executing: ./+x/game.+x 2 100 1000.00 "xo" 0 "jb" 0
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hInput received: 49 (pid 123577)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 1[?25hInput received: 10 (pid 123577)
+[?25hRunning file_submenu.+x (pid 123577)
+[2J[H
+--- File Menu ---
+1. Save Game
+2. Load Game
+3. Back to Main Menu
+Enter your choice: [?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hSIGINT received in game.c (pid 123577)
+[?25h[?25h[?25h[?25hRunning game setup...
+Executing: ./+x/day_loop.+x
+Executing: ./+x/tax_loop.+x
+Executing: ./+x/dividend_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/payroll_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/salary_loop.+x
+sh: 1: ./+x/salary_loop.+x: not found
+Hello, Multiverse!
+50 corporation sheets generated successfully.
+Corporation files updated and martian_corporations.txt created.
+Found starting_data.txt, loading settings.
+Executing: ./+x/game.+x 2 100 1000.00 "xo" 0 "jb" 0
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hExecuting: ./+x/day_loop.+x
+Running game setup...
+Executing: ./+x/tax_loop.+x
+Executing: ./+x/dividend_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/payroll_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/salary_loop.+x
+sh: 1: ./+x/salary_loop.+x: not found
+Hello, Multiverse!
+50 corporation sheets generated successfully.
+Corporation files updated and martian_corporations.txt created.
+Found starting_data.txt, loading settings.
+Executing: ./+x/game.+x 2 100 1000.00 "xo" 0 "jb" 0
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hRunning game setup...
+Executing: ./+x/day_loop.+x
+Executing: ./+x/tax_loop.+x
+Executing: ./+x/dividend_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/payroll_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/salary_loop.+x
+sh: 1: ./+x/salary_loop.+x: not found
+Hello, Multiverse!
+50 corporation sheets generated successfully.
+Corporation files updated and martian_corporations.txt created.
+Found starting_data.txt, loading settings.
+Executing: ./+x/game.+x 2 100 1000.00 "xo" 0 "jb" 0
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hInput received: 49 (pid 124173)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 1[?25hInput received: 10 (pid 124173)
+[?25hRunning file_submenu.+x (pid 124173)
+[2J[H
+--- File Menu ---
+1. Save Game
+2. Load Game
+3. Back to Main Menu
+Enter your choice: [?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hSIGINT received in game.c (pid 124173)
+[?25h[?25h[?25h[?25hRunning game setup...
+Executing: ./+x/day_loop.+x
+Executing: ./+x/tax_loop.+x
+Executing: ./+x/dividend_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/payroll_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/salary_loop.+x
+sh: 1: ./+x/salary_loop.+x: not found
+Hello, Multiverse!
+50 corporation sheets generated successfully.
+Corporation files updated and martian_corporations.txt created.
+Found starting_data.txt, loading settings.
+Executing: ./+x/game.+x 2 100 1000.00 "xo" 0 "jb" 0
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hInput received: 49 (pid 124491)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 1[?25hInput received: 10 (pid 124491)
+[?25hRunning file_submenu.+x (pid 124491)
+[2J[H
+--- File Menu ---
+1. Save Game
+2. Load Game
+3. Back to Main Menu
+Enter your choice: [?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hSIGINT received in game.c (pid 124491)
+[?25h[?25h[?25h[?25hRunning game setup...
+Executing: ./+x/day_loop.+x
+Executing: ./+x/tax_loop.+x
+Executing: ./+x/dividend_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/payroll_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/salary_loop.+x
+sh: 1: ./+x/salary_loop.+x: not found
+Hello, Multiverse!
+50 corporation sheets generated successfully.
+Corporation files updated and martian_corporations.txt created.
+Found starting_data.txt, loading settings.
+Executing: ./+x/game.+x 2 100 1000.00 "xo" 0 "jb" 0
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hInput received: 49 (pid 124744)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 1[?25hInput received: 10 (pid 124744)
+[?25hRunning file_submenu.+x (pid 124744)
+[2J[H
+--- File Menu ---
+1. Save Game
+2. Load Game
+3. Back to Main Menu
+Enter your choice: [?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hSIGINT received in game.c (pid 124744)
+[?25h[?25h[?25h[?25hRunning game setup...
+Executing: ./+x/day_loop.+x
+Executing: ./+x/tax_loop.+x
+Executing: ./+x/dividend_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/payroll_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/salary_loop.+x
+sh: 1: ./+x/salary_loop.+x: not found
+Hello, Multiverse!
+50 corporation sheets generated successfully.
+Corporation files updated and martian_corporations.txt created.
+Found starting_data.txt, loading settings.
+Executing: ./+x/game.+x 2 100 1000.00 "xo" 0 "jb" 0
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hInput received: 49 (pid 156149)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 1[?25hInput received: 10 (pid 156149)
+[?25hRunning file_submenu.+x (pid 156149)
+[2J[H
+--- File Menu ---
+1. Save Game
+2. Load Game
+3. Back to Main Menu
+Enter your choice: [?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hSIGINT received in game.c (pid 156149)
+[?25h[?25h[?25h[?25hRunning game setup...
+Executing: ./+x/day_loop.+x
+Executing: ./+x/tax_loop.+x
+Executing: ./+x/dividend_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/payroll_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/salary_loop.+x
+sh: 1: ./+x/salary_loop.+x: not found
+Hello, Multiverse!
+50 corporation sheets generated successfully.
+Corporation files updated and martian_corporations.txt created.
+Found starting_data.txt, loading settings.
+Executing: ./+x/game.+x 2 100 1000.00 "xo" 0 "jb" 0
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hInput received: 49 (pid 156199)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 1[?25hInput received: 10 (pid 156199)
+[?25hRunning file_submenu.+x (pid 156199)
+[2J[H
+--- File Menu ---
+1. Save Game
+2. Load Game
+3. Back to Main Menu
+Enter your choice: [?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hSIGINT received in game.c (pid 156199)
+[?25h[?25h[?25h[?25hRunning game setup...
+Executing: ./+x/day_loop.+x
+Executing: ./+x/tax_loop.+x
+Executing: ./+x/dividend_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/payroll_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/salary_loop.+x
+sh: 1: ./+x/salary_loop.+x: not found
+Hello, Multiverse!
+50 corporation sheets generated successfully.
+Corporation files updated and martian_corporations.txt created.
+Found starting_data.txt, loading settings.
+Executing: ./+x/game.+x 2 100 1000.00 "xo" 0 "jb" 0
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hInput received: 49 (pid 7231)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 1[?25hInput received: 10 (pid 7231)
+[?25hRunning file_submenu.+x (pid 7231)
+[2J[H
+--- File Menu ---
+1. Save Game
+2. Load Game
+3. Back to Main Menu
+Enter your choice: [?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hSIGINT received in game.c (pid 7231)
+[?25h[?25h[?25h[?25hRunning game setup...
+Executing: ./+x/day_loop.+x
+Executing: ./+x/tax_loop.+x
+Executing: ./+x/dividend_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/payroll_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/salary_loop.+x
+sh: 1: ./+x/salary_loop.+x: not found
+Hello, Multiverse!
+50 corporation sheets generated successfully.
+Corporation files updated and martian_corporations.txt created.
+Found starting_data.txt, loading settings.
+Executing: ./+x/game.+x 2 100 1000.00 "xo" 0 "jb" 0
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hInput received: 49 (pid 23409)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 1[?25hInput received: 10 (pid 23409)
+[?25hRunning file_submenu.+x (pid 23409)
+[2J[H
+--- File Menu ---
+1. Save Game
+2. Load Game
+3. Back to Main Menu
+Enter your choice: Available saves:
+1. datarentity.zip
+Enter save number to load (0 to cancel): [?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hSIGINT received in game.c (pid 23409)
+[?25h[?25h[?25h[?25hExecuting: ./+x/day_loop.+x
+Running game setup...
+Executing: ./+x/tax_loop.+x
+Executing: ./+x/dividend_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/payroll_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/salary_loop.+x
+sh: 1: ./+x/salary_loop.+x: not found
+Hello, Multiverse!
+50 corporation sheets generated successfully.
+Corporation files updated and martian_corporations.txt created.
+Found starting_data.txt, loading settings.
+Executing: ./+x/game.+x 2 100 1000.00 "xo" 0 "jb" 0
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hInput received: 49 (pid 23479)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 1[?25hInput received: 51 (pid 23479)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 13[?25hInput received: 10 (pid 23479)
+[?25h[H[2J[3J--- Financing ---
+1. Startup New Corp
+2. Capital Contribution
+3. Public Stock Offering
+4. Issue Bonds
+5. Buy Back or Call Bonds
+6. Extraordinary Dividend
+7. Tax-Free Liquidation
+8. Spin Off Subsidiary
+9. Back to main menu
+
+Enter your choice: [H[2J[3J--- Startup New Corp ---
+Select the industry for your new corporation:
+1. Banking
+2. Insurance
+3. Real Estate
+4. Automotive
+5. Technology/Computers
+6. Commodities
+7. Aerospace and Defense
+8. Agriculture
+9. Airlines
+10. Apparel and Textiles
+11. Biotechnology
+12. Chemicals
+13. Construction
+14. Consumer Electronics
+15. Consumer Goods
+16. Energy (Oil and Gas)
+17. Entertainment and Media
+18. Food and Beverage
+19. Healthcare
+20. Hospitality
+21. Manufacturing
+22. Mining
+23. Pharmaceuticals
+24. Retail
+25. Telecommunications
+26. Transportation
+27. Utilities
+28. Advertising
+29. Building Materials
+30. Consumer Finance
+31. Financial Services (Non-Banking)
+32. Heavy Machinery
+33. Medical Equipment
+34. Publishing
+35. Semiconductors
+36. Software
+
+Enter your choice (1-36): 
+Select the country of incorporation:
+1. Solar Empire
+2. Red African Union
+3. Robot State
+4. Sinder Rouge Monarchy
+5. United Clones
+6. Farland
+7. Inland
+
+Enter your choice (1-7): Enter the amount to fund the corporation (minimum 100): Enter the name for the new corporation (5-25 characters): Enter the ticker symbol (1-6 characters): 
+Congratulations! You have successfully founded spirl realty (SPIRL).
+Press Enter to continue...[H[2J[3J--- Financing ---
+1. Startup New Corp
+2. Capital Contribution
+3. Public Stock Offering
+4. Issue Bonds
+5. Buy Back or Call Bonds
+6. Extraordinary Dividend
+7. Tax-Free Liquidation
+8. Spin Off Subsidiary
+9. Back to main menu
+
+Enter your choice: [?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hInput received: 49 (pid 23479)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 1[?25hInput received: 10 (pid 23479)
+[?25hRunning file_submenu.+x (pid 23479)
+[2J[H
+--- File Menu ---
+1. Save Game
+2. Load Game
+3. Back to Main Menu
+Enter your choice: Enter save name (alphanumeric, dash, underscore):   adding: spirl/ (stored 0%)
+  adding: spirl/multiverse/ (stored 0%)
+  adding: spirl/multiverse/wussup?.txt (deflated 36%)
+  adding: spirl/multiverse/humanoids/ (stored 0%)
+  adding: spirl/multiverse/humanoids/humanoid_data_bank.txt (deflated 32%)
+  adding: spirl/data/ (stored 0%)
+  adding: spirl/data/xdb/ (stored 0%)
+  adding: spirl/data/xdb/db_search.txt (deflated 33%)
+  adding: spirl/data/data_data/ (stored 0%)
+  adding: spirl/data/data_data/active_entity.txt (stored 0%)
+  adding: spirl/data/data_data/db_search.txt (deflated 32%)
+  adding: spirl/data/data_data/wsr_clock.txt (stored 0%)
+  adding: spirl/data/data_data/setting.txt (deflated 40%)
+  adding: spirl/data/active_entity.txt (stored 0%)
+  adding: spirl/data/clockwise_daily.txt (deflated 97%)
+  adding: spirl/data/db_search.txt (deflated 32%)
+  adding: spirl/data/wsr_clock.txt (stored 0%)
+  adding: spirl/data/clockwise_monthly.txt (deflated 97%)
+  adding: spirl/data/day.txt (deflated 95%)
+  adding: spirl/data/clockwise_quarterly.txt (deflated 97%)
+  adding: spirl/data/setting.txt (deflated 40%)
+  adding: spirl/data/tax.txt (deflated 95%)
+  adding: spirl/governments/ (stored 0%)
+  adding: spirl/governments/generated/ (stored 0%)
+  adding: spirl/governments/generated/Inland/ (stored 0%)
+  adding: spirl/governments/generated/Inland/financial_profile.txt (deflated 59%)
+  adding: spirl/governments/generated/Inland/Inland.txt (deflated 38%)
+  adding: spirl/governments/generated/Inland/balance_sheet.txt (deflated 18%)
+  adding: spirl/governments/generated/Farland/ (stored 0%)
+  adding: spirl/governments/generated/Farland/financial_profile.txt (deflated 59%)
+  adding: spirl/governments/generated/Farland/balance_sheet.txt (deflated 18%)
+  adding: spirl/governments/generated/Farland/Farland.txt (deflated 38%)
+  adding: spirl/governments/generated/Robot State/ (stored 0%)
+  adding: spirl/governments/generated/Robot State/financial_profile.txt (deflated 60%)
+  adding: spirl/governments/generated/Robot State/Robot State.txt (deflated 37%)
+  adding: spirl/governments/generated/Robot State/balance_sheet.txt (deflated 21%)
+  adding: spirl/governments/generated/gov-list.txt (deflated 20%)
+  adding: spirl/governments/generated/Solar Empire/ (stored 0%)
+  adding: spirl/governments/generated/Solar Empire/financial_profile.txt (deflated 59%)
+  adding: spirl/governments/generated/Solar Empire/Solar Empire.txt (deflated 36%)
+  adding: spirl/governments/generated/Solar Empire/balance_sheet.txt (deflated 19%)
+  adding: spirl/governments/generated/Red African Union/ (stored 0%)
+  adding: spirl/governments/generated/Red African Union/financial_profile.txt (deflated 60%)
+  adding: spirl/governments/generated/Red African Union/Red African Union.txt (deflated 36%)
+  adding: spirl/governments/generated/Red African Union/balance_sheet.txt (deflated 19%)
+  adding: spirl/governments/generated/Sinder Rouge Monarchy/ (stored 0%)
+  adding: spirl/governments/generated/Sinder Rouge Monarchy/financial_profile.txt (deflated 60%)
+  adding: spirl/governments/generated/Sinder Rouge Monarchy/Sinder Rouge Monarchy.txt (deflated 34%)
+  adding: spirl/governments/generated/Sinder Rouge Monarchy/balance_sheet.txt (deflated 20%)
+  adding: spirl/governments/generated/United Clones/ (stored 0%)
+  adding: spirl/governments/generated/United Clones/financial_profile.txt (deflated 60%)
+  adding: spirl/governments/generated/United Clones/United Clones.txt (deflated 36%)
+  adding: spirl/governments/generated/United Clones/balance_sheet.txt (deflated 20%)
+  adding: spirl/players/ (stored 0%)
+  adding: spirl/players/jb/ (stored 0%)
+  adding: spirl/players/jb/portfolio.txt (deflated 46%)
+  adding: spirl/players/jb/balance_sheet.txt (deflated 30%)
+  adding: spirl/players/xo/ (stored 0%)
+  adding: spirl/players/xo/portfolio.txt (deflated 50%)
+  adding: spirl/players/xo/balance_sheet.txt (deflated 30%)
+  adding: spirl/corporations/ (stored 0%)
+  adding: spirl/corporations/generated/ (stored 0%)
+  adding: spirl/corporations/generated/CRT/ (stored 0%)
+  adding: spirl/corporations/generated/CRT/CRT.txt (deflated 58%)
+  adding: spirl/corporations/generated/SNT/ (stored 0%)
+  adding: spirl/corporations/generated/SNT/SNT.txt (deflated 58%)
+  adding: spirl/corporations/generated/STQ/ (stored 0%)
+  adding: spirl/corporations/generated/STQ/STQ.txt (deflated 58%)
+  adding: spirl/corporations/generated/TRF/ (stored 0%)
+  adding: spirl/corporations/generated/TRF/TRF.txt (deflated 58%)
+  adding: spirl/corporations/generated/CMZ/ (stored 0%)
+  adding: spirl/corporations/generated/CMZ/CMZ.txt (deflated 59%)
+  adding: spirl/corporations/generated/LDS/ (stored 0%)
+  adding: spirl/corporations/generated/LDS/LDS.txt (deflated 58%)
+  adding: spirl/corporations/generated/AST/ (stored 0%)
+  adding: spirl/corporations/generated/AST/AST.txt (deflated 58%)
+  adding: spirl/corporations/generated/MPC/ (stored 0%)
+  adding: spirl/corporations/generated/MPC/MPC.txt (deflated 58%)
+  adding: spirl/corporations/generated/VDW/ (stored 0%)
+  adding: spirl/corporations/generated/VDW/VDW.txt (deflated 58%)
+  adding: spirl/corporations/generated/GEN/ (stored 0%)
+  adding: spirl/corporations/generated/GEN/GEN.txt (deflated 58%)
+  adding: spirl/corporations/generated/OLM/ (stored 0%)
+  adding: spirl/corporations/generated/OLM/OLM.txt (deflated 58%)
+  adding: spirl/corporations/generated/DCR/ (stored 0%)
+  adding: spirl/corporations/generated/DCR/DCR.txt (deflated 58%)
+  adding: spirl/corporations/generated/CHM/ (stored 0%)
+  adding: spirl/corporations/generated/CHM/CHM.txt (deflated 58%)
+  adding: spirl/corporations/generated/RRV/ (stored 0%)
+  adding: spirl/corporations/generated/RRV/RRV.txt (deflated 58%)
+  adding: spirl/corporations/generated/STB/ (stored 0%)
+  adding: spirl/corporations/generated/STB/STB.txt (deflated 58%)
+  adding: spirl/corporations/generated/SLW/ (stored 0%)
+  adding: spirl/corporations/generated/SLW/SLW.txt (deflated 58%)
+  adding: spirl/corporations/generated/CMF/ (stored 0%)
+  adding: spirl/corporations/generated/CMF/CMF.txt (deflated 58%)
+  adding: spirl/corporations/generated/PLG/ (stored 0%)
+  adding: spirl/corporations/generated/PLG/PLG.txt (deflated 58%)
+  adding: spirl/corporations/generated/RPL/ (stored 0%)
+  adding: spirl/corporations/generated/RPL/RPL.txt (deflated 58%)
+  adding: spirl/corporations/generated/STS/ (stored 0%)
+  adding: spirl/corporations/generated/STS/STS.txt (deflated 59%)
+  adding: spirl/corporations/generated/HFM/ (stored 0%)
+  adding: spirl/corporations/generated/HFM/HFM.txt (deflated 58%)
+  adding: spirl/corporations/generated/AZN/ (stored 0%)
+  adding: spirl/corporations/generated/AZN/AZN.txt (deflated 58%)
+  adding: spirl/corporations/generated/SFG/ (stored 0%)
+  adding: spirl/corporations/generated/SFG/SFG.txt (deflated 58%)
+  adding: spirl/corporations/generated/ORB/ (stored 0%)
+  adding: spirl/corporations/generated/ORB/ORB.txt (deflated 58%)
+  adding: spirl/corporations/generated/WST/ (stored 0%)
+  adding: spirl/corporations/generated/WST/WST.txt (deflated 58%)
+  adding: spirl/corporations/generated/SLR/ (stored 0%)
+  adding: spirl/corporations/generated/SLR/SLR.txt (deflated 58%)
+  adding: spirl/corporations/generated/CLG/ (stored 0%)
+  adding: spirl/corporations/generated/CLG/CLG.txt (deflated 58%)
+  adding: spirl/corporations/generated/martian_corporations.txt (deflated 58%)
+  adding: spirl/corporations/generated/GLP/ (stored 0%)
+  adding: spirl/corporations/generated/GLP/GLP.txt (deflated 58%)
+  adding: spirl/corporations/generated/MSF/ (stored 0%)
+  adding: spirl/corporations/generated/MSF/MSF.txt (deflated 58%)
+  adding: spirl/corporations/generated/CYB/ (stored 0%)
+  adding: spirl/corporations/generated/CYB/CYB.txt (deflated 58%)
+  adding: spirl/corporations/generated/MRT/ (stored 0%)
+  adding: spirl/corporations/generated/MRT/MRT.txt (deflated 58%)
+  adding: spirl/corporations/generated/MTB/ (stored 0%)
+  adding: spirl/corporations/generated/MTB/MTB.txt (deflated 59%)
+  adding: spirl/corporations/generated/SKF/ (stored 0%)
+  adding: spirl/corporations/generated/SKF/SKF.txt (deflated 58%)
+  adding: spirl/corporations/generated/VDL/ (stored 0%)
+  adding: spirl/corporations/generated/VDL/VDL.txt (deflated 58%)
+  adding: spirl/corporations/generated/CRM/ (stored 0%)
+  adding: spirl/corporations/generated/CRM/CRM.txt (deflated 58%)
+  adding: spirl/corporations/generated/VCG/ (stored 0%)
+  adding: spirl/corporations/generated/VCG/VCG.txt (deflated 58%)
+  adding: spirl/corporations/generated/SPIRL/ (stored 0%)
+  adding: spirl/corporations/generated/SPIRL/SPIRL.txt (deflated 63%)
+  adding: spirl/corporations/generated/SPIRL/list_shareholders.txt (deflated 53%)
+  adding: spirl/corporations/generated/SPT/ (stored 0%)
+  adding: spirl/corporations/generated/SPT/SPT.txt (deflated 58%)
+  adding: spirl/corporations/generated/NNT/ (stored 0%)
+  adding: spirl/corporations/generated/NNT/NNT.txt (deflated 58%)
+  adding: spirl/corporations/generated/LUN/ (stored 0%)
+  adding: spirl/corporations/generated/LUN/LUN.txt (deflated 59%)
+  adding: spirl/corporations/generated/QNT/ (stored 0%)
+  adding: spirl/corporations/generated/QNT/QNT.txt (deflated 58%)
+  adding: spirl/corporations/generated/RGE/ (stored 0%)
+  adding: spirl/corporations/generated/RGE/RGE.txt (deflated 58%)
+  adding: spirl/corporations/generated/AFL/ (stored 0%)
+  adding: spirl/corporations/generated/AFL/AFL.txt (deflated 58%)
+  adding: spirl/corporations/generated/PLS/ (stored 0%)
+  adding: spirl/corporations/generated/PLS/PLS.txt (deflated 58%)
+  adding: spirl/corporations/generated/BMP/ (stored 0%)
+  adding: spirl/corporations/generated/BMP/BMP.txt (deflated 58%)
+  adding: spirl/corporations/generated/MMV/ (stored 0%)
+  adding: spirl/corporations/generated/MMV/MMV.txt (deflated 58%)
+  adding: spirl/corporations/generated/DUN/ (stored 0%)
+  adding: spirl/corporations/generated/DUN/DUN.txt (deflated 58%)
+  adding: spirl/corporations/generated/RDW/ (stored 0%)
+  adding: spirl/corporations/generated/RDW/RDW.txt (deflated 58%)
+  adding: spirl/corporations/generated/MSM/ (stored 0%)
+  adding: spirl/corporations/generated/MSM/MSM.txt (deflated 58%)
+  adding: spirl/corporations/generated/SYN/ (stored 0%)
+  adding: spirl/corporations/generated/SYN/SYN.txt (deflated 58%)
+  adding: spirl/corporations/generated/SCM/ (stored 0%)
+  adding: spirl/corporations/generated/SCM/SCM.txt (deflated 58%)
+Game saved as saves/spirl.zip
+
+--- File Menu ---
+1. Save Game
+2. Load Game
+3. Back to Main Menu
+Enter your choice: [?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hSIGINT received in game.c (pid 23479)
+[?25h[?25h[?25h[?25h[?25hRunning game setup...
+Executing: ./+x/day_loop.+x
+Executing: ./+x/tax_loop.+x
+Executing: ./+x/dividend_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/payroll_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/salary_loop.+x
+sh: 1: ./+x/salary_loop.+x: not found
+Hello, Multiverse!
+50 corporation sheets generated successfully.
+Corporation files updated and martian_corporations.txt created.
+Found starting_data.txt, loading settings.
+Executing: ./+x/game.+x 2 100 1000.00 "xo" 0 "jb" 0
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hInput received: 49 (pid 80101)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 1[?25hInput received: 51 (pid 80101)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 13[?25hInput received: 10 (pid 80101)
+[?25h[H[2J[3J--- Financing ---
+1. Startup New Corp
+2. Capital Contribution
+3. Public Stock Offering
+4. Issue Bonds
+5. Buy Back or Call Bonds
+6. Extraordinary Dividend
+7. Tax-Free Liquidation
+8. Spin Off Subsidiary
+9. Back to main menu
+
+Enter your choice: [H[2J[3J--- Startup New Corp ---
+Select the industry for your new corporation:
+1. Banking
+2. Insurance
+3. Real Estate
+4. Automotive
+5. Technology/Computers
+6. Commodities
+7. Aerospace and Defense
+8. Agriculture
+9. Airlines
+10. Apparel and Textiles
+11. Biotechnology
+12. Chemicals
+13. Construction
+14. Consumer Electronics
+15. Consumer Goods
+16. Energy (Oil and Gas)
+17. Entertainment and Media
+18. Food and Beverage
+19. Healthcare
+20. Hospitality
+21. Manufacturing
+22. Mining
+23. Pharmaceuticals
+24. Retail
+25. Telecommunications
+26. Transportation
+27. Utilities
+28. Advertising
+29. Building Materials
+30. Consumer Finance
+31. Financial Services (Non-Banking)
+32. Heavy Machinery
+33. Medical Equipment
+34. Publishing
+35. Semiconductors
+36. Software
+
+Enter your choice (1-36): 
+Select the country of incorporation:
+1. Solar Empire
+2. Red African Union
+3. Robot State
+4. Sinder Rouge Monarchy
+5. United Clones
+6. Farland
+7. Inland
+
+Enter your choice (1-7): Enter the amount to fund the corporation (minimum 100): Enter the name for the new corporation (5-25 characters): Enter the ticker symbol (1-6 characters): 
+Congratulations! You have successfully founded aauto corp (AAUTO).
+Press Enter to continue...[H[2J[3J--- Financing ---
+1. Startup New Corp
+2. Capital Contribution
+3. Public Stock Offering
+4. Issue Bonds
+5. Buy Back or Call Bonds
+6. Extraordinary Dividend
+7. Tax-Free Liquidation
+8. Spin Off Subsidiary
+9. Back to main menu
+
+Enter your choice: [?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hSIGINT received in game.c (pid 80101)
+[?25h[?25h[?25h[?25hRunning game setup...
+Executing: ./+x/day_loop.+x
+Executing: ./+x/tax_loop.+x
+Executing: ./+x/dividend_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/payroll_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/salary_loop.+x
+sh: 1: ./+x/salary_loop.+x: not found
+Hello, Multiverse!
+50 corporation sheets generated successfully.
+Corporation files updated and martian_corporations.txt created.
+Found starting_data.txt, loading settings.
+Executing: ./+x/game.+x 2 100 1000.00 "xo" 0 "jb" 0
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hInput received: 49 (pid 80948)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 1[?25hInput received: 10 (pid 80948)
+[?25hRunning file_submenu.+x (pid 80948)
+[2J[H
+--- File Menu ---
+1. Save Game
+2. Load Game
+3. Back to Main Menu
+Enter your choice: [?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hInput received: 49 (pid 80948)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 1[?25hInput received: 52 (pid 80948)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 14[?25hInput received: 10 (pid 80948)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hInput received: 49 (pid 80948)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 1[?25hInput received: 52 (pid 80948)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 14[?25hInput received: 127 (pid 80948)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 1[?25hInput received: 51 (pid 80948)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 13[?25hInput received: 10 (pid 80948)
+[?25h[H[2J[3J--- Financing ---
+1. Startup New Corp
+2. Capital Contribution
+3. Public Stock Offering
+4. Issue Bonds
+5. Buy Back or Call Bonds
+6. Extraordinary Dividend
+7. Tax-Free Liquidation
+8. Spin Off Subsidiary
+9. Back to main menu
+
+Enter your choice: [H[2J[3J--- Startup New Corp ---
+Select the industry for your new corporation:
+1. Banking
+2. Insurance
+3. Real Estate
+4. Automotive
+5. Technology/Computers
+6. Commodities
+7. Aerospace and Defense
+8. Agriculture
+9. Airlines
+10. Apparel and Textiles
+11. Biotechnology
+12. Chemicals
+13. Construction
+14. Consumer Electronics
+15. Consumer Goods
+16. Energy (Oil and Gas)
+17. Entertainment and Media
+18. Food and Beverage
+19. Healthcare
+20. Hospitality
+21. Manufacturing
+22. Mining
+23. Pharmaceuticals
+24. Retail
+25. Telecommunications
+26. Transportation
+27. Utilities
+28. Advertising
+29. Building Materials
+30. Consumer Finance
+31. Financial Services (Non-Banking)
+32. Heavy Machinery
+33. Medical Equipment
+34. Publishing
+35. Semiconductors
+36. Software
+
+Enter your choice (1-36): 
+Select the country of incorporation:
+1. Solar Empire
+2. Red African Union
+3. Robot State
+4. Sinder Rouge Monarchy
+5. United Clones
+6. Farland
+7. Inland
+
+Enter your choice (1-7): Enter the amount to fund the corporation (minimum 100): Enter the name for the new corporation (5-25 characters): Enter the ticker symbol (1-6 characters): 
+Congratulations! You have successfully founded automizi (AAMO).
+Press Enter to continue...[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hSIGINT received in game.c (pid 80948)
+[?25h[?25h[?25h[?25h[?25hExecuting: ./+x/day_loop.+x
+Running game setup...
+Executing: ./+x/tax_loop.+x
+Executing: ./+x/dividend_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/payroll_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/salary_loop.+x
+sh: 1: ./+x/salary_loop.+x: not found
+Hello, Multiverse!
+50 corporation sheets generated successfully.
+Corporation files updated and martian_corporations.txt created.
+Found starting_data.txt, loading settings.
+Executing: ./+x/game.+x 2 100 1000.00 "xo" 0 "jb" 0
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hInput received: 49 (pid 103463)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 1[?25hInput received: 10 (pid 103463)
+[?25hRunning file_submenu.+x (pid 103463)
+[2J[H
+--- File Menu ---
+1. Save Game
+2. Load Game
+3. Back to Main Menu
+Enter your choice: [?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hInput received: 49 (pid 103463)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 1[?25hInput received: 51 (pid 103463)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 13[?25hInput received: 10 (pid 103463)
+[?25h[H[2J[3J--- Financing ---
+1. Startup New Corp
+2. Capital Contribution
+3. Public Stock Offering
+4. Issue Bonds
+5. Buy Back or Call Bonds
+6. Extraordinary Dividend
+7. Tax-Free Liquidation
+8. Spin Off Subsidiary
+9. Back to main menu
+
+Enter your choice: [H[2J[3J--- Startup New Corp ---
+Select the industry for your new corporation:
+1. Banking
+2. Insurance
+3. Real Estate
+4. Automotive
+5. Technology/Computers
+6. Commodities
+7. Aerospace and Defense
+8. Agriculture
+9. Airlines
+10. Apparel and Textiles
+11. Biotechnology
+12. Chemicals
+13. Construction
+14. Consumer Electronics
+15. Consumer Goods
+16. Energy (Oil and Gas)
+17. Entertainment and Media
+18. Food and Beverage
+19. Healthcare
+20. Hospitality
+21. Manufacturing
+22. Mining
+23. Pharmaceuticals
+24. Retail
+25. Telecommunications
+26. Transportation
+27. Utilities
+28. Advertising
+29. Building Materials
+30. Consumer Finance
+31. Financial Services (Non-Banking)
+32. Heavy Machinery
+33. Medical Equipment
+34. Publishing
+35. Semiconductors
+36. Software
+
+Enter your choice (1-36): 
+Select the country of incorporation:
+1. Solar Empire
+2. Red African Union
+3. Robot State
+4. Sinder Rouge Monarchy
+5. United Clones
+6. Farland
+7. Inland
+
+Enter your choice (1-7): Enter the amount to fund the corporation (minimum 100): Enter the name for the new corporation (5-25 characters): Enter the ticker symbol (1-6 characters): 
+Congratulations! You have successfully founded solomed (SOLOM).
+Press Enter to continue...[H[2J[3J--- Financing ---
+1. Startup New Corp
+2. Capital Contribution
+3. Public Stock Offering
+4. Issue Bonds
+5. Buy Back or Call Bonds
+6. Extraordinary Dividend
+7. Tax-Free Liquidation
+8. Spin Off Subsidiary
+9. Back to main menu
+
+Enter your choice: [?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hSIGINT received in game.c (pid 103463)
+[?25h[?25h[?25h[?25h[?25hRunning game setup...
+Executing: ./+x/day_loop.+x
+Executing: ./+x/tax_loop.+x
+Executing: ./+x/dividend_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/payroll_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/salary_loop.+x
+sh: 1: ./+x/salary_loop.+x: not found
+Hello, Multiverse!
+50 corporation sheets generated successfully.
+Corporation files updated and martian_corporations.txt created.
+Found starting_data.txt, loading settings.
+Executing: ./+x/game.+x 2 100 1000.00 "xo" 0 "jb" 0
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hInput received: 49 (pid 103956)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 1[?25hInput received: 51 (pid 103956)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): 13[?25hInput received: 10 (pid 103956)
+[?25h[H[2J[3J--- Financing ---
+1. Startup New Corp
+2. Capital Contribution
+3. Public Stock Offering
+4. Issue Bonds
+5. Buy Back or Call Bonds
+6. Extraordinary Dividend
+7. Tax-Free Liquidation
+8. Spin Off Subsidiary
+9. Back to main menu
+
+Enter your choice: [H[2J[3J--- Startup New Corp ---
+Select the industry for your new corporation:
+1. Banking
+2. Insurance
+3. Real Estate
+4. Automotive
+5. Technology/Computers
+6. Commodities
+7. Aerospace and Defense
+8. Agriculture
+9. Airlines
+10. Apparel and Textiles
+11. Biotechnology
+12. Chemicals
+13. Construction
+14. Consumer Electronics
+15. Consumer Goods
+16. Energy (Oil and Gas)
+17. Entertainment and Media
+18. Food and Beverage
+19. Healthcare
+20. Hospitality
+21. Manufacturing
+22. Mining
+23. Pharmaceuticals
+24. Retail
+25. Telecommunications
+26. Transportation
+27. Utilities
+28. Advertising
+29. Building Materials
+30. Consumer Finance
+31. Financial Services (Non-Banking)
+32. Heavy Machinery
+33. Medical Equipment
+34. Publishing
+35. Semiconductors
+36. Software
+
+Enter your choice (1-36): 
+Select the country of incorporation:
+1. Solar Empire
+2. Red African Union
+3. Robot State
+4. Sinder Rouge Monarchy
+5. United Clones
+6. Farland
+7. Inland
+
+Enter your choice (1-7): Enter the amount to fund the corporation (minimum 100): Enter the name for the new corporation (5-25 characters): Enter the ticker symbol (1-6 characters): 
+Congratulations! You have successfully founded abc health (ABCH).
+Press Enter to continue...[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hInput received: 27 (pid 103956)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hInput received: 91 (pid 103956)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hInput received: 65 (pid 103956)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hInput received: 27 (pid 103956)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hSIGINT received in game.c (pid 103956)
+[?25h[?25h[?25h[?25hExecuting: ./+x/day_loop.+x
+Running game setup...
+Executing: ./+x/tax_loop.+x
+Executing: ./+x/dividend_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/payroll_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/salary_loop.+x
+sh: 1: ./+x/salary_loop.+x: not found
+Hello, Multiverse!
+50 corporation sheets generated successfully.
+Corporation files updated and martian_corporations.txt created.
+Found starting_data.txt, loading settings.
+Executing: ./+x/game.+x 2 100 1000.00 "xo" 0 "jb" 0
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......xo
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: xo
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		1000.00
+Other Assets....		0.00
+Total Assets.....		1000.00
+Less Debt....		-0.00
+Net Worth........		1000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hInput received: 110 (pid 104208)
+[?25h[?25hRunning game setup...
+Executing: ./+x/day_loop.+x
+Executing: ./+x/tax_loop.+x
+Executing: ./+x/dividend_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/payroll_loop.+x
+Usage: ./game num_players game_length starting_cash [player_name player_type]...
+Executing: ./+x/salary_loop.+x
+sh: 1: ./+x/salary_loop.+x: not found
+Hello, Multiverse!
+50 corporation sheets generated successfully.
+Corporation files updated and martian_corporations.txt created.
+No starting_data.txt found, running interactive setup.
+--- Game Setup ---
+Enter number of players (1-5): Enter game length (in years): Enter starting cash: 
+--- Player 1 ---
+Enter name: Enter player type (0 for Human, 1 for Computer): 
+--- Player 2 ---
+Enter name: Enter player type (0 for Human, 1 for Computer): Executing: ./+x/game.+x 2 200 2000.00 "ab" 1 "ba" 0
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......ab
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: ab
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		2000.00
+Other Assets....		0.00
+Total Assets.....		2000.00
+Less Debt....		-0.00
+Net Worth........		2000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25hInput received: -1 (pid 25338)
+[?25l[2J[H_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol.... N/A Go		Stock Price.......Start Game!
+Controlled By.....Start Game!		Acting Now.......ab
+Date: 00/00/0 00:00:00:00		Day Passage Speed: sec
+Player: ab
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER [OFF]
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..		2000.00
+Other Assets....		0.00
+Total Assets.....		2000.00
+Less Debt....		-0.00
+Net Worth........		2000.00
+----------------------------------------------
+FINANCIAL NEWS HEADLINES [<- scroll data 2 left here]
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Market closed		Prime Rate: 2.50%
+Long Bond: 7.25%		Short Bond: 6.50%
+Spot Crude: $100.00		Silver: $20.00
+Spot Gold: $1,200.00		Spot Wheat: $5.00
+GDP Growth: 2.5%		Spot Corn: $5.00
+------------------------------------------
+Enter your choice (or 'n' to quit): [?25h

@@ -1,0 +1,44 @@
+✦ Based on our progress, here are some suggested next steps to enhance the
+  AI and game mechanics:
+
+   1. Expand the AI's Knowledge: We can enhance the AI_Corporation struct in
+      ai_module.c to include more financial details like total assets,
+      liabilities, and stock price. This will allow the AI to make more
+      intelligent decisions.
+
+   2. Implement Inter-Corporation Loans: We can create a system where
+      corporations can request loans from each other (especially from
+      banks). This would be the first real "business" transaction and would
+      involve:
+       * AI logic to identify when a loan is needed.
+       * AI logic for banks to evaluate and approve/deny loan requests.
+       * A mechanism to update the financial sheets of both corporations
+         involved.
+
+   3. Develop AI Personalities: We can give corporations different financial
+      strategies or "personalities" (e.g., aggressive, conservative,
+      growth-focused). This would influence their decisions regarding loans,
+      investments, and other business activities.
+
+   4. Create Dynamic News Events: The AI's actions can generate headlines in
+      the financial news, such as major loan agreements or investment deals.
+      This would make the game world more dynamic and responsive to the AI's
+      activities.
+
+  Let me know which of these you'd like to focus on, or if you have another
+  idea in mind.
+
+companies can buy control of other companies by owning majority share. 
+companies may issue shares
+were gonna want ai to use the same menu options & modules players use.
+we want the ai to be an ai_orchestator.c and ai_module.c , ai_module should handle the individual
+actions of 1 entity, like "non_human player" , while orchestrator can handle managment of many ai.
+ controlled in game corporations .
+ review the menu options currently in place, and decide what new menu modules we should be building next.
+ 
+ 
+ hints : 8.buy/sell allows users to buy stocks/bonds/options/futures and physical gooods
+ 9. financing allows users to contribute money to form a new company .or issue shares for existing. 
+ 
+ also dont forget to 
+ 

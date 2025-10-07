@@ -1,0 +1,16 @@
+userhash rvBT.🎛️.®™
+symbol 🎛️
+shape cube
+color 0.185 0.161 0.157
+x -2
+y 6
+z 8
+active none
+range_x 3
+range_y 2
+range_z 0
+stamina 0
+turn 8
+extra_0 0
+extra_1 0
+hunger 1

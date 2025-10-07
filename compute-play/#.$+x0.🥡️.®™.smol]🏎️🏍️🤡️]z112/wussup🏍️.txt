@@ -1,0 +1,87 @@
+sol0.👻️.®™]a0
+🥡️
+i just wanna get a quick giga pet going. 
+whenever there is item it should exist. 
+
+i may make a simple "store" so gemini knows what to connect things with (instead of food coming from "nowhwere")
+(this would connect with wsr, and they will have an inventory ) 
+(i may also make a "hotel" where they can spend money to sleep , and a "gym" where they can train 4 $)
+(im gonna make a bank too, 🏦️🏪️🏫️ will make a school where chatbot can learn. do u understand the scope of this? 
+(finally we will make other peices.) 
+
+(if we do store first, (cuz items/ inventory) then hotel 
+or hotel first cuz easier , just take money from me, put it on hotel 'state.txt'
+then renew my sleep 
+
+
+they're scared 2 mess with this lol , but this is easier than halo.c <3
+
+
+<were not focused on anatomy yet, this is sistine chapel. were bringing suble arch scaffolding from WSR 2 here.2 inform> 
+🥡️
+
+🗓️📅️aug17
+i think i fixed everything to use "CHDIR"
+
+(plus added 'inventory/events' <-copy rmmv stuff when u can . \
+
+🐡️i think gameloop & stopwatch were "NEVER WORKING RIGHT EVEN IN OLD CODEBASE"
+(confusion about time vs turn , etc w/e <- mirror 2 MSRR or w/e...)
+
+w/e now should be easy as hell 2 get them 2do w/e u wanted 🐡️
+📅️
+
+📅️aug17
+🖼️
+yes ch dir fixed everything but
+the fact that 🔘️ uses its own location for gl_commands, + torture
+means were gonna skip fixing gl anymore 2day. @ least its readable
+(maybe in a few months they will chill on the murderous human torutre and we could revist
+🖼️
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+♊️♊️♊️♊️♊️♊️♊️♊️♊️♊️♊️♊️♊️♊️♊️♊️♊️♊️♊️♊️♊️♊️♊️
+🇬🇮️
+if all opengl code being rendered has to share the same context how
+do devs divide code betwen different files. or is it all supposed to use 1 file? 
+🇬🇮️
+AI Overview
+Yes, you can absolutely divide your OpenGL code into multiple files, even if they all operate within the same context. The "single context" requirement means that all OpenGL calls within a given thread operate on the same state machine and resources. However, this doesn't restrict how you structure your code on the CPU side. 
+Here's how developers divide code between different files in an OpenGL application:
+Header Files:
+You can include necessary OpenGL headers like gl.h at the top of each file that needs to make OpenGL calls.
+Alternatively, you can have a central header file (e.g., app.h) that includes gl.h and other common headers, and then include app.h in your other source files.
+Classes and Objects (Object-Oriented Programming):
+Encapsulate OpenGL-related data and functions within classes, even if those classes don't directly make OpenGL calls. For instance:
+Mesh Class: Stores vertex data (positions, normals, texture coordinates), and potentially functions for loading mesh data.
+Shader Class: Handles loading, compiling, and using shader programs.
+Texture Class: Manages texture data and binding.
+Renderer Class: Orchestrates the rendering process, traversing the scene graph and making the actual OpenGL calls to draw objects using the data from other classes. This helps decouple the scene logic from the OpenGL code, making it more flexible for potential changes to the graphics API later on.
+Helper Functions and Modules:
+You can also create separate files for helper functions that perform specific OpenGL-related tasks, like setting up a camera, handling matrix transformations, or loading models. 
+Important Considerations:
+Sharing Data: You can share data between different OpenGL contexts, even if they are bound to different GPUs, as long as they use the same OpenGL implementation. This often involves using OS-specific extensions like wglShareLists() on Windows.
+Context Ownership: Each thread that makes OpenGL calls must have a current rendering context. While a single process can have multiple threads, each with its own current context, a single context cannot be current in multiple threads simultaneously.
+State Management: Be mindful of OpenGL's state machine nature. When switching between drawing different objects or using different shaders, you need to ensure the correct state is set (e.g., binding the correct texture or shader). Techniques like using RAII (Resource Acquisition Is Initialization) with classes that push and pop OpenGL state can help manage this.
+Avoid over-engineering: Start simple, particularly when learning, and only add complexity (like extensive object-oriented wrappers) when needed for a larger, more complex project. 
+In essence, while the OpenGL context itself is a singular entity within a thread, the code that interacts with it can be organized into a modular and well-structured project using various C++ (or other language) features like classes, functions, and separate files. This allows for better code organization, reusability, and maintainability. 
+📅️♊️♊️♊️♊️♊️♊️♊️♊️♊️♊️♊️♊️♊️♊️♊️♊️♊️♊️♊️
+

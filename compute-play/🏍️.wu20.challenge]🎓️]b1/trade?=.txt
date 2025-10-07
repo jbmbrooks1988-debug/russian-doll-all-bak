@@ -1,0 +1,17 @@
+
+
+-------------------
+ask from (you) @:
+park place inc. , wheat 500x 
+offers from (them) @:
+gold 10x , silver 100x
+-----------------
+
+how to structure 
+11.trade
+11.a ask 11.b offer  <- how to look up / click  stuff while under? etc 
+ask : <- keep adding to list
+offer : <- keep adding to list (how?)
+
+<theres also no item 4 item trading, just buying/selling of liquid
+so its def an extra...>

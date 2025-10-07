@@ -1,0 +1,25 @@
+EXEC: opcode=0, op1=1, op2=2
+NAND r1, r2 -> r1
+PC: 2, REG: [0,255,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=1, op1=1, op2=0
+LOAD r1, mem[0]
+PC: 4, REG: [0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=2, op1=1, op2=2
+STORE r1, mem[2]
+PC: 6, REG: [0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=3, op1=1, op2=0
+JUMP r1 -> PC=2
+PC: 2, REG: [0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=0, op1=1, op2=0
+NAND r1, r0 -> r1
+PC: 4, REG: [0,255,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=2, op1=1, op2=2
+STORE r1, mem[2]
+PC: 6, REG: [0,255,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=3, op1=1, op2=0
+JUMP r1 -> PC=254
+PC: 254, REG: [0,255,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 256, REG: [255,255,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 1
+Halted: PC out of bounds

@@ -1,0 +1,337 @@
+999. 0 = Universal Merc stories that can apply to anyone
+999. 1 = Normal mercenary stories
+999. 2 = Generic Goblin Mercenary Stories
+999. 3 = Goblin Anti Slaver Stories
+2.are a mercenary group of Goblinwood garrison retirees
+2.are a mercenary group of Swamp Goblins from the deep swamps of the western lands
+2.are a mercenary group made up of goblins who used to serve in a human army
+2.are a mercenary group made up of goblin ex-slaves who slew their master and escaped
+2.are a mercenary group of travelling goblins from across the realm
+2.are a mercenary group made up of young warrior goblins who are keen to make a name for themselves
+2.are a mercenary group made up of Goblinwood garrison rejects
+2.are a mercenary group of independent goblin warriors who decided to work together
+2.are a mercenary group of ex-alcoholic goblins who fight as a form of therapy
+2.are a mercenary group of ex-merchant goblins who sought a career change
+2.are a mercenary group of ex-goblin miners who decided to make a living a different way
+2.are a mercenary group of goblin wanderers who banded together to see the world
+2.are a mercenary group of goblins made up of the surviving members of an old goblin clan
+2.are a mercenary group of goblin outcasts from a number of goblin tribes and clans
+2.are a mercenary group of goblin bandits who decided to try mercenary work instead
+2.are a mercenary group of goblins who one day decided to choose violence
+2.are a mercenary group of goblins known for their love of chaos and war
+2.are a mercenary group of goblins known for their brutality in battle
+2.are a mercenary group of goblins known for their pre-battle laughter
+2.are a mercenary group of goblins who paint their skin red before battle
+2.are a mercenary group of goblins who have been exiled from their homes
+2.are a mercenary group of goblins who are on the run from the law
+2.are a mercenary group of goblins who have been rejected by their families
+2.are a mercenary group of goblins who have been outcast by their tribes
+2.are a mercenary group of goblins who have been cast out by society
+2.are a mercenary group of goblins who are looking for a new place to call home
+2.are a mercenary group of goblins who are searching for a new purpose in life
+2.are a mercenary group of goblins who are just looking for a good fight
+2.are a mercenary group of goblins who are in it for the money
+2.are a mercenary group of goblins who are in it for the glory
+2.are a mercenary group of goblins who are in it for the fun
+2.are a mercenary group of goblins who are in it for the bloodshed
+2.are a mercenary group of goblins who are in it for the chaos
+2.are a mercenary group of goblins who are in it for the destruction
+2.are a mercenary group of goblins who are in it for the lulz
+2.are a mercenary group of goblins who just want to watch the world burn
+2.are a mercenary group of goblins who want to see the downfall of civilization
+2.are a mercenary group of goblins who want to bring about the end of the world
+2.are a mercenary group of goblins who are motivated by hate
+2.are a mercenary group of goblins who are motivated by revenge
+2.are a mercenary group of goblins who are motivated by power
+2.are a mercenary group of goblins who are motivated by greed
+2.are a mercenary group of goblins who are motivated by lust
+2.are a mercenary group of goblins who are motivated by pride
+2.are a mercenary group of goblins who are motivated by chaos
+2.are a mercenary group of goblins who are motivated by destruction
+2.are a mercenary group of goblins who are motivated by the thrill of the kill
+2.are a mercenary group of goblins who are motivated by bloodlust
+2.are a mercenary group of goblins who are motivated by a love of violence
+2.are a mercenary group of goblins who are motivated by a desire to cause suffering
+2.are a mercenary group of goblins who are motivated by a need for chaos
+2.are a mercenary group of goblins who are motivated by a hatred of all things good
+2.are a mercenary group of goblins who are motivated by a desire for power
+2.are a mercenary group of goblins who are motivated by a desire for wealth
+2.are a mercenary group of goblins who are motivated by a desire for revenge
+2.are a mercenary group of goblins who are motivated by a desire for justice
+2.are a mercenary group of goblins who are motivated by a desire for destruction
+2.are a mercenary group of goblins who are motivated by a desire for chaos
+2.are a mercenary group of goblins who are motivated by a desire for anarchy
+2.are a mercenary group of goblins who are motivated by a desire for freedom
+2.are a mercenary group of goblins who are motivated by a love of nature
+2.are a mercenary group of goblins who are motivated by a love of destruction
+2.are a mercenary group of goblins who are motivated by a love of chaos
+2.are a mercenary group of goblins who are motivated by a need to prove themselves
+2.are a mercenary group of goblins who are motivated by a fear of death
+2.are a mercenary group of goblins who are motivated by a fear of the unknown
+2.are a mercenary group of goblins who are motivated by a fear of change
+2.are a mercenary group of goblins who are motivated by a fear of failure
+2.are a mercenary group of goblins who are motivated by a fear of rejection
+2.are a mercenary group of goblins who are motivated by a fear of the dark
+2.are a mercenary group of goblins who are motivated by a fear of the light
+2.are a mercenary group of goblins who are motivated by a fear of the future
+2.are a mercenary group of goblins who are motivated by a fear of the past
+2.are a mercenary group of goblins who are motivated by a fear of the present
+2.are a mercenary group of goblins who are motivated by a fear of abandonment
+2.are a mercenary group of goblins who are motivated by a fear of intimacy
+2.are a mercenary group of goblins who are motivated by a fear of commitment
+2.are a mercenary group of goblins who are motivated by a fear of loneliness
+2.are a mercenary group of goblins who are motivated by a need for approval
+2.are a mercenary group of goblins who are motivated by a need for attention
+2.are a mercenary group of goblins who are motivated by a need for love
+2.are a mercenary group of goblins who are motivated by a need for validation
+2.are a mercenary group of goblins who are motivated by low self-esteem
+2.are a mercenary group of goblins who are motivated by insecurity
+2.are a mercenary group of goblins who are motivated by a need for control
+2.are a mercenary group of goblins who are motivated by a need for power
+2.are a mercenary group of goblins who are motivated by a need for revenge
+2.are a mercenary group of goblins who are motivated by envy
+2.are a mercenary group of goblins who are motivated by gluttony
+2.are a mercenary group of goblins who are motivated by sloth
+2.are a mercenary group of goblins who are motivated by wrath
+2.are a mercenary group of goblins who are motivated by a desire for vengeance
+2.are a mercenary group of goblins who are motivated by a desire for retribution
+2.are a mercenary group of goblins who are motivated by a desire for order
+2.are a mercenary group of goblins who are motivated by hatred
+2.are a mercenary group of goblins who are motivated by bigotry
+2.are a mercenary group of goblins who are motivated by xenophobia
+2.are a mercenary group of goblins who are motivated by tribalism
+2.are a mercenary group of goblin refugees who have fled their homes
+2.are a mercenary group of goblin orphans who were raised by wolves
+2.are a mercenary group of goblin outcasts who have been shunned by their families
+2.are a mercenary group of goblin criminals who have been exiled from their tribes
+2.are a mercenary group of goblin warriors who were dishonored in battle
+2.are a mercenary group of goblin shamans who were cast out by their tribes
+2.are a mercenary group of goblin hunters who were exiled from their homes
+2.are a mercenary group of goblin berserkers who were cast out by their tribes
+2.are a mercenary group of goblins who are all missing an eye
+2.are a mercenary group of goblins who are all missing a hand
+2.are a mercenary group of goblins who are all missing a foot
+2.are a mercenary group of goblins who are all missing an ear
+2.are a mercenary group of goblins who are all missing a nose
+2.are a mercenary group of former goblin soldiers who were left behind by their commander
+2.are a mercenary group of goblin mercenaries who have been left for dead
+2.are a mercenary group of goblins who were once part of an elite military unit
+2.are a mercenary group of goblins who were once part of a secret organization
+2.are a mercenary group of goblins who have all been mutated by magical means
+2.are a mercenary group made up of escaped goblin prisoners
+2.are a mercenary group made up of former goblin slaves
+2.are a mercenary group made up of goblin outcasts
+2.are a mercenary group made up of goblin exiles
+2.are a mercenary group made up of goblin criminals
+2.are a mercenary group made up of goblin warriors who were dishonored in battle
+2.are a mercenary group made up of goblin shamans who were cast out by their tribes
+2.are a mercenary group made up of goblin hunters who were exiled from their homes
+2.are a mercenary group made up of goblin berserkers who were cast out by their tribes
+2.are a mercenary group made up of goblin wanderers who banded together to see the world
+2.are a mercenary group of goblins who paint their skin green before battle
+2.are a mercenary group of goblins who paint their skin blue before battle
+2.are a mercenary group of goblins who paint their skin black before battle
+2.are a mercenary group of goblins who paint their skin white before battle
+2.are a mercenary group of goblins who shave their heads before battle
+2.are a mercenary group of goblins who have been scarred in battle
+2.are a mercenary group of goblin warriors who have been exiled from their homes
+2.are a mercenary group of goblins who use fear as a weapon
+2.are a mercenary group of goblins who use pain as a weapon
+2.are a mercenary group of goblins who use torture as a weapon
+2.are a mercenary group of goblins who use trickery as a weapon
+2.are a mercenary group of goblins who use deception as a weapon
+2.are a mercenary group of goblin warriors who have been possessed by demons
+2.are a mercenary group of goblin warriors who have been possessed by spirits
+2.are a mercenary group of goblin warriors who have been possessed by gods
+2.are a mercenary group of goblin warriors who have been possessed by monsters
+2.are a mercenary group of goblins who have been displaced by war
+2.are a mercenary group of goblins who just want to find a place to belong
+3.are a group of ex-goblin slaves who fight slavers in their spare time
+3.are a mercenary group made up of escaped goblin slaves
+3.are a mercenary group known for their fight to free goblins from slavery
+3.are a mercenary group who grow their number by freeing goblin slaves
+3.are a mercenary group made up of goblin ex-slaves who were purchased and free'd by a kind human merchant
+3.are a mercenary group made up of goblin war veterans who hate goblin slavery
+3.are a mercenary group made of heroic goblin slave liberators
+3.are a mercenary group known for botching a raid to free goblin slaves where they accidentally killed them all
+3.are a mercenary group known for their promise to fight for the freedom of goblinkind
+3.are a mercenary group founded by goblins who bought their way out of slavery
+3.are a mercenary group made up of the relatives of goblins who died in slavery
+3.are a mercenary group made up of the children of escaped goblin slaves
+3.are a mercenary group who murder goblin slavers whenever they can
+3.are a mercenary group of anti-slavery goblins
+3.are a mercenary group of goblins who vow to kill any who support the slavery of their kind
+3.are a mercenary group made up of goblin slaves who have escaped and are looking for revenge
+3.are a mercenary group of goblin ex-slaves who are now out for revenge against their former masters
+3.are a mercenary group made up of goblin slaves who have been freed and now want to help free others
+3.are a mercenary group of goblins who have escaped from slavery and are now fighting to end it
+3.are a mercenary group of goblin slaves who have been freed and are now fighting to help free others
+3.are a mercenary group founded by goblins who bought their way out of slavery
+0.are a mercenary group who claim to be sworn to a cunning giant
+1.are a mercenary group made up of oathbreakers and deserters from many armies
+1.are a mercenary group made up of men who train for ten years in a small cavern hidden in a gorge
+1.are a mercenary group made up of traders and caravan guards who found more value in fighting than trading
+1.are a mercenary group made up of men once rejected from their local armies and militias
+0.are a mercenary group made up of old mine guards
+0.are a mercenary group who ended a war between two bitter and longstanding rival clans
+1.are a mercenary group made up of ex-bakers
+1.are a mercenary group of silent men, no one knows their origins but rumour has it all of their tongues have been cut out
+1.are a mercenary group formed from a group of shepherds
+0.are a mercenary group known for coating their weapons in dung before battle to infect their enemies with diseases
+0.are a mercenary group known for bathing in dirt before battle as part of their aesthetic
+0.are a mercenary group who claim to all be walking gods
+0.are a mercenary group known for each having carved a cross onto their foreheads
+0.are a mercenary group who have been recently awoken from a long sleep, it is unknown how long they had been slumbering but their relatives are long dead
+0.are a mercenary group who claim to have come from another realm
+1.are a mercenary group who claim to be possessed by the spirits of elite warriors from ages long past
+0.are a mercenary group who say 'do not judge us on anything other than our success in your service'
+1.are a mercenary group who say 'we are honest fighting men, you make the orders and payment and we make corpses'
+0.are a mercenary group who once stopped fighting mid battle to help a puppy that had strayed onto the battlefield, once the dog was removed and safe they continued
+0.are a mercenary group who say they wish to watch the world burn and will do all they can to contribute
+0.are a mercenary group who are known for repeating themselves are a mercenary group that are known for repeating themselves
+1.are a mercenary group whose goal is less wealth and more to meet their equals in combat
+0.are a mercenary group who claim to be sworn to a mighty green dragon, strangely no one has seen this dragon
+1.are a mercenary group who claim to be creatures from another plane of existence, cursed by their overlord for disobedience they have been forced into the bodies of mortal warriors and must die fighting to be freed back to their realm
+1.are a mercenary group who are made up of the descendents of a mighty mercenary group who reformed it in the hopes of reclaiming the glory of their ancestors
+1.are a mercenary group known for setting their weapons on fire before they charge into battle, while it definitely scares their enemies it has also burned several of their members hands
+0.are a mercenary group known for drenching themselves in urine before battle, the logic is that if an enemy touches them, they are touching pee, and that is funny
+0.are a mercenary group known for their vow of celibacy to help them in combat
+0.are a mercenary group known for their use of coal to darken up their clothes and skin before battle
+0.are a mercenary group known for painting themselves in bright colours so they can tell themselves apart from the enemy in battle after a certain fateful incident where several members were mistakenly killed
+0.are a mercenary group known for their hatred of elves of every kind
+0.are a mercenary group known for their wild parties, often taking over entire taverns sometimes for days on end
+0.are a mercenary group known for getting very drunk before any battle to give them courage
+1.are a mercenary group of old Arena gladiators who wanted to do something bigger than single combat
+1.are a mercenary group known for their hatred of short creatures, dwarves, halflings, goblins, you name it, they hate it
+1.are a mercenary group known for slaying a large sea creature that had been ravaging a coastline and terrorising the various passing ships
+1.are a mercenary group known for their hatred of orcs and orclings, and basically everything green
+1.are a mercenary group known for their post-battle meditation, whereby they sit on the battlefield and clear their minds of the horrors they saw
+0.are a mercenary group known for their brutality, they often cut the heads off all the dead after a battle and play games with them
+1.are a mercenary group known for helping overthrow a tyrant in a far off kingdom much to the praise of the people
+1.are a mercenary group known for overthrowing a royal family and helping a tyrant take their place much to the dismay of their people
+1.are a mercenary group known for their vast knowledge of the land from years of exploring and adventuring
+1.are a group of people from a now dead clan, they have decided to take up arms in memory of their clan and fight for gold and glory
+1.are a group of rejects from a foreign army, as such they have decided to be mercenaries instead
+0.are a mercenary group known for triggering a war between two large kingdoms
+0.are a mercenary group known for stopping a peasant revolt, by killing all the revolting peasants
+0.are a mercenary group known for slaying a fleet of pirates that had been raiding along the coastline
+0.are a mercenary group famed for slaying a nest of giant ants who had been terrorising an entire province
+1.are a mercenary group known for holding off an entire army of goblins
+1.are a group of savage warriors bound to their leader with blood
+1.are a group of mercenaries who claim to hail from a horrid land filled with horrors beyond our comprehension
+1.are a group of mercenaries who claim to hail from a heavenly land with peace and fulfilment around every corner
+0.are a mercenary group known for killing their last leader after he went insane and began attacking his members
+0.are a mercenary group known for killing their last leader after a disagreement with the division of pay
+0.are a mercenary group known for killing their last leader after a disagreement on uniform
+1.are a group of savage warriors bound to their leader due to a pact made with blood
+1.are a mercenary group formed from an old militia that defended villages from bandits and raiders
+1.are a mercenary group formed from a small band of adventurers who eventually got offered some contracts and moved into mercenary work full-time soon after
+0.are a mercenary group known for their history of destroying bandit encampments
+0.are a mercenary group known for their history of helping bandit groups out for a discount
+1.are a mercenary group that started as noble adventurers who refused to take any contract that was immoral, over time their morality has become flexible depending on the flow of gold
+1.are a mercenary group formed from unpaid guards from a large town who decided to work directly for pay instead of relying on wages
+1.are a mercenary group of men from a mysterious valley, the men cannot find their way home and have turned to mercenary work to make a living
+1.are a group of raiding folk who after several unsuccessful village raids decided to become mercenaries
+1.are a group of folk from a small town who were convinced to become mercenaries by a passionate speech by the would-be merc leader
+1.are a group of adventurers who ended up cursed by a sorcerer, the sorcerer's apprentice leads the group and makes money sending them to their deaths
+1.are a group of hunters from a large town who were banished after a stray arrow hit the local lords pet dog
+1.are a group of failed apprentice wizards who have taken to mercenary work instead
+1.are a group of men who were captive in a bandit camp for several months before revolting and escaping, they have since turned to mercenary work and especially enjoy fighting against bandits
+1.are a group of men who were captive in a troll cave but after a heroic adventurer slew the beasts and freed them they have followed him and together formed a mercenary group
+1.are a group of savage warriors who have pledged their lives to the god of blood
+1.are a mercenary group known for massacring an island of native folk and using it as a base of operations
+0.are a mercenary group known for their kind treatment of their prisoners and the happiness of their party
+1.are a group of proud folk from a warrior clan, they seek to fight purely for the thrill of combat and take the gold payments as a bonus
+1.are a mercenary group made from people of all backgrounds in the north, farmers, fighters, and even wildermen
+0.are a mercenary group known for killing a horde of undead and slaying the necromancer who summoned them
+0.are a mercenary group known for defeating a famous goblin warlord while he was in the middle of battling a rival goblin clan
+1.are a group of people cursed with a slow-working poison, they fight for gold to pay for the antidote
+1.are a group of people who felt bullied and decided to band together and bully other people, for gold
+1.are a group of gold-lovers destined to be wealthy at any cost, even their lives
+1.are a group of people who worked as individual mercenaries and decided to band together to earn much larger contracts and squash all of the individual competition
+1.are a mercenary group formed out of the survivors of a larger mercenary group that was slaughtered in an ambush
+1.are a mercenary group known for killing a goblin warlord and his entire army
+0.are a mercenary group known for their tracking ability, they are alleged to be so good, they could track an ant from 10 miles away
+0.are a mercenary group known for their unbreaking friendship and trust among each other
+1.are a mercenary group formed all from the men of a very large northern family, lots of cousins and uncles, fathers and sons, even a few grandfathers
+1.are a mercenary group formed out of a mix of mercenaries from other disbanded mercenary companies
+1.are a mercenary group formed from a collapsed guild of working men who grew tired of hum drum life
+1.are a mercenary group formed from former slave soldiers who wish now to fight for a master who pays
+1.are a mercenary group formed from released prisoners, many of these men could not get work elsewhere within society so they have become soldiers for pay
+1.are a mercenary group formed out of the survivors of an old death cult, now marked for death they vow to fight unto the last man to meet their fates
+1.are a mercenary group formed from landed pirates who's ship was wrecked in a storm, from one blood-filled career to another it was a natural switch for them
+1.are a mercenary group formed from a group of deserters, it is uncertain where they deserted from, but now they fight for pay
+1.are a mercenary group formed from a group of miners, they lost their jobs when their mine dried up
+1.are a mercenary group that came from the Blackmarket, made up of various local warriors and fighters
+1.are a mercenary group made up of a clan of wildermen from the north, the wildermen have found there is more gold to be made in mercenary work than raiding and hunting
+1.are a mercenary group formed by disgruntled guards from various settlements
+1.are a mercenary group made up of ex-slaves, now free they fight for a master who pays instead of one who doesn't
+0.are a mercenary group known to have made an extraordinary number of enemies in their time, some of them greatly fear reprisal and the group is unlikely to last much longer
+1.are a mercenary group formed from disgraced heroes and adventurers who seek to make a new name for themselves
+1.are a mercenary group formed from men of various backgrounds in the western lands
+1.are a mercenary group formed from men of various backgrounds in the northern lands
+1.are a mercenary group formed from men of various backgrounds in the eastern lands
+1.are a mercenary group formed from men of various backgrounds in the southern lands
+1.are a mercenary group known for their use of trickery in combat, catching their opponents off guard before killing them
+1.are a mercenary group known for defeating a collective of mages who had brought a curse on the land
+0.are a mercenary group formed from a split of a much larger mercenary company following a disagreement about payment
+1.are a mercenary group formed from a bunch of pit fighters who wished for something more violent
+1.are a mercenary group formed from a bunch of Brawl Pit fighters who wished for something more than just a fist fight
+1.are a mercenary group formed from a sect of monks who's home was destroyed
+1.are a mercenary group formed from a bunch of slumfolk who fled the Blackmarket in search of a better life
+1.are a death cult, dedicated to killing as much as possible, as they do not care who their victims are they decided to get paid to kill to afford better equipment to continue their goals
+1.are a mercenary group made up of slightly deformed men who are tormented for their looks and have banded together to find death
+1.are a mercenary group made up of second and third born sons who were unlikely to do well in wealthy families and have set out to find their fortune as mercenaries
+1.are a mercenary group made up of outcasts from society
+1.are a mercenary group made up of soldiers who have taken early retirement to be mercenaries
+1.are a mercenary group made up of escaped convicts who have decided to repent for their crimes with blood
+1.are a mercenary group made up of self-identified sinners who seek to find the truth through death or honour
+1.are a mercenary group made up of people recruited entirely from taverns and inns
+1.are a mercenary group made up of sailors who have had enough of their old lives
+1.are a mercenary group made up of vampire hunters who have grown tired of their work and decided to fight for gold instead
+1.are a mercenary group formed from peasants training to become warriors
+0.are a mercenary group formed from followers of a famous hero
+1.are a mercenary group that is little more than bandits who have decided to raid for pay
+1.are a clan of famous warriors known for their heroism
+1.are a group of battlefield looters who have armed themselves to fight for gold
+1.are a group of questionably young men who heard about mercenary work from a fairytale and have run away from their homes to pursue it
+1.are a mercenary group formed from the survivors of an older forgotten mercenary group of great fame
+1.are a mercenary group formed from unemployed caravan guards
+1.are a mercenary group formed from unemployed blacksmiths and tradeworkers
+1.are a mercenary group formed from escaped slaves
+1.are a mercenary group formed from wanted criminals, they seek to make enough gold to collectively pay off their bounties
+1.are a mercenary group formed out of worshippers of an alleged 'God of mercenaries' they seek to serve him as best they can
+1.are a band of famous pirates who have turned to mercenary work during the low season
+1.are a group of deserters from nearby who have since made a name for themselves in the field of mercenary work
+1.are a party of adventurers that decided to work directly for pay instead of on their own terms
+1.are a group of adventurers that have decided to dedicate themselves fully to mercenary work
+1.are formed from the mercenary post in the wild north, these men have decided to break off from the post and try and make it themselves
+1.are a group of ex-demon worshippers who have turned to mercenary work instead
+1.are made up of wildermen who have fled from their clanlands in the north and sought a better life
+1.are a mercenary group made up of prison guards
+1.are a mercenary group known for their extensive use of polish for their armour and weapons, they are rumoured to have such shiny gear they can be seen from miles away
+1.are a group who claim to be bardbarians, men who spend half their time raiding and pillaging and the other half playing songs and singing of their misdeeds
+1.are a group of goblin hunters who now work for pay
+1.are a mercenary group known for once slaying an army of the walking dead in the north and saving many settlements from certain doom
+1.are a mercenary group known for destroying a cult of warriors who were plotting to raid and massacre a village and its people
+0.are a mercenary group known for burning down villages and small settlements
+0.are a mercenary group known for their heroism on the battlefield
+1.are a group of woodcutters who cleared an entire forest and had nothing else to do so they formed a mercenary group
+0.are a mercenary group known for capturing a fortress that was considered unconquerable
+0.are a mercenary group known for their lack of remorse, often being hired by questionable benefactors to do things others would not
+1.are a group who once protected an ancient stone but upon its destruction became a mercenary group instead
+1.are a group of men who were all stolen as children and raised in a cave, when they came of age they killed their captor and broke free becoming a mercenary company eventually
+1.are a group of cursed soldiers who once raided a temple in a foreign land, since then they have been cursed to find death on the battlefield or suffer an eternity of suffering
+1.are a mercenary group known for accidentally ending a civilisation while exploring a foreign land
+1.are a group of men who come from a peaceful town, one day half the men in the town decided they were bored of the town and together they formed a mercenary outfit
+0.are a mercenary group known for clearing out several covens of witches with great efficiency
+0.are a group of old goblin hunters who have decided to move on to more lucrative work
+0.are a mercenary group known for their lack of fear, they will fight to the last man
+0.are a mercenary group known for slaying a large group of angry ogres to save a small settlement
+0.are a mercenary group known for helping a minor kingdom win a war with one of its neighbours with their well organised raids
+0.are a relatively unknown mercenary group that has only recently appeared and doesn't seem to have taken any contracts before
+0.are a completely unknown mercenary group with no prior history of having done any mercenary work
+1.are a mercenary group known for slaying a family of giants, though they took many losses the group prevailed
+1.are a mercenary group known for killing an entire fleet of pirates who had landed on the coast and were planning to raid the coastline
+0.are a mercenary group known for destroying several minor bandit gangs under orders from a foreign kingdom
+0.are a mercenary group known for their strange dress sense, some theorise that this catches their enemies off guard and gives them the edge in battle

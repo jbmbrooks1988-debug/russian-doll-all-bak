@@ -1,0 +1,4 @@
+Trend type: Volatile Sideways
+Volatility (sigma): 0.2473
+AR order: 3
+AR coefficients: phi1=0.4445, phi2=-0.0832, phi3=-0.0999

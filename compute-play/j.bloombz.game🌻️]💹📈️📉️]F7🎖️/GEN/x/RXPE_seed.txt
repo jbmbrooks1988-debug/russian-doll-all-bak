@@ -1,0 +1,4 @@
+Trend type: Growing
+Volatility (sigma): 0.1409
+AR order: 2
+AR coefficients: phi1=0.5259, phi2=-0.2990

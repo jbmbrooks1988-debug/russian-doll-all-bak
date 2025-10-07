@@ -1,0 +1,24 @@
+CC = gcc
+CFLAGS = -Wall
+LDFLAGS = -lreadline
+TARGET = nav.+x
+SOURCE = nav.c
+INSTALL_DIR = /usr/+x
+
+all: $(TARGET)
+
+$(TARGET): $(SOURCE)
+	$(CC) $(CFLAGS) -o $(TARGET) $(SOURCE) $(LDFLAGS)
+
+install: $(TARGET)
+	@mkdir -p $(INSTALL_DIR)
+	@mv $(TARGET) $(INSTALL_DIR)/
+	@chmod +x $(INSTALL_DIR)/$(TARGET)
+	@echo "Installed $(TARGET) to $(INSTALL_DIR) 🎉"
+	@echo "Ensure $(INSTALL_DIR) is in your PATH (e.g., add 'export PATH=\$$PATH:$(INSTALL_DIR)' to ~/.bashrc)"
+
+clean:
+	@rm -f $(TARGET)
+	@echo "Cleaned up build artifacts 🧹"
+
+.PHONY: all install clean

@@ -1,0 +1,5 @@
+STATE: STOPPED
+SHUFFLE: ON
+CURRENT_SONG_INDEX: 483
+CURRENT_SONG_PATH: /media/no/b7ced73c-5231-4462-b98d-64e38fe2df9e/home/jbez/Music/SP.ONLY.Make.DAW]2727]solonly/SP.ONLY.Make.DAW]2727]solonly/Mp3.M4a.merge.fix]795/02.Lucky melder new rap dope.mp3
+PLAYBACK_TIME: N/A

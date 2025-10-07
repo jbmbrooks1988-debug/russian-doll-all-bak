@@ -1,0 +1,28 @@
+🧠️
+this is a great project, 
+cuz its really data visualization 
+and all we want is data, data+weights as functinoality thru .txt's 
+
+would even be cool to have wsr written as that...
+(most of the wsr stuff done is the same , gui or data io, but w/e 
+very nice 2 have compat there and disc/p2p/bc....
+🧠️
+🔒️📪️
+POST F16[LOCK]whats up : 
+1. MVC : duh...
+2. Getter setters : <- direct nonglobals. ask more about if unsure <3
+3. Event driven : InputEvent;
+     void enqueue_input(InputEvent event);
+     void process_input_queue(); {no direct input from term.good4scripts/ai}
+4. State Machine : (for tools ;ie : rect/fill/etc 
+____________________
+
+🔒️📪️
+🗓️
+^.rmmvc.moji_nest🎨️🧚❤️‍🔥️f16]LOCK
+12.8.25: 
+i did all the MVC updates we could do[like 13 in1 day]
+ and even some readability stuff
+w/o .h 's .(now it suggests headers 4 w/e)
+ so just do new features now🌚️
+ 📅️🛠️⚒️💂‍♂️️🀄️

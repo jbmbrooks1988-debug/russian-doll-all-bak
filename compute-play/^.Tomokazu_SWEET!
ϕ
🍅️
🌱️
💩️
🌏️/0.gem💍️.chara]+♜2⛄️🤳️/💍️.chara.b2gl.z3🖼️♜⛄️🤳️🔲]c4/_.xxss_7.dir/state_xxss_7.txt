@@ -1,0 +1,8 @@
+player:1
+hp:100
+attack:10
+defense:0
+x:3
+y:3
+z:0
+symbol : 🍸

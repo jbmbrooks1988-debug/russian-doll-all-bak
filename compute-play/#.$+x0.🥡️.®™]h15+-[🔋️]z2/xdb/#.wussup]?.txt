@@ -1,0 +1,108 @@
+👾️🧷️
+🛗️
+❤️‍🔥️
+🎛️🔘️if i press human button , it can populate "supers" with "../ externals or not']w/e u want]KISS.+x🔘️🎛️
+
+❤️‍🔥️
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+🛗️
+🪞️(here from copying fbx. w/e kinda relevant)🪞️
+
+🎮️🕹️🚥️
+⬜️📌️
+
+want this logic : 
+if no state , so what , just means map cant move  
+
+if no map , so what, just means render 1 block
+
+
+if state but "no size/ position" 
+w/e should be on map. 
+
+adv : map has coords but so does state? override/overwrite map i guess. w/e <- yes. 
+
+🔳️
+ok. first thing. theres no super state. yes . make a button now <3
+
+🎥️also. i think we put the camera plugin in "box" and just adjust paths. w/e ]+clean kruft.txt's🎥️
+
+🗡️sword has its own menu. or is it box plugin again? wut gives u control of sword, 🖇️
+literal login? but wut tho? = a plugin , right? 
+a plugin from button box that adjusts sword position & dir could work, 
+then u wouldnt need 2 touch sword directly , this maybe the common sense missing link 🖇️🗡️
+
+
+
+
+but wut if i want to touch sword w/o login? 
+first of all u cant, so.. (otherwise it would need 2 run button 4 cam, or symlink a cam @ this point)
+(u use a "controller") ignore sword...more important is clock-link-updates]gameloop
+
+🔲️
+this may be the most important thing at this point. get it done fast pls🔲️
+
+(pressing button can setup maps {&start clock/ai} w/o turning on a camera btw)
+
+*original coords dont matter, but its not rocket science (we will have mc-biome/world gen later)
+
+📬️
+the problem im seeing is that "peices have camera coordinates"
+really it should be 'what'? that person controlling should? u REALLY NEED TO BORE THRU THIS STUF
+just 2 get us up and running enough 2 go 2 '2d'📬️
+🔳️
+📍️
+🎓️
+🦉️WHAT DOES WU NEED?
+🏍️
+🛗️
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+🥡️does flexbox have a size? 
+dont worry about that 4 now🥡️

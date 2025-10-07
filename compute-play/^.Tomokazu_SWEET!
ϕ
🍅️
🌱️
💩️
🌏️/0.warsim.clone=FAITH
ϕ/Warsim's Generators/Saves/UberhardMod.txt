@@ -1,0 +1,429 @@
+7500.0.39.0.0.0.1.0.2.0.5.1.-7.0.135.1.3.3070.0.0.0.1.10.100.1.1.30.5.15.3.0.0.0.0.0.1.0.0.0.0.0.4.3.5.6.8.0.0.0.0.0.0.7.485.234.4.0.0.0.0.-1.1010.1280.7640.790.3585.650.2120.3210.850.1760.4.2013.23560.12880.47700.78840.99.0.0.0.0.152.25.0.0.0.0.0.0..0.0.2.Gaarbatar Bloodtooth.Ravyn the Tutor.Blooming Pikelancer.Prime Halberdling.Brazen Headbreaker.Khron Blademaster.Ivory Ironguard.Pink Pack.Loyal Hill Woodland Ravagers.New Serpent.High Troublemakers.Unremiting Hog Ravagers......Blooming Mercenary Company.Prime Hounds.Brazen Purplecloaks.Khron Soldiers.Uthenon.Kull the Shaman.Fangar the Clenched.Tronkar the Impaler.Tymon Wulfgarson.Kyrad the Fate Weaver.Erandur the Faraway Warrior.Dask Littlerock.Bailane the Old Headhunter.Sir Hadring the Armorer III.Cedran of the Cold Shore...........72.76.49.220.97.0.0.0.0.0.0.0.0.1150.575.0.0.5.0.0.0.0.0.0.0.0.0.0.0.4034.5946.6139.6624.6191.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.180.124.139.135.150.87.62.91.113.137.0.0.0.0.0.Glass City-State.Colossal Papacy.Sultanate of the Titan Vampires.Kegrot.Overland of the Deatheater Wizards.High-Chief Wonjin the Bloodmaker.The God of Love Gwynn the Loyal.Sultan Tarust the Flea.King Aniruk Stoneaxe.Overlord Anumil the Lawgiver.195.379.161.244.247.0.0.0.0.0.7.5.6.5.5.9015.1515.15015.5415.3765.1510.660.1260.1610.1510.260.110.110.60.160.5666.9935.5175.1692.305.208520.151280.215440.165020.168780.0.0.0.0.0.1.1.1.1.1.0.1.0.1.0.0.0.0.0.400.45.12.0.0.0.0.0.0.0.Phennor the Hopeless.Toro the Thrice Killed III.Stabber the Strong Heart.Caron the Gifted One.Qislan the Chainwalker.45.148.90.84.65.15.0.0.3.3.4.3.2.300.300.400.300.200.30.30.40.30.20.0.0.0.0.Clan Rokk'Ulrak.Clan Kaz'Uqut.Clan Goak'Uz'Ek.Clan Goak'Ul'Na.Clan Kur'Ul'Na.........0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1.3.0.4721.650.365.0.0.0.94.0.0.0.0.0.0.0.0.0.0.10.209.815.10.104.0.0.0.415.10.0.0.0.0.0.0.0.0.0.230.59.36.13.15.5.0.3.0.7.7.6.4.-2.0.0.0.0.1.1.0.0.0.0.0.0.0.1.0.6.6.6.6.2.2.2.2.6.6.0.1.0.0.1.0.0.0.0.0.1.159.0.0.5630.9940.5205.1705.3189.3.3.3.3.3.........      >->--<-<
+    ++++++++++++
+   ----(-()-)----
+   =~=~=~=~=~=~=~
+    #~#~#~#~#~#~
+      ^^^--^^^
+.   =====++======++=====
+   =====++======++=====
+   [][][][][][][][][][]
+   [][][][][][][][][][]
+   ^^================^^
+   ^^================^^
+.   [][][][][][][][][][]
+   [][][][][][][][][][]
+   [][][][][][][][][][]
+   ========----========
+   ========----========
+   ========----========
+.   XOXOXOXOXOXOXOXOXOXO
+   ^^^==============^^^
+   III--- ------ ---III
+   -------<<<>>>-------
+   IIIXXX XX  XX XXXIII
+   ][][][][][][][][][][
+.   +++++++0000000000000
+   #######XxXxXxXxXxXxX
+   +++++++VVVVVVVVVVVVV
+   #######VVVVVVVVVVVVV
+   xxxxxxxVvVvVvVvVvVvV
+   +++++++vVvVvVvVvVvVv
+.High-Chief.The God of Love.Sultan.King.Overlord.Yavo the Nauseous.Agnar the Strong Heart.Cienius Gentleheart.Klirg the Turtle.Torlin the Iron Bear.Old Croll.......Their famed symbol is '`'.Their famed words are 'We Slither Who They Watched'.Their famed words are 'Service, Hate, Fathers'.Their famed words are 'Bo, Ook, Gro'.Their famed words are 'They Solemnly Protect Then We Saw'.0.0.0.0.0.0.0.0.0.0.205.0.0.0.0.0.0.0.0.0.......0.0.0.0.0.50.0.50.1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.100.0.600.29509.37746.29318.1219.0.0.0.0.0.0.0.0.0.10000..0.500.0.0.0.0.315.350.0.244.0.0.0.0.0.0.0.0.0.0.0.0.0.615.0.Meerwyn of Smallhaven.0.0.115.0.0.2.0.0.0.0.Crom of Rihhm.0.71.0.0.0.0.0.117..0.0.0.0..0.0..0.0..0.0....0.0.Behemoth Troll.Colossal Godling.Titan Thrall.Nightmare Ogre.Deatheater Apprentice Wizard.Behemoth Armored Troll.Colossal Godling Lord.Titan Vampire.Nightmare Ogre Brute.Deatheater Wizard.Behemoth Berserk Troll.Colossal Godling King.Titan Vampire Bloodlord.Nightmare Ogre Champion.Deatheater Grand-Wizard.Behemoth Trolls.Colossal Godlings.Titan Vampires.Nightmare Ogres.Deatheater Wizards.known as savage brutish creatures with feral minds and tree-trunk like arms trolls are a great and powerful foe, its people are all of behemoth proportions.known as creatures who are somewhat godlike, they are the descendents of demigods, its people are all colossal in size, taller than hills.known to hide in the shadows and rely on the blood of the innocent to stay strong, its people are all great titans.known as brutishly large usually cave dwelling creatures, ogres are aggressive and savage by nature, its people are nightmarish red skinned monsters.known for their magical prowess and isolation from everything else wizards are a powerful foe, its people are said to consume death itself, they are said to get stronger as their enemies fall before them.840.720.150.230.102.2340.3150.1600.608.185.5640.9900.5200.1680.250.1.1.6.5.15.1.7.6.1.6.0.0.0.44.16.0.0.0.2.2.0.0.0.0.0.Ghorin Pikener.......100.70.0.0.0.0.0.0.0.0.0.0.0.0.1.1.1.1.1.0.1.0.1.0.0.1.2.1.0.2.0.1.2.0.0.0.0.0.0.0.0.0.   ///--|^|--\\\  
+   //   /|\   \\  
+ ^{\O\ \ | / /O/}^
+ \))  \ | | /  ((/
+   { /|     |\ }  
+  { +VV VvV VV+ } 
+    {___\u/___}   
+.   \==|=|==/  
+  {<  >O<  >} 
+ @(<*>|||<*>)@
+ @_   /_\   _@
+  }|       |{ 
+   \ vvvvv /
+    \__*__/   
+.    _///////_   
+   |\_ \|/  /|  
+ |\[ o  |  o ]/|
+  \_)o | |  (_/ 
+    |\     /|   
+     \\v-v//    
+    \ \/=\/ /   
+.   _\\\\\\\\\_      
+  {=@=@='=@=@=}     
+  {<O>- | -<O>}     
+  { O       O }     
+  {(O)- | -(O)}     
+  {)O       O(}     
+ ()< -(o|o)- >()    
+  \ /   |   \ /     
+   { v+++++v }      
+   { +=vvv=+ }      
+   { +-+++-+ }      
+   {____,____}      
+.   #~~#~#~~#  
+  {  _\|/_  } 
+  /- o   o -\ 
+ @    (n) ---@
+  {,, \ / ,,} 
+    {{===}}   
+    ///////   
+.    _(((|||)))_   
+   /-_  /^\  _-\  
+ ^{\O\\  ^  //O/}^
+ \))  \ |U| /  ((/
+   { /|  u  |\ }  
+  { v-v-v-v-v-v } 
+    {__|_+_|__}   
+.   |*=|*|=*|  
+ <{<  (O)  >}>
+ <|<0>   <0>|>
+  @  (* *)  @ 
+   |       |  
+   |_ ~~~ _|  
+    /_____\   
+.   (=|=|o|=|=)  
+   | \     / |  
+ |\[\o\   /o/]/|
+  \_)  |||  (_/ 
+    |  \_/  |   
+     \\+=+//    
+    \ \_=_/ /   
+.   _,,\\\//,,_      
+  {==== | ====}     
+  {(O)- | -(O)}     
+  { O   ^   O }     
+  { O)- | -(O }     
+  {(O)- | -(O)}     
+ ())  (| |)  (()    
+  { /   |   \ }     
+   {  v---v  }      
+   { +-----+ }      
+   { v-----v }      
+    \__|+|__/       
+.   _/\/*\/\_  
+  {___\|/___} 
+  {(O)| |(O)} 
+ @   )n n(---@
+ {,   \ /   ,}
+   {{\VuV/}}  
+    \\{#{//   
+.............   ^+^+^+^+^  
+  {\\_\|/_//} 
+  / o | | o \ 
+ @)  ) n (  (@
+  {,  \ /  ,} 
+  // (v=v) \\ 
+    \\}|}_/   
+...  (===(0)===) 
+  {)^__|__^(} 
+  { , --- , } 
+ @--- (_)    @
+  \ /     \ / 
+    { ~~~ }   
+    )(\@/)(   
+.0.49.0.0.0.0.   _/\/+\/\_  
+  {}   |   {} 
+  { x /|\ x } 
+ @)  (,_,)  (@
+  \_|     |_/ 
+   \ ( o ) /  
+    \{_|_}/   
+.  (==(=o=)==) 
+  { \^/^\^/ } 
+  { , | | , } 
+ @) -(z z)- (@
+  {   ,,,   } 
+  {{{ VVV }}} 
+    \\\+/_/   
+.   \\///////  
+  {)__\|/__(} 
+  {<0>|||<0>} 
+ @===),_,(===@
+ {     ,     }
+   \--___--/  
+    \_|^|//   
+.   {---o---}  
+  {{_\{|}/_}} 
+  /(o)| |(o)\ 
+ @  -) n (-  @
+ {/ /     \ \}
+   // -=- \\  
+    \_]|[_/   
+.  ((==(^)==)) 
+  {}\  |  /{} 
+  {<o>\|/<0>} 
+ @)== ),,(  (@
+ {/ /     \ \}
+ /// (-uu) \\\
+    \\|^|//   
+.1.151.0.11.0.0.0.157.0.18.578.3.NONE.Godlings Suns.Light Ruble.Ogres Stars.Large Crownmarks.NONE.   ,,,
+  //V\\
+  \(=)/
+.   ---
+  (/+\)
+  \]X[/
+.   _/\
+  /)+(\
+  \/*\/
+.  _____
+  (}#{)
+  ([!])
+.1063.0.100.   {--(x)--}  
+   /___ ___\  
+  /[0 ||| 0]\ 
+ @)  ( n )==(@
+ {/ /     \ \}
+   {{ ~~~ }}  
+    )(~|~)(   
+.   {--)^(--}  
+  {---_|_---} 
+  |- O | O -| 
+ @  -(x x)-  @
+  {{       }} 
+   \ (vvv) /  
+    \_{^{_/   
+.   _:::-:::_  
+  {--  |  --} 
+  /<O>|||<O>\ 
+ @)==|___|  (@
+ {{{{ ___ }}}}
+   \ (~~~) /  
+    \_|#|_/   
+.  ((==(@)==)) 
+  { \_____/ } 
+  |-<0)|(0>-| 
+ @---(n n)   @
+  {    '    } 
+   // uuu \\  
+    ()|||()   
+.  (===(0)===) 
+  {}^     ^{} 
+ (  <o>|<0>  )
+ @   (@ @)---@
+ {{{{ ___ }}}}
+  {{{{V=V}}}} 
+    )(|#|)(   
+.199.7.4.9.1.14.0.82.10.7.1.9.10.0.0.0.0.0.0.0.0.0.0.0.0.Ditid Gold Mine.Dorkuraz Trade Post.Zinjo Outpost.Boal Fortress.Haralus Castle.Neal Trade Post.Dracula Village.Tieie Fortress.Xatarga Gold Mine.Bakagg Trade Post.Akig Trade Post.Groakohr Village.Galahad Village.Wirt Fortress.Alwyn Trade Post.      ##
+   ##### 
+ #### #### #   (|(|()|)|) 
+####    ####  ##0#0##0#0##
+#####    #########{||}####
+.        
+ (|(|()|)|) 
+##0#0##0#0## (|(|()|)|) 
+#0##0##0##0#  []      ||
+####{||}#### [][]     ||
+.        
+ (|(|()|)|) 
+#0##0##0##0#
+##0#0##0#0##   (|(|()|)|) 
+##0#0##0#0##  ##0#0##0#0##
+####{||}####  #0##0##0##0#
+.        
+ UuuuuuuuuU 
+[O[[[[]]]]O]
+[[O[[[]]]O]]   UuuuuuuuuU 
+[[O[[[]]]O]]  [[O[[[]]]O]]
+[[[[[/\]]]]]  [[O[[[]]]O]]
+.        
+             UuuuuuuuuU 
+            [[O[[[]]]O]]
+ UuuuuuuuuU [O[[[[]]]]O] UuuuuuuuuU 
+[[O[[[]]]O]][O[[[[]]]]O][O[[[[]]]]O]
+[O[[[[]]]]O][[O[[[]]]O]][O[[[[]]]]O]
+[[[[[/\]]]]][O[[[[]]]]O][[[[[/\]]]]]
+.        
+ UuuuuuuuuU 
+[[O[[[]]]O]] UuuuuuuuuU 
+[O[[[[]]]]O]  []   _  ||
+[[[[[/\]]]]] [][] |x| ||
+.        
+ \==\==/==/ 
+   |I  I|      \==\==/==/    \==\==/==/ 
+   |    |        |I  I|        |    |   
+ppp| /\ |qqq  ppp| /\ |qqq  ppp| /\ |qqq
+. \==\==/==/ 
+   |I  I|   
+   |I  I|   
+   |I  I|      \==\==/==/ 
+   |    |        |I  I|   
+ppp| /\ |qqq     |I  I|   
+.        
+     ##        \==\==/==/ 
+    #####        |I  I|   
+  ####  ###      |    |   
+ ###     #### ppp| /\ |qqq
+.        
+ ))))__(((( 
+!=!==!!==!=! ))))__(((( 
+!=!==!!==!=!  []      ||
+!_!_!!!!_!_! [][]     ||
+.        
+ ))))__(((( 
+!=!==!!==!=! ))))__(((( 
+!=!=!==!=!=!  []      ||
+!_!_!!!!_!_! [][]     ||
+.        
+ ))))__(((( 
+!=!==!!==!=!   ))))__(((( 
+!=!=!==!=!=!  !=!==!!==!=!
+!_!_!!!!_!_!  !_!_!!!!_!_!
+.        
+   \-\/-/   
+ #0 0  0 0#    \-\/-/   
+ # 0    0 #  # 0    0 # 
+ # # [] # #  # # [] # # 
+.   \-\/-/   
+ # 0    0 # 
+ # 0    0 # 
+ # 0    0 #      \-\/-/   
+ # 0    0 #    # 0    0 # 
+ # # [] # #    # 0    0 # 
+.        
+   \-\/-/   
+ #0 0  0 0#    \-\/-/   
+ #0 0  0 0#   []   _  ||
+ # # [] # #  [][] |x| ||
+.5.11.3.4.8.11.2.4.5.11.11.2.2.4.11.1.0.0.4.5.2.0..0.0.0.0.0.1.1.1.1.1.0.0.0.0.0.0.0......Glass City-State Skirmished the Erak in 98
+.Colossal Papacy Skirmished the Erak in 99
+.Sultanate of the Titan Vampires raided the lands of the Bandits in 97
+Sultanate of the Titan Vampires Skirmished the Bandits in 99
+.Kegrot raided the lands of the Erak in 99
+.Overland of the Deatheater Wizards attempted to invade the lands of the Bandits but were unsuccessful
+.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.Trolls.Godlings.Vampires.Ogres.Wizards.0.0.0.0.0.0.0.0.0.0.0.Council Elder.Cardinal.Emir.Lord.Lord.0.9.0.0.2.3.2.4.4.0...0.0.0.0..0..0..0.0.      ^^v^^v^^
+    ------------
+   ##############
+   ----(-()-)----
+    =-=-=-=-=-=-
+      ***--***
+.      >>>><<<<
+    ~-~-~-~-~-~-
+   ~~~~~~~~~~~~~~
+   --((((()))))--
+    ~~~~~~~~~~~~
+      ___--___
+.      >>====<<
+    ~-~-~-~-~-~-
+   --((--()--))--
+   ----(-()-)----
+    -=-=-=-=-=-=
+      ***--***
+.      ++++++++
+    #~#~#~#~#~#~
+   --------------
+   ###===##===###
+    ************
+      >>>><<<<
+.      >->><<-<
+    ------------
+   ==============
+   --------------
+    +#+#+#+#+#+#
+      >>>><<<<
+.0.125.30.0.Sir Nalfanar Alebreath.   {---=---}  
+   /___ ___\  
+ (  (o) (0)  )
+ @--- (_)    @
+ {{{/     \}}}
+  // (uu-) \\ 
+    \\}^{//   
+.1.1.1.1.2.3.1.1.Xyolorokon.Xolorall.Xyodom.Xolerek.0.1.8.32.0.1.0.150.0.0.0.0.0.0. )|)=((X))=(|(.    #+#=#+#.   (=(-*-)=).   |>\===/<|.    #+#^#+#.0.0.0.2.0.212.0.0.0.0.0.0.0.0.0.####{||}####.#0##0##0##0#.##0#0##0#0##. (|(|()|)|) .[[[[[/\]]]]].[O[[[[]]]]O].[[O[[[]]]O]]. UuuuuuuuuU .ppp| /\ |qqq.   |I  I|   .   |    |   . \==\==/==/ .!_!_!!!!_!_!.!=!=!==!=!=!.!=!==!!==!=!. ))))__(((( . # # [] # # . # 0    0 # . #0 0  0 0# .   \-\/-/   .0.0.0...0.0.0.0.0.0.19.0.35.0.974.0.1.  (((((*))))) 
+  {{_\{|}/_}} 
+  {(o)-v-(0)} 
+ @===(, ,)   @
+ (__   |   __)
+   {{{vvv}}}  
+    \_{#{_/   
+.Sir Drak of Phenor's Horde.4.7.|   Iawn The Merciful
+|   Old Olaf The Monster
+|   Walla The Ogre
+|   Zagaroth The Monster
+|   Vanos The Helm
+.0.170.0.0.2.0.0.0.0.0.  (((((*))))) 
+  {{_\{|}/_}} 
+  {(o)-v-(0)} 
+ @===(, ,)   @
+ (__   |   __)
+   {{{vvv}}}  
+    \_{#{_/   
+.Sir Drak of Phenor's Horde.0.548.66.0.14011.0.0.1000.A.1.0.0.0.0.0.0.250.613.388.756.0.0.0.0.0.0.0.0.0.0.7.13.14.7.14.310000.260000.390000.180000.340000.1235000.195000.90000.900000.100000.0.0.259.0.2569.0.0.0.1.0.180.80.8.0.4.0.3800.5625.0.0.22.6.0.0.0.0.0.0.0.0..0.0.0.0.0.0.0.0.0.0.0.0.4.92.2.110.Elduryn the Grizzled Veteran Fighter.  \\\\\\\//// 
+  {) _\|/_ (} 
+  { @ ||| @ } 
+ @    ( )    @
+ |__   |   __|
+  {{{{v-v}}}} 
+    \\]*]//   
+.Sir Drak of Phenor's Horde the leader of the blackmarket creates a statue of himself
+you receive 157 gold in rents from your 4 Lands
+you enlist 16 Soldiers from your 4 Lands
+you are sent 1060 gold in arena profits by Sir Herment the Legend
+you earned 6 gold in interest this turn
+you receive 259 gold from your Gambling Tax law
+you receive 401 gold from General Taxes
+you receive 160 gold in tributes from Sigurd the Goblin Slaver
+your Knights train 20 Peasants into Soldiers
+your peasants earn you 332 gold from this years harvest
+you pay 50 in wages to Old Croll your head diplomat
+you pay 70 in wages to Ghorin Pikener your General
+you pay 234 in wages to your soldiers
+you pay 12 in wages to your Knights
+The Bandit Horde hire a small warband of 25 new bandits from the Wild Northern Mercenary Outpost
+The Blackmarket provide 4 troops to Phenor's Horde 
+.you receive 157 gold in rents from your 4 Lands
+you are sent 1060 gold in arena profits by Sir Herment the Legend
+you earned 6 gold in interest this turn
+you receive 259 gold from your Gambling Tax law
+you receive 401 gold from General Taxes
+you receive 160 gold in tributes from Sigurd the Goblin Slaver
+your peasants earn you 332 gold from this years harvest
+.you pay 50 in wages to Old Croll your head diplomat
+you pay 70 in wages to Ghorin Pikener your General
+you pay 234 in wages to your soldiers
+you pay 12 in wages to your Knights
+.you receive 259 gold from your Gambling Tax law
+you receive 401 gold from General Taxes
+you receive 160 gold in tributes from Sigurd the Goblin Slaver
+.you enlist 16 Soldiers from your 4 Lands
+..you pay 50 in wages to Old Croll your head diplomat
+you pay 70 in wages to Ghorin Pikener your General
+you pay 234 in wages to your soldiers
+you pay 12 in wages to your Knights
+.Sir Drak of Phenor's Horde the leader of the blackmarket creates a statue of himself
+The Bandit Horde hire a small warband of 25 new bandits from the Wild Northern Mercenary Outpost
+The Blackmarket provide 4 troops to Phenor's Horde 
+..0..0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0..Jorg Doomedhand................3.0.1.0.0.   {--(~)--}  
+ {)\       /(}
+ /   O | O   \
+ @   -/ \-   @
+  \_ ,, ,, _/ 
+   \ (VVV) /  
+    \_\|/_/   
+.5.0.0.0.0.43.14.Deatheater Apprentice Wizard.2193.48.16.Deatheater Grand-Wizard.6000.56.3.Behemoth Armored Troll.65520.103.0.3603.0.326.1.94.4.  \\\\|:|//// 
+  {}=  ^  ={} 
+  /(0)/|\(0)\ 
+ @  -( n )-  @
+  \ / \ / \ / 
+   \-\~~~/-/  
+    \_{*}_/   
+.Derec the Thickskin Brawler.24.29.3.2.93.96..Derec the Thickskin Brawler.1.0.1225.0.0..0.0.0.0.0.are a mercenary group formed from former slave soldiers who wish now to fight for a master who pays.are a mercenary group known for killing a horde of undead and slaying the necromancer who summoned them.are a group of savage warriors bound to their leader due to a pact made with blood.are a group of adventurers that have decided to dedicate themselves fully to mercenary work.are a mercenary group formed from a bunch of pit fighters who wished for something more violent.0.6.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.............0.0.0.Little Divided Elders.Samwell the 10-year old Monster.   {=======}  
+  /(O)|||(O)\ 
+ @   (,,)    @
+  {{{ V~V }}} 
+    )(|@|)(   
+.18.0.0.Sir Herment the Legend.2.   {xxxoxxx}  
+  { _  ^  _ } 
+  { O     0 } 
+ @   =|_|=   @
+  \_       _/ 
+    {\vvv/}   
+    \{_~_}/   
+.0.1.1.1.1.1.0.0.I came from Arasuk, a place in the south, I was not meant for a place full of folk like that, no free thinking, I took to the roads with a passing knight who for some ungodly reason found himself in the south, we adventured around the land after that, I was his squire but I had to swing a sword many a time, once we found ourselves in the north defending a small village from wildermen, another time we encountered a band of gold armoured warriors protecting a strange cave, wild adventures indeed..........0.46.0.262.99.0.0.0.0.158.0.0.1833.141.61.16291.0.0.1.96.0.   [-------]
+  [^^^^^^^^^].0.0.0.0.0.0.0.21.109.815.0.0.0.0.0.0.0.3.0.0.0.0.0.1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0............1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.6.0.0.0.0.0.King.m'lord.lord.mister.0.0.0.0.Sigurd the Goblin Slaver.  \\\___///// 
+  {___   ___} 
+  {<0>| |<o>} 
+ @)== (_)   (@
+ {,,,     ,,,}
+   \ (VvV) /  
+    \\]^]//   
+.80.7.0.0.0.0.0.0.0.Aslona.9.3.2.4.2.0.1.351.75.0.0.0.0.0.ENDOFFILE

@@ -1,0 +1,116 @@
+
+	------------------------------------------------------------------
+				CHEAT AND DEBUG CODES
+        		   for the unethical warsim player
+        ------------------------------------------------------------------
+
+CHEAT CODES
+These codes are entered in the standard cheats menu found in extras, here there
+are many different codes that do all kinds including some debugging codes
+that probably serve little purpose to a cheater
+
+7) +7000000 gold
+19) All desterters disband
+25) +1000 Throne room visitors
+29) +1000 deserter soldiers
+69) +69 lands
+70) All factions have 100 relation with you
+71) All factions have -100 relation with you
+72) All factions have 0 relation with you
+88) +10000 Soldiers
+99) +1000 gold
+100) if any leagues could possibly be formed force them to happen
+101) Turns all independent kingdoms into pacifists
+111) See a list of some non debug cheats
+172) +100 of all independent soldiers to aslona army
+211) Shows a list of debug codes
+299) Adds 100k peasants to your army
+331) Travel through time
+370) Choose how much bluetrii fruit you have
+380) Choose how many lands you have
+388) Set all Independent Races to be resurrecting race type
+390) Choose how much gold you have
+399) Debug Mode unlocked in main screen
+404) Unlocks cut areas in the exploration screen for one turn
+444) Makes all kingdoms 10x stronger
+445) Makes all kingdoms 10x stronger but retain the same lands
+450) Set general bandit level to whatever you want
+469) Add 10000 new peasants to the militia
+475) Sets game time limit to infinite (if previously set to be a timed game)
+477) Adds 100 knights on quests for you
+480) Unexplores any locations you've discovered but gives you 1000 explore chances
+495) Gives all your staff a 300 skill level
+504) Old Debug text colour setting (may not work)
+505) Colour testing system (fun)
+616) Demon Horde set to 2000
+666) +666 bandits, knights, peasant, soldiers and tribals to aslona
+700) Adds 1000 mercenaries to the blackmarket
+710) Spawns a list of 100 races
+716) 100 Relation with musicians guild
+717) -100 Relation with musicians guild
+747) All people wear hats
+777) +777000000 gold
+801) All other kingdoms have one land (troops are unchanged)
+802) All other kingdoms have one land and a single peasant unit
+933) Create a void gate in Independent Kingdom One (spawns void army)
+1000) Set public opinion to anything
+1015) Generate a new goblin slaver
+1016) Allows you to choose trait of the goblin slaver (and spawns one if one isn't already there)
+1017) Adds 1000 slave goblins to the local slaver
+1111) Disables cheats for your current save game
+1112) Spawns all minor factions (void army, pest bandits, demons, revolt and deserters)
+1331) Choose how many orbs of madness you want
+1487) Spawns a list of 100 races but none of them are beast based races
+1995) All locations revealed
+2020) Start the Plague
+6001) Opens the custom champion creator
+6092) Allows you to change your backstory
+7020) All faces mutated (enter again to disable)
+7049) Turn all 5 kingdoms dead or alive into refugee camps instead
+7072) Create 100 new barren lands
+
+TEST CODES
+These codes can also be entered into the cheats menu in extras but they
+tend to be more for debugging and testing
+
+388) All independent troops can now resurrect
+933) Turns building one of kingdom one into a void gate
+6000) Makes a random colour on your screen
+6085) Enable Vampire Debug Stats
+6092) Choose your background (mad kings son, bandit king, demon, etc)
+7040) Resets the blackmarket to default
+7896) Sets southern nomads to evil
+7897) Sets southern nomads to good
+7898) Resets southern nomads troops
+
+KINGDOM LOADOUT CODES
+In the screen where you are told you are invited to the royal crowning
+ceremony, you may instead of pressing (1) to go to the ceremony enter one of
+the following to force a preset leadership type
+
+551) Heir of King who was Assassinated
+552) Heir of King who Died of Old Age
+553) Son of the Mad King
+554) Gambler who won the Kingdom
+555) Bandit Warlord who captured the city
+556) Demonic King
+
+DEBUG MODE CODES
+In the screen where you choose your difficulty level you can enter other codes
+to get special debug mods, these are instant game modes made to test features
+usually
+
+111) Debug Mode 111 (made to test why independents were so bad (spawn with 3000 independents)
+69) 69 Cheat Mode (Start with tons of troops and lands)
+11) Debug Mode 11 (Demons active from the start)
+12) Debug Mode 12 (Chaos from the start, lots of random events)
+13) Debug Mode 13 (Instantly start with pest group)
+14) Debug Mode 14 (Automatically spawn special mercenary groups)
+15) Debug Mode 15 (Plague from the start)
+16) Debug Mode 16 (AKA Superduper impossible mode)
+17) Fight Test Arena
+18) Debug Mode 18 (Kingdoms get double land)
+19) Debug Mode 19 (Kingdoms get triple land)
+21) Debug Mode available in menu from the start
+22) Debug Mode 21 (All locations unlocked)
+23) Debug Mode 22 (Debug messages visible)

@@ -1,0 +1,20 @@
+------ CENTAAR RACE CODE ----------
+You can put this in the RaceType.txt file in Warsim's data folder to add them
+back into the world, they use elven faces.
+
+Centaars.1.0.0.0.60.4.Centaar.60.Centaarian Hunter.135.Centaarian Champion.165.known as half-elf half-horse these creatures are fast and aggressive
+
+------ WHAT THE HELL IS THIS ------
+Centaars are half-elf half-horse, the elven version of a Centaur (half-man)
+It was an original creation invented for the warsim world, like Blogroki
+Skeeroks, Protofolk, and so on, however as of update 0.7.5.3 the concept of
+completely procedural 'taur' races rendered Centaars useless as the taur
+system made random taur versions of every race including elves.
+
+It made more sense to leave it up to randomness than to have hardcoded versions
+of them so now instead of Centaars you can find Elvetaurs, Goblintaurs, Trolltaurs
+and so on.
+
+I have saved the code for the Centaar race so if anyone wants to put them back
+in they can!
+-----------------------------------

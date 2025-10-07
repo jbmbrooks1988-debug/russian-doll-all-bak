@@ -1,0 +1,9 @@
+userhash hmA1.🟪️.®™
+brain_size 1350           # Volume in cm³ (human avg ~1350)
+neuron_count 86000000000  # Approx. human neuron count
+regions cortex:100,amygdala:100,hippocampus:100,thalamus:100  # Health of brain regions (0-100%)
+synaptic_density 1000     # Synapses per neuron (affects storage)
+storage_capacity 2.5      # Petabytes (human brain estimate)
+processing_speed 1.0      # Relative speed for LLM/RL (1.0 = human baseline)
+chemical_balance serotonin:50,dopamine:50  # Neurotransmitter levels (0-100%)
+neurons_sheet neurons_hmA1.txt  # Pointer to cellular-level neuron data

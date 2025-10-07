@@ -1,0 +1,243 @@
+🏆️
+u will watch them die if they dont stop🔍️ <- proven "ALWAY$ RIGHT FOR WORK" jul29 & '\n' fix.👿️]☠️☦️🤯️
+Title:   deathAnd
+Comment:  00000000 00000210
+🏆️
+
+
+
+🗓️
+
+📅️july29📅️📅️📅️📅️📅️📅️📅️
+
+
+not passing "arrows thru" ? dont fix until u need it is our new motto . 
+3d works fine still so w/e; make mr . then make multi 's 4 stationary tourney. 
+then give movement , blockplacing w/e etc. 
+
+were not doing wsr till u have block placing (or i would do yahoo/wsrbank) <-QLU 
+we can do chatbot tho. (were doing monsterancher->monopoly btw.)
+
+we wanna watch calendar pass, we wanna pre-program (automate events early) += ai.
+
+read
+#.wussup]?🟪️]b3
+🥇️
+
+
+🥈️
+🥉️
+📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️
+
+
+
+
+
+
+
+
+
+
+
+🗓️
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+🇯🇵️i added flag, its working wonderfully; (if u ONLY read from "LIST" flag is a non issue tbh...)🤯️
+🎖️
+
+however, we have to build other stuff back (like write commands.txt , read commands .txt )
+
+
+im very tempted to seperate keyboard stuff completely and handle as a parent process. 
+⌨️if u get started with seperate keyboard, its easier 2 keep going down that direction⌨️
+why are there 2 writes 2 commands.txt (cuz gl_tx.c translates gl menu input to commands.txt input)
+🎨️
+🇬🇮️
+i actually want to separate this into a parent child pipe relationship of modules. in parent i want to take in the keyboard input , and in the child i want to do everything else, this is because im later going to modify the keyboard parent to accept input from file as well as keyboard and i dont want "kvp_menu" to have to worry about that kinda stuff, get it? kbd_parent.c can take in kvp_menu.+x as arg 1. heres how i do my modules : 
+
+
+🇬🇮️
+👨🏽‍💻️
+*writing of the pid's to text file is simple w/e ; BUILD IT WHEN U NEED IT...IMO👨🏽‍💻️
+🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️
+
+4 example. im not just gonna make "commands.txt" right now. why ? (who uses it anymore?)
+(we do wanna pipe arrows thru "&" tho) <- do it when u need it. even if u need it right away.
+(read gl_commands.txt yet? do it when u need it. ; its gona be ok <3 ]ez
+🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️🚧️
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️
+
+
+
+
+
+
+🗿️
+in read_kvp_file:The existing else for setting bg_flags to an empty string was left as is, since it's a simple assignment and removing it would require more complex logic (e.g., initializing bg_flags to empty strings earlier). This is a minor case where keeping the else is cleaner than alternatives.
+🗿️
+
+
+
+
+
+🎌️🎌️🎌️🎌️🎌️🎌️🎌️🎌️🎌️🎌️🎌️🎌️
+imo  .we can use flags but dont need 2 . 
+its just that enter isnt going thru..
+u maybe able 2 modify old unicycle. after u figure out how. w/e
+
+10.📱️; going. 
+but 1 problem , already not taking enter key. 
+im thinking orchbreak here, write 2 commands.txt 
+and have menu handler read from commands.txt
+
+u can just run a parallel
+if u think ur not gonna run parallel ur insane.
+
+oh u , mean from locations.txt? that could fix that
+(we do that anyways)
+👿️
+(its way 2 hot and violent/hateful/demonic 2day so may sleep)
+👨🏽‍💻️
+this doesn't have 2 be a big deal. 
+if they are that violent]RIP. 👨🏽‍💻️👿️
+🏆️
+u will watch them die if they dont stop🔍️ <- proven "ALWAY$ RIGHT FOR WORK" jul29 & '\n' fix.👿️]☠️☦️🤯️
+Title:   deathAnd
+Comment:  00000000 00000210
+🏆️
+
+🎌️🎌️🎌️🎌️🎌️🎌️🎌️🎌️🎌️https://grok.com/chat/8d97ca7f-e2ff-426b-9c34-a9982fc5ee6c
+🤮️
+enter wasn't going thru ; on purpose. 
+
+____________
+enter key isn't going to child (submenu only  ;non submenu doesn't need ) sometimes a menu just needs an enter confirm. ; last time i tried to fix it sent "empty" without any key press causing submenu to quit. avoid that. just wanna send enter signal of some sort (only when its pressed)
+____________]
+🤮️
+
+👨🏽‍🚀️
+that codebase is FUCKED☢️
+
+it should be 2 or 3 modules {y? never want issues here again}
+
+!. just use a flag for sub_menu vs hide 4 now pls. thats advanced
+not foundational
+
+1. keypipe.2.txt.c = takes in key (even pipes)
+outputs them all 2 commands.txt 
+thats all it does.
+
+2. read commands.txt reads from that file, thats all
+(this way ai can write commands as well
+i kno ur mad u didn't start like this but we learn + 300- loc. 
+
+
+3.
+
+
+!.theres some shit about reading and reconsuming
+ignore that 
+
+also it passes arrows keys 2 idle processes? 
+thats just dumb. 
+just start over bro <3 
+
+
+
+
+
+
+
+#.gl.2.pipe ] ignore 4 now
+
+
+☢️☢️☢️☢️☢️☢️☢️☢️☢️☢️☢️☢️☢️☢️☢️☢️☢️☢️☢️☢️☢️☢️☢️☢️
+📅️jul29 : 404 im going 2 bed 4 now ; youll be ok tho <3 
+📅️
+9.kvp_menu📱️]b1]NOTW8 <>< <-start back here 🔍️🚇️
+
+its good but if a program is run that doesnt have a submenu it shouldn't block menu, just redirect to run in background /dev/null ? i will add a third column with "&" to indicate background (doesn't need to accept input as submenu's doe they should die when parent is killed, ofc)  ie : "subs ./+x/sub_menu_io_test.+x
+slave ./+x/test_slave.+x &
+confirm]a0 ./+x/test_confirm]a0.+x" dont change any other functionality ofc, its perfect
+
+ill just build it back up, wuts missing? read/write to commands.txt file? 
+(im adding flags
+🎌️🎌️🎌️🎌️🎌️🎌️🎌️🎌️🎌️🎌️🎌️🎌️🎌️🎌️🎌️🎌️🎌️🎌️
+
+the real problem is commands.txt only writes after enter is pressed
+
+but it writes "10"
+10
+123abc
+10
+10
+so the real problem is how it passes thru pipe, 
+but current is cluttered...
+i bet i could fix it esp if i knew why with smoller code...
+
+🤮️
+im trying diff things they all center around a nuance of how 
+enter is handled, but sitll being extremel assaulted. 
+🤮️
+
+🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️
+🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️
+🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️🛌️
+
+
+
+⏯️
+Line feed (LF) and carriage return (CR) are control characters originating from the mechanics of typewriters and teletypewriters, now used in computing to manage text formatting. 
+Carriage Return (CR):
+.
+Represented by \r and ASCII code 13, the carriage return moves the cursor or print head to the beginning of the current line without advancing to the next line. Its origin lies in pushing the typewriter's carriage back to the left margin.
+Line Feed (LF):
+.
+Represented by \n and ASCII code 10, the line feed moves the cursor or print head down to the next line without affecting the horizontal position. This action mimics advancing the paper on a typewriter by one line.
+⏯️
+
+

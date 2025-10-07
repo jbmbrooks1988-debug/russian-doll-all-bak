@@ -1,0 +1,21 @@
+end_turn ../../turn.➡️.®™/+x/increment_turn]a0.+x
+hunger ../../hlth.🤍️.®™/+x/hunger.😋️]a0.+x
+state ../../usfx.📟️.®™/+x/1.state_display📟️]a1.+x
+act ../../actn.🗯️.®™/+x/1.interact_xp_dirs🗯️]x7.+x 
+# should scan and fill inv.txt each time (things can change)
+inventory ../../actn.🗯️.®™/+x/1.inventory_1p_dirs🎒️]x7.+x
+# search dirs (ie 🏪️) for interact_1d.txt 2 interact with {RMMV LIKE]play rmmv tbh}u will see that interacting triggering things is a big game mechanic. also some things self trigger on map stick 2 rmmv🕵🏼‍♂️️ (we may have iteract_1d.txt and interact_2d.txt{door teleport or w/e} & interact_3d.txt? physics? get it? 1d4 now
+
+
+
+
+
+
+
+
+#slave ./+x/test_slave.+x &
+#confirm]a0 ./+x/test_confirm]a0.+x
+#enter]a1 ./+x/test_enter]a1.+x
+#confirm].. ../hmA0.🔌️.®™/mnus.📱️.®™]c4/+x/test_confirm]a0.+x
+#subs ./+x/sub_menu_io_test.+x
+#test

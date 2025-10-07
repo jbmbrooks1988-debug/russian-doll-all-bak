@@ -1,0 +1,8 @@
+
+fix player to use test_project/ 
+
+id say use 
+/home/no/Desktop/👬🏾️/sept_21/1.rmmvc🧚🏻️ともじ📟️txt083/text/🤺️.rmmx-qante]c5/5_static.txt
+
+but it has extra data. maybe we should edit "editor" first. and ignore that crap since player doenst
+apperantly use it "YET" 

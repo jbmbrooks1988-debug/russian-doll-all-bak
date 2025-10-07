@@ -1,0 +1,10 @@
+🌩️
+rv-i on discord/p2p is "cloud services"; login, get tokens , etc <3 
+
+; would be nice if these could run peices;backend.eth? bluetooth local servers?; 
+till u need a gui.
+🌩️
+🖥️can "lil amd" hook into desktop ? 
+(and box still be used for somethign else? 
+(can box hook into "riscv-boards? & be interfaced with thru ssh? )
+🤖️

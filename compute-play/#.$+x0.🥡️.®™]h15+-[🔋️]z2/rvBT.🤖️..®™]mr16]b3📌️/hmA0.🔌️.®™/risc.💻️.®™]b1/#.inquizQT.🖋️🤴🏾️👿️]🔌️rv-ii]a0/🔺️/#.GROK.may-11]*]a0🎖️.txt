@@ -1,0 +1,38 @@
+https://grok.com/chat/29cd6cd3-075e-4f6b-b35b-fb2af18454b6
+🎖️🎖️🎖️🎖️🎖️🎖️🎖️🎖️🎖️🎖️🎖️🎖️🎖️🎖️🎖️🎖️🎖️🎖️
+🧾️
+for modularity and reuse
+id like to break
+ the tangential functions of this up into executable modules (seperate .c files)
+{i dont want to link them on compile or use externs, i want them to beable to be self contained aside from data io}
+and executing them with system(); ex : system(./+x/"xor.+x 16 0 1"); when they are needed.
+(or pipes)
+if we need to share data among modules it should be easy because we shoud be writing 
+to one of the auto save file, so we can just read and write from those ( or pipes)
+
+our executables are compiled as ".+x" and stored in "/+x/"
+
+Each C file is standalone, avoiding headers.
+
+
+Everything is built from NAND gates, scaled to 32 bits for RISC-V. This covers the core requirements—let me know if you want details on any specific part!
+
+is there any way we can modularize this codebase. 
+i dont wanna force it , but if we can factor any reusable modules out
+that shouldn't be cluttering main.c file, lets go. (feel free to correct any obviously errors in my risc-v logic as well, im a newb)
+
+then we can continue trying to build our risc-v emu to the point where it can boot tiny_linux_32.iso
+(like qemu) <- lets make a design-dox.md to outline code-principles, next steps +kpis 4 future sessions.
+🧾️
+
+i want to implement all the modules but keeping them compartmentalized is a good idea. ideally the main file could be used to do any architecture or chip (ex z80 , arm , x86 etc) .so lets organize the code in this way . in order to actually peices the riscv architecture i dont want it hardcoded in . i want it to read the "netlist" chip connections from a specific file .txt that specifies something like :  "./+x/chip1.+x arg1 arg2 out1.txt out2.txt ./+x/chip2.+x out1.txt out3.txt ... get it ? lets update design doc to communicate that please, and then we should get started on "gates" plus main.c file making sure the emulator can run simple gates, we will make a test.sh for automation
+
+
+🧾️
+sh zsh
+.test.emu.sh 
+NAND(1,1) = 0: PASS
+NOT(1) = 0: FAIL (got 1)  {i remove compile logic from script. i already have one and it breaks in this one<3} lets keep making the new gates and netlists for bigger gates. we will build and test step by step (all gates should be made from previous gates in a netlist file, multiple netlist files can be used from script or w/e) does that make sense? did you already know that or do you need to modify design doc/steps&kpis?
+
+🧾️
+

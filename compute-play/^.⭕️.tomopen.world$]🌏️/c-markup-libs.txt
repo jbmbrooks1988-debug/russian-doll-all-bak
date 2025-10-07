@@ -1,0 +1,20 @@
+🏣️
+4 real 4 real? 
+i have to make a GPU/CPU(riscv+-) MANUFACTURING COMPANY (so laptop/pc/phone 2)
++ software (linux + ai apps + cloud )  4 real. or it wont get done
+AND then i can(MUST) do biotech ...and MAYBE aerospace 4 fun... 
+{and honestly i should start a nonprofit 2 do it 2 avoid taxes and aim 4 sov...}
+or work very cloesly with us gov 2 avoid crazy nes son(unometalw8) both sides.
+🏣️
+https://github.com/lc-soft/LCUI
+https://tsoding.github.io/olive.c/
+----------------------------------------
+LCUI is a C-based user interface (UI) library that uses XML for defining the structure of an interface and CSS for styling, similar to web development. It supports cross-platform development for Windows and Linux, offering a unique approach to creating desktop applications with a built-in CSS engine for styling. Developers familiar with web technologies will find LCUI's use of XML, CSS, and web-like layout concepts (like block and inline-block) makes it easy to transition to building UIs with C, according to GitHub. 
+Key Features of LCUI
+XML for Structure: Use XML to define the hierarchical structure of your UI elements, making it easy to organize your application's layout. 
+CSS for Styling: The library includes a built-in CSS engine, allowing you to style your UI components using familiar CSS properties and selectors, as described by GitHub. 
+Web-like Layout: LCUI supports HTML-like layout models, such as block, inline-block, and simple flex layout, which simplifies the process for web developers. 
+Cross-Platform Compatibility: Develop applications that can run on both Windows and Linux, providing a consistent experience across different operating systems. 
+DPI Awareness: The library automatically scales the UI on high-resolution displays to ensure that elements appear clear and sharp, maintaining visual quality on modern screens. 
+C-Based Development: Written entirely in C, LCUI is suitable for applications requiring small size and efficient performance, appealing to developers who work primarily in C. 
+-------------------------------

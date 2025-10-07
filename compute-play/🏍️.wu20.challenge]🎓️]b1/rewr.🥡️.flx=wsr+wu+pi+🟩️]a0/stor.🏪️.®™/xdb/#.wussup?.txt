@@ -1,0 +1,35 @@
+
+
+
+sell: ./+x/1.sell]a0.+x
+buy: ./+x/1.buy]a0.+x
+
+what should these do ? 
+
+show inventory/ (bag?raw?)  + prices.txt
+(should really show "🍎️x 10" or w/e)
+
+allow user to choose +x , check thier inventory 4 money ? take money ; give the thing...
+
+
+🪙️something that counts  🪙️/state.txt ; subtracts from it or says not enough money 
+
+🎎️theres "no one" "in" the store, theres "no cash register" 
+(altho later i would hope we could repourpose this into more of a plugin; start simple)🎎️
+
+🏪️
+so what does "interact" do (obv if i have an apple it should do "fx" )
+(give user health as its own mod, delete itself + create "seed" as its own mod by reading fx.txt? w/e
+
+interact 4 store/🏪️
+🧾️
+show inventory with index's? (first show "buy.+x & sell.+x as index's)
+(then u can sell using "suggested price (or have ur own price sheet and it can reject it 
+and u can just manually change on price sheet 4 now) get it? 
+🧾️
+🛍️ should i care about bag vs raw? no not right now we will tighten up once data / fx structure has 
+been iterated a couple times and used in sim / production w/e - were aiming for libra, not perfect .c ♎️
+
+🇬🇮️
+may seem complicated and i know u wished 2 use modular systems, but we can always have grok orc break it into a
+working pipeline after its together... (which it is but im gonna skip for now🇬🇮️

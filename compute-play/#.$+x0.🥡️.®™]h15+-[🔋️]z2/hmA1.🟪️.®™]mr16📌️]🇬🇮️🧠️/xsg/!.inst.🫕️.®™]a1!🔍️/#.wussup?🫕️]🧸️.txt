@@ -1,0 +1,192 @@
+
+
+
+🚩️
+
+the button is actually gonna launch something in the local .+x 
+(in fact , it should launch w/e folder u are in 4 a trick? 
+uh ignore that 4 now ironically . go back and just have button launch local
+(it was a good thot excersize 2 compartamentalize but were goin back now ; lol
+
+
+
+humon button will 
++ populate super {opt}
++start my guys cam {opt}
++ game_loop_humon◻️]a0.+x {definate}
++ ( i will put some "food inside of its invetory 4 it 2 eat(ai)"
++ yes ai within loop (an 'auto process' 
++ user controller? 
+
+🚩️
+🖥️<-way to transfer files between computers soon? yea we will make share.w/e->🖥️
+🛗️
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+🛗️
+🧰️
+🚫️were not doing "install" 4 sword game menu bs, (right now @ least)
+
+were doing "dev tools" like >compile @ cli (instead of carrying aroudn stpid .sh)
+
+◻️+ start "humon" <- raw (toy)🧸️
+
+
+(not getting into versioning {code}but feel free 2 use 'git' in cli 2] git-gud ]JDMD )
+🔺️
+📮️
+🔘️= how we will do our own "REAL" git (cuz /bin/ + cli  = .git ) ]GIT_GUD🧸️
+🔺️
+📮️
+{i would say do "blah blah" but we aren't using +x/ anymore }
+{literally make a list of dirs/ 2 do xdb etc, get it? ; could get hidden; 
+surely grok can do this ? why not 4 fun? do it now!}
+
+dont use +x , just use + or x w/e 
+👨🏽‍🚀️
+ill put nnex in +  {u can put 'dev tools' on path.btw. w/e }
+and devtools in x 
+👨🏽‍🚀️
+✖️
+🧰️
+📅️jul25 : 📅️
+
+
+📅️📅️📅️📅️📅️📅️📅️📅️
+
+📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️
+📅️july25📅️
+
+🚲️
+make circle a square & w/e else "u want"  ; push 2 MANNcraft / df as civ / gta/wsr
+
+🔘️
+would be nice if "BUTTON = $+x/ts/tsots/+/x = starting 'exe' we are working on
+ie : make a "compile/ install script that auto does this"
+(give install script optiong for "long term install or dev install = infra/devtools♾️
+
+button -> can ask 'user' questions, btw. (ie : 1.legacy_list 2.dev_list)
+(can search 'our install lists 'xshrc_history.txt ' and show options ] NOW!🔍️
+
+
+we can compile from command line 2 . using different command. no need 2 deviate /bin/
+lets just make our own /bin/ commands, w/e 
+ deviate from nnex 4 a sec 2 go nuts with this. (its on button <3)]W.ON!🔍️
+ 
+ 🧰️
+ can literally have a button that shows all historic stuff. 
+ 
+(can also auto move copy of code to /bin_src) evo = z.sh -> x.sh -> $
+ 🧰️
+🔘️📌️
+🚲️
+📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️
+
+🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️
+🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+🐣️🐣️🐣️🐣️🐣️🐣️🐣️🐣️🐣️🐣️🐣️🐣️🐣️🐣️🐣️🐣️🐣️🐣️🐣️🐣️🐣️🐣️🐣️🐣️🐣️🐣️🐣️🐣️🐣️
+
+
+🫕️
+install certainly goes in /bin/ 2 launch immediately cuz its "already on users path, ie : its a hack/moat"
+they didn't think "i would find" + its the only way unless u modify 
+"literal linx kernel instal. which is fine & u should do ofc...@ some point..."
+
+📮️
+ok fine install is in. 
+
+i literally cant wrap my head around how to start df without sword controller, cuz its the controller. 
+plus this is giving speed...
+and im in task 3...
+
+
+but ya, u could install sword , give user a hash. but is that for "ENTIRE PROGRAM" or is a "FBX" more like a local wallet? 
+(and u could put 1 FB in ther "FB's" 2 do multi wallet management ?
+
+so should i start sword with 
+
+tsots.<wallet_it>.+x ?  u kno? 
+
+i gotta be honest deving for starting this way is super smooth, but QLU said dev , inside out ... so ...
+uh... ok. i trust qlu so im gonna do that. 
+
+y cuz u shouldn't let their violence dictate ur work , and "FUCK YOU" w/e 
+go at w/e pace opposing them dictates i guess. w/e . they shouldn't even be allowed 2 do that so yea . 
+kool im fine with that. this is here but i guess were treating it like its not an option... ok so wut then? 
+
+
+🙅🏻‍♀️️🖕️
+alignning with clu means doing that and S&B <- not locking them; instead letting them get bored with rap...
+] id rather do things the way i can do SPIRL tbh . dont let them make u EGO Slave 
+🪖️
+{i do like looking at them like they are morons, but i guess u want 2 be "HUMBLE/PUNISHED" ?  w/e }
+🪖️
+🙅🏻‍♀️️🖕️
+✅️
+ok... so post that wussup? 
+back 2 doing teh squares ? ai? intentionally not logging in.
+
+wanna just have the ai guys doing shit w/o being able 2 control them? just control camera ? 
+
+🏧️🌉️🌆️
+i guess we push 2 MC/CIV WU / WSR as wuz the guidance... w/o sword? no one said that, just w/o login/p2p yet...🗡️
+
+so YES to 3d/NNEX=ai no 2 login blockchain p2p YET! ✅️ok., legts GOOOOOOOOOOOOOOO
+🦿️🦿️
+🌉️where are we ? : 📲️not in here...(fondu mobout)📲️
+📳️🔍️
+u dont have to "LEAEVE THIS FB THO (home.) go into dwu3./ or step./
+📳️🔍️
+
+
+🌆️
+🦿️🦿️
+🏧️
+
+📮️
+🫕️

@@ -1,0 +1,4 @@
+./+x/nand.+x INPUT_A INPUT_B TMP1
+./+x/nand.+x INPUT_A TMP1 TMP2
+./+x/nand.+x INPUT_B TMP1 TMP3
+./+x/nand.+x TMP2 TMP3 TMP_XOR

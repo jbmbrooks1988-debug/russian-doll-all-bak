@@ -1,0 +1,246 @@
+🧟‍♀️️its making ugly code by default instead of just reading in matrixes 
+and parsing by position🤮️overcomplicaing our flo for no reason, we already know the sol...🤮️just do 2/3d 4 format. then build up TSON pls. 🇬🇮️🤮️🌆️🤺️
+
+
+
+This way, the XP needed between levels increases quadratically, which is a common choice.
+Alternatively, we can make it exponential, like 100 * (2^{n-1} - 1), but quadratic is fine for now.
+
+🧝‍♂️️
+n pure gcc c i want to make a cli text version of "rpg maker mv" (devloper kadokawa)The software allowed users to create their own role-playing game with a  world editor and two scripting programs for in-game events and battles.  popular functions the user can set and manipulate are battles/ players / items/ enemies and events (teleports, switches , conditions , battles) and map editing (lets keep it "1d" text based  visually but lets also be creative/visionary and sustainable ie : we can still operate in 2d/ 3d matrix on paper for scaling our engine later.) save the game files to a .txt file in a folder named after "users game" we will make two seperate independant programs, the game editor and the game player both in pure gcc c , both using the "user games folder" to load and save static and dynamic data. (in rpg maker mz the code under the hood is in javascript where user can make "/plugins" and "compiles" to json , but we will just use c and txt".  you game? lets try! {dont treat what im saying as gospel , this is a creative process , lets work to get a nice MVP foundation that covers all the important foundational aspects for now!}
+
+🅰️🅰️🅰️🅰️🅰️🅰️🅰️🅰️
+Key Points
+
+    It seems likely that creating a CLI text-based RPG maker in pure GCC C, similar to RPG Maker MV, is feasible with careful planning.
+    The system will include an editor for creating game elements (map, players, enemies, items, events, battles) and a player for gameplay, both using text files for data storage.
+    Research suggests that the map can be represented as a 2D grid internally, displayed in 1D text for simplicity, with potential for future 2D/3D scaling.
+    The evidence leans toward using separate files for static (game design) and dynamic (game state) data, stored in a folder named after the user's game.
+
+Direct Answer
+Overview
+Creating a command-line interface (CLI) text version of RPG Maker MV in pure GCC C is a complex but achievable task. This system will allow users to design role-playing games with features like map editing, battles, players, enemies, items, and events, all managed through text files. We'll develop two programs: an editor for creating and modifying game elements, and a player for interacting with the game, both using a shared folder for data storage.
+Game Design and Features
+The editor will let you create and edit:
+
+    Maps: Represented as a 2D grid, displayed in text, with potential for future 2D/3D expansion.
+    Game Elements: Including players (with attributes like health and strength), enemies, items (like potions or weapons), events (teleports, switches, conditions, battles), and battles (with participants and rewards).
+
+The player program will load these designs and allow gameplay, such as moving around the map, battling enemies, using items, and triggering events. All data will be saved in a folder named after your game, with separate files for static design data and dynamic game state.
+Implementation Details
+
+    Data Storage: Static data (map, players, etc.) and dynamic data (player position, inventory) will be stored in .txt files, making it easy to edit and load. For example, the map might look like this in a text file:
+
+    [Map]
+    Size: 5 5
+    Row1: .....
+    Row2: .P..
+    Row3: .E..
+    Row4: .....
+    Row5: .....
+
+    Editor Interface: You'll use a menu-driven CLI to edit elements, like setting map size or adding players, and save changes to the static file.
+    Player Interaction: The player program offers commands like "look" to see the map, "move north" to navigate, and "attack" to fight enemies, with progress saved to the dynamic file.
+
+Unexpected Detail
+While RPG Maker MV uses JavaScript and JSON under the hood, our C implementation will use simple text parsing, which might feel less flexible but is more accessible for pure C development and aligns with the goal of a text-based MVP.
+For more on RPG Maker MV, check out the official site at Kadokawa Games.
+Survey Note: Detailed Analysis of CLI Text-Based RPG Maker in Pure GCC C
+This section provides a comprehensive exploration of designing and implementing a CLI text-based RPG maker akin to RPG Maker MV, using pure GCC C. It covers the conceptualization, data structures, file handling, and program functionalities, ensuring a robust foundation for both the editor and player programs.
+Background and Context
+RPG Maker MV, developed by Kadokawa, is a game development tool that enables users to create role-playing games with features like world editing, event scripting, and battle systems, primarily using JavaScript and compiling to JSON for plugins. Our task is to replicate key functionalities in a text-based CLI format using pure C, focusing on sustainability and scalability for future 2D/3D matrix operations. The system will comprise two independent programs: an editor for game design and a player for gameplay, both interacting via a "user's game" folder with .txt files for data storage.
+Given the current date, March 10, 2025, and the focus on pure C, we aim for a minimum viable product (MVP) that covers foundational aspects, acknowledging the creative process and potential for expansion.
+Data Structures and Representation
+To manage game elements, we define several structs in C:
+
+    Player: Includes name, health, and strength, representing the player's state.
+    Enemy: Includes name, health, strength, and potential drop items.
+    Item: Includes name, type (e.g., potion, weapon), and effect (e.g., heal 20, strength +5).
+    Event: Includes position (x, y), type (teleport, battle, condition), and parameters (e.g., target location, battle ID).
+    Battle: Includes name, list of player and enemy participants (as comma-separated strings), and rewards (e.g., experience 100, item Item1).
+
+The map, central to gameplay, is represented as a 2D grid internally, stored as a list of strings (each string a row) for simplicity in text display. Despite the user's mention of "1D text-based visually," we interpret this as a 2D grid displayed linearly in text files, with potential for future 2D/3D scaling on paper for engine expansion.
+File Handling and Storage
+Data is stored in two .txt files within a folder named after the user's game:
+
+    static.txt: Contains static game design data, including:
+        [Map]: Size (width, height) and rows (e.g., "....." for each row).
+        [Players]: Each player with attributes (e.g., "Player1, health=100, strength=10").
+        [Enemies]: Each enemy with attributes and drops.
+        [Items]: Each item with type and effect.
+        [Events]: Each event with position, type, and parameters.
+        [Battles]: Each battle with participants and rewards.
+    dynamic.txt: Contains dynamic game state data, including:
+        [Player Position]: Current x, y coordinates.
+        [Player Attributes]: Current health, strength, etc.
+        [Inventory]: List of item names (e.g., "Item1, Item2").
+        [Enemy States]: List of defeated enemies.
+        [Switches]: State of game switches (e.g., "door_open=true").
+        [Variables]: Game variables (e.g., "gold=100").
+
+This separation ensures the editor modifies only static data, while the player updates dynamic data, maintaining data integrity.
+Editor Program: Design and Functionality
+The editor program offers a menu-driven CLI for users to create and edit game elements:
+
+    Main Menu Options:
+        Edit Map: Set size, edit cell by cell, or input row by row (e.g., display current map, prompt for row/column to edit).
+        Manage Players: Add, edit, delete players with attributes.
+        Manage Enemies: Similar to players, including drops.
+        Manage Items: Define items with types and effects.
+        Manage Events: Add events at specific positions (e.g., teleport to x,y, start battle with ID).
+        Manage Battles: Define battles with participants and rewards.
+        Save Game: Write to static.txt.
+        Exit: Return to system.
+
+For example, editing the map might involve:
+
+    Displaying the current grid (e.g., ".....\n.P..\n.E..\n.....").
+    Prompting for row and column to edit, then what to place (e.g., 'P' for player, '.' for empty).
+    Saving changes in the [Map] section of static.txt.
+
+Player Program: Gameplay and Interaction
+The player program loads data from both files and provides a command-line interface for interaction:
+
+    Initialization: Load static.txt for game setup (map, players, enemies, etc.) and dynamic.txt for current state (if exists, else default values like starting position).
+    Command Interface: Users input commands like:
+        "look": Display the map grid with player's position marked (e.g., 'P' at current x,y).
+        "move north/south/east/west": Move player, check for walls, trigger events/items at new position.
+        "attack": Initiate battle if enemy present, simulate combat, update states.
+        "use item Item1": Apply item effect, remove from inventory.
+        "check inventory": List current items.
+        "save": Update dynamic.txt with current state.
+        "exit": End program.
+
+Movement and Events: Movement adjusts position (e.g., north decreases row by 1), checks map bounds and walls, and triggers events (e.g., teleport, battle) or picks up items at the new position. Events are parsed from static.txt, with actions like "teleport 3,4" or "start_battle Battle1" executed accordingly.
+Battles: Simulated turn-based, with player and enemies attacking sequentially based on strength, updating health, and marking defeated enemies in dynamic.txt. Rewards (experience, items) are applied on victory.
+Scalability and Future Considerations
+The design allows for future scaling:
+
+    Maps can transition from 2D grids to 3D matrices by extending storage and display logic.
+    Events can evolve into a simple scripting language, parsed and executed dynamically, enhancing flexibility.
+    The text-based format ensures accessibility, with potential for graphical interfaces in future iterations.
+
+Tables for Clarity
+Below is a table summarizing key data sections and their storage:
+Section
+	
+File Type
+	
+Description
+Map
+	
+static.txt
+	
+Grid size and rows, e.g., "Size: 5 5", "....."
+Players
+	
+static.txt
+	
+List of players with attributes, e.g., "Player1, health=100"
+Enemies
+	
+static.txt
+	
+List of enemies with attributes and drops
+Items
+	
+static.txt
+	
+List of items with type and effect
+Events
+	
+static.txt
+	
+List of events with position, type, parameters
+Battles
+	
+static.txt
+	
+List of battles with participants and rewards
+Player Position
+	
+dynamic.txt
+	
+Current x, y coordinates
+Inventory
+	
+dynamic.txt
+	
+List of item names
+Enemy States
+	
+dynamic.txt
+	
+List of defeated enemies
+Switches
+	
+dynamic.txt
+	
+State of game switches, e.g., "door_open=true"
+Another table for command examples in the player program:
+Command
+	
+Action
+look
+	
+Display current map grid with player position
+move north
+	
+Move player north, check for events/items
+attack
+	
+Initiate battle if enemy present
+use item Item1
+	
+Apply Item1 effect, remove from inventory
+check inventory
+	
+List current items
+save
+	
+Update dynamic.txt with current state
+Conclusion
+This implementation provides a solid MVP for a CLI text-based RPG maker in pure C, covering essential features like map editing, battles, and events, with scalable design for future enhancements. The separation of static and dynamic data ensures maintainability, and the text-based format aligns with the goal of accessibility and simplicity.
+Key Citations
+
+    Kadokawa Games RPG Maker MV Official Page
+    🅰️🅰️🅰️🅰️🅰️
+    Expanding the Event System
+You’re right—RPG Maker MV (developed by Kadokawa) supports a rich event system beyond just battles and teleports. It includes:
+Show Text: Displays dialogue or narrative text.
+
+Show Choices: Presents a menu of options for the player to select (e.g., "Yes/No" or custom branches).
+
+Switches/Conditions: Triggers based on game state (e.g., "if switch A is on").
+
+Move Routes: NPC movement or scripted sequences.
+
+For our MVP, we’ll add:
+Text Events: Display a message (e.g., "Welcome to the game!").
+
+Choice Events: Offer a simple menu with up to 4 options, storing the selected option as a variable.
+
+I’m familiar with RPG Maker’s engine—its event system is scriptable (JavaScript in MV/MZ) and compiles to JSON, but we’ll adapt this to our text-based C approach using .txt files.
+
+
+    🅰️🅰️🅰️
+    
+    ❌️
+    You ran the editor (./+x/editor), named your game test_0000, and:
+Edited the Map: Changed position (4,4) to 'E' (worked fine).
+
+Managed Events: Selected option 2 ("Add new event") from the events menu.
+
+Entered Event Data: Input 3 when prompted for x y, type (battle/teleport), param.
+The prompt expects four values: x, y, type, and param (e.g., 2 2 battle Battle1).
+
+You only entered 3, which likely caused scanf to wait for more input, making it seem "frozen."
+
+Exited: Typed 7 to save and exit, but the program didn’t respond because it was still awaiting input from the previous step.
+
+Root Cause
+In the editor’s event management section, the scanf call expects four arguments:
+
+❌️
+
+

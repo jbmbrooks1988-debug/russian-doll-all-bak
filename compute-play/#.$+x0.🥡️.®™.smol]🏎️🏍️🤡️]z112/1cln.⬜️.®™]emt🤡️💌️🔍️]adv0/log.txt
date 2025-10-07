@@ -1,0 +1,1106 @@
+[Sun Aug 17 16:56:49 2025] Warning: Failed to open ../🔐️.txt, using default locations.txt path
+[Sun Aug 17 16:56:49 2025] Warning: Failed to open locations.txt, using default paths
+[Sun Aug 17 16:56:49 2025] super_maps directory empty or not specified, falling back to default maps
+[Sun Aug 17 16:56:49 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:49 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:49 2025] Warning: Failed to open terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:49 2025] Warning: Failed to open camera at /dev/video4
+[Sun Aug 17 16:56:49 2025] Using default black background for AR
+[Sun Aug 17 16:56:49 2025] FreeType initialized, font loaded: /usr/share/fonts/truetype/noto/NotoColorEmoji.ttf, scalable: 0
+[Sun Aug 17 16:56:49 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:49 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:49 2025] Maps reloaded due to directory change
+[Sun Aug 17 16:56:49 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:49 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:49 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:49 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:49 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:49 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:49 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:49 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:49 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:49 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:49 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:49 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:49 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:49 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:49 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:49 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:49 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:49 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:49 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:49 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:49 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:49 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:49 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:49 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:49 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:49 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:49 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:49 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:49 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:49 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:49 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:49 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:49 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:49 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:49 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:49 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:49 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:49 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:49 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:49 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:49 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:49 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:49 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:49 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:49 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:49 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:50 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:50 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:50 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:50 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:50 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:50 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:50 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:50 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:50 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:50 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:50 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:50 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:50 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:50 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:50 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:50 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:50 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:50 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:50 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:50 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:50 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:50 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:50 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:50 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:50 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:50 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:50 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:50 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:50 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:50 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:50 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:50 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:50 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:50 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:50 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:50 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:50 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:50 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:50 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:50 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:50 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:50 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:50 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:50 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:50 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:50 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:50 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:50 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:50 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:50 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:50 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:50 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:50 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:50 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:50 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:50 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:50 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:50 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:50 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:50 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:50 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:50 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:50 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:50 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:50 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:50 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:50 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:50 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:50 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:50 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:50 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:50 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:50 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:50 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:50 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:50 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:50 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:50 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:50 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:50 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:50 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:50 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:50 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:50 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:50 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:50 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:50 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:50 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:50 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:50 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:50 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:50 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:50 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:50 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:50 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:50 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:50 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:50 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:50 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:50 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:50 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:50 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:50 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:50 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:51 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:51 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:51 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:51 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:51 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:51 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:51 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:51 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:51 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:51 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:51 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:51 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:51 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:51 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:51 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:51 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:51 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:51 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:51 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:51 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:51 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:51 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:51 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:51 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:51 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:51 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:51 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:51 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:51 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:51 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:51 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:51 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:51 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:51 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:51 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:51 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:51 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:51 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:51 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:51 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:51 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:51 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:51 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:51 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:51 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:51 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:51 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:51 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:51 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:51 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:51 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:51 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:51 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:51 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:51 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:51 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:51 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:51 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:51 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:51 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:51 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:51 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:51 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:51 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:51 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:51 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:51 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:51 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:51 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:51 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:51 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:51 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:51 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:51 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:51 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:51 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:51 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:51 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:51 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:51 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:51 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:51 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:51 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:51 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:51 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:51 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:51 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:51 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:51 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:51 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:51 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:51 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:51 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:51 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:51 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:51 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:51 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:51 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:51 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:51 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:51 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:51 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:51 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:51 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:52 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:52 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:52 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:52 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:52 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:52 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:52 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:52 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:52 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:52 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:52 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:52 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:52 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:52 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:52 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:52 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:52 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:52 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:52 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:52 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:52 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:52 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:52 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:52 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:52 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:52 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:52 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:52 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:52 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:52 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:52 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:52 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:52 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:52 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:52 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:52 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:52 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:52 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:52 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:52 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:52 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:52 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:52 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:52 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:52 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:52 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:52 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:52 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:52 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:52 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:52 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:52 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:52 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:52 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:52 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:52 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:52 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:52 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:52 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:52 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:52 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:52 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:52 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:52 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:52 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:52 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:52 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:52 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:52 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:52 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:52 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:52 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:52 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:52 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:52 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:52 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:52 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:52 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:52 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:52 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:52 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:52 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:52 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:52 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:52 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:52 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:52 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:52 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:52 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:52 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:52 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:52 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:52 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:52 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:52 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:52 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:52 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:52 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:52 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:52 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:52 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:52 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:52 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:52 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:53 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:53 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:53 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:53 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:54 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:54 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:54 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:54 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:54 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:55 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:55 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:55 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:55 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:55 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:56 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:56 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:56 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:56 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:56 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:57 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:57 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:57 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:57 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:57 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:58 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:58 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:58 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:58 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:58 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:56:59 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:56:59 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:56:59 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:56:59 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:56:59 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:00 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:00 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:00 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:00 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:00 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:01 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:01 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:01 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:01 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:01 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:02 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:02 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:02 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:02 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:02 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:03 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:03 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:03 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:03 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:03 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:04 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:04 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:04 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:04 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:04 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:16 2025] Warning: Failed to open ../🔐️.txt, using default locations.txt path
+[Sun Aug 17 16:57:16 2025] Warning: Failed to open locations.txt, using default paths
+[Sun Aug 17 16:57:16 2025] super_maps directory empty or not specified, falling back to default maps
+[Sun Aug 17 16:57:16 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:16 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:16 2025] Warning: Failed to open terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:16 2025] Warning: Failed to open camera at /dev/video4
+[Sun Aug 17 16:57:16 2025] Using default black background for AR
+[Sun Aug 17 16:57:16 2025] FreeType initialized, font loaded: /usr/share/fonts/truetype/noto/NotoColorEmoji.ttf, scalable: 0
+[Sun Aug 17 16:57:16 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:16 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:16 2025] Maps reloaded due to directory change
+[Sun Aug 17 16:57:16 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:16 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:16 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:16 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:16 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:16 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:16 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:16 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:16 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:16 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:16 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:16 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:16 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:16 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:16 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:16 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:16 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:16 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:16 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:16 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:16 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:16 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:16 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:16 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:16 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:16 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:16 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:16 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:16 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:16 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:16 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:16 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:16 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:17 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:17 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:17 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:17 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:17 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:17 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:17 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:17 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:17 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:17 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:17 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:17 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:17 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:17 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:17 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:17 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:17 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:17 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:17 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:17 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:17 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:17 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:17 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:17 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:17 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:17 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:17 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:17 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:17 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:17 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:17 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:17 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:17 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:17 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:17 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:17 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:17 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:17 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:17 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:17 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:17 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:17 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:17 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:17 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:17 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:17 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:17 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:17 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:17 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:17 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:17 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:17 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:17 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:17 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:17 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:17 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:17 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:17 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:17 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:17 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:17 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:17 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:17 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:17 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:17 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:17 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:17 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:17 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:17 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:17 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:17 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:17 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:17 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:17 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:17 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:17 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:17 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:17 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:17 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:17 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:17 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:17 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:17 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:17 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:17 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:17 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:17 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:17 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:17 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:17 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:17 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:17 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:17 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:17 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:17 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:17 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:17 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:17 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:17 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:17 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:17 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:17 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:17 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:17 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:18 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:18 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:18 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:18 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:18 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:18 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:18 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:18 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:18 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:18 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:18 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:18 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:18 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:18 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:18 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:18 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:18 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:18 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:18 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:18 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:18 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:18 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:18 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:18 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:18 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:18 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:18 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:18 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:18 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:18 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:18 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:18 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:18 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:18 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:18 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:18 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:18 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:18 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:18 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:18 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:18 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:18 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:18 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:18 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:18 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:18 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:18 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:18 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:18 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:18 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:18 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:18 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:18 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:18 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:18 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:18 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:18 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:18 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:18 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:18 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:18 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:18 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:18 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:18 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:18 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:18 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:18 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:18 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:18 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:18 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:18 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:18 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:18 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:18 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:18 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:18 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:18 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:18 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:18 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:18 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:18 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:18 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:18 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:18 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:18 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:18 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:18 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:18 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:18 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:18 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:18 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:18 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:18 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:18 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:18 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:18 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:18 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:18 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:18 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:18 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:18 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:18 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:18 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:18 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:19 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:19 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:19 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:19 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:19 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:19 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:19 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:19 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:19 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:19 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:19 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:19 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:19 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:19 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:19 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:19 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:19 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:19 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:19 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:19 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:19 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:19 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:19 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:19 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:19 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:19 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:19 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:19 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:19 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:19 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:19 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:19 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:19 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:19 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:19 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:19 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:19 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:19 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:19 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:19 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:19 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:19 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:19 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:19 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:19 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:19 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:19 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:19 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:19 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:19 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:19 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:19 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:19 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:19 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:19 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:19 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:19 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:19 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:19 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:19 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:19 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:19 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:19 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:19 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:19 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:19 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:19 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:19 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:19 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:19 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:19 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:19 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:19 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:19 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:19 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:19 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:19 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:19 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:19 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:19 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:19 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:19 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:19 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:19 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:19 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:19 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:19 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:19 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:19 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:19 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:19 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:19 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:19 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:19 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:19 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:19 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:19 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:19 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:19 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:19 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:19 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:19 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:19 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:19 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:20 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:20 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:20 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:20 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:20 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:20 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:20 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:20 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:20 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:20 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:20 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:20 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:20 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:20 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:20 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:20 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:20 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:20 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:20 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:20 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:20 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:20 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:20 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:20 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:20 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:20 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:20 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:20 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:20 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:20 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:20 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:20 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:20 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:20 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:20 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:20 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:20 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:20 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:20 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:20 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:20 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:20 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:20 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:20 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:20 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:20 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:20 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:20 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:21 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:21 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:21 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:21 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:21 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:22 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:22 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:22 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:22 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:22 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:23 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:23 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:23 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:23 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:23 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:24 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:24 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:24 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:24 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:24 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:25 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:25 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:25 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:25 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:25 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:26 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:26 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:26 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:26 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:26 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:27 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:27 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:27 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:27 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:27 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:31 2025] Warning: Failed to open ../🔐️.txt, using default locations.txt path
+[Sun Aug 17 16:57:31 2025] Warning: Failed to open locations.txt, using default paths
+[Sun Aug 17 16:57:31 2025] super_maps directory empty or not specified, falling back to default maps
+[Sun Aug 17 16:57:31 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:31 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:31 2025] Warning: Failed to open terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:32 2025] Warning: Failed to open camera at /dev/video4
+[Sun Aug 17 16:57:32 2025] Using default black background for AR
+[Sun Aug 17 16:57:32 2025] FreeType initialized, font loaded: /usr/share/fonts/truetype/noto/NotoColorEmoji.ttf, scalable: 0
+[Sun Aug 17 16:57:32 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:32 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:32 2025] Maps reloaded due to directory change
+[Sun Aug 17 16:57:32 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:32 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:32 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:32 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:32 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:32 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:32 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:32 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:32 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:32 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:32 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:32 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:32 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:32 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:32 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:32 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:32 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:32 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:32 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:32 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:32 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:32 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:32 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:32 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:32 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:32 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:32 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:32 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:32 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:32 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:32 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:32 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:32 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:32 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:32 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:32 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:32 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:32 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:32 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:32 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:32 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:32 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:32 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:32 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:32 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:32 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:32 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:32 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:32 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:32 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:32 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:32 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:32 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:32 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:32 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:32 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:32 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:32 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:32 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:32 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:32 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:32 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:32 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:32 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:32 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:32 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:32 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:32 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:32 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:32 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:32 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:32 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:32 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:32 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:32 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:32 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:32 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:32 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:32 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:32 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:32 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:32 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:32 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:32 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:32 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:32 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:32 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:32 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:32 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:32 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:32 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:32 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:32 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:32 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:32 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:32 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:32 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:32 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:32 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:32 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:32 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:32 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:33 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:33 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:33 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:33 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:33 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:33 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:33 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:33 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:33 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:33 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:33 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:33 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:33 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:33 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:33 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:33 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:33 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:33 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:33 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:33 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:33 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:33 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:33 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:33 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:33 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:33 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:33 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:33 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:33 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:33 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:33 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:33 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:33 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:33 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:33 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:33 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:33 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:33 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:33 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:33 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:33 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:33 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:33 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:33 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:33 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:33 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:33 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:33 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:33 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:33 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:33 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:33 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:33 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:33 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:33 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:33 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:33 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:33 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:33 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:33 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:33 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:33 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:33 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:33 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:33 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:33 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:33 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:33 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:33 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:33 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:33 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:33 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:33 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:33 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:33 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:33 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:33 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:33 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:33 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:33 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:33 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:33 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:33 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:34 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:34 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:34 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:34 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:34 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:35 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:35 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:35 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:35 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:35 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:36 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:36 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:36 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:36 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:36 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:37 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:37 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:37 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:37 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:37 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:38 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:38 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:38 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:38 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:38 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:39 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:39 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:39 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:39 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:39 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:40 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:40 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:40 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:40 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:40 2025] Warning: Failed to stat terminal input file gl_cli_out.txt
+[Sun Aug 17 16:57:41 2025] Warning: Failed to open state file ../state.txt
+[Sun Aug 17 16:57:41 2025] super_states directory not specified in locations.txt, skipping
+[Sun Aug 17 16:57:41 2025] Mini-map: Raw player pos: (0, 0, 0), Snapped: (0, 0), Rotation: 2
+[Sun Aug 17 16:57:41 2025] Mini-map: Rendering map 0: x=[0,20), y=[0,10), z=0
+[Sun Aug 17 16:57:41 2025] Warning: Failed to stat terminal input file gl_cli_out.txt

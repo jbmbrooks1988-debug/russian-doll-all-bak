@@ -1,0 +1,27 @@
+
+❤️‍🩹️ if u ever have problems with a features of <htmvc> u can always just
+remove it and try 2 make it seperatly as ref or start over w/e 
+as opposed 2 it being in some big scary project + u get a whole bunch of modular space for free thru "modules" (and can seperate view.c and canvas.c one day if u like ]u did good <3❤️‍🩹️
+
+
+📮️🪲️post refactor to model.c  = everything is better than before
+cept dir/ stuff ; i have to press enter in cli 2 get it 2 register click. 
+wtf🪲️📮️
+🐛️
+
+
+i think theres something up with "extended text view' 4 cli/editor. 
+and adding a 'thumb/scroll bar completely broke it so i rolled back
+
+thats the only bug i can think of now tho🐛️
+haven't been diligently updating
+chtml_legend.md after additions. kinda dumb🥴️
+
+also time to remove hardcoded 2d triangle. and start doing 3d shit.
+🥴️
+📊️🪞️
+get rid of ALL the hardcoding and make an ASCII VERSION *y? cuz reuse. ++📊️🪞️
+
+
+> we dont always want keys 2 work right or mouse or w/e
+(or do we? ref rmmvc )🖱️🪤️

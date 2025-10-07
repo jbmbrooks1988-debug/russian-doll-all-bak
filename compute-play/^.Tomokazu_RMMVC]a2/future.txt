@@ -1,0 +1,61 @@
+🧿️yes we do wanna introduce "animatin tiles / obj/ fbx, just 4 compat/ demo/ ar demo yt etc🧿️
+🤯️rmmv "programing" (is only json) ie it maps 2 functions in code. 
+ie its turing complete json as code... ;it should be more human readable. 
+then we can sell rmmvc3d at walmart/target/gamestop and ppl can share their games on the 'network' and they can just auto steal others code like github. its just 'the deal' thats the fun, share ur games play others. and theres 
+"sub 2 multiplayer etc." or u can just literally play other ppls games 4 free . get it like roblox or u can buy dev liscence. y ? shrug cuz apple does it w/e;
+its slop after all + monetize everything cuz inflation . never sella  macro product even sell it thru a diff company ., just monetize everything ;y 
+everything u just said is fair monetization scheme for the product. w/o 
+even needing 2 talk 2 advertisers
+ (even tho thats best model  ,u need clout first)🤯️
+❤️‍🔥️
+⛏️
+can add minecraft recipees 2 chem table (or do seperate as moe ) etc
+
+>yt no mans sky elements
+Miso Bot
+APP
+ — 
+10:57 PM
+https://youtube.com/watch?v=rMX6GqfM2c8
+YouTube
+Xaine's World
+39 Refiner Recipes You Should Know in No Man's Sky for 2023 - Learn...
+⛏️❤️‍🔥️
+🪚️🪚️🪚️
+MVC= 
+👁️
+
+view : has "shapes/menus" hardcoded, but long term , they should be
+"designated via model"
+👁️
+🧚‍♀️️
+decouple "sprite designer" from program all 2gether? 
+like we were gonna do with "TSOKO" or w/e the "os"
+where we open sytem() gl programs and close back2 main
+or just open as smol windo? 
+🪚️🪚️🪚️
+
+
+thot: decouple ascii from mvc? using new linked .c ie : ascii.c ? 
+
+add rmmv logic / 3d game engine logic ie : gravity
+
+add play mode. 
++ playmode has "2d/3d/ar/ selection which tries usb cam fallback 2 webcam"
+(we should make streaming software for "INSIDE SUITE> its a fullscreen os now..."
+also nothing should be completely full screen but "MOTHER RUNNER"editor slighsmol
+
+
+how ever events/npc's are read = ai-ledger loop. get it? = RMMV EVENT LOOP🥴️🤯️
+
+{how would it run wsr? i duno lets make a game 'inside of it' and see (peices 2)
+ie: plugin system should be pretty robust, dont u agree?
+either writing 2 data or allowing us 2 grab vars? (probalby from data somehow)
+(4 use with events... duh...)
+-------------------
+put colors (and alpha numeric) in "tabs" 
+-----------------------------
+alsoput more tabs , and put "tiled/rmmv" specific stuff
+will ship pre programmed 2 do stuff but!dont forget rmmv isn't 3d ie:
+ https://www.reddit.com/r/RPGMaker/comments/i1wspk/starting_tutorial_series_for_the_mv3d_plugin/
+ ----------------

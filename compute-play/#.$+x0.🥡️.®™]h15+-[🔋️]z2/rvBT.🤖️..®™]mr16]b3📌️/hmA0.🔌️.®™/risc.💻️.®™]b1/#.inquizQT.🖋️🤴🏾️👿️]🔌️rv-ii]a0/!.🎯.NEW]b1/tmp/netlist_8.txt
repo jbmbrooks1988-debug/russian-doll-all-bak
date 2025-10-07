@@ -1,0 +1,1 @@
+./+x/nand.+x PC_0 PC_0 TMP_NOT_PC_0

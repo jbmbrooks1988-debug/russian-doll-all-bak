@@ -1,0 +1,29 @@
+
+🏣️
+
+📬️SEP5🪚️
+did that. kinda need 2 polish it 2 be "model_gl dynamic" ONLY .
+emoji paint is now in mvc...(weve come along way from first rmmv attempt
+https://robotsweater.medium.com/bots-guide-to-custom-art-in-rpgmaker-mv-understanding-tilesets-9178fe09e475
+
+i still love rmmv / tiling system in general 'makes sense...'
+if u can do that (rmmv tiles in 'emopaint') u sould beable 2 do procgen 4 it 2
+
+;btw im completely red pilled on waiting 4 our meta-master ai 2 be done
+b4 worrying about new-kernel/riscv w/e cuz (compatability = ez user migration)+
+onestly it(riscv/linux) will&should respectivli be the easist stuff 4 the ai 2do
+(tho it would be hardest 2 progrma around as 'dummy data' ; get it? 🔍️
+just like emojirmmv is ez. but trying 2 do asset rmmv was hard , get it? 🔍️
+📬️
+💡️
+b4 u do that. could u do "main.c gl.c compiler linkering? just 4 gl stuff 2 abstract logic? but still prototype/product?
+
+💡️
+📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️
+
+yea tis is cool... or not . 
+cant prompt anymore otherwise we would create a super corp . 
+ok use framebuffer. make a gui w/e . 
+but this should be compatabile with the fb stuff dont u think? case
+the player doesnt' install ur gui at least , i mean wuts the harm? 📺️
+📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️📺️

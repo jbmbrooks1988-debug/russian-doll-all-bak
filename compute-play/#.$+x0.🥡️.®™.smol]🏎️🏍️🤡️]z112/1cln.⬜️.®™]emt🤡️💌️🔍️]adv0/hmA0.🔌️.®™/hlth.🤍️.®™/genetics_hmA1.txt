@@ -1,0 +1,5 @@
+userhash hmA1.🟪️.®™
+dna_sequence ATGC...  # Simplified DNA string or hash
+protein_levels enzyme1:100,enzyme2:80,...  # Protein levels (0-100%)
+genetic_traits strength:50,speed:30,...  # Traits affecting gameplay
+reproductive_status fertile  # fertile/infertile

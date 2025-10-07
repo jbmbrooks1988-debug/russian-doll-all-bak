@@ -1,0 +1,14 @@
+Dryads.2.0.0.0.35.5.Dryad.100.Warrior Dryad.130.Dryad Champion.170.known as nymphs of the trees or of wood, they defend and inhabit woodlands to protect them from destruction at the hands of other races
+Satyrs.8.0.0.0.60.5.Satyr.45.Militant Satyr.90.Satyr Guard.115.known as half-man half-goat satyrs are generally peaceful, though they are prone to excessive drinking 
+Centaurs.1.0.0.0.60.4.Centaur.60.Centaurian Hunter.130.Centaurian Champion.167.known as half-men half-horse these creatures are fast and aggressive
+Minotaurs.8.0.0.6.35.1.Minotaur.120.Minotaur Champion.160.Minotaur Warlord.190.known as half-men half-bull these creatures are strong and aggressive
+Harpies.0.0.0.4.45.4.Harpy.75.Harpy Warrior.140.Harpy Queen.240.known as winged demonic beasts
+Tritons.4.0.0.0.55.6.Triton.55.Militant Triton.120.Triton Warrior.140.known as folk of the sea tritons are sentient-fish people, they live in deep sea cities and feast on algae and other fish, they rarely surface to interact with the land races 
+Men.1.0.0.0.100.5.Peasant.50.Soldier.100.Knight.150.known to settle and grow great kingdoms men are known to be more adaptable and diverse than most
+Elders.1.0.0.0.40.6.Elder.104.High-Elder.170.High-Elder Champion.240.known as intelligent men who create vast libraries and study well on all they can
+Oracles.1.0.0.5.30.6.Oracle-in-Training.40.Nameless Oracle.80.Oracle.190.known to be the seers of the world, they know a great deal that others do not, they are often isolated from the world and learn in secret
+Godlings.7.0.0.0.5.7.Godling.180.Godling Lord.350.Godling King.550.known as creatures who are somewhat godlike, they are the descendents of demigods
+Demigods.7.0.0.0.2.8.Demigod Guardian.250.Demigod.500.Demigod King.750.known to be the sons and daughters of the gods, immensely powerful and intelligent, they are not to be underestimated
+Half-Giants.1.0.0.4.15.3.Half-Giant.110.Half-Giant Berserker.170.Half-Giant Champion.260.known as sons of giants these creatures are hulking and powerful though lacking in intelligence and population
+Cyclops.9.0.0.6.100.4.Cyclops.51.Cyclopean Guard.110.Cyclopean Champion.149.known for their lack of two eyes, cyclopes are renowned as violent people
+Giants.1.0.0.6.3.2.Giant.450.Armored Giant.500.Giant Champion.620.known as mountainous creatures with giant statures and strong tempers, giants though small in quantity are a huge threat to their enemies

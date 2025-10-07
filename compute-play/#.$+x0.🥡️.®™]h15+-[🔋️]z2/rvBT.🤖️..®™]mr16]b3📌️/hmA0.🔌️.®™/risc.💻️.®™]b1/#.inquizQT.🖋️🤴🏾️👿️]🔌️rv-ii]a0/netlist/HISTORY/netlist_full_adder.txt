@@ -1,0 +1,8 @@
+INCLUDE netlist/netlist_xor.txt
+./+x/nand.+x TMP_XOR INPUT_C TMP4
+./+x/nand.+x TMP_A_TMP1 TMP_B_TMP1 TMP5
+./+x/nand.+x TMP_XOR TMP4 TMP6
+./+x/nand.+x TMP5 TMP6 TMP7
+./+x/nand.+x TMP4 TMP4 TMP8
+./+x/nand.+x TMP8 TMP8 OUTPUT_SUM
+./+x/nand.+x TMP7 TMP7 OUTPUT_COUT

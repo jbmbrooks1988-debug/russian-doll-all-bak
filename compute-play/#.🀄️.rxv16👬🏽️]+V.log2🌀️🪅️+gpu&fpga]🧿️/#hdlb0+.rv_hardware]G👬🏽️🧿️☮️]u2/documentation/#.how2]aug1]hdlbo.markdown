@@ -1,0 +1,23 @@
+## 🚧 Emulator Modifications and Reversion: A Lesson in Purity 🧘‍♀️
+
+During the development of the RV-I, attempts were made to modify the core emulator (`0.hdlb0.☮️16]pr3]HOLY.c`) to enhance its functionality, specifically to improve the handling of RAM addresses and to simulate a program counter for `JUMP` instructions.
+
+### Attempted Modifications:
+
+1.  **`resolve_input` Function Patch:**
+    -   **Goal:** To allow the emulator to correctly interpret all RAM addresses (0-255) as valid inputs, rather than treating values 0-15 as literal values or invalid inputs.
+    -   **Change:** Modified the `resolve_input` function to treat all `raw_input` values (except 2, 3, 5, 6, 7 for blanks, switches, and clock) as RAM addresses.
+    -   **Problem:** This modification fundamentally altered the emulator's intended behavior, where values 0 and 1 are meant to be literal 0 and 1, not `RAM[0]` and `RAM[1]`. This led to incorrect program execution and made it impossible to use literal values in instructions.
+
+2.  **Program Counter (PC) Simulation in `test_chip.sh`:**
+    -   **Goal:** To enable the `JUMP` instruction by simulating a program counter in the testing script, allowing for non-sequential instruction execution.
+    -   **Change:** The `test_chip.sh` script was modified to read the program counter from `ram_output_address.txt`, select the next instruction based on this PC, and then feed only that instruction to the emulator.
+    -   **Problem:** The HDLb0 emulator is designed to execute all instructions in a given program file sequentially in a single clock cycle. It does not have an internal program counter or a mechanism to handle external control flow at the instruction level. Simulating a PC externally in the test script fundamentally misinterprets the emulator's architecture. The `JUMP` instruction, as envisioned in the RV-I design, is meant to be implemented *within* the RV-I CPU's HDLb0 program, not by modifying the emulator itself.
+
+### Why Reverted:
+
+These modifications were ultimately reverted to maintain the purity and original design philosophy of the HDLb0 emulator. The emulator is intended to be a simple, fixed-function hardware simulator. Complex control flow and CPU-like behavior (such as a program counter) are meant to be implemented *as programs* running on the emulator, using its basic NAND and pass-through capabilities.
+
+The original design of the `resolve_input` function, where values 0 and 1 are literals, is crucial for constructing basic logic. The emulator's sequential execution of all instructions in a file is a core feature that must be respected.
+
+By reverting these changes, we ensure that the HDLb0 emulator remains a stable and predictable platform, allowing us to focus on building the RV-I CPU as a program that adheres to the emulator's specifications, rather than trying to force the emulator to behave like a CPU itself. This approach aligns with the roadmap's goal of building the RV-I CPU *in* HDLb0.

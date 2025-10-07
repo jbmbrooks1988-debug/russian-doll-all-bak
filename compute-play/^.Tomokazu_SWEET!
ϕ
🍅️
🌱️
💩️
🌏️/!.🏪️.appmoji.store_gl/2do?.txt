@@ -1,0 +1,78 @@
+
+📳️
+if ur concerned about sprawl? make an "app manager gui";
+
+give all ur apps "icons" etc. make a new folder for it outside of emoji or w/e 
+📲️📱️v0 or w/e 
+
+even our website can be accessed via app. can we use some kind of dynamic linking? 
+u can have "binary : kvp , and only use the things intentionally. ie sp-franch/social/etc
+📳️
+only 2 things 2 do 
+
+
+0. mechs macrometa / micro etc
+
+1. distrobution infra- app face/store /crm  etc {jb.com?not readi imo w/e tho}
+
+
+2. rnd fun = rmmvmoji etc 
+
+b-b-but steampage/paypal/stripe no. do distro. onur own . then look @ that. ;)
+________________________________________
+
+
+
+
+
+
+
+
+Wall A (Concrete)|壁A（コンクリート）
+Wall B (Concrete, Dirty)|壁B（コンクリート・汚れ）
+Wall C (House)|壁C（現代住宅）
+Wall D (Metal)|壁D（金属）
+Wall E (Metal, Red Rust)|壁E（金属・赤錆）
+Wall F (Metal, Patina)|壁F（金属・緑青錆）
+Wall G (Barracks)|壁G（バラック）
+Wall H (Chinese)|壁H（中華風）
+Wall A (Concrete)|壁A（コンクリート）
+Wall B (Concrete, Dirty)|壁B（コンクリート・汚れ）
+Wall C (House)|壁C（現代住宅）
+Wall D (Metal)|壁D（金属）
+Wall E (Metal, Red Rust)|壁E（金属・赤錆）
+Wall F (Metal, Patina)|壁F（金属・緑青錆）
+Wall G (Barracks)|壁G（バラック）
+Wall H (Chinese)|壁H（中華風）
+Wall I (Factory)|壁I（工場）
+Wall J (Factory)|壁J（工場）
+Wall K (Building)|壁K（ビル）
+Wall L (Checkered)|壁L（市松）
+Interior Wall A (Pattern)|内装壁A（模様）
+Interior Wall B (Pattern)|内装壁B（模様）
+Interior Wall C (Pattern)|内装壁C（模様）
+Wall M (Brick)|壁M（レンガ)
+Wall I (Factory)|壁I（工場）
+Wall J (Factory)|壁J（工場）
+Wall K (Building)|壁K（ビル）
+Wall L (Checkered)|壁L（市松）
+Interior Wall A (Pattern)|内装壁A（模様）
+Interior Wall B (Pattern)|内装壁B（模様）
+Interior Wall C (Pattern)|内装壁C（模様）
+Wall M (Brick)|壁M（レンガ)
+Wall N (Wood)|壁N（木造）
+Wall O (Wood, Dirty)|壁O（木造・汚れ）
+Wall P (Artery)|壁P（動脈)
+Wall Q (In Body)|壁Q（体内)
+Wall R (Neon)|壁R（ネオン)
+Wall S (Wire Mesh)|壁S（金網）
+Wall T (Wire Mesh, Red Rust)|壁T（金網・赤錆）
+Wall U (Wire Mesh, Patina)|壁U（金網・緑青錆）
+Wall N (Wood)|壁N（木造）
+Wall O (Wood, Dirty)|壁O（木造・汚れ）
+Wall P (Artery)|壁P（動脈)
+Wall Q (In Body)|壁Q（体内)
+Wall R (Neon)|壁R（ネオン)
+Wall S (Wire Mesh)|壁S（金網）
+Wall T (Wire Mesh, Red Rust)|壁T（金網・赤錆）
+Wall U (Wire Mesh, Patina)|壁U（金網・緑青錆）

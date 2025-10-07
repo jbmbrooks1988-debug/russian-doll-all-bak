@@ -1,0 +1,32 @@
+📅️sept23
+>ignore dante. just add the options u want. "MINI" is already way better (i did saves)
+and if we ignore dante we can merge it into gl.vis . not that u need 2 but w/e
+(add those options on another line in temrinal 4 .cli .and add z layers. and 
+can still use dante player,just edit the player 2 use the new saves and w/e else 
+___________________________________
+
+1.merge paint with pre menu with out 2 player . make player work with our maps
+
+
+📅️
+📮️->23
+0.b4 that? make sure we have 'non emoji painting'(y? literally dosen't matter but will do in .txt 
+so may want uniformity
+📅️sept22:
+____________________________
+ currently emoji index (in emoji picker) has the first emoji      │
+│   from emojis.txt; actually its supposed be be "0" blank, and      │
+│   let users paint 'only colored block/tile' without emoji.         │
+│   can we fix this ( we dont need to use sub dirs, every            │
+│   relevant file is in main dir)
+🧸️theres some issues with saving a 'new project' (it doesnt' save ANYTHING ofc qwen can fix this...)
+🧸️
+📁️
++
+we want to save in ".txt" same way ".gl" saves, should be ez af. then we can have player load either.
+(and .txt player ) and can start doing events 
+📁️
+
+
+
+POST : bg color is now unused. use it for alpha-level. change naming if possible. 

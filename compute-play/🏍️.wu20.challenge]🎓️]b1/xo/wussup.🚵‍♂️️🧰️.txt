@@ -1,0 +1,37 @@
+
+ we should do option 23, as a new submenu module similiar to    
+🧰️🧰️🧰️🧰️🧰️🧰️🧰️🧰️🧰️🧰️🧰️🧰️🧰️
+i want to try to rewrite this ms-dos/x86 stock market simulator in 
+gcc c. 
+
+remember : its multiplayer choosing 5 players @ the start, can designate human or computer controls for each.
+
+start menu , choose name, length of game, and starting cash of players
+
+
+u dont have to rewrite it line for line, just the spirit of it. 
+mostly interbank trading, interest rates, taxes, stock trading, company formation , bank/insurance management, news ticker affecting prices, stock filter, financial statements etc. 
+we will start writing it in the cli , but can use opengl/glut for visualazations later.
+🧰️🧰️🧰️🧰️🧰️🧰️🧰️🧰️🧰️🧰️🧰️🧰️🤩️
+
+
+🚵‍♂️️🚵‍♂️️🚵‍♂️️🚵‍♂️️🚵‍♂️️🚵‍♂️️🚵‍♂️️🚵‍♂️️🚵‍♂️️🚵‍♂️️🚵‍♂️️🚵‍♂️️🚵‍♂️️🚵‍♂️️🚵‍♂️️🚵‍♂️️🚵‍♂️️🚵‍♂️️
+📅️aug10]2025
+📅️dec25]2024] 
+
+🎨️🤑️
+add option 2 start gov @ 1T 
+then let user do civ/risk stuff. 
+
+
+> hold "offical , on going aucctions 2 buy and sell , 
+deal memos and stuff in game, dont just "issue a loan/ buy M&A, also u can" but u knwo what i mean
+
+🌍️
+later we can evolve fromothing 2 cave ppl (buy planets / universes)
+
+and do sim earth / terraforming stuff ]DIRT
+
+quarks, fractal renders, minecraft. chem compound crAF.T.ING 🔍️
+🤑️
+🧰️🧰️🧰️🧰️🧰️🧰️🧰️🧰️🧰️🧰️🧰️🧰️🧰️

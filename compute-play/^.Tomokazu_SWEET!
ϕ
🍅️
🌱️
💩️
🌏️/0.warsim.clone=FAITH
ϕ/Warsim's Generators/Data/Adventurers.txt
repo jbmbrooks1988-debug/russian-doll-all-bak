@@ -1,0 +1,79 @@
+Pxy Hand of the Faithful.151.149.64.4.Pxy's Adventurers.4.120.2.0.    #####
+   #     #
+         #
+      #
+      #
+       
+      #
+.Celibate Evolved Greyhounds.0.Pxy's Adventurers are an adventurer group led by Pxy Hand of the Faithful, their origin is unknown but they are made up of 4 Celibate Evolved Greyhounds and are dedicated to enslaving as many people as possible
+.Tremella of the Hive.142.140.10.37.Rogue Squirrel Bandits.4.142.1.3.   (- - - - - - )  
+  (  =  =  =  =  ) 
+ (_____-   -______)
+     ( O   O )     
+     ( (---) )     
+     (~ ~~~ ~)     
+     (=======)     
+.Confused Wood Fungus Folk.0.Rogue Squirrel Bandits are an adventurer group led by Tremella of the Hive, their origin is unknown but they are made up of 37 Confused Wood Fungus Folk and are dedicated to enslaving as many people as possible
+.Polypore the Discourteous.140.140.10.41.Polypore's Band.4.46.1.3.   ( = = = = = =)  
+  (~~~~~~~~~~~~~~) 
+ (____ -- -- _____)
+     ((0) (o))     
+     ( -uuu- )     
+     (  ---  )     
+     (~ ~ ~ ~)     
+.Confused Wood Fungus Folk.0.Polypore's Band are an adventurer group led by Polypore the Discourteous, their origin is unknown but they are made up of 41 Confused Wood Fungus Folk and are dedicated to enslaving as many people as possible
+.Wormdrinker Deathadder.226.212.101.12.Watery Mercenaries.3.3062.2.4.     ___^^^___  
+    /   ___   \ 
+     )__#  __ | 
+     \   oo# /  
+      |VvvvV|   
+       \|#|/    
+.Noseless Gillghouls.0.Watery Mercenaries are an adventurer group led by Wormdrinker Deathadder, their origin is unknown but they are made up of 12 Noseless Gillghouls and are dedicated to stealing as much gold as possible
+.Cledwyn the Disgruntled Brawler.158.153.103.12.Towering Cult.4.32.2.8.   {xx(o)xx}  
+  { =  |  = } 
+  |  O   O  | 
+ @)==( n )  (@
+ {{{       }}}
+   \-\,,,/-/  
+    ))~+~((   
+.Men.0.Towering Cult are an adventurer group led by Cledwyn the Disgruntled Brawler, their origin is unknown but they are made up of 12 Men and are dedicated to enslaving as many people as possible
+.Ugramar the Lawbearer.321.295.123.8.Ugramar's Adventuring Company.3.3612.1.10.   #=##=##=#  
+  {)^__|__^(} 
+  / 0 \|/ 0 \ 
+ @)==(, ,)  (@
+  \,,,   ,,,/ 
+   {{ v-v }}  
+    {{{@}}}   
+.Grand Warlocks.0.Ugramar's Adventuring Company are an adventurer group led by Ugramar the Lawbearer, their origin is unknown but they are made up of 8 Grand Warlocks and are dedicated to stealing as much gold as possible
+.Xhe the Mentally-Ill.116.142.57.2.Haanden's Orangecloaks.1.3258.0.0.    #####
+   #     #
+         #
+      #
+      #
+       
+      #
+.Celibate Evolved Greyhounds.0.Haanden's Orangecloaks are an adventurer group led by Xhe the Mentally-Ill, their origin is unknown but they are made up of 2 Celibate Evolved Greyhounds and are dedicated to making as much gold as possible
+.Craterellus the Master of Arms.171.150.20.33.Craterellus's Band.2.38.2.3.   ( =  =  =  = )  
+  (  ~  ~  ~  ~  ) 
+ (____-=   =-_____)
+     ((0) (o))     
+     ( VuuuV )     
+     ( = = = )     
+     ( ~~ ~~ )     
+.Confused Wood Fungus Folk.0.Craterellus's Band are an adventurer group led by Craterellus the Master of Arms, their origin is unknown but they are made up of 33 Confused Wood Fungus Folk and are dedicated to killing as many living things as possible
+.Telvann the Shaman Adjutant.188.162.112.7.Distinguished Night Shieldwall.1.1455.0.8.  (===(x)===) 
+   / _ | _ \  
+  {(o)|||(0)} 
+ @   ), ,(---@
+ {/ / ___ \ \}
+   \-- ~ --/  
+    \\}|{_/   
+.Men.0.Distinguished Night Shieldwall are an adventurer group led by Telvann the Shaman Adjutant, their origin is unknown but they are made up of 7 Men and are dedicated to making as much gold as possible
+.Fleshrot the Beast-Eater.210.182.71.17.Permanent Pinkcloaks.2.98.0.4.     __,,,,,__  
+    /  _____  \ 
+    | ==   == | 
+     \  /oo\#/  
+      \UuuuU/   
+       \#__/    
+.Noseless Gillghouls.0.Permanent Pinkcloaks are an adventurer group led by Fleshrot the Beast-Eater, their origin is unknown but they are made up of 17 Noseless Gillghouls and are dedicated to killing as many living things as possible
+.

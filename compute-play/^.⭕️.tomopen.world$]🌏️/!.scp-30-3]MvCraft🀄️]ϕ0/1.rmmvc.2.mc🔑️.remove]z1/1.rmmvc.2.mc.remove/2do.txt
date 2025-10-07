@@ -1,0 +1,14 @@
+TODO LIST FOR MINECRAFT CLONE REFACTOR
+
+1. [COMPLETED] Analyze current codebase structure and understand the MVC architecture
+2. [COMPLETED] Create new game data structures in model_gl.c
+3. [COMPLETED] Achieve basic compilation with placeholder implementations
+4. [COMPLETED] Implement world generation (biomes and terrain) 
+5. [IN PROGRESS] Set player starting position and spawn system
+6. [PENDING] Implement player movement and physics
+7. [PENDING] Refactor controls to match Minecraft-style controls
+8. [PENDING] Implement turn-based game loop for clean game state updates
+9. [PENDING] Refactor 2D/3D rendering to work with block-based world
+10. [PENDING] Implement block placement and destruction mechanics
+11. [PENDING] Update UI to show inventory, health, and game stats
+12. [PENDING] Implement calendar-based events system

@@ -1,0 +1,33 @@
+
+✦ How to Compile and Run
+
+   1. Save the code: Save the code above into a file named tui_explorer.c.
+   2. Compile: Open a terminal and run the following command:
+
+   1     gcc -o tui_explorer tui_explorer.c
+   3. Run: Execute the compiled program:
+   1     ./tui_explorer
+
+  Keybindings
+
+   * Arrow Up/Down: Navigate the file explorer.
+   * Enter: Open the selected file in a new tab.
+   * Ctrl-B: Toggle the file explorer on and off.
+   * Ctrl-L/[': Switch to the previous tab.
+   * Ctrl-H/]: Switch to the next tab.
+   * Ctrl-W: Close the current tab.
+   * Ctrl-T: open terminal
+   * Ctrl-Q: Quit the application.
+
+  This program provides the core functionality you requested in a
+  minimal, single-file package that you can easily adapt for your other
+  projects.
+________________
+all of these work and are good reference.
+it starts getting more complicated , but also introduces bugs like
+
+"some emojis dont render, 
+mouse with terminal open doesn't work right... etc?"
+
+nontheless this is a great "wrapper" for ANY AND ALL PROGRAMS.c WE USE TBH.
+

@@ -1,0 +1,5 @@
+Trend type: Mean-Reverting
+Volatility (sigma): 0.2444
+AR order: 2
+AR coefficients: phi1=0.5134, phi2=-0.2272
+Target mean: 0.34

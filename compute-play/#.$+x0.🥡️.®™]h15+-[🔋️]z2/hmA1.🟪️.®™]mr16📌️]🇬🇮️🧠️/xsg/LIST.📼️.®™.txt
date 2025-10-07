@@ -1,0 +1,21 @@
+userhash ?
+symbol 🐩️🧠️
+color 1.0 1.0 1.0
+x 0
+y 7
+z 6
+active none
+range_x 3
+range_y 2
+range_z 0
+stamina -57
+turn 143
+cam_x 0
+cam_y 0
+cam_z 0
+cam_tx 0
+extra_0 0
+extra_1 0
+cursor_x 10
+cursor_y 1
+cursor_z -1

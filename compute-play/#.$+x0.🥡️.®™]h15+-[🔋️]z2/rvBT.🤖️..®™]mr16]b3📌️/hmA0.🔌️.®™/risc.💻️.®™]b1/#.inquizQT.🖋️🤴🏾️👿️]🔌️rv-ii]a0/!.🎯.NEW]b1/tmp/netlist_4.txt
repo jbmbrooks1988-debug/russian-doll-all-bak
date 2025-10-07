@@ -1,0 +1,1 @@
+./+x/nand.+x TMP_NOT_INST_0 TMP_NAND_1 REG0_1

@@ -1,0 +1,9 @@
+0000000000000011  # chip_location = 3 (xor)
+0000000000010000  # ram_output_address = 16
+0000000000000000  # input_a = 0
+0000000000000001  # input_b = 1
+
+0000000000000000  # chip_location = 0 (no logic)
+0000000000000000  # ram_output_address = 0 (to tape)
+0000000000000011  # input_a = blank
+0000000000010000  # input_b = RAM[16]

@@ -1,0 +1,90 @@
+FINANCIAL PROFILE FOR UNITED STATES GOVERNMENT (USG)
+====================================================
+FINANCIAL STATEMENT: U.S. GOVERNMENT (CONSOLIDATED)
+----------------------------------------------------
+(Amounts in billions of U.S. Dollars, except per capita and rate data)
+ASSETS:
+  Cash and Cash Equivalents:		876.4
+  Tax Receivables (Net):		321.1
+  Loans (Student, SBA, etc.):		1,420.3
+  Physical Assets (Land, Equipment):	1,102.8
+  Investments (Trust Funds):		4,320.5
+  ---------------------------------------------
+  Total Assets:				8,041.1
+  ---------------------------------------------
+LIABILITIES AND NET POSITION:
+  Public Debt Outstanding:		27,320.0
+  Intragovernmental Debt:		9,870.0
+  Pension & Benefits Payable:		7,100.0
+  Environmental & Legal Liabilities:	320.6
+  Accrued Interest Payable:		212.4
+  ---------------------------------------------
+  Total Liabilities:			44,823.0
+  ---------------------------------------------
+  Net Position (Net Worth):		(36,781.9)
+  =============================================
+FISCAL OPERATIONS (FY 2024):
+----------------------------
+  Total Revenue:			4,977.9
+    - Individual Income Tax:		4,085.5
+    - Corporate Income Tax:		534.9
+    - Payroll Taxes (Social Security):	357.5
+    - Other Revenue:			0.0
+  Net Cost of Operations:		7,402.9
+    - Social Security:			1,461.0
+    - Health (Medicaid, CHIP):		991.0
+    - Net Interest on Debt:		880.0
+    - Medicare:				874.0
+    - National Defense:			874.0
+    - Income Security:			671.0
+    - Other Spending:			1,651.9
+  Net Operating (Cost)/Revenue:		(2,425.0)
+  ---------------------------------------------
+NET POSITION:
+-------------
+  Beginning of Period:			(37,479.2)
+  Adjustments (Accounting Changes):	+20.4
+  Net Operating (Cost)/Revenue:		(2,425.0)
+  ---------------------------------------------
+  End of Period (Net Worth):		(39,883.8)
+  ---------------------------------------------
+VARIOUS FISCAL RATIOS:
+----------------------
+  Debt-to-GDP Ratio:			123.4%
+  Deficit-to-Spending Ratio:		32.6%
+  Interest-to-Revenue Ratio:		17.7%
+  Tax Revenue per Capita:		$14,980
+  Federal Spending per Capita:		$22,270
+  ---------------------------------------------
+*** CREDIT INFO: ***
+-------------------
+  Sovereign Credit Rating:		AA+
+  Benchmark 10-Year Yield:		4.21%
+  Effective Borrowing Rate:		3.87%
+  Debt Ceiling Limit:			$35,000.0B
+  Current Debt Level:			$37,190.0B
+  ---------------------------------------------
+VARIABLE SETTINGS (Changeable by controlling player):
+----------------------------------------------------
+  % Change in Defense Spending:		0%
+  % Change in Social Security:		0%
+  Tax Rate Adjustment (Bracket Shift):	0%
+  New Debt Issuance (Automatic):		YES (To Cover Deficit)
+  ---------------------------------------------
+MISCELLANEOUS INFO:
+-------------------
+  Government Type:			FEDERAL REPUBLIC
+  Fiscal Year End:			September 30
+  Next Budget Deadline:			October 1, 2025
+  Next Debt Ceiling Vote:		TBD
+  Controlled (and actively managed) by:	Player_Name
+  Wholly owned by:			Citizens of the United States
+  Inflation Rate (2024):			3.1%
+  Unemployment Rate (2024):		4.0%
+  GDP (Nominal, 2024):			$28.3T
+  ---------------------------------------------
+FOOTNOTE TO FINANCIAL STATEMENT:
+-------------------------------
+[1] This statement is consolidated and includes all federal agencies, trust funds, and federally sponsored enterprises. Intragovernmental transactions are eliminated.
+[2] "Net Position" is analogous to net worth or equity in corporate finance. A negative value indicates liabilities exceed assets.
+[3] Interest on debt is projected based on current yield curve and debt rollover schedule.

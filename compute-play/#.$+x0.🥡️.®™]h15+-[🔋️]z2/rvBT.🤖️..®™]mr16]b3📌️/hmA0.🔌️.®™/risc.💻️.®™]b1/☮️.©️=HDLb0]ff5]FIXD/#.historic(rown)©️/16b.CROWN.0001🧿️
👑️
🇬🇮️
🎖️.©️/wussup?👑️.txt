@@ -1,0 +1,24 @@
+
+🗓️
+
+👑️
+🌝️
+🎖️
+how did we get here so fast? look at the prompt (its NICEO) . make it "think while reading, 
+and catch obvious flubs 
+🎖️
+its a good start. show it prompt and current state of codebase. 
+(including out put if it doesn't run w/e nand code it gave u . 
+
+
+
+currently it will drop blank down 2 "tape" and do program comments... keep pushing it its dope. 
+
+its like halo but a tini bit doper. its halo tho. in a way it understands 
+(logic is abstracted away. its fucking perfect) and the clock already works, etc...⏰️
+(apperantly switches 1&2 already work 2 ... sicccccccccccc
+
+👑️
+🌝️
+
+🗓️

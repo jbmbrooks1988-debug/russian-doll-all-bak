@@ -1,0 +1,817 @@
+#LAB = 🥼️
+
+#resistor can go before all logic , if  "wires" are on "inputs"
+#it can choose wire with lower input 2 "Go thrU" 
+#this can let us make a "NOT" using "diodes" (or w/e) 
+#THAT , would be "COOL EMULATION OF PHY NOW" but not necsariy ofc .
+#🥼️
+
+
+#🍀️https://static.righto.com/images/8086-latch/inverter-diagram2.jpg
+#4State Transistor Small Signal Model Truth Table [cmos/nmos/pmos]= SAME NOT LOGIC	
+#|   a   |   b   |  out  |
+#|   0   |   0   |   0   |
+#|   0   |   1   |   0   |
+#|   1   |   0   |   0   |
+#⚡️Hi-Impedance
+#|   1   |   Z   |   Z   | 
+#|   0   |   Z   |   1   |
+
+#|   Z   |   1   |   Z   |
+#|   Z   |   0   |   1   | 
+#
+#|   1   |   1   |   Z   |
+#|   Z   |   Z   |   0   |
+#⚡️
+##🚬️Small Signal Cutoff
+#|   3   |   3   |   3   |
+#|   3   |   0   |   1   |
+#|   3   |   1   |   0   |
+#|   0   |   3   |   1   |  
+#|   1   |   3   |   0   |
+#|   3   |   Z   |   1   |                 	 
+#|   Z   |   3   |   1   |
+#_🚬️_)🚬️_)🚬️_)🚬️_)🚬️_)🚬️_)🚬️_)
+#🍀️
+
+
+
+#@++
+#|   a   |   b   |  out  |
+#|   0   |   0   |   1   |
+#|   0   |   1   |   1   |  # = high z out. 
+#|   1   |   0   |   1   |  # = GOOD 
+#|   1   |   1   |   0   |
+
+
+
+
+
+#❣️make sure u read the "TT"S write some have a on left, some on right ;) 
+#tristate buffer 74HC126(non-inverted) #X
+#  c a d
+#|0|1|1    Z & 1 = Z =zc0  =1
+#|0|0|0    Z & 0 = 1 = 1c0 =0 
+#|1|0|Z    Z & 0 = 1 = 1c1 =Z  
+#|1|1|Z	   Z & 1 = Z =zc1  =Z   
+
+##if it expected z in it would say on both sides ;)
+#tristate buffer 74HC125(inverted) #X
+#  c a d
+#|0|1|0
+#|1|1|1       < if was 00 would be Z...
+#|0|X|Z
+
+   #🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️
+    Modes of operation 	[DFF]
+        S 	R 	Q 	Q 	Fx on output
+4bidn 	0 	0 	1 	1 	4bidn (do not use)
+Set 	0 	1 	1 	0 	Set : 1
+Reset 	1 	0 	0 	1 	Set : 0 (clear)
+Hold 	1 	1 	Q 	Q 	Previous state (no change)
+      #🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️🔑️
+#___________________________________________________________________________
+🪃️🪃️🪃️🪃️🪃️🪃️🪃️🪃️
+kirchoffs voltage law =
+
+https://www.electronics-tutorials.ws/dccircuits/kirchhoffs-voltage-law.html
+Gustav Kirchhoff’s Voltage Law is the second of his fundamental laws we can use for circuit analysis. His voltage law states that for a closed loop series path the algebraic sum of all the voltages around any closed loop in a circuit is equal to zero. This is because a circuit loop is a closed conducting path so no energy is lost.
+🕹️🕹️🕹️
+xample game=
+https://www.khanacademy.org/science/physics/circuits-topic/circuits-resistance/a/ee-kirchhoffs-laws
+🕹️🕹️🕹️
+🪃️🪃️🪃️🪃️🪃️🪃️🪃️🪃️🪃️
+#🍀️🍀️🍀️🍀️🍀️🍀️🍀️🍀️🍀️🍀️🍀️🍀️🍀️🍀️
+#4 states of NPN/PNP  Transistor = c-colctr, b-base,e-emit, V-volt
+#NPN                              PNP 
+#Active = Ve < Vb < Vc		|Reverse
+#Saturation = Ve < Vb > Vc	|Cutoff
+#Cutoff = Ve > Vb < Vc		|Saturation
+#Reverser = Ve > Vb  > Vc	|Active
+#🍀️🍀️🍀️🍀️🍀️
+#🍤️
+
+#🍤️
+#🌈️🌊️
+🟩️
+🟩️R = (How hard is it for current to flow)
+🟨️🟥️=(E^2/P)🟨️🟦️=(E/I)🟥️🟦️=(P/I^2)
+🟩️
+🟦️
+🟦️I = (How much current is flowing)
+🟩️🟨️=(E/R)🟥️🟩️=(√{P/R})🟥️🟨️=(P/E)
+🟦️
+🟥️
+🟥️P = (How much power is being produced)
+🟦️🟩️=(I^2*R)🟨️🟦️=(E*I)🟨️🟩️=(E^2/R)
+🟥️
+🟨️
+🟨️E = (How strong is the flow)
+🟦️🟩️=(I*R)🟥️🟩️=(√{P*R})🟥️🟦️=(P/I)
+🟨️
+#🌈️🌊️
+
+
+⚠️OHMS LAW PYRAMID⚠️
+V|I*R
+V=Voltage (in volts)
+I=Current (in Amps)
+R= REsistance (in ohms)
+IR = is I*R (V=IR)
++
+P=I*V 
+I=P/V
+V=P/I
+-
+⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
+
+💤️💤️💤️💤️💤️💤️💤️💤️💤️💤️💤️💤️💤️💤️
+In electronics, high impedance means that a point in a circuit (a node) allows a relatively small amount of current through, per unit of applied voltage at that point.
+💤️💤️💤️💤️💤️💤️💤️💤️💤️💤️💤️💤️💤️💤️
+
+#@++
+#|   a   |   b   |  out  |
+#|   0   |   0   |   1   |
+#|   0   |   1   |   1   |  # = high z out. 
+#|   1   |   0   |   1   |  # = GOOD 
+#|   1   |   1   |   0   |
+
+
+#&++
+#|   a   |   b   |  out  |
+#|   0   |   0   |   0   |
+#|   0   |   1   |   0   |  # = high z out. 
+#|   1   |   0   |   0   |  # = GOOD 
+#|   1   |   1   |   1   |
+
+#o|++
+#|   a   |   b   |  out  |
+#|   0   |   0   |   0   |
+#|   0   |   1   |   1   |  # = high z out. 
+#|   1   |   0   |   1   |  # = GOOD 
+#|   1   |   1   |   1   |
+
+#_______________________________________________
+#3@ = https://www.electronics-tutorials.ws/logic/logic_5.html
+#C 	B 	A 	Q
+#0 	0 	0 	1
+#0 	0 	1 	1
+#0 	1 	0 	1
+#0 	1 	1 	1
+#1 	0 	0 	1
+#1 	0 	1 	1
+#1 	1 	0 	1
+#1 	1 	1 	0
+#_______________________________________________
+
+
+
+_________________NEARKRUFT_____________
+ # Or
+   #is gonna need 6|'s either @or& ;)
+   #i tried other combos closet was a10 b10 ab 00=z
+   #AND THATS OK. its just an emu, it was never a phy modlr.
+   #its still smal sig / kerchovs "spirit" 
+   #if u dont like it use "nunqs"
+   #maybe u should
+    #actually u dont need 6  its 2nots and nand = 4 u win.
+    #btw and isn't 2ac either but u wer chillin.
+    
+    
+    i wish i would explained 4 dummies 
+"hey this works like kirchov / calculator " not like
+Phy-  example : 2 apples - 1 . doesn't give u a freaking 3d apple=froma  calculator... 
+#ofc u cant make w/e wonky circuit u made phy 
+#but thats not how kirchovs works either.?> reduces...
+#and pnr is no problem BUT i think u should use nand
+instead of bunch of "HI-z's" if ur planning on making 
+PNR later. 
+
+(btw vhdl lets u use resistors/caps/ diodes etc, 
+even tho "kerchov renders them Unecssary and over complex"
+we just have u reduce ur design first , it keeps out redundancy and theoretically PNR would do that 4 u ) 
+(if we ever had a "standing wire" we would auto-cap it, 
+Which is another reason why reusing/threading wires is GOOD)
+#!
+!i would probably use "TX" still over "NAND" 2 PNR"
+cuz at least u can give ur "PNR" heads up not 2 make
+a full nand if u can use less "TX"s right? 
+thats the bigboi move imo...
+👨🏽‍🚀️let pnr use lowest lcd 2 figure it out itself <3
+#!
+https://edurev.in/question/576480/The-transistor-configuration-which-provides-highest-output-impedance-is-a-Common-Baseb-Common-Emitte
+
+>HOW DOES VHDL/VERILOG /QUARTUS HANDLE IT? 
+>does it give u an "hot chip?"
+Create Tri-State Buffer in VHDL and Verilog
+https://nandland.com › create-tri-state-buffer-in-vhdl-a...
+Jun 30, 2022 — Tri-State buffers are able to be in one of three states: Logic 0, Logic 1, and Z (high impedance). Their use allows for multiple drivers to ...
+
+https://support.xilinx.com › question › can-someone-e...
+Feb 10, 2022 — Tristate output buffer only exists at the chip IO and there are no internal tristates in Xilinx FPGAs. So all tristate has to be converted to 2 wire interface ( ...
+#zzzzzzzzzzzzz
+
+https://edurev.in/question/576480/The-transistor-configuration-which-provides-highest-output-impedance-is-a-Common-Baseb-Common-Emitte
+
+
+Most Upvoted Answer
+The transistor configuration which provides highest output impedance = CC
+
+The three basic transistor configurations are common base (CB), common emitter (CE), and common collector (CC). Each configuration has its own characteristics and advantages, but when it comes to output impedance, the common base configuration provides the highest output impedance.
+
+Reasons why common base configuration provides highest output impedance:
+
+1. Current gain is low: In common base configuration, the input signal is applied to the emitter and the output is taken from the collector. The base is common to both input and output circuits. The current gain in this configuration is low due to the fact that the base current is small compared to the emitter current. As a result, the output impedance is high.
+
+2. Voltage gain is high: In common base configuration, the voltage gain is high due to the fact that the input impedance is low and the output impedance is high. This makes it suitable for impedance matching applications.
+
+3. Low power output: In common base configuration, the power output is low due to the fact that the collector current is small compared to the emitter current. This makes it suitable for high-frequency applications where low power is required.
+
+Conclusion:
+In conclusion, the common base configuration provides the highest output impedance due to its low current gain, high voltage gain, and low power output. This makes it suitable for applications where high input impedance and low output impedance are required.
+#zzzzzzzzzzzzz
+
+https://fpgaer.tech/?p=253
+
+
+
+______________KAV_
+#👨🏽‍🚀️
+>y i dont use "low z?(lo z lo-z " (its not in teh std.../hard) so yea. y use something no one uses?
+>after all its not a phy sim <3 
+https://en.wikipedia.org/wiki/IEEE_1164
+
+'U' 	uninitialized
+'X' 	strong drive, unknown logic value
+'0' 	strong drive, logic zero
+'1' 	strong drive, logic one
+'Z' 	high impedance
+'W' 	weak drive, unknown logic value
+'L' 	weak drive, logic zero
+'H' 	weak drive, logic one
+'-' 	don't care
+
+
+"
+The IEEE 1164 standard (Multivalue Logic System for VHDL Model Interoperability) is a technical standard published by the IEEE in 1993. It describes the definitions of logic values to be used in electronic design automation, for the VHDL hardware description language.[2]
+    'Z' literal to make tri-state buffer logic easy"
+
+
+IEEE is a not-for-profit organization, incorporated in the state of New York on 16 March 1896. IEEE qualifies as a tax-exempt organization as described under US Internal Revenue Code Section 501(c)(3), 
+
+can essentially ignore underneath...
+
+#🐡️>CAV . see low-z being used somehow in (AS6C1008 128K X 8 BIT LOW POWER CMOS SRAM)
+https://www.alliancememory.com/wp-content/uploads/pdf/AS6C1008feb2007.pdf
+
+"
+AC ELECTRICAL CHARACTERISTICS
+(1) READ CYCLE
+AS6C1008-55PARAMETER SYM.
+MIN. MAX.
+UNIT
+Read Cycle Time tRC 55 - ns
+Address Access Time tAA - 55 ns
+Chip Enable Access Time tACE - 55 ns
+Output Enable Access Time tOE - 30 ns
+Chip Enable to Output in Low-Z tCLZ* 10 - ns
+Output Enable to Output in Low-Z tOLZ* 5 - ns
+Chip Disable to Output in High-Z t CHZ* - 20 ns
+Output Disable to Output in High-Z tOHZ* - 20 ns
+Output Hold from Addre(...)
+"
+
+#🦈️
+https://www.farnell.com/datasheets/92297.pdf
+The IDT71024 is a 1,048,576-bit high-speed static RAM organized as 
+128K x 8.
+[this is a similiar module, it aslo mentions "Low-z" yet it has a "truth table" which only includes "HI-Z"... ]
+
+
+-------------------------------------
+Inputs
+I/O FunctionWE CS1 CS 2 OE
+X H X X High-Z Deselected – Standby (I SB)
+X VHC (3) X X High-Z Deselected – Standby (I SB1 )
+X X L X High-Z Deselected – Standby (I SB)
+X X V LC (3) X High-Z Deselected – Standby (I SB1 )
+H L H H High-Z Outputs Disabled
+H L H L DATA OUT Read Data
+L L H X DATA IN Write Data
+---------------------
+👩🏻‍🚀️
+🦞️🦞️🦞️🦞️🦞️🦞️🦞️🦞️🦞️🦞️
+https://www.digchip.com/datasheets/parts/datasheet/409/KM416S1020-pdf.php
+[samsung nand-flash 512k dram ]
+(also references a low-z in relation 2 "ac characteristics"
+(seeing as u will be making one of these asap . im sure u will find out
+ur gonna be emulating it but it would be cool 2 get a "phy one"
+🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️
+but "M8" u should have (x86)IO first 	[THINK ABOUT IT]
+💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️
+ie : JUST GET THE EMULATED MICROCHIPS MADE STOP TALKING ABOUT DIODES & LOW Z TBH
+(until/unless u need THAT 2 make THAT)
+💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️💯️
+🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️🛸️
+🦞️🦞️🦞️🦞️🦞️🦞️🦞️🦞️🦞️🦞️🦞️🦞️🦞️
+👩‍🚀️
+[i think u will be aight, till phy, but hey make the chip (🐭️MINIMAL64) and see if u at that point need 2 modify ur model.]
+w/e make it asap idgaf.
+
+yea,,. all the data sheets use "HI-z" for truth table, and are just using "lo-z" 2 describe "electrical characteristics"
+so i really think u ougta be just fine 
+(ive NEVER seen low-z on a truth table INCLUDING HERE, i see hi-z all the time INCLUDING HERE!) 
+👩‍🚀️
+#🦈️
+#🐡️
+
+#👨🏽‍🚀️
+#🐟️🐟️🐟️🐟️🐟️🐟️🐟️🐟️🐟️🐟️🐟️
+#🐟️wanna have another look at "4state bjt npn truth table?" for PNR-
+#🐟️https://www.circuitbread.com/tutorials/different-regions-of-bjt-operation 
+#m8 read this is will reveal much ...
+
+#(showing 5/6 rgns=states?)y is reverse active not on here? [dont assume shit just read the paper pls]
+#https://www.theengineeringprojects.com/2021/08/bjt-definition-symbol-working-characteristics-types-applications.html
+
+#4 =https://images.theengineeringprojects.com/image/webp/2021/06/Working-Modes-of-a-Bipolar-Junction-Transistor.png.webp?ssl=1
+
+#🧸️i have heard of "tx's" made of diodes (is this possible for us? ) (sort this pre "LI" 
+#DIODE = [(->|-)]
+#http://vlsi-design-engineers.blogspot.com/2015/07/bjt-based-logic-gates.html
+
+#🧨️
+#I MADE DIODE TRANSISTOR IN "falstad(F+)" ONLY DIFF IS COLLECTOR WILL GIVE "3" INSTEAD OF "0" 
+
+#and u have 2 put the wire in between the 2 diodes (like a capacitor) u cant just connect them 
+#or it will flow always
+
+#it occurs to me that if u wanted "EVNE MORE ACCURATE BEHAVIOR" u could ad things like
+#"state of "GROUND" *to ur truth table states (ie 0-4?) (i dont recommend u do these things tho)  
+#OR is "ground " more of an "FX" that u might add along with "DIODE" ? (we leave resis/cap out still...)
+#ive not actually needed a ground 2 throw current thru... (complete a circuit?F+) wussup wit dat? 
+
+
+example 
+🐐️🦍️= GO FOR IT w/e 
+diode = 12 	0000 1100 
+ground= 13  	0000 1101 	
+
+diode example = 
+
+0000 1100 0000 1100 + 0000 0000, 00000001  (0,1)returns 1 (&|2) , (sym) 
+0000 1100 0000 1100 + 0000 0011, 00000001  (3,1)returns 3? (sym) (implying grounded
+
+ground example = 
+0000 1101 0000 1100 0001 + X , X = 3 (x,x)returns 3 
+
+#CAN WE MIRROR FX OF TRANSISTOR (somewhat not perfect btw) using this? 
+=
+
+#ASYM DIODE = REAL
+	B 	A	D 
+#|   0   |   0   |   0   | 
+#|   0   |   1   |   1   | 
+#|   1   |   0   |   0   | 
+#|   1   |   1   |   1   | 
+
+#if u leave it like this and do "NUNQ PRE " thats will "DO IT"
+#and is easy so is or
+#not is the real challenge
+
+#u should ship diode with "64"(maybe cascadding modem as well) 
+
+
+#🚭️#🚭️#🚭️#🚭️#🚭️#🚭️#🚭️#🚭️#🚭️#🚭️#🚭️#🚭️
+##REAL DIODE IS NOT SYMETRIC IRL ! 
+#SO VV THAT IS DUMB
+
+#DIODE# (this is NOT set in stone...i think 0 , may return 0's (like 3 is doing)
+#DIODE# (with 1&2 returning 1(not 2 ) maybe tho (2 = weak signal...)
+(nvm4tx 11=2 orw/e its the only thing that allows 3sv 2 work ! ) 
+#|   a   |   b   |  out  |
+#|   0   |   0   |   0   | 
+#|   0   |   1   |   1   | 
+#|   0   |   2   |   2   | 
+#|   0   |   3   |   3   | 
+#|   1   |   0	 |   1   | 
+#|   1   |   1	 |   1   | 
+#|   1   |   2	 |   2   | 
+#|   1   |   3	 |   3   | 
+#|   0   |   2   |   2   | 
+#|   2   |   0	 |   2   | 
+#|   2   |   1   |   2   | 
+#|   2   |   2	 |   2   | 
+#|   2   |   3	 |   3   | 
+#|   0   |   3   |   3   | 
+#|   3   |   0	 |   3   | 
+#|   3   |   1   |   3   | 
+#|   3   |   2	 |   3   | 
+#|   3   |   3	 |   3   | 
+#🚭️#🚭️#🚭️#🚭️#🚭️#🚭️#🚭️#🚭️#🚭️#🚭️#🚭️
+#GROUND
+#|   X   |   X   |   3   | <could just use this since it DOESNT MATTER AT ALL
+############################# < V im not sure that thats true... (unless were tryign 2 make moreacc tx...?) ^ this first..
+#(OR V This actually makes more sense 4 ur "FX" 
+#|   3   |   3   |   3   | 
+
+#| X-3   | X-3   |   0   | (so otherwise readout "0" (hot ground/lo)
+
+#option - u could optionally tweak this , since it doesnt' "matter" at ALL...
+#|   3   | X-3   |   0|3?   | 
+#| X-3   |   3   |   0|3?   | 
+
+#________________________________
+OP AMP = 
+
+#or maybe it makes the thing go to "hi impedance? or come down from it? 
+#if u can make an "OP AMP WORK" ur resistor is working
+#theres also another testor of resistors seemingly acting like a switch but i dont know it off top
+
+#op amp = if + = 1 & - =0  = 1 if -=1 +=0 = 0 
+#________________________
+
+#these are cute [becase no truth tables exist for them...]
+# but i have a feelling a "PNR tape out isn't gonna use EITHER of these..."
+#especially with the facts that DIODE Tx is diff than "TX=TT" 
+
+#once again i would be more concerned with how u are gonna mirror 10vs11 behvior in "PNR" for "BJTx"
+#but the 2 arn;t related...i wouldnt' clutter ur schematics/src.s [KISS] but w/e it can sit here for now
+
+#DOESN"T MATTER? = actually everything "TX" related is "assuming unique grounding"
+#so if u made diode+ground deliver "TX" like behavior thats cool.. but
+#they dont even behave the same in falstead so ... u cant use them for same things
+#or can u , since we said "HOT GROUND" can be 0? 
+
+#btw these are voltages were talkinga bout..
+
+#morale of the story? = its probably best(most responsible) 2 qiss use "NUNQ" 
+#till u can vet "THIS STUFF" with "UR OWN PNR SCHEME" 
+#especially since having the "tx's work like that (THO THEY WILL)
+#would require some interesting scheme of "grounding" that we haven't thot thru...
+#+ that hi-impedance is weird if u haven't stress tested it with PHYSICAL CHIPS...
+#add it tho. w/e for "BR-sake" but u dont have 2 translate it 2 new lang etc w/e\
+#unless u make an "unvetted"chip that needs it.
+
+#i wouldn't go so far as to say this is "BAD" its very GOOD' its a mathmatical model of physical events 
+hell, they are "REAL/SYMETRIC" truth tables (ofc they include more than 0/1 but so does 3SV...
+(and there are "many other types of transistors"
+, i just think its dangerous 2 expect 2  map (safely) back 2 phy w/o 
+extensively proving that......
+i think it may or maynot be meaningful and as of now its "OVERKILL"
+
+#b4 u even do this (will be ez ) 
+#u need 2 finish modem/ save state
+#🐐️🦍️🐐️🦍️🐐️🦍️🐐️🦍️🐐️🦍️🐐️🦍️🐐️🦍️🐐️🦍️🐐️🦍️🐐️🦍️
+#🧨️
+
+#REALITY = "MODERN CPUS ARE DESIGNED USING "MOSFETS" (not bjt's...)
+#even "TRANOR/MYNOR" is using "MOSFETS" 
+https://hackaday.com/2021/05/19/thousands-of-discrete-mosfets-make-up-this-compact-cpu-less-computer/
+
+#do they use "n-type? p-type? or both"? 
+
+#ur using "npn" which corresponds 2 "NCHANNEL" 
+
+#HOWEVER it seems that they probably use "CMOS" 
+#(also the nmos "Not" i made in "F+" didn't even work!? 
+#falstad DOESNT EVEN SIMULATE "CMOS"! 
+#🚨️
+#doesn't matter according 2 "KEN SHIRIFF" they use "NMOS/PMOS" configureations * 
+#🚨️
+#7400chips are "TTL" meaning they use "BJT" 
+
+#morale, unless ur planning on "TAPING OUT" (were not until we have phy sim)
+#i think ur best using "NUNQ" gates , i really wouldn't worry about diode /ground
+#even "CMOS" is gonna require "ground-routing" so just wait) 
+
+#obviously were "probably gonna tape with "CMOS but tbh who knows its probably up 2 u
+#but lets assume we know nothing and its someone elses machine...
+
+
+#especially if they dont stop just assualting me during work , who cares. 
+#just do nunq stuff. we can do PNR much later.
+
+#🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️
+#advanced research ? 
+#🚓️
+*
+https://www.righto.com/2021/03/reverse-engineering-standard-cell-logic.html
+#🚔️🚨️
+#📛️👮🏼‍♂️️
+#🍀️
+https://www.oreilly.com/library/view/introduction-to-digital/9780470900550/chap5-sec004.html
+based on "THIS" it almost looks like "BJT" AND "NMOS" both can make "NOT" [(F+) didn't show this... ]
+but if thats the case, ur good to go nothing changes and u dont need 2 make "NMOS/PMOS" cuz nmos is enough...
+
+#however the deal is that "Nmos & pmos (OR NPN / PNP) give "UPSIDEDOWN (not necessarily inverted) 
+#why the hell would u tape out 2 diff types of "TRANSISTOR designs tho? if u could've used 1 are they trying 2 make 
+#their lives more difficult 
+#if THIS RESEARCH "OREILY" is correct  , then this is something u shoudl absolutely just worry about at "3dPNR"  stage
+IE: dont add more TX" cuz "BJTX is probably CMOS ALSO!(fx wise)  " < wish we wouldhave put that on paper.... 
+(but u know ppl act a fool and we were running low on time) 
+
+*with these discrepancies and so much at stake u should probalby just order some "CMOS-NMOS" transistors soon...
+
+#🍀️
+
+#🚓️
+
+#🐡️
+https://www.quora.com/Why-is-PMOS-good-to-pass-logic-1-and-NMOS-is-good-to-pass-logic-0
+
+is showing a NMOS truth table (asym) with "0,0 = hiz" isn't that crazy??? (and this is hte ONLY Tx TT ive EVER SEEN(incomplete (no hi-z in...)
+
+#but its implying that 0+0 is "dropoff " 
+(like cutoff < also that clown may not know anything... cuz 3sv gives 1,1=z)(only inverted(ie NOTTED) WOULD give 0,0 = Z
+
+#NMOS 
+#|   a   |   b   |  cout |
+#|   0   |   0   |   2   |
+#|   0   |   1   |   2   | 
+#|   1   |   0   |   0   | != assume a=1 always
+#|   1   |   1   |   1   | != assume a=1 always
+#0,0 = hi-z?! (would pmos be 1,1= hiz?  ) (3sv inverted works like "THAT" ... 
+
+#
+#❗️
+#tristate buffer 74HC126(non-inverted) #X
+#  c a d
+#|0|1|1    Z & 1 = Z =zc0  =1
+#|0|0|0    Z & 0 = 1 = 1c0 =0 
+#|1|0|Z    Z & 0 = 1 = 1c1 =Z  
+#|1|1|Z	   Z & 1 = Z =zc1  =Z   
+
+##if it expected z in it would say on both sides ;)
+#tristate buffer 74HC125(inverted) #X
+#  c a d
+#|0|1|0
+#|1|1|1       < if was 00 would be Z...
+#|0|X|Z
+#
+#🐡️
+#🦭️🦭️🦭️🦭️🦭️🦭️🦭️🦭️🦭️CMOS/NMOS ATTEMPT (based on  🦭️🦭️🦭️🦭️🦭️🦭️🦭️🦭️🦭️🦭️🦭️🦭️🦭️🦭️🦭️
+#i was thinking of "hi-z 2 be "2 strong of a signal...but that guy is implying its "2 weak of one" (so u would reverse things
+#4State BJT Transistor Small Signal Model Truth Table	
+#|   a   |   b   |  out  |
+#|   0   |   0   |   2   |  #🚼️ 
+#|   0   |   1   |   2   |  #🚼️  #can be different? 
+#|   1   |   0   |   0   |
+#⚡️Hi-Impedance
+#|   1   |   Z   |   0   |  #🚼️ 
+#|   0   |   Z   |   2   |  #🚼️ 
+
+#|   Z   |   1   |   Z   |
+#|   Z   |   0   |   1   | 
+#
+#|   1   |   1   |   1   | #🚼️ 
+#|   Z   |   Z   |   0   |
+#⚡️
+##🚬️Small Signal Cutoff
+#|   3   |   3   |   3   |
+#|   3   |   0   |   1   |
+#|   3   |   1   |   0   |
+#|   0   |   3   |   1   |  
+#|   1   |   3   |   0   |
+#|   3   |   Z   |   3   |   #🚼️          	 
+#|   Z   |   3   |   3   |   #🚼️ 
+#_🚬️_)🚬️_)🚬️_)🚬️_)🚬️_)🚬️_)🚬️_)
+#🍀️
+
+
+#look inside of "3sv and inverted for the schematic" 
+
+#also i dont htink u should be "confidently modelling anything w/o PHYSICAL PROOF (especially when oriely and F+ disagree...)
+#save that for post bootstrap (<<<< WAY MORE IMPORTANT ) 3d  (otherwise ur a "crack head' if they phy force ignore m8 
+
+MORALE : dont do diode, do do ground .DONT DO THIS. lol . (according 2 oREILY and "QLU") ur done. 🍀️🔎️
+#do NUNQ for everything . cuz y not? but if u dont , im sure ur pnr can figure it out. after all none of this is "REAL" 
+
+
+
+#⚡️also seeing that theres a "LOW-z"  , kill me  https://rlctalk.com/what-is-high-impedance/
+⚡️
+🎤️
+https://www.sweetwater.com/insync/lo-z/
+As the letter Z is the commonly agreed upon abbreviation for impedance, then Lo-Z simply refers to “low impedance.” This refers to the input or output impedance of a device (in our cases an audio device).
+🎙️
+ Precisely what Lo-Z means, and how it is applied in the audio industry, is not entirely concrete.
+ 🎙️
+  In general, devices with impedances up through 600 ohms are said to be “low impedance,” while devices with impedances of several thousand ohms and up are considered “high impedance.”
+  🎤️
+⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️
+#🔌️
+High impedance in electronics refers to a point in a circuit (a node) that permits only a tiny amount of current to flow through it per unit of applied voltage there. 
+#🔌️
+Low impedance circuits have high voltage and low current, whereas high impedance circuits are the opposite.
+⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️⚡️
+#🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️🎟️
+#🎓️? we have bachelor in CS. its "JUL15"
+meaning we would have 15 days left. FUCK OFF.lmfao
+(it is wut it is...) 
+(u can always write a revision one day 
+but im sure youll have bigger fish 2 fry <3) 
+it served us well <3 
+#🎓️
+🤡️
+🕵‍♂️️
+https://atg.world/view-article/27093/transmission-gate-and-its-truth-table
+
+[this is where "HE" got that "SHIT" FROM 
+its not the truth table for a "CMOS" 
+its the truth table for N/Pmos's chained 2 gether 2 make a "TX GATE" aka , fuck off. 
+🕵‍♂️️
+forget that clown. 
+🤡️
+
+🌩️
+it seems u maybe using "inverted input tristate buffer" which is probably dumb af...and fucked up ur entire design. 
+https://www.electronics-lab.com/article/digital-buffer/
+u probably wanna model an "ACTIVE HIGH" tristate buffer ie : no inversions anywhere ..   = 
+
+#💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️
+#❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️
+#  c a d
+#|0|1|1    Z & 1 = Z =zc0  =1
+#|0|0|0    0 & 0 = 3 = 3c0 =0 
+#|1|0|Z    0 & 0 = 3 = 3c1 =Z  
+#|1|1|Z	   0 & 1 = 0 =zc1  =Z   
+
+#🚭️cant just "invert a or c either...(so how do we get this result if we wanted it? (could probably nand/or io w/e) #🚭️
+#😜️
+#also i think ur better off running ur "COMPUTER CALCULATOR " than trying 2 do it by hand in head at THAT point ;) 
+#😜️
+#tristate buffer 74HC125(inverted) #X 
+#  c a d  (invert c)
+#|0|1|0 = X 11=/=0 
+#|1|1|1 = 1 (01)           < if was 00 would be Z...
+#|0|1|Z = z (11)
+#|0|0|Z = z (10)
+#❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️
+#🥗️
+#74LS241 = ACTIVE HI "PURE" 3sv"
+#  c a d			#how did we get 2 "Z"#🥗️
+#|0|0|Z    Z & 0 = 0 = 0c0  =Z
+#|1|0|0    Z & 0 = 0 = 0c1 =0 >🚭️THESE 2 WONT LET THIS HAPPEN w/o ASYM , move on 🚭️
+#|0|1|Z    Z & 1 = 1 = 1c0 =Z >🚭️THESE 2 WONT LET THIS HAPPEN w/o ASYM , move on 🚭️
+#|1|1|1	   Z & 1 = 1 = 1c1  =1  
+#🥗️🚬️use smol sig if u need!
+# (wut if 126 is the only one that fits!? just our luck!)
+#i actually think it is , focus on how 2 get "PURE 3sv241" from wut u got imo fam
+(im gonna check 1 more time 4 if threes not , if so z SHOULD change...(yes 3's not)
+🥗️🚭️(THIS WONT HAPPEN (and 3 doesnt' Help) try 2 get "🍀️2 do "74LS241" is best u can hope
+🍀️ie : u got lucky <3 🎖️REALLY LUCKY IMO 🎖️
+
+Y did u get "LUCKY" ? (it was used in a practical design.. so *shrug* w/e eff off 
+🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️
+https://www.ti.com/product/CD74HCT126  = "TTY COMPATIBLE CMOS ;)" 
+🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️🇹🇴️
+#👨🏽‍🚀️
+#also pnr doesn't have 2 only use "NUNQ" it can look for ur "nand/and/or" "PATTERNS"
+they will always be the same (this is bjt or nmos. not a big dif in fx 4 pnr or oriely..)
+i think F+ and oriely are both righttbh and idont think diode/gnd are QISS do modem pls.
+
+#👨🏽‍🚀️
+########################## ⁉️cant u get "PURE 3sv241" if u needed? ⁉️
+
+#🥗️dont forget 
+#🍀️
+#4State BJT Transistor Small Signal Model Truth Table	
+#|   a   |   b   |  out  |
+#|   0   |   0   |   0   |
+#|   0   |   1   |   0   |
+#|   1   |   0   |   0   |
+#⚡️Hi-Impedance
+#|   1   |   Z   |   Z   | 
+#|   0   |   Z   |   1   |
+
+#|   Z   |   1   |   Z   |
+#|   Z   |   0   |   1   | 
+#
+#|   1   |   1   |   Z   |
+#|   Z   |   Z   |   0   |
+#⚡️
+##🚬️Small Signal Cutoff
+#|   3   |   3   |   3   |
+#|   3   |   0   |   1   |
+#|   3   |   1   |   0   |
+#|   0   |   3   |   1   |  
+#|   1   |   3   |   0   |
+#|   3   |   Z   |   1   |                 	 
+#|   Z   |   3   |   1   |
+#_🚬️_)🚬️_)🚬️_)🚬️_)🚬️_)🚬️_)🚬️_)
+#_🚬️_)🚬️_)🚬️_)🚬️_)🚬️_)🚬️_)🚬️_)
+
+OLD?
+
+#🍀️
+#4State BJT Transistor Small Signal Model Truth Table	
+#|   a   |   b   |  out  |
+#|   0   |   0   |   0   |
+#|   0   |   1   |   0   |
+#|   1   |   0   |   0   |
+#⚡️Hi-Impedance
+#|   1   |   Z   |   Z   | 
+#|   0   |   Z   |   1   |
+
+#|   Z   |   1   |   Z   |
+#|   Z   |   0   |   1   | 
+#
+#|   1   |   1   |   Z   |
+#|   Z   |   Z   |   0   |
+#⚡️
+##🚬️Small Signal Cutoff
+#|   3   |   3   |   3   |
+#|   3   |   0   |   1   |
+#|   3   |   1   |   0   |
+#|   0   |   3   |   1   |  
+#|   1   |   3   |   0   |
+#|   3   |   Z   |   1   |                 	 
+#|   Z   |   3   |   1   |
+#_🚬️_)🚬️_)🚬️_)🚬️_)🚬️_)🚬️_)🚬️_)
+#🍀️
+
+#❣️make sure u read the "TT"S write some have a on left, some on right ;) 
+#tristate buffer 74HC126(non-inverted) #X (this is actually the 125 inverted. w/e tho the other one isn't gonna work?
+#❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️
+#  c a d
+#|0|1|1    Z & 1 = Z =zc0  =1
+#|0|0|0    Z & 0 = 1 = 1c0 =0 
+#|1|0|Z    Z & 0 = 1 = 1c1 =Z  
+#|1|1|Z	   Z & 1 = Z =zc1  =Z   
+
+#🚭️cant just "invert a or c either...(so how do we get this result if we wanted it? (could probably nand/or io w/e) #🚭️
+#tristate buffer 74HC125(inverted) #X 
+#  c a d  (invert c)
+#|0|1|0 = X 11=/=0 
+#|0|0|Z = z (10)
+#|1|0|Z = z (11)
+#|1|1|1 = 1 (01)         
+
+
+#❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️❣️
+
+#based on my experience, u basically want
+#transistor 2 act "very closely 2 "3sv
+
+#3 = low -negative loop 4= lower = cutoff w/e that doesn't matter...
+#the "not" stuff is probalby gonna stay the same as well 
+(AND IGNORE THAT CMOS STUFF ) 
+⁉️
+74LS241 is PURE ( we weren't looking at this cuz "DFPGA...)(used 125/126) 
+#but were probably gonna wanna make "DFPGA our own way based on knowledge of "LUTS"
+
+
+⁉️
+https://en.wikipedia.org/wiki/Very_Large_Scale_Integration
+Very large-scale integration (VLSI) is the process of creating an integrated circuit (IC) by combining millions or billions of MOS transistors onto a single chip
+#💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️
+#normalli i would say just use "NUNQ" 
+#but this seems kinda effed up...
+#is it fixable? probably definately lol
+🌩️
+🥬️
+imo maybe u can have ur "TXsym" 
+do 00-z style stuff instead 
+(and make a not gate on "3sv 2 invert it)
+(for a more informed representation of "hi-z" behavior as it pertains 2 binary...
+
+use nunq in the meantime...
+🥬️
+#🐟️🐟️🐟️🐟️🐟️🐟️🐟️🐟️🐟️🐟️
+
+TX HARD METAL RND 
+
+What is reverse active mode of a transistor?
+Transistors - SparkFun Learn
+Just as saturation is the opposite of cutoff, reverse active mode is the opposite of active mode. A transistor in reverse active mode conducts, even amplifies, but current flows in the opposite direction, from emitter to collector. The downside to reverse active mode is the β (βR in this case) is much smaller.
+
+
+[NOT 4 ? ]
+MOS transistors have three regions of operations- cutoff region, triode region, saturation region with each region having different applications.
+
+🪆️🪆️🪆️🪆️🪆️🪆️🪆️🪆️🪆️🪆️🪆️🪆️🪆️🪆️
+🪆️DOPING? cant u figure it out purely based on the behavior that expect? 
+it will be more work but maybe? )
+
+
+we dont have infinity i honestly think u should bootstrap 2 io investigation first..
+(thoyea i think its possible, 
+#🥜️🔩️🥜️🔩️🥜️🔩️🥜️🔩️🥜️🔩️🥜️🔩️
+just use nunq in meantime is Ultimately morale
+
+(even if u do "FIX BJT/CMOS" i bet u will learn stuff in future that u wanna change AGAIN ! 
+🥜️🔩️🥜️🔩️🥜️🔩️🥜️🔩️🥜️🔩️🥜️🔩️🥜️🔩️🥜️🔩️
+🪆️🪆️🪆️🪆️🪆️🪆️🪆️🪆️🪆️
+#⚠️
+MORALE OF THE STORY = DEADLINES =/= BEING RIGHT (be FUCKING CAREFUL!) 
+
+(dont try 2 model much more phy than "tx fix" pls...)
+[ignorance is bliss ;) ]
+#⚠️
+______________________KRUFT_____________
+
+
+
+
+

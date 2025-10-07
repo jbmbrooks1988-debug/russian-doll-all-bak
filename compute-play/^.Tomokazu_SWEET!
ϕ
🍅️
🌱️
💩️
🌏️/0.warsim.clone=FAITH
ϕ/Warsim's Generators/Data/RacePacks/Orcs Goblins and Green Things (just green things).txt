@@ -1,0 +1,19 @@
+Cthuul.2.0.0.4.50.5.Cthuul.99.Cthuul Master.249.Forgotten One.399.known as a race of squidmen from a place unseen by any but themselves
+Mutants.3.0.0.4.90.4.Mutant.50.Brute Mutant.120.Monstrous Mutant.180.known once as men the mutants were turned into wretched monsters by the gods
+Dryads.2.0.0.0.35.5.Dryad.100.Warrior Dryad.130.Dryad Champion.170.known as nymphs of the trees or of wood, they defend and inhabit woodlands to protect them from destruction at the hands of other races
+Draconians.1.0.0.0.95.5.Draconian.55.Draconian Guard.110.Draconian Champion.160.known to hold the power of dragons in their blood, though they are far more civil
+Orcs.2.0.0.6.105.4.Orc.60.Orcish Warrior.115.Orcish Champion.145.known for their brutish appearance and protruding tusks orcs are a powerful race of warriors
+Orks.2.0.0.4.90.4.Ork.61.Ork Reaver.119.Ork Reaver Lord.156.known for their brutish appearance and protruding tusks orks are known as a powerful but savage race of warriors
+Goblins.3.0.0.4.200.3.Goblin Tribal.40.Goblin Berserker.95.Goblin Warlord.125.known as mischeifious and often tribal peoples, goblins spread quickly and cause problems for all
+Orclings.2.0.0.6.145.3.Orcling.45.Orcling Warrior.95.Orcling Champion.130.known as cousins of orcs they are smaller and weaker but found in much greater quantity
+Lizardmen.2.0.0.6.105.3.Lizardman.52.Armored Lizardman.99.Lizardman Warrior.120.known as half-men half-lizard these creatures are aggressive and barely civilized
+Kobolds.3.0.0.6.110.3.Kobold.45.Kobold Warrior.91.Kobold Chief.130.known as goblin like creatures who live less tribally but are just as aggressive
+Ogres.2.0.0.6.15.2.Ogre.115.Ogre Brute.160.Ogre Champion.210.known as brutishly large usually cave dwelling creatures, ogres are aggressive and savage by nature
+Gogs.3.0.0.6.95.2.Gog.49.Gog Warrior.105.Gog Warlord.130.known as small goblin like creatures who shriek and shout as they fight, they are troublesome
+Magogs.3.0.0.6.95.2.Magog.51.Black Magog.110.Magog Underking.155.known as stronger cousins of gogs, they are small goblin like creatures who shriek and shout as they fight and cause as much trouble as possible
+Gremlins.3.0.0.6.150.1.Gremlin.36.Gremlin Guard.70.Gremlin Chief.110.known as mischievous sprites who cause all kinds of problems and faults for those they encounter, they are small and weak but great in number
+Implings.3.0.0.4.300.1.Impling.20.Battle Impling.60.Armored Impling.80.known to be cousins of imps they are very small in stature and weaker than pretty much anything else they tend to keep together in great number to survive
+Zombies.3.0.0.2.62.1.Zombie.54.Zombie Warrior.109.Zombie Lord.143.known as the living dead, zombies are mindless flesh eating monsters considered by all to be evil abominations
+Troglodytes.3.0.0.6.145.1.Troglodyte.39.Troglodyte Beast.99.Troglodyte Cavelord.139.known as cave-dwelling dark skinned beasts, completely feral and lost to time, troglodytes can be a worth foe
+Snotlings.3.0.0.6.190.2.Snotling.29.Snotling Warrior.60.Snotling Chief.104.known as orc and goblin like troublemakers who live among large packs and clans
+Skeeroks.2.0.0.2.200.2.Skeerok Hatchling.39.Skeerok.79.Skeerok Alpha.115.known as a race of three-eyed reptile humanoids, these creatures survive in small underground colonies and often hunt in large packs, know to destroy entire settlements with their raids

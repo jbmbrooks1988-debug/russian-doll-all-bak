@@ -1,0 +1,160 @@
+https://konklone.io/json/ 🏆️
+🎖️
+i need a fully functional json 2 csv file parser in gcc c. it must beable 2 parse any json no matter how complicated , and it must not include any external libraries, just pure c. (no structs, using "jagged array" / char matrix should be easier. make sure it really works 2 no errors or infinite loops.
+
+🎖️
+
+
+https://konklone.io/json/ 🏆️
+
+could you print the cosign after and store both in double wave[x][y] and print that? 
+
+
+need a simple program to parse most json and store results in jagged array as rows and columns . 
+
+print results as sanity check
+
+[rules : pure c (no json libraries, just recursive descent), no structs , must compile]
+
+
+
+
+
+
+**Example input JSON**
+
+Here's an example input JSON file `input.json`:
+```json
+{
+    "key1": "value1",
+    "key2": 42,
+    "key3": {
+        "subkey1": "subvalue1",
+        "subkey2": 21
+    }
+}
+```
+This should produce the following output when run with the `json2array` program:
+```text
+Jagged Array:
+key1: "value1"
+key2: 42
+key3: 
+  subkey1: "subvalue1"
+  subkey2: 21
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+🏆️
+we want to make a program in pure c (no external libs) , that can open and parse a file.json and create
+ char ***matrix[rows][cols]. (jagged array)
+  We'll use a
+recursive descent approach to parse the JSON input.
+Format = each row record or an entry, and each column represents a field or 
+attribute within that record. 
+
+printf  rows and cols size as sanity check
+[rules : pure c , no structs , must compile]
+
+
+file.json = " 
+{
+    "name": "Aleix Melon",
+    "id": "E00245",
+    "role": ["Dev", "DBA"],
+    "age": 23,
+    "doj": "11-12-2019",
+    "married": false,
+    "address": {
+        "street": "32, Laham St.",
+        "city": "Innsbruck",
+        "country": "Austria"
+    },
+    "referred-by": "E0012"
+}
+"
+🏆️
+i have a program that converts short.json into short.csv. 
+
+my question is "what data format would the data organized into in short.csv be called, technically?"
+🏆️
+we want to make a program in pure c (no external libs) , that can convert file.json to file.txt 
+matrix file , where each row represents a 
+record or an entry, and each column represents a field or 
+attribute within that record. 
+basically a jagged array or string matrix. seperated by spaces.
+
+print row and col size after parsing json , as a sanity check
+
+store all "tokens in their corresponding array row col position after counting rows and cols in json
+
+
+[rules : pure c , no structs , must compile]
+🏆️
+we want to make a program in pure c (no external libs) , that can convert json to csv 
+1.tabular csv with semicolon as delimiter
+2. flat file , where each row represents a 
+record or an entry, and each column represents a field or 
+attribute within that record.
+
+keep it simple
+
+[rules : pure c , no structs , must compile]
+
+3.must handle all anticipatable json structures , even and ESPECIALLY nested! go for the GOLD!
+
+To tackle this task, we'll need to implement a JSON parser
+from scratch, which is quite a feat in itself. We'll use a
+recursive descent approach to parse the JSON input.
+
+🏆️
+
+want to make a program in pure c , that can convert the following .json file format
+to the following .csv
+(remember, this is not the actual data , just example data. expect different formats and keep the parser flexible!)
+
+🏆️
+
+short.json = 
+"{
+	"query": {
+		"count": 2,
+		"created": "2016-10-07T16:03:37Z",
+		"lang": "en-US",
+		"results": {
+			"quote": [{
+				"symbol": "YHOO",
+				"Ask": "43.25",
+				"AverageDailyVolume": "11754200",
+				"DividendYield": null,
+				"PercentChange": "-0.98%"
+			}, {
+				"symbol": "GOOG",
+				"Ask": "771.5500",
+				"AverageDailyVolume": "1302160",
+				"Bid": "771.2000",
+				"DividendYield": null,
+				"PercentChange": "-0.7144%"
+			}]
+		}
+	}
+}"
+
+short.csv =
+"symbol;Ask;AverageDailyVolume;DividendYield;PercentChange;Bid
+YHOO;43.25;11754200;;-0.98%;
+GOOG;771.5500;1302160;;-0.7144%;771.2000"
+

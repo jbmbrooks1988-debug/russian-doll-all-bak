@@ -1,0 +1,219 @@
+
+
+
+🗓️📅️
+
+
+0. we want to push a bit more into player
+"starting position" + start plat?/text?2d/3d?+ar?
+
+start basics will be a long way
+and can prompt for data based games outside
+(and may even switch data struct 2 luts or w/e r&d)
+<also map positions arent really done>
+
+emoji tile picker modifcation
+!. one of the tiles (top-left =0,0) should always be empty so 'no emoji is selected' only color gets painted.
+(also we should show all emojis, 
+by using a scroll bar for picker
+(also want to show more colors this way as well
+
+1. tiles are weird long term. want ALL emojis +
+(need a thumb )
+
+🕸️🕸️🕸️🕸️🕸️🕸️🕸️🕸️🕸️🕸️🕸️🕸️🕸️
+
+🛑️
+thumb or nothing else can be added
+qwen gets confused. 
+we need a better more modular fraemwork for doing menus
+🛑️
+📅️
+
+
+🗓️
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+🏁️
+@ some point id like to make a "mvc function map"->
+in txt or even image that shows what fx connect 2 wut
+this is like post ship documentation tbh so just finish first
+🧚🏻️🏁️
+⏭️
+
+🧚🏻️
+map functionality should use a map_legend.txt 
+
+to store map index at creation and its name(incase changed by user) and event file;
+"map window" population is currently clunky and error prone (sometimes displaying items that aren't maps), but this will fix it once and for all.
+
+dont worry about backwards compatability. we will create new projects and discard the old ones.
+-------------
+
+then we can use the map_legend.txt for save/load event creation a
+
+(i got this from rmmv src code) 
+___________________________________
+ 🧚🏻️
+
+
+3. add events , start simple . text, movement. 2 see u need player.c
+
+<remember even "tactics/physics" are 'plugins">
+(ai ? 1d wsr integration? will do that will plugins after)
+(we will do ai sooner than u think tho.
+3d world levels ? 
+(we were always gonna break up big maps... we can 
+still do that using teleports or "auto teleports"
+4 maps that are "connected by coords or w/e things rmmv didnt do but coulda done.)
+📹️
+AR? can add whenever dont forget 2d is ar 2 tho...
+1d ar = computer vision. 
+(ar  is good 4 "demo/fund raise" but were actually 
+strategically not doing that til crm/ crypto swell, so w/e 
+its ez enuff 2 add when ur ready w/o worrying about breaking it 
+w/e just have AR on off button ,
+maybe we when get a better "HEADER MENU";
+
+i could add by hand from ref if i had 2 btw. 
+📹️
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+🤣️🤣️🤣️🤣️🤣️🤣️🤣️🤣️🤣️🤣️🤣️🤣️🤣️🤣️
+> we could save space just have occupied xyz. 
+it literaly does every tile or w/e 
+fix that
+>we never specified a format...🥴️
+it sux i cant read/write it, but w/e we just got into maps w/e
+-------------------
+coulda checked at save load but w/e . careful u dont break 
+featuers again :/ 
+
+
+btw ur talking about a "superfile"
+(events are seperate)
+
+but ushould beable to populate 🥡️♟️<- dir shape based on ]IDEAL🪅️
+
+
+i still want them in 2 diff files (color/emoji ) vs position
+(one is more of an "image" file even tho emoji.b-but we have emoji image in state.txt... for ease...
+
+i think we should actually keep it simpler tho 
+and use pointers or know locations tbh 
+cuz we have diff levels of abstractino (rmmv health vs full anat)
+🤣️🤣️🤣️🤣️🤣️🤣️🤣️🤣️🤣️🤣️🤣️🤣️🤣️🤣️
+how is it reading from map? 
+there doesnt even seem 2 be xyz coords in map
+yet it goes 2 the right place? 
+(the labels must not be right , but then ... how does it know colors?
+
+
+after that. can we do new projects? save? 
+
+if so lets do events(.c?) <a scratch-esq language ide >
+and "player.c"	<"the interpreter>
+
+
+----
+A language that executes code without needing a compiler is called an
+interpreted language. These languages use a program called an interpreter, which reads the source code line-by-line and executes each command directly.  ie :scripted? (.txt we do it all the time)
+----------------------------
+
+ I've located the load_game_state function in model_gl.c, which confirms
+  your suspicion.
+
+  Here's the breakdown:
+
+   1. File Reading: The function reads the map file line by line.
+   2. Data Parsing: It parses emoji_idx, fg_color_idx, bg_color_idx, and
+      layer from each line.
+   3. Position Calculation: This is the critical part. The X and Y
+      coordinates are not read from the file. Instead, the loader infers
+      them from the order of the data:
+       * A loaded_entries counter tracks the line number.
+       * The row (Y) is calculated with (loaded_entries % (rows * cols)) /
+          cols.
+       * The column (X) is (loaded_entries % (rows * cols)) % cols.
+       * The layer value from the file serves as the Z coordinate.
+
+  Conclusion:
+
+  You were right. The map file format is misleading. The X and Y
+  coordinates are implicit, derived from the data's order, while the layer
+   value provides the Z coordinate. This is a common space-saving
+  technique in simple game development, where a grid is assumed, and tiles
+   are listed sequentially.
+
+  Do you have any more questions?
+
+
+----------
+─────────────────────────────────────────────────────────────────╯
+
+✦ That's a sharp observation. There's no sorcery, but there is a key
+  detail in how the saving and loading process works together. The loader
+  doesn't skip unoccupied tiles; the save file includes them.
+
+  Here's the breakdown:
+
+   1. `save_game_state` Writes Everything: When a map is saved, the
+      save_game_state function iterates through every single tile of the
+      canvas—occupied or not. If a tile is empty, it writes a line to the
+      map file with an emoji_idx of -1.
+
+   2. `load_game_state` Reads Everything: The load_game_state function
+      reads the map file line by line, without any skipping logic. When it
+      encounters a line with an emoji_idx of -1, it places that "-1" into
+      the corresponding position in the canvas, effectively creating an
+      empty tile.
+
+  The illusion of skipping is created because the save file is a complete, 
+  sequential representation of the canvas, including all the empty spaces.
+  This is why map_2.txt is so large; it has a line for every single tile.
+
+
+  A more efficient method would be to save only the occupied tiles with
+  their explicit XYZ coordinates. However, the current implementation
+  favors simplicity by saving and loading the entire canvas state.
+
+
+
+

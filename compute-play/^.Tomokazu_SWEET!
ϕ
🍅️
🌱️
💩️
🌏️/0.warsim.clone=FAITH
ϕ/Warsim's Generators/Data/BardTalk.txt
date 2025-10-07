@@ -1,0 +1,50 @@
+999.0=UNIVERSAL
+999.1=BLACKMARKET GUILD
+999.2=MAIN WESTERN GUILD
+0.Broke another string on my lute today, I don't know what's going on
+0.Broke another lute string... I must be cursed
+0.I'm getting better at lute playing since joining this guild, who would've guessed
+0.I am trying every day to play faster
+0.I will be a great musician one day, I swear it
+0.I wasn't very confident in my musical ability but they have made me feel great here
+0.I learned a new trick with my lute earlier, I am so happy with it
+0.There are three kinds of lutes you know, Classic, Elven and Vampyric
+0.Vampyric lutes give me the creeps
+0.Elven lutes are so expensive, I'll stick with a standard lute thank you
+0.I swear my skill is lessening, must be cursed, I'm playing worse by the day
+0.I like goblin drums, they make me feel good
+0.Clickers are not true musicians, come on
+0.Have you ever heard the Blackmarket shanty singers, really good
+0.I am saving up for a better lute
+0.Wait... so there are actual vampires in the guild, VAM-PIRES, they literally survive by drinking human blood... where do they come from, how are they surviving, who vets these people! AM I THE ONLY ONE AROUND HERE WHO CARES ABOUT THE RULES!
+0.You should grab an instrument and have a go yourself
+0.I've been travelling around making music for years
+0.I'm going to train here for a while and then travel around playing music
+0.my goal is to become a famed travelling bard
+0.I want to play music in every corner of the world
+0.I am going to be the next great musician
+0.I will be a famous musician one day
+0.I am going to be the best musician in the land, watch me
+0.I am going to make a name for myself
+0.I will be known throughout the land as the best musician
+0.I am getting so good at this, I might even become a lute teacher one day
+1.Wulf is the greatest bard ever
+1.The blackmarket isn't so receptive to music as other places, too much evil here
+1.I'd love to be able to play in one of the taverns here, preferably the dragon's kneecap cause it's closer and not in a district full of darkness
+1.Ever heard Wulf Thorenson in the central district? the boy is an amazing musician
+1.Wulf Thorenson's a fraud, he can barely hold his lute but he's been buying a musicians elixir from the market stalls and has used it to enhance his ability, it's magic not skill!
+1.This guild is a smaller one but head to songwood in the west just beyond 
+1.This guild isn't as good as the main hall in Songwood
+1.Wulf Thorenson is the greatest musician in the land I would wager
+1.Welcome to the Musicians guild
+1.Welcome to our humble guildhall!
+2.I hear of this Wulf, supposedly the best musician alive? I'll believe it when I see it
+2.Welcome to the Musicians Guildhall, the hub of music
+2.We have another guild in the blackmarket too but this is our main hall
+2.Speak to the guildmaster if you have questions
+2.You should visit the songwood trees sometime, good place to clear your mind
+2.If you tip and treat bards well you will end up with a lot more of them coming to see you
+2.If you treat bards well more of them will visit your lands
+2.Only well reputed friends of the guild can go through that door over there
+2.Songwood is a fantastic place to be based
+2.I like it here in songwood, sometimes I head over to the great trees and listen to the birds sing

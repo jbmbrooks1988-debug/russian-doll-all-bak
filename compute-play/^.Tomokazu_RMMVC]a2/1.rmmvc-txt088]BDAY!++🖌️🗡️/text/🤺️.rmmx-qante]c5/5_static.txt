@@ -1,0 +1,18 @@
+[Map]
+Size: 5 5
+Row1: .P...
+Row2: .....
+Row3: .E...
+Row4: .....
+Row5: .....
+[Players]
+Player1, base_health=100, base_strength=10, multiplier=1.2, xp_factor=100
+[Enemies]
+Goblin, level=2, base_health=50, base_strength=5, multiplier=1.1, xp_reward=50
+[Items]
+Potion, type=potion, effect=heal 20
+Sword, type=weapon, effect=strength +5
+[Events]
+2 2, type=battle, param=Battle1
+[Battles]
+Battle1, enemies=Goblin, rewards=Potion

@@ -1,0 +1,16 @@
+userhash 1cln.🟩️.®™
+symbol 🟩️
+shape cube
+color 1.0 1.0 1.0
+x -2
+y 5
+z 0
+active none
+range_x 3
+range_y 2
+range_z 0
+stamina 0
+turn 31
+extra_0 0
+extra_1 0
+hunger 17

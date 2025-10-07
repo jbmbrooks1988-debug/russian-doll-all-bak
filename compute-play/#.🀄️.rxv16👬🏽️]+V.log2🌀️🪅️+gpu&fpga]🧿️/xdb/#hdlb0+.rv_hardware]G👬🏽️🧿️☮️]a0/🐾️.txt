@@ -1,0 +1,7 @@
+🐾️
+
+ smol_sig.+x = fine <3
+ 
+ 🧩️
+pressing enter should work same as step.(running another step of chip in emulator) also "r"run is supposed to run until "p" paused(as if user was auto pressing 's' step). ez enhancements to current functionality (dont break anything existing ofc) <3🐾️]done✅️
+🐾️

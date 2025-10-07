@@ -1,0 +1,40 @@
+BUG REPORT: Submenu rendering issue
+
+PROBLEM:
+- Submenu is not visually showing up on screen when menu is clicked
+- However, the submenu items are accepting mouse clicks (as evidenced by console output when clicking where submenu should be)
+- Menu items are printed to console when clicked in the area where submenu should appear
+- This confirms that click detection is working correctly, but rendering is not
+
+CURRENT STATE:
+- Menu click detection: WORKING
+- Submenu click detection: WORKING  
+- Submenu visual rendering: NOT WORKING
+- Menu text positioning: FIXED (was cut off, now properly centered)
+
+POSSIBLE CAUSES:
+1. Z-order/rendering order issue - submenu may be rendering behind other elements
+2. Coordinates calculation issue - submenu may be rendering at wrong position
+3. OpenGL state issue - something may be interfering with the submenu rendering
+4. Color issue - submenu may be rendering but with same color as background or invisible color
+5. The submenu might be rendering but at a different position than expected
+
+WHAT HAS BEEN TRIED:
+1. Changed submenu background color to bright yellow (distinct from everything else)
+2. Made submenu render directly in the menu's rendering function instead of individual element rendering
+3. Ensured menu items are not rendered in original positions when parent menu is open
+4. Fixed coordinate calculation for submenu items
+5. Updated mouse click detection to use correct submenu coordinates
+
+CURRENT APPROACH:
+The submenu is now being drawn directly in the menu element's rendering code:
+- Yellow background for submenu area
+- Blue for individual menu items within submenu
+- Black text for menu item labels
+- Proper positioning below the menu bar
+- Calculated item positions based on their order in the submenu
+
+NEXT STEPS NEEDED:
+- A new analysis of the rendering pipeline to determine why the submenu is not visually appearing despite correct click detection
+- Check if there's an OpenGL rendering order issue
+- Consider that the elements might render in a different order than expected

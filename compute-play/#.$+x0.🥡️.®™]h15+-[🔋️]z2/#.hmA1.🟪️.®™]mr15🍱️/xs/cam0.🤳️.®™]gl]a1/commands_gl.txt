@@ -1,0 +1,211 @@
+[Wed Jul 23 22:21:56 2025] Mouse: button=Left, state=Down, x=146, y=372
+[Wed Jul 23 22:21:56 2025] Mouse: button=Left, state=Up, x=146, y=372
+[Wed Jul 23 22:21:56 2025] SpecialKeyboard: key=UpArrow, x=146, y=372
+[Wed Jul 23 22:21:57 2025] SpecialKeyboard: key=UpArrow, x=146, y=372
+[Wed Jul 23 22:21:57 2025] SpecialKeyboard: key=UpArrow, x=212, y=375
+[Wed Jul 23 22:23:33 2025] SpecialKeyboard: key=RightArrow, x=813, y=492
+[Wed Jul 23 22:23:35 2025] Mouse: button=Left, state=Down, x=655, y=436
+[Wed Jul 23 22:23:35 2025] Mouse: button=Left, state=Up, x=655, y=436
+[Wed Jul 23 22:23:35 2025] SpecialKeyboard: key=UpArrow, x=655, y=436
+[Wed Jul 23 22:23:36 2025] SpecialKeyboard: key=DownArrow, x=655, y=436
+[Wed Jul 23 22:23:36 2025] SpecialKeyboard: key=LeftArrow, x=655, y=436
+[Wed Jul 23 22:25:19 2025] Mouse: button=Left, state=Down, x=568, y=383
+[Wed Jul 23 22:25:19 2025] Mouse: button=Left, state=Up, x=568, y=383
+[Wed Jul 23 22:25:19 2025] SpecialKeyboard: key=RightArrow, x=568, y=383
+[Wed Jul 23 22:25:19 2025] SpecialKeyboard: key=RightArrow, x=568, y=383
+[Wed Jul 23 22:25:20 2025] SpecialKeyboard: key=LeftArrow, x=568, y=383
+[Wed Jul 23 22:25:20 2025] SpecialKeyboard: key=UpArrow, x=568, y=383
+[Wed Jul 23 22:25:20 2025] SpecialKeyboard: key=LeftArrow, x=568, y=383
+[Wed Jul 23 22:25:21 2025] SpecialKeyboard: key=LeftArrow, x=568, y=383
+[Wed Jul 23 22:25:21 2025] Keyboard: key=d, x=568, y=383
+[Wed Jul 23 22:25:21 2025] Keyboard: key=w, x=568, y=383
+[Wed Jul 23 22:25:21 2025] Keyboard: key=s, x=568, y=383
+[Wed Jul 23 22:25:22 2025] Keyboard: key=s, x=568, y=383
+[Wed Jul 23 22:25:22 2025] Keyboard: key=d, x=568, y=383
+[Wed Jul 23 22:25:22 2025] Keyboard: key=w, x=568, y=383
+[Wed Jul 23 22:25:22 2025] Keyboard: key=q, x=568, y=383
+[Wed Jul 23 22:25:22 2025] SpecialKeyboard: key=DownArrow, x=568, y=383
+[Wed Jul 23 22:25:23 2025] Keyboard: key=a, x=568, y=383
+[Wed Jul 23 22:25:23 2025] SpecialKeyboard: key=RightArrow, x=568, y=383
+[Wed Jul 23 22:25:23 2025] SpecialKeyboard: key=UpArrow, x=568, y=383
+[Wed Jul 23 22:25:23 2025] SpecialKeyboard: key=LeftArrow, x=568, y=383
+[Wed Jul 23 22:25:23 2025] Keyboard: key=d, x=568, y=383
+[Wed Jul 23 22:25:23 2025] SpecialKeyboard: key=DownArrow, x=568, y=383
+[Wed Jul 23 22:25:23 2025] SpecialKeyboard: key=LeftArrow, x=568, y=383
+[Wed Jul 23 22:25:23 2025] SpecialKeyboard: key=UpArrow, x=568, y=383
+[Wed Jul 23 22:25:24 2025] SpecialKeyboard: key=LeftArrow, x=568, y=383
+[Wed Jul 23 22:25:24 2025] SpecialKeyboard: key=RightArrow, x=568, y=383
+[Wed Jul 23 22:25:24 2025] SpecialKeyboard: key=UpArrow, x=568, y=383
+[Wed Jul 23 22:25:24 2025] SpecialKeyboard: key=LeftArrow, x=568, y=383
+[Wed Jul 23 22:25:24 2025] SpecialKeyboard: key=RightArrow, x=568, y=383
+[Wed Jul 23 22:25:24 2025] SpecialKeyboard: key=UpArrow, x=568, y=383
+[Wed Jul 23 22:25:24 2025] SpecialKeyboard: key=LeftArrow, x=568, y=383
+[Wed Jul 23 22:25:24 2025] SpecialKeyboard: key=RightArrow, x=625, y=431
+[Wed Jul 23 22:27:53 2025] SpecialKeyboard: key=RightArrow, x=687, y=611
+[Wed Jul 23 22:27:54 2025] SpecialKeyboard: key=RightArrow, x=687, y=611
+[Wed Jul 23 22:27:55 2025] Mouse: button=Left, state=Down, x=520, y=381
+[Wed Jul 23 22:27:55 2025] Mouse: button=Left, state=Up, x=520, y=381
+[Wed Jul 23 22:27:55 2025] SpecialKeyboard: key=RightArrow, x=520, y=381
+[Wed Jul 23 22:27:55 2025] SpecialKeyboard: key=LeftArrow, x=520, y=381
+[Wed Jul 23 22:27:55 2025] SpecialKeyboard: key=DownArrow, x=520, y=381
+[Wed Jul 23 22:27:56 2025] SpecialKeyboard: key=DownArrow, x=520, y=381
+[Wed Jul 23 22:27:56 2025] SpecialKeyboard: key=UpArrow, x=520, y=381
+[Wed Jul 23 22:27:56 2025] SpecialKeyboard: key=UpArrow, x=520, y=381
+[Wed Jul 23 22:27:56 2025] SpecialKeyboard: key=LeftArrow, x=520, y=381
+[Wed Jul 23 22:27:56 2025] SpecialKeyboard: key=RightArrow, x=520, y=381
+[Wed Jul 23 22:27:57 2025] SpecialKeyboard: key=LeftArrow, x=520, y=381
+[Wed Jul 23 22:27:57 2025] Keyboard: key=d, x=520, y=381
+[Wed Jul 23 22:27:57 2025] Keyboard: key=w, x=520, y=381
+[Wed Jul 23 22:27:57 2025] Keyboard: key=a, x=520, y=381
+[Wed Jul 23 22:27:58 2025] Keyboard: key=s, x=520, y=381
+[Wed Jul 23 22:27:58 2025] Keyboard: key=d, x=520, y=381
+[Wed Jul 23 22:28:15 2025] Mouse: button=Left, state=Down, x=547, y=420
+[Wed Jul 23 22:28:15 2025] SpecialKeyboard: key=UpArrow, x=547, y=420
+[Wed Jul 23 22:28:15 2025] Mouse: button=Left, state=Up, x=547, y=420
+[Wed Jul 23 22:28:15 2025] SpecialKeyboard: key=RightArrow, x=547, y=420
+[Wed Jul 23 22:28:15 2025] SpecialKeyboard: key=LeftArrow, x=547, y=420
+[Wed Jul 23 22:28:15 2025] SpecialKeyboard: key=DownArrow, x=547, y=420
+[Wed Jul 23 22:28:16 2025] SpecialKeyboard: key=LeftArrow, x=547, y=420
+[Wed Jul 23 22:28:16 2025] SpecialKeyboard: key=UpArrow, x=547, y=420
+[Wed Jul 23 22:28:16 2025] SpecialKeyboard: key=LeftArrow, x=547, y=420
+[Wed Jul 23 22:28:16 2025] SpecialKeyboard: key=UpArrow, x=547, y=420
+[Wed Jul 23 22:28:16 2025] SpecialKeyboard: key=LeftArrow, x=547, y=420
+[Wed Jul 23 22:29:01 2025] SpecialKeyboard: key=UpArrow, x=427, y=463
+[Wed Jul 23 22:29:02 2025] Mouse: button=Left, state=Down, x=491, y=229
+[Wed Jul 23 22:29:02 2025] SpecialKeyboard: key=UpArrow, x=491, y=229
+[Wed Jul 23 22:29:02 2025] Mouse: button=Left, state=Up, x=491, y=229
+[Wed Jul 23 22:29:02 2025] SpecialKeyboard: key=RightArrow, x=491, y=229
+[Wed Jul 23 22:29:02 2025] SpecialKeyboard: key=RightArrow, x=491, y=229
+[Wed Jul 23 22:29:03 2025] SpecialKeyboard: key=LeftArrow, x=491, y=229
+[Wed Jul 23 22:29:03 2025] Keyboard: key=2, x=491, y=229
+[Wed Jul 23 22:29:03 2025] Keyboard: key=1, x=491, y=229
+[Wed Jul 23 22:29:03 2025] Keyboard: key=2, x=491, y=229
+[Wed Jul 23 22:29:04 2025] Keyboard: key=1, x=491, y=229
+[Wed Jul 23 22:29:04 2025] Keyboard: key=q, x=491, y=229
+[Wed Jul 23 22:29:04 2025] Keyboard: key=1, x=491, y=229
+[Wed Jul 23 22:29:04 2025] Keyboard: key=2, x=491, y=229
+[Wed Jul 23 22:29:05 2025] Mouse: button=Left, state=Down, x=488, y=371
+[Wed Jul 23 22:29:05 2025] Mouse: button=Left, state=Up, x=488, y=371
+[Wed Jul 23 22:29:06 2025] Keyboard: key=1, x=488, y=371
+[Wed Jul 23 22:29:06 2025] Keyboard: key=2, x=488, y=371
+[Wed Jul 23 22:29:06 2025] Keyboard: key=2, x=488, y=371
+[Wed Jul 23 22:31:10 2025] SpecialKeyboard: key=RightArrow, x=485, y=510
+[Wed Jul 23 22:31:11 2025] SpecialKeyboard: key=LeftArrow, x=485, y=510
+[Wed Jul 23 22:31:11 2025] SpecialKeyboard: key=UpArrow, x=485, y=510
+[Wed Jul 23 22:31:11 2025] SpecialKeyboard: key=LeftArrow, x=485, y=510
+[Wed Jul 23 22:31:11 2025] SpecialKeyboard: key=UpArrow, x=485, y=510
+[Wed Jul 23 22:31:12 2025] SpecialKeyboard: key=LeftArrow, x=485, y=510
+[Wed Jul 23 22:31:12 2025] Keyboard: key=1, x=485, y=510
+[Wed Jul 23 22:31:12 2025] Keyboard: key=2, x=485, y=510
+[Wed Jul 23 22:31:12 2025] Keyboard: key=2, x=485, y=510
+[Wed Jul 23 22:31:13 2025] SpecialKeyboard: key=LeftArrow, x=485, y=510
+[Wed Jul 23 22:31:14 2025] SpecialKeyboard: key=UpArrow, x=485, y=510
+[Wed Jul 23 22:31:15 2025] SpecialKeyboard: key=RightArrow, x=485, y=510
+[Wed Jul 23 22:31:15 2025] SpecialKeyboard: key=RightArrow, x=485, y=510
+[Wed Jul 23 22:31:15 2025] SpecialKeyboard: key=RightArrow, x=485, y=510
+[Wed Jul 23 22:31:15 2025] SpecialKeyboard: key=RightArrow, x=485, y=510
+[Wed Jul 23 22:31:15 2025] SpecialKeyboard: key=RightArrow, x=485, y=510
+[Wed Jul 23 22:31:15 2025] SpecialKeyboard: key=RightArrow, x=485, y=510
+[Wed Jul 23 22:31:15 2025] SpecialKeyboard: key=RightArrow, x=485, y=510
+[Wed Jul 23 22:31:15 2025] SpecialKeyboard: key=RightArrow, x=485, y=510
+[Wed Jul 23 22:31:15 2025] SpecialKeyboard: key=RightArrow, x=485, y=510
+[Wed Jul 23 22:31:15 2025] SpecialKeyboard: key=RightArrow, x=485, y=510
+[Wed Jul 23 22:31:15 2025] SpecialKeyboard: key=RightArrow, x=485, y=510
+[Wed Jul 23 22:31:15 2025] SpecialKeyboard: key=RightArrow, x=485, y=510
+[Wed Jul 23 22:31:15 2025] SpecialKeyboard: key=RightArrow, x=485, y=510
+[Wed Jul 23 22:31:15 2025] SpecialKeyboard: key=RightArrow, x=485, y=510
+[Wed Jul 23 22:31:16 2025] SpecialKeyboard: key=LeftArrow, x=485, y=510
+[Wed Jul 23 22:31:17 2025] SpecialKeyboard: key=DownArrow, x=485, y=510
+[Wed Jul 23 22:31:17 2025] SpecialKeyboard: key=UpArrow, x=485, y=510
+[Wed Jul 23 22:31:17 2025] Keyboard: key=f, x=485, y=510
+[Wed Jul 23 22:31:19 2025] Keyboard: key=13, x=485, y=510
+[Wed Jul 23 22:31:20 2025] Keyboard: key=3, x=485, y=510
+[Wed Jul 23 22:31:20 2025] Keyboard: key=4, x=485, y=510
+[Wed Jul 23 22:31:22 2025] SpecialKeyboard: key=UnknownSpecial, x=485, y=510
+[Wed Jul 23 22:31:22 2025] Keyboard: key=3, x=485, y=510
+[Wed Jul 23 22:31:23 2025] SpecialKeyboard: key=UnknownSpecial, x=485, y=510
+[Wed Jul 23 22:31:23 2025] Keyboard: key=3, x=485, y=510
+[Wed Jul 23 22:31:23 2025] SpecialKeyboard: key=UnknownSpecial, x=485, y=510
+[Wed Jul 23 22:31:23 2025] Keyboard: key=3, x=485, y=510
+[Wed Jul 23 22:45:14 2025] SpecialKeyboard: key=RightArrow, x=1523, y=1051
+[Wed Jul 23 22:49:57 2025] SpecialKeyboard: key=UpArrow, x=1485, y=1161
+[Wed Jul 23 22:49:57 2025] SpecialKeyboard: key=UpArrow, x=1485, y=1161
+[Wed Jul 23 22:49:58 2025] SpecialKeyboard: key=DownArrow, x=1485, y=1161
+[Wed Jul 23 22:49:58 2025] SpecialKeyboard: key=DownArrow, x=1485, y=1161
+[Wed Jul 23 22:49:58 2025] SpecialKeyboard: key=DownArrow, x=1485, y=1161
+[Wed Jul 23 22:51:20 2025] SpecialKeyboard: key=UpArrow, x=1523, y=985
+[Wed Jul 23 22:51:21 2025] SpecialKeyboard: key=UpArrow, x=1523, y=985
+[Wed Jul 23 22:51:21 2025] SpecialKeyboard: key=UpArrow, x=1523, y=985
+[Wed Jul 23 22:51:21 2025] SpecialKeyboard: key=UpArrow, x=1523, y=985
+[Wed Jul 23 22:51:39 2025] SpecialKeyboard: key=UpArrow, x=1523, y=985
+[Wed Jul 23 22:51:40 2025] SpecialKeyboard: key=UpArrow, x=1523, y=985
+[Wed Jul 23 22:51:40 2025] SpecialKeyboard: key=RightArrow, x=1523, y=985
+[Wed Jul 23 22:51:40 2025] SpecialKeyboard: key=RightArrow, x=1523, y=985
+[Wed Jul 23 22:52:26 2025] SpecialKeyboard: key=RightArrow, x=1523, y=985
+[Wed Jul 23 22:52:37 2025] Mouse: button=Left, state=Down, x=710, y=431
+[Wed Jul 23 22:52:37 2025] SpecialKeyboard: key=UnknownSpecial, x=710, y=431
+[Wed Jul 23 22:52:37 2025] Keyboard: key=3, x=710, y=431
+[Wed Jul 23 22:52:37 2025] Mouse: button=Left, state=Up, x=710, y=431
+[Wed Jul 23 22:52:37 2025] Keyboard: key=3, x=710, y=431
+[Wed Jul 23 22:53:20 2025] SpecialKeyboard: key=UpArrow, x=572, y=775
+[Wed Jul 23 22:53:20 2025] SpecialKeyboard: key=UpArrow, x=572, y=775
+[Wed Jul 23 22:54:00 2025] SpecialKeyboard: key=UpArrow, x=1514, y=886
+[Thu Jul 24 09:33:06 2025] Mouse: button=Left, state=Down, x=697, y=503
+[Thu Jul 24 09:33:06 2025] Mouse: button=Left, state=Up, x=697, y=503
+[Thu Jul 24 09:33:06 2025] SpecialKeyboard: key=UpArrow, x=697, y=503
+[Thu Jul 24 09:33:07 2025] SpecialKeyboard: key=UpArrow, x=697, y=503
+[Thu Jul 24 09:33:07 2025] SpecialKeyboard: key=LeftArrow, x=697, y=503
+[Thu Jul 24 09:33:07 2025] SpecialKeyboard: key=LeftArrow, x=697, y=503
+[Thu Jul 24 09:33:07 2025] SpecialKeyboard: key=RightArrow, x=697, y=503
+[Thu Jul 24 09:34:05 2025] SpecialKeyboard: key=UpArrow, x=795, y=531
+[Thu Jul 24 09:34:05 2025] SpecialKeyboard: key=UpArrow, x=795, y=531
+[Thu Jul 24 09:34:05 2025] SpecialKeyboard: key=UpArrow, x=795, y=531
+[Thu Jul 24 09:34:40 2025] SpecialKeyboard: key=UpArrow, x=795, y=531
+[Thu Jul 24 09:34:40 2025] SpecialKeyboard: key=UpArrow, x=795, y=531
+[Thu Jul 24 09:34:40 2025] SpecialKeyboard: key=UpArrow, x=795, y=531
+[Thu Jul 24 09:36:57 2025] Mouse: button=Left, state=Down, x=483, y=447
+[Thu Jul 24 09:36:57 2025] SpecialKeyboard: key=UpArrow, x=483, y=447
+[Thu Jul 24 09:36:57 2025] Mouse: button=Left, state=Up, x=483, y=447
+[Thu Jul 24 09:36:58 2025] SpecialKeyboard: key=UpArrow, x=483, y=447
+[Thu Jul 24 09:36:58 2025] SpecialKeyboard: key=UpArrow, x=483, y=447
+[Thu Jul 24 09:36:58 2025] SpecialKeyboard: key=DownArrow, x=483, y=447
+[Thu Jul 24 09:36:58 2025] SpecialKeyboard: key=DownArrow, x=483, y=447
+[Thu Jul 24 09:36:59 2025] SpecialKeyboard: key=LeftArrow, x=483, y=447
+[Thu Jul 24 09:36:59 2025] SpecialKeyboard: key=LeftArrow, x=483, y=447
+[Thu Jul 24 09:36:59 2025] SpecialKeyboard: key=RightArrow, x=483, y=447
+[Thu Jul 24 09:36:59 2025] SpecialKeyboard: key=RightArrow, x=483, y=447
+[Thu Jul 24 09:36:59 2025] SpecialKeyboard: key=RightArrow, x=483, y=447
+[Thu Jul 24 09:37:00 2025] SpecialKeyboard: key=RightArrow, x=483, y=447
+[Thu Jul 24 09:43:00 2025] SpecialKeyboard: key=UpArrow, x=621, y=731
+[Thu Jul 24 09:43:00 2025] SpecialKeyboard: key=UpArrow, x=621, y=731
+[Thu Jul 24 09:43:01 2025] SpecialKeyboard: key=UpArrow, x=621, y=731
+[Thu Jul 24 09:43:01 2025] SpecialKeyboard: key=DownArrow, x=621, y=731
+[Thu Jul 24 09:43:01 2025] SpecialKeyboard: key=DownArrow, x=621, y=731
+[Thu Jul 24 09:43:01 2025] SpecialKeyboard: key=DownArrow, x=621, y=731
+[Thu Jul 24 09:43:01 2025] SpecialKeyboard: key=LeftArrow, x=621, y=731
+[Thu Jul 24 09:43:02 2025] SpecialKeyboard: key=LeftArrow, x=621, y=731
+[Thu Jul 24 09:43:02 2025] SpecialKeyboard: key=RightArrow, x=621, y=731
+[Thu Jul 24 09:43:02 2025] SpecialKeyboard: key=RightArrow, x=621, y=731
+[Thu Jul 24 09:43:03 2025] SpecialKeyboard: key=RightArrow, x=621, y=731
+[Thu Jul 24 09:43:03 2025] SpecialKeyboard: key=RightArrow, x=621, y=731
+[Thu Jul 24 09:43:03 2025] SpecialKeyboard: key=RightArrow, x=621, y=731
+[Thu Jul 24 09:43:03 2025] SpecialKeyboard: key=RightArrow, x=621, y=731
+[Thu Jul 24 11:13:14 2025] SpecialKeyboard: key=UpArrow, x=2052, y=-172
+[Thu Jul 24 11:13:15 2025] SpecialKeyboard: key=UpArrow, x=2052, y=-172
+[Thu Jul 24 11:13:15 2025] SpecialKeyboard: key=UpArrow, x=2052, y=-172
+[Thu Jul 24 11:13:15 2025] SpecialKeyboard: key=DownArrow, x=2052, y=-172
+[Thu Jul 24 11:13:15 2025] SpecialKeyboard: key=DownArrow, x=2052, y=-172
+[Thu Jul 24 11:13:16 2025] SpecialKeyboard: key=DownArrow, x=2052, y=-172
+[Thu Jul 24 11:13:16 2025] SpecialKeyboard: key=DownArrow, x=2052, y=-172
+[Thu Jul 24 11:13:16 2025] SpecialKeyboard: key=DownArrow, x=2052, y=-172
+[Thu Jul 24 11:13:16 2025] SpecialKeyboard: key=RightArrow, x=2052, y=-172
+[Thu Jul 24 11:13:16 2025] SpecialKeyboard: key=LeftArrow, x=2052, y=-172
+[Thu Jul 24 11:13:17 2025] SpecialKeyboard: key=DownArrow, x=2052, y=-172
+[Thu Jul 24 11:13:17 2025] SpecialKeyboard: key=DownArrow, x=2052, y=-172
+[Thu Jul 24 11:13:17 2025] SpecialKeyboard: key=LeftArrow, x=2052, y=-172
+[Thu Jul 24 11:13:17 2025] SpecialKeyboard: key=DownArrow, x=2052, y=-172
+[Thu Jul 24 11:13:18 2025] SpecialKeyboard: key=LeftArrow, x=2052, y=-172
+[Thu Jul 24 11:13:18 2025] SpecialKeyboard: key=LeftArrow, x=2052, y=-172
+[Thu Jul 24 11:13:18 2025] SpecialKeyboard: key=LeftArrow, x=2052, y=-172
+[Thu Jul 24 11:13:18 2025] SpecialKeyboard: key=LeftArrow, x=2052, y=-172
+[Thu Jul 24 11:13:19 2025] SpecialKeyboard: key=UpArrow, x=2052, y=-172

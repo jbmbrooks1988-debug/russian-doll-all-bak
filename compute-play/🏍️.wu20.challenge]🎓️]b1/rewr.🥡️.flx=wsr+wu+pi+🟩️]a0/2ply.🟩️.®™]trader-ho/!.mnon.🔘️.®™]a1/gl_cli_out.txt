@@ -1,0 +1,9 @@
+Current working directory: /media/no/b7ced73c-5231-4462-b98d-64e38fe2df9e/home/jbez/Desktop/^.📶️.SHARE]/^.🦾️]fullsharezip/💪🏾️].no-desk.sharezip/📲️📵️.GTFO.flxbx.📦️arcbit♏️/#.⛷️LOOSE-TANGENT]2wild]🎄️⛷️/🪆️.a0/📟️.a0/💻️🏓️/#.$+x0.🥡️.®™.smol]🏎️🏍️🤡️]z111/1cln.⬜️.®™]emt🤡️💌️🔍️]adv0/hmA0.🔌️.®™/mnus.📱️.®™]c4/+x
+
+Menu:
+0: end_turn
+1: hunger
+2: state
+3: act
+4: inventory
+Enter choice (0-4) or -1 to exit: Cannot access watch.txt

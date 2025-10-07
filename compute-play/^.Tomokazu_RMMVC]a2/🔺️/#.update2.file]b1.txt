@@ -1,0 +1,51 @@
+Update 2 - Fixed Tool Functionality Issues
+
+1. Fixed paint, fill, rectangle, and erase tool functionality in controller_gl.c:
+   - Corrected the tool state handling in set_tool_state function
+   - Ensured proper mapping between UI tool indices and internal tool states
+   - Fixed issue with tool selection not properly updating the model
+
+2. Fixed sidebar tool buttons in 3D mode:
+   - Resolved issue where sidebar tool buttons weren't working in 3D mode
+   - Modified mouse handler to only process 3D canvas clicks when click is actually on canvas area
+   - Sidebar clicks now properly propagate to their handlers in both 2D and 3D modes
+
+3. Added missing function declaration:
+   - Added declaration for set_selected_tool in controller_gl.c to eliminate compiler warning
+
+4. Corrected duplicate function definition:
+   - Removed duplicate definition of set_selected_tool in model_gl.c
+
+These fixes ensure that all tools (paint, fill, rectangle, erase) work correctly in both 2D and 3D modes, and that the sidebar tool buttons function properly regardless of the view mode.
+
+Future Enhancement Opportunity:
+Use a more generic approach for handling tools: The current implementation uses a switch statement to handle the different tools. This is not very extensible. A better approach would be to use a table of function pointers, where each entry in the table corresponds to a different tool. This would make it much easier to add new tools in the future. This approach would involve defining function pointer types for tool actions, creating a tool descriptor structure, and implementing tool action functions that can be called through the function pointer table. This would provide better extensibility, maintainability, and flexibility for adding new tools.
+
+Next Steps - Game Engine Foundation:
+The ultimate goal is to transform this into a game engine that can export 2D and 3D games using basic assets. The next phase will focus on making tiles and objects interactive by implementing:
+
+1. Clickable Objects System:
+   - Implement object-oriented structure for game entities (tiles, sprites, UI elements)
+   - Add event system for handling clicks, hover, and other interactions
+   - Create context menu system that opens when objects are right-clicked
+
+2. Menu System Architecture:
+   - Design context menu structure with customizable items
+   - Implement event registration system for objects
+   - Create foundation for adding "events" to objects through the menu interface
+
+3. Implementation Roadmap:
+   - Start with simplest step: opening a basic menu on right-click of any tile/object
+   - Progress to adding menu items that can attach events to objects
+   - Build out the event system to handle various game logic triggers
+   - Eventually support exporting games with embedded event logic
+
+This will lay the groundwork for a full-featured game engine with visual scripting capabilities.
+
+___________________
+The context menu functionality is now complete and should work as
+  expected in both 2D and 3D modes. When a user right-clicks on a tile
+  (either empty or occupied), the context menu will appear with the
+  appropriate options enabled or disabled based on the context (e.g.,
+  copy and edit are only enabled when clicking on an occupied tile,
+  paste is only enabled when something has been copied).

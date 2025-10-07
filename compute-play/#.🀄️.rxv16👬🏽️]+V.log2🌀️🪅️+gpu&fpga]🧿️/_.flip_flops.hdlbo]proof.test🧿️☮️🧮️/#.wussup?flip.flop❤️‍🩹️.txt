@@ -1,0 +1,39 @@
+
+⚠️
+these flip flops, test them before fpga/ gpu / rv-16
+
+so u knwo if hdlo is working like "GROK THINKS IT IS" or "AT ALL" 
+⚠️
+
+btw , tehse all assume existence of "HDLB0"(i hope...) <- they dont include it . where is it? 
+
+📮️its having repeat problems, insists its not emulator (but who knows)💬️
+still nothing. do you need to sanity check that nand / clock is working with a simpler program before you try this? 💬️📮️
+
+⚫️🕳️
+its having some confusion it doesn't know that "10 & 11" in "a|b" are the only values meant to be interpreted as blank 
+(00 & 01 = binary )
+
+i could probably fix this by hand if i wasn't being human tortured by what appears 2 be cia/fbi/ice <-mex+wont stop +warrant
+⚫️🕳️🤕️
+📬️
+clock works, but nand isn't outputting stuff right. 
+
+❤️‍🩹️
+(it was the nand.c chip. fixed it) 
+what about gpu/fpga ? they weren't tested against the hdlb0 OR at all w/ e
+theyre just "1rst draft ask ref 5 min b4 bed w/e ) 
+
+💩️(dff/msff?)
+no they dont work . probably cuz they were constructed on false logic. 
+so yes. they wasted 2+ hours spammign 4 force those++ w/o testing foundational NAND/CLOCK w/e EVER. 
+so just focus on wsr pls. this is a distraction till 20 day sisup .💩️
+
+👩🏼‍🚀️👩🏼‍🚀️👩🏼‍🚀️👩🏼‍🚀️👩🏼‍🚀️👩🏼‍🚀️👩🏼‍🚀️👩🏼‍🚀️👩🏼‍🚀️👩🏼‍🚀️👩🏼‍🚀️👩🏼‍🚀️👩🏼‍🚀️
+why didn't they work: (dont modify 0.hdlb0 , just use ram addresses 16++ as they are assured not to be contested or reserved)👩🏼‍🚀️👩🏼‍🚀️👩🏼‍🚀️👩🏼‍🚀️👩🏼‍🚀️👩🏼‍🚀️👩🏼‍🚀️👩🏼‍🚀️👩🏼‍🚀️👩🏼‍🚀️👩🏼‍🚀️👩🏼‍🚀️👩🏼‍🚀️
+++🪠️ still not working? = rams may not be written to AND| OR , may only write nand 2 
+tape if "no blanks" wut? not grabbing ram 2 pass 2 nand correctly? {or with blanks?10/11}
+🐏️test ram when violence stops🐏️
+🪠️
+❤️‍🩹️
+📬️

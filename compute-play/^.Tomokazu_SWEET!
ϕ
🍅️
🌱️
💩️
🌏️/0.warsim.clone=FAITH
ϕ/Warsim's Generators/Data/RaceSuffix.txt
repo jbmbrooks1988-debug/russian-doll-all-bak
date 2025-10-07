@@ -1,0 +1,379 @@
+1.Arch-.0.3.4.0.0.1.1.0.0.its people are very powerful and the first of their kind
+1.Albino .0.5.2.0.0.0.0.0.0.it's people have albinism and lack skin pigment making for a ghostly white skin
+1.Arctic .23.5.1.0.0.0.0.0.0.its people live in the arctic lands
+1.Autumn .0.0.0.0.0.0.0.0.0.its people are known to thrive in the autumn
+1.Ash .0.0.0.0.0.0.0.0.0.its people worship the ashes of the flame
+1.Action .0.12.1.0.0.0.0.0.0.its people are famed for their rowdy nature and for always being ready for action and violence
+1.Bog .11.0.0.0.0.0.0.0.0.its people hail from the boglands
+1.Boulder .0.4.1.0.0.0.0.0.0.its people live inside and among boulders and structures built into them
+1.Blood-.0.2.4.0.0.0.0.2.37.its people are blood-red and known to hold within them great evil
+1.Bogland .11.0.0.0.0.0.0.0.0.its people hail from the boglands
+1.Battle .0.35.1.0.0.0.0.0.0.its people are hardened and always ready for a battle, they are renowned for their combat prowess
+1.Bone .0.5.1.0.0.0.0.2.0.its people are almost entirely bone, held together by dark magic
+1.Bush .0.2.3.2.3.0.0.0.10.its people live in thick bushes and bushlands
+1.Bridge .0.2.2.0.0.0.0.0.0.its people live underneath and alongside bridges, taking tolls usually
+1.Combat .0.34.1.0.0.0.0.0.0.its people are known for their combat skill and are a foe to be cautious of
+1.Chasm .4.12.1.0.0.0.0.0.0.its people are said to have come from a deep dark chasm
+1.Cave .4.5.1.0.0.0.0.0.0.its people live inside vast caves
+1.Cliff .0.1.1.0.0.0.0.0.0.its people live along the edge of huge and vast cliffs
+1.Cavern .4.10.1.0.0.0.0.0.0.its people live inside vast caverns
+1.Coast .20.0.0.0.0.0.0.0.0.its people live on the coast
+1.Cove .0.3.1.0.0.0.0.0.0.its people live in coastal coves hidden along the water
+1.Clan . 0.12.1.0.0.0.0.0.0.its people hail from vast clans in their histories and fight strong together
+1.Cloud .14.2.1.0.0.0.0.0.0.its people live in high places to be among clouds
+1.Crater .0.2.1.0.0.0.0.0.0.its people live inside great craters left by crashing asteroids
+1.Clockwork .0.10.1.0.0.0.0.0.9.its people are said to be entirely clockwork, made of nothing but bronze parts and magic
+1.Canyon .5.0.0.0.0.0.0.0.0.its people live within the canyons
+1.Chaos .0.2.4.0.0.0.0.2.6.its people worship chaos and seek to see the world engulfed in it
+1.Deep .4.15.1.0.0.0.0.0.0.its people come from the deep
+1.Dust .25.0.0.0.0.0.0.0.0.its people live among moving clouds of dust, worshipping them
+1.Desert .25.7.1.5.2.0.0.0.0.its people hail from harsh desert
+1.Dune .25.0.0.0.0.0.0.0.0.its people live among the sand dunes
+1.Ditch .0.4.2.0.0.0.0.0.0.its people live in ditches
+1.Day .0.0.0.0.0.0.0.0.0.its people worship the day
+1.Dark .0.4.1.0.0.0.0.2.37.its people worship the darkness and seek to spread it as far and wide as they can
+1.Death .0.50.1.0.0.0.0.2.3.its people are followers of death
+1.Dire .0.36.1.0.0.0.0.0.0.its people are large and strong, greatly more-so than their non-dire counterparts
+1.Dusk .0.2.1.0.0.0.0.0.0.its people are said to thrive at dusk
+1.Dawn .0.5.1.0.0.0.0.0.0.its people are said to thrive at dawn
+1.Earthen .0.0.0.0.0.0.0.0.0.its people worship the earth
+1.Elder .0.15.1.0.0.1.1.0.0.its people are known to hold and follow old knowledge and wisdom
+1.Edge .0.2.1.0.0.0.0.0.0.its people live on the edge of huge and vast cliffs and ravines
+1.Flame .24.12.1.0.0.0.0.0.0.its people worship the flame
+1.Fire .24.13.1.0.0.0.0.0.0.its people worship fire
+1.Frost .23.5.1.0.0.0.0.0.0.its people live among frost
+1.Fog .0.3.1.0.0.0.0.0.0.its people are always surrounded by thick patches of fog
+1.Forest .19.0.0.0.0.0.0.0.0.its people live in the forest
+1.Fungus .0.0.0.0.0.0.0.0.0.its people are part fungi and have various bits of moss and mold all over them
+1.Greater .0.15.1.0.0.0.0.0.0.its people are slightly stronger and larger than others of its type
+1.Grassland .16.0.0.0.0.0.0.0.0.its people live in the grasslands
+1.Glacial .23.0.0.0.0.0.0.0.0.its people live among glaciers
+1.Gorge .0.13.1.2.3.0.0.0.0.its people live in settlements alongside and over the edge of great gorges
+1.Golden .0.20.1.0.0.0.0.0.0.its people are known as golden
+1.Garden .0.3.3.2.3.0.0.0.10.its people live in large gardens and sometimes the gardens of other races
+1.High .0.5.1.0.0.1.1.0.0.its people are known to be intelligent
+1.Hell .30.55.1.0.0.1.3.2.3.its people were said to have emerged from the depths of hell itself
+1.Hill .13.0.0.0.0.0.0.0.0.its people live among the hills
+1.Hive .0.0.0.0.0.0.0.0.10.its people are said to operate under a great hivemind
+1.Hedge .0.5.2.0.0.0.0.0.0.its people are unsettled and near landless
+1.Highland .8.3.1.0.0.0.0.0.0.its people hail from the highlands
+1.Ice .23.5.1.0.0.0.0.0.0.its people live among the ice
+1.Island .3.0.0.0.0.0.0.0.0.its people live on an Island
+1.Jungle .15.0.0.0.0.0.0.0.0.its people live in the jungle
+1.Lesser .0.10.2.0.0.0.0.0.10.its people are slightly smaller and weaker than others of the same origin race
+1.Lava .24.19.1.0.0.0.0.0.0.its people worship lava, the infinite fire
+1.Lagoon .22.0.0.0.0.0.0.0.0.its people live among lagoons
+1.Low .0.0.0.0.0.1.2.0.0.its people are renowned for their dullness
+1.Lunar .0.0.0.0.0.0.0.0.0.its people are said to worship the moon
+1.Lightning .31.11.1.0.0.0.0.0.0.its people worship lightning
+1.Light .0.0.0.0.0.0.0.1.0.its people are followers of what is good
+1.Lake .22.0.0.0.0.0.0.0.0.its people live on floating lake rafts
+1.Lowland .9.0.0.0.0.0.0.0.0.its people hail from the lowlands
+1.Mire .17.0.0.0.0.0.0.0.0.its people hail from the Mire
+1.Mini .0.35.2.80.1.0.0.0.10.its people are very small, but they reproduce quicker
+1.Marsh .18.3.1.2.2.0.0.0.0.its people live in the marshes
+1.Mountain .14.12.1.0.0.0.0.0.0.its people live among the mountains
+1.Mine .3.2.1.0.0.0.0.0.0.its people live inside vast mines
+1.Mud .0.0.0.0.0.0.0.0.0.its people are known to come from lands of mud and dirt
+1.Moon .33.19.1.0.0.0.0.0.0.its people worship the moon
+1.Magma .24.19.1.0.0.0.0.0.0.its people worship lava, the infinite fire
+1.Mist .0.0.0.0.0.0.0.0.0.its people live among the mists to hide away from the prying eyes of the world
+1.Minor .0.9.2.0.0.0.0.0.0.its people are known to be a lesser subclass of their race, smaller and weaker than their normal counterparts
+1.Metal .0.11.1.0.0.0.0.0.0.its people are thought to be made of a strong metallic substance
+1.Nocturnal .0.3.1.0.0.0.0.0.0.its people live in the night
+1.Night .0.14.1.0.0.0.0.0.0.its people worship the night
+1.Nightfall .0.14.1.0.0.0.0.0.0.its people thrive during nightfall
+1.Old .0.0.0.0.0.0.0.0.0.its people are said to follow old ways
+1.Ocean .22.0.0.0.0.0.0.0.0.its people hail from the ocean
+1.Omega .0.22.1.5.2.0.0.0.0.its people are larger and stronger than their normal counterparts
+1.Plains .0.0.0.0.0.0.0.0.0.its people live in the plains
+1.Plateau .0.5.1.1.2.0.0.0.0.its people live on high flat plateau's
+1.Pond .0.1.2.0.0.0.0.0.0.its people live around great patches of ponds
+1.Pit .0.10.1.4.2.1.2.0.0.its people are said to have emerged from great pits in the earth where great battles for survival would take place every day
+1.Ravine .5.0.0.0.0.0.0.0.0.its people live within deep ravines
+1.Rock .0.8.1.0.0.0.0.0.0.its people live among great rocks and use rock for most of their building, armour, and weaponry
+1.Subterranean .30.12.1.0.0.0.0.0.0.its people hail from the deep subterranean lands
+1.Surface .0.0.0.0.0.0.0.0.0.its people live on the surface and avoid going underground
+1.Sun .32.20.1.0.0.0.0.0.0.its people worship the sun
+1.Sunset .32.16.1.0.0.0.0.0.0.its people thrive during sunset and are spiritually connected to it
+1.Sunlight .32.10.1.0.0.0.0.0.0.its people thrive in sunlight and need it to survive
+1.Stout .0.3.1.2.3.0.0.0.0.its people are known to be rather fat and thick bodied
+1.Sand .25.0.0.0.0.0.0.0.0.its people live among the sands
+1.Sea .22.0.0.0.0.0.0.0.0.its people are of the sea
+1.Salt .0.1.2.0.0.0.0.0.0.its people live among great salt flats and cover themselves in salt
+1.Shell .0.10.1.0.0.0.0.0.0.its people have shells on their backs and receed into them for protection
+1.Snow .23.6.1.0.0.0.0.0.0.its people have grown and evolved out of snow covered lands
+1.Space .29.31.1.0.0.2.1.0.0.its people are said to hail from space
+1.Star .29.30.1.0.0.2.1.0.0.its people are said to have birthed from a crashing star
+1.Swamp .18.5.1.2.2.0.0.0.0.its people live in the swamp
+1.Shore .21.0.0.0.0.0.0.0.0.its people live on the shores
+1.Slime .0.0.0.0.0.0.0.0.0.its people produce large amounts of slime from their orifices
+1.Storm .0.10.1.0.0.0.0.0.0.its people worship the storm
+1.Summer .0.0.0.0.0.0.0.0.0.its people are known to thrive in the summer
+1.Spring .0.0.0.0.0.0.0.0.0.its people are known to thrive in the spring
+1.Spark .31.6.1.0.0.0.0.0.0.its people are said to host small electrical energy in their skin
+1.Shadow .0.10.1.0.0.0.0.2.0.its people are said to live only in the shadows
+1.Shadow .0.25.1.0.0.0.0.2.0.its people are said to be made of shadows, few see them as they move
+1.Solar .0.0.0.0.0.0.0.0.0.its people are said to worship the sun
+1.Stone .0.30.1.0.0.0.0.0.0.its people are made from stone
+1.Stoneland .10.0.0.0.0.0.0.0.0.its people hail from the stonelands
+1.Tundra .2.0.0.0.0.0.0.0.0.its people live in the Tundras
+1.Taiga .2.0.0.0.0.0.0.0.0.its people live in the Taigas
+1.Tunnel .4.10.1.0.0.0.0.0.0.its people live inside vast tunnels
+1.Tropical .0.0.0.0.0.0.0.0.0.its people hail from tropical regions
+1.Trench .6.0.0.0.0.0.0.0.0.its people live among a vast network of trenches
+1.Tomb .0.0.0.0.0.0.0.0.0.its people are known to live inside tombs alongside buried dead
+1.Thunder .0.10.1.0.0.0.0.0.0.its people worship the thunder
+1.Tideland .20.0.0.0.0.0.0.0.0.its people live in the coastal lands that become submerged during high tide
+1.Tree .28.0.0.0.0.0.0.0.0.its people live among the trees
+1.Treetop .28.0.0.0.0.0.0.0.0.its people live among the treetops
+1.Underworld .30.15.1.0.0.0.0.2.0.its people hail from the underworld
+1.Underground .0.2.1.0.0.0.0.0.0.its people live underground
+1.Underpass .0.0.0.0.0.0.0.0.0.its people live in great underpasses, protected from the elements and hostile forces, However their skin has turned grey from living hidden from the sun
+1.Volcanic .24.34.1.0.0.0.0.0.0.its people harness the power of volcanoes
+1.Valley .12.5.1.0.0.0.0.0.0.its people hail from the valleys
+1.Void .29.100.1.5.5.7.3.2.0.its people are said to have come from the void
+1.Water .22.0.0.0.0.0.0.0.0.its people worship water
+1.Wasteland .0.24.1.2.3.1.2.0.0.its people hail from harsh wastelands
+1.Wood .28.0.0.0.0.0.0.0.0.its people live among the woodlands
+1.Woodlands .28.0.0.0.0.0.0.0.0.its people live among the woodlands
+1.Wetland .7.0.0.0.0.0.0.0.0.its people hail from the wetlands
+1.Winter .0.0.0.0.0.0.0.0.0.its people are known to thrive in the winter
+2.Advanced .0.2.4.2.4.2.1.0.0.its people are advanced in strength and civility
+2.Academic .0.0.0.0.0.4.1.0.0.its people are very academic and hold great libraries
+2.Abyssal .0.3.4.2.3.1.3.2.37.its people are said to have come from the abyss, they are of an unintelligible darkness
+2.Ancient .0.5.4.4.3.0.0.0.0.its people are said to be ancient
+2.Ascended .0.2.4.0.0.10.3.1.38.its people are said to have ascended from the common way of existing and now experience a combined and shared bliss and higher level of intelligence that is unimaginable to those outside of their race
+2.Aerial .0.0.0.0.0.0.0.0.0.its people worship the sky
+2.Alpha .0.2.4.10.1.0.0.0.26.its people are bigger and stronger than their non alpha counterparts
+2.Azure .0.1.1.0.0.0.0.0.0.its people are known for having azure blue skin
+2.Arcane .0.40.1.0.0.1.1.0.5.its people are said to hold Arcane powers
+2.Arcane .0.60.1.0.0.1.1.0.5.its people are said to hold Great Arcane powers
+2.Aquatic .22.0.0.0.0.0.0.0.0.its people are aquatic
+2.Awoken .0.12.1.2.3.0.0.0.3.its people are said to have risen from a great sleep to fulfil a purpose
+2.Blind .0.7.2.0.0.0.0.0.27.its people cannot see but have honed their other senses greatly
+2.Banished .0.5.2.2.3.0.0.0.0.its people were banished from their true homelands
+2.Breeding .0.10.2.5.4.0.0.0.0.its people are known to breed fast, although their speedy breeding has made them a little bit weaker they are great in number
+2.Brooding .0.8.2.4.4.0.0.0.0.its people are known for producing great numbers of young
+2.Beastly .0.10.1.2.2.2.2.0.0.its people are said to be beastly in nature
+2.Barbaric .0.9.1.0.0.2.2.0.0.its people are barbaric and tough by nature
+2.Brutish .0.6.1.0.0.1.2.0.26.its people are much larger and more brutish than their counterparts
+2.Berserk .0.11.1.0.0.2.3.0.0.its people are berserk and savage
+2.Behemoth .0.12.4.15.3.0.0.0.0.its people are all of behemoth proportions
+2.Big-Eared .0.1.1.0.0.0.0.0.0.its people are renowned for their large ears
+2.Baby .0.2.3.0.0.1.2.0.10.its people are very young and childlike, considered by many to be nothing more than babies
+2.Blighted .0.10.2.0.0.0.0.2.1.its people are blighted and evil
+2.Black .0.10.1.0.0.0.0.0.0.its people are renowned for their pitch black skin
+2.Blue .0.0.0.0.0.0.0.0.0.its people are renowned for their sea-blue skin
+2.Brown .0.0.0.0.0.0.0.0.0.its people are renowned for their brown skin
+2.Bandit .0.5.1.0.0.0.0.2.13.its people are bandits who steal, fight and kill freely under a united banner
+2.Bronze .0.9.1.0.0.0.0.0.0.its people are said to have bronze skin
+2.Camouflage .0.20.1.2.3.0.0.0.0.its people are able to fully camouflage themselves to be more or less invisible
+2.Colourful .0.3.1.0.0.0.0.0.0.its people have colourful skin that often changes from one colour to another
+2.Crying .0.10.2.0.0.0.0.0.25.its people are known for their high emotions and for crying before combat
+2.Chanting .0.4.1.0.0.1.1.0.22.its people are known to ritualistically chant together including before battles
+2.Cackling .0.5.1.0.0.0.0.0.23.its people are known for letting off a flurry of terrifying cackles and laughs when approached by their enemies before battle
+2.Cretinous .0.10.2.0.0.0.0.2.0.its people are evil cretins
+2.Corrupt .0.2.1.0.0.0.0.2.37.its people are corrupted and evil, hellbent on destruction and suffering
+2.Conjoined .0.5.1.2.3.0.0.0.31.its people are all made up of conjoined twins
+2.Crested .0.0.0.0.0.0.0.0.0.its people are crested
+2.Cowardly .0.15.2.0.0.0.0.0.0.its people are said to be harmless, they are never aggressors but will defend themselves if needs be
+2.Childlike .0.2.3.0.0.1.2.0.10.its people are childlike and do not seem to ever fully age
+2.Cold .23.5.1.0.0.0.0.0.0.its people are immune to the cold
+2.Common .0.0.0.0.0.0.0.0.0.its people are known to be of a common variety of their race with little alterations
+2.Corsair .34.7.1.0.0.0.0.2.13.its people are reavers of the sea
+2.Colossal .0.9.4.10.3.0.0.0.0.its people are all colossal in size, taller than hills
+2.Cursed .0.4.3.0.0.0.0.0.1.its people are cursed to be weak
+2.Cursed .0.0.0.0.0.0.0.2.1.its people are cursed to be evil
+2.Cursed .0.0.0.0.0.1.3.0.1.its people are cursed to be savage
+2.Cruel .0.0.0.0.0.0.0.2.37.its people are cruel and evil by nature
+2.Chaotic .0.4.4.0.0.1.2.2.20.its people are chaotic in nature
+2.Celibate .0.2.1.5.3.0.0.0.0.its people are mostly celibate and do not procreate
+2.Confused .0.3.2.0.0.0.0.0.20.its people are often confused and mix up who their enemies and friends are
+2.Doomed .0.0.0.0.0.0.0.0.1.its people are doomed to fall some day according to ancient prophecy
+2.Damned .0.5.2.0.0.0.0.0.1.its people are damned to collapse some day according to ancient prophecy
+2.Dastardly .0.4.1.0.0.0.0.2.13.its people are dastardly robbers and thieves
+2.Dirty .0.2.2.0.0.0.0.0.0.its people are known to be dirty and are often covered in dirt and muck
+2.Deformed .0.5.2.2.3.1.2.0.24.its people are all deformed, each new generation is born with different defects
+2.Disfigured .0.10.2.0.0.0.0.0.24.its people go through ritualistic disfigurement as part of their culture
+2.Dreaded .0.35.1.0.0.1.2.2.0.its people are dreaded and feared by all around them for their battle skill
+2.Divine .0.30.1.0.0.0.0.1.0.its people are said to have divine energy
+2.Deatheater .0.5.1.2.3.0.0.2.16.its people are said to consume death itself, they are said to get stronger as their enemies fall before them
+2.Demonic .0.60.1.0.0.0.0.2.2.its people are demonic in nature and worship the demons of the southern gate
+2.Eldritch .0.5.4.5.2.1.3.2.44.its people are weird, unworldly, and sinister, and their appearance is uncanny
+2.Elite .0.40.1.2.3.0.0.0.21.its people are trained to the most elite quality and thus are feared and respected for their combat prowess
+2.Ever-Young .0.2.3.0.0.1.2.0.10.its people are cursed with being ever young and so never fully mature
+2.Eyeless .0.12.2.10.2.0.0.0.7.its people were born with no eyes, but have much better abilities with their other senses
+2.Eastern .0.0.0.0.0.0.0.0.0.its people hail from the east
+2.Evil .0.6.1.0.0.0.0.2.37.its people are evil and completely lack any kind of empathy for others, knowing only hatred and suffering
+2.Freed .0.0.0.0.0.0.0.0.4.its people were once enslaved but were freed
+2.Free .0.5.1.0.0.0.0.0.4.its people were once enslaved but broke free
+2.Faceless .0.0.0.0.0.0.0.0.45.its people are rumored to be able to switch their faces
+2.Feral .0.7.1.0.0.1.3.0.0.its people are feral and savage by nature
+2.Frozen .0.10.2.2.3.0.0.0.0.its peoples bodies are almost entirely frozen inside blocks of ice, it is unknown if this is a curse of a ritual but they seem to be able to survive inside the ice regardless
+2.Fake .0.0.0.0.0.0.0.0.3.its people aren't exactly how they appear
+2.Fertile .0.0.0.3.4.0.0.0.0.its people are known to be greatly fertile and to have many children
+2.Four-Eyed .0.5.1.0.0.0.0.0.29.its people have two pairs of eyes
+2.Freckled .0.0.0.0.0.0.0.0.0.its people are known for their freckles
+2.Furious .0.15.1.0.0.0.0.0.0.its people have great tempers and are tough and worthy foes in battle
+2.Fragile .0.3.5.0.0.0.0.0.0.its people are immensely fragile and often perish from trivial injuries
+2.Great .0.22.1.0.0.0.0.0.0.its people are known as great
+2.Grand .0.21.1.0.0.0.0.0.0.its people are known as grand
+2.Glowing .0.5.1.0.0.0.0.0.0.its people are renowned for their glowing skin
+2.Ghostly .0.10.1.0.0.0.0.0.0.its people are said to be spectral and ghostly
+2.Goliath .0.11.4.15.3.0.0.0.0.its people are all of goliath proportions
+2.Gentle .0.10.2.0.0.0.0.0.0.its people are gentle and do not wish to bring harm on others, as such they do not seek violence
+2.Grey .0.0.0.0.0.0.0.0.0.its people are renowned for their grey skin
+2.Green .0.0.0.0.0.0.0.0.0.its people are renowned for their grass-green skin
+2.Gold .0.12.1.0.0.0.0.0.0.its people are said to have golden skin
+2.Grim .0.5.1.0.0.0.0.0.2.its people are angry by nature and are grim by action, they are tough and fearsome, a worthy foe in battle
+2.Hairless .0.0.0.0.0.0.0.0.0.its people are renowned for their complete lack of body hair
+2.Horned .0.13.1.0.0.0.0.0.0.its people are known to have a pair of horns on their heads
+2.Happy .0.0.0.5.1.0.0.1.36.its people are known to be happy and friendly to those who seek them
+2.Horned .0.19.1.0.0.0.0.0.0.its people are known to be covered with horns
+2.Horned .0.23.1.0.0.0.0.0.0.its people are known to be covered with vast horns
+2.Hulking .0.10.1.0.0.0.0.0.26.its people are much larger and more brutish than their non-hulking counterparts
+2.Hermit .27.10.2.0.0.0.0.0.11.its people are hermits and live poorly
+2.Harmless .0.2.3.0.0.0.0.0.0.its people are said to be harmless, they are never aggressors but will defend themselves if needs be
+2.Holy .0.2.4.0.0.1.1.1.0.its people are blessed by their gods
+2.Hollow .0.10.2.0.0.2.3.2.37.its people are said to have hollow souls, their is a great deal of mystery surrounding them
+2.Inbred .0.2.3.2.4.2.2.0.24.its people are known to inbreed creating larger populations of weak and misformed offspring
+2.Invincible .0.9.4.4.3.0.0.0.0.its people are said to be invincible, unbeatable by any in single combat
+2.Immortal .0.10.4.4.3.0.0.0.0.its people are said to be immortal, forgotten by death
+2.Infected .0.2.3.0.0.0.0.0.0.its people are said to be infected with a strange disease
+2.Invisible .0.3.1.0.0.0.0.0.0.its people are always invisible, making it hard to interact with them, but also making them excellent spies and assassins
+2.Ivory .0.0.0.0.0.0.0.0.0.its people are renowned for their ivory white coloured skin
+2.Iron .0.10.1.0.0.0.0.0.0.its people are said to have iron skin
+2.Imperial .0.8.1.0.0.0.0.0.0.its people are followers of the philosophy of imperial dominance
+2.Infernal .0.5.1.0.0.0.0.0.0.its people are said to be fuelled by an infernal flame
+2.Juggernaut .0.7.4.4.3.0.0.0.0.its people are known as juggernauts, as strong as they come and tough by nature
+2.Juvenile .0.2.3.0.0.1.2.0.10.its people are known for their juvenile appearance and nature
+2.Laughing .0.2.1.0.0.0.0.0.23.its people are renowned for their pre-battle warlaugh, a twisted laugh used to scare off would be invaders
+2.Loremaster .0.1.1.0.0.2.1.0.0.its people are known for their writing, their famous scrolls, and their lorekeeping, allowing them to become highly intelligent
+2.Longneck .0.0.0.0.0.0.0.0.28.its people are renowned for their long necks
+2.Longhead .0.2.1.0.0.0.0.0.26.its people are renowned for their long foreheads
+2.Little .0.3.2.0.0.0.0.0.10.its people are smaller than usual for their race
+2.Legendary .0.10.4.2.4.4.1.0.0.its people are legendary by nature, they are known to be very powerful
+2.Lost .0.6.1.0.0.0.0.0.0.its people are said to be the lost remnants of a great civilisation
+2.Mad .0.0.0.5.2.1.2.0.20.its people are said to have lost their minds long ago, they are unstable and unknowable
+2.Majestic .0.1.1.0.0.0.0.0.0.its people are majestic and are famed for their beauty and style
+2.Metal .0.10.1.5.2.0.0.0.0.its people are made of a metallic substance
+2.Magic .0.30.1.0.0.1.1.0.5.its people are said to have magical powers
+2.Mutated .0.6.2.2.3.1.2.0.24.its people are all deformed, each new generation is born with different defects
+2.Magic .0.50.1.0.0.1.1.0.5.its people are said to have vast magical powers
+2.Mighty .0.2.4.0.0.0.0.0.0.its people are mighty and strong
+2.Mystic .0.20.1.0.0.1.1.0.5.its people are said to be mystics
+2.Mouthless .0.8.2.0.0.2.1.0.41.its people do not have mouthes
+2.Monstrous .0.3.4.2.3.1.3.2.44.its people are horrific and monstrous beings
+2.Marauding .0.8.1.0.0.0.0.2.13.its people are marauders who raid across the lands for riches and valuables
+2.Marauder .0.8.1.0.0.0.0.2.13.its people are marauders who raid across the lands for riches and valuables
+2.Mercantile .0.0.0.0.0.1.1.0.35.its people are known for their mercantilistic nature often trading with eachother and sometimes outsiders
+2.Masked .0.15.1.0.0.0.0.0.0.its people hide away behind vast and decorated masks
+2.Masked .0.10.1.0.0.0.0.0.0.its people all wear simple small masks to divide them by wealth and class
+2.Many-Eyed .0.7.1.0.0.0.0.0.30.its people have more than a single pair of eyes
+2.New .0.0.0.0.0.0.0.0.0.its people have split from their ancestors and follow new ways
+2.Nomadic .26.3.1.0.0.0.0.0.0.its people are nomadic and travel place to place
+2.Noseless .0.3.2.0.0.0.0.0.42.its people do not have noses
+2.Northwestern .0.0.0.0.0.0.0.0.0.its people hail from the Northwest
+2.Northeastern .0.0.0.0.0.0.0.0.0.its people hail from the Northeast
+2.Northern .0.0.0.0.0.0.0.0.0.its people hail from the north
+2.Nightmare .0.4.4.3.3.1.3.2.44.its people are nightmarish red skinned monsters
+2.Orange .0.0.0.0.0.0.0.0.0.its people are renowned for their orange skin
+2.Psychotic .0.21.1.0.0.1.2.2.20.its people are known to be psychotic in nature
+2.Purple .0.0.0.0.0.0.0.0.0.its people are renowned for their purple skin
+2.Primal .0.10.1.0.0.1.3.0.0.its people are filled with primal rage and are completely savage by nature
+2.Primordial .0.0.0.0.0.0.0.0.0.its people are said to have existed since the beginning of time
+2.Primitive .0.0.0.0.0.1.3.0.0.its people are very primitive and uncivilised
+2.Purging .0.3.1.0.0.0.0.2.0.its people want to purge the world of anything and anyone they deem unpure
+2.Pygmy .0.50.2.100.1.0.0.0.10.its people are pygmies, tiny in size and strength but great in number
+2.Pirate .34.6.1.0.0.0.0.2.13.its people are reavers of the sea
+2.Pillaging .0.5.1.0.0.0.0.2.13.its people are pillagers and raiders and take what they want
+2.Paragon .0.15.1.3.1.2.1.0.21.its people are the paragon, the best of their kind in every way
+2.Pacifist .0.10.2.0.0.0.0.0.0.its people are pacifists and do not believe in violence unless they have no other choice
+2.Pale .0.0.0.0.0.0.0.0.0.its people are renowned for their pale skin
+2.Quiet .0.5.1.0.0.0.0.0.0.its people rarely speak and are renowned for their quiet lands
+2.Red .0.0.0.0.0.0.0.0.0.its people are renowned for their blood-red skin
+2.Resurrecting .0.10.2.0.0.0.0.0.19.its people are known to have trouble dying, when struck down they sometimes magically get back up, they have feisty souls and live on the fringe of death's reach
+2.Resurrected .0.4.2.0.0.0.0.0.0.its people were resurrected after they died
+2.Royal .0.21.1.0.0.0.0.0.0.its people believe they are all of royal blood
+2.Rainbow .0.3.1.0.0.0.0.0.0.its people have rainbow skin that appears to look one colour one moment but then change the next
+2.Roving .26.1.1.0.0.0.0.0.0.its people rove across the lands in search of temporary settlement
+2.Rotting .0.5.2.0.0.0.0.2.3.its people are slowly decaying and seek to spread their suffering on the world
+2.Ransacking .0.3.1.0.0.0.0.2.13.its people ransack and steal from their neighbours
+2.Rabid .0.4.1.3.2.1.3.0.0.its people are rabid and savage
+2.Raiding .0.6.1.0.0.0.0.2.13.its people are raiders who take what they want without asking and kill those who oppose them
+2.Raider .0.6.1.0.0.0.0.2.13.its people are raiders who take what they want without asking and kill those who oppose them
+2.Reaving .0.7.1.0.0.0.0.2.13.its people are reavers who's livelyhood is based on slaughtering the weak and looting what remains
+2.Reaver .0.7.1.0.0.0.0.2.13.its people are reavers who's livelyhood is based on slaughtering the weak and looting what remains
+2.Soul .0.8.1.0.0.0.0.0.0.its people ritualistically embody the souls of their ancestors
+2.Steel .0.2.1.0.0.0.0.0.0.its people are known for their extensive use of steel
+2.Steel .0.15.1.6.2.0.0.0.0.its people are made of steel
+2.Silver .0.10.1.0.0.0.0.0.0.its people are said to have silver skin
+2.Shrouded .0.25.1.2.3.0.0.0.0.its people are shrouded in thick grey clouds of smoke at all times making them hard to fight
+2.Stupid .0.10.2.0.0.1.2.0.14.its people are very stupid
+2.Super .0.3.4.2.3.0.0.0.0.its people are known as an immensely strong and powerful iteration of their race
+2.Short .0.2.2.0.0.0.0.0.10.it's people are shorter than usual for their race
+2.Skeletal .0.2.3.0.0.0.0.2.3.its people are entirely skeletal and mindlessly evil, being controlled by something dark and powerful
+2.Sacred .0.15.1.20.2.0.0.0.0.its people are said to be sacred to the balance of things
+2.Souleater .0.10.1.2.3.0.0.2.16.its people are said to consume the souls of the dead, they are said to get stronger as their enemies fall before them
+2.Sparse .0.0.0.4.3.0.0.0.0.its people are sparse in number for their lands and live in low populations
+2.Silent .0.0.0.0.0.0.0.0.0.its people are renowned for their silence, they rarely make noise
+2.Spectral .0.10.1.0.0.0.0.0.0.its people are said to be spectral and ghostly
+2.Seafaring .22.1.1.0.0.0.0.0.0.its people are seafaring and spend much time on the sea
+2.Swarming .0.50.2.200.1.0.0.0.0.its people though weak live in great swaths and swarms
+2.Supernatural .0.28.1.0.0.0.0.0.0.its people are said to hold strange supernatural powers
+2.Skinned .0.0.0.0.0.0.0.0.0.its people are known for having very little skin
+2.Strange .0.2.1.0.0.0.0.0.39.its people are known for their strange nature and behaviour
+2.Scaly .0.2.1.0.0.0.0.0.0.its people are known to have skin covered in scales
+2.Scrawny .0.3.3.0.0.0.0.0.10.its people are scrawny and weak
+2.Sightless .0.15.2.10.2.0.0.0.7.its people do not have eyes and thus cannot see
+2.Striped .0.3.1.0.0.0.0.0.0.its people are marked with a pattern of stripes
+2.Shamanist .0.5.1.0.0.0.0.0.5.its people follow shamanistic rituals
+2.Sentinel .0.25.1.5.2.0.0.0.0.its people are known to guard a great lost civilisation
+2.Southeastern .0.0.0.0.0.0.0.0.0.its people hail from the Southeast
+2.Southwestern .0.0.0.0.0.0.0.0.0.its people hail from the Southwest
+2.Stretch-Head .0.5.1.0.0.0.0.0.43.its people have strange stretched out and twisted heads
+2.Savage .0.3.1.0.0.1.3.0.0.its people are savages
+2.Southern .0.0.0.0.0.0.0.0.0.its people hail from the south
+2.Tusked .0.18.1.0.0.0.0.0.0.its people are renowned for their large tusks
+2.Tall .0.3.1.0.0.0.0.0.26.its people are renowned for being taller than other counterparts
+2.Terrestrial .0.0.0.0.0.0.0.0.0.its people are said to be some of the earliest living beings on the planet
+2.Tormented .0.5.2.0.0.0.0.0.0.its people have suffered and been tormented in the past and are still suffering the aftermath
+2.Translucent .0.1.1.0.0.0.0.0.0.its people have translucent skin and cannot be seen without great effort
+2.Two-Headed .0.10.1.0.0.0.0.0.31.its people have two heads
+2.Two-Headed Masked .0.12.1.0.0.0.0.0.33.its people have two heads and hide away behind vast and decorated masks
+2.Three-Headed .0.50.1.2.3.0.0.0.32.its people have three heads
+2.Toothy .0.1.1.0.0.0.0.0.40.its people have much larger tooth filled mouthes
+2.Three-Headed Masked .0.52.1.2.3.0.0.0.34.its people have three heads and hide away behind vast and decorated masks
+2.Tattooed .0.5.1.0.0.1.2.0.0.its people are covered in tribal tattoos that send fear into the hearts of their enemies
+2.Tattooed .0.12.1.0.0.1.2.0.5.its people are covered in ancestral talismanic tattoos that contain within them old magic and seals of protection
+2.Thoughtless .0.10.2.0.0.1.2.0.14.its people do not often think and are thus considered fairly unintelligent
+2.Titan .0.10.4.10.3.0.0.0.0.its people are all great titans
+2.Tribal .0.3.1.0.0.2.3.0.0.its people are tribal and uncivilised
+2.Three-Eyed .0.25.1.0.0.0.0.0.0.its people are renowned for their three-eyes, which give them predatory powers
+2.Twin .0.15.1.2.3.0.0.0.31.its people are each twinned together and bonded by flesh
+2.Ugly .0.2.2.2.3.0.0.0.24.its people are all deformed, each new generation is born with different defects
+2.Unborn .0.0.0.0.0.0.0.0.45.its people are said to have been brought into existence through some way other than birth, they are strange indeed
+2.Ungovernable .0.0.0.0.0.1.2.0.8.its people are considered ungovernable and frequently replace their rulers
+2.Undead .0.10.2.0.0.1.3.2.0.its people are between life and death
+2.Unholy .0.5.2.0.0.0.0.2.0.its people are forsaken by their gods, they are cursed beings
+2.Vile .0.2.1.0.0.1.2.2.37.its people are known to be a repulsive and vile sight
+2.Violet .0.0.0.0.0.0.0.0.0.its people are renowned for their violet coloured skin
+2.Vicious .0.29.1.0.0.1.2.2.0.its people are said to be vicious and aggressive from birth till death
+2.Warborn .0.18.1.5.1.0.0.0.0.its people are known for their fondness of war
+2.Weeping .0.5.2.0.0.0.0.0.25.its people are known for their tears
+2.White .0.0.0.0.0.0.0.0.0.its people are renowned for their cloud white skin
+2.Wasting .0.5.2.5.2.0.0.0.1.its people are slowly decaying, its lands growing more barren as time goes on
+2.Winged .0.15.1.0.0.0.0.0.0.its people are known to be winged
+2.Wandering .26.2.1.0.0.0.0.0.0.its people are wanderers who do not settle
+2.Warped .0.0.0.0.0.0.0.2.20.its people have warped minds and are not to be trusted
+2.Warty .0.0.0.0.0.0.0.2.0.its people are covered in warts
+2.Weak .0.2.3.0.0.0.0.0.0.its people are weak and lack strength or will
+2.Wise .0.2.1.2.2.3.1.0.0.its people are wise and intelligent
+2.Warrior .0.19.1.0.0.0.0.0.0.its people are proud warriors
+2.Wild .0.0.0.0.0.2.3.0.0.its people are wild and savage
+2.Western .0.0.0.0.0.0.0.0.0.its people hail from the west
+2.Wretched .0.1.1.0.0.1.2.2.37.its people are known for their wretched ways
+2.Wraith .0.25.1.0.0.0.0.2.37.its people are wraith-like and evil
+2.Yellow .0.0.0.0.0.0.0.0.0.its people are renowned for their yellow skin
+2.Youthful .0.2.3.0.0.1.2.0.10.its people are known for their extremely youthful appearance

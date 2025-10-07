@@ -1,0 +1,14 @@
+👣️👣️👣️👣️👣️👣️👣️👣️👣️👣️
+🦄️this is still smartest way , cuz headless servers/ssh (could even hook 2 gl renderer on mine ;)🔍️
+🥇️
+💌️
+🏣️
+tabs in terminal!? (using tab command with terminal open obv uses terminal instead. etc) 
+
+
+the more i mess with this it makes me wonder. am i just stupid as hell? {y do we go back and forth gl/or terminal}
+
+why dont we just remake the terminal/linux_gui...😬️ in "gl"(other than emojis look ugly , ofc? ) 
+
+real question is why haven't u made ur own kernel xv6linux like, with its own shit? ok, well we are tool-shipping. chill.🥶️
+👣️👣️👣️👣️👣️👣️👣️👣️👣️👣️👣️

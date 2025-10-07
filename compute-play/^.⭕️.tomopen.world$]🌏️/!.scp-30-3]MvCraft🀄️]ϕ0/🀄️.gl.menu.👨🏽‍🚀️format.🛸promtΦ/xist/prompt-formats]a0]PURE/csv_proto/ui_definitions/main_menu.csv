@@ -1,0 +1,9 @@
+element_type,id,parent_id,x,y,width,height,relative_x,relative_y,text,onclick_callback,properties
+button,btn_start,root,0,0,120,40,0.5,0.4,"Start Game","start_game",
+button,btn_options,root,0,0,120,40,0.5,0.5,"Options","show_options",
+button,btn_exit,root,0,0,120,40,0.5,0.6,"Exit","exit_app",
+slider,sldr_volume,root,100,100,200,20,0.1,0.8,"","volume_changed","min=0;max=100;value=50"
+label,txt_title,root,0,0,300,50,0.5,0.2,"Game Title","","font_size=24;text_align=center"
+canvas,game_area,root,50,150,900,500,0.05,0.15,"","","width=900;height=500"
+container,ui_panel,root,0,0,250,300,0.75,0.5,"","","background=0.2;0.2;0.2;0.7"
+button,btn_fullscreen,ui_panel,0,0,100,30,0.8,0.1,"Fullscreen","toggle_fullscreen",

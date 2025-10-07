@@ -1,0 +1,87 @@
+>yt RPG Construction Tool: Dante[34]
+[BGM] [MSX2] [opll] RPGコンストラクションツール Dante [...
+=====================
+https://www.youtube.com/watch?v=M4lmq1nzvF4
+RPG Construction Tool: Dante[34]
+
+------------
+https://www.youtube.com/watch?v=PpN9AQ2MQa4
+--------------------------------------
+
+>qante is the freakin way. its all good tho refactor. 
+(we have to refactor dante 2 fyi
+also dante player is ass, it can literally be ascii player.
+(can even do 3d. should do now m8, 4 "stds")
+
+im stoked on this work on geting "MSR" 2 play thru qlayer.c
+
+
+
+📌️
+1.refactor 1.qante editor 2 factor map maker
+as seperate .+x <- 4 discipline + future precedent
+(then immedia
+tely do events the same way ) 
+
+2. fix quante player 2 take input w/o "enter" 
+(and add 3d-ascii 2 maplayer.<-reads same start.txt;)😶‍🌫️️
+
+(also are we rendering emojis correctly?)
+(rmmvc actually already has this fx , get old) 
+
+3. start doing events and see how it transfers 2 .gl
+
+4. look into scripting. 
+
+5. integreat text option? 
+
+6. piece banks? event highliting in gl? computer viz tab? 
+7. windows pc for wsr has touchscreen(pen later)👻️🖋️
+8.periphs (diffusion etc) +c--/halo = arduino/.com💈️
+music . text2speach2text recog/ctrl(bedridn) , audio.fx🔊️
+(theme music midi.bank like rmmv, but gen)
+
+9.paper cpu + boardgame rl/crypt by hand etc. 
+
+
+10. acedemic help = mcatz = literaly learn chems /pharm
+https://youtube.com/watch?v=g29op9-A2j0 
+YouTube
+MCAT Simplified
+MCAT BIOCHEMISTRY | MCAT SIMPLIFIED
+___________________________________________
+
+
+
+🏋‍♀️️ku may not like this but this is peak perf🏋‍♀️️
+
+we will do ai , plugins etc.and be logic heavy but
+we can still chip away at gui . gui is gospel. saw gud.
+
+
+
+🦉️
+real goals are getting human 2 Ⓜ️tomogichatbots 2 do 
+crafting/banks/localaimulti/network/install/supermenu/etc
+🦉️
+📌️
+
+
+[Map]
+Size: 5 5
+Row1: .P...
+Row2: .....
+Row3: .E...
+Row4: .....
+Row5: .....
+[Players]
+Player1, base_health=100, base_strength=10, multiplier=1.2, xp_factor=100
+[Enemies]
+Goblin, level=2, base_health=50, base_strength=5, multiplier=1.1, xp_reward=50
+[Items]
+Potion, type=potion, effect=heal 20
+Sword, type=weapon, effect=strength +5
+[Events]
+2 2, type=battle, param=Battle1
+[Battles]
+Battle1, enemies=Goblin, rewards=Potion

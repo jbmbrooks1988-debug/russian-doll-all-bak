@@ -1,0 +1,3 @@
+Trend type: Mean-Reverting
+Volatility (sigma): 0.0101
+Target mean: 8592.50

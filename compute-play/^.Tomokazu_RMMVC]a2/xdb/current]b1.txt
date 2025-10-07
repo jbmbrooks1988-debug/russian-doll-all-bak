@@ -1,0 +1,141 @@
+👿️>not using debilu as main... but outsourcing gemini/qwen =
+no weird emoji paths, clean env. etc... i like it. 👿️
+
+📅️6️⃣️6️⃣️6️⃣️
+add those lil updates really fast.(ray cast picker main fix)+opt
+ then pull WSR 2 QWEN-DEB 4 NOS🏍️
+
+(we could probably pull peices back 2 rmmv? )
+
+Y ? i do wanna do rmmvc3d clone.i just wanna make sure
+we accomodate all the data structs... and are up 2 speed y not? 
+
+also we can push more into daw. 
+and even image gen thru pixel cloning
+and even chatai/meta ai.
+
+
++
+i wanna sus out more features for wsr 
+and sus out monopoly + hax and compare (monopoly spex is tm)
++ sus out the tamogotchis in diff directions...
+(sus out a 'multi tamo playground type deal (mem ,etc) right?🐣️
+
+also wanna make p2p infra that allows uploading of "shorts"+torrents
+supabase hax, crypto , etc💱️
+
+>also we have incrementals auto running. 
+if sp did that we coudl guide it to dump dustopedia stuff 
+on staticish site hooks. and build out site even pre login
+as some sort of one man portfolio on steroids type deal 
+(obv will rebrand page but 4 now that blurb is fine executively)
+📅️6️⃣️6️⃣️6️⃣️
+sept 6. 
+optomized emojis, 
+added raycasting . 
+fixed cam ctrls a bit
+
+cons : 
+so ray cast is going but its interfereing with menu picker in 3d <-
+thinks im trying to pick ray [instead of emoji/options](2d/3d toggle works tho)
+
+> take out "sides" in grid but leave squares = 3dchess♟️❤️‍🔥️💞️
+<- this shoudl allow better "plane picking" as well... ❤️‍🔥️💞️
+>rotate 45.o and make sure its"horizontal"
+
+>still haven't added "thumbs"scroll
+> align more with rmmv {tabs} including save/load maps
+
+
+>show grok files. tell it ur making game engine mvc. or no w/e
+
+>rigt click on "objects" pulls up menu (even in 2d)<-event menu
+
+> add "ar" toggle at least 4 tsots etc. u make utube...try it 4 data📹️
+
+
+>i wanna finsih wsr. 
+>i wanna do peices. 
+> refactor cache monopoly/zelda-rouge/esp civ 
+> then go back to "META_MASTER" ideas...
+> can open(mod?) 18th files seperately , btw. 
+
+>go crazy prompting entire universe "solar sys gravity/flight/space
+/cars / ppl gta7"using just emoji blocks. 
+> minecraft + chem craft + magicraft
+
+>remake chimochio / solpen "INSIDE RMMVC" y  ? level genetc tools=ez.
+help ai. try 2 integrate. teach ai natively then if we hook in
+ollama later we can charge ppl like windsurf.and it will helpem.
+
+>training our chat bot. start making chat in c . +web supabase?
+
+>wanna do macro TSOTS app window. 
+
+💳️
+The fix is to preload and cache textures for all emojis once at initialization, then reuse them in rendering. Since get_num_emojis() returns a fixed (small) set of emojis, this is straightforward and efficient.
+💳️
+
+dont forget lfs and framebuffer.
+ur making sick progress even if u dont "see/feel" it ]mvc/emojiopt
+
+
+going 2 market isn't a bad thing, can we do pre wishlist
+user surveys somehow into crm? 
+
+
+- 
+b4 this ? google. github . stackoverflow was a REAL thing in 2020+-
+📅️
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+
+____________________
+raycaster barely on. break it up w/e
+and reprompt smoller . its alreayd linked m8 . 
++ super close 2 "end goals of 3d (maybe THE end)
+not counting dumb liil stuff , even ar is ez  right? 
+
+(use early ass example or w/e ez]glu
+
+! weve done raycasters b4. 
+it maybe obscured by 2 many blocks but read thru the code
+most of it is super legit.
+
+-------------
+thumb scroll... more tight pro looking stuff
+
+______
+im guessing the z level loaded @ 0
+not at the level we quit at
+so thats a nothing burger
+however
+would be nice i suppose
+@ least 2 make sure were healthy quicker
+_____________________
+📲️
+
+❤️‍🔥️
+📛️
+ cli render and gl rendering (even web?)
+ ultimately ur looking for some kind of .txt gui based scripting , right? 
+ (and that can parse 2 "WRAITH" also)
+ 
+ protip? : i would do one thing at a time 
+ build it in c first as MVC , then theoretically u can load "V" from file.txt
+ right? 
+ ai can help u with that no problem.wuts the point? 
+ 
+ io cohesion if nothing else tbh. (std io api's tbh) get it? 
+📛️
+❤️‍🔥️
+file:///media/no/b7ced73c-5231-4462-b98d-64e38fe2df9e/home/jbez/Desktop/%5E.📶️.SHARE%5D/%5E.🦾️%5Dfullsharezip/💪🏾️%5D.no-desk.sharezip/📲️📵️.GTFO.flxbx.📦️arcbit♏️/%23.⛷️LOOSE-TANGENT%5D2wild%5D🎄️⛷️/🪆️.a0/📟️.a0/❤️‍🔥️/❤️‍🔥️%0A📛️.gui.script.io.y%3F.how.txt
+📲️
+

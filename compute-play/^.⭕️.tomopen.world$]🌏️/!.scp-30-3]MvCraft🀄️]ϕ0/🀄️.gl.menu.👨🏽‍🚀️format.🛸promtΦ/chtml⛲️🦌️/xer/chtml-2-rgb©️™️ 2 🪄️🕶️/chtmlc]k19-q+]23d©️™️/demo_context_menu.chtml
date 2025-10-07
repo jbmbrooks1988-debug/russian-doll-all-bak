@@ -1,0 +1,24 @@
+<window title="Context Menu Demo" width="800" height="600">
+    <!-- Regular menu at top -->
+    <menu id="main_menu" x="0" y="575" width="800" height="25" label="Main Menu" color="#555555" onClick="menu_click_handler">
+        <menuitem x="0" y="0" width="800" height="20" label="File" color="#CCCCCC" onClick="file_menu_handler" />
+        <menuitem x="0" y="0" width="800" height="20" label="Edit" color="#CCCCCC" onClick="edit_menu_handler" />
+        <menuitem x="0" y="0" width="800" height="20" label="View" color="#CCCCCC" onClick="view_menu_handler" />
+    </menu>
+    
+    <!-- Generic context menu that will appear on right-click -->
+    <menu id="context_menu" x="0" y="0" width="150" height="25" label="Generic Context Menu" color="#444444" onClick="context_menu_handler">
+        <menuitem x="0" y="0" width="150" height="20" label="Copy" color="#CCCCCC" onClick="copy_handler" />
+        <menuitem x="0" y="0" width="150" height="20" label="Paste" color="#CCCCCC" onClick="paste_handler" />
+        <menuitem x="0" y="0" width="150" height="20" label="Settings" color="#CCCCCC" onClick="settings_handler" />
+        <menuitem x="0" y="0" width="150" height="20" label="About" color="#CCCCCC" onClick="about_handler" />
+    </menu>
+    
+    <header y="550" width="800" height="25" color="#333333">
+        <text value="Context Menu Demo - Right-click anywhere to see context menu" x="10" y="565" color="#FFFFFF" />
+    </header>
+    <panel x="10" y="10" width="780" height="530" color="#444444">
+        <button id="test_button" x="10" y="20" width="100" height="30" label="Test Button" onClick="button_click_handler" />
+        <text id="instructions" x="10" y="60" value="Left-click the main menu to toggle it open/closed. Right-click anywhere to see the context menu." color="#FFFFFF" />
+    </panel>
+</window>

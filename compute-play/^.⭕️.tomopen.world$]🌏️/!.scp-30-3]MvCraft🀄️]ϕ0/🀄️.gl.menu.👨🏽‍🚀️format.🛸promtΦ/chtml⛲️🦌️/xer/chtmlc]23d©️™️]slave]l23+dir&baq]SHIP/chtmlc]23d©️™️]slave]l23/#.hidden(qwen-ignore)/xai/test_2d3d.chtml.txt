@@ -1,0 +1,16 @@
+<window title="2D/3D View Switching Test" width="800" height="600">
+    <panel x="10" y="10" width="780" height="580" color="#444444">
+        <!-- Buttons to switch between 2D and 3D views -->
+        <button id="view_2d_button" x="10" y="20" width="80" height="30" label="2D View" onClick="switch_to_2d_handler" />
+        <button id="view_3d_button" x="100" y="20" width="80" height="30" label="3D View" onClick="switch_to_3d_handler" />
+        
+        <text id="instructions" x="200" y="25" value="Click 2D/3D buttons to switch view modes" color="#FFFFFF" />
+        
+        <!-- Canvas with 2D/3D view capability -->
+        <canvas id="game_canvas" x="10" y="60" width="400" height="300" label="Game Canvas" view_mode="2d" />
+        
+        <!-- Run game module button -->
+        <button id="run_module_button" x="10" y="370" width="150" height="30" label="Run Game Module" onClick="run_module_handler" />
+        <text id="status" x="10" y="410" value="Use arrow keys to move player" color="#FFFFFF" />
+    </panel>
+</window>

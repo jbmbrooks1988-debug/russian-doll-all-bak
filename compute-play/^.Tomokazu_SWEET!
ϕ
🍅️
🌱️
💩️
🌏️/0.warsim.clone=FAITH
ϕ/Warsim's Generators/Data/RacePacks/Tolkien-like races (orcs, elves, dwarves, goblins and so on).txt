@@ -1,0 +1,11 @@
+Ents.8.0.0.5.25.6.Entling.80.Ent.180.Ent Champion.230.known to be large tree folk, with thick bark and the ability to speak, they have rooted feet but can move and prefer solitude than the company of others
+Treemen.8.0.0.5.24.6.Sapling.20.Treeman.190.Treeman Champion.300.known to be large tree folk, with thick bark and the ability to speak, they have rooted feet but can move and prefer solitude than the company of others
+Elves.1.0.0.5.75.6.Elf.50.Elven Guardian.120.Elven Elite.170.known for their great instinct and generally peaceful and isolationist nature elves are a powerful race
+Dwarves.1.0.0.0.70.5.Dwarf.50.Dwarvern Warrior.120.Dwarvern Elite.170.known for their affinity to mining dwarves are small in stature but stocky and strong, they are also said to grow the mightiest beards
+Men.1.0.0.0.100.5.Peasant.50.Soldier.100.Knight.150.known to settle and grow great kingdoms men are known to be more adaptable and diverse than most
+Men.1.0.0.0.100.5.Barbarian.55.Barbarian Warrior.120.Barbarian of Krom.199.known to wander the land Ignorant to the civil customs of other men
+Men.1.0.0.0.95.5.Berserk Man.60.Berserker Warrior.130.Berserker Chief.179.known to eat psychoactive plants before battle to give themselves berserk abilities
+Halflings.1.0.0.0.120.5.Halfling.26.Halfling-At-Arms.70.Halfling Warrior.110.known as small peaceful farm folk, they are short but have great appetites and are known also for their large and hairy feet
+Orcs.2.0.0.6.105.4.Orc.60.Orcish Warrior.115.Orcish Champion.145.known for their brutish appearance and protruding tusks orcs are a powerful race of warriors
+Goblins.3.0.0.4.200.3.Goblin Tribal.40.Goblin Berserker.95.Goblin Warlord.125.known as mischeifious and often tribal peoples, goblins spread quickly and cause problems for all
+Ogres.2.0.0.6.15.2.Ogre.115.Ogre Brute.160.Ogre Champion.210.known as brutishly large usually cave dwelling creatures, ogres are aggressive and savage by nature

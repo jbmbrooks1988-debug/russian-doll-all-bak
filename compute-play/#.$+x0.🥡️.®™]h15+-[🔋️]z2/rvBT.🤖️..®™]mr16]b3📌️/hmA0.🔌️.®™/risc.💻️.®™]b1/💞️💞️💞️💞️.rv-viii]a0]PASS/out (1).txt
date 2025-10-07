@@ -1,0 +1,301 @@
+EXEC: opcode=4, op1=1, op2=2
+ADDI r1, 2
+PC: 2, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 4, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 6, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 8, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 10, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 12, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 14, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 16, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 18, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 20, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 22, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 24, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 26, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 28, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 30, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 32, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 34, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 36, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 38, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 40, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 42, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 44, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 46, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 48, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 50, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 52, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 54, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 56, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 58, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 60, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 62, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 64, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 66, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 68, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 70, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 72, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 74, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 76, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 78, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 80, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 82, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 84, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 86, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 88, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 90, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 92, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 94, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 96, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 98, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 100, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 102, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 104, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 106, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 108, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 110, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 112, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 114, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 116, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 118, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 120, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 122, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 124, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 126, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 128, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 130, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 132, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 134, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 136, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 138, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 140, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 142, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 144, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 146, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 148, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 150, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 152, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 154, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 156, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 158, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 160, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 162, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 164, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 166, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 168, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 170, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 172, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 174, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 176, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 178, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 180, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 182, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 184, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 186, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 188, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 190, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 192, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 194, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 196, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 198, REG: [0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 200, REG: [255,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0], MEM[0]: 129
+Halted: Possible infinite loop

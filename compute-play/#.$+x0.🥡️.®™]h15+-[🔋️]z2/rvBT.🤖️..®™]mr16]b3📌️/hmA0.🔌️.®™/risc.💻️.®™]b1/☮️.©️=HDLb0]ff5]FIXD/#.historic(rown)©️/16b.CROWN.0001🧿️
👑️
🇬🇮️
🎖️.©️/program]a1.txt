@@ -1,0 +1,23 @@
+# XOR: 0 XOR 1 -> RAM[16]
+0000000000000011  # chip_location = 3 (xor)
+0000000000010000  # ram_output_address = 16
+0000000000000000  # input_a = 0
+0000000000000001  # input_b = 1
+
+# Move RAM[16] to tape
+0000000000000000  # chip_location = 0 (no logic)
+0000000000000000  # ram_output_address = 0 (to tape)
+0000000000000011  # input_a = blank (3)
+0000000000010000  # input_b = RAM[16]
+
+# NAND: switch_0 NAND switch_1 -> RAM[17]
+0000000000000001  # chip_location = 1 (nand)
+0000000000010001  # ram_output_address = 17
+0000000000000101  # input_a = switch_0 (5)
+0000000000000110  # input_b = switch_1 (6)
+
+# D flip-flop: latch switch_0 on clock -> RAM[18]
+0000000000000010  # chip_location = 2 (d_flip_flop)
+0000000000010010  # ram_output_address = 18
+0000000000000101  # input_a = switch_0 (5)
+0000000000000111  # input_b = clock (7)

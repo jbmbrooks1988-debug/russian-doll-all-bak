@@ -1,0 +1,139 @@
+👾️🧷️
+🛗️
+❤️‍🔥️
+🎛️🔘️if i press human button , it can populate "supers" with "../ externals or not']w/e u want]KISS.+x🔘️🎛️
+
+❤️‍🔥️
+🔌️
+if something is plugin vs 'piece'? hope its modular but
+maybe determined by button/gameloop
+🔌️
+
+
+🔘️
+so i push button , it creates cam (that isn't independanlty controlled, but follows player 1rst/3rd w/e)
+(can change by reading state, can have its own state vars that "its own controller may change?"
+this shit gets confusing, only trial and error will alert u 2 the fact that its "FLEX"🥡️
+dont sweat it 4 now, and let it be flex.🥡️
+🚔️
+its like if cars were like this. some parts will work only if others are present etc. 
+only when u have a full car would u take it completely apart. or w/e otherwise it makes no sense, get it?
+
+👩‍🏫️
+ecs = for game engines; (games are ignorant of it. but not ours. our game is many mini engines"
+
+🥱️once u know "ours" u could do it in a cave 🥱️
+📼️
+https://www.youtube.com/watch?v=6djXCScdK54
+ECS Game Development Architecture - NUNUG July 2021
+📼️
+https://www.youtube.com/watch?v=XrRPGfQ4ru0&ab_channel=bbdtv
+Entity Component Systems - Nico Schoeman
+📼️etc
+"ecs is as generic as you make it"
+"good for games with lots of 'things'"
+
+E= container of components, just a 'unique id', no 'dangling references' = (file/)<-no-nakeds] uidp.®™]xx
+C= no logic just data , example "health.c makes mortal" ]state.txt supers/ map/
+S= logic only no state <relys on button/tape start> <- missing linker tales.
+(game loop has 2 call w/e "systems" it wants. {even if that is a master-slave sys or subbutton})
+👩‍🏫️
+🚔️
+👁️‍🗨️️@ some point we will "clock speed/perf" of all our running pid's somehow. gud 2 have 4 pro👁️‍🗨️️
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+🛗️
+🪞️(here from copying fbx. w/e kinda relevant)🪞️
+
+🎮️🕹️🚥️
+⬜️📌️
+
+want this logic : 
+if no state , so what , just means map cant move  
+
+if no map , so what, just means render 1 block
+
+
+if state but "no size/ position" 
+w/e should be on map. 
+
+adv : map has coords but so does state? override/overwrite map i guess. w/e <- yes. 
+
+🔳️
+ok. first thing. theres no super state. yes . make a button now <3
+
+🎥️also. i think we put the camera plugin in "box" and just adjust paths. w/e ]+clean kruft.txt's🎥️
+
+🗡️sword has its own menu. or is it box plugin again? wut gives u control of sword, 🖇️
+literal login? but wut tho? = a plugin , right? 
+a plugin from button box that adjusts sword position & dir could work, 
+then u wouldnt need 2 touch sword directly , this maybe the common sense missing link 🖇️🗡️
+
+
+
+
+but wut if i want to touch sword w/o login? 
+first of all u cant, so.. (otherwise it would need 2 run button 4 cam, or symlink a cam @ this point)
+(u use a "controller") ignore sword...more important is clock-link-updates]gameloop
+
+🔲️
+this may be the most important thing at this point. get it done fast pls🔲️
+
+(pressing button can setup maps {&start clock/ai} w/o turning on a camera btw)
+
+*original coords dont matter, but its not rocket science (we will have mc-biome/world gen later)
+
+📬️
+the problem im seeing is that "peices have camera coordinates"
+really it should be 'what'? that person controlling should? u REALLY NEED TO BORE THRU THIS STUF
+just 2 get us up and running enough 2 go 2 '2d'📬️
+🔳️
+📍️
+🎓️
+🦉️WHAT DOES WU NEED?
+🏍️
+🛗️
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+🥡️does flexbox have a size? 
+dont worry about that 4 now🥡️

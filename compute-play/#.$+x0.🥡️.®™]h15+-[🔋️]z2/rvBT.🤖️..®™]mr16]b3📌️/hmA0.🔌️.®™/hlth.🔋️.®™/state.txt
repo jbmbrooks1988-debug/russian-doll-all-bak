@@ -1,0 +1,2 @@
+hunger 0 
+energy 100 

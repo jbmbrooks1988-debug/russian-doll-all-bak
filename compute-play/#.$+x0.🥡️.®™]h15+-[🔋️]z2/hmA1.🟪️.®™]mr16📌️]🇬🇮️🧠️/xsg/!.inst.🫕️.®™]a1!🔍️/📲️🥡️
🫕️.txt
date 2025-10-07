@@ -1,0 +1,184 @@
+__________________________________
+!.pwr0.🔘️.®™ = turn on from cli, via path {via install script<- maybe we should start there 2 dispel confusion}
+acct.🗡️.®™]a0 = enter hashword 2 control "acct.🗡️" -> shows menu, user , child_boxes,lobby, messages, auction, appstore,etc]
+dwu3.🥡️.®™]a0 = ⬜️◻️◽️▫️ + 🔘️ a button for starting box (not parent; just .&//)
+		<starting box may open menu 4 how 2 start ; or a default w/e>
+		< 7 dwarfs start auto ; -> i want wu 2 start ; i should probably use lobby 4 that = creates premade box📌️>
+
++?
+🔌️ = list current and child directories {.&//} : 
+
+📍️
+maybe just go thru the motions of installing. 
+installing what? a path var that launches on tsots
+-----------
+once we hook up sword control with, then u can figure w/o this is
+training wheels, much needed 👩🏻‍🦽️(im avoiding cuz old qlu)
+but were not still in sponge bob, ur fine 🚇️do this NOW!🚇️🔍️👿️srlsly👨🏽‍💻️
+everyone/thing agrees. and its EZ🪲️
+📍️
+🫕️ok, well... there is info for this in fondu...
+
+ie : cat .bashrc = ON!
+so : cat ~/.bashrc = ON!
+🫕️
+📲️
+i made ~/#.UNDU/
+
+and put 
+
+\#.ONDU/bashrc\]UNHIDE]a0 .sh <-
+
+
+im about to fuck up my env vars, i can see it now...
+🆘️
+just run from /+x/tsots.+x
+
+__________________________________
+
+
+📳️📳️📳️📳️
+were gonna install "EACH FLEXBOX INSTANCE LOCALLY" <- ie it will have its own "source ~/xshrc.sh"
+
+try that now. manually , then we will make "install_local_tsots_flexbox.<hash>.sh" w/e
+
+🇬🇮️
+i want this to be in install_v1.sh 
+
+but instead of path , i want it to use arg1 
+
+ie 'sh install.sh !.inst.🫕️.®™/+x/'
+📜️
+install_v0.sh = "
+echo 'export PATH="$HOME/+x/+x:$PATH"' >> ~/xshrc.sh
+echo 'echo "✨ xshrc.sh loaded ($HOME/+x/+x/)! PATH=$PATH ✨"' >> ~/xshrc.sh
+
+echo 'source ~/xshrc.sh' >> ~/.bashrc
+source ~/.bashrc
+"
+📜️
+
+🇬🇮️
+📳️📳️📳️📳️
+
+🥈️
+then we will load up a "THE" cli : 
+which will "show flexboxes" 
+let me go in them with sword. 
+or turn their button on first, then let me go in them or w/e that means (starting a camera or w/e) 
+
+button will compile supers, obv, and we will see them, and go from there. 
+🥈️
+🛗️
+
+__________________________________
+we will just install our own program to /bin/ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+🛗️
+📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️
+/home/no/#.UNDU]a0
+📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️
+⁉️
+does this work from /222/ ? 
+⁉️
+
+⚠️
+(need 2 mkdir on user cpu, practice by deleting dir.<- from script ) 
+
+📜️
+echo 'export PATH="$HOME/+x/+x:$PATH"' >> ~/xshrc.sh
+echo 'echo "✨ xshrc.sh loaded! PATH=$PATH ✨"' >> ~/xshrc.sh
+
+echo 'source ~/xshrc.sh' >> ~/.bashrc
+source ~/.bashrc
+📜️
+⚠️
+❌️ (remove all addition)
+sed -i.bak '/^\s*source\s/d' ~/.bashrc          
+
+(+reset "temp? PATH")
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
+❌️
+🆘️
+    echo "This will overwrite the file." > filename.txt
+    echo "This will append to the file." >> filename.txt
+    
+    ls -a would show files like .bashrc, .profile, and .config
+    
+    cat .bash_history  = fix mac ? 
+🆘️
+
+
+📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️📲️
+🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️
+
+
+
+
+
+
+
+
+
+
+
+
+
+________________________________________________________________________________________
+
+Artifact 3: TSOTS Platform :
+
+This is 4 “ALL THINGS SERIOUS” ie : ai / quantum / brokerage/ simulation (methuselah
+
+“chimochio/rmmv/bots/etc(anything gamey/espn) = xirqus now…”
+<but they both have exchanges ;) they are compatible and we play that up ;pokemon red blue
+This is SLACK VS DISCORD ; basically >
+
+*cant xirqus do any of this?; some things are more accentuated , etc diff marketing user base{pkm red /blue or w/e} 
+
+
+1D instal, login , blockchain mining , chat , trade  + APIS’ yahoo / discord + AI :chat & more
+2D Ascii
+3D/AR + GRAPHS OF STOCKS
+PUSH FAST ! yes its macros, but a lot of heavy lifting should be done. 
+(theoretically u should only take 3 days lol <3) : i did this revision in afternoon with 8 hours 2 spare, i believe in u <3 {this is how i want my website 2 . will put login at top corner  ,bofa}
+
+
+
+
+
+
+
+
+
+__________________________________

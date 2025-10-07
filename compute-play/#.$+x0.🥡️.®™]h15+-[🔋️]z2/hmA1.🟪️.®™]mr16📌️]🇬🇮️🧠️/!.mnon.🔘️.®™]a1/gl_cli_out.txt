@@ -1,0 +1,7 @@
+2025-08-17T13:04:04
+
+Menu:
+0: end_turn
+1: hunger
+2: state
+Enter choice (0-2) or -1 to exit: 

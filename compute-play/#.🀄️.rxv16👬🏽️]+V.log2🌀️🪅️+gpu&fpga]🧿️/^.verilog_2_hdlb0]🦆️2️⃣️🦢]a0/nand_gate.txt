@@ -1,0 +1,15 @@
+module nand_gate(a, b, out);
+    input a, b;
+    output out;
+    wire w1, w2;
+    supply1 vdd;
+    supply0 gnd;
+
+    // PMOS transistors (pull-up network)
+    pmos (w1, vdd, a);
+    pmos (out, w1, b);
+
+    // NMOS transistors (pull-down network)
+    nmos (w2, out, a);
+    nmos (w2, gnd, b);
+endmodule

@@ -1,0 +1,3 @@
+INCLUDE netlist/netlist_xor.txt  # TMP3 = A ⊕ B (uses first two lines of input.txt)
+./+x/nand.+x TMP3 INPUT TMP4  # TMP4 = TMP3 ⊕ C (TMP3 and third line)
+./+x/nand.+x TMP4 TMP4 OUTPUT  # OUTPUT = TMP4

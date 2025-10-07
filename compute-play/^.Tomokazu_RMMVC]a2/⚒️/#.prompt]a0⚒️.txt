@@ -1,0 +1,46 @@
+📅️SEPT9 : 
+i am making a game editor. 
+
+the games should save and load from a directory 
+
+instead of save and load buttons, we want to make a file button , with 
+new save load that shows directory contents
+if new we will have user create new folder with name of their project
+if save or load they will load a dir with project data
+
+project data = global_events.txt , map_<mapnumber>.txt 's and map_events_<mapnumber>.txt
+❤️‍🔥️
+📅️
+
+
+___________________________________________________
+📅️✔️SEPT 8✔️
+______________________________________________________________________
+Menu is done "techinically " but isn't 'optomized"
+ 
+/media/no/b7ced73c-5231-4462-b98d-64e38fe2df9e/home/jbez/Desktop/^.📶️.SHARE]/^.🦾️]fullsharezip/💪🏾️].no-desk.sharezip/📲️📵️.GTFO.flxbx.📦️arcbit♏️/#.⛷️LOOSE-TANGENT]2wild]🎄️⛷️/🪆️.a0/📟️.a0/💻️🏓️/1.W$R-tifacts🏦️]c3/^.Tomokazu_Suite]ai]a2/⚒️/MENU💉️/menu.md
+
+_________________
+i am making a game editor
+
+user is able to open menu in 2d/3d canvas.this is what we are modifying
+when 'new' is clicked it should show a child menu screen near size of parent screen
+leave space at top and bottom for system buttons
+left side will be done later
+right side is where events go 
+Contents:
+user will click existing events to edit
+or empty space to create new event
+
+events commands : is a grandchild menu that is size of right side of parent menu
+
+it contains 3 pages of command option buttons
+
+the contents of these are store in 
+menu/event.commands.1.txt
+menu/event.commands.2.txt
+menu/event.commands.3.txt
+
+they should be read from file. no need to hardcode them
+
+ready? 

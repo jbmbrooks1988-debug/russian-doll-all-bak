@@ -1,0 +1,55 @@
+MAP SAVING ISSUE FIX - SUMMARY
+==============================
+
+PROBLEM FIXED:
+The application was overwriting map_0.txt when saving other maps, causing data loss.
+
+ROOT CAUSE IDENTIFIED:
+The save_project() function was hardcoded to always save to "map_0.txt" regardless of which map was currently loaded.
+
+SOLUTION IMPLEMENTED:
+
+1. FIXED save_project() function in controller_gl.c:
+   - Now saves to the currently loaded map file (current_map_file) instead of always saving to map_0.txt
+   - Provides clear user feedback showing which file was saved
+   - Added debug output for troubleshooting
+   - Proper error handling and memory management
+
+2. ENHANCED save_game_state() function in model_gl.c:
+   - Prioritizes using current_map_file when set and valid
+   - Only generates new filenames when no current map is loaded
+   - Preserves fallback behavior for debug cases
+
+RESULT:
+- Application correctly tracks and saves to the currently loaded map file
+- No more overwriting of existing maps
+- Users can safely create, edit, and save multiple maps without data loss
+- Clear feedback shows which file was saved
+
+COMPILATION STATUS:
+Successfully compiled without warnings.
+
+PENDING FEATURES:
+Scale and dimension editing and saving in objects has not yet been implemented. This includes:
+- Headerbar options for scale and dimension editing
+- Input fields for [xyz] * [1] (in header , supposed to be editable on click inside)
+- Currently the input fields don't accept input when clicked
+- This functionality still needs to be implemented
+
+FUTURE IMPLEMENTATION - SCALE AND DIMENSION EDITING:
+When implementing the scale and dimension editing feature, the following will need attention:
+
+Files that likely need modification:
+1. controller_gl.c - For input handling and UI interaction
+2. model_gl.c - For storing and managing scale/dimension data
+3. view_gl]3d]a0.c - For rendering scaled objects
+4. event_menu.c - For UI elements and menu options
+
+Areas to focus on:
+- Making input fields responsive to mouse clicks
+- Implementing + / - 1:1 controls for scaling
+- Adding header options for dimension editing
+- Saving scale/dimension data with map files
+- Loading scale/dimension data when loading maps
+
+The map saving issue has been resolved and is ready for testing, but the scale/dimension editing feature remains to be implemented.

@@ -1,0 +1,9 @@
+https://www.bloomberg.com/features/2015-stock-chart-trading-game/
+----------------------
+
+i want  jbmbrooks 2 run this (like a tsots demo game)
+
+and it should use a mini in browser llm or w/e 2 generate 
+prices (along with sine and other stuff "FSM" )
+
+

@@ -1,0 +1,14 @@
+[2J[H
+Available Modules:
+1: ./+x/18.th_person_cam_gl]🎥️🗺️💲️🔴️]p58.+x
+2: ./+x/18.th_person_cam_gl]🎥️🗺️💲️🔴️]o57.+x
+3: ./+x/#.18.th_person_cam_gl]🎥️🗺️💲️🔴️]o57.+x
+4: ./+x/#.18.th_person_cam_gl]🎥️🗺️💲️🔴️]n56.+x
+5: ./+x/^.move.0_pipe]🗃️🟨️]j9.+x
+6: ./+x/director.+x
+7: ./+x/18.th_person_cam_gl]🎥️🗺️💲️🔴️]n56.+x
+8: ./+x/^.move.1_gl]🗃️🟨️]g7.+x
+9: ./+x/0.platform.orb.args]🪄️🔮️2gl📲️]e6.+x
+10: ./+x/0.mgnt_uni-cycl♿️gl_i10🚸️!]HOLY.+x
+Enter module index: [13;1H[KQuitting...
+[13;1H[KQuitting...

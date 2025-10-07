@@ -1,0 +1,311 @@
+    [Created By JBMBrooks.com]
+             F.A.I.T.H.
+     FUNTURISTIC AI TOMOKAZU HEAVY
+            {/}==|=={\}
+           //|  _|_   |\\
+          // | /   \  | \\
+         <<  | \___/  |  >>
+          \\ |   |    | //
+           \\|___|____|//
+            {/}====={\}
+        [ SHIELD OF FAITH ]
+[Welcome to F.A.I.T.H.: Guardians of The ϕ (Full Release 1.0.0) ]
+1) Start a New Game
+2) Load a Savegame
+3) Quickstart (Instant new game)
+4) Options and Settings
+5) Start a new Challenge Mode Game
+6) Extras and Generators
+7) Report a bug/Suggest a feature 8) Community Links
+9) View your scores
+10) Help the text is too small on the screen 
+11) Quit to Desktop
+______________________________________________________📄️
+No starting_data.txt found, running interactive setup.
+--- Game Setup ---
+Enter number of players (1-5): 2
+Enter game length (in years): 200
+
+--- Player 1 ---
+Enter name: test_0
+Enter player type (0 for Human, 1 for Computer): 1
+
+--- Player 2 ---
+Enter name: test_1
+Enter player type (0 for Human, 1 for Computer): 0
+______________________________________________________📄️
+
+---------------------------choose your difficulty---------------------------
+1) Easy   (10 lands) (1000 peasants) (400 soldiers) (10 knights) (5000gold)
+2) Normal (5 lands) (500 peasants) (200 soldiers) (5 knights) (2000gold)
+3) Hard   (3 lands) (300 peasants) (75 soldiers) (3 knights) (750gold)
+4) Solid  (1 lands) (100 peasants) (25 soldiers) (1 knights) (250gold)
+5) SP.IRL (nothing)
+______________________________________________________📄️
+
+----- Year 103-----------------ASLONA STATS---------------------------------
+Gold 5000 - Men 1410 - Lands 10 - Faction Strength 3
+
+one of your enlisted Knights wins a tournament in a nearby kingdom
+and dedicates the win to your honour.
+(+1 Threat)
+----------------------------------------------------------------------------
+General Ghorin: My King, what are your orders?
+1) We can attack the Rebels [At War]
+2) We can attack the Bandits
+3) We can attack the K'rut
+4) We can attack the e'rak
+5) We can attack the Murky Knaves (Bandits)
+6) We can attack the The Green-Bannered Dusk Hounds (Bandits)
+7) We can attack the The Marked Dusk Gatekeepers (Bandits)
+8) We can attack the The Purple Frost Razors (Bandits)
+9) We can attack the Warborn Dark Marsh Raiders (Bandits)
+10) We can attack the Purple Dead Dutchy (Independent)
+11) We can attack the Royal Free Free City (Independent)
+12) We can attack the The Faceless Dutchy (Independent)
+13) We can attack the Monstrous Hill Free City (Independent)
+14) We can attack the The Reining Land (Independent)
+0) Launch no attacks
+______________________________________________________📄️
+
+
+----END OF TURN REPORT------------------------------------------------------
+you receive 196 gold in rents from your 10 Lands
+you enlist 39 soldiers from your 10 Lands
+your Knights train 50 Peasants into Soldiers
+your peasants earn you 557 gold from this seasons harvest
+Bandits pillage 3080 gold from you this season
+Other Bandit Groups pillage 194 gold from you this season
+you pay 489 in wages to your soldiers
+you pay 30 in wages to your Knights
+
+----SPY REPORTS-------------------------------------------------------------
+the rebels enlist 3 new soldiers from their 6 Lands
+the bandits enlist 21 new bandits and 5 new warlords from their 5 Lands
+the K'rut enlist 15 tribals, 12 Berserkers and  6 Warlords from their 6 Lands
+the E'rak enlist 14 tribals, 16 Berserkers and 8 Warlords from their 8 Lands
+
+
+Press any key to continue . . .
+______________________________________________________📄️
+
+
+
+
+-------KINGDOM MENU-------------you have [0 Gold]-----------------------
+1)  Recruit Troops
+2)  Hire Mercenary companies
+3)  Hire Heroes and Champions
+4)  Arrange Diplomacy
+5)  Change Laws of the Land
+6)  Kingdom Upgrades
+7)  Visit the Arena
+8)  Visit the Royal Bank
+9)  Kingdom Management
+10) Explore the Realm
+
+0) exit
+______________________________________________________📄️  
+       .-.
+     __|=|__
+    (_/`-`\_)
+    //\___/\\
+    <>/   \<>
+     \|_._|/
+      <_I_>
+       |||
+      /_|_\
+------RECRUITMENT MENU-----------you have [0 Gold]-----------------------
+1) Hire Peasants from the local militia (20 gold)
+2) Hire Soldiers from the local Guilds and Forts (50 gold)
+3) Hire Knight from the noble houses (500 gold)
+x) There are no bandits currently in prison to be hired
+5) Hire Tribal Goblin from the local goblin slaver (5 gold)
+
+0) exit
+
+
+______________________________________________________📄️
+
+              /
+       ,~~   /
+   _  <=)  _/_
+  /I\.="==.{>
+  \I/-\T/-'
+      /_\
+     // \_
+    _I    /
+------------MERCENARY GROUPS------------------------------------------------
+1) Purple-Bannered Soul Angels (cost 3681 per year)
+2) Blue Granite Razors (cost 10233 per year)
+3) Golden Dawn Rangers (cost 5918 per year)
+4) Ultimate Soldiers (cost 4911 per year)
+5) Great Wind Shields (cost 6683 per year)
+
+0) Exit
+______________________________________________________📄️
+              ,_
+         ()  /(.\
+        /\__/_/\,)
+    _,-((-'` /
+   /(   d    )
+   ` \ /`'--\\
+      ))     ))
+     //      ^
+     ^
+----------------------------------------------------------------------------
+These are your champions
+1) Aslona Champion Slot One
+2) Aslona Champion Slot Two
+3) Aslona Champion Slot Three
+4) Aslona Champion Slot Four
+5) Aslona Champion Slot Five
+
+0) Exit
+______________________________________________________📄️
+
+         _______________
+    ()==(              (@==()
+         '______________'|
+           |             |
+           |             |
+         __)_____________|
+    ()==(               (@==()
+         '--------------'
+------------DIPLOMATIC ACTIONS----------------------------------------------
+your head diplomat appears before you and bows, you begin to discuss possible
+diplomatic moves and actions with your neighbours
+
+1) Rebels
+2) Bandits
+3) Krut
+4) Erak
+5) Independent Cities
+6) Minor Goblin Clans
+7) Minor Bandit Groups
+8) Mercenary Groups
+9) Deserters
+
+0) Exit
+______________________________________________________📄️
+------------LAWS------------------------------------------------------------
+your head scribe is brought before you, he unravels a fresh scroll eagerly
+awaiting your new laws and edicts
+1)  Bandit Scourge (offer reward of 20gold for each bandit captured)
+2)  Outlaw Mercenary companies
+3)  Gambling Tax
+4)  Goblin Scourge (10 gold reward for each goblin caught)
+5)  Forceful Enlistment
+6)  Subsidise Arena (costs 1k per turn)
+7)  Longer Harvest Hours
+8)  Ban Goblin Slavery
+9)  Mercenary Grant (allow larger mercenary groups)
+10) Forgive outlaws (allow outlaws back into society)
+11) Cease Peasant Training
+12) Banking Tax
+13) Allow only smaller Mercenary Groups
+14) Begin the Goblin Celebration (1k Per turn)
+
+______________________________________________________📄️
+------KINGDOM UPGRADES----------you have [66 Gold]-----------------------
+1) Nobility Quarters (10k) (Chance of recruiting 1-5 new knights per turn)
+2) Training Grounds (10k) (Trains 1-50 men per turn)
+3) Shrine of Harvest(25k) (doubles the income from each harvest)
+4) Grand Champions Quarters (10k) (if given to the Grand Champion +25strength)
+5) Inn (30k) (250gold per turn and ability to visit inn)
+6) Dock (5k) (25% to trade)(ability to buy ships)
+7) Monument to Champions (10k) (More Heroes in Arena Fights)
+8) Armoury (25k) (Stronger units (10%)
+9) Explorers Guild (60000k)
+----------------------------------------------------------------------------
+10) Sell Land
+11) Sell peasants to the militia
+12) Sell soldiers to the guilds
+17) Convert Knights to Recruiters
+
+0) exit
+
+______________________________________________________📄️
+------ARENA---------------------you have [66 Gold]-----------------------
+1) Watch a fight (10 Gold Entry Fee)
+2) Bet on a fight (10 Gold Entry Fee)
+3) Grand Champion
+4) Tournaments
+5) Buy the Arena (250k)
+6) Visit the Hall of Fame
+
+0) exit
+
+______________________________________________________📄️
+------ROYAL BANK----------------you have [66 Gold]-----------------------
+you currently don't have any gold stored in the royal bank
+x) you have no gold to withdraw
+2) Deposit
+3) Loan
+
+0) Exit
+
+______________________________________________________📄️
+----------------------------------------------------------------------------
+1) View Current Troop count
+2) Cheats Menu
+3) Aslona Knightly Orders
+4) Aslona Grand Council
+5) Change troop wages
+6) Artefact Hall
+
+0) Exit
+________________
+----------------------------------------------------------------------------
+1) Explore the Land (remaining times 1)
+----------------------------------------------------------------------------
+
+0) Exit
+
+
+______________________________________________________📄️
+----------------------------------------------------------------------------
+x) you have reached the explore limit for this turn
+----------------------------------------------------------------------------
+2)  Slavers Pen (Slavers)
+
+0) Exit
+______________________________________________________📄️
+-----------SLAVER ARMY--------you have [66 Gold]----------------
+1) Buy Slaves (3 gold each) (1050 available)
+2) Buy Slave Soldiers (5 gold each) (525 available)
+3) Offer to buy the Slavery Operation (50000 Gold)
+4) Attack them (1018 men are garrisoned here)
+
+0) Exit
+1
+How many Slaves would you like to buy?
+1
+you bought 1 slaves
+Press any key to continue . . .
+______________________________________________________📄️(new turn)
+----- Year 104-----------------ASLONA STATS---------------------------------
+Gold 63 - Men 1449 - Lands 10 - Faction Strength 4
+
+nothing of interest has happened in the realm recently
+----------------------------------------------------------------------------
+General Ghorin: My King, what are your orders?
+1) We can attack the Rebels [At War]
+2) We can attack the Bandits
+3) We can attack the K'rut
+4) We can attack the e'rak
+5) We can attack the Murky Knaves (Bandits)
+6) We can attack the The Green-Bannered Dusk Hounds (Bandits)
+7) We can attack the The Marked Dusk Gatekeepers (Bandits)
+8) We can attack the The Purple Frost Razors (Bandits)
+9) We can attack the Warborn Dark Marsh Raiders (Bandits)
+10) We can attack the Purple Dead Dutchy (Independent)
+11) We can attack the Royal Free Free City (Independent)
+12) We can attack the The Faceless Dutchy (Independent)
+13) We can attack the Monstrous Hill Free City (Independent)
+14) We can attack the The Reining Land (Independent)
+0) Launch no attacks
+
+
+
+_____________________________

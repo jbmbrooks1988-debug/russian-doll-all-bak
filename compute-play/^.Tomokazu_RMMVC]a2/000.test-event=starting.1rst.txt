@@ -1,0 +1,72 @@
+⚡️i may make simpler 'text only events menu'
+just 2 write 2 player data test, then impliment them in 
+rmvc3d.why not then we have both, 1 4 ascii thats cool🥸️😎️ right? (thats the way imo but they love vis.🔍️
+-> this is vis bruh... <- i WANT to do this.🔍️
+⚡️🤩️start NOW!🥳️📯️✨️ (use dante.xt) 📟️ helpscripting🆘️
+
++ maybe we could swap / xp better of data strux 📁️🏷️
+remember btw were making peices.mc.wu by making MSR🧭️
+⚠️
+events has nothing 2 do with anything gl. , yet
+its hug3 4 player. 
+get that shit out into its own linked moduel.
+
+also i wanna do blender like scripting SOON 
+
+even before worrying about w/e gui bs 
+(cuz i can use it for other things 2 ) 
+⚠️
+▶️
+in player/data/test_project we want to add
+'starting position' so the player starts in the world
+and so that when arrow keys are pressed
+their player is moved
+(use a 😃️ emoji as default, we will change it later)
+
+also obviously we have to modify player_main.c
+and any associates to accomodate this important foundational update.▶️
+>
+if u start over in fb, (fraembuffer)
+just make brwoser first and work backwards
+then they can all use the same layout scheme...
+
+🛑️
+thumb or nothing else can be added
+qwen gets confused. 
+we need a better more modular fraemwork for doing menus
+
+
+🛑️
+
+nothing is showing up in player. its
+having a really hard time with it but thats dumb. 
+this is a good jumpoff point tho for some
+kind of architectural wizardry or w/e
+i believe in and like the editor
+if it was "modular" it would be readable
+and promptable...
+
+*make sure it has a switch from 2d/3d in data
+or else testing will be harder.
+
+📮️
+if u need a bit more juice u may need to ask 4 refactor; even 4 understanding..may need 2 ask it
+2 do our own window scheme based on html? w/e or do in playe rfirst w/e 
+🛸️its better than anyone ever paid for w/e🛸️ 
+📮️
+🪟️
+also if u want a "menu as start screen" or something else, that should be programed
+in editor tbh. then we cna literal make chatrooms and stuff in editor get it? 
+🪟️🎟️; 2d/3d in data is working. so yea, maybe everythign should 'start in data first'
+this is a lab man dont beat urself up🎟️
+👍️
+player is completely independant of editor. so who gives a frick if we made a new editor or w/e
+⏯️btw u could make a diff player 2 . make one in halo/fb/gb/webgl w/e 
+
+web-gl maybe less messy 4 both tbh.. .
+
+⏯️
+👍️
+🕸️🕸️🕸️🕸️🕸️🕸️🕸️🕸️🕸️🕸️🕸️🕸️🕸️
+
+

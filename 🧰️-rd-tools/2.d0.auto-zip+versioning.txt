@@ -1,0 +1,33 @@
+
+
+should u run this when computer starts? 4 sure. 
+is there a script 4 that? 
+
+
+🥌️🥌️🥌️🥌️🥌️🥌️🥌️🥌️🥌️🥌️<auto zip w/e changed when i finish the day & show me in log>🤐️🇬🇮️
+this can actually get into versioning, 
+especially if u only track specific directories, 
+
+and u just make a new zip if stuff has changed in that dir, 
+by running dirwide program. 
+🥌️🥌️🥌️🥌️🥌️🥌️🥌️🥌️🥌️🥌️🥌️🥌️🥌️
+🥡️
+
+
+
+
+
+
+
+
+
+
+
+----------------------
+
+Install inotify-tools library: sudo apt-get install libinotifytools0-dev
+Save the code to file_open_logger.c.
+Compile with GCC: gcc -o file_open_logger file_open_logger.c -linotify
+
+= OFF
+----------

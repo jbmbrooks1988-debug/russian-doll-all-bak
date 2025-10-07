@@ -1,0 +1,27 @@
+❤️‍🩹️ if u ever have problems with a features of <htmvc> u can always just
+remove it and try 2 make it seperatly as ref or start over w/e 
+as opposed 2 it being in some big scary project + u get a whole bunch of modular space for free thru "modules" (and can seperate view.c and canvas.c one day if u like ]u did good <3❤️‍🩹️\
+📆️it occured 2methat we were running pretty modular in "peice-18th"
+but we lost that blitzing rmmvc/daw
+but we basically just got it back .📆️
+🐛️
+
+
+i think theres something up with "extended text view' 4 cli/editor. 
+and adding a 'thumb/scroll bar completely broke it so i rolled back
+
+thats the only bug i can think of now tho🐛️
+haven't been diligently updating
+chtml_legend.md after additions. kinda dumb🥴️
+
+also time to remove hardcoded 2d triangle. and start doing 3d shit.
+⛲️⛲️⛲️⛲️⛲️⛲️⛲️⛲️⛲️⛲️⛲️⛲️⛲️⛲️⛲️
+🔑️
+btw . u only need 1 module arg (that module orchs "SUB MODULES"tho, get it?
+
+maybe totally chill 2 switch between multiple .chtml's tho
+(completely like any website)
+at which point u may want to hot load a new module . w/e why not. arg4setuponli
+🔑️⛏️
+terraria is a mc as a platformer
+(which is just a "rmmvc z--lvl top button that didn't get fleshed out yet)⛏️⛲️⛲️⛲️⛲️⛲️⛲️⛲️⛲️⛲️⛲️

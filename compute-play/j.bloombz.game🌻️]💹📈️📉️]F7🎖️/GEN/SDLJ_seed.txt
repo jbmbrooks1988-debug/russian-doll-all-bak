@@ -1,0 +1,7 @@
+Trend type: Cyclical
+Volatility (sigma): 0.2136
+AR order: 2
+AR coefficients: phi1=0.6976, phi2=-0.2624
+Mu base: 0.0006
+Mu amplitude: 0.0010
+Period: 16

@@ -1,0 +1,18 @@
+--- Game Setup ---
+Enter number of players (1-5): 2
+Enter game length (in years): 200
+
+--- Player 1 ---
+Enter name: test_0
+Enter player type (0 for Human, 1 for Computer): 1
+
+--- Player 2 ---
+Enter name: test_1
+Enter player type (0 for Human, 1 for Computer): 0
+
+🍬️🍭️
+🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️
+for fast prompts 
+we may just use emoji bank + stats. 
+(and games should read from this seperate process shoud write 2 /from folder.
+and then this even allows in memory (not disparaging peice dirs ofc.)just evolved 4 speed🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️🎠️

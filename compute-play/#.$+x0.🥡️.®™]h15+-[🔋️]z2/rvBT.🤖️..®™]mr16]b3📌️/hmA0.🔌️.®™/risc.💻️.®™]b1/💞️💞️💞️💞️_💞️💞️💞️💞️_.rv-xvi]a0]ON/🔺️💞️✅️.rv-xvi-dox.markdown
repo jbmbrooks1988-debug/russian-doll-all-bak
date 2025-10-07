@@ -1,0 +1,144 @@
+# 📚 RV-XVI Emulator Documentation 🚀
+
+Welcome to the **RV-XVI Emulator**! 🎉 This 16-bit RISC-V-inspired emulator builds on RV-VIII, scaling up for larger values and programs while keeping simplicity and modularity. It’s a step toward RV32I, perfect for learning and experimentation! 😄 This guide is for **users** running programs and **developers** extending the system. Let’s dive in! 🌊
+
+## 🌟 What is RV-XVI? 🌟
+RV-XVI is a 16-bit processor emulator that:
+- Runs programs from `in.txt` (or a specified file) 📜.
+- Writes execution traces to `out.txt` 📝.
+- Uses `./+x/nand.+x` for 16-bit NAND operations ⚡.
+- Keeps code simple with arrays, no structs 🧱.
+- Supports RV-II/IV/VIII compatibility and self-modifying code.
+- Paves the way for a 32-bit RV32I emulator 📈.
+
+It’s a mini computer for logic, data movement, and dynamic program changes! 🦘
+
+## 🛠️ How It Works 🛠️
+RV-XVI features:
+- **32 registers** (`r0-r31`), 16-bit each (0-65535) 🖐️.
+- **65536-byte memory** (`mem[0-65535]`) for programs and data 💾.
+- **Program counter** (`pc`) to track execution 🗺️.
+- **4-byte instructions** fetched from memory 📖.
+
+### 💻 Instruction Set
+Each instruction is 4 bytes:
+- **Byte 1** (`mem[pc]`): `opcode = (mem[pc] >> 6) & 0x3`, `op1 = mem[pc] & 0x1F` (5-bit register index, 0-31).
+- **Byte 2** (`mem[pc+1]`): Unused (set to 0 for compatibility).
+- **Bytes 3-4** (`mem[pc+2], mem[pc+3]`): `op2 = mem[pc+2] & 0xFF` for LOAD/STORE/JUMP (8-bit address); for NAND, `op2 = mem[pc+2] & 0x1F` (5-bit register index).
+- **PC Update**: `pc += 4`, unless JUMP overrides.
+
+| Opcode | Name  | Action                     | Description                              |
+|--------|-------|----------------------------|------------------------------------------|
+| 0      | NAND  | `reg[op1] = NAND(reg[op1], reg[op2])` | 16-bit NAND, store in `reg[op1]` 🔧 |
+| 1      | LOAD  | `reg[op1] = (mem[op2] << 8) | mem[op2+1] & 0xFFFF` | Load 16 bits from `mem[op2]` to `reg[op1]` 📥 |
+| 2      | STORE | `mem[op2] = (reg[op1] >> 8) & 0xFF`, `mem[op2+1] = reg[op1] & 0xFF` | Store `reg[op1]` to `mem[op2:op2+1]` 📤 |
+| 3      | JUMP  | `pc = (reg[op1] & 0x7FFF) * 2` | Jump to `reg[op1] * 2` (aligned address) 🦘 |
+
+- **NAND**: Calls `./+x/nand.+x 16 a b` → `~(a & b) & 0xFFFF`. Core logic operation! ❤️
+- **LOAD/STORE**: Uses 8-bit `op2` (0-255) for memory addresses, storing/loading 16-bit values as two bytes.
+- **JUMP**: Uses lower 15 bits of `reg[op1]` (0-32767), multiplies by 2 for even addresses (0, 2, ..., 65534).
+- **Self-Modifying Code**: STORE can overwrite instructions, enabling dynamic behavior.
+
+### 📂 File I/O
+- **Input**: Reads `in.txt` or a file via `./+x/rv-xvi.+x myprog.txt` 📄.
+  - Format: Space-separated bytes (e.g., `1 0 2 0`).
+- **Output**: Writes trace to `out.txt` 📝.
+  - Format: `EXEC: opcode, op1, op2`, action, `PC, REG, MEM[0]`.
+- **NAND Module**: `./+x/nand.+x` writes results to `temp.txt` 🛠️.
+
+### 🛑 Safety Features
+- Halts if `pc >= 65536` (“Halted: PC out of bounds”) 🚫.
+- Stops after 100 steps (“Halted: Possible infinite loop”) 🔄.
+- Checks `op1 < 32` and `op2 < 32` (NAND) or `op2 + 1 < 65536` (LOAD/STORE) 🚨.
+
+## 🎮 How to Use It (Users) 🎮
+1. **Write a Program** ✍️:
+   - Create `in.txt` with instruction bytes.
+   - Example:
+     ```
+     1 0 2 0    // NAND r1, r2 (r1 = 65535)
+     65 0 0 0   // LOAD r1, mem[0] (r1 = 256)
+     129 0 1 0  // STORE r1, mem[1] (mem[1] = 1, changes NAND r1,r2 to NAND r1,r1)
+     193 0 0 0  // JUMP r1 (jumps based on r1)
+     ```
+2. **Compile** 🛠️:
+   ```bash
+   gcc rv-xvi.c -o /+x/rv-xvi.+x
+   gcc nand.c -o /+x/nand.+x
+   ```
+3. **Run** 🏃:
+   ```bash
+   ./+x/rv-xvi.+x in.txt
+   ```
+   Or default:
+   ```bash
+   ./+x/rv-xvi.+x
+   ```
+4. **Check Output** 👀:
+   ```bash
+   cat out.txt
+   ```
+   Example:
+   ```
+   EXEC: opcode=0, op1=1, op2=2
+   NAND r1, r2 -> r1
+   PC: 4, REG: [0,65535,0,...], MEM[0]: 1
+   ...
+   Halted: PC out of bounds
+   ```
+
+## 🧑‍💻 For Developers 🧑‍💻
+Ready to hack RV-XVI? Here’s the lowdown! 🔍
+
+### 📂 File Structure
+- **rv-xvi.c**: Emulator core, handles execution and I/O 📟.
+- **nand.c**: NAND logic, compiled to `./+x/nand.+x` ⚙️.
+- **/+x/**: Stores executables (`rv-xvi.+x`, `nand.+x`) 🗂️.
+
+### 🔧 Key Functions
+- **main()**: Initializes registers/memory, loads program, runs loop.
+- **nand_op()**: Calls `./+x/nand.+x`, reads `temp.txt`.
+
+### 🛠️ Extending RV-XVI
+RV-XVI is a stepping stone to `rv-xxxii` (RV32I). To extend:
+- **Scale Up**: Increase registers/memory for 32-bit values.
+- **Add Instructions**: Implement ADD, SUB, etc., via NAND.
+- **Compatibility**: Ensure RV-II/IV/VIII/XVI programs run (mask to 2/4/8/16 bits).
+- **Reuse NAND**: `./+x/nand.+x` supports wider bits (e.g., `./+x/nand.+x 32 a b`).
+
+### 🐛 Debugging Tips
+- **Trace out.txt**: Verify `EXEC` logs for opcodes/operands.
+- **Test NAND**: `./+x/nand.+x 16 0 0` should output 65535.
+- **Validate in.txt**: Check `opcode = (byte >> 6) & 0x3`, `op1 = byte & 0x1F`.
+- **Self-Modification**: STORE to instruction addresses (e.g., `mem[1]`) changes behavior.
+
+## 🚀 Example Walkthrough 🚀
+For `in.txt`:
+```
+1 0 2 0    // NAND r1, r2
+65 0 0 0   // LOAD r1, mem[0]
+129 0 1 0  // STORE r1, mem[1]
+193 0 0 0  // JUMP r1
+```
+- **Initial**: `reg=[0,0,0,...]`, `mem=[1,0,2,0,65,0,0,0,129,0,1,0,193,0,0,0,...]`.
+- **PC=0**: NAND r1, r2 → `r1=65535`.
+- **PC=4**: LOAD r1, mem[0] → `r1=256`.
+- **PC=8**: STORE r1, mem[1] → `mem[1]=1` (NAND r1,r2 becomes NAND r1,r1).
+- **PC=12**: JUMP r1 → `PC=512` (r1=256).
+- **PC=512**: NAND r1, r0 → `r1=65535` (due to modified instruction).
+- **PC=516+**: NAND r0, r0 → toggles `r0` between 65535 and 0 until 100 steps.
+
+This showcases **self-modifying code**, dynamically altering program flow! 🧙
+
+## 🌈 Why RV-XVI? 🌈
+- **Modular**: Reuses `nand.+x` for logic.
+- **Simple**: Arrays keep code clear.
+- **Scalable**: Steps toward RV32I with RV-II/IV/VIII compatibility.
+- **Dynamic**: Self-modifying code enables creative programs.
+
+## 📢 Next Steps
+- Test new `in.txt` programs to explore self-modification 🧪.
+- Move to `rv-xxxii.c` for 32-bit RV32I emulation 📈.
+- Share bugs or feature ideas! 🐞
+
+Happy emulating! 🎈

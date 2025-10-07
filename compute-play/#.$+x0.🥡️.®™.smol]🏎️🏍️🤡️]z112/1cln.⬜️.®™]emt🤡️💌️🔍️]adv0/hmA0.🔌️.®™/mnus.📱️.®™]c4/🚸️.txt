@@ -1,0 +1,31 @@
+👨🏽‍🚀️
+i actually fixed unicycle_menu.k12
+
+and i dont think the other will wait(wont).. so use k12.<3
+🛡️
+u might think k12 is janky, but its all sorts of battle tested
+🐧️even ubuntu22-04 has "quirks' w/e lol srsly ignore @a.🐧️
+🐡️i haven't actually tested it against all those cases, im 
+assuming it works the exact same🐡️
+
+also "waiting 4 thing 2 execute amybe cool (modable)
+i duno w/e 
+🛡️
+👩🏻‍🏭️
+were just gonna do w/e 
+and show a "confirmation window"
+also we dont have to confirm shit tbh.
+
+but it probably will hide main menu if its a silent process. 
+(we can add submenu check after w/e; big whoop)
+
+y am i not using MGNT ? its not setup for key display :/ 
+{i tried a few times but couldn't seem 2 get it 2 work}
+🚸️
+
+this maybe over kill. 
+can we just run proc , pipe io ? 
+
+wuts with the submenu bs? 
+🚸️🇬🇮️
+i want code in gcc c (arrays no structs) that will read menu_kvp.txt , show the keys and index's and when chosen execute the value pair .+x file .it should show child process till child process is killed then go back to showing menu_kvp.txt 🇬🇮️

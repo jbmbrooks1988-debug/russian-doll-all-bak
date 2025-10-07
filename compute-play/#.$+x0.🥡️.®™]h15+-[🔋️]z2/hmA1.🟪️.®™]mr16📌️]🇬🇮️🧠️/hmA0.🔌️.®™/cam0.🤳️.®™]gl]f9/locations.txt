@@ -1,0 +1,6 @@
+state ../state.txt
+maps ../../maps/
+commands commands_gl.txt
+super_states ../../super_states/
+super_maps ../../super_maps/
+mgnt ./+x/0.mgnt_uni-cycl♿️jAA1]ON!.+x

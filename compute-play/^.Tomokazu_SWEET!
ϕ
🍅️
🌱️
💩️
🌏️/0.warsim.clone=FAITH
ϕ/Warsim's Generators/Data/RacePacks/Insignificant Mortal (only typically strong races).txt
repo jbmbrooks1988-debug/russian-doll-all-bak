@@ -1,0 +1,14 @@
+Cthuul.2.0.0.4.50.5.Cthuul.99.Cthuul Master.249.Forgotten One.399.known as a race of squidmen from a place unseen by any but themselves
+Treemen.8.0.0.5.24.6.Sapling.20.Treeman.190.Treeman Champion.300.known to be large tree folk, with thick bark and the ability to speak, they have rooted feet but can move and prefer solitude than the company of others
+Bogeymen.5.0.0.2.40.2.Bogeymog.66.Bogeyman.166.Bogeyman Shadowmaster.666.known to be the dark hunters of the shadows, bogeymen hide away and hunt their prey in the dark, there are few feared more than the shadowmaster bogeymen who are said to be the incarnation of fear itself
+Demigods.7.0.0.0.2.8.Demigod Guardian.250.Demigod.500.Demigod King.750.known to be the sons and daughters of the gods, immensely powerful and intelligent and not to be underestimated
+Demons.6.0.0.2.11.6.Demon Bloodspawn.60.Demon.300.Demon Overlord.450.known to be the spawn of the hells and supporters of the demons of the southern gate
+Vampires.1.0.0.4.68.6.Thrall.30.Vampire.160.Vampire Bloodlord.260.known to hide in the shadows and rely on the blood of the innocent to stay strong
+Warlocks.1.0.0.6.30.6.Warlock Acolyte.110.Warlock.179.Grand-Warlock.250.known known for their magical prowess and isolation from everything warlocks have dark tendencies and are a powerful foe
+Giants.1.0.0.6.3.2.Giant.450.Armored Giant.500.Giant Champion.620.known as mountainous creatures with giant statures and strong tempers, giants though small in quantity are a huge threat to their enemies
+Liches.5.0.0.2.10.6.Warlock of the Dead.199.Lich.290.Lich King.450.known and feared as the undead masters of the underworld, a deadly and violent force
+Corpselords.5.0.0.2.12.4.Corpsewalker.40.Corpselord.300.High-Corpselord.449.known and feared as the undead masters of the underworld a deadly and violent force of warrior undead
+Godlings.7.0.0.0.5.7.Godling.180.Godling Lord.350.Godling King.550.known as creatures who are somewhat godlike, they are the descendents of demigods
+Half-Demons.6.0.0.4.20.5.Half-Demon.111.Half-Demon Hell Guard.222.Half-Demon Champion.333.Known as the descendents of demons and men, half-demons are a race with a very complicated past, and a history of suffering and destruction
+Psions.5.0.0.0.14.6.Psion.111.Psion Mindwalker.222.Psion Mindruler.333.Known as a group of magic users who keep themselves withdrawn from the world, they are powerful and use magic to conceal themselves from outsiders
+Essfanti.1.0.0.0.19.4.Essfanti Calfling.109.Essfanti.340.Great Essfanti.566.Known as a race of elephantoid beasts, they are huge and hulking in strength and are known to live near water, it is said they are able to crush a tree with their arms

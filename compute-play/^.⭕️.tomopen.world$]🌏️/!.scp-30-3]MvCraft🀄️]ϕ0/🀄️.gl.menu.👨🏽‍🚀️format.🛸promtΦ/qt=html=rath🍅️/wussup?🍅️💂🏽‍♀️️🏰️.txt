@@ -1,0 +1,150 @@
+⚠️there is no 'qt' for .c , only c++ 🥴️ignore qt conventions😜️⚠️
+choking a bit on limits of rmmv prompting
+but even more. we rather have std... and we can . html/gl...
+💬️
+lets make an html renderer for gl. 
+we can start small with basics...
+
+
+all we really need to do is figure out how to show mini windows .
+{for nested menu's}
+how does html do this? 
+
+everything else is ez
+
+<what about variables? read them from .txt kvp
+
+    <p id="message"></p>
+    <script>
+      let userName = "Alice";
+      document.getElementById("message").textContent = "Hello, " + userName + "!";
+    </script>
+    
+    
+    
+💬️💬️💬️💬️💬️💬️💬️
+🍅️
+if u wish 2 get farther with gl windows. 
+
+u should just make a html render. 
+
+
+we can do buttons/windows/w/e and "canvas (2d&3d) "
+
+u will spend more time on canvas 
+but its still a renderer. and u focus on that ie
+
+
+
+main.c 
+view.c = "html.c" "canvas.c" <- both can write 2 ".txt" 2 share
+model.c = need? 
+controller.c = input ? 
+
+
+remake rmmv in htgl using old 4 reference
+
+u should only use external data files . then 
+its more compact. gemini can do this. its worth it 4 more gl progs
+including a browser , lol ;) 
+
+dont try 2 force mvc. try 2 force reading from .txt ie wraith. 
+good we can use that for rv-ii
+wanna do rv-ii now so we can know how 2 hook up ? sure w/e
+we have lots of XP, im not worried about it. 
+
+so htgl , can dump 2 "RATH" and back. (pixels/rgb)
+this is good...
+so was rv-ii (we pushed untested so effed it up a bit but were gud now)
+
+🧕️🧕️🧕️🧕️🧕️🧕️🧕️🧕️🧕️🧕️🧕️🧕️🧕️🧕️🧕️🧕️🧕️
+i may (just for this obv, cuz gl ) 
+use headers "intentionally"
+
+so =
+
+main.c
+view.c : html.c html.h 
+controller.c : html.h controller.h 
+model.c : .h ? + "includes.c" <- would be js? 
+
+🪡️maybe not this EXACTLY but something like this "intentionally'
+ie not 'haphazrdly up 2 the llm...
+🪡️🔑️gfto out of 'gl'context and back into data asap
+then we can run threaded .c programs that just write 2 data.
+and the html.mvc can just read from our "database.txt" like sql.
+
+its already gonna read 'index.html' etc...
+
+
+the real problem is "canvas"
+cuz theoretically u could render html in canvas ,get me? 
+
+ofc u want to beable 2 recursively do w/e u want in ur system
+even if u dont actualy do it...
+🧕️🧕️🧕️🧕️🧕️🧕️🧕️🧕️🧕️🧕️🧕️🧕️🧕️🧕️🧕️🧕️🧕️🧕️🧕️🧕️🧕️🧕️🧕️🧕️
+its def not some smol job tho.
+
+but if u think of the rmmv menu
+(its not for a unreal liek game engine)
+its just "character menu + save load ; ie its cheat...
+
+
+but ur going ointo "google/firefox/msft" level terrirtory. 
+its kinda crazy but w/e , wehave llm...and its 2 "fix gl"
+its such a gnarly hardcore fucked up abstract thing +retention...
+that only a super established company would bother doing it...
+but ai... 
+
+
+w/e we will do stuff and see how it turns out, cuz we
+have to have a "DYNAMIC" menu system ; and one day we will need browser so w/e . faster 🐈️
+think of the moat...
+if u can do retention youll beable 2 buy a castle lol🏰️
+if not. well u have other problems anyways. 💂🏽‍♀️️
+put it on github w/e lol. 
+its not like others can do this w/o it. or will no 2use this w/e💂🏽‍♀️️
+
+all u would need then is a js engine
+(even tho were gunna run .c thru 4 now. good scaffold tbh 🚧️
+
+🧚‍♀️️
+do we finish rmmv 2 the point of a basic event? maybe w/e 
+y bother? 
+
+
+remember we also have a "tiny rmmv" w/e lol well see.
+
+
+we abandon projects all the time 2 get 2 deepr control...
+at least we can ref them now
+🧚‍♀️️
+just do it 4 the infra. ; get it over with; we'll use it; they love graphix n shit & i need scale/speed. its aok . itll be done fast and scale fast. (if ur willing 2 spend 20 days doing shit youll be aight)🍒️🀄️
+
+
+
+🤯️
+the crazy part tho is we really only have to do the html render
+(we dont really have to do it now...)
+and they cuz we already kinda have a scheme 4 3d events right
+
+(simple voxel + events, but we can build on that...) 
+
+so im not sure maybe we wait and try 2 get a bit farther with RMMVC..4 now just 2 see wut we really req/vs have done../
+
+
+do , do rv-ii but maybe it can wait, right? just keep pushign rmmvc
+but u have this here....; its not that cut and dry 
+
+what MADE u come here? just curiosity or a real problem? 
+keep pushing (rmmvc) 4 now . 
+
+im not lazy by any means (i made halo...), be strategic...
+
+🎣️🔍️🧐️
+its not that it does't need 2 be done
+and we tried b4 , with a simple csv type format but it broke everyting
+so... we will push 4 scaff/ref but may try 
+"within games or something, get it? with smoller simpler menu
+schemes w/e" 🔍️🧐️
+🤯️

@@ -1,0 +1,41 @@
+🎖️
+
+🥇️
+-------------
+have it make a text editor simple. 
+then give it header file save load. 
+then make it show all files in "side bar" (and emoji picker) <-rmmv
+
+---------------
+🥈️
+have it make candy crush or space invaders 
+
+----------------
+🥉️
+have it make the minecraft. 
+
+---------------
+🏆️
+have it look out , outline.md ; ;and make rmmvc 
+
+⚜️
+look into making wrait for rvii-v before its 2 late.]w8
+
+{RENDERER DOESNT NEED SAME GL CONTEXT AS GENERATION OF RGB. 
+AND LASTER U DONT NEED GL 2 GENERATE RGB EITHER. }
+U WOULD STILL NEED TO READ INPUT / OUTPUT BUT
+IT WOULD JUST BE AN EXCERSIZE IN CONVERSION <4HDMI/FB> 
+⚜️
+
+🎖️
+
+
+if i wanted it to make a "linker file" 2 ignore chtml innar c. 
+how does one do that? 
+
+/media/no/b7ced73c-5231-4462-b98d-64e38fe2df9e/home/jbez/Desktop/^.🦄️HORN!🏎️[MBA]뿔!⾓!📌️/#.(dev일)horn!]nosloc🔒️/^.work-space=trunk[a0]🪠️/json-pros]🏝️/#.json-c-master/build/libjson-c.so
+
+# Basic linking against a shared library
+gcc -o myprogram myprogram.c -lmylib
+
+# This looks for libmylib.so in standard library paths

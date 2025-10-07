@@ -1,0 +1,474 @@
+Plank-Swinger
+Logtosser
+Bonewielder
+Scrollkeeper
+Twiglancer
+Polelancer
+Pikelancer
+Swordchief
+Bowchief
+Chainswinger
+Chainwhirler
+Chainbearer
+Chainwearer
+Chainlord
+Chainwalker
+Sellchain
+Marshal
+Justiciar
+Adjutant
+Warmaker
+Warcaller
+Warchaser
+Warwatcher
+Warwinner
+Warwailer
+Bow Incarnate
+Spear Incarnate
+Staff Incarnate
+Bill Incarnate
+Sword Incarnate
+Shield Incarnate
+Axe Incarnate
+Mace Incarnate
+Crossbow Incarnate
+Pike Incarnate
+Dagger Incarnate
+Deathchaser
+Headcleaver
+Headguard
+Headknocker
+Headkicker
+Headhunter
+Headsman
+Headcutter
+Headhitter
+Headbreaker
+Swordswinger
+Swordthrower
+Axeswinger
+Maceswinger
+Bladeswinger
+Pikeswinger
+Stoneswinger
+Daggerswinger
+Spearswinger
+Battlechanter
+Warchanter
+Private Guard
+Monster Hunter
+Legkicker
+Kickmaster
+Kickwarrior
+Kicklord
+Kicker
+Warsinger
+Heavy Puncher
+Heavy Kicker
+Fistswinger
+Fistslinger
+Fistmaster
+Fistwarrior
+Secret Guard
+Personal Guard
+Cutter
+Carver
+Culler
+Spiritcaller
+Soulstealer
+Soultaker
+Slowkiller
+Quickrider
+Slowrider
+Fastrider
+Pathrider
+Dunerider
+Dunewalker
+Snail-Rider
+Wolf-Lancer
+Misfit
+Dog-Lancer
+Pig-Lancer
+Boar-Lancer
+Snail-Lancer
+Horse-Lancer
+Lance Bearer
+Lanceman
+Order Follower
+Duty Follower
+Wildrider
+Wildraider
+Wildfighter
+Wildwarrior
+Wildkiller
+Wildrover
+Wildscreamer
+Wildhunter
+Warrior-Bard
+Warrior-Monk
+Warrior-Cleric
+Warrior-Veteran
+Staffbearer
+Spearbearer
+Oathbearer
+Billbearer
+Lawbearer
+Orderbearer
+Warbearer
+Battlebearer
+Arrowbearer
+Bodybearer
+Painbearer
+Swordbearer
+Shieldbearer
+Stonebearer
+Axebearer
+Macebearer
+Bowbearer
+Crossbowbearer
+Pikebearer
+Corpsebearer
+Deathbearer
+Daggerbearer
+Rightguard
+Leftguard
+Highguard
+Truthguard
+Royalguard
+Battle Chief
+Honourguard
+Gloryguard
+Warbaron
+War Veteran
+Battle Veteran
+Battle Baron
+War Screamer
+War Crier
+Skinpeeler
+Battle Crier
+Corpsebringer
+Gravefiller
+Widowmaker
+Longblade
+Shortblade
+Shortsword Militia
+Longsword Militia
+Battle Screamer
+Seer
+Battler
+Titan
+Warbeast
+Warwinner
+Ruffian
+Rogue
+Vagabond
+Vagrant
+War Cleric
+Mountain Crossbow
+Halberd Militia
+Bill Militia
+Boar-Rider
+Strider
+Sandstrider
+Elk-Rider
+Bull-Rider
+Sandrider
+Windstrider
+Trailstrider
+Snowstrider
+Snowrider
+Snow-walker
+Huskarl
+Sword Militia
+Staff Militia
+Bow Militia
+Axe Militia
+Mace Militia
+Pole Militia
+Spear Militia
+Dagger Militia
+Militia
+Militia Archer
+Militia Fighter
+Highlander
+Looter
+Loot-Taker
+Swordfodder
+Bodyguard
+Armguard
+Goldguard
+Steelguard
+Ironguard
+Guard Boy
+Trainee Guard
+Axe Thrower
+Spear Thrower
+Dagger Thrower
+Arrow Thrower
+Javellin Thrower
+Axefodder
+Arrowfodder
+Boltfodder
+Spearfodder
+Meatbag
+Peltast
+Screamer
+Staffwielder
+Staffling
+Stinger
+Staffman
+Staffswinger
+Stafflord
+Staffmaster
+Bloodletter
+Fistfighter
+Brave
+Man-at-arms
+Jouster
+Joustling
+Slugger
+Scrapper
+Bully
+Corpsemaker
+Bonelancer
+Dual Weilder
+Duelist
+Hunter
+Beast Hunter
+Freedom Fighter
+Bannerman
+Swordling
+Spearling
+Daggerling
+Axeling
+Bladeling
+Maceling
+Hammerling
+Pikeling
+Shieldling
+Halberdling
+Savage
+Destroyer
+Camelman
+Fear-Spreader
+Mountaineer
+Hillsman
+Blade-Slinger
+Axe-Slinger
+Spear-Slinger
+Pirate
+Herald
+Halberdier
+Buccaneer
+Revolutionary
+Siegebreaker
+Caster
+Assaulter
+Windmaster
+Airmaster
+Watermaster
+Firemaster
+Icethrower
+Waverider
+Mindbreaker
+Souleater
+Doombringer
+Marauder
+Assassin
+Footsoldier
+Skirmisher
+Invader
+Raider
+Linebreaker
+Barbarian
+Berserker
+Flamebreather
+Horse Archer
+Elephant Rider
+Legionaire
+Sharpshooter
+Conscript
+Neophyte
+Fledgling
+Heavy
+Pugilist
+Boltman
+Slinger
+Witcher
+Clawman
+Bladesinger
+Swordsinger
+Spearsinger
+Pickmaster
+Fistlord
+Gatherer
+Nightwarrior
+Nightmaster
+Bowlord
+Spearlord
+Swordlord
+Macelord
+Axelord
+Daggerlord
+Axewalker
+Daggerman
+Dagger-Carrier
+Swordwalker
+Bladewalker
+Shieldwalker
+Spearwalker
+Whipman
+Slavelord
+Irregular
+Pikelord
+Hammerlord
+Regular
+Poacher
+Juggernaut
+Shortbowman
+Crossbowman
+Ambusher
+Valkyrie
+Brigand
+Veteran
+Axeman
+Highwayman
+Sheriff
+Javelineer
+Tracker
+Knight
+Maceman
+Pikeman
+Spearman
+Axemaster
+Reaper
+Hammer Thrower
+Trooper
+Warmaster
+Auxiliary
+Wildling
+Windrider
+Greenhorn
+Bladerider
+Blademaster
+Shieldmaiden
+Shieldmaster
+Macemaster
+Pikemaster
+Spearmaster
+Champion
+Centurion
+Soldier
+Crusader
+Bowman
+Archer
+Fighter
+Longbowman
+Defender
+Brawler
+Guardian
+Rider
+Roamer
+Rover
+Levy
+Paladin
+Recruit
+Bruiser
+Mercenary
+Ranger
+Sellsword
+Spartan
+Hireling
+Apache
+Combatant
+Sellspear
+Lancer
+Wanderer
+Corsair
+Nomad
+Sentinel
+Reaver
+Squire
+Master
+Watcher
+Scout
+Gladiator
+War-Monger
+Outrider
+Outlander
+Outsider
+Guard
+Guardsman
+Horseman
+Boarman
+Wolf-Rider
+Dog-Rider
+Pig-Rider
+Cow-Rider
+Cut-Throat
+Sentry
+Warder
+Thug
+Warden
+Warling
+Immortal
+Warman
+Mamluke
+Executioner
+Volunteer
+Warlord
+Elite
+Warchief
+Warking
+Killer
+Troop
+Armsman
+Hoplite
+Bloodspiller
+Bloodmaker
+Skullbreaker
+Skulltaker
+Skullstealer
+Warboy
+Warlad
+Warkid
+Battleboy
+Battlelad
+Battlekid
+Warrior
+Hired Staff
+Hired Blade
+Hired Axe
+Hired Sword
+Hired Bow
+Hired Lad
+Hired Crossbow
+Hired Spear
+Hired Dagger
+Hired Mace
+Hired Hammer
+Hired Pike
+Hired Veteran
+Hired Thug
+Hired Warrior
+Hired Guard
+Hired Rider
+Hired Shield
+Hired Hand
+Hired Champion
+Hired Boy
+Lowguard
+Hillguard
+Moundguard
+Barrowguard
+Towerguard
+Fortguard
+Castleguard
+Keepguard
+Dockguard
+Coastguard
+Isleguard
+Throneguard
+Woodguard
+Jungleguard
+Forestguard

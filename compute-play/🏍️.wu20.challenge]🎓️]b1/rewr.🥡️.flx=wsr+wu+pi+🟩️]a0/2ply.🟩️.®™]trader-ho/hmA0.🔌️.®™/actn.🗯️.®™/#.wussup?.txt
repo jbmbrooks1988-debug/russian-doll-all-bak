@@ -1,0 +1,23 @@
+#inventory needs to look thru dir 4 'lut matches' and show (like directory list does, contents of inventories with index's' )
+#I may do this by hand just 4 gemini momentum 
+#🥡️<- will have a file like this or something telling htat its "directories end. were just gonna use this 4 now tho
+#🥡️<-they can hold a flexbox wont break anything, (i think ) we assume we "IN" not adjacent, would need special 2 escape
+💬️
+i need 0.inventory🗯️]a0.c , to use inventory_lut.txt , to search dirs for dirname containing emoji from inventory_lut.txt,
+and list the child dirs with an index 
+
+up to any dir with 🥡️(this is top dir, dont leave it)
+♟️
+
+1. (get it 2 find first higher level dir containing "🥡️" , use as arg to )
+🇬🇮️gcc c code that searches up dirs till it finds a dir containing 🥡️ emoji in its name then give path as "../../file_🥡️/"
+
+2. #.69.list+dirs🔦️[.]+filt]ff7.c <-  creates directory_map.txt
+3. parse directory_map.txt for files in lut
+
+4. make a .c file "1.inventory_dir🗯️]a0.c"  that runs output of system(./+x/0.find.🥡️.top]a0]PURE.+x); into arg1 ./+x/#.69.list+dirs🔦️[.]+filt]ff7.+x
+which will create a "directory_map.txt". when that is created. 
+we want to re-create the dir map using only directories that contain "emoji's from inventory_lut.txt
+(and any of its subdirectories) if any of the subdirectories also contain emoji from inventory_lut.txt, show its sub-dirs. 
+then let user enter input (will choose a directory based on its index)
+and print the full path of the directory to user 

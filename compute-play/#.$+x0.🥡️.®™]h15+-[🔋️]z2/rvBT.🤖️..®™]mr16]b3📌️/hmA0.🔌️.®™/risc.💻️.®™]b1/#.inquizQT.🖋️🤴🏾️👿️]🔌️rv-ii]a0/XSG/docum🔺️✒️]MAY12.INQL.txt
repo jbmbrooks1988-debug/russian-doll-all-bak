@@ -1,0 +1,107 @@
+# Chip Simulator Documentation
+
+## Overview
+This project is a chip simulator for designing and testing digital circuits using two-input NAND gates, targeting a RISC-V processor implementation. It has been extended to support quantum circuits with reversible and quantum gates (Toffoli, Hadamard, CNOT) for exploring quantum universality. The simulator processes netlist files, manages I/O through temporary files, and validates circuit behavior with manual and automated tests.
+
+## Functionality
+- **main.c**: Orchestrates netlist processing, input loading, and output generation.
+  - `load_input`: Reads `tmp/input.txt`, creates `tmp/<signal>.<hash>.txt` files for classical bits (0 or 1) or quantum states (space-separated real/imaginary amplitudes).
+  - `process_netlist`: Executes netlist lines, handles `INCLUDE` directives, calls `io_manager.+x` for classical gates or `module.+x` for quantum gates, and copies outputs to `test_output.txt` or `test_sum.txt`.
+- **io_manager.c**: Manages signal I/O and executes classical NAND gates.
+  - Maps signals (e.g., `INPUT_A`, `OUTPUT`) to `tmp/<signal>.<hash>.txt` files.
+  - Creates intermediate files (e.g., `tmp/INPUT_A_INPUT_B.<hash>.txt`) for NAND inputs.
+- **module.c**: Executes quantum gates (Toffoli, Hadamard, CNOT).
+  - Uses flat arrays (double) for states and matrices (real/imag pairs) instead of structs for readability and debugging.
+  - Supports multi-output gates (e.g., Toffoli outputs three qubits).
+  - Applies unitary matrices for quantum transformations.
+- **Netlists**:
+  - `netlist_nand.txt`: Single NAND gate.
+  - `netlist_xor.txt`: XOR circuit using four NANDs.
+  - `netlist_full_adder.txt`: Full Adder using XOR and NANDs.
+  - `netlist_toffoli.txt`: Pseudo-Toffoli (classical NAND-like).
+  - `netlist_quantum.txt`: Quantum circuit with true Toffoli, Hadamard, and CNOT.
+- **I/O Flow**:
+  - Inputs: `tmp/input.txt` lists classical bits (one per line) or quantum states (e.g., `1 0` for `|0⟩`).
+  - `main.c` creates `tmp/INPUT_A.<hash>.txt`, etc.
+  - Outputs: `tmp/OUTPUT.<hash>.txt` for classical bits, multiple files for quantum gates (e.g., `tmp/OUTPUT_A.<hash>.txt`).
+
+## Usage
+1. **Compile**:
+   ```
+   gcc main.c -o +x/main.+x
+   gcc io_manager.c -o +x/io_manager.+x
+   gcc module.c -o +x/module.+x -lm
+   ```
+2. **Create Netlist**:
+   - Classical: `echo "./+x/nand.+x INPUT_A INPUT_B OUTPUT" > netlist/netlist_nand.txt`
+   - Quantum: `echo "./+x/module.+x toffoli INPUT_A INPUT_B INPUT_C OUTPUT_A OUTPUT_B OUTPUT_C" > netlist/netlist_quantum.txt`
+3. **Set Inputs**:
+   - Classical: `printf "1\n1\n" > tmp/input.txt`
+   - Quantum: `printf "1 0\n1 0\n0 0\n" > tmp/input.txt` (for `|1⟩, |1⟩, |0⟩`)
+4. **Run Test**:
+   - `./+x/main.+x netlist/netlist_quantum.txt test_output.txt 3`
+5. **Check Output**:
+   - `cat tmp/OUTPUT_A.*.txt` (e.g., `1 0` for `|1⟩`)
+6. **Clean Up**:
+   - `rm -f tmp/*.txt test_output.txt`
+
+## Conventions
+- **Signal Names**: `INPUT_A`, `INPUT_B`, `INPUT_C`, `QUBIT_1`, `ANCILLA_1` for inputs; `OUTPUT`, `OUTPUT_SUM`, `OUTPUT_C`, `OUTPUT_QUBIT_1` for outputs; `TMP_<name>` for intermediates.
+- **Input Files**: `tmp/input.txt` has one line per signal (classical: `0` or `1`; quantum: `real imag` pairs).
+- **File Naming**: `tmp/<signal>.<hash>.txt` for signals, `tmp/<in1>_<in2>.<hash>.txt` for intermediates.
+- **NAND Purity**: Classical circuits use two-input NANDs with buffering (e.g., `TMP8`).
+- **Quantum Purity**: Quantum circuits use reversible gates (Toffoli, Hadamard, CNOT).
+- **Debugging**: Check `tmp/*.txt` and logs (e.g., `test_quantum.log`).
+
+## Fixes and Updates (May 12, 2025)
+- **NAND Test**: Fixed missing `test_output.txt` and garbled tmp file names.
+- **XOR Test**: Fixed netlist syntax, 100% test coverage.
+- **Full Adder**: Validated 4/8 test cases.
+- **Toffoli (Classical)**: Pseudo-Toffoli as NAND-like gate.
+- **Quantum Module**:
+  - Fixed typos in `module.c` for state reading/writing.
+  - Implemented true Toffoli (reversible, multi-output).
+  - Added Hadamard and CNOT for quantum universality.
+  - Fixed `snprintf` truncation warnings by increasing `MAX_LINE` to 512.
+  - Rewrote `module.c` to use arrays instead of structs for readability and debugging.
+  - Fixed array indexing in `mat_vec_mult`.
+  - Validated with Toffoli reversibility and Bell state creation.
+
+## Quantum Gate Exploration
+- **Universal Quantum Gates**:
+  - No single gate is universal; `{Hadamard, CNOT, T}` is a universal set.
+  - Toffoli is reversible and supports classical logic but needs Hadamard for quantum superpositions.
+- **Simulator Upgrades**:
+  - `main.c`: Supports multi-output gates and quantum state inputs.
+  - `module.c`: Executes Toffoli, Hadamard, CNOT with array-based state vectors.
+  - `netlist_quantum.txt`: Tests true Toffoli and Bell state creation.
+
+## Roadmap
+- **Completed (as of May 12, 2025)**:
+  - NAND, XOR, Full Adder validated.
+  - True Toffoli and quantum gates (Hadamard, CNOT) implemented.
+  - Bell state simulation (100% test coverage for quantum tests).
+  - `module.c` rewritten with arrays.
+- **Next Steps**:
+  - **4-Bit Adder (by May 26, 2025)**:
+    - Create `netlist_4bit_adder.txt`.
+    - Test 16 input combinations.
+  - **Signal Scoping (by June 2, 2025)**:
+    - Add per-`INCLUDE` namespaces.
+  - **Quantum Circuits (by June 16, 2025)**:
+    - Simulate more complex circuits (e.g., quantum adder).
+    - Add T gate for full `{H, CNOT, T}` universality.
+  - **ALU Design (by June 30, 2025)**:
+    - Implement 1-bit ALU with classical and quantum modes.
+- **Long-Term**:
+  - Build RISC-V core and quantum extensions by August 2025.
+
+## KPIs
+- **Current**:
+  - NAND, XOR, Full Adder, Toffoli (classical): 100% test coverage.
+  - Quantum tests: 100% (2/2 cases: Toffoli, Bell state).
+  - Codebase size: ~1000 lines (`main.c` ~500, `io_manager.c` ~300, `module.c` ~200).
+- **Targets**:
+  - 4-bit adder: 100% test coverage by May 26, 2025.
+  - Quantum circuits: Simulate quantum adder by June 16, 2025.
+  - Codebase growth: <1200 lines by ALU completion.

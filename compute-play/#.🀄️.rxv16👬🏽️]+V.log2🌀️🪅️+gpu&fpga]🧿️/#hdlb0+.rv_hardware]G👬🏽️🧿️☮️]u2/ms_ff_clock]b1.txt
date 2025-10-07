@@ -1,0 +1,78 @@
+# D flip-flop using NAND gates (master-slave, falling-edge triggered)
+# Inputs: D = switch_0 (5), CLK = clock (7)
+# Output: Q in RAM[16]
+# Intermediate: ~D in RAM[17], S in RAM[18], R in RAM[19], Q_m in RAM[20], Q_m' in RAM[21]
+#               ~CLK in RAM[22], S_s in RAM[23], R_s in RAM[24], Q' in RAM[25]
+# Tape outputs: switch_0 (D) and Q (RAM[16]) each cycle
+
+# 0: ~D = NAND(D, D)
+0000000000000001 # Chip location: 1 (NAND)
+0000000000010001 # RAM[17]
+0000000000000101 # Input A: switch_0 (D)
+0000000000000101 # Input B: switch_0 (D)
+
+# 1: S = NAND(D, CLK) = ~(D & CLK)
+0000000000000001 # Chip location: 1 (NAND)
+0000000000010010 # RAM[18]
+0000000000000101 # Input A: switch_0 (D)
+0000000000000111 # Input B: clock (CLK)
+
+# 2: R = NAND(~D, CLK) = ~(~D & CLK)
+0000000000000001 # Chip location: 1 (NAND)
+0000000000010011 # RAM[19]
+0000000000010001 # Input A: RAM[17] (~D)
+0000000000000111 # Input B: clock (CLK)
+
+# 3: Q_m = NAND(S, Q_m') = ~(S & Q_m')
+0000000000000001 # Chip location: 1 (NAND)
+0000000000010100 # RAM[20]
+0000000000010010 # Input A: RAM[18] (S)
+0000000000010101 # Input B: RAM[21] (Q_m')
+
+# 4: Q_m' = NAND(R, Q_m) = ~(R & Q_m)
+0000000000000001 # Chip location: 1 (NAND)
+0000000000010101 # RAM[21]
+0000000000010011 # Input A: RAM[19] (R)
+0000000000010100 # Input B: RAM[20] (Q_m)
+
+# 5: ~CLK = NAND(CLK, CLK)
+0000000000000001 # Chip location: 1 (NAND)
+0000000000010110 # RAM[22]
+0000000000000111 # Input A: clock (CLK)
+0000000000000111 # Input B: clock (CLK)
+
+# 6: S_s = NAND(Q_m, ~CLK) = ~(Q_m & ~CLK)
+0000000000000001 # Chip location: 1 (NAND)
+0000000000010111 # RAM[23]
+0000000000010100 # Input A: RAM[20] (Q_m)
+0000000000010110 # Input B: RAM[22] (~CLK)
+
+# 7: R_s = NAND(Q_m', ~CLK) = ~(Q_m' & ~CLK)
+0000000000000001 # Chip location: 1 (NAND)
+0000000000011000 # RAM[24]
+0000000000010101 # Input A: RAM[21] (Q_m')
+0000000000010110 # Input B: RAM[22] (~CLK)
+
+# 8: Q = NAND(S_s, Q') = ~(S_s & Q')
+0000000000000001 # Chip location: 1 (NAND)
+0000000000010000 # RAM[16]
+0000000000010111 # Input A: RAM[23] (S_s)
+0000000000011001 # Input B: RAM[25] (Q')
+
+# 9: Q' = NAND(R_s, Q) = ~(R_s & Q)
+0000000000000001 # Chip location: 1 (NAND)
+0000000000011001 # RAM[25]
+0000000000011000 # Input A: RAM[24] (R_s)
+0000000000010000 # Input B: RAM[16] (Q)
+
+# 10: Test warning, output switch_0 (D) to cli_tape.txt
+0000000000000000 # Chip location: 0 (no logic)
+0000000000000000 # RAM output address: 0 (cli_tape.txt)
+0000000000000101 # Input A: switch_0
+0000000000000000 # Input B: 0 (should be blank, expect warning)
+
+# 11: Output Q (RAM[16]) to cli_tape.txt for sanity check
+0000000000000000 # Chip location: 0 (no logic)
+0000000000000000 # RAM output address: 0 (cli_tape.txt)
+0000000000010000 # Input A: RAM[16] (Q)
+0000000000000010 # Input B: blank (2)

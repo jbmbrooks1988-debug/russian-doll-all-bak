@@ -1,0 +1,94 @@
+🎮️💹️
+i want to make an open gl game that uses the assets in this folder
+
+
+=======================================================
+i want to re-write this tile map editor in gcc pure c , opengl/ glut and stb headers. 
+
+
+
+no new or custom headers, i rather use executable modules using system() or pipe
+
+if they need to share data we want external .txt for better data visualization
+
+
+
+
+ 	
+
+start will basic user editable functinality and tack on features module by module.
+we can test step by step
+rules : prefer arrays to structs for readability. no linking .c files. 
+standalone modules only
+
+
+dont try to test directly . instead :   
+make a robust testing program that can test pass/fail each feature as u make it
+script should also be in pure gcc c . same rules. (should read its commands
+from a .txt file)
+in c_rewrite/ directory
+
+
+🖼️
+since this is working and ez. 
+1. it could do entire rmmmv, if u got more down and dirty with arch spex...
+1.it could also make webgl version but in memory
+
+🔮️
+also just cuz we made "vibe coded" doesn't mean gemini cant ez vibe orchbreak
+into legit "peice-likes" , further so if we show it peice architecture.
+
+honestly tho this is just like a "back up/ref for peices we have. w/e
+
+💌️gonna get rmmv 2d/ cli renderer 2 remember, render it in ascii cli !
+amd 3d option! 
+(oh sure hook , rl // llm thru gemini if it does. wut else? money / trade
+farming etc, GO GO GO !💌️
+🪨️
+(we should be reading off rmmv sprite sheet, not this garbage, 
+keep iterating. ; like i said , this is kinda "step backup prompting"
+
+this goes fast cuz there is a visual/interactive test element, i guess
+keep pushign (plus im at desktop desk)....
+
+
+{who else is doing this? with my arch? w/e blah blah/ do our stuff. RB&U]SP5000}
+🪨️
+🔮️
+
+its great, when it switches to other player turn , we are          │
+│   going to impliment a "rl" finite state machine type ai, that       │
+│   saves saves weights.<peice>.txt and biases.<peice>.txt so          │
+│   that it can learn/ and be trained, user may update bias file       │
+│   to try to enhance peice performance. get it  ? 
+
+
+_________
+before we go forward i have a minor data architecture edit that will be fun!
+all the .png files should be in their own dir ie : <peice>.dir/ 
+
+we can store and retreive all the information like that from now on. get it? 
+
+instead of seperating by "class" it wil be more "gamified" each 
+peices data can be in its own folder, thats fun for the user to view <3 
+⚠️
+
+
+
+ignore below ----
+ask it to rewrite rmmv engine basics in gcc c ,
+especially the data structures, and asset use
+
+
+have it make an editor for it .
+
+have it make a 3d editor (or just render in optional 3d )
+
+what about tsots!? (this is for adaptability, may even help inform needed fx/data)⚠️
+
+
+(ask gemini to read the rules of my_chara/bots / aow and make it in gl)
+(describe mars merc/space invaders have it remade. 
+have it make social in [web]gl, using pics on computer & put up on jbmbrooks
+along with this rest of this, so we can 
+"ALSO CLONE REDDIT< and put our stories on it ,etc. 

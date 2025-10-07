@@ -1,0 +1,4 @@
+x,y,z,emoji_idx,fg_color_idx,bg_color_idx
+5,5,0,0,0,7
+6,5,0,1,0,7
+7,5,0,2,0,7

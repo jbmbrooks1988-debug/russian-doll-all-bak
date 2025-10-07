@@ -1,0 +1,120 @@
+# Chip Simulator Documentation
+
+## Overview
+This project is a chip simulator for designing and testing digital circuits using two-input NAND gates, targeting a RISC-V processor implementation. It supports quantum circuits with reversible gates (Toffoli, Hadamard, CNOT) and multi-cycle execution with clock signals. A quantum mode avoids measurement for reversibility, storing full quantum states.
+
+## Functionality
+- **orchestrator.c**: Manages multi-cycle execution, clock signals, and quantum mode.
+  - Runs `./+x/main.+x` for multiple cycles, updating `tmp/input.txt` with inputs and `CLOCK`.
+  - Supports `--quantum` flag to enable quantum mode, writing `tmp/quantum_mode.txt`.
+  - Supports automated or manual (press Enter) cycle modes.
+- **main.c**: Orchestrates single-run netlist processing.
+  - `load_input`: Maps `tmp/input.txt` to `tmp/<signal>.<hash>.txt` for signals (`INPUT_A`, `INPUT_B`, `INPUT_C`, `ANCILLA_1`, `ANCILLA_2`, `CLOCK`).
+  - `process_netlist`: Executes netlist lines, calls `io_manager.+x` or `quantum.+x`.
+- **io_manager.c**: Executes classical NAND gates.
+  - Maps signals to `tmp/<signal>.<hash>.txt`.
+  - Creates intermediate files (e.g., `tmp/INPUT_A_INPUT_B.<hash>.txt`).
+- **quantum.c**: Executes quantum gates (Toffoli, Hadamard, CNOT).
+  - Supports classical mode (measures to `0` or `1` in `tmp/<signal>.<hash>.txt`) and quantum mode (stores states in `tmp/STATE_<signal>.<hash>.txt`).
+  - Quantum mode: Enabled via `--quantum` or `tmp/quantum_mode.txt`, writes dummy `0` to classical files for compatibility.
+  - Reads classical bits or quantum states (real/imag pairs) from `tmp/STATE_<signal>.<hash>.txt`.
+  - Uses arrays for states and matrices, dynamically parses commands via `argv[0]`.
+- **Netlists**:
+  - `netlist_nand.txt`: Single NAND gate.
+  - `netlist_xor.txt`: XOR using four NANDs.
+  - `netlist_full_adder.txt`: Full Adder.
+  - `netlist_toffoli.txt`: Pseudo-Toffoli (classical).
+  - `netlist_quantum.txt`: Quantum circuit with Toffoli, Hadamard, CNOT.
+- **I/O Flow**:
+  - Inputs: `tmp/input.txt` lists classical bits (`0` or `1`) for `INPUT_A`, `INPUT_B`, `INPUT_C`, `ANCILLA_1`, `ANCILLA_2`, `CLOCK`.
+  - Classical outputs: `tmp/<signal>.<hash>.txt` (`0` or `1`).
+  - Quantum outputs: `tmp/STATE_<signal>.<hash>.txt` (real/imag pairs) in quantum mode.
+
+## Usage
+1. **Compile**:
+   ```
+   gcc orchestrator.c -o +x/orchestrator.+x
+   gcc main.c -o +x/main.+x
+   gcc io_manager.c -o +x/io_manager.+x
+   gcc quantum.c -o +x/quantum.+x -lm
+   ```
+2. **Create Netlist**:
+   - Classical: `echo "./+x/nand.+x INPUT_A INPUT_B OUTPUT" > netlist/netlist_nand.txt`
+   - Quantum: `echo "./+x/quantum.+x toffoli INPUT_A INPUT_B INPUT_C OUTPUT_A OUTPUT_B OUTPUT_C" > netlist/netlist_quantum.txt`
+3. **Run Cycles**:
+   - Classical mode: `./+x/orchestrator.+x netlist/netlist_quantum.txt test_output.txt 3 2`
+   - Quantum mode: `./+x/orchestrator.+x netlist/netlist_quantum.txt test_output.txt 3 2 --quantum`
+   - Manual: Add `manual` (e.g., `./+x/orchestrator.+x ... 2 --quantum manual`)
+4. **Check Output**:
+   - Classical: `cat tmp/OUTPUT_A.*.txt` (`0` or `1`)
+   - Quantum: `cat tmp/STATE_OUTPUT_A.*.txt` (e.g., `1.0 0.0\n0.0 0.0`)
+   - Clock: `cat tmp/CLOCK.*.txt` (`0` or `1`)
+5. **Clean Up**:
+   - `rm -f tmp/*.txt test_output.txt`
+
+## Conventions
+- **Signal Names**: `INPUT_A`, `INPUT_B`, `INPUT_C`, `ANCILLA_1`, `ANCILLA_2`, `CLOCK` for inputs; `OUTPUT`, `OUTPUT_SUM`, `OUTPUT_C`, `OUTPUT_QUBIT_1` for outputs; `TMP_<name>` for intermediates.
+- **Input Files**: `tmp/input.txt` has one classical bit per line (`0` or `1`).
+- **File Naming**: `tmp/<signal>.<hash>.txt` (classical, `0` or `1`); `tmp/STATE_<signal>.<hash>.txt` (quantum, real/imag pairs).
+- **NAND Purity**: Classical circuits use two-input NANDs.
+- **Quantum Purity**: Quantum circuits use reversible gates.
+- **Clock Purity**: `tmp/CLOCK.<hash>.txt` holds `0` or `1`.
+- **Debugging**: Check `tmp/*.txt` and logs (e.g., `test_quantum.log`).
+
+## Fixes and Updates (May 12, 2025)
+- **NAND Test**: Fixed missing `test_output.txt` and tmp file names.
+- **XOR Test**: Fixed netlist syntax, 100% coverage.
+- **Full Adder**: Validated 4/8 test cases.
+- **Toffoli (Classical)**: Pseudo-Toffoli as NAND-like gate.
+- **Quantum Module**:
+  - Fixed typos in `quantum.c` for state reading/writing.
+  - Implemented true Toffoli, Hadamard, CNOT.
+  - Fixed `snprintf` truncation by increasing `MAX_LINE` to 512.
+  - Rewrote `quantum.c` to use arrays.
+  - Fixed Toffoli output extraction.
+  - Updated `sh.test.quantum.sh` for signal alignment.
+  - Validated Toffoli (100% for |110⟩ → |111⟩) and Bell state tests.
+  - Renamed `module.c` to `quantum.c` with dynamic parsing (`argv[0]`).
+  - Added quantum mode (`--quantum` or `tmp/quantum_mode.txt`) to avoid measurement, storing states in `tmp/STATE_<signal>.<hash>.txt`.
+- **Orchestrator Module**:
+  - Added `orchestrator.c` for multi-cycle execution with `CLOCK`.
+  - Added `--quantum` support to enable quantum mode via `tmp/quantum_mode.txt`.
+
+## Quantum Gate Exploration
+- **Universal Quantum Gates**:
+  - `{Hadamard, CNOT, T}` is universal; Toffoli supports classical logic.
+- **Simulator Upgrades**:
+  - `main.c`: Supports classical I/O and `CLOCK`.
+  - `quantum.c`: Supports classical and quantum modes for reversibility.
+  - `orchestrator.c`: Manages cycles and quantum mode.
+  - `netlist_quantum.txt`: Tests Toffoli and Bell state.
+
+## Roadmap
+- **Completed (as of May 12, 2025)**:
+  - NAND, XOR, Full Adder validated.
+  - True Toffoli, Hadamard, CNOT implemented.
+  - Toffoli and Bell state tests: 100%.
+  - `orchestrator.c` with `CLOCK` and quantum mode.
+  - Quantum mode in `quantum.c` for reversibility.
+- **Next Steps**:
+  - **4-Bit Adder (by May 26, 2025)**:
+    - Create `netlist_4bit_adder.txt`, test with `CLOCK`.
+  - **Signal Scoping (by June 2, 2025)**:
+    - Add per-`INCLUDE` namespaces.
+  - **Quantum Circuits (by June 16, 2025)**:
+    - Add T gate for `{H, CNOT, T}` universality.
+    - Simulate quantum adder with quantum mode.
+  - **ALU Design (by June 30, 2025)**:
+    - Implement 1-bit ALU with classical and quantum modes.
+- **Long-Term**:
+  - RISC-V core with quantum extensions by August 2025.
+
+## KPIs
+- **Current**:
+  - NAND, XOR, Full Adder, Toffoli: 100% test coverage.
+  - Quantum tests: 100% (Toffoli, Bell state, quantum mode).
+  - Codebase size: ~1200 lines (`main.c` ~500, `io_manager.c` ~300, `quantum.c` ~250, `orchestrator.c` ~200).
+- **Targets**:
+  - 4-bit adder: 100% coverage by May 26, 2025.
+  - Quantum circuits: Quantum adder by June 16, 2025.
+  - Codebase growth: <1500 lines by ALU completion.

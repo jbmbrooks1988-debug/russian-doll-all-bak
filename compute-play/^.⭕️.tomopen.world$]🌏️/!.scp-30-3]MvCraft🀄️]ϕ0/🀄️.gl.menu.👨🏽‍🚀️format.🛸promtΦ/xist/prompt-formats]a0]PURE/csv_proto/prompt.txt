@@ -1,0 +1,40 @@
+# Current Implementation: CSV-Based UI Framework with 3D/2D Canvas Elements
+
+## What I'm Trying to Do:
+1. Create a declarative UI system using CSV files that define UI elements (buttons, sliders, canvas, etc.)
+2. Implement a canvas element that can render both 3D and 2D content based on its properties
+3. Implement a 3D game area where a player can be moved using arrow keys (WASD simulation)
+4. Implement a 2D mini map that shows the player position from the 3D world
+5. Connect the two via shared player position variables so movement in 3D reflects in the 2D mini map
+
+## Architecture:
+- MVC Pattern: Model (model.c) handles data/CSV parsing, View (view.c) handles rendering, Controller (controller.c) handles input
+- CSV defines UI elements with properties like "render_mode=3d" or "render_mode=2d" for canvas elements
+- Arrow keys control player position in the 3D world (shared variables: player_x, player_z)
+- 2D mini map displays scaled positions of player and obstacles from 3D world
+
+## Suspected Problems:
+1. **OpenGL State Management**: Changing viewport/projection matrices within canvas rendering may be interfering with overall UI rendering
+2. **Coordinate System Mismatch**: Canvas rendering coordinates may not align properly with screen coordinates
+3. **Rendering Order**: Canvas content might be getting covered by UI elements or drawn in wrong z-order
+4. **Function Scoping**: The complex rendering functions I added were causing compilation issues
+5. **Canvas Sizing**: Canvas elements may be too small or positioned incorrectly in the UI layout
+
+## Current Implementation Approach:
+1. Canvas elements have red (3D) or green grid (2D) backgrounds with labels "3D GAME" and "2D MAP"
+2. In 3D canvas: Yellow square represents player at (player_x, player_z) coordinates
+3. In 2D canvas: Grid shows player position scaled from 3D world coordinates
+4. Arrow keys modify player_x/player_z variables in controller.c, which should update both canvases
+
+## Expected Visual Output:
+- Main window with UI elements (buttons, sliders, labels)
+- Large red rectangle labeled "3D GAME" with yellow square (player)
+- Smaller area with green grid labeled "2D MAP" with red square (player position on mini map)
+- Player position should update when arrow keys are pressed
+
+## Solutions to Try:
+1. Use simple 2D rendering primitives instead of complex OpenGL matrix changes
+2. Ensure drawing happens in screen coordinates rather than changing projections
+3. Draw canvas content without altering global OpenGL state
+4. Verify canvas elements are properly positioned and sized in the CSV definition
+5. Debug by drawing clearly visible shapes in known positions

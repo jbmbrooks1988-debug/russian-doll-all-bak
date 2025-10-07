@@ -1,0 +1,119 @@
+Super-Simple Serial HDL Emulator for NAND-Based Chips
+What Is This?
+This is a lightweight emulator built in C that simulates NAND-based chips one gate at a time. Think of it as a minimalist tool inspired by NAND2Tetris—perfect for learning or experimenting with hardware logic in a simple, serial way. It uses netlists (text files) to define how NAND gates connect signals, and it processes everything step-by-step, cycle-by-cycle.
+Why Use It?
+
+Simplicity: No fancy dependencies—just pure C and basic file I/O.
+Flexibility: Define any NAND-based chip logic with a netlist.
+Debugging: Lots of debug messages to see what’s happening.
+Educational: Great for understanding how logic gates build circuits.
+
+How to Set It Up
+Prerequisites
+
+A C compiler (like gcc).
+A terminal to run commands.
+A ./tmp/ folder in your working directory (create it with mkdir tmp if it’s not there).
+
+Compilation
+Compile the two main programs:
+gcc -o +x/main.+x main.c
+gcc -o +x/orchestrator.+x orchestrator.c
+
+How to Run It
+Use the orchestrator to simulate your chip:
+./+x/orchestrator.+x <netlist_file> <cycles>
+
+
+<netlist_file>: Path to your netlist (e.g., netlist/netlist_rv_ii.txt).
+<cycles>: Number of cycles to run (e.g., 10).
+
+Example
+./+x/orchestrator.+x netlist/netlist_rv_ii.txt 10
+
+This runs the emulator for 10 cycles using the netlist_rv_ii.txt netlist.
+Netlist Format
+A netlist tells the emulator how NAND gates connect signals. Each line represents one NAND operation:
+./+x/nand.+x <input1> <input2> <output>
+
+
+<input1> and <input2>: Signals going into the NAND gate.
+<output>: Signal coming out of the NAND gate.
+
+Example Netlist
+./+x/nand.+x A B C
+./+x/nand.+x C D E
+
+
+First line: NANDs signals A and B, outputs to C.
+Second line: NANDs signals C and D, outputs to E.
+
+How It Works
+
+Start Up:
+
+The orchestrator reads your netlist and figures out all the signals involved.
+It sets all signals to 0 and saves them in tmp/state.txt.
+
+
+Each Cycle:
+
+Picks the next NAND operation from the netlist.
+Grabs the current values of the input signals from tmp/state.txt.
+Writes those inputs to tmp/input.txt.
+Creates a tiny netlist file (e.g., tmp/netlist_0.txt) for just that NAND operation.
+Runs ./+x/main.+x with the tiny netlist and tmp/output.txt as the output file.
+main.c processes the NAND gate and writes the result to tmp/output.txt.
+The orchestrator reads the output and updates tmp/state.txt.
+
+
+Repeat:
+
+Moves to the next cycle until it hits the number you specified.
+
+
+Finish:
+
+Cleans up and stops.
+
+
+
+Files You’ll See
+
+tmp/input.txt: Inputs for the current NAND operation (e.g., A=0).
+tmp/output.txt: Output of the current NAND operation (e.g., C=1).
+tmp/state.txt: All signal values after each cycle.
+tmp/netlist_<cycle>.txt: Temporary netlist for each cycle’s NAND operation.
+
+Debugging Tips
+
+Check the DEBUG: messages in the terminal—they show what’s being read and written.
+If it fails, look for ERROR: messages (e.g., file not found, bad netlist line).
+Make sure tmp/ exists and is writable.
+
+Example Runs
+Simulate an RV-II Chip
+./+x/orchestrator.+x netlist/netlist_rv_ii.txt 10
+
+
+Runs 10 cycles of the RV-II netlist.
+
+Simulate an XOR Gate
+./+x/orchestrator.+x netlist/netlist_xor.txt 1
+
+
+Runs 1 cycle of an XOR netlist.
+
+Troubleshooting
+
+Usage Error: If you see Usage: ./+x/main.+x <netlist_file> <output_file>, the orchestrator isn’t calling main.c right. The fix above ensures it passes both <netlist_file> and <output_file>.
+File Errors: Ensure tmp/ exists (mkdir tmp) and your netlist file is in the right spot.
+Bad Netlist: Each line needs exactly ./+x/nand.+x <in1> <in2> <out>—no typos!
+
+Notes
+
+The emulator processes one NAND gate per cycle, keeping it serial and simple.
+All logic lives in the netlist—edit it to change how your chip behaves.
+It’s NAND-only, so build everything (AND, OR, XOR, etc.) using NAND gates.
+
+Enjoy simulating your NAND-based chips! Let me know if you hit snags—this is meant to be fun and easy to tweak. 🎉

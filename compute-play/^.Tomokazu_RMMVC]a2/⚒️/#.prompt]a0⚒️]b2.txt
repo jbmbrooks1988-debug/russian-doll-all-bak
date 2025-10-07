@@ -1,0 +1,84 @@
+📅️SEPT9 : 
+this is code for a game editor (using emojis). 
+
+the games should save and load from a directory 
+
+instead of save and load buttons, we want to make a file button , with 
+sub options save load that shows directory contents
+if 'new' we will have user create new folder with name of their project
+if save we will update the project dir
+ if load they will show dir picker & load a chosen dir with project data
+
+project data = global_events.txt , map_<mapnumber>.txt 's and map_events_<mapnumber>.txt
+
+
+underneath "tools" buttons, 
+we will show a "temp dir display , showing all "maps" in project dir, 
+clicking one of these maps (and their corresponding events edits)  will load that map into view 
+for editing , the edits should be stored in temp/
+dir within project  , until saved by user
+
+
+
+do not modify any of the other code it works great but is fragile 2 modification.
+pls use mvc . avoid structs prefer arrays. and no new .h files 
+
+
+do you wanna read over the code, then write and have me approve a todo list before writing it to todo.txt?
+then upon approval we will do each list item , careful to make
+a backup zip tar before each new step, for safety. 
+
+optional additional reading for context (ignore if confusing) : 
+______________________________________________
+
+currently program looks more like a "paint" than game-editor because
+we haven't created events yet, but that will be our next step
+and we will want to save/load them as well. 
+
+
+events : user programmed events 
+
+use ? :next we are going to create a "player.c" gameloop
+that can read "save dir" and play the users game using the data. 
+
+events dictate the behaviors of the objects
+
+feel free to give guidance/code-hooks towards this next stage as well
+after.
+
+pls use mvc . avoid structs prefer arrays. and no new .h files 
+❤️‍🔥️
+📅️
+
+
+___________________________________________________
+📅️✔️SEPT 8✔️
+______________________________________________________________________
+Menu is done "techinically " but isn't 'optomized"
+ 
+/media/no/b7ced73c-5231-4462-b98d-64e38fe2df9e/home/jbez/Desktop/^.📶️.SHARE]/^.🦾️]fullsharezip/💪🏾️].no-desk.sharezip/📲️📵️.GTFO.flxbx.📦️arcbit♏️/#.⛷️LOOSE-TANGENT]2wild]🎄️⛷️/🪆️.a0/📟️.a0/💻️🏓️/1.W$R-tifacts🏦️]c3/^.Tomokazu_Suite]ai]a2/⚒️/MENU💉️/menu.md
+
+_________________
+i am making a game editor
+
+user is able to open menu in 2d/3d canvas.this is what we are modifying
+when 'new' is clicked it should show a child menu screen near size of parent screen
+leave space at top and bottom for system buttons
+left side will be done later
+right side is where events go 
+Contents:
+user will click existing events to edit
+or empty space to create new event
+
+events commands : is a grandchild menu that is size of right side of parent menu
+
+it contains 3 pages of command option buttons
+
+the contents of these are store in 
+menu/event.commands.1.txt
+menu/event.commands.2.txt
+menu/event.commands.3.txt
+
+they should be read from file. no need to hardcode them
+
+ready? 

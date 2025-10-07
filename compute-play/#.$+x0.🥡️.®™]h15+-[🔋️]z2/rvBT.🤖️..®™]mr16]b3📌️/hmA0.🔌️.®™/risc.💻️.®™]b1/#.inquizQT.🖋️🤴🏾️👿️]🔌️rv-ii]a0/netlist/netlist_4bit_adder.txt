@@ -1,0 +1,7 @@
+INCLUDE netlist/netlist_full_adder.txt  # A0, B0, Cin
+./+x/nand.+x OUTPUT_COUT INPUT TMP4_1  # A1, B1, Cin=Cout0
+INCLUDE netlist/netlist_full_adder.txt  # A1, B1, Cin=TMP4_1
+./+x/nand.+x OUTPUT_COUT INPUT TMP4_2  # A2, B2, Cin=Cout1
+INCLUDE netlist/netlist_full_adder.txt  # A2, B2, Cin=TMP4_2
+./+x/nand.+x OUTPUT_COUT INPUT TMP4_3  # A3, B3, Cin=Cout2
+INCLUDE netlist/netlist_full_adder.txt  # A3, B3, Cin=TMP4_3

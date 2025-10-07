@@ -1,0 +1,10 @@
+
+
+i just wanna get a quick giga pet going. 
+whenever there is item it should exist. 
+
+i may make a simple "store" so gemini knows what to connect things with (instead of food coming from "nowhwere")
+(this would connect with wsr, and they will have an inventory ) 
+(i may also make a "hotel" where they can spend money to sleep , and a "gym" where they can train 4 $)
+(finally we will make other peices.) 
+

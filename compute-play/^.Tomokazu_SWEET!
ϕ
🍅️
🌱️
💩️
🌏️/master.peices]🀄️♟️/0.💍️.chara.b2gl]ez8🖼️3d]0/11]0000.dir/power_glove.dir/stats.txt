@@ -1,0 +1,2 @@
+type:weapon
+value:20

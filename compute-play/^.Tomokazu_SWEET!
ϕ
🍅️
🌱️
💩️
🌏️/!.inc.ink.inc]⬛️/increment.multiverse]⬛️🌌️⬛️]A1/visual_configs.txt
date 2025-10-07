@@ -1,0 +1,7 @@
+Universe sphere 1.0 0.5 0.5 0.5
+H2 point 0.01 1.0 0.0 0.0
+O2 point 0.01 0.0 0.0 1.0
+Water point 0.01 0.0 1.0 1.0
+CH4 point 0.01 1.0 1.0 0.0
+CO2 point 0.01 0.5 0.5 0.5
+City city 0.5 0.8 0.8 0.8

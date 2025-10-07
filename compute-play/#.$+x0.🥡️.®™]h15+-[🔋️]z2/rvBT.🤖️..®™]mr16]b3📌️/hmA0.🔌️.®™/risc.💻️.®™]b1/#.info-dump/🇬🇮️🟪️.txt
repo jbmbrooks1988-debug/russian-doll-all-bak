@@ -1,0 +1,50 @@
+🇬🇮️🟪️
+stripped down version i can show grok? 
+
+we have turns but i want a bit more infra ; 
+
+id rather show it less. but have more. ]
+
+add chatbot early btw with context of self/state ,etc 
+
+ie : are u hungry ? 
+
+(it may not know what it needs, can u "tell it"
+(user commands are "highest priority" , etc)+ str8 up automation
+
+vs "loyalty automation ie mix of both"
+
+-------
+i kinda wanna switch 🔐️ b4 going forward...
+
+now im wanting 🖼️.txt instead of state.txt all cosmetic. 
+but helps me know wutssup tbh.
+
+>>
+i kinda wanna hash state , so i will just wait till i do both, 
+which maybe when its more appropriate...
+>>
+🇬🇮️🟪️
+
+
+
+
+🤖️how does rvii++ does this? {inc hunger/w/e}
+will just run "rvii++ -> pointing 2 w/e program 2 modify io
+(try with simple stuff first, such as incriment...add1 , etc)
+
+{word context() may actually help 4 coding, also 0b isn't very human readable; so not 2 stop u , just make infra tools imo. ; 
+including helping it get better at explaining its meta reasoning}
+🍑️
+no buts, we wanna explore this ]5lyfe esp since 5T nvdia🧿️ seems slo♾️🍑️
+🤖️
+
+
+
+
+
+
+
+
+
+

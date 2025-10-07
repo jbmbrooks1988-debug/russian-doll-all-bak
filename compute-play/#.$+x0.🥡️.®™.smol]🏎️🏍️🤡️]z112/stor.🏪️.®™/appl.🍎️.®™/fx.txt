@@ -1,0 +1,3 @@
+eat: ./+x/eat_me.+x -2
+yeild: ./+x/yeild_me.+x 🥜️
+post: ./+x/delete_me.+x 

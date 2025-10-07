@@ -1,0 +1,7 @@
+# Mojicraft - Minecraft Clone Progress Report
+
+what makes this better than "peices"<- compact easy 2 iterate on theoretically . altho peices really isn't that bad , i
+think u mean large chunks, with a different "focus" (and can reverse engineer other things exactly the same later, but 
+maybe thru a plugin system or something hopefully (could at least break that. anyways try diff ones, see which suits u , when for what
+we have them all); but i think theres lots of value in having this as a plugin system, hopefully compatible with rmmvc, 
+but whwere we can keep adding real minecraft like / 3d like features.

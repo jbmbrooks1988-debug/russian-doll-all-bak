@@ -1,0 +1,30 @@
+
+🌫️
+fog of war <- big for multiplayer mGsv. 🌫️
+↑ ↓ ← →
+Move yellow cursor
+Enter
+Try to move settler or found city at cursor
+Space
+End turn (earn gold)
+Mouse Click
+Move cursor + act if valid
+Cursor on Settler
+Re-select settler
+
+🚀 Next Steps?
+Let me know when you're ready for:
+
+🏰 Enemy city on another island
+🧭 Fog of war / exploration
+🗺️ Terrain types (mountains, rivers)
+🏗️ City production menu
+💬 Dialog prompts
+We’re building a full retro-style Civilization — one emoji at a time! 🌍👑⚔️
+
+---------------------------------------------
+#.0.civ🏰️was]ez.on.eye👁️.c <- i kinda like this style . its ez on eyes
+
+and kinda hides the fact that ur using emojis. w/e tho u could  just use unicode
+chars 4 saem effect.
+___________

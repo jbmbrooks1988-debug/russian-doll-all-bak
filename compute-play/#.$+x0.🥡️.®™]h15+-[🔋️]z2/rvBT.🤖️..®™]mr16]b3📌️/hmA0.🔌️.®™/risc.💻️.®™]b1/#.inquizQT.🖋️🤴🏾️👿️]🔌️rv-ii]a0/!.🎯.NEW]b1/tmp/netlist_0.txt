@@ -1,0 +1,1 @@
+./+x/nand.+x INPUT_A INPUT_B TMP1

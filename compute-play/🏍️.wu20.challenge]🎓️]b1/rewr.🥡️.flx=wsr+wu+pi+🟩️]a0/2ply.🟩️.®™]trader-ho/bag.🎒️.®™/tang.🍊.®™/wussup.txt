@@ -1,0 +1,6 @@
+
+
+does it need to recursively "find what peice is using it"? 
+(its an item , may not be so simple as to go "../../state.txt" (but it could till it finds it)
+(or hits "fbx")
+b-b-but u didn't do that in the last code for top fbx. yup. that sux. will have 2 ai it.🇬🇮️

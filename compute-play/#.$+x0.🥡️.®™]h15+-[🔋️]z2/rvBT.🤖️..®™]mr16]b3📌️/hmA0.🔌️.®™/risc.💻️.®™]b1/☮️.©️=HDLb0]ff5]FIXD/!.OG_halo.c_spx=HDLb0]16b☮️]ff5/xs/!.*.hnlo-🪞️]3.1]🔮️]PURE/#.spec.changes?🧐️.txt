@@ -1,0 +1,28 @@
+💭️
+🧘🏽‍♂️️change is fine. 
+🧐️🥽️
+//📅️mar7🥱️
+// this may seem boring. but i just fixed post2 dram]+EZ.AF] ie: its nearly done
+// this isnt assembly , that tricked u...
+// coming 2 this from "scratch" it maybe a "bit tricky" but ez enuff
+// if u dont bake bugs in each step. w8 4 full b4 orb.
+// this dram is already better than halo.s's btw. sorry🤷🏽‍♂️️
+// tho im actually not sure. is 0 supposed 2 post  0 or blank...hi-z...
+//(there are no empty spaces...
+//but i think we were signifying empty with "3"(if u want no reason no matter
+// i wouldn't do that right now
+
+👨🏾‍🚀️just get 2 the point where we are doing gates. 
+where the output of dram is actually meaning full. 
+
+btw dram isn't a thing is supposed 2 be modem. dram's just another 
+form of mem , but w/e big whoop., u can always write out 2 modem instead.
+also u can dram out  2 file , its just io. w/e that honestly doesn't matter
+esp in .c where u can drop that fx entierly, but it DOES clear wire...right?
+(i dunno i dont remember, probably, w/e we will revist when we ar emaking real wires, changes will be ez. just get basic io stuff.
+
+)
+📌️write 2 wire is important
+🧐️
+📅️
+🗓️

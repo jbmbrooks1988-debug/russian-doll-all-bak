@@ -1,0 +1,291 @@
+👿️>not using debilu as main... but outsourcing gemini/qwen =
+no weird emoji paths, clean env. etc... i like it. 
+👿️
+🧩️
+when this is done u may have 2 show code, or genned api 
+
+then u can literally just prompt plugins for everything. thats the dream (again. after mvc-linked.c)
+
+💎️totes worth while,2💎️
+<i wanna make "tile eidtor pixel thingy but maybe ill wait 4 recursion>
+
+
+
+i want to add "+" to load a new tile tab
+(from dir all tiles in dir (like map editor
+or chosoing map switches tile from map editor. 
+then u can choose "normal/tiled/rmmv"
+2d tilling and 3d are different artforms with only RMV3d bridign🌉️
+🛸️
+also i want to make AOW/ BOTS <- cuz i want to make the ai compelling 2 visualize
+{animatinos etc. also we can start bilding out solpen. even dedicated chanel{lucksol}}
+and start posting matching online
+also "EMOCHIO" is same as bots, but with macro peice average "ELO MATCHING"❤️‍🔥️
+
++🫕️setting up appstore on website, links on youtube. p2p etc. 🫕️
+
+(were spossed to be tracking peices 2 wgu/wu 2 p2p 2 appstore, but we got a 
+tiny bit off track <not really just exploring r&d> but its ok)
+
+
+ur making videos w/o music. what about the "opposite"(ai gen + vids)
+we have to do marketing experiments and its chep noow
+❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️
+
+
+
+
+
+🧩️
+⚠️we need to include rendering sizes(coords as decimal places) in map saves, then we can do 'minute pixel art/ size & shapes = piece☮️
+
+will use +- 1:1 actuall for setting "pixel size" with a "size read out feild to the right of 1:1
+
+
+
+and use (z&x in 2d for zoom in & out : no its already z level ...mouse can zoom in / out <-🕸️.c)
+{meanign use +- & 1:1 for "SIZE zoom." ; confused?  }
+{should all still be in 1:1 grid...}
+
+
+if its "optional" things can be 1x1 cube otherwise.
+
+i just want to 
+
+⚠️<- do this then IMMEDIATELY do "player" after. 
+👾️also were gonna wanna add "externs. maybe a 3d pixel peice or could be planet/atom;
+but they dont have to or can have same formt but are loop thru a diff way / as 'extern';
+may give a tab or something 4 goingthru externs iduni<- pointer style would be nice or w/e👾️
+🛑️not same as plugin but similiar -> 4 maps/. i wanna do peices / wsr in rmmvc 4 science soon💌️🔍️
+🎨️>also may have a look at photoshop 'bar' / and would like blender scripting sooner than later💌️
+🗒️blender has an editor/ code completition type thing that knows all the primatives..exobv🦧️
+👽️also when does factoring out of mvc start making ALOT of sense? post events windows prolly👽️
+🎛️when should we look at daw/vid? + load in sounds 4 events 🎛️
+🎖️"
+we want it so that we can program any 2d / 3d game
+and somehow use "player infra"(even if we didn't use playscript.c)
+
+so that we could show qwen the "player_mvc.c"
+and it can write "everything else for the game" 
+(instead of showing it 'rmmvc or 18th or another game or w/e')
+(maximum reuse/ compat and hell, probly helps showing playscript)
+
+PLAYSCRIPT should be very similiar 2 HALO/NETLIST if possible 
+otherwise , similiar 2 c/javascript.
+
+(its at this point we can make a proper menu system(mousemovable)
+and even may use 'html'
+and at that point we can recursively refactor, and 
+even do this with other things (18th etc) or w/e in futuer <3💖️🏆️
++= 👢️🪤️♾️❤️‍🔥️
+🎖️
+🗒️
+wed like to add "meta_scripting" @ some point
+2 control entire emoji_paint (same thing blender has)
+basically we will trigger many of the same functions.
+but we also want it so doing stuff writes "script"
+of all actions done(blender does this 2 ) 
+and we wanna be doing that will all programs. so ai can do stuff.
+(like make us games)
+{all our srs programs should have it but, this is a good startspot}✨️
+honestly i wanna get this rolling very soon after first few events.
+
+
+
+🗒️
+🚵‍♀️️(we also wanna add terrain "rules" tab)since we include NONE 
+🚵‍♀️️
+>and the other tabs...
+
+and events, want them to be seperate modules, 2 what extent is that possible? <-honestly 
+i think u need 2 sit with the code and actually read it. (or u could just ask...🤖️;
+u have 2 ask "pre"questions 2)
+
+controller_gl.c <- has tons of map related fx that dont touch gl, 
+should be factored out to a sys(".+x");🤖️
+
+💯️(i did menu window loading 2day(sept10 = 10 days rmmv 20wsr...
+if the fin sim was harder 2 do
+what does that tell u about the fim sin?
+🤨💰️i wanna go back. also wanna pull up ai(s) 2 reach & play 🎉️
+💯️
+⛏️like having 'clones'4 reasons more so clones in rmmv?  make it "PMFit"+ Minecraft in rmmv = synergy right? vs it being naked? its gotta be! (plugin for scripting etc, im stoked tbh)⛏️
+9️⃣️
+theres alredy a few menus. are the "modular" or hardcoded structures? 
+ask . 
+how to make them more generic if so? <- good idea, isnt' done cuz we had stack smash right click.💣️
+⏳️
+(woudl truly like them to beable 2 be replaced by a .txt file of "markup"
+w/e tho . maybe we can invert after we figure out save games/exports⏳️
+
+export is jsut "player.+x (plus w/e else) + dir/game.jsons, 
+
+they do html for compat..
+they also do win. w/e kiss 4 now. do it soon tho💣️
+7️⃣️
+honestly our  goal should be 2 get back into ai/llm asap
+so we can put in in our major aps (tho they should be ready 4 it..); ergo pls make a simple game IN RMMVC3d so we can ai.hook back l8r
+
+
+<- i just want to get event loop for WSR&RMMVC done...and inject simple ai 4 peices/corps. 
+we we can hook the ai up to something and have awareness of data..++ if both are playable <3
+
+📽️📼️📼️📼️📼️📼️📼️
+ make neural networks click forever
+https://youtube.com/watch?v=SXnHqFGLNxA
+7️⃣️
+📅️6️⃣️6️⃣️6️⃣️
+ pull WSR 2 QWEN-DEB 4 NOS🏍️🛑️
+
+(we could probably pull peices back 2 rmmv? )
+
+Y ? i do wanna do rmmvc3d clone.i just wanna make sure
+we accomodate all the data structs... and are up 2 speed y not? 
+
+(dont rmmv teach u bad habits. gameprogrm needn't be in map.json)
+
+also we can push more into daw. /image diffusion= animation : SPRITE FROM EMOJI/WORDCORPUS+-(googimg)🧚️
+and even image gen thru pixel cloning
+and even chatai/meta ai.
+
+
++
+i wanna sus out more features for wsr 
+and sus out monopoly + hax and compare (monopoly spex is tm)
++ sus out the tamogotchis in diff directions...
+(sus out a 'multi tamo playground type deal (mem ,etc) right?🐣️
+
+>theres still no ppl in wsr. but i want org charts etc. qwen?
+
+also wanna make p2p infra that allows uploading of "shorts"+torrents
+supabase hax, crypto , etc💱️
+
+>also we have incrementals auto running. 
+if sp did that we coudl guide it to dump dustopedia stuff 
+on staticish site hooks. and build out site even pre login
+as some sort of one man portfolio on steroids type deal 
+(obv will rebrand page but 4 now that blurb is fine executively)
+📅️6️⃣️6️⃣️6️⃣️
+sept 6. 
+optomized emojis, 
+added raycasting . 
+fixed cam ctrls a bit
+
+cons : 
+so ray cast is going but its interfereing with menu picker in 3d <-
+thinks im trying to pick ray [instead of emoji/options](2d/3d toggle works tho)
+
+> take out "sides" in grid but leave squares = 3dchess♟️❤️‍🔥️💞️✅️
+<- this shoudl allow better "plane picking" as well... ❤️‍🔥️💞️✅️
+>rotate 45.o and make sure its"horizontal"
+
+>still haven't added "thumbs"scroll
+> align more with rmmv {tabs} including save/load maps
+
+
+
+> add "ar" toggle at least 4 tsots etc. u make utube...try it 4 data📹️
+
+
+>i wanna finsih wsr. 
+>i wanna do peices. 
+> refactor cache monopoly/zelda-rouge/esp civ +BIG4 .2 experiemnt.leave 1.tamo?
+(4 science)
+> then go back to "META_MASTER" ideas...
+> can open(mod?) 18th files seperately , btw. 
+
+>go crazy prompting entire universe "solar sys gravity/flight/space
+/cars / ppl gta7"using just emoji blocks. 
+> minecraft + chem craft + magicraft
+
+>remake chimochio / solpen "INSIDE RMMVC" y  ? level genetc tools=ez.
+help ai. try 2 integrate. teach ai natively then if we hook in
+ollama later we can charge ppl like windsurf.and it will helpem.
+
+>training our chat bot. start making chat in c . +web supabase?
+
+>wanna do macro TSOTS app window. 
+
+💳️
+The fix is to preload and cache textures for all emojis once at initialization, then reuse them in rendering. Since get_num_emojis() returns a fixed (small) set of emojis, this is straightforward and efficient.
+💳️
+
+dont forget lfs and framebuffer.
+ur making sick progress even if u dont "see/feel" it ]mvc/emojiopt
+
+
+going 2 market isn't a bad thing, can we do pre wishlist
+user surveys somehow into crm? 
+
+
+- 
+b4 this ? google. github . stackoverflow was a REAL thing in 2020+-
+📅️
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+-------------
+thumb scroll... more tight pro looking stuff
+
+______
+im guessing the z level loaded @ 0
+not at the level we quit at
+so thats a nothing burger
+however
+would be nice i suppose
+@ least 2 make sure were healthy quicker
+_____________________
+📲️
+🛑️
+> we want normal events/ rpg items. 
+but what about elements/ elemental magic? ai? (all plugins
+treat RMMV the same way u treat WSR . build complete clone first + w/e(3d ofc)
+then do addonts. even as plugins ,w/e 
+
+we get tons of speed/momentum/sos from cloning.
+🛑️
+❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️
+
+📛️
+ cli render and gl rendering (even web?)
+ ultimately ur looking for some kind of .txt gui based scripting , right? ❤️‍🔥️
+ (and that can parse 2 "WRAITH" also)
+ 
+ protip? : i would do one thing at a time 
+ build it in c first as MVC , then theoretically u can load "V" from file.txt
+ right? 
+ ai can help u with that no problem.wuts the point? 
+ 
+ io cohesion if nothing else tbh. (std io api's tbh) get it? 
+📛️
+❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️❤️‍🔥️
+file:///media/no/b7ced73c-5231-4462-b98d-64e38fe2df9e/home/jbez/Desktop/%5E.📶️.SHARE%5D/%5E.🦾️%5Dfullsharezip/💪🏾️%5D.no-desk.sharezip/📲️📵️.GTFO.flxbx.📦️arcbit♏️/%23.⛷️LOOSE-TANGENT%5D2wild%5D🎄️⛷️/🪆️.a0/📟️.a0/❤️‍🔥️/❤️‍🔥️%0A📛️.gui.script.io.y%3F.how.txt
+📲️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️🔚️
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+✔️

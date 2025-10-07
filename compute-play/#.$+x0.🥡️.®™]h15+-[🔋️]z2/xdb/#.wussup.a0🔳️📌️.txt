@@ -1,0 +1,52 @@
+🚥️
+⬜️📌️
+
+want this logic : 
+if no state , so what , just means map cant move  
+
+if no map , so what, just means render 1 block
+
+
+if state but "no size/ position" 
+w/e should be on map. 
+
+adv : map has coords but so does state? override/overwrite map i guess. w/e <- yes. 
+
+🔳️
+ok. first thing. theres no super state. yes . make a button now <3
+
+🎥️also. i think we put the camera plugin in "box" and just adjust paths. w/e ]+clean kruft.txt's🎥️
+
+🗡️sword has its own menu. or is it box plugin again? wut gives u control of sword, 🖇️
+literal login? but wut tho? = a plugin , right? 
+a plugin from button box that adjusts sword position & dir could work, 
+then u wouldnt need 2 touch sword directly , this maybe the common sense missing link 🖇️🗡️
+
+but wut if i want to touch sword w/o login? 
+first of all u cant, so.. (otherwise it would need 2 run button 4 cam, or symlink a cam @ this point)
+🔳️
+🛗️
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+🥡️does flexbox have a size? 
+dont worry about that 4 now🥡️

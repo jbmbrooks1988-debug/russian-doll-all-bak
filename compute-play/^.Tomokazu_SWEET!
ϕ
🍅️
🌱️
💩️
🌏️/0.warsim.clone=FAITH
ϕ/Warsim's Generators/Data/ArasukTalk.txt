@@ -1,0 +1,70 @@
+2.Nothing like a warm ale on a warm southern day.
+2.I couldn't bare the North, snow... it's covered in snow!
+2.Leave this place!
+2.Not often we get visitors here, no one has the courage to venture south.
+2.The rumours you hear are both true and false my friend, think carefully.
+2.Outsiders are not welcome here...
+2.Nothing like the warmth of a boiled ale, eh? I've heard you northern savages prefer yours cold... eugh.
+2.And you're a ruler of a distant kingdom you say?
+2.I don't like you being here.
+2.You aren't an invader are you? Foreigners are nothing but trouble.
+2.We are safe here, don't worry about us.
+2.Hmm, barkeep, this ale isn't warm enough, boil it more for me please.
+2.Most of the ruins around here are very old. These lands have been calm lately.
+2.That abandoned fortress down on the outskirts of the Oasis hasn't been occupied for years and years. Used to be held by a knightly order of some kind, but they were destroyed.
+2.The Parched Lands are barely worth considering southern lands
+2.I traveled north once until I found a great kingdom, great only in size mind you, every aspect of the thing was grotesque
+2.Some whisper that a great hidden land exists further south, impossible, we are the southernmost tip of the world.
+2.Have you been here long? We get few visitors here so you are quite a treat for us. Ignore those who may insult you however, we are not used to visitors as I say.
+2.Please leave outsider, you don't want to get involved.
+2.Welcome stranger, come to gawk at us? Why don't you walk for the Lava Pit up north and do us all a favour?
+2.This place is not for you.
+2.Fort Kullak was held by Gor the Bastard last time I checked, terrible man. He and his bandits haven't made it as far down as us though. They just use the fort as a base of operations to raid north out of
+2.Ugh... this ale ain't warm enough.
+2.You're goofy looking, euhyuck hyuck.
+2.You there, what are you looking at?
+2.I hate foreigners... begone with you.
+2.Leave this place, and never return.
+2.Have the others been scaring you? Don't worry... everything will be fine.
+2.[he stares at you and begins to sweat profusely]
+1.This town is dying now... without... them, we are doomed.
+1.Life here after the collapse, it's like living as a maggot on the corpse of a dead titan.
+1.The prophecy was a lie... it was severed.
+1.Come to gawk at us?
+1.Arasuk... the last survivor of the South... but alas, not for long.
+1.Not many will admit it around here but our spirit is crushed. We are unprotected and soon to be doomed.
+1.Arasuk... a name lost to the endless sands.
+1.What do we do now... we are alone.
+0.Arasuk... the last survivor of the South.
+0.You do not agree with us, I can sense it. You see us as evil because we fit your concept of what evil is, but sometimes the status quo is wrong. The Overlord may have what seems like a grim method for victory, but if he wins, we are all free.
+0.Nothing I love more than watching those unprepared for southern heat. Their panic and sweat, it makes them look weak.
+0.The prophecy will return to us, and we shall watch the lands be cleansed again.
+0.New here, have you heard a Sand Talker yet?
+0.The Sand-Talkers make no sense but if you listen right, you will hear the words.
+0.We may seem like fools, but in truth we are the smartest of them all.
+0.Arasuk, the eternal land. Know our name but keep it close to your heart, outsider. For we must not be known.
+0.Camp Assurak is a strange place. They are our allies though.
+0.The Lava Pit in the parched lands scares me. One false step and you die a horrible death. they say it's the gateway to another world.
+0.We thrive in the Oasis where others have fallen. If that doesn't earn us respect, I don't know what does.
+0.We will one day be the last living I believe. So many of the old prophecies have come true.
+0.We are surrounded by the ruins of those who wouldn't listen.
+0.Look in any direction out of this settlement and you'll see what happens to those who ignore prophecy.
+0.You won't hear anyone here say it explicitly, but we are protected by higher beings.
+0.Welcome to Arasuk, traveler.
+0.The totems of the Parched Lands are worth the pilgrimage. Don't know if they are still standing.
+0.Camp Assurak are our only allies in the Parched Lands, or anywhere really. We do not communicate with anyone else.
+0.Once we were the laughing stock of these lands, now we are the only people of these lands, sad almost.
+0.So many abandoned structures around our settlement. It makes me wonder, we hear stories of the ancient south but I can't imagine such a populated area.
+0.They say there is a land beyond the realm of the living, where eternal fires burn and all powerful monsters build their preparations for besieging the realm of the living.
+0.They say in the Drylands further south there is the skull of a dead titan, huge thing, taller than two standing men.
+0.I hear whispers here.
+0.Sand-Talkers are some of the most respected among us.
+0.Listen, you can't let them see you speak to me... you have to leave, this place is bad... trust me... these folk do terrible things, I must go.
+0.[he just stares at you]
+0.[he just stares at you, for a moment you could swear his eyes glinted red]
+0.You must leave, now.
+0.The suns set and the moons rise, and all is still in the Parched Lands.
+0.[he looks around nervously] I don't have time to explain, just go!
+0.You should probably go, I don't think it's safe here.
+0.I'm sorry, I can't help you.
+0.Please, just leave me alone.

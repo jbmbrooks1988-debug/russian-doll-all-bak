@@ -1,0 +1,9 @@
+Chose 2: Do Y
+Chose 1: Do X
+Chose 1: Do X
+Chose 1: Do X
+Input: 5
+Input: 5
+Chose 1: Do X
+Chose 1: Do X
+Chose 1: Do X

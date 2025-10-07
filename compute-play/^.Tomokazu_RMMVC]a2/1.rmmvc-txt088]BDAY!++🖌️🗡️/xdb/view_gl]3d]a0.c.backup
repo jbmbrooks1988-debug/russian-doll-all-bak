@@ -1,0 +1,1603 @@
+#include <GL/glut.h>
+#include <GL/glx.h>
+#include <X11/Xlib.h>
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include <stdbool.h>
+
+// Text input dialog structure
+typedef struct {
+    int x, y;           // Position of the dialog
+    int width, height;  // Dimensions of the dialog
+    bool visible;       // Whether the dialog is visible
+    char input_buffer[512];  // Buffer for text input
+    int input_cursor;   // Current cursor position
+    int input_length;   // Length of the input text
+    bool confirmed;     // Whether the user confirmed the input
+} TextInputDialog;
+
+// Header strip height (same as in controller_gl.c and model_gl.c)
+#define HEADER_STRIP_HEIGHT 40
+
+// Helper functions to access event menu item fields
+char* get_event_menu_item_label(void* item);
+int get_event_menu_item_id(void* item);
+bool get_event_menu_item_is_category(void* item);
+int get_event_menu_item_page(void* item);
+void set_event_menu_item_label(void* item, const char* label);
+void set_event_menu_item_id(void* item, int id);
+void set_event_menu_item_is_category(void* item, bool is_category);
+void set_event_menu_item_page(void* item, int page);
+
+// Event menu structure - keeping as struct since it's more complex
+typedef struct {
+    int x, y;           // Position of the menu
+    int width, height;  // Dimensions of the menu
+    int item_count;
+    void* items;        // Pointer to array of menu items (using byte array instead of struct)
+    int selected_item;
+    bool visible;
+    int parent_x, parent_y;  // Position of parent menu for positioning
+    int type;  // 0 = main menu, 1 = event area, 2 = commands menu
+    int current_page; // For tabbed menus
+} EventMenu;
+
+// Event menu extern declarations
+extern EventMenu* main_event_menu;
+extern EventMenu* event_area_menu;
+extern EventMenu* event_commands_menu;
+extern EventMenu* contents_context_menu;
+extern EventMenu* maps_context_menu;
+
+// Text input dialog extern declarations
+extern TextInputDialog* text_input_dialog;
+extern void render_text_input_dialog(TextInputDialog* dialog);
+extern void save_event_text_to_file(const char* text);
+
+// Event menu function declarations
+EventMenu* create_main_event_menu(int parent_x, int parent_y);
+EventMenu* create_event_area_menu(int parent_x, int parent_y);
+EventMenu* create_event_commands_menu(int parent_x, int parent_y);
+EventMenu* create_contents_context_menu(int parent_x, int parent_y);
+void destroy_event_menu(EventMenu* menu);
+void render_event_menu(EventMenu* menu);
+void handle_event_menu_click(EventMenu* menu, int x, int y);
+void show_event_menu(EventMenu* menu);
+void hide_event_menu(EventMenu* menu);
+
+// Map file function declarations
+char** get_map_files_list(int* count);
+
+// External variables
+// Model function declarations for FreeType variables
+FT_Library get_ft(void);
+FT_Face get_emoji_face(void);
+float get_emoji_scale(void);
+float* get_font_color(void);
+float* get_background_color(void);
+extern Display *x_display;
+extern Window x_window;
+
+// Texture cache structure
+typedef struct {
+    unsigned int codepoint;
+    GLuint texture_id;
+    int width;
+    int height;
+    bool valid;
+} EmojiTexture;
+
+// Thumb scroller for emoji grid (changed from static to global for extern access)
+float emoji_thumb_y = 0;          // position from top
+float emoji_thumb_height = 50.0f; // fixed thumb size
+int emoji_thumb_dragging = 0;
+int emoji_start_index = 0;        // first visible emoji index
+int emoji_visible_rows = 8;       // number of visible rows (adjustable)
+
+// Constants for emoji grid
+#define EMOJI_COLS 8
+#define EMOJI_CELL_SIZE 40
+
+// Global texture cache
+static EmojiTexture* emoji_texture_cache = NULL;
+static int emoji_texture_cache_size = 0;
+
+// Global list of UI elements
+static int* ui_elements = NULL;
+static int ui_element_count = 0;
+static int ui_element_capacity = 0;
+// static float* ui_element_colors = NULL;  // Already defined below
+
+// Helper functions to access UI element fields
+typedef enum {
+    UI_ELEMENT_BUTTON,
+    UI_ELEMENT_LABEL,
+    UI_ELEMENT_EMOJI_GRID,
+    UI_ELEMENT_COLOR_PALETTE,
+    UI_ELEMENT_TOOL_SELECTOR,
+    UI_ELEMENT_TAB_BANK,
+    UI_ELEMENT_MAP_WINDOW
+} UIElementType;
+
+// Using array-based approach for UIElement instead of struct
+#define UI_ELEMENT_TYPE_FIELD 0
+#define UI_ELEMENT_ID_FIELD 1
+#define UI_ELEMENT_X_FIELD 2
+#define UI_ELEMENT_Y_FIELD 3
+#define UI_ELEMENT_WIDTH_FIELD 4
+#define UI_ELEMENT_HEIGHT_FIELD 5
+#define UI_ELEMENT_TEXT_PTR_FIELD 6
+#define UI_ELEMENT_DATA_INDEX_FIELD 7
+#define UI_ELEMENT_SELECTED_FIELD 8
+#define UI_ELEMENT_COLOR_FIELD 9  // This will be an index into a separate color array
+
+#define UI_ELEMENT_FIELDS 10
+#define UI_ELEMENT_SIZE (UI_ELEMENT_FIELDS * sizeof(int))
+
+// Separate array for color values (3 floats per element)
+static float* ui_element_colors = NULL;
+
+// Helper functions to access UI element fields
+UIElementType get_ui_element_type(int* element) {
+    return (UIElementType)element[UI_ELEMENT_TYPE_FIELD];
+}
+
+int get_ui_element_id(int* element) {
+    return element[UI_ELEMENT_ID_FIELD];
+}
+
+float get_ui_element_x(int* element) {
+    return *(float*)&element[UI_ELEMENT_X_FIELD];
+}
+
+float get_ui_element_y(int* element) {
+    return *(float*)&element[UI_ELEMENT_Y_FIELD];
+}
+
+float get_ui_element_width(int* element) {
+    return *(float*)&element[UI_ELEMENT_WIDTH_FIELD];
+}
+
+float get_ui_element_height(int* element) {
+    return *(float*)&element[UI_ELEMENT_HEIGHT_FIELD];
+}
+
+char* get_ui_element_text(int* element) {
+    return (char*)(intptr_t)element[UI_ELEMENT_TEXT_PTR_FIELD];
+}
+
+int get_ui_element_data_index(int* element) {
+    return element[UI_ELEMENT_DATA_INDEX_FIELD];
+}
+
+int get_ui_element_selected(int* element) {
+    return element[UI_ELEMENT_SELECTED_FIELD];
+}
+
+void get_ui_element_color(int* element, float* color) {
+    int color_index = element[UI_ELEMENT_COLOR_FIELD];
+    color[0] = ui_element_colors[color_index * 3];
+    color[1] = ui_element_colors[color_index * 3 + 1];
+    color[2] = ui_element_colors[color_index * 3 + 2];
+}
+
+void set_ui_element_type(int* element, UIElementType type) {
+    element[UI_ELEMENT_TYPE_FIELD] = (int)type;
+}
+
+void set_ui_element_id(int* element, int id) {
+    element[UI_ELEMENT_ID_FIELD] = id;
+}
+
+void set_ui_element_x(int* element, float x) {
+    *(float*)&element[UI_ELEMENT_X_FIELD] = x;
+}
+
+void set_ui_element_y(int* element, float y) {
+    *(float*)&element[UI_ELEMENT_Y_FIELD] = y;
+}
+
+void set_ui_element_width(int* element, float width) {
+    *(float*)&element[UI_ELEMENT_WIDTH_FIELD] = width;
+}
+
+void set_ui_element_height(int* element, float height) {
+    *(float*)&element[UI_ELEMENT_HEIGHT_FIELD] = height;
+}
+
+void set_ui_element_text(int* element, const char* text) {
+    element[UI_ELEMENT_TEXT_PTR_FIELD] = (int)(intptr_t)text;
+}
+
+void set_ui_element_data_index(int* element, int data_index) {
+    element[UI_ELEMENT_DATA_INDEX_FIELD] = data_index;
+}
+
+void set_ui_element_selected(int* element, int selected) {
+    element[UI_ELEMENT_SELECTED_FIELD] = selected;
+}
+
+void set_ui_element_color(int* element, float* color) {
+    int color_index = element[UI_ELEMENT_COLOR_FIELD];
+    ui_element_colors[color_index * 3] = color[0];
+    ui_element_colors[color_index * 3 + 1] = color[1];
+    ui_element_colors[color_index * 3 + 2] = color[2];
+}
+
+// Function to allocate color storage for a UI element
+int allocate_ui_element_color(int* element) {
+    // For simplicity, we'll just use the element index as the color index
+    // In a real implementation, we'd need a more sophisticated approach
+    int element_index = (element - ui_elements) / UI_ELEMENT_FIELDS;
+    element[UI_ELEMENT_COLOR_FIELD] = element_index;
+    return element_index;
+}
+
+// Function declarations
+int decode_utf8(const unsigned char* str, unsigned int* codepoint);
+void render_emoji(unsigned int codepoint, float x, float y, float fg[3], float bg[3]);
+void render_emoji_3d_quad(unsigned int codepoint, float x, float y, float z, float fg[3], float bg[3]);
+void render_text(const char* str, float x, float y);
+void draw_rect(float x, float y, float w, float h, float color[3]);
+void draw_border(float x, float y, float w, float h, float color[3]);
+void draw_3d_border(float x, float y, float z, float w, float h, float d, float color[3]);
+void draw_3d_cursor(float x, float y, float z, float size);
+
+// Context menu functions
+void render_context_menu(void);
+
+// Texture cache function declarations
+void init_emoji_texture_cache(void);
+void cleanup_emoji_texture_cache(void);
+
+// Model function declarations
+int get_canvas_rows(void);
+int get_canvas_cols(void);
+int get_tile_size(void);
+int get_num_emojis(void);
+int get_num_colors(void);
+int get_max_layers(void);
+int get_sidebar_width(void);
+int get_file_tab_height(void);
+int get_window_width(void);
+int get_window_height(void);
+int get_tab_count(void);
+const char* get_emoji(int idx);
+const char* get_color(int idx, int component);
+const char* get_color_name(int idx);
+const char* get_status_message(void);
+int get_selected_emoji(void);
+int get_selected_fg_color(void);
+int get_selected_bg_color(void);
+int get_selected_tool(void);
+int get_start_row(void);
+int get_start_col(void);
+int get_selector_row(void);
+int get_selector_col(void);
+int get_canvas_tile(int layer, int r, int c, int field);
+int get_tab_bank(int idx, int field);
+int get_view_mode(void);
+int get_current_z_level(void);
+float get_camera_x(void);
+float get_camera_y(void);
+float get_camera_z(void);
+float get_camera_yaw(void);
+float get_camera_pitch(void);
+float get_scale_x(void);
+float get_scale_y(void);
+float get_scale_z(void);
+bool get_show_all_layers(void);
+
+// Mouse position functions
+int get_mouse_x(void);
+int get_mouse_y(void);
+bool get_mouse_in_window(void);
+
+// Raycasting function declarations
+void screen_to_world_ray(int screen_x, int screen_y, float* ray_origin, float* ray_direction);
+int ray_intersects_box(float ray_origin[3], float ray_direction[3], 
+                      float box_min[3], float box_max[3], float* distance);
+int find_closest_intersected_block(int screen_x, int screen_y, int* out_row, int* out_col, int* out_layer);
+
+// UI element functions
+int get_file_tab_count(void);
+const char* get_file_tab_label(int idx);
+int get_emoji_grid_rows(void);
+int get_emoji_grid_cols(void);
+int get_color_grid_rows(void);
+int get_color_grid_cols(void);
+int get_tool_count(void);
+const char* get_tool_label(int idx);
+
+// Model setter function declarations
+void set_scale_x(float scale);
+void set_scale_y(float scale);
+void set_scale_z(float scale);
+
+// Callback function declaration for rendering game objects
+void render_game_object(int object_type, int object_id, float x, float y, float z, float fg[3], float bg[3]);
+
+// UI Element management functions
+void init_ui_elements(void);
+void cleanup_ui_elements(void);
+void add_ui_element(UIElementType type, int id, float x, float y, float width, float height, 
+                   const char* text, int data_index, int selected, float color[3]);
+void update_ui_element(int id, float x, float y, float width, float height, int selected);
+void render_ui_elements(void);
+
+// UI Layout functions for generalized coordinate calculations
+int get_grid_cell_size(void);
+int get_button_width(void);
+int get_button_height(void);
+int get_button_spacing(void);
+int get_tool_button_width(void);
+int get_tool_button_height(void);
+int get_grid_columns(void);
+int get_sidebar_padding(void);
+int get_element_spacing(void);
+
+// Setter functions for FreeType variables
+void set_ft(FT_Library value);
+void set_emoji_face(FT_Face value);
+void set_emoji_scale(float value);
+
+void initFreeType(void) {
+    FT_Library ft = get_ft();
+    if (FT_Init_FreeType(&ft)) {
+        fprintf(stderr, "Could not init FreeType Library\n");
+        exit(1);
+    }
+    set_ft(ft); // Update the model
+
+    const char *emoji_font_path = "/usr/share/fonts/truetype/noto/NotoColorEmoji.ttf";
+    FT_Face emoji_face = get_emoji_face();
+    FT_Error err = FT_New_Face(ft, emoji_font_path, 0, &emoji_face);
+    if (err || emoji_face == NULL) {
+        fprintf(stderr, "Error: Could not load emoji font at %s, error code: %d\n", emoji_font_path, err);
+        emoji_face = NULL;
+        exit(1);
+    }
+    set_emoji_face(emoji_face); // Update the model
+    
+    if (FT_IS_SCALABLE(emoji_face)) {
+        err = FT_Set_Pixel_Sizes(emoji_face, 0, get_tile_size() - 10);
+        if (err) {
+            fprintf(stderr, "Error: Could not set pixel size for emoji font, error code: %d\n", err);
+            FT_Done_Face(emoji_face);
+            emoji_face = NULL;
+            exit(1);
+        }
+    } else if (emoji_face->num_fixed_sizes > 0) {
+        err = FT_Select_Size(emoji_face, 0);
+        if (err) {
+            fprintf(stderr, "Error: Could not select size for emoji font, error code: %d\n", err);
+            FT_Done_Face(emoji_face);
+            emoji_face = NULL;
+            exit(1);
+        }
+    } else {
+        fprintf(stderr, "Error: No fixed sizes available in emoji font\n");
+        FT_Done_Face(emoji_face);
+        emoji_face = NULL;
+        exit(1);
+    }
+
+    int loaded_emoji_size = emoji_face->size->metrics.y_ppem;
+    float emoji_scale = (float)(get_tile_size() * 0.8f) / (float)loaded_emoji_size;
+    set_emoji_scale(emoji_scale); // Update the model
+    fprintf(stderr, "Emoji font loaded, loaded size: %d, scale: %f\n", loaded_emoji_size, emoji_scale);
+}
+
+// Initialize emoji texture cache
+void init_emoji_texture_cache(void) {
+    // Get the number of emojis from the model
+    int num_emojis = get_num_emojis();
+    
+    // Allocate memory for texture cache
+    emoji_texture_cache = (EmojiTexture*)malloc(num_emojis * sizeof(EmojiTexture));
+    if (!emoji_texture_cache) {
+        fprintf(stderr, "Error: Failed to allocate memory for emoji texture cache\n");
+        return;
+    }
+    
+    emoji_texture_cache_size = num_emojis;
+    
+    // Initialize all entries as invalid
+    for (int i = 0; i < num_emojis; i++) {
+        emoji_texture_cache[i].codepoint = 0;
+        emoji_texture_cache[i].texture_id = 0;
+        emoji_texture_cache[i].width = 0;
+        emoji_texture_cache[i].height = 0;
+        emoji_texture_cache[i].valid = false;
+    }
+    
+    // Preload all emoji textures
+    FT_Face emoji_face = get_emoji_face();
+    int loaded_count = 0;
+    for (int i = 0; i < num_emojis; i++) {
+        unsigned int codepoint;
+        decode_utf8((const unsigned char*)get_emoji(i), &codepoint);
+        emoji_texture_cache[i].codepoint = codepoint;
+        
+        // Load the emoji texture
+        if (emoji_face != NULL) {
+            FT_Error err = FT_Load_Char(emoji_face, codepoint, FT_LOAD_RENDER | FT_LOAD_COLOR);
+            if (!err) {
+                FT_GlyphSlot slot = emoji_face->glyph;
+                if (slot->bitmap.buffer && slot->bitmap.pixel_mode == FT_PIXEL_MODE_BGRA) {
+                    // Generate texture
+                    glGenTextures(1, &emoji_texture_cache[i].texture_id);
+                    glBindTexture(GL_TEXTURE_2D, emoji_texture_cache[i].texture_id);
+                    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, slot->bitmap.width, slot->bitmap.rows, 0, GL_BGRA, GL_UNSIGNED_BYTE, slot->bitmap.buffer);
+                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                    
+                    emoji_texture_cache[i].width = slot->bitmap.width;
+                    emoji_texture_cache[i].height = slot->bitmap.rows;
+                    emoji_texture_cache[i].valid = true;
+                    loaded_count++;
+                    
+                    glBindTexture(GL_TEXTURE_2D, 0);
+                }
+            }
+        }
+    }
+    
+    fprintf(stderr, "Preloaded %d/%d emoji textures\n", loaded_count, num_emojis);
+}
+
+// Cleanup emoji texture cache
+void cleanup_emoji_texture_cache(void) {
+    if (emoji_texture_cache) {
+        for (int i = 0; i < emoji_texture_cache_size; i++) {
+            if (emoji_texture_cache[i].valid && emoji_texture_cache[i].texture_id != 0) {
+                glDeleteTextures(1, &emoji_texture_cache[i].texture_id);
+            }
+        }
+        free(emoji_texture_cache);
+        emoji_texture_cache = NULL;
+        emoji_texture_cache_size = 0;
+    }
+}
+
+// UI Element management functions
+void init_ui_elements(void) {
+    // Initialize UI elements with default capacity
+    ui_element_capacity = 100;
+    ui_elements = (int*)malloc(ui_element_capacity * UI_ELEMENT_SIZE);
+    ui_element_colors = (float*)malloc(ui_element_capacity * 3 * sizeof(float));
+    ui_element_count = 0;
+    
+    if (!ui_elements) {
+        fprintf(stderr, "Error: Failed to allocate memory for UI elements\n");
+        ui_element_capacity = 0;
+    }
+    
+    if (!ui_element_colors) {
+        fprintf(stderr, "Error: Failed to allocate memory for UI element colors\n");
+        // Clean up ui_elements if it was allocated
+        if (ui_elements) {
+            free(ui_elements);
+            ui_elements = NULL;
+        }
+        ui_element_capacity = 0;
+    }
+}
+
+void cleanup_ui_elements(void) {
+    if (ui_elements) {
+        // Free any allocated strings in UI elements
+        for (int i = 0; i < ui_element_count; i++) {
+            int* element = &ui_elements[i * UI_ELEMENT_FIELDS];
+            char* text = get_ui_element_text(element);
+            if (text) {
+                free(text);
+            }
+        }
+        free(ui_elements);
+        ui_elements = NULL;
+        ui_element_count = 0;
+        ui_element_capacity = 0;
+    }
+    
+    if (ui_element_colors) {
+        free(ui_element_colors);
+        ui_element_colors = NULL;
+    }
+}
+
+void add_ui_element(UIElementType type, int id, float x, float y, float width, float height, 
+                   const char* text, int data_index, int selected, float color[3]) {
+    // Check if we need to expand the array
+    if (ui_element_count >= ui_element_capacity) {
+        int new_capacity = ui_element_capacity * 2;
+        int* new_elements = (int*)realloc(ui_elements, new_capacity * UI_ELEMENT_SIZE);
+        float* new_colors = (float*)realloc(ui_element_colors, new_capacity * 3 * sizeof(float));
+        if (new_elements && new_colors) {
+            ui_elements = new_elements;
+            ui_element_colors = new_colors;
+            ui_element_capacity = new_capacity;
+        } else {
+            fprintf(stderr, "Error: Failed to expand UI elements array\n");
+            return;
+        }
+    }
+    
+    // Add the new element
+    int* element = &ui_elements[ui_element_count * UI_ELEMENT_FIELDS];
+    set_ui_element_type(element, type);
+    set_ui_element_id(element, id);
+    set_ui_element_x(element, x);
+    set_ui_element_y(element, y);
+    set_ui_element_width(element, width);
+    set_ui_element_height(element, height);
+    set_ui_element_data_index(element, data_index);
+    set_ui_element_selected(element, selected);
+    
+    // Set color
+    int color_index = ui_element_count;
+    element[UI_ELEMENT_COLOR_FIELD] = color_index;
+    ui_element_colors[color_index * 3] = color[0];
+    ui_element_colors[color_index * 3 + 1] = color[1];
+    ui_element_colors[color_index * 3 + 2] = color[2];
+    
+    // Copy text (if provided)
+    if (text) {
+        char* text_copy = (char*)malloc(strlen(text) + 1);
+        if (text_copy) {
+            strcpy(text_copy, text);
+            set_ui_element_text(element, text_copy);
+        } else {
+            set_ui_element_text(element, NULL);
+        }
+    } else {
+        set_ui_element_text(element, NULL);
+    }
+    
+    ui_element_count++;
+}
+
+void update_ui_element(int id, float x, float y, float width, float height, int selected) {
+    for (int i = 0; i < ui_element_count; i++) {
+        int* element = &ui_elements[i * UI_ELEMENT_FIELDS];
+        if (get_ui_element_id(element) == id) {
+            set_ui_element_x(element, x);
+            set_ui_element_y(element, y);
+            set_ui_element_width(element, width);
+            set_ui_element_height(element, height);
+            set_ui_element_selected(element, selected);
+            return;
+        }
+    }
+}
+
+void render_ui_elements(void) {
+    // Render all UI elements based on their type
+    for (int i = 0; i < ui_element_count; i++) {
+        int* element = &ui_elements[i * UI_ELEMENT_FIELDS];
+        float tab_color[3] = {0.5f, 0.5f, 0.5f};
+        float sel_color[3] = {1.0f, 1.0f, 0.0f};
+        float color[3];
+        
+        get_ui_element_color(element, color);
+        
+        switch (get_ui_element_type(element)) {
+            case UI_ELEMENT_BUTTON:
+                draw_rect(get_ui_element_x(element), get_ui_element_y(element), get_ui_element_width(element), get_ui_element_height(element), tab_color);
+                if (get_ui_element_text(element)) {
+                    render_text(get_ui_element_text(element), get_ui_element_x(element) + 10, get_ui_element_y(element) + 10);
+                }
+                if (get_ui_element_selected(element)) {
+                    draw_border(get_ui_element_x(element), get_ui_element_y(element), get_ui_element_width(element), get_ui_element_height(element), sel_color);
+                }
+                break;
+                
+            case UI_ELEMENT_LABEL:
+                if (get_ui_element_text(element)) {
+                    render_text(get_ui_element_text(element), get_ui_element_x(element), get_ui_element_y(element));
+                }
+                break;
+                
+            case UI_ELEMENT_EMOJI_GRID:
+                // Render emoji at the specified position
+                if (get_ui_element_data_index(element) >= 0 && get_ui_element_data_index(element) < get_num_emojis()) {
+                    unsigned int codepoint;
+                    decode_utf8((const unsigned char*)get_emoji(get_ui_element_data_index(element)), &codepoint);
+                    float fg[3] = {1.0f, 1.0f, 1.0f};
+                    float bg[3] = {0.0f, 0.0f, 0.0f};
+                    render_emoji(codepoint, get_ui_element_x(element) + get_ui_element_width(element)/2, get_ui_element_y(element) + get_ui_element_height(element)/2, fg, bg);
+                    if (get_ui_element_selected(element)) {
+                        draw_border(get_ui_element_x(element), get_ui_element_y(element), get_ui_element_width(element), get_ui_element_height(element), sel_color);
+                    }
+                }
+                break;
+                
+            case UI_ELEMENT_COLOR_PALETTE:
+                // Render color swatch
+                draw_rect(get_ui_element_x(element), get_ui_element_y(element), get_ui_element_width(element), get_ui_element_height(element), color);
+                if (get_ui_element_selected(element)) {
+                    draw_border(get_ui_element_x(element), get_ui_element_y(element), get_ui_element_width(element), get_ui_element_height(element), sel_color);
+                }
+                break;
+                
+            case UI_ELEMENT_TOOL_SELECTOR:
+                draw_rect(get_ui_element_x(element), get_ui_element_y(element), get_ui_element_width(element), get_ui_element_height(element), tab_color);
+                if (get_ui_element_text(element)) {
+                    render_text(get_ui_element_text(element), get_ui_element_x(element) + 10, get_ui_element_y(element) + 10);
+                }
+                if (get_ui_element_selected(element)) {
+                    draw_border(get_ui_element_x(element), get_ui_element_y(element), get_ui_element_width(element), get_ui_element_height(element), sel_color);
+                }
+                break;
+            
+            case UI_ELEMENT_MAP_WINDOW:
+                draw_rect(get_ui_element_x(element), get_ui_element_y(element), get_ui_element_width(element), get_ui_element_height(element), tab_color);
+                if (get_ui_element_text(element)) {
+                    render_text(get_ui_element_text(element), get_ui_element_x(element) + 10, get_ui_element_y(element) + 10);
+                }
+                break;
+                
+            case UI_ELEMENT_TAB_BANK:
+                // Render tab bank item
+                if (get_ui_element_data_index(element) >= 0 && get_ui_element_data_index(element) < get_tab_count()) {
+                    unsigned int codepoint;
+                    decode_utf8((const unsigned char*)get_emoji(get_tab_bank(get_ui_element_data_index(element), 0)), &codepoint);
+                    float fg[3] = {
+                        atof(get_color(get_tab_bank(get_ui_element_data_index(element), 1), 0)) / 255.0f,
+                        atof(get_color(get_tab_bank(get_ui_element_data_index(element), 1), 1)) / 255.0f,
+                        atof(get_color(get_tab_bank(get_ui_element_data_index(element), 1), 2)) / 255.0f
+                    };
+                    float bg[3] = {
+                        atof(get_color(get_tab_bank(get_ui_element_data_index(element), 2), 0)) / 255.0f,
+                        atof(get_color(get_tab_bank(get_ui_element_data_index(element), 2), 1)) / 255.0f,
+                        atof(get_color(get_tab_bank(get_ui_element_data_index(element), 2), 2)) / 255.0f
+                    };
+                    render_emoji(codepoint, get_ui_element_x(element) + get_ui_element_width(element)/2, get_ui_element_y(element) + get_ui_element_height(element)/2, fg, bg);
+                }
+                break;
+        }
+    }
+}
+
+void render_emoji(unsigned int codepoint, float x, float y, float fg[3], float bg[3]) {
+    // Find the texture in the cache
+    EmojiTexture* texture = NULL;
+    for (int i = 0; i < emoji_texture_cache_size; i++) {
+        if (emoji_texture_cache[i].codepoint == codepoint && emoji_texture_cache[i].valid) {
+            texture = &emoji_texture_cache[i];
+            break;
+        }
+    }
+    
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    // Draw background first
+    draw_rect(x - get_tile_size()/2, y - get_tile_size()/2, get_tile_size(), get_tile_size(), bg);
+
+    if (texture) {
+        // Draw emoji from cached texture
+        glBindTexture(GL_TEXTURE_2D, texture->texture_id);
+        glEnable(GL_TEXTURE_2D);
+        glColor3fv(fg);
+
+        float scale_factor = get_emoji_scale();
+        float w = texture->width * scale_factor;
+        float h = texture->height * scale_factor;
+        float x2 = x - w / 2;
+        float y2 = y - h / 2;
+
+        glBegin(GL_QUADS);
+        glTexCoord2f(0.0, 1.0); glVertex2f(x2, y2);
+        glTexCoord2f(1.0, 1.0); glVertex2f(x2 + w, y2);
+        glTexCoord2f(1.0, 0.0); glVertex2f(x2 + w, y2 + h);
+        glTexCoord2f(0.0, 0.0); glVertex2f(x2, y2 + h);
+        glEnd();
+
+        glDisable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, 0);
+    } else {
+        // Fallback: Draw a simple colored square
+        draw_rect(x - get_tile_size()/4, y - get_tile_size()/4, get_tile_size()/2, get_tile_size()/2, fg);
+    }
+
+    glDisable(GL_BLEND);
+    glColor3f(1.0f, 1.0f, 1.0f);
+}
+
+void render_emoji_3d_quad(unsigned int codepoint, float x, float y, float z, float fg[3], float bg[3]) {
+    // Find the texture in the cache
+    EmojiTexture* texture = NULL;
+    for (int i = 0; i < emoji_texture_cache_size; i++) {
+        if (emoji_texture_cache[i].codepoint == codepoint && emoji_texture_cache[i].valid) {
+            texture = &emoji_texture_cache[i];
+            break;
+        }
+    }
+    
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    // Draw background first (as a 3D quad)
+    glColor3fv(bg);
+    glBegin(GL_QUADS);
+    glVertex3f(x - get_tile_size()/2, y - get_tile_size()/2, z);
+    glVertex3f(x + get_tile_size()/2, y - get_tile_size()/2, z);
+    glVertex3f(x + get_tile_size()/2, y + get_tile_size()/2, z);
+    glVertex3f(x - get_tile_size()/2, y + get_tile_size()/2, z);
+    glEnd();
+
+    if (texture) {
+        // Draw emoji texture from cache
+        glBindTexture(GL_TEXTURE_2D, texture->texture_id);
+        glEnable(GL_TEXTURE_2D);
+        glColor3fv(fg);
+
+        float scale_factor = get_emoji_scale();
+        float w = texture->width * scale_factor;
+        float h = texture->height * scale_factor;
+        float x2 = x - w / 2;
+        float y2 = y - h / 2;
+
+        glBegin(GL_QUADS);
+        glTexCoord2f(0.0, 1.0); glVertex3f(x2, y2, z + 0.01f);
+        glTexCoord2f(1.0, 1.0); glVertex3f(x2 + w, y2, z + 0.01f);
+        glTexCoord2f(1.0, 0.0); glVertex3f(x2 + w, y2 + h, z + 0.01f);
+        glTexCoord2f(0.0, 0.0); glVertex3f(x2, y2 + h, z + 0.01f);
+        glEnd();
+
+        glDisable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, 0);
+    } else {
+        // Fallback: Draw a simple colored square
+        glColor3fv(fg);
+        glBegin(GL_QUADS);
+        glVertex3f(x - get_tile_size()/4, y - get_tile_size()/4, z + 0.01f);
+        glVertex3f(x + get_tile_size()/4, y - get_tile_size()/4, z + 0.01f);
+        glVertex3f(x + get_tile_size()/4, y + get_tile_size()/4, z + 0.01f);
+        glVertex3f(x - get_tile_size()/4, y + get_tile_size()/4, z + 0.01f);
+        glEnd();
+    }
+
+    glDisable(GL_BLEND);
+    glColor3f(1.0f, 1.0f, 1.0f);
+}
+
+// Callback function to render a game object
+// This allows the model to define how objects should be rendered
+void render_game_object(int object_type, int object_id, float x, float y, float z, float fg[3], float bg[3]) {
+    switch (object_type) {
+        case 0: // Emoji object
+            if (z >= 0) {
+                // 3D rendering
+                render_emoji_3d_quad(object_id, x, y, z, fg, bg);
+            } else {
+                // 2D rendering
+                render_emoji(object_id, x, y, fg, bg);
+            }
+            break;
+        case 1: // Rectangle object
+            draw_rect(x, y, get_tile_size(), get_tile_size(), fg);
+            break;
+        case 2: // Text object
+            // For text objects, object_id would be an index to a text array
+            // This is a placeholder - actual implementation would depend on how text is stored
+            break;
+        default:
+            // Default rendering - just draw a simple rectangle
+            draw_rect(x, y, get_tile_size(), get_tile_size(), fg);
+            break;
+    }
+}
+
+void render_text(const char* str, float x, float y) {
+    glColor3fv(get_font_color());
+    glRasterPos2f(x, y);
+    while (*str) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *str++);
+    }
+    glColor3f(1.0f, 1.0f, 1.0f);
+}
+
+void print_ascii_grid(void) {
+    printf("\033[H\033[J"); // Clear terminal
+    printf("Emoji Paint (%s Layers)\n", get_show_all_layers() ? "All" : "Top");
+    printf("----------------------------------------\n");
+    for (int r = 0; r < get_canvas_rows(); r++) {
+        for (int c = 0; c < get_canvas_cols(); c++) {
+            bool drawn = false;
+            if (get_selected_tool() != 2 && r == get_selector_row() && c == get_selector_col()) {
+                printf("\033[1;33m[]\033[0m "); // Yellow brackets for selector
+                drawn = true;
+            } else {
+                for (int layer = get_max_layers() - 1; layer >= 0; layer--) {
+                    if (!get_show_all_layers() && layer != get_current_z_level()) continue;
+                    if (get_canvas_tile(layer, r, c, 0) != -1) {
+                        printf("\033[38;2;%s;%s;%sm%s\033[0m ",
+                               get_color(get_canvas_tile(layer, r, c, 1), 0),
+                               get_color(get_canvas_tile(layer, r, c, 1), 1),
+                               get_color(get_canvas_tile(layer, r, c, 1), 2),
+                               get_emoji(get_canvas_tile(layer, r, c, 0)));
+                        drawn = true;
+                        break;
+                    }
+                }
+            }
+            if (!drawn && !(r == get_selector_row() && c == get_selector_col())) printf("  ");
+        }
+        printf("|\n");
+    }
+    if (get_selected_tool() == 2 && get_start_row() != -1) {
+        printf("Rectangle Start: (%d, %d)\n", get_start_row(), get_start_col());
+    }
+    printf("----------------------------------------\n");
+    printf("Emoji Palette: ");
+    for (int i = 0; i < get_num_emojis(); i++) {
+        if (i == get_selected_emoji()) printf("[");
+        printf("%s", get_emoji(i));
+        if (i == get_selected_emoji()) printf("]");
+        printf(" ");
+    }
+    printf("\nColor Palette: ");
+    for (int i = 0; i < get_num_colors(); i++) {
+        if (i == get_selected_fg_color()) printf("[");
+        printf("%s", get_color_name(i));
+        if (i == get_selected_fg_color()) printf("]");
+        printf(" ");
+    }
+    printf("\nTab Bank: ");
+    for (int i = 0; i < get_tab_count(); i++) {
+        printf("\033[38;2;%s;%s;%sm%s\033[0m ",
+               get_color(get_tab_bank(i, 1), 0),
+               get_color(get_tab_bank(i, 1), 1),
+               get_color(get_tab_bank(i, 1), 2),
+               get_emoji(get_tab_bank(i, 0)));
+    }
+    // Invert the Y coordinate for display to match 2D coordinate system
+    int display_row = get_canvas_rows() - 1 - get_selector_row();
+    printf("\nTool: %s  Emoji: %s  FG: %s  BG: %s  Selector: (%d, %d)  Z-Level: %d\n",
+           get_selected_tool() == 0 ? "Paint" : (get_selected_tool() == 1 ? "Fill" : (get_selected_tool() == 2 ? "Rectangle" : "Erase")),
+           get_emoji(get_selected_emoji()), get_color_name(get_selected_fg_color()), get_color_name(get_selected_bg_color()),
+           display_row, get_selector_col(), get_current_z_level());
+    printf("%s\n", get_status_message());
+    printf("SPACE: Paint  F: Fill  R: Rect  1: Emoji  C: Color  2: Layer  S: Save  L: Load  T: Tab  Q: Quit\n");
+    printf("Arrows: Move Selector  Enter: Place Tile\n");
+}
+
+void draw_rect(float x, float y, float w, float h, float color[3]) {
+    glColor3fv(color);
+    glBegin(GL_QUADS);
+    glVertex2f(x, y);
+    glVertex2f(x + w, y);
+    glVertex2f(x + w, y + h);
+    glVertex2f(x, y + h);
+    glEnd();
+    glColor3f(1.0f, 1.0f, 1.0f);
+}
+
+void draw_border(float x, float y, float w, float h, float color[3]) {
+    glLineWidth(2.0f);
+    glColor3fv(color);
+    glBegin(GL_LINE_LOOP);
+    glVertex2f(x, y);
+    glVertex2f(x + w, y);
+    glVertex2f(x + w, y + h);
+    glVertex2f(x, y + h);
+    glEnd();
+    glColor3f(1.0f, 1.0f, 1.0f);
+}
+
+void draw_3d_border(float x, float y, float z, float w, float h, float d, float color[3]) {
+    glLineWidth(2.0f);
+    glColor3fv(color);
+    glBegin(GL_LINE_LOOP);
+    // Front face
+    glVertex3f(x, y, z + d);
+    glVertex3f(x + w, y, z + d);
+    glVertex3f(x + w, y + h, z + d);
+    glVertex3f(x, y + h, z + d);
+    glEnd();
+    glBegin(GL_LINE_LOOP);
+    // Back face
+    glVertex3f(x, y, z);
+    glVertex3f(x + w, y, z);
+    glVertex3f(x + w, y + h, z);
+    glVertex3f(x, y + h, z);
+    glEnd();
+    glBegin(GL_LINES);
+    // Connecting edges
+    glVertex3f(x, y, z);
+    glVertex3f(x, y, z + d);
+    glVertex3f(x + w, y, z);
+    glVertex3f(x + w, y, z + d);
+    glVertex3f(x + w, y + h, z);
+    glVertex3f(x + w, y + h, z + d);
+    glVertex3f(x, y + h, z);
+    glVertex3f(x, y + h, z + d);
+    glEnd();
+    glColor3f(1.0f, 1.0f, 1.0f);
+}
+
+// Function to draw a 3D cursor
+void draw_3d_cursor(float x, float y, float z, float size) {
+    float cursor_color[3] = {1.0f, 0.0f, 0.0f}; // Red cursor
+    glLineWidth(3.0f);
+    glColor3fv(cursor_color);
+    glBegin(GL_LINES);
+    // Vertical line
+    glVertex3f(x, y - size, z);
+    glVertex3f(x, y + size, z);
+    // Horizontal line
+    glVertex3f(x - size, y, z);
+    glVertex3f(x + size, y, z);
+    // Depth line
+    glVertex3f(x, y, z - size);
+    glVertex3f(x, y, z + size);
+    glEnd();
+    glColor3f(1.0f, 1.0f, 1.0f);
+}
+
+
+// Update emoji_start_index from thumb position
+void update_emoji_index_from_thumb(int total_emojis) {
+    // Calculate visible emojis
+    int visible_emojis = emoji_visible_rows * EMOJI_COLS;
+    int emoji_rows = (total_emojis + EMOJI_COLS - 1) / EMOJI_COLS;
+    int visible_height = emoji_visible_rows * EMOJI_CELL_SIZE;
+    
+    // Only show thumb if we have more emojis than can fit
+    if (total_emojis <= visible_emojis) {
+        emoji_start_index = 0;
+        return;
+    }
+    
+    float track_height = visible_height - emoji_thumb_height;
+    if (track_height <= 0) return;
+
+    // Clamp emoji_thumb_y to valid range
+    if (emoji_thumb_y < 0) emoji_thumb_y = 0;
+    if (emoji_thumb_y > track_height) emoji_thumb_y = track_height;
+
+    float ratio = emoji_thumb_y / track_height;
+    emoji_start_index = (int)(ratio * (total_emojis - visible_emojis));
+
+    if (emoji_start_index < 0) emoji_start_index = 0;
+    if (emoji_start_index > total_emojis - visible_emojis)
+        emoji_start_index = total_emojis - visible_emojis;
+}
+
+// Update thumb from emoji_start_index (for initialization or external scroll)
+void update_thumb_from_emoji_index(int total_emojis) {
+    // Calculate visible emojis
+    int visible_emojis = emoji_visible_rows * EMOJI_COLS;
+    int emoji_rows = (total_emojis + EMOJI_COLS - 1) / EMOJI_COLS;
+    int visible_height = emoji_visible_rows * EMOJI_CELL_SIZE;
+    
+    // Only show thumb if we have more emojis than can fit
+    if (total_emojis <= visible_emojis) {
+        emoji_thumb_y = 0; // Reset thumb position
+        return;
+    }
+    
+    float track_height = visible_height - emoji_thumb_height;
+    if (track_height <= 0) return;
+
+    float ratio = (float)emoji_start_index / (total_emojis - visible_emojis);
+    emoji_thumb_y = ratio * track_height;
+    
+    // Clamp to valid range
+    if (emoji_thumb_y < 0) emoji_thumb_y = 0;
+    if (emoji_thumb_y > track_height) emoji_thumb_y = track_height;
+}
+
+// Convert mouse Y to thumb position
+float mouse_y_to_emoji_thumb_y(int y) {
+    return y - emoji_thumb_height/2.0f; // center grab
+}
+
+// Check if click is on an emoji (with scrolling support)
+int get_clicked_emoji_index(int x, int y, float sidebar_x, float base_y, int total_emojis) {
+    // Calculate visible emojis
+    int visible_emojis = emoji_visible_rows * EMOJI_COLS;
+    
+    // Only check if we have more emojis than can fit
+    if (total_emojis <= visible_emojis) {
+        // Use original logic for small emoji sets
+        int emoji_cols = 8;
+        int emoji_rows = (total_emojis + emoji_cols - 1) / emoji_cols;
+        for (int i = 0; i < total_emojis; i++) {
+            int row = i / emoji_cols;
+            int col = i % emoji_cols;
+            float emoji_x = sidebar_x + 10 + col * 40;
+            float emoji_y = base_y - row * 40;
+            
+            if (x >= emoji_x && x <= emoji_x + 40 &&
+                y >= emoji_y && y <= emoji_y + 40) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    // For scrolled emoji grid
+    for (int i = emoji_start_index; i < total_emojis && i < emoji_start_index + visible_emojis; i++) {
+        int relative_index = i - emoji_start_index;
+        int row = relative_index / EMOJI_COLS;
+        int col = relative_index % EMOJI_COLS;
+        float emoji_x = sidebar_x + 10 + col * EMOJI_CELL_SIZE;
+        float emoji_y = base_y - row * EMOJI_CELL_SIZE;
+        
+        if (x >= emoji_x && x <= emoji_x + EMOJI_CELL_SIZE &&
+            y >= emoji_y && y <= emoji_y + EMOJI_CELL_SIZE) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int decode_utf8(const unsigned char* str, unsigned int* codepoint) {
+    if (str[0] < 0x80) {
+        *codepoint = str[0];
+        return 1;
+    }
+    if ((str[0] & 0xE0) == 0xC0) {
+        if ((str[1] & 0xC0) == 0x80) {
+            *codepoint = ((str[0] & 0x1F) << 6) | (str[1] & 0x3F);
+            return 2;
+        }
+    }
+    if ((str[0] & 0xF0) == 0xE0) {
+        if ((str[1] & 0xC0) == 0x80 && (str[2] & 0xC0) == 0x80) {
+            *codepoint = ((str[0] & 0x0F) << 12) | ((str[1] & 0x3F) << 6) | (str[2] & 0x3F);
+            return 3;
+        }
+    }
+    if ((str[0] & 0xF8) == 0xF0) {
+        if ((str[1] & 0xC0) == 0x80 && (str[2] & 0xC0) == 0x80 && (str[3] & 0xC0) == 0x80) {
+            *codepoint = ((str[0] & 0x07) << 18) | ((str[1] & 0x3F) << 12) | ((str[2] & 0x3F) << 6) | (str[3] & 0x3F);
+            return 4;
+        }
+    }
+    *codepoint = '?';
+    return 1;
+}
+
+// Header strip height
+#define HEADER_STRIP_HEIGHT 40
+
+void render_header_strip(void) {
+    float header_color[3] = {0.3f, 0.3f, 0.3f};
+    float button_color[3] = {0.5f, 0.5f, 0.5f};
+    float sel_color[3] = {1.0f, 1.0f, 0.0f};
+    float dark_recessed_color[3] = {0.2f, 0.2f, 0.2f}; // Darker color for recessed fields
+    
+    // Draw header strip background
+    draw_rect(0, get_window_height() - HEADER_STRIP_HEIGHT, get_window_width(), HEADER_STRIP_HEIGHT, header_color);
+    
+    // Draw buttons in header strip
+    int button_width = 60;
+    int button_height = 30;
+    int button_y = get_window_height() - HEADER_STRIP_HEIGHT + 5;
+    
+    // File, Text, Tile, 2D, 3D buttons (same as before but in header)
+    draw_rect(10, button_y, button_width, button_height, button_color); // File button
+    draw_rect(80, button_y, button_width, button_height, button_color); // Text button
+    draw_rect(150, button_y, button_width, button_height, button_color); // Tile button
+    draw_rect(220, button_y, button_width, button_height, button_color); // 2D button
+    draw_rect(290, button_y, button_width, button_height, button_color); // 3D button
+    
+    // Highlight selected view mode
+    if (get_view_mode() == 0) {
+        draw_border(220, button_y, button_width, button_height, sel_color); // 2D selected
+    } else {
+        draw_border(290, button_y, button_width, button_height, sel_color); // 3D selected
+    }
+    
+    render_text("File", 30, button_y + 10);
+    render_text("Text", 100, button_y + 10);
+    render_text("Tile", 170, button_y + 10);
+    render_text("2D", 245, button_y + 10);
+    render_text("3D", 315, button_y + 10);
+    
+    // Move -, +, 1:1 buttons more to the middle of the header bar (switched + and -)
+    // Position them at about 50% from the left instead of 75%
+    int middle_x = get_window_width() * 0.5;
+    draw_rect(middle_x - 105, button_y, button_width, button_height, button_color); // - button
+    draw_rect(middle_x - 35, button_y, button_width, button_height, button_color); // + button
+    draw_rect(middle_x + 35, button_y, button_width, button_height, button_color); // 1:1 button
+    
+    // Add [x:1,y:1,z:1] and [1.0] fields to the right of 1:1
+    // These should look darker and recessed (not like buttons)
+    int coord_field_width = 100;
+    int scale_field_width = 60;
+    int field_height = 25;
+    int field_y = get_window_height() - HEADER_STRIP_HEIGHT + 7; // Slightly lower to appear recessed
+    
+    // Draw recessed fields
+    draw_rect(middle_x + 105, field_y, coord_field_width, field_height, dark_recessed_color); // [x:1,y:1,z:1] field
+    draw_rect(middle_x + 215, field_y, scale_field_width, field_height, dark_recessed_color); // [1.0] field
+    
+    render_text("-", middle_x - 80, button_y + 10); // - button
+    render_text("+", middle_x - 10, button_y + 10); // + button
+    render_text("1:1", middle_x + 60, button_y + 10);
+    
+    // Render scale values in the fields
+    char coord_text[50];
+    snprintf(coord_text, sizeof(coord_text), "[x:%.1f,y:%.1f,z:%.1f]", get_scale_x(), get_scale_y(), get_scale_z());
+    render_text(coord_text, middle_x + 115, field_y + 8); // Lower text position for recessed look
+    
+    char scale_text[20];
+    // Calculate average scale for display
+    float avg_scale = (get_scale_x() + get_scale_y() + get_scale_z()) / 3.0f;
+    snprintf(scale_text, sizeof(scale_text), "[%.1f]", avg_scale);
+    render_text(scale_text, middle_x + 235, field_y + 8); // Lower text position for recessed look
+    
+    // Keep plug, db and play buttons at the far right
+    int db_x = get_window_width() - 280; // Position from the right edge
+    draw_rect(db_x, button_y, button_width, button_height, button_color); // plug button
+    draw_rect(db_x + 70, button_y, button_width, button_height, button_color); // db button
+    draw_rect(db_x + 140, button_y, button_width, button_height, button_color); // play button
+    
+    render_text("Plug", db_x + 15, button_y + 10);
+    render_text("Db", db_x + 90, button_y + 10);
+    render_text("Play", db_x + 160, button_y + 10);
+}
+
+void render_sidebar_ui(void) {
+    float sidebar_x = 10;
+    float tab_color[3] = {0.5f, 0.5f, 0.5f};
+    float sel_color[3] = {1.0f, 1.0f, 0.0f};
+
+    // Draw sidebar (left side, below header strip)
+    float base_y = get_window_height() - HEADER_STRIP_HEIGHT - 50;
+
+    // Emoji grid (8x8)
+    int emoji_cols = 8;
+    int total_emojis = get_num_emojis();
+    int emoji_rows = (total_emojis + emoji_cols - 1) / emoji_cols;
+    int visible_emojis = emoji_visible_rows * EMOJI_COLS;
+    
+    // Check if we need a thumb picker (more than 64 emojis or more than visible rows)
+    if (total_emojis > 64 || total_emojis > visible_emojis) {
+        // Update thumb height based on content
+        int visible_height = emoji_visible_rows * EMOJI_CELL_SIZE;
+        float content_height = emoji_rows * EMOJI_CELL_SIZE;
+        emoji_thumb_height = (visible_height / (float)content_height) * visible_height;
+        
+        // Ensure minimum thumb height
+        if (emoji_thumb_height < 20.0f) emoji_thumb_height = 20.0f;
+        
+        // Render visible emojis based on scroll position
+        int end_index = emoji_start_index + visible_emojis;
+        if (end_index > total_emojis) end_index = total_emojis;
+        
+        for (int i = emoji_start_index; i < end_index; i++) {
+            int relative_index = i - emoji_start_index;
+            int row = relative_index / emoji_cols;
+            int col = relative_index % emoji_cols;
+            float x = sidebar_x + 10 + col * EMOJI_CELL_SIZE;
+            float y = base_y - row * EMOJI_CELL_SIZE;
+            unsigned int codepoint;
+            decode_utf8((const unsigned char*)get_emoji(i), &codepoint);
+            float fg[3] = {1.0f, 1.0f, 1.0f};
+            float bg[3] = {0.0f, 0.0f, 0.0f};
+            render_emoji(codepoint, x + EMOJI_CELL_SIZE/2, y + EMOJI_CELL_SIZE/2, fg, bg);
+            if (i == get_selected_emoji()) {
+                draw_border(x, y, EMOJI_CELL_SIZE, EMOJI_CELL_SIZE, sel_color);
+            }
+        }
+        
+        // Draw thumb track background (right edge of emoji grid area)
+        float thumb_x = sidebar_x + 10 + emoji_cols * EMOJI_CELL_SIZE + 5;
+        float thumb_track_height = visible_height;
+        float thumb_track_color[3] = {0.3f, 0.3f, 0.3f}; // Dark gray track background
+        glColor3fv(thumb_track_color);
+        glBegin(GL_QUADS);
+            glVertex2f(thumb_x, base_y - thumb_track_height);                           // top-left
+            glVertex2f(thumb_x + 10, base_y - thumb_track_height);                     // top-right
+            glVertex2f(thumb_x + 10, base_y);                                          // bottom-right
+            glVertex2f(thumb_x, base_y);                                               // bottom-left
+        glEnd();
+        
+        // Draw thumb
+        glColor3f(0.0f, 0.6f, 0.0f);  // Dark green color
+        glBegin(GL_QUADS);
+            glVertex2f(thumb_x, base_y - emoji_thumb_y - emoji_thumb_height);          // top-left
+            glVertex2f(thumb_x + 10, base_y - emoji_thumb_y - emoji_thumb_height);    // top-right
+            glVertex2f(thumb_x + 10, base_y - emoji_thumb_y);                          // bottom-right
+            glVertex2f(thumb_x, base_y - emoji_thumb_y);                               // bottom-left
+        glEnd();
+    } else {
+        // Original rendering for small emoji sets
+        for (int i = 0; i < total_emojis; i++) {
+            int row = i / emoji_cols;
+            int col = i % emoji_cols;
+            float x = sidebar_x + 10 + col * 40;
+            float y = base_y - row * 40;
+            unsigned int codepoint;
+            decode_utf8((const unsigned char*)get_emoji(i), &codepoint);
+            float fg[3] = {1.0f, 1.0f, 1.0f};
+            float bg[3] = {0.0f, 0.0f, 0.0f};
+            render_emoji(codepoint, x + 20, y + 20, fg, bg);
+            if (i == get_selected_emoji()) {
+                draw_border(x, y, 40, 40, sel_color);
+            }
+        }
+    }
+
+    // Colors (horizontal row below emojis)
+    float colors_y_start;
+    if (total_emojis > 64 || total_emojis > visible_emojis) {
+        // Position colors below the visible emoji area
+        colors_y_start = base_y - (emoji_visible_rows * EMOJI_CELL_SIZE) - 20;
+    } else {
+        // Original positioning for small emoji sets
+        colors_y_start = base_y - (emoji_rows * 40) - 20;
+    }
+    
+    int colors_cols = 8;
+    int colors_rows = 1;
+    for (int i = 0; i < get_num_colors(); i++) {
+        int row = i / colors_cols;
+        int col = i % colors_cols;
+        float x = sidebar_x + 10 + col * 40;
+        float y = colors_y_start - row * 40;
+        float color[3] = {
+            atof(get_color(i, 0)) / 255.0f,
+            atof(get_color(i, 1)) / 255.0f,
+            atof(get_color(i, 2)) / 255.0f
+        };
+        draw_rect(x, y, 40, 40, color);
+        if (i == get_selected_fg_color()) {
+            draw_border(x, y, 40, 40, sel_color);
+        }
+    }
+
+    // Tab bank (vertical below colors)
+    float tabs_y_start = colors_y_start - (colors_rows * 40) - 20;
+    for (int i = 0; i < get_tab_count(); i++) {
+        float x = sidebar_x + 10;
+        float y = tabs_y_start - i * 40;
+        unsigned int codepoint;
+        decode_utf8((const unsigned char*)get_emoji(get_tab_bank(i, 0)), &codepoint);
+        float fg[3] = {
+            atof(get_color(get_tab_bank(i, 1), 0)) / 255.0f,
+            atof(get_color(get_tab_bank(i, 1), 1)) / 255.0f,
+            atof(get_color(get_tab_bank(i, 1), 2)) / 255.0f
+        };
+        float bg[3] = {
+            atof(get_color(get_tab_bank(i, 2), 0)) / 255.0f,
+            atof(get_color(get_tab_bank(i, 2), 1)) / 255.0f,
+            atof(get_color(get_tab_bank(i, 2), 2)) / 255.0f
+        };
+        render_emoji(codepoint, x + 20, y + 20, fg, bg);
+    }
+
+    // Tools (horizontal below tabs)
+    float tabs_section_height = get_tab_count() * 40;
+    float tools_y_start = tabs_y_start - tabs_section_height - 20;
+    const char *tools[] = {"Paint", "Fill", "Rect", "Erase"};
+    for (int i = 0; i < 4; i++) {
+        float x = sidebar_x + 10 + i * 70;
+        float y = tools_y_start;
+        draw_rect(x, y, 60, 30, tab_color);
+        render_text(tools[i], x + 10, y + 10);
+        if (i == get_selected_tool()) {
+            draw_border(x, y, 60, 30, sel_color);
+        }
+    }
+
+    // Map window
+    float map_window_y = tools_y_start - 210;
+    draw_rect(sidebar_x, map_window_y, get_sidebar_width() - 20, 200, tab_color);
+    render_text("Maps", sidebar_x + 10, map_window_y + 180);
+    
+    // Display map files in the maps window
+    int map_files_count = 0;
+    char** map_files = get_map_files_list(&map_files_count);
+    if (map_files && map_files_count > 0) {
+        // Display up to 8 map files in the window
+        int max_display = (map_files_count < 8) ? map_files_count : 8;
+        for (int i = 0; i < max_display; i++) {
+            float text_y = map_window_y + 160 - (i * 20);
+            render_text(map_files[i], sidebar_x + 10, text_y);
+        }
+        
+        // If there are more files than we can display, show a count
+        if (map_files_count > 8) {
+            char more_text[50];
+            sprintf(more_text, "... and %d more", map_files_count - 8);
+            render_text(more_text, sidebar_x + 10, map_window_y + 160 - (8 * 20) - 20);
+        }
+    } else {
+        render_text("No maps found", sidebar_x + 10, map_window_y + 160);
+    }
+
+    // Display current Z-level
+    char z_level_str[50];
+    sprintf(z_level_str, "Z-Level: %d", get_current_z_level());
+    render_text(z_level_str, get_sidebar_width() + 10, HEADER_STRIP_HEIGHT + 30);
+
+    render_text(get_status_message(), get_sidebar_width() + 10, HEADER_STRIP_HEIGHT + 10);
+}
+
+void display(void) {
+    float* bg_color = get_background_color();
+    glClearColor(bg_color[0], bg_color[1], bg_color[2], bg_color[3]);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    float sidebar_x = 10;
+
+    if (get_view_mode() == 0) { // 2D View
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glOrtho(0, get_window_width(), 0, get_window_height(), -1, 1);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+
+        // Draw canvas grid with scaling
+        float scale_x = get_scale_x();
+        float scale_y = get_scale_y();
+        float grid_color[3] = {0.6f, 0.6f, 0.6f};
+        for (int r = 0; r < get_canvas_rows(); r++) {
+            for (int c = 0; c < get_canvas_cols(); c++) {
+                float x = get_sidebar_width() + 10 + c * get_tile_size() * scale_x;
+                float y = get_window_height() - HEADER_STRIP_HEIGHT - 10 - (r + 1) * get_tile_size() * scale_y;
+                float w = get_tile_size() * scale_x;
+                float h = get_tile_size() * scale_y;
+                draw_border(x, y, w, h, grid_color);
+            }
+        }
+
+        // Render only the current Z-level in 2D view
+        int current_layer = get_current_z_level();
+        for (int r = 0; r < get_canvas_rows(); r++) {
+            for (int c = 0; c < get_canvas_cols(); c++) {
+                if (get_canvas_tile(current_layer, r, c, 0) == -1) continue;
+                float x = get_sidebar_width() + 10 + c * get_tile_size() * scale_x + (get_tile_size() * scale_x) / 2;
+                float y = get_window_height() - HEADER_STRIP_HEIGHT - 10 - (r + 1) * get_tile_size() * scale_y + (get_tile_size() * scale_y) / 2;
+                const char *emoji = get_emoji(get_canvas_tile(current_layer, r, c, 0));
+                unsigned int codepoint;
+                decode_utf8((const unsigned char*)emoji, &codepoint);
+                float fg[3] = {
+                    atof(get_color(get_canvas_tile(current_layer, r, c, 1), 0)) / 255.0f,
+                    atof(get_color(get_canvas_tile(current_layer, r, c, 1), 1)) / 255.0f,
+                    atof(get_color(get_canvas_tile(current_layer, r, c, 1), 2)) / 255.0f
+                };
+                float bg[3] = {
+                    atof(get_color(get_canvas_tile(current_layer, r, c, 2), 0)) / 255.0f,
+                    atof(get_color(get_canvas_tile(current_layer, r, c, 2), 1)) / 255.0f,
+                    atof(get_color(get_canvas_tile(current_layer, r, c, 2), 2)) / 255.0f
+                };
+                render_emoji(codepoint, x, y, fg, bg);
+            }
+        }
+
+        // Draw tile selector with scaling
+        float sel_color[3] = {1.0f, 1.0f, 0.0f};
+        if (get_selected_tool() == 2 && get_start_row() != -1) {
+            int r_min = get_start_row() < get_selector_row() ? get_start_row() : get_selector_row();
+            int r_max = get_start_row() > get_selector_row() ? get_start_row() : get_selector_row();
+            int c_min = get_start_col() < get_selector_col() ? get_start_col() : get_selector_col();
+            int c_max = get_start_col() > get_selector_col() ? get_start_col() : get_selector_col();
+            float x = get_sidebar_width() + 10 + c_min * get_tile_size() * scale_x;
+            float y = get_window_height() - HEADER_STRIP_HEIGHT - 10 - (r_max + 1) * get_tile_size() * scale_y;
+            float w = (c_max - c_min + 1) * get_tile_size() * scale_x;
+            float h = (r_max - r_min + 1) * get_tile_size() * scale_y;
+            draw_border(x, y, w, h, sel_color);
+        } else {
+            float x = get_sidebar_width() + 10 + get_selector_col() * get_tile_size() * scale_x;
+            float y = get_window_height() - HEADER_STRIP_HEIGHT - 10 - (get_selector_row() + 1) * get_tile_size() * scale_y;
+            float w = get_tile_size() * scale_x;
+            float h = get_tile_size() * scale_y;
+            draw_border(x, y, w, h, sel_color);
+        }
+
+    } else { // 3D View
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
+        glFrontFace(GL_CCW);
+
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        gluPerspective(60.0, (double)get_window_width() / get_window_height(), 1.0, 1000.0);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+
+        // Apply camera transformations
+        glTranslatef(-get_camera_x(), -get_camera_y(), -get_camera_z());
+        glRotatef(get_camera_pitch(), 1.0f, 0.0f, 0.0f);
+        glRotatef(get_camera_yaw(), 0.0f, 1.0f, 0.0f);
+
+        // Draw 3D cubes with emojis
+        for (int layer = 0; layer < get_max_layers(); layer++) {
+            for (int r = 0; r < get_canvas_rows(); r++) {
+                for (int c = 0; c < get_canvas_cols(); c++) {
+                    if (get_canvas_tile(layer, r, c, 0) == -1) continue;
+
+                    float x = c * get_tile_size() * get_scale_x();
+                    // Invert Y coordinate to match 2D mode coordinate system
+                    float y = (get_canvas_rows() - 1 - r) * get_tile_size() * get_scale_y();
+                    float z = layer * get_tile_size() * get_scale_z();
+                    float half_size_x = (get_tile_size() * get_scale_x()) / 2.0f;
+                    float half_size_y = (get_tile_size() * get_scale_y()) / 2.0f;
+                    float half_size_z = (get_tile_size() * get_scale_z()) / 2.0f;
+
+                    glPushMatrix();
+                    glTranslatef(x + half_size_x, y + half_size_y, z + half_size_z);
+
+                    float cube_color[3] = {0.2f, 0.2f, 0.2f};
+                    float border_color[3] = {0.4f, 0.4f, 0.4f};
+
+                    // Draw all six faces of the cube
+                    glBegin(GL_QUADS);
+                    glColor3fv(cube_color);
+                    // Front face (z = +half_size_z)
+                    glVertex3f(-half_size_x, -half_size_y, half_size_z);
+                    glVertex3f(half_size_x, -half_size_y, half_size_z);
+                    glVertex3f(half_size_x, half_size_y, half_size_z);
+                    glVertex3f(-half_size_x, half_size_y, half_size_z);
+                    // Back face (z = -half_size_z)
+                    glVertex3f(-half_size_x, -half_size_y, -half_size_z);
+                    glVertex3f(-half_size_x, half_size_y, -half_size_z);
+                    glVertex3f(half_size_x, half_size_y, -half_size_z);
+                    glVertex3f(half_size_x, -half_size_y, -half_size_z);
+                    // Top face (y = +half_size_y)
+                    glVertex3f(-half_size_x, half_size_y, -half_size_z);
+                    glVertex3f(-half_size_x, half_size_y, half_size_z);
+                    glVertex3f(half_size_x, half_size_y, half_size_z);
+                    glVertex3f(half_size_x, half_size_y, -half_size_z);
+                    // Bottom face (y = -half_size_y)
+                    glVertex3f(-half_size_x, -half_size_y, -half_size_z);
+                    glVertex3f(half_size_x, -half_size_y, -half_size_z);
+                    glVertex3f(half_size_x, -half_size_y, half_size_z);
+                    glVertex3f(-half_size_x, -half_size_y, half_size_z);
+                    // Left face (x = -half_size_x)
+                    glVertex3f(-half_size_x, -half_size_y, -half_size_z);
+                    glVertex3f(-half_size_x, -half_size_y, half_size_z);
+                    glVertex3f(-half_size_x, half_size_y, half_size_z);
+                    glVertex3f(-half_size_x, half_size_y, -half_size_z);
+                    // Right face (x = +half_size_x)
+                    glVertex3f(half_size_x, -half_size_y, -half_size_z);
+                    glVertex3f(half_size_x, half_size_y, -half_size_z);
+                    glVertex3f(half_size_x, half_size_y, half_size_z);
+                    glVertex3f(half_size_x, -half_size_y, half_size_z);
+                    glEnd();
+
+                    // Draw emoji on front face
+                    const char *emoji = get_emoji(get_canvas_tile(layer, r, c, 0));
+                    unsigned int codepoint;
+                    decode_utf8((const unsigned char*)emoji, &codepoint);
+                    float fg[3] = {
+                        atof(get_color(get_canvas_tile(layer, r, c, 1), 0)) / 255.0f,
+                        atof(get_color(get_canvas_tile(layer, r, c, 1), 1)) / 255.0f,
+                        atof(get_color(get_canvas_tile(layer, r, c, 1), 2)) / 255.0f
+                    };
+                    float bg[3] = {
+                        atof(get_color(get_canvas_tile(layer, r, c, 2), 0)) / 255.0f,
+                        atof(get_color(get_canvas_tile(layer, r, c, 2), 1)) / 255.0f,
+                        atof(get_color(get_canvas_tile(layer, r, c, 2), 2)) / 255.0f
+                    };
+                    render_emoji_3d_quad(codepoint, 0, 0, half_size_z + 0.01f, fg, bg);
+
+                    glPopMatrix();
+                }
+            }
+        }
+
+        // Draw 3D grid lines - only show 2D plane stacks (no connecting vertical lines between layers)
+        glLineWidth(1.0f);
+        float grid_color[3] = {0.6f, 0.6f, 0.6f};
+        glColor3fv(grid_color);
+        glBegin(GL_LINES);
+        // X-Y grid lines for each layer (only the grid lines within each layer)
+        for (int layer = 0; layer < get_max_layers(); layer++) {
+            float z = layer * get_tile_size() * get_scale_z();
+            // Horizontal lines
+            for (int r = 0; r <= get_canvas_rows(); r++) {
+                // Invert Y coordinate to match 2D mode coordinate system
+                float y = (get_canvas_rows() - r) * get_tile_size() * get_scale_y();
+                glVertex3f(0, y, z);
+                glVertex3f(get_canvas_cols() * get_tile_size() * get_scale_x(), y, z);
+            }
+            // Vertical lines
+            for (int c = 0; c <= get_canvas_cols(); c++) {
+                float x = c * get_tile_size() * get_scale_x();
+                glVertex3f(x, get_canvas_rows() * get_tile_size() * get_scale_y(), z);
+                glVertex3f(x, 0, z);
+            }
+        }
+        glEnd();
+
+        // Draw tile selector in 3D
+        float sel_color[3] = {1.0f, 1.0f, 0.0f};
+        if (get_selected_tool() == 2 && get_start_row() != -1) {
+            int r_min = get_start_row() < get_selector_row() ? get_start_row() : get_selector_row();
+            int r_max = get_start_row() > get_selector_row() ? get_start_row() : get_selector_row();
+            int c_min = get_start_col() < get_selector_col() ? get_start_col() : get_selector_col();
+            int c_max = get_start_col() > get_selector_col() ? get_start_col() : get_selector_col();
+            float x = c_min * get_tile_size() * get_scale_x();
+            float y = r_min * get_tile_size() * get_scale_y();
+            float z = get_current_z_level() * get_tile_size() * get_scale_z();
+            float w = (c_max - c_min + 1) * get_tile_size() * get_scale_x();
+            float h = (r_max - r_min + 1) * get_tile_size() * get_scale_y();
+            float d = get_tile_size() * get_scale_z();
+            draw_3d_border(x, y, z, w, h, d, sel_color);
+        } else {
+            float x = get_selector_col() * get_tile_size() * get_scale_x();
+            float y = get_selector_row() * get_tile_size() * get_scale_y();
+            float z = get_current_z_level() * get_tile_size() * get_scale_z();
+            float w = get_tile_size() * get_scale_x();
+            float h = get_tile_size() * get_scale_y();
+            float d = get_tile_size() * get_scale_z();
+            draw_3d_border(x, y, z, w, h, d, sel_color);
+        }
+
+        // Draw mouse cursor in 3D if mouse is in window
+        if (get_mouse_in_window()) {
+            int mouse_x = get_mouse_x();
+            int mouse_y = get_mouse_y();
+            int row, col, layer;
+            // Use raycasting to determine where the cursor should be in 3D space
+            if (find_closest_intersected_block(mouse_x, mouse_y, &row, &col, &layer)) {
+                float x = col * get_tile_size() + get_tile_size() / 2.0f;
+                float y = row * get_tile_size() + get_tile_size() / 2.0f;
+                float z = layer * get_tile_size() + get_tile_size() / 2.0f;
+                draw_3d_cursor(x, y, z, get_tile_size() / 3.0f);
+            }
+        }
+
+        glDisable(GL_CULL_FACE);
+        glDisable(GL_DEPTH_TEST);
+        
+        // Display current position in 3D mode
+        char position_str[100];
+        // Invert the Y coordinate for display to match 2D coordinate system
+        int display_row = get_canvas_rows() - 1 - get_selector_row();
+        sprintf(position_str, "Position: (%d, %d, %d)", get_selector_col(), display_row, get_current_z_level());
+        render_text(position_str, get_sidebar_width() + 10, HEADER_STRIP_HEIGHT + 10);
+    }
+
+    // Render UI overlay
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glOrtho(0, get_window_width(), 0, get_window_height(), -1, 1);
+
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+
+    // Render header strip
+    render_header_strip();
+    
+    render_sidebar_ui();
+
+    // Render event menus if visible
+    render_event_menu(main_event_menu);
+    render_event_menu(event_area_menu);
+    render_event_menu(event_commands_menu);
+    render_event_menu(contents_context_menu);
+    render_event_menu(maps_context_menu);
+    
+    // Render text input dialog if visible
+    if (text_input_dialog) {
+        render_text_input_dialog(text_input_dialog);
+    }
+    
+    // Render file menu
+    extern void render_file_menu(void);
+    render_file_menu();
+
+    glPopMatrix();
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+
+    glutSwapBuffers();
+}

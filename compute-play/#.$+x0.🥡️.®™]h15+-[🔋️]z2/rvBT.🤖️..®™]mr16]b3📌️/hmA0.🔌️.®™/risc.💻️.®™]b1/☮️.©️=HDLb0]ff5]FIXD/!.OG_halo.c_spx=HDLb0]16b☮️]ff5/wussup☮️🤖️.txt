@@ -1,0 +1,155 @@
+
+
+
+☮️
+🗓️
+
+📅️jul31
+
+
+fixed ram clear. 
+im stumped on modem tho. should be ez. is bank messing us up? 
+
+(modem in modem out could be a bank..
+whats it do ? 
+
+i want to make two new "bank functions" (like nand)
+
+modem_in.c  & modem_out.c  :  
+
+a: # = modem_<in|out>.+x 
+b: address to input or output from/to modem/ 
+c: ignore
+d: ignore
+
+modem/  = 0.txt, 1.txt, 10.txt ... 10000000.txt etc 
+
+we may definately have to modify main.c to facilitate that but im ok with it.
+
+
+⏰️
+(is there a clock_in address?)
+yes 
+**Input Values**:
+- `0` or `1`: Literal 0 or 1.
+- `2` or `3`: Blank (used with chip_location = 0 for pass-through).
+- `5`: `switch_0` value.
+- `6`: `switch_1` value.
+- `7`: Clock value (0 or 1).
+- `>15`: Read from RAM at address `raw_input % 256` (then clear that address).
+⏰️
+
+📅️jul31 15:00
+found this , may have a few bugs or w/e but w/e
+not gonna fix fight now they're being extremely unpleasant and its hottest of summer
+will go do something game related{MR}/chatbot or sleep💉️
+
+☮️
+
+
+💞️
+perfect. that was "the documentation" now we will begin by defining the "roadmap_rvii.md" of steps and kpis for making the rvii "compter" using only binary , starting with the chips we will need, 
+
+perfect. that was "the documentation" now we will begin by defining the "roadmap_rvii.md" of steps and kpis for making the rvii "compter" using only binary , starting with the chips we will need, 
+and any tools that maybe helpful such as 
+
+[tool in .c  to "auto make chips" ; or put seperate chips together like a netlist
+
+sort of compilers or we treating this as the "hardware or w/e best terminology is"(your the genius!)
+]
+
+also , to address "## 🐛 Known Bugs and Limitations"
+i am okay with most of these, but 
+1. **RAM Clearing on Read** 🧠: seems it maybe unintended. 
+cant we "hold read, write in mem and rewrite new plus old 2 file? " 
+i dont wanna change it unless it will HELP US make chisp (i dunno y its there but it could be a bug like u said)otherwise, we like to keep this architecture spec simple, so we could write it fast 4 other languages
+(bash/assembly/ vhdl etc)
+💞️
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+🚩️
+netlist maybe 2 jacked up. ,eep trying 2 push it... but 
+i would ALSO make "fully working "original halo spex" <- once u 'sus out spex with it 
+
+(pro tip show it programs, . get halo/ loom 
+
+maybe better . and why not compare side by side the whole tiem. u wont be happy till u do 
+
+( and even verilog sim or w/e ) <- but thats ast garbage youll never understand that code
+so we cant be sure of purity
+
+
+💿️
+can u reuse some of "halo.c" ? but fix it 2 og halo? etc.
+
+ofc u can. 
+
+can u reuse old chip order even tho its ugly till it works THEN swap? 
+💿️
+🚩️
+📬️
+show grok both , tell it u wanna do the rv-ii/iv
+
+in "NETLIST HOLO"
+📬️
+🇬🇮️
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+💞️
+they had the nerve (while clown freeze) 2 suggest
+i make the "peices" run idivisual or "bank riscv-" machines
+(using c- instead of ♋️middle man ♋️
+im gonna prompt for "2bit dumbed down riscv computer
+then straup up 2 4 bit , a8bit 16,and finally 32 (it brakes on 64)
+
+but i think we can strap a tiny c+ast in those tiny risc's
+as well...
+sometimes try 2 use those 4 calculation
+
+(were still buidinng LLM @ home, and maybe that will be helpful4 that
+2 infuse train right away. and grok will be good @ this...
+(u should use existing halo netlist infra if possible...
+instead of running in "c")
+
+i'dhave liked 2 looka bit more @ peice stuff and maybe 
+will do basic  2 death stuff... 
+
+may make a "robot peice" as apposed 2 human
+who doesn't eat and stuff. 
+💞️

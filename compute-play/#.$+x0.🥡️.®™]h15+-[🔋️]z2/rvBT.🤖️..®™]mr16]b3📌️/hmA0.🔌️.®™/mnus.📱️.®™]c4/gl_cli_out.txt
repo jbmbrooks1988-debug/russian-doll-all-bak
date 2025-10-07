@@ -1,0 +1,12 @@
+Failed to open ../kvp.txt, using fallback: No such file or directory
+Using fallback menu file: menu_kvp.txt
+
+Menu:
+0: end_turn
+1: hunger
+2: subs
+3: slave
+4: confirm]a0
+5: enter]a1
+6: confirm]..
+Enter choice (0-6) or -1 to exit: 

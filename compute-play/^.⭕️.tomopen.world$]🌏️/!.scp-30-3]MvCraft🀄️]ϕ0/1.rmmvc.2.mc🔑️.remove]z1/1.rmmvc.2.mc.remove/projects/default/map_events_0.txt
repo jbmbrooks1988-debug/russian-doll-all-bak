@@ -1,0 +1,14 @@
+events[1].id,1
+events[1].name,test-event-1
+events[1].note,
+events[1].pages[0].list[1].parameters[0],defalt test
+events[1].x,4
+events[1].y,3
+events[1].z,9
+events[2].id,2
+events[2].name,test-event-2
+events[2].note,
+events[2].pages[0].list[1].parameters[0],map1-text
+events[2].x,4
+events[2].y,3
+events[2].z,9

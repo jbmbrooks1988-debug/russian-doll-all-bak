@@ -1,0 +1,5 @@
+# Simple no-logic: write 1 to tape
+0000000000000000  # chip_location = 0 (no logic)
+0000000000000000  # ram_output_address = 0 (to cli_tape.txt)
+0000000000000001  # input_a = 1
+0000000000000011  # input_b = blank (3)

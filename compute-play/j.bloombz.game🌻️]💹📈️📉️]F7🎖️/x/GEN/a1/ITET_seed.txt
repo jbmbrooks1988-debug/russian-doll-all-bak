@@ -1,0 +1,2 @@
+Trend type: Growing
+Volatility (sigma): 0.1673

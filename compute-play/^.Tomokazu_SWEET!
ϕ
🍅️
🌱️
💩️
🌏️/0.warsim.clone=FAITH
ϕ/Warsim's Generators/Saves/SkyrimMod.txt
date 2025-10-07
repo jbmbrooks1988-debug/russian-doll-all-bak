@@ -1,0 +1,372 @@
+5000.0.20.0.0.0.3.4.3.3.4.1.28.0.100.1.0.902.0.0.0.0.10.100.1.1.30.5.15.3.0.0.0.0.0.1.0.0.0.1.0.3.0.0.0.0.3.4.1.5.2.0.35.300.75.3.0.0.0.0.1.0.0.1600.0.0.0.0.0.0.0.0.1000.0.0.0.0.58.0.0.0.0.181.0.0.0.0.0.0.0..0.0.2.Umbra the Legend..Silent Slowkiller.Mythic Heavy.Diamond Auxiliary.Fourth Swordbearer.Dawned Auxiliary.Blackblood Marauders.Blood-Horkers.Forsworn Bandits.Skaal Raiders.Bandit Marauders......Silver-Bloods.Blood Horkers.Companions.Battle-Borns.Forsworn for Hire.Thongvor Silver-Blood.Haldyn.Kodlak Whitemane.Olfrid Battle-Born.Borkul the Beast.Gargald the Black.Thaer Silverbane.Herklar the Jester.Sir Cledwyn Renhamson.Sir Ghunxul Bromson...........90.135.125.85.185.414.712.124.1075.140.0.0.0.1000.500.0.0.5.0.75.28.9.45.34.0.0.0.0.0.2205.9146.9223.4043.2366.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.155.110.127.160.150.100.66.75.91.139.0.0.0.0.0.Imperial Legion.Stormcloak Rebellion.College of Winterhold.Forsworn Rebellion.Thalmor.General Tullius.Ulfric Stormcloak.Arch-Mage Savos Aren.King Madanach.High-Justiciar Elenwen.23.491.406.166.18.0.0.0.0.0.16.14.4.9.3.22000.24500.3896.3258.500.15000.19000.292.2619.5000.299.100.48.72.2000.218.201.156.177.135.500000.105000.3418.4613.95000.0.0.0.0.0.1.1.1.1.1.0.0.0.0.0.0.0.0.0.150.2.3.0.0.0.0.0.0.0.Sir Durkan the Firewalker.Caerwyn the Wolf.Halgar Titan-Hater.Jolor the Forest Follower.Alwyn Wind.104.175.71.87.102.0.0.0.2.1.4.4.4.200.100.400.400.400.20.10.40.40.40.0.0.0.0.Clan Kur'Uc.Clan Tar'Urkrok.Clan Khurr'Uc'Na.Clan Roak'Ulrovar.Clan Guuk'Uc'Mo.........0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1.3.0.0.500.300.0.0.0.0.1.0.0.0.0.0.0.0.0.0.10.200.800.10.100.0.0.0.400.0.0.0.0.0.0.0.0.0.0.200.50.30.10.0.5.0.3.0.5.5.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1.0.5.5.6.6.5.5.3.3.4.4.0.1.0.1.0.0.0.0.0.0.1.150.0.0.187.204.196.267.158.0.0.0.0.0.........   =====----==----=====
+   #=#==#========#==#=#
+   :::XXX XX  XX XXX:::
+   I#I#I#I#I##I#I#I#I#I
+   ***=**=*************
+   :::==== ==== ====:::
+.   ~=~=~=~=~=~=~=~=~=~=
+   ~=~=~=~=~=~=~=~=~=~=
+   ~=~=~=~=~=~=~=~=~=~=
+   ====III======III====
+   ====III======III====
+   ====III======III====
+.   ***\++++++++++++/***
+   (((((----)(----)))))
+   -----\++++++++/-----
+   -*-*-*-*-**-*-*-*-*-
+   xxxxxxxxxxxxxxxxxxxx
+   |-----#-#--#-#-----|
+.   #######ooooooooooooo
+   =======-~=~=~=~=~===
+   +++++++;:;:;:;:;:;:;
+   xxxxxxxXXXXXXXXXXXXX
+   #######vVvVvVvVvVvVv
+   #######ooooooooooooo
+.   xxxxxxxVvVvVvVvVvVvV
+   #######ooooooooooooo
+   =======~~~~~~~~~~~~~
+   +++++++vVvVvVvVvVvVv
+   #######vVvVvVvVvVvVv
+   +++++++XxXxXxXxXxXxX
+.General.High-King.Arch-Mage.King.High-Justiciar.Clanbald the All-Brother.Hilfrey Wealth Seeker III.Wilbald the Powerful.Maryn the Paladin.Cespar the Hilljumper.Proventus Avenicci.......Their famed words are 'For the Empire'.Their famed words are 'For Talos'.Their famed words are 'Can you become arch-mage while barely casting a spell, why yes!'.Their famed words are 'The Reach is ours and we want it back'.Their famed words are 'For the superiority of the altmer'.0.0.0.0.0.0.0.0.0.0.160.0.0.0.0.0.0.0.0.0.......0.0.0.0.0.78.0.125.1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.600.38504.26959.17278.1250.0.0.0.0.0.0.0.0.0.0..0.500.0.0.0.0.300.350.0.200.0.0.0.0.0.0.0.0.0.0.0.0.0.300.0..0.0.0.0.0.0.0.0.0.0..0.50.0.0.0.0.0.0..0.0.0.0..0.0..0.0..0.0....0.0.Imperial Recruit.Stormcloak Recruit.College Recruit.Forsworn.Thalmor Trainee.Imperial Soldier.Stormcloak Soldier.College Mage.Forsworn Ravager.Thalmor Guard.Imperial Knight.Stormcloak General.College Master Mage.Forsworn Shaman.Thalmor Justiciar.Imperial.Nord.Nord.Breton.Altmer.known to be the force of the Empire of Tamriel, the legion is sworn to restore order to the empire.known as the rebellion of nords against the empire, these men seek to restore self-rule to challenge the aldmeri dominion.known as a hub of great knowledge, the college of winterhold is a school of magic and the only one of its kind left in skyrim.known as the rebellion of the men of the reach, these men will stop at nothing to take back what's theirs.known as the military arm of the aldmeri dominion, this group intends to suppress any worship of the false god talos.60.56.51.62.50.105.105.120.95.103.172.172.200.155.145.95.100.100.100.100.5.5.5.5.5.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.Irileth.......100.70.0.0.0.0.0.0.0.0.0.0.0.1.1.1.1.1.0.0.0.0.0.0.3.0.2.0.2.1.2.2.0.0.0.0.0.0.0.0.0.0.   \\_\_/_//  
+   /==\|/==\  
+  |-<0) (0>-| 
+ @---),_,(   @
+  {{{{{,}}}}} 
+  // (---) \\ 
+    \{___}/   
+.   :=-:::==:  
+  {} __^__ {} 
+  | (0)|(0) | 
+ @    ( ) ---@
+  \,,     ,,/ 
+   {{{uuu}}}  
+    \\]|]//   
+.   :::::::::  
+   / ^   ^ \  
+  /(o)   (o)\ 
+ @)  ), ,(==(@
+  \, ,   , ,/ 
+   {{ ~~~ }}  
+    \\]#[_/   
+.   \\\\\\\\/  
+  { ^__|__^ } 
+  |-<0)|(0>-| 
+ @)  (, ,)==(@
+ {,,  \ /  ,,}
+  {{{ VuV }}} 
+    \_}~{_/   
+.   ))))())))   
+  |====*====|  
+|\  x     o  /|
+ \)    (    (/ 
+  *|       |   
+    | === |    
+     \_!_/     
+.  \\\==|==/// 
+ {===))*((===}
+  {(O) | (O)} 
+ @  =(,_,)=  @
+  {,,,   ,,,} 
+   \+++++++/  
+    |\|+|/|   
+.  \\\\__///// 
+  {--  |  --} 
+  /- o | o -\ 
+ @===( n )   @
+ {,,  ___  ,,}
+   {{\vvv/}}  
+    \_\|/_/   
+.   _=:::::=_  
+  {)   ^   (} 
+  /<o>|||<o>\ 
+ @---), ,(   @
+  {,, \ / ,,} 
+   {{ V~V }}  
+    \\}^{//   
+.   {==(~(==}  
+  {)_  ^  _(} 
+  {-<o) (o>-} 
+ @    \ / ===@
+ {,,,     ,,,}
+    # uuu #   
+    |\,-,/|   
+.   _=======_  
+  {\^/ _ \^/} 
+  / <o) (o> \ 
+ @)   (n) ==(@
+  {,,,   ,,,} 
+   \--___--/  
+    \\\|///   
+.............  (=(=(o)=)=) 
+  {  |   |  } 
+  /[o ||| o]\ 
+ @)==(,,)   (@
+  \_       _/ 
+   {{ V-V }}  
+    |\_~_/|   
+...   {xx(~)xx}  
+  { \__^__/ } 
+ /  <0) (0>  \
+ @   ) n (   @
+  \    '    / 
+    { ~~~ }   
+     {_=_}    
+.0.40.0.0.0.0.   {==)@)==}  
+  {}\__^__/{} 
+  { O \|/ x } 
+ @)==), ,(  (@
+ {{{{{{,}}}}}}
+    {{v~v}}   
+    \\}^{_/   
+.  \\:\\://:// 
+  {}___^___{} 
+  || 0 | 0 || 
+ @   (,,)    @
+  {{{ \ / }}} 
+   {{{v~v}}}  
+    )(=@=)(   
+.  ((==(@)==)) 
+  {\\     //} 
+  {-<O> <O>-} 
+ @=== |_|    @
+  \_   |   _/ 
+   {{{v-v}}}  
+    \\{^{//   
+.   _=:::::=_  
+  {--     --} 
+  {<o>---<o>} 
+ @    (,,)===@
+ {{{/ ___ \}}}
+   // v-v \\  
+    \\\x///   
+.   {--(*(--}  
+  {\ _____ /} 
+  { o -v- o } 
+ @===) n (   @
+ {{{{ ___ }}}}
+   \-\___/-/  
+    ()---()   
+.1.150.0.0.0.0.0.125.0.0.0.7.Septim.Septim.Septim.Septim.Septim.  _---_
+  /)#(\
+  \\_//
+.  _-^-_
+  (>*<)
+  )}_{(
+.   =_=
+  ()#()
+  (}x{)
+.  _-^-_
+  (\=/)
+  ))+((
+.   =-=
+  ({x})
+  (|__)
+.300.0.100.      /+xx+\    
+     /++xx++\   
+    /=-=-=-=-\  
+   /\   ||  _ \ 
+ @ o  (,,)   o @
+  }((-UUUUU-)){ 
+     \__,__/    
+.   {===*===}  
+  { \|/ \|/ } 
+ (   o | 0   )
+ @---) n (   @
+  {{  ___  }} 
+   {{ V V }}  
+    ()\=/()   
+.  (((=(+)=))) 
+   / = | = \  
+  { , \|/ , } 
+ @   =|_|=   @
+ {{{  ___  }}}
+  {{{\V V/}}} 
+    \_]*]//   
+.   {==)@)==}  
+  {==  ^  ==} 
+  / , /|\ , \ 
+ @)   (_)   (@
+ {{{/ ___ \}}}
+    { --- }   
+    \_\|/_/   
+.   {=======}  
+  {}\__|__/{} 
+  { X \|/ X } 
+ @  -)n n(-  @
+  {{{ ___ }}} 
+  {{{{v v}}}} 
+    \_}+{//   
+.190.12.9.3.15.14.0.0.5.1.10.1.10.0.0.0.0.0.0.0.0.0.0.0.0.Marsdan Hovel.Haemonn Gold Mine.Poran Outpost.Elfyre Gold Mine.Eldrun Trade Post.Gonmor Hovel.Seren Gold Mine.Agnar Village.Layn Trade Post.Slicer Castle.Fargo Fortress.Herklan Village.Gonmor Castle.Gryrath Gold Mine.Tywood Hovel.        
+[^] [^^] [^]
+ |||o||o||| 
+ |||o||o||| 
+_|o||<>||o|_
+.        
+     ## 
+    #####     [^] [^^] [^]
+  ####  ###    ||o|oo|o|| 
+ ###     #### _|o||<>||o|_
+.[^] [^^] [^]
+ |||o||o||| 
+ ||o|oo|o|| 
+ |||o||o|||   [^] [^^] [^]
+ |||o||o|||    ||o|oo|o|| 
+_|o||<>||o|_   ||o|oo|o|| 
+.       #
+   # ###         \-\/-/   
+  ### ####     | 0    0 | 
+ ###    ###    |0 0  0 0| 
+####     #### -|   []   |-
+.        
+   \-\/-/   
+ | 0    0 |    \-\/-/   
+ |0 0  0 0|   []      ||
+-|   []   |- [][] [][]||
+.        
+   \-\/-/   
+ |0 0  0 0| 
+ | 0    0 | 
+-|   []   |-
+.        
+     ##       [^] [^^] [^]
+    #####     [O[O[[]]O]O]
+  ####  ###   [[O[O[]O]O]]
+ ###     #### [[[[[/\]]]]]
+.        
+[^] [^^] [^]
+[O[O[[]]O]O]  [^] [^^] [^]  [^] [^^] [^]
+[[O[O[]O]O]]  [O[O[[]]O]O]  [O[O[[]]O]O]
+[[[[[/\]]]]]  [[[[[/\]]]]]  [[[[[/\]]]]]
+.        
+[^] [^^] [^]
+[[O[O[]O]O]][^] [^^] [^]
+[[O[O[]O]O]]  []      ||
+[[[[[/\]]]]] [][]     ||
+.        
+             >>>>~~<<<< 
+              |X::::X|  
+ >>>>~~<<<<   |:X::X:|   >>>>~~<<<< 
+  |:X::X:|    |:X::X:|    |X::::X|  
+  |:X::X:|    |X::::X|    |:X::X:|  
+ |:::[]:::|   |:X::X:|   |:::[]:::| 
+. >>>>~~<<<< 
+  |:X::X:|  
+  |X::::X|  
+  |X::::X|     >>>>~~<<<< 
+  |X::::X|      |X::::X|  
+ |:::[]:::|     |:X::X:|  
+.        
+ >>>>~~<<<< 
+  |X::::X|   >>>>~~<<<< 
+  |X::::X|    |:X::X:|  
+ |:::[]:::|  |:::[]:::| 
+.        
+             ooooOOoooo 
+             |x|x  x|x| 
+ ooooOOoooo  |x|x  x|x|  ooooOOoooo 
+ |x|x  x|x|  |x|x  x|x|  |x|x||x|x| 
+ |x|x  x|x|  |x|x  x|x|  |x|x||x|x| 
+ |x|[  ]|x|  |x|x||x|x|  |x|[  ]|x| 
+.        
+     ##        ooooOOoooo 
+    #####      |x|x  x|x| 
+  ####  ###    |x|x  x|x| 
+ ###     ####  |x|[  ]|x| 
+.        
+ ooooOOoooo 
+ |x|x||x|x| 
+ |x|x  x|x| 
+ |x|[  ]|x| 
+.6.5.3.5.11.6.5.2.11.8.4.2.8.5.6.1.0.0.0.0.0.0..0.0.0.0.0.1.1.1.1.1.0.0.0.0.0.0.0...........0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.Men.Men.Men.Men.Elves.0.0.0.0.0.0.0.0.0.0.0.Captain.Captain.Master.Warlord.Justiciar.0.20.0.0.3.2.2.3.4.0...0.0.0.0..0..0..0.0.      >>->>->>
+    +~+~+~+~+~+~
+   =-=-=-=-=-=-=-
+   --((--()--))--
+    #+#+#+#+#+#+
+      <<-<<-<<
+.      <<<<<<<<
+    +#+#+#+#+#+#
+   ----(-()-)----
+   -----(())-----
+    -=-=-=-=-=-=
+      --__--__
+.      ////\\\\
+    #+#+#+#+#+#+
+   ----(-()-)----
+   ~=~=~=~=~=~=~=
+    ++++++++++++
+      ++++++++
+.      ********
+    ~~~~~~~~~~~~
+   \\\\\\\///////
+   --------------
+    ++++++++++++
+      ^-^--^-^
+.      <<++++>>
+     ////  \\\\
+   \\\\\\\///////
+   --((--()--))--
+    ------------
+      <~<~~>~>
+.0.150.32.0.Halwyn the Supreme.   _::---::_  
+  {--     --} 
+  {[o ||| o]} 
+ @    )_(    @
+ {{   ___   }}
+  // (---) \\ 
+    \\]*]//   
+.1.1.1.1.1.2.2.3.Xzeerak.Xoroxar.Xolorokon.Xyoloz.0.0.0.0.0.1.0.150.0.0.0.0.0.0.  )**(===)**(.   ==+)o(+==.  ***(=0=)***.  >(==(^)==)<.    #=#_#=#.0.0.0.2.0.200.0.0.0.0.0.0.0.0.1._|o||<>||o|_. ||o|oo|o|| . |||o||o||| .[^] [^^] [^].-|   []   |-. | 0    0 | . |0 0  0 0| .   \-\/-/   .[[[[[/\]]]]].[O[O[[]]O]O].[[O[O[]O]O]].[^] [^^] [^]. |:::[]:::| .  |:X::X:|  .  |X::::X|  . >>>>~~<<<< . |x|[  ]|x| . |x|x||x|x| . |x|x  x|x| . ooooOOoooo .0.0.0...0.0.0.0.0.0.10.0.10.0.1000.0.1.   #~~#~#~~#  
+  {---_^_---} 
+  { x  |  o } 
+ @)  (,_,)  (@
+  {{{/___\}}} 
+  // (VVV) \\ 
+    ()-+-()   
+.Zenner The King-Killer.4.2.|   Bildon The Burned
+|   Derec The Merciful
+|   Dyfan The Monster
+|   Jaris The Monster
+.0.150.0.0.0.0.0.0.0.0...0.500.60.0.1899.0.0.1000.@.0.0.0.0.0.0.0.250.600.375.750.0.0.0.0.0.0.0.0.0.0.15.14.8.8.8.310000.260000.390000.180000.340000.1235000.195000.90000.900000.100000.0.0.200.0.2500.0.0.0.0.0.150.50.8.0.3.0.3800.5666.0.0.5.4.0.0.0.0.0.0.0.0..0.0.0.0.0.0.0.0.0.0.0.0.3.70.8.283.Sir Sylric the Scarred Northman.   {==(~)==}  
+  {}_     _{} 
+  {  O | O  } 
+ @)  ),_,(==(@
+ {/ / \ / \ \}
+   {{{VuV}}}  
+    ))-+-((   
+..........0..0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0..Balgruuf the Greater................2.0.0.0.0.   {xx(-(xx}  
+  {__  |  __} 
+ (  <O)|(O>  )
+ @   (,_,)===@
+ {,,  ___  ,,}
+   \ (~~~) /  
+    ))=#=((   
+.3.0.0.0.0.0.0..0.0.0..0.0.0..0.100.0.0.0.254.8.81.1.  \\\\__///// 
+  {)___|___(} 
+  / 0 \|/ o \ 
+ @=== )_( ===@
+  # ##   ## # 
+   \-(vvv)-/  
+    \\[+]_/   
+.Draig the One-Eyed Veteran Warrior.23.29.3.2.55.52...0.0.1225.0.0..0.0.0.0.0.are a mercenary group formed out of the survivors of a larger mercenary group that was slaughtered in an ambush.are a mercenary group known for painting themselves in bright colours so they can tell themselves apart from the enemy in battle after a certain fateful incident where several members were mistakenly killed.are a mercenary group famed for slaying a nest of giant ants who had been terrorising an entire province.are a group who once protected an ancient stone but upon its destruction became a mercenary group instead.are a mercenary group of silent men, no one knows their origins but rumour has it all of their tongues have been cut out.0.7.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.............0.0.0.Little Red-Bannered Roses.Asloth the 2-Foot Terror.   =========  
+  {_x_   _x_} 
+ @)== |_|   (@
+   {{{V=V}}}  
+    \_]~[_/   
+.12.0.0.Cloudtoucher Crag-Jumper.5.   {---*---}  
+ {===))*((===}
+  / O \|/ 0 \ 
+ @    / \ ---@
+ {,,       ,,}
+   \--(o)--/  
+    \_[*[_/   
+.0.1.1.1.1.1.0.0.I used to sell sweet rolls, then my store was robbed by a barbarian with an arrow lodged in his knee, had to set out as an adventurer after that..........0.40.0.250.90.0.0.0.0.150.0.0.1800.120.50.15000.0.0.1.58.0.      v^v
+    //-|-\\
+    =======
+  /_\_/_\_/_\.2.0.0.0.0.0.0.0.100.800.0.0.0.0.0.0.0.3.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0............2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.Jarl.m'lord.lord.mister.0.0.0.0.Geirlund the Goblin Slaver.  (==(=*=)==) 
+  { =_____= } 
+  /-<O)|(O>-\ 
+ @  -)n n(-  @
+ {{{{{{_}}}}}}
+   \-(v=v)-/  
+    ))=#=((   
+.89.4.0.0.0.0.0.0.0.Whiterun.7.3.6.9.0.0.1.477.41.0.0.0.0.0.ENDOFFILE

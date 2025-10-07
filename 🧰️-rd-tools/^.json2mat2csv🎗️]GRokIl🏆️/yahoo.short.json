@@ -1,0 +1,23 @@
+{
+	"query": {
+		"count": 2,
+		"created": "2016-10-07T16:03:37Z",
+		"lang": "en-US",
+		"results": {
+			"quote": [{
+				"symbol": "YHOO",
+				"Ask": "43.25",
+				"AverageDailyVolume": "11754200",
+				"DividendYield": null,
+				"PercentChange": "-0.98%"
+			}, {
+				"symbol": "GOOG",
+				"Ask": "771.5500",
+				"AverageDailyVolume": "1302160",
+				"Bid": "771.2000",
+				"DividendYield": null,
+				"PercentChange": "-0.7144%"
+			}]
+		}
+	}
+}

@@ -1,0 +1,7 @@
+events[1].id,1
+events[1].name,test-event-1
+events[1].note,
+events[1].pages[0].list[1].parameters[0],map0,test event!
+events[1].x,4
+events[1].y,3
+events[1].z,9

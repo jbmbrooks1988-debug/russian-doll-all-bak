@@ -1,0 +1,4 @@
+-------------
+can we see 3d and 2d elements in canvas using demo project markup (ie : 3d player controlled with arrows + 2d mini map?)    
+
+----------

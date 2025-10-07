@@ -1,0 +1,442 @@
+🔠️🔠️🔠️🔠️🔠️🔠️🔠️🔠️ASCII OFFICIAL🔠️🔠️🔠️🔠️🔠️🔠️🔠️🔠️
+https://www.rapidtables.com/code/text/ascii-table.html
+
+===============================================================
+Dec     Hex     Binary     HTML     Char     Description	HALO FX
+0     00     0000 0000     &#0;     NUL     Null		Binary 0
+1     01     0000 0001     &#1;     SOH     Start of Header	Binary 1
+2     02     0000 0010     &#2;     STX     Start of Text	EMPTY FIELD/ HI-Z  	
+3     03     0000 0011     &#3;     ETX     End of Text		EMPTY FIELD/ CutOff   
+								
+								####################################
+4 	04 	0000 0100 	&#4; 	EOT 	End of          = MT (lo-z?)
+5 	05 	0000 0101 	&#5; 	ENQ 	Enquiry 	= switch_0 = "^"
+6 	06 	0000 0110 	&#6; 	ACK 	Acknowledge     = switch_1 = "^^"
+7 	07 	0000 0111 	&#7; 	BEL 	Bell            =clock oscillator ":" # NAND FX = "@"
+
+8 	08 	0000 1000 	&#8; 	BS 	Backspace 	= 4State BJT Transistor FX "|"						
+9 	09 	0000 1001 	&#9; 	HT 	Horizontal Tab  = # NAND FX = "@"#(mt )
+10 	0A 	0000 1010 	&#10; 	LF 	Line Feed       = cmos? nmos/pmos[ no , is bjt+-]
+11 	0B 	0000 1011 	&#11; 	VT 	Vertical Tab    = diode
+
+12 	0C 	0000 1100 	&#12; 	FF 	Form Feed       = gnd
+13 	0D 	0000 1101 	&#13; 	CR 	Carriage Return = ascii? (one char at a time?)
+14 	0E 	0000 1110 	&#14; 	SO 	Shift Out	= modem in 
+15 	0F 	0000 1111 	&#15; 	SI 	Shift In	= modem out  (grnd? ) 
+
+							MOdem io should patern out,by 2's, 256 
+								for mult io (vga/wifi/usb/etc)
+					and this can go on a riscv/soc/fpga type deal ;) 
+								#end of HDL functions
+								#begining of HDL "wires" thru - 255
+16 	10 	0001 0000 	&#16; 	DLE 	Data Link Escape
+17 	11 	0001 0001 	&#17; 	DC1 	Device Control 1
+18 	12 	0001 0010 	&#18; 	DC2 	Device Control 2
+19 	13 	0001 0011 	&#19; 	DC3 	Device Control 3
+
+20 	14 	0001 0100 	&#20; 	DC4 	Device Control 4
+21 	15 	0001 0101 	&#21; 	NAK 	Negative Acknowledge
+22 	16 	0001 0110 	&#22; 	SYN 	Synchronize
+23 	17 	0001 0111 	&#23; 	ETB 	End of Transmission Block
+
+24 	18 	0001 1000 	&#24; 	CAN 	Cancel
+25 	19 	0001 1001 	&#25; 	EM 	End of Medium
+26 	1A 	00011010 	&#26; 	SUB 	Substitute
+27 	1B 	00011011 	&#27; 	ESC 	Escape
+
+28 	1C 	0001 1100 	&#28; 	FS 	File Separator
+29 	1D 	00011101 	&#29; 	GS 	Group Separator
+30 	1E 	0001 1110 	&#30; 	RS 	Record Separator
+31 	1F 	0001 1111 	&#31; 	US 	Unit Separator
+
+32 	20 	0010 000 0 	&#32; 	space 	Space                     #
+33 	21 	0010 000 1 	&#33; 	! 	Exclamation mark
+34 	22 	0010 001 0 	&#34; 	" 	Double quote
+35 	23 	0010 0011 	&#35; 	# 	Number
+36 	24 	00100100 	&#36; 	$ 	Dollar sign
+37 	25 	00100101 	&#37; 	% 	Percent
+38 	26 	00100110 	&#38; 	& 	Ampersand
+39 	27 	0010 0111 	&#39; 	' 	Single quote
+40 	28 	00101000 	&#40; 	( 	Left parenthesis
+41 	29 	00101001 	&#41; 	) 	Right parenthesis
+42 	2A 	00101010 	&#42; 	* 	Asterisk
+43 	2B 	00101011 	&#43; 	+ 	Plus
+44 	2C 	00101100 	&#44; 	, 	Comma
+45 	2D 	00101101 	&#45; 	- 	Minus
+46 	2E 	00101110 	&#46; 	. 	Period
+47 	2F 	00101111 	&#47; 	/ 	Slash
+
+48 	30 	0011 0000 	&#48; 	0 	Zero
+49 	31 	0011 0001 	&#49; 	1 	One
+
+50 	32 	0011 0010 	&#50; 	2 	Two
+
+51 	33 	0011 0011 	&#51; 	3 	Three
+52 	34 	00110100 	&#52; 	4 	Four
+
+53 	35 	0011 0101 	&#53; 	5 	Five
+54 	36 	0011 0110 	&#54; 	6 	Six
+
+55 	37 	00110111 	&#55; 	7 	Seven
+56 	38 	00111000 	&#56; 	8 	Eight
+57 	39 	00111001 	&#57; 	9 	Nine
+58 	3A 	0011 1010 	&#58; 	: 	Colon       #🕙️(10)
+59 	3B 	00111011 	&#59; 	; 	Semicolon
+60 	3C 	00111100 	&#60; 	< 	Less than
+61 	3D 	00111101 	&#61; 	= 	Equality sign
+62 	3E 	00111110 	&#62; 	> 	Greater than
+63 	3F 	00111111 	&#63; 	? 	Question mark
+
+64 	40 	0100 00 00 	&#64; 	@ 	At sign
+
+65 	41 	0100 0001 	&#65; 	A 	Capital A
+66 	42 	0100 0010 	&#66; 	B 	Capital B
+67 	43 	0100 0011 	&#67; 	C 	Capital C
+
+68 	44 	0100 0100 	&#68; 	D 	Capital D     💯️
+
+69 	45 	0100 0101 	&#69; 	E 	Capital E
+70 	46 	0100 0110 	&#70; 	F 	Capital F
+71 	47 	0100 0111 	&#71; 	G 	Capital G
+72 	48 	0100 1000 	&#72; 	H 	Capital H
+73 	49 	0100 1001 	&#73; 	I 	Capital I
+74 	4A 	0100 1010 	&#74; 	J 	Capital J
+75 	4B 	0100 1011 	&#75; 	K 	Capital K
+76 	4C 	0100 1100 	&#76; 	L 	Capital L
+
+77 	4D 	0100 1101 	&#77; 	M 	Capital M
+
+78 	4E 	0100 1110 	&#78; 	N 	Capital N
+79 	4F 	0100 1111 	&#79; 	O 	Capital O
+80 	50 	0101 0000 	&#80; 	P 	Capital P
+81 	51 	0101 0001 	&#81; 	Q 	Capital Q
+82 	52 	0101 0010 	&#82; 	R 	Capital R
+
+83 	53 	0101 0011 	&#83; 	S 	Capital S
+84 	54 	0101 0100 	&#84; 	T 	Capital T
+85 	55 	0101 0101 	&#85; 	U 	Capital U
+86 	56 	0101 0110 	&#86; 	V 	Capital V
+87 	57 	0101 0111 	&#87; 	W 	Capital W
+88 	58 	0101 1000 	&#88; 	X 	Capital X
+89 	59 	0101 1001 	&#89; 	Y 	Capital Y
+90 	5A 	0101 1010 	&#90; 	Z 	Capital Z
+91 	5B 	0101 1011 	&#91; 	[ 	Left square bracket
+92 	5C 	0101 1100 	&#92; 	\ 	Backslash
+93 	5D 	0101 1101 	&#93; 	] 	Right square bracket
+94 	5E 	0101 1110 	&#94; 	^ 	Caret / circumflex
+95 	5F 	0101 1111 	&#95; 	_ 	Underscore
+
+96 	60 	0110 000 0 	&#96; 	` 	Grave / accent
+
+97 	61 	0110 000 1 	&#97; 	a 	Small a
+98 	62 	0110 001 0 	&#98; 	b 	Small b
+99 	63 	0110 0011 	&#99; 	c 	Small c
+
+100 	64 	0110 0100 	&#100; 	d 	Small d   💯️
+
+101 	65 	0110 0101 	&#101; 	e 	Small e
+102 	66 	0110 0110 	&#102; 	f 	Small f
+103 	67 	0110 0111 	&#103; 	g 	Small g
+
+104 	68 	0110 1000 	&#104; 	h 	Small h
+105 	69 	0110 1001 	&#105; 	i 	Small i
+106 	6A 	01101010 	&#106; 	j 	Small j
+107 	6B 	01101011 	&#107; 	k 	Small k
+108 	6C 	0110 1100 	&#108; 	l 	Small l
+
+109 	6D 	0110 1101 	&#109; 	m 	Small m
+
+110 	6E 	0110 1110 	&#110; 	n 	Small n
+
+111 	6F 	0110 1111 	&#111; 	o 	Small o
+
+112 	70 	0111 0000 	&#112; 	p 	Small p
+
+113 	71 	0111 0001 	&#113; 	q 	Small q
+114 	72 	0111 0010 	&#114; 	r 	Small r
+115 	73 	0111 0011 	&#115; 	s 	Small s
+116 	74 	0111 0100 	&#116; 	t 	Small t
+117 	75 	0111 0101 	&#117; 	u 	Small u
+118 	76 	0111 0110 	&#118; 	v 	Small v
+119 	77 	01110111 	&#119; 	w 	Small w
+
+120 	78 	0111 1000 	&#120; 	x 	Small x
+
+121 	79 	01111001 	&#121; 	y 	Small y
+122 	7A 	0111 1010 	&#122; 	z 	Small z
+123 	7B 	0111 1011 	&#123; 	{ 	Left curly bracket
+124 	7C 	01111100 	&#124; 	| 	Vertical bar
+125 	7D 	01111101 	&#125; 	} 	Right curly bracket
+126 	7E 	01111110 	&#126; 	~ 	Tilde
+127 	7F 	0111 1111 	&#127; 	DEL 	Delete
+
+
+🔠️🔠️🔠️🔠️🔠️🔠️🔠️🔠️🔠️🔠️🔠️🔠️🔠️🔠️🔠️🔠️🔠️🔠️🔠️🔠️🔠️🔠️🔠️
+🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️
+Extended ASCII table
+==========================================
+Dec 	Hex 	Binary 	HTML 	Char 	 
+128 	80 	1000 0000 	- 	 	 
+129 	81 	1000 0001 	- 	 	 
+130 	82 	1000 0010 	- 	 	 
+131 	83 	1000 0011 	- 	        #🍀️
+	 
+132 	84 	1000 0100 	- 	 
+	 
+133 	85 	1000 0101 	- 	 	 
+134 	86 	1000 0110 	- 	 	
+ 
+135 	87 	1000 0111 	- 	         ##🍀️#🍀️
+ 	 
+136 	88 	1000 1000 	- 	 	
+ 
+137 	89 	1000 1001 	- 	 	 
+138 	8A 	1000 1010 	- 	 	 
+139 	8B 	1000 1011 	- 	 	  #@lux
+ 
+140 	8C 	1000 1100 	- 	 	 
+141 	8D 	1000 1101 	- 	 	 
+142 	8E 	1000 1110 	- 	 	
+143 	8F 	1000 1111 	- 	     #@luxx  ##🍀️#🍀️
+	 
+144 	90 	10010000 	- 	 	 
+145 	91 	10010001 	- 	 	 
+146 	92 	10010010 	- 	 	 
+147 	93 	10010011 	- 	 	 
+148 	94 	10010100 	- 	 	 
+149 	95 	10010101 	- 	 	 
+150 	96 	10010110 	- 	 	 
+151 	97 	10010111 	- 	 	 
+152 	98 	10011000 	- 	 	 
+153 	99 	10011001 	- 	 	 
+154 	9A 	10011010 	- 	 	 
+155 	9B 	10011011 	- 	 	 
+156 	9C 	10011100 	- 	 	 
+157 	9D 	10011101 	- 	 	 
+158 	9E 	10011110 	- 	 	 
+159 	9F 	10011111 	- 	 	 
+160 	A0 	1010 000 0 	&#160; 	  	 ✋️
+#########################################################
+161 	A1 	1010 000 1 	&#161; 	¡ 	 
+162 	A2 	1010 001 0 	&#162; 	¢ 	 
+163 	A3 	10100011 	&#163; 	£ 	 
+164 	A4 	10100100 	&#164; 	¤ 	 
+165 	A5 	10100101 	&#165; 	¥ 	 
+166 	A6 	10100110 	&#166; 	¦ 	 
+167 	A7 	10100111 	&#167; 	§ 	 
+168 	A8 	10101000 	&#168; 	¨ 	 
+169 	A9 	1010 1001 	&#169; 	© 	 
+170 	AA 	10101010 	&#170; 	ª 	 
+171 	AB 	10101011 	&#171; 	« 	 
+172 	AC 	10101100 	&#172; 	¬ 	 
+173 	AD 	10101101 	&#173; 	­ 	 
+174 	AE 	10101110 	&#174; 	® 	 
+175 	AF 	10101111 	&#175; 	¯ 
+	 
+176 	B0 	10110000 	&#176; 	° 	 
+
+177 	B1 	10110001 	&#177; 	± 	 
+178 	B2 	10110010 	&#178; 	² 	 
+179 	B3 	10110011 	&#179; 	³ 	 
+180 	B4 	10110100 	&#180; 	´ 	 
+181 	B5 	10110101 	&#181; 	µ 	 
+182 	B6 	10110110 	&#182; 	¶ 	 
+183 	B7 	10110111 	&#183; 	· 	 
+184 	B8 	10111000 	&#184; 	¸ 	 
+185 	B9 	10111001 	&#185; 	¹ 	 
+186 	BA 	10111010 	&#186; 	º 	 
+187 	BB 	10111011 	&#187; 	» 	 
+188 	BC 	10111100 	&#188; 	¼ 	 
+189 	BD 	10111101 	&#189; 	½ 	 
+190 	BE 	10111110 	&#190; 	¾ 	 
+191 	BF 	10111111 	&#191; 	¿ 	 
+192 	C0 	110000 00 	&#192; 	À 	 
+193 	C1 	110000 01 	&#193; 	Á 	 
+194 	C2 	110000 10 	&#194; 	Â 	 
+195 	C3 	110000 11 	&#195; 	Ã 	 
+196 	C4 	110001 00 	&#196; 	Ä 	 
+197 	C5 	110001 01 	&#197; 	Å 	 
+198 	C6 	11000110 	&#198; 	Æ 	 
+199 	C7 	11000111 	&#199; 	Ç 	   
+
+200 	C8 	1100 1000 	&#200; 	È 	 💯️✏️ start x here 4 safety
+
+201 	C9 	11001001 	&#201; 	É 	 
+202 	CA 	11001010 	&#202; 	Ê 	 
+203 	CB 	11001011 	&#203; 	Ë 	 ✏️
+204 	CC 	11001100 	&#204; 	Ì 	 
+205 	CD 	11001101 	&#205; 	Í 	 
+206 	CE 	11001110 	&#206; 	Î 	 
+207 	CF 	11001111 	&#207; 	Ï 	✏️
+	
+208 	D0 	11010000 	&#208; 	Ð 
+	 
+209 	D1 	11010001 	&#209; 	Ñ 	 
+210 	D2 	11010010 	&#210; 	Ò         	 
+211 	D3 	11010011 	&#211; 	Ó 	 ✏️
+212 	D4 	11010100 	&#212; 	Ô 	 
+213 	D5 	11010101 	&#213; 	Õ 	 
+214 	D6 	11010110 	&#214; 	Ö 	 
+
+215 	D7 	1101 0111 	&#215; 	× 	 ✏️x16 
+
+216 	D8 	1101 1000 	&#216; 	Ø 	 ✏️y1
+217 	D9 	1101 1001 	&#217; 	Ù 	 
+218 	DA 	1101 1010 	&#218; 	Ú 	 
+219 	DB 	1101 1011 	&#219; 	Û 	 
+ 
+220 	DC 	1101 1100 	&#220; 	Ü 	 
+221 	DD 	1101 1101 	&#221; 	Ý 	 
+222 	DE 	1101 1110 	&#222; 	Þ 	 
+223 	DF 	1101 1111 	&#223; 	ß 	 ✏️y8
+ 
+224 	E0 	1110000 0 	&#224; 	à 
+	 
+225 	E1 	1110000 1 	&#225; 	á 	 
+226 	E2 	1110001 0 	&#226; 	â 	 
+227 	E3 	11100011 	&#227; 	ã 	 
+228 	E4 	11100100 	&#228; 	ä 	 
+229 	E5 	11100101 	&#229; 	å 	 
+230 	E6 	11100110 	&#230; 	æ 	 
+231 	E7 	11100111 	&#231; 	ç 	 ✏️y16
+
+232 	E8 	11101000 	&#232; 	è 	 🥪️w1
+233 	E9 	11101001 	&#233; 	é 	 
+234 	EA 	11101010 	&#234; 	ê 	 
+235 	EB 	11101011 	&#235; 	ë 	 
+236 	EC 	11101100 	&#236; 	ì 	 
+237 	ED 	11101101 	&#237; 	í 	 
+238 	EE 	11101110 	&#238; 	î 	 ✋️
+239 	EF 	11101111 	&#239; 	ï 	 ✋️ w8
+240 	F0 	11110000 	&#240; 	ð 	 
+241 	F1 	11110001 	&#241; 	ñ 	 
+242 	F2 	11110010 	&#242; 	ò 	 
+243 	F3 	11110011 	&#243; 	ó 	 
+244 	F4 	11110100 	&#244; 	ô 	 
+245 	F5 	11110101 	&#245; 	õ 	 
+246 	F6 	11110110 	&#246; 	ö 	 
+247 	F7 	11110111 	&#247; 	÷ 	🥪️w16 
+248 	F8 	11111000 	&#248; 	ø 	 
+249 	F9 	11111001 	&#249; 	ù 	 
+250 	FA 	11111010 	&#250; 	ú 	 
+251 	FB 	11111011 	&#251; 	û 	 
+252 	FC 	11111100 	&#252; 	ü 	 
+253 	FD 	11111101 	&#253; 	ý 	 
+254 	FE 	11111110 	&#254; 	þ 	 
+255 	FF 	11111111 	&#255; 	ÿ 	  ✋️
+
+🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️🔡️
+
+🌏️🌏️🌏️🌏️🌏️🌏️🌏️🌏️🌏️🌏️🌏️🌏️🌏️🌏️🌏️
+🗺️legend.hvl🗾️
+🧲️u can still use this if u wanna think of letters and avoid -48's
+🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️THE MAP
+0000 0000   = 48 =$'0'= 0 
+0000 0001   =49 = $'1'= 1
+0000 0010  = @
+0000 0011  = _
+
+}OFF{0001 0000    #64= $'@'=16
+
+}OFF{0010 1111 #95= $'_' =47= 
+
+#https://commons.wikimedia.org/wiki/File:ASCII-Table.svg
+
+		#CAPA < lowa (therefore we shall use CAP1rst-ofc.
+0001 0001 ++ 	$'A' = 65 = A = 17     (minus 48)
+
+0001 1101	$'M' = 	77 = 29			
+0001 1110	$'N' = 	78 = 30	
+0010 0011	$'S' = 	83 = 35	
+
+		$'Z' = 
+		(theres a few chars in between here but that 
+		(doesn't matter at this point , just roll with them
+		(as numbers 4 now) 
+	#-----------------------------------------
+0011 0001	$'a' = 97 = 49 
+
+0011 1101	$'m' = 	109 = 61
+
+0011 1110	$'n' = 	110 = 62
+
+0011 1111	$'o' = 	110 = 63
+	
+0100 0011	$'s' = 	115 = 67	
+
+		$'z' =  122 = 74
+		
+		+ is okay cuz 48 gets subtracted pre wire
+		it only depends on ur ram size.
+		if its over ram we will just "delete it " 4 now
+		by counting and just replacing it with "_"
+		(or not even counting it w/e works)
+		
+		
+64 end of ram = "NOW" 
+128 end of ram = 127 + 48 = 175			
+256 end of ram = 256(5) - 48?  (or minus 65? 17? 
+
+512 end of ram = 
+
+x86_64 REGISTER STORAGE LIMIT ? = 
+
+
+(its currently pulling "rlow" out of "registers"
+i dont know if that accords with limit we will see, look out) 
+🗾️THE TERRITORY 🗾️🗾️🗾️🗾️🗾️🗾️🗾️🗾️🗾️
+
+#u can do either way
+# a&b drop and repeat (save wires)
+#or A-M & N-d (Y? just cuz it doesn't drop down doesnt' mean its not oncli?
+#A= cuz u may want 2 rewire the output into new wires
+#compromise ? just drop the a&bs into ""lowercase;"
+#TEY WILL PICK BACK UP AS UPPER CASE IN NEW FX <3
+🗾️🗾️🗾️🗾️🗾️🗾️🗾️🗾️🗾️🗾️🗾️🗾️🗾️🗾️🗾️🗾️🗾️
+🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️
+
+
+____________________________MUZN_______________
+#🥠️
+#if the "letters" are messing u up , you would be better of anyways, using 
+#"binary 2 decimal" ie : 17,3,0,0
+
+#but u really ougta learn 2 work in binary regardless
+#theres no one 2 "Be mad at"
+#🌌️
+#how could it ever possibly HELP(irl)!?!? i know u think its a joke
+# but its  "THE SUPREME 'MACRO-MACRO'" + logic? = GALAXY MIND
+#🌌️
+#⭐️if ur doing complex chip, u should know that the problem isn't "@"⭐️
+#♾️
+#ps: in the future they will ALWAYS be using binary (at edge of computing power)
+#2 program (no matter how powerful someone would want MORE RAW ALPHA)
+#therefor the key will be 2 have the ability 2 "work/thrive in that domain"
+#the reason u dont see it being done is "its tough" (someone did it b4 tho;) 
+(this concept actually has nothing 2 do with "digital supremacy", thats riscv...;)
+#♾️
+
+#is this getting crazy and u need a break but wanna do work? 
+#just look at a riscv schematic (ur obv not there yet or u should have BNN going;)
+
+
+
+#🥠️
+
+
+
+
+  🌏️🌏️🌏️🌏️🌏️🌏️🌏️🌏️🌏️🌏️🌏️🌏️🌏️🌏️🌏️🌏️🌏️🌏️🌏️🌏️🌏️🌏️🌏️🌏️🌏️
+  ➕️➕️➕️➕️➕️➕️➕️➕️➕️➕️➕️➕️➕️
+  {learn wildcards for "g-edit find&replace} = 
+https://askubuntu.com/questions/671745/gedit-search-and-replace-with-regular-expressions
+
+learn binary  . we'll be using it FOREVER form now on .+its the "DREAM/MATRIX"
+= QRLNN.hack
+
+i would go so far as 2 say if ur not looking at binary , ur not on ur truest path
+
+
+KRUFT_____________
+  (mem is hvl nox '^sqi mux'
+  ➕️➕️➕️➕️➕️➕️➕️➕️➕️➕️➕️➕️➕️➕️➕️➕️➕️

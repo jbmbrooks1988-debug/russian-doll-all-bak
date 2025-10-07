@@ -1,0 +1,15 @@
+userhash hmA1.🟪️.®™
+symbol 🟪️
+shape cube
+color 0.62 0.12 0.91
+x -2
+y 6
+z 8
+active none
+range_x 3
+range_y 2
+range_z 0
+stamina 0
+turn 4
+extra_0 0
+extra_1 0

@@ -1,0 +1,20 @@
+
+
+
+
+how is it reading from map? 
+there doesnt even seem 2 be xyz coords in map
+yet it goes 2 the right place? 
+(the labels must not be right , but then ... how does it know colors?
+
+
+after that. can we do new projects? save? 
+
+if so lets do events(.c?) <a scratch-esq language ide >
+and "player.c"	<"the interpreter>
+
+
+----
+A language that executes code without needing a compiler is called an
+interpreted language. These languages use a program called an interpreter, which reads the source code line-by-line and executes each command directly.  ie :scripted? (.txt we do it all the time)
+----------------------------

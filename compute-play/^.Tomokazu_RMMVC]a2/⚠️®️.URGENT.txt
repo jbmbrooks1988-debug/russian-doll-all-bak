@@ -1,0 +1,13 @@
+⚠️®️
+when u do this over, 
+main window should load "tiles" 
+(u can specify their size ie 36 42 or w/e and it will just make tabs
+for everything in "dir" <- so u could use all rmmv for 1 map. 
+or u could 'load treatments.txt' for how tiles shold be treated (get it? ) 
+®️
+and the others are smoller pickers are colors and emojis 
+®️
+& a picker for "obj placement" 
+®️
+and we will have loader here for loading w/e obj, fbx or custom "treatment" as well
+⚠️

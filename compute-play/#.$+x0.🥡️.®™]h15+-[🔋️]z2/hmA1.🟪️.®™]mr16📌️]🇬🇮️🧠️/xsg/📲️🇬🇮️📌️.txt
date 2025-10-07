@@ -1,0 +1,262 @@
+📲️
+💌️
+📍️
+🎈️🎇️#09h233
+
+ok so what do i need? 
+
+>button
+> camera [opt]
+> walking 
+> game_loop + test_fx() = 🤍️"sleepy/sleep" [CDDA]QLU🔍️
+> + tm sleep💤️.c🔍️📌️🥋️🚇️
+
+> edit_data /manage if not all in state.txt
+
+-----------------
+> supers button   = multi peices/ maps
+>building 
+
+>store fruit
+>plant fruit & watch grow
+> modify health 
+> go hungry 
+> eat fruit
+> or die 
+> can no longer walk ; despite having control 
+
+>view inventory 
+
+>multi peices 
+
+> ai learn 2 feed itself with weights 
+
+
+> now we are cooking tbh . (farming/hunting = reproduction of life) yes push. 
+>fighting vs trading  = global  = kings/money/corporation = (keep primatiive? tech tree? push WSR)
+> peices intellect? chatting? libra? "hi , who are u ?" 
+
+>sorting out weights ; so ai can do meta stuff. llm. etc. r&d /school4peices etc. 
+
+>chat bot hooked in like grok, but we can talk about peices, etc. 
+
++?
+control with "hotkey setting or numpad vs arrows. dont worry right now; but yes. "
+💌️
+
+🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️
+top level hmA0.⬜️.®™]c5📌️/
+subfolders : 
+ in dir !.mnon.🔘️.®™/  we will make 'hma0.button.c'
+ 
+ 
+ 
+ for now we want to log "test1" 
+ and read the contents of locations.txt 
+ we will use pthread to launch each executable in locations.txt 
+ 
+ we are its parent so we will keep running, but when killed
+ the children will be killed also
+ ⌚️
+ readability rules : pure gcc no structs 
+🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️
+🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️
+top level hmA0.⬜️.®™]c5📌️/
+subfolders : 
+ in dir loop.📼️.®™/  we will make 'hma0.gameloop.c'
+ 
+ it will run a loop everytime '../wtch.⌚️.®™/watch.txt'
+ adds a new line (adds timestamp every series)
+ 
+ 
+ for now we want to log "test1" 
+ and read the contents of locations.txt 
+ we will use system() to launch each executable in locations.txt 
+ 
+ ⌚️
+ readability rules : pure gcc no structs 
+🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️
+ make a progrm to edit ../state.txt by adding (incrementing) turn value 
+ each time it is run [ entries may be in any order in state, or not there at all (add it)]
+readability rules : pure gcc no structs 
+
+🦃️these should DEFINATELY be in plugins, or else they look like "ITEMS"🔌️
+♣️➡️☑️DONE☑️
+🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️
+🤍️😋️
+ make a progrm to edit state.txt by adding (incrementing) hunger value 
+ each time it is run [ entries may be in any order in state, or not there at all (add it)]
+
+readability rules : pure gcc no structs 
+☑️DONE☑️
+🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️
+we will make 'hma0.watch.c'
+should incriment every watch_time_series * seconds
+int watch_time_series = 10 ; 
+
+and write time to 
+watch.txt
+as 2025-2-28T06:50:00
+
+
+readability rules : pure gcc no structs ☑️DONE☑️
+🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️
+readability rules : pure gcc no structs 
+🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️🇬🇮️
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+userhash ?
+symbol 🐩️
+color 1.0 0.0 0.0
+x 0
+y 0
+z 6
+active none
+range_x 3
+range_y 2
+range_z 0
+stamina -57
+turn 143
+cam_x 14
+cam_y 40
+cam_z 19
+cam_tx 0
+extra_0 0
+extra_1 0
+cursor_x 2
+cursor_y 5
+cursor_z 3
+📹️ 📹️ 📹️ 📹️ 📹️ 📹️ 📹️ 📹️ 📹️ 📹️ 📹️ 📹️ 📹️ 📹️ 
+⁉️
+cam_x 14
+cam_y 40
+cam_z 19
+📹️ <- cam , where should it read from instead? 
+literally "xyz" of "camera peice" 
+(we link it 2 something else IN DATA)
+(how are u moving it currently? )
+(u can still use that as 'cam controls'
+(peices can have 'dif controls') ; fix this first
+
+(where is it reading from 2 change cam???)
+
+--------------------------------
+^.move.1_gl]🗃️🟨️]e4.c
+2.command.converter]🎈️🪄️📲️]d5.c
+?
+
+the problem is theres stuff thats confusing u . 
+and there trying 2 force me 2 explain 2 their egos @ same time/troll
+w/e take a nap im not their fucking slave / clown
+
+otherwise? 
+
+could ask grok (im literally about 2 ); ask it "WHAT?"
+
+
+🇬🇮️🇬🇮️🇬🇮️
+instead of moving camera when cam_x cam_y & cam_y change, i just wanna move it when vanilla x,y,&or z change (were gonna use a more flexible architecture). what parts of this code do i have to change to do that?
+🇬🇮️🇬🇮️🇬🇮️
+📹️ 📹️ 📹️ 📹️ 📹️ 📹️ 📹️ 📹️ 📹️ 📹️ 📹️ 📹️ 📹️ 📹️ 
+
+
+
+
+
+📍️
+🎈️🎇️#09h233
+❣️ we ALREAYD HAVE STRCTURE 2 SHOW GROK & ask 4 more
+cav : cursor/cam stuff. remember. clear that and make
+that stuff its own peice. and figure out controlling it  = BIG DEAL📌️
+🥅️when did we forget this? 🥅️ & u can grok that...🤖️📌️
+📂️🎥️🔘️we need 2 know where it points? button? 
+u may not like thinking like this now. but git gud📂️🎥️🔘️
+📲️🇬🇮️
+
+
+🇬🇮️
+
+
+
+💤️
+just "lay down" <-w/e and restore health , while
+stopping 'other functions' ie : not "working"? 
+
+btw, for working, just go "place blocks" put it in game loop
+make a "meta ai" thingi that can pick "place blocks" or "do nothing"
+or "walk" dont just "walk" 
+
+"but if "sleeping" stop this" 
+"also make 'user stoppable 4 manual control'🧠️💪️🧠️
+
+
+🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️
+meta_ai_0.c <- can be many of these (can pass args or read from file)
+🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️🦳️
+🐰️🐰️🐰️🐰️🐰️🐰️🐰️🐰️🐰️🐰️🐰️🐰️🐰️🐰️🐰️🐰️🐰️
+
+
+cant u show this 2 grok? 
+🦳️
+🐰️
+
+
+🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️
+dont feel weird for making tons of supers, 
+same happens in kernel. 
+we will optomize with riscv OS, same for opengl src code 
+
+🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️🦸‍♀️️
+
+
+
+
+
+
+
+
+
+
+
+🥅️🤖️📲️
+📂️🎥️🔘️
+_i___l__
+ — 
+3:37 PM
+>yt ai video generator ali baba
+Miso Bot
+APP
+ — 
+3:37 PM
+https://youtube.com/watch?v=XIYIAW1Clyc
+YouTube
+How To In 5 Minutes
+WAN 2.1 100% FREE AI Video Generator  :  WATCH Before INSTALL!
+Image
+🥅️🤖️📲️
+📂️🎥️🔘️
+_i___l__
+

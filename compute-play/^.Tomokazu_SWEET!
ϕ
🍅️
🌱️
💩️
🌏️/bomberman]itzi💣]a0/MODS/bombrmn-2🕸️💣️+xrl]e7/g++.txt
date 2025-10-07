@@ -1,0 +1,2 @@
+g++ g.bomberman]ixzi]e6.c -o g -pthread -lm -lssl -lcrypto -lGL -lGLU -lglut -lfreetype -lavcodec -lavformat -lavutil -lswscale -lX11 -lassimp -I/usr/include/freetype2 -I/usr/include/libpng12 -L/usr/local/lib -lOpenCL
+

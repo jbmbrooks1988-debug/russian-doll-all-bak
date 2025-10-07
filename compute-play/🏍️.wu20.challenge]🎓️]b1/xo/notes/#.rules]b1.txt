@@ -1,0 +1,32 @@
+_____________________________________________________
+
+
+
+
+RULES : 
+
+no new or custom headers, i rather use executable modules using system() or pipe
+
+if they need to share data we want external .txt for better data visualization
+
+
+
+
+start will basic user editable functinality and tack on features module by module.
+we can test step by step
+rules : prefer arrays to structs for readability. no linking .c files. 
+standalone modules only
+
+
+
+
+_____________________________________________________
+
+
+
+
+
+
+
+
+

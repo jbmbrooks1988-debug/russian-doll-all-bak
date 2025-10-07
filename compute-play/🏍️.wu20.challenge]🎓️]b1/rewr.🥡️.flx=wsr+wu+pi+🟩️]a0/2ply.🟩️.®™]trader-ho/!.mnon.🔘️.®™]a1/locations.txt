@@ -1,0 +1,15 @@
+
+../hmA0.🔌️.®™/loop.📼️.®™/+x/game_loop.📼️]b5.+x
+
+#../hmA0.🔌️.®™/swtc.⏱️.®™]kvp]c2/+x/2.hma0.stop_watch⏱️]c3.+x
+../hmA0.🔌️.®™/mnus.📱️.®™]c4/+x/13.kvp_menu_fixed.+x
+
+#⏱️📱️ watch is paused till menu or w/e 
+#../hmA0.🔌️.®™/swtc.⏱️.®™]kvp]c2/+x/hma0.watch⌚️]b2.+x  &
+
+../hmA0.🔌️.®™/cam0.🤳️.®™]gl]g10/+x/18.th_person_cam_gl]🎥️🗺️💲️🔴️]q60.+x
+../hmA0.🔌️.®™/cam0.🤳️.®™]gl]g10/+x/^.move.1_gl]🗃️🟨️]g7.+x &
+
+
+
+

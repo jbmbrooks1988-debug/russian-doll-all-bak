@@ -1,0 +1,119 @@
+
+📯️📯️📯️📯️📯️📯️📯️📯️📯️📯️📯️📯️📯️📯️📯️📯️
+ in gcc pure c  
+
+
+i want to factor out the map editor as map_editor.c 
+
+
+RULES/PRINCIPLES : for modularity and reuse ; we like to break code up into executable modules (seperate .c files)
+{i dont want to link them on compile or use externs/headers, i want them to beable to be self contained aside from data io}
+and executing them with system(); ex : system(./+x/"nand.+x 16 0 1");(or pipe etc) when they are needed.
+
+if we need to share data among modules it should be easy because we shoud  write
+ to an external file or pipe 
+
+our executables are compiled as ".+x" and stored in "/+x/"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+in c_rewrite/ directory
+
+ 	
+
+start will basic user playable functinality and tack on features module by module.
+we can test step by step
+rules : prefer arrays to structs for readability. no linking .c files. 
+standalone modules only
+
+
+heres how it works : 
+
+
+
+📯️📯️📯️📯️📯️📯️📯️📯️📯️📯️📯️📯️📯️📯️📯️📯️📯️📯️📯️📯️📯️📯️
+
+
+
+
+
+
+
+
+
+
+
+🎮️
+i want to make an open gl game that uses the assets in this folder
+
+the sprites should al render 42x42
+
+the only things that aren't sprites are the background maps starting with "ss"
+
+it should be a tile based tactical game, where we click on the peice and 
+a menu of options is shown including "move" (which has a range , where
+player can select and move")
+
+sword.png is used as the "cursor" to select the other "peices"
+(half the peices are on a board like chess on your side and the other player side
+, so selecting the players peices doesnt' give control , just shows stats. 
+its turn bases and peices have hp / attack / items (potion/revive)
+and will leave board when killed. 
+winner is one with more peices at the end of 5 minutes (chess clock based game)
+=======================================================
+i want to write this game in gcc pure c and glut. 
+
+
+
+no new or custom headers, i rather use executable modules using system() or pipe
+
+if they need to share data we want external .txt for better data visualization
+
+
+
+in c_rewrite/ directory
+
+ 	
+
+start will basic user playable functinality and tack on features module by module.
+we can test step by step
+rules : prefer arrays to structs for readability. no linking .c files. 
+standalone modules only
+
+
+dont try to test directly . instead :   
+make a robust testing program that can test pass/fail each feature as u make it
+script should also be in pure gcc c . same rules. (should read its commands
+from a .txt file)
+⚠️
+
+
+
+ignore below ----
+ask it to rewrite rmmv engine basics in gcc c ,
+especially the data structures, and asset use
+
+
+have it make an editor for it .
+
+have it make a 3d editor (or just render in optional 3d )
+
+what about tsots!? (this is for adaptability, may even help inform needed fx/data)⚠️
+
+
+(ask gemini to read the rules of my_chara/bots / aow and make it in gl)
+(describe mars merc/space invaders have it remade. 
+have it make social in [web]gl, using pics on computer & put up on jbmbrooks
+along with this rest of this, so we can 
+"ALSO CLONE REDDIT< and put our stories on it ,etc. 

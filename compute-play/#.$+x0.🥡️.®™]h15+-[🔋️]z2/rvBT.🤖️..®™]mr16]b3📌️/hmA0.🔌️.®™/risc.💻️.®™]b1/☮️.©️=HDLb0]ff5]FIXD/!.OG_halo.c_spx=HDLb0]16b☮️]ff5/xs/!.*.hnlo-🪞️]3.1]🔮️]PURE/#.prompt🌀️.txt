@@ -1,0 +1,9 @@
+int int_temp_e ;
+
+int int_reg_a ; 
+int int_reg_a ; 
+
+do a logican nand on int_reg_a , and int_reg_a and store output in int_temp_e, 
+print result for sanity check 
+
+rules : pure c [no structs]

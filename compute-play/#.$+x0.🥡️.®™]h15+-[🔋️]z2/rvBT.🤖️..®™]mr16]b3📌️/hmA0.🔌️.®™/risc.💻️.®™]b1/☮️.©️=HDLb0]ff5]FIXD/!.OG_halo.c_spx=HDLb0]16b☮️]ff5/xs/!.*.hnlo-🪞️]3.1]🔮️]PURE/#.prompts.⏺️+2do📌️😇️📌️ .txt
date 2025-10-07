@@ -1,0 +1,89 @@
+📌️⚙️
+. binary has been converted 2 "dec" ] AUG22 ]
+
+📌️
+al
+bl
+cl
+dl
+
+next . 
+#😇️📌️  <- 2024 , jump here 4.c <3 ❣️
+.were in same place in code 
+. 
+⭕️
+🔺️
+.comparing al with "3 or 255" (. emtpy ram...) 
+(u may wanna fill ur ram with these as well...y not , right? )
+(u can do it manually as a char or do it by "bitsize" w/e EZ
+[its trying 2 see if it needs 2 'pull memyry down'
+.and if so  , if theres anything 'on the wire/yr']
+
+(also u can just drop all str8 2 logic, output fast , ]NOS🏍️
+put stuff on wire if necessary fast]NOS🏍️
+get a quick print 2 "final output?"(cli+.txt)🏍️
+and see where we are after that, dont need 2 overcomplicate ;) 
+
+*can also skip logic, and go right 2 modem (DONT FORGET CLK cycle)
+
+honestly not even sure if there is much more than that <3 
+🧮️
+(can make loom...) +
+u may rather at some point write "chip names + ranges"
+which should be easy 2 add as loom mod or something ;) <3🧮️
+🚡️
+]also u may want to "MEMMAP" those online? 
+(u dont have 2 read from file byte by byte 
+i think memmap uses meminplace.
+{its on "SOME MEDIUM", that kernal has already registered...}
+🚡️
+🔺️
+🔻️
+🔻️
+🔻️
+🔻️
+
+⭕️.
+🔺️
+🔻️
+⭕️.
+🔺️
+🔻️
+⭕️.
+
+⚙️
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+🧱️🧱️🧱️🧱️🧱️🧱️🧱️🧱️🧱️🧱️🧱️🧱️
+
+/*
+inside of bin2dec_hvlq_4 take the bcd 64 char string of ones and zeroes 
+example : 
+reg_a : 0000000000000000000000000000000000000000000000000000000000010000
+reg_b : 0000000000000000000000000000000000000000000000000000000000010000
+reg_c : 0000000000000000000000000000000000000000000000000000000000000011
+reg_d : 0000000000000000000000000000000000000000000000000000000000000011
+
+ in globals orig_register_a  ,
+orig_register_b , orig_register_c, and orig_register_d
+and convert them to decimal ints, and store them in globals
+ int_reg_a ; 
+ int_reg_b ; 
+ int_reg_c ; 
+ int_reg_d ; 
+ 
+ do this as dec_bin()
+ pure c 
+ */

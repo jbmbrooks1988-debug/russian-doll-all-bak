@@ -1,0 +1,60 @@
+
+# C-HTML Framework Prototype Progress
+
+## Current Progress
+
+*   **Blueprint:** A `blueprint.md` file has been created, outlining the design and architecture of the C-HTML framework.
+*   **C-HTML Legend:** A `chtml_legend.md` file has been created and updated to document available elements and attributes, including `<panel>`, `<textfield>`, `<checkbox>`, and `<slider>`.
+*   **Backup:** Multiple backups of the project files have been created in `backup/` directory.
+*   **UIElement Struct:** The `UIElement` struct in `view.c` and `controller.c` has been modified to include fields for hierarchy, text field functionality, checkbox state, slider properties (`slider_value`, `slider_min`, `slider_max`, `slider_step`), canvas rendering, menu properties, and unique element IDs.
+*   **`demo.chtml`:** The `demo.chtml` file includes various UI elements including `<panel>`, `<button>`, `<textfield>`, `<checkbox>`, `<slider>`, `<canvas>`, and `<menu>`.
+*   **Parser (`view.c`):** The `parse_chtml` function supports nested elements, various attributes including `id` for unique element identification, and now parses attributes for all implemented elements with proper error handling.
+*   **Renderer (`view.c`):** The `draw_element` function renders all UI elements including `<panel>`, `<button>`, `<textfield>` with text content and blinking cursor, `<checkbox>` with correct checkmark, `<slider>` with track and thumb, `<canvas>` with proper coordinate system, and `<menu>` elements.
+*   **Controller (`controller.c`):**
+    *   The `mouse` function handles clicks on all nested elements with proper event delegation.
+    *   The `mouse_motion` function handles mouse drags for sliders.
+    *   The `keyboard` function handles text input for active text fields.
+    *   Dynamic UI updates are now supported - module results update UI elements identified by their unique IDs.
+*   **Canvas Element:** The canvas element has been added with proper rendering that doesn't interfere with other UI elements. The canvas has its own coordinate system and can render 2D graphics within its boundaries.
+*   **Menu Elements:** The `<menu>` and `<menuitem>` elements have been implemented with proper rendering and event handling.
+*   **Event Handling:** Improved event handling system with onClick attribute support that maps to handler functions using unique element IDs for identification.
+*   **Module System:** A modular system is implemented where external modules can be launched via separate processes, communicate via CSV files, and update the application state upon completion.
+*   **Dynamic UI Updates:** UI elements can be updated dynamically from module execution results, with changes immediately reflected in the display through glutPostRedisplay().
+*   **Verification:** The application compiles successfully and runs. The UI displays all implemented elements. All UI elements (button, text field, checkbox, slider, canvas, menu) are interactive as expected, with dynamic updates working properly.
+
+## How to Use
+
+1.  **Compile:** Open a terminal in the project directory and run the `bash xh.compile.dir.link.+x.sh` script. This will compile the source files and create an executable named `html_proto.+x`.
+2.  **Run:** Execute the application by running `./html_proto.+x`.
+3.  **Interact:**
+    *   A window will appear with the UI, featuring a menu bar, header, control panel with various UI elements, and a canvas.
+    *   Click the "Click Me" button. A message will be printed to the terminal.
+    *   Click the text field to activate it. Type some text. Use backspace to delete. Press Enter to print the text field's content to the terminal.
+    *   Click the checkbox to toggle its state. Observe the checkmark appear and disappear.
+    *   Click and drag the slider's thumb to change its value. The value will be printed to the terminal.
+    *   Click the "Run External Module" button to execute an external module and see the result update the UI (both textfield and text display).
+    *   Click the canvas to trigger its event handler.
+    *   Click the menu to see it toggle open/close state.
+    *   Press the `ESC` key to close the window.
+
+## Recent Additions for Text Editor Support
+
+1.  **Multi-line Text Editing:** Extended textfield element to support multi-line text editing with proper line breaks and cursor movement between lines.
+2.  **TextArea Element:** Implemented a specialized `<textarea>` element for multi-line text input with initial value support using HTML newline entities (&#10;).
+3.  **Text Selection & Navigation:** Added arrow key support for precise cursor navigation and text selection framework.
+4.  **Text Editing Operations:** Implemented copy (Ctrl+C), cut (Ctrl+X), and paste (Ctrl+V) functionality with internal clipboard storage.
+5.  **Enhanced Keyboard Handling:** Improved keyboard input handling to support control keys and special operations.
+
+## Future Goals
+
+1.  **Expand UI Library:** Add more UI elements such as `<table>`, `<image>`, `<listbox>`, `<radiobutton>`, `<combobox>`, and `<progress>` elements.
+2.  **Enhanced CSS-like Styling:** Implement a styling system for more advanced visual customization beyond basic color attributes.
+3.  **Animation System:** Add support for basic animations and transitions between states.
+4.  **Layout Management:** Implement more sophisticated layout managers like flexbox or grid-based systems.
+5.  **Application Framework:** Develop a framework that allows creating complete applications (games, chat apps, forums, etc.) using separate .c and .chtml files while leveraging the MVC interpreter.
+6.  **Advanced Module Communication:** Enhance the module system to support more complex inter-process communication patterns beyond CSV files.
+7.  **Template System:** Implement support for component templates and reusable UI components.
+8.  **Multi-Window Support:** Extend the framework to support multiple windows and dialogs.
+9.  **Internationalization:** Add support for multi-language applications.
+10. **IDE/Editor Tooling:** Develop tools to help create and debug .chtml files with visual editors and live preview.
+11. **Text Editor Features:** Add syntax highlighting, line numbers, search/replace, and file I/O operations for full text editor functionality.

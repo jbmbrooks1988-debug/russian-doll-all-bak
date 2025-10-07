@@ -1,0 +1,4 @@
+./+x/quantum.+x toffoli INPUT_A INPUT_B INPUT_C OUTPUT_A OUTPUT_B OUTPUT_C
+./+x/quantum.+x hadamard ANCILLA_1 TMP_ANCILLA_1
+./+x/quantum.+x cnot TMP_ANCILLA_1 ANCILLA_2 OUTPUT_QUBIT_1 OUTPUT_QUBIT_2
+./+x/quantum.+x t ANCILLA_1 OUTPUT_T

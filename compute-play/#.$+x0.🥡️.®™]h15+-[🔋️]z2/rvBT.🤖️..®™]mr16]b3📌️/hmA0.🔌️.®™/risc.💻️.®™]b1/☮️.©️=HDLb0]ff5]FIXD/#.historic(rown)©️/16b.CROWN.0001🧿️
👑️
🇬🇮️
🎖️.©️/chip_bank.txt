@@ -1,0 +1,4 @@
++x/nand.+x
++x/mux.+x
++x/d_flip_flop.+x
++x/xor.+x

@@ -1,0 +1,3405 @@
+Millbane.29.0
+Millwall.3.0
+Millward.50.0
+Millwood.3.0
+Millburn.5.0
+Millwar.24.0
+Milldoom.35.0
+Millburg.3.0
+Millmill.1.0
+Millgard.6.0
+the Childslayer.3.3
+the Foul-Smelling.1.3
+the Discourteous.1.3
+the Unsightly.2.3
+the Spiteful.-1.3
+the Heinous.1.3
+the Cynic.-2.3
+the Shocked.-3.3
+the Encumbered.-2.3
+the Cow.2.3
+the Goose.1.3
+the Bleeding.-6.3
+the Chicken.2.3
+the Cross-eyed.-3.3
+the Imposter.-2.3
+the Mudblood.0.3
+the Awakened.13.3
+the Nervous.-3.3
+the Spiritual.2.3
+the Mushroom.5.3
+the Scarlet.6.3
+the Unwavering.18.3
+the Wavering.-3.3
+the Miser.-1.3
+the Ascetic.5.3
+the Porky.-6.3
+the Podgy.-4.3
+the Hefty.5.3
+the Thin-Boned.-2.3
+the Flimsy.-5.3
+the Insubstantial.-2.3
+the Lanky.4.3
+the Meager.-2.3
+the Shrivelled.-7.3
+the Atrophied.-11.3
+the Wizened.7.3
+the Withered.-9.3
+the Small Boned.-2.3
+the Smooth Brained.-9.3
+Frail Spine.-12.0
+the Arseface.1.3
+the Victim.-1.0
+the Careless.-3.3
+the Fetid.-5.3
+the Decaying.-9.3
+the Decayed.-11.3
+the Tainted.-2.3
+the Impure.-1.3
+the Tarnished.-6.3
+the Injured.-7.3
+the Invalid.-9.3
+the Coddled.-8.3
+the Sheltered.-7.3
+the Irredeemable.-3.3
+the Narrow-Minded.-2.3
+the Decadent.-4.3
+the Lazy.-2.3
+the Truent.1.3
+the Late.-1.3
+the Indolent.-2.3
+the Slothful.-3.3
+the Inactive.-1.3
+the Apathetic.-1.3
+the Procrastinator.0.0
+the Trifling.-3.3
+the Skullcarver.31.0
+the Renegade.14.3
+the Starved.-16.3
+the Bygone.-5.3
+the Gate-Crasher.15.0
+the Pyromaniac.11.0
+the Slayer of Champions.55.0
+the Blazing Demon.42.0
+the Breaker of Demons.54.0
+the Bleedheart.-1.3
+the Forsworn.19.3
+the Bane of Order.25.0
+the Herald of Death.56.0
+the Herald of Famine.33.0
+the Herald of War.55.0
+the Herald of Skulls.49.0
+the Herald of the Damned.51.0
+the Herald of Demons.60.0
+the Herald of the Night.50.0
+the Ridiculous.-8.3
+the Ruffian.5.3
+the Skilled.27.3
+the Dog Kicker.-1.0
+the Mouse Stomper.-1.0
+the Cretin.-3.3
+the Dumb-Dumb.-8.3
+the Deranged.10.3
+the Irrational.-2.3
+the Unreasonable.1.3
+the Absurd Stranger.5.0
+the Bizarre Wanderer.5.0
+the Skin Flaker.11.0
+the Crooked.4.3
+the Harebrained.-3.3
+the Inane.-7.3
+the Fractured.-8.3
+the Inebriated.-6.3
+the Balding.-2.3
+the Webbed Hands.-1.0
+the Sulky.-6.3
+Itchy Feet.-2.0
+Itchfoot.-1.0
+the Overconfident.-5.3
+the Snitch.-1.0
+the Pink Eyed.-8.3
+the Bumbling Idiot.-11.0
+the Quivering Fool.-9.0
+the Stumbling Nitwit.-6.0
+the Thick Bonehead.2.0
+the Eunuch.-3.3
+of Weak Shins.-7.0
+the Dove.5.3
+the Submissive.-15.3
+the Laughable.-10.3
+the Amnesiac.-4.3
+the Demented.6.3
+the Rat Tosser.3.0
+the Air-Headed.-3.3
+the Exhausted.-5.3
+the Fatigued.-4.3
+the Weary.-2.3
+the Sluggish.-4.3
+the Lumbering.-1.3
+the Blundering.-6.3
+the Ponderous.3.3
+the Incompetent.-10.3
+the Bungling.-3.3
+the Unbalanced.-2.3
+the Unskilled.-1.3
+the Amateur.-1.3
+the Uneducated.-2.3
+the Dumb.-4.3
+the Daft.-1.3
+the Dolt.-2.3
+the Stupid.-5.3
+the Unintelligent.-5.3
+the Obtuse.-2.3
+the Asinine.-4.3
+the Yellowbellied.-2.3
+the Limbless.-15.3
+the Unsmart.-4.3
+the Meek.-6.3
+the Fumbling Idiot.-10.3
+the Crosseyed.-2.3
+of Tiny Hands.-1.0
+of Sweaty Hands.-1.0
+of Brittle Bones.-7.0
+the Naive Fool.6.0
+the Uninvited.-1.3
+the Repentant.5.3
+the Walking Dead.-11.0
+the Bloated.-4.3
+the Frostbitten.-7.3
+the Ill-Fated.-10.3
+the Spineless Coward.-11.0
+the Unfortunate One.-6.0
+the Reprobate.-1.3
+the Mournful.-2.3
+the Grim.11.3
+the Asthmatic.-4.3
+the Dingus.-3.3
+the Dongus.-4.3
+the Stooge.-5.3
+the Frightened.-7.3
+the Enslaved.-6.3
+the Stick Collector.-1.0
+the Nipple Slicer.9.0
+the Dung Diver.-9.0
+the Feces Smearer.-6.0
+the Teary-Eyed.-2.3
+the Mouth Spitter.1.0
+the Bird-Brain.-6.3
+the Brain Damaged.-11.3
+Sock Thief.1.0
+the Loaf.-3.3
+the Oaf.-7.3
+the Flippant.-1.3
+the Cocky.2.3
+the Frivolous.-1.3
+the Superficial.-2.3
+the Insolent.-1.3
+the Cur.-2.0
+the Blood-Fearing.-4.3
+the Humpback.-2.3
+the Dumpling.1.3
+the Nobhead.-1.3
+the Meat.5.3
+the Tomato.1.3
+the Door Kicker.5.0
+the Shin Kicker.6.0
+the Nose Taker.11.0
+the Soul Taker.37.0
+the Stunty.2.0
+the Beast Hunter.35.0
+the Blood Weaver.49.0
+the Bloodmancer.50.3
+the Buttercup.1.3
+the Big Flame of Shame.-5.0
+the Bumbling Baffoon.-6.0
+the Foolinator.-1.3
+the Exterminator.32.3
+the Murderer of Justice.22.0
+the Sly.11.3
+the Pig-Snout.1.3
+the Humble.5.3
+the Scorched-Face.-2.0
+the Biter.8.0
+the Easy Walker.5.0
+the Accursed.-7.3
+the Gut Puncher.7.0
+the Flesh Tearer.13.0
+the Gob Hucker.3.0
+the Swordbreaker.19.3
+the Face Collector.25.0
+the Cheek Slapper.-1.0
+the Stone Grinder.6.0
+the Archon of Rage.19.0
+the Archon of Wrath.17.0
+the Titan Chaser.47.0
+Unbridled Hatred.21.0
+the Ancient Wanderer.55.0
+the Star Breaker.42.0
+the Life Leecher.10.0
+the Pebble Tosser.1.0
+the King Killer.42.0
+the Tavern Wrecker.3.0
+Snaggletooth.-3.0
+the Realm Breaker.71.0
+Bladestorm.56.0
+the Fate Breaker.46.0
+the Mind Weaver.21.0
+the Mountain Breaker.15.0
+the Face Smasher.29.0
+Eye Piercer.21.0
+Shadow Dancer.29.0
+Skull Splitter.31.0
+the Fatal Weirdo.12.0
+the Pillar of Eternity.59.0
+the Pillar of Shame.-5.0
+the Fable Weaver.15.0
+Watercloak.24.0
+Firecloak.24.0
+Icecloak.24.0
+Rockcloak.20.0
+Stormcloak.23.0
+Windcloak.15.0
+Steelcloak.21.0
+Silvercloak.21.0
+Ironcloak.21.0
+Goldcloak.21.0
+Redcloak.17.0
+Greencloak.14.0
+Bluecloak.16.0
+Blackcloak.20.0
+Whitecloak.14.0
+Greycloak.15.0
+Purplecloak.21.0
+Dreamcloak.21.0
+Raincloak.15.0
+Suncloak.20.0
+Mooncloak.19.0
+Sandcloak.11.0
+Rivercloak.10.0
+Gloryfire.28.0
+Dreamfire.24.0
+Greatfire.30.0
+Corpsefire.29.0
+the Unfettered.40.3
+the Undeterred.20.3
+the Unerring.30.3
+the Unfazed.5.3
+the Gregarious.16.3
+the Unamused.5.3
+the Bemused.3.3
+the Stocky.32.3
+the Illegitimate.-10.3
+the Mute.0.3
+the Deaf.-6.3
+the Stern.10.3
+the Maimed.-25.3
+the Infested.-10.3
+the Infester.10.3
+the Corrupt.5.3
+the Thrall.-10.3
+the Untrustworthy.-2.3
+the Starving.-15.3
+the Infected.-20.3
+the Inexperienced.-5.3
+the Sinful.3.3
+the Sanctimonious.1.3
+the Complacent.-2.3
+the Undefeated.65.3
+the Vain.1.3
+the Prideful.3.3
+the Virtuous.5.3
+the Selective.-2.3
+the Cautious.2.3
+the Passive.0.3
+the Redeemed.10.3
+the Rash.9.3
+the Deficient.-12.3
+the Excessive.3.3
+the Champion of Excess.6.0
+the Benevolent.1.3
+the Malevolent.5.3
+the Stingy.-2.3
+the Temperate.10.3
+the Generous.2.3
+the Truthful.1.3
+the Witty.5.3
+the Determined.15.3
+the Comedic.5.3
+the Tragic.-5.3
+the Disfigured.-15.3
+the Beggar.-10.3
+the Questionable.-6.3
+the Lacking.-14.3
+the Malformed.-16.3
+the Deformed.-17.3
+the One-armed.-14.3
+the Limp-wristed.-14.3
+the Waste of Space.-10.0
+the Waste or Air.-10.0
+the Bound.2.3
+the Unbound.5.3
+the Unimaginative.-1.3
+the Boastful.2.3
+the Scrawny.-5.3
+the Lithe.4.3
+the Gaunt.-6.3
+the Anemic.-10.3
+the Two Left Feet.-14.0
+the Uncoordinated.-13.3
+the Grieving.-5.3
+the Failure.-19.3
+the Failing.-7.3
+the Disappointed.-4.3
+the Disappointment.-18.0
+the Beefy.35.3
+the Decrepit.-30.3
+the Begrudged.-4.3
+the Fancy.5.3
+the Fantastic.45.3
+the Grumbler.1.0
+the Skunk.3.3
+the Dismal.-5.3
+the Chunky.5.3
+the Ravenous.10.3
+the Large.11.3
+the Ominous.30.3
+the Loved One.10.0
+the Wimpy.-15.3
+the Blind.-10.3
+the Unremarkable.-5.3
+the Loathed.-3.3
+the Titan of War.60.0
+the Titan.49.0
+the Titan of Speed.45.0
+the Titan of Strength.52.0
+the Titan of Mercy.30.0
+the Titan of Death.62.0
+the Titan of Love.60.0
+the Titan of Hate.59.0
+the Titan of Loss.44.0
+the Titan of Murder.61.0
+the Titan of Bones.60.0
+the Titan of Blood.60.0
+the Titan of Sleep.39.0
+the Titan of Swords.49.0
+the Titan of Steel.52.0
+the Titan of Shields.42.0
+the Titan of Skulls.61.0
+the Titan of Wit.39.0
+the Titan of Pain.59.0
+the Titan of Evil.60.0
+the Titan of Good.60.0
+the Titan of Gold.55.0
+the Titan of Iron.49.0
+the Titan of Sacrifice.45.0
+the Titan of Day.35.0
+the Titan of Night.40.0
+the Meatflesh.5.3
+the Stocker.1.0
+the Combatant.12.3
+the Candle-Lighter.1.0
+the Treejumper.10.0
+the Turnip Puller.-5.0
+the Carrot Cutter.-3.0
+the Spud Thrower.1.0
+the Wastelander.18.0
+of the Wasteland.15.0
+of the Ruined Lands.5.0
+the Wastewalker.22.0
+the Earth Scorcher.30.0
+the Land Scorcher.29.0
+the Wasteborn.19.0
+the Craterborn.35.0
+the Craterwalker.20.0
+the Wastewhisperer.23.0
+the Holdout.10.0
+the Warrior Commando.35.0
+the Deadeye.27.0
+the Peacebreaker.31.0
+the Mirror-Breaker.-5.0
+the Mirror-Watcher.3.0
+the Greyseer.18.0
+the Blueseer.22.0
+the Goldseer.24.0
+the Skyseer.24.0
+Weirdaxe.16.0
+Weirdblade.15.0
+Weirdshield.13.0
+Weirdhelm.17.0
+Weirdspear.15.0
+Weirdmace.16.0
+Oddaxe.15.0
+Oddblade.14.0
+Oddshield.12.0
+Oddhelm.16.0
+Oddspear.14.0
+Oddmace.15.0
+the Arseling.-2.0
+the Dreamless.-2.0
+Heavystep.3.0
+the Younger.2.0
+Splitstone.7.0
+the Tracker.11.0
+Bigfists.9.0
+Skullslam.15.0
+Strongclub.12.0
+Hardswing.11.0
+Hardbrow.6.0
+Brightbeard.5.0
+Steelforge.6.0
+Scragglebeard.1.0
+of Downstream.1.0
+Treefeller.5.0
+Gnash.11.0
+of the Otherplace.13.0
+Daysbane.5.0
+Brightstreak.9.0
+Dusksprinter.6.0
+Briskstep.3.0
+the Darter.10.0
+Quickmoon.8.0
+Sternwill.9.0
+Nightrush.11.0
+the Observant.10.3
+Headlopper.30.0
+the Rat-Squeezer.-2.0
+the Horse-Jerker.-3.0
+Ironbrow.7.0
+Fatnose.1.0
+the Amputated.-5.3
+Grinner.1.0
+the Intelligent.11.3
+the Plague-Bearing.-5.3
+the Plague-Warding.15.3
+the Major.17.3
+the Last.20.3
+the Puncher.5.0
+Kinlover.5.0
+Spikespear.26.0
+Stoney-Eyed.5.0
+Glass-Eyed.1.0
+Horse-Lover.5.0
+the Fatherless.1.0
+the Motherless.1.0
+the Orphan.2.3
+the Once-Loved.-2.3
+the Reknowned.22.3
+the Knowing.11.3
+Taint-Kicker.5.0
+the Dirty-Fighter.7.0
+the Sand-Thrower.3.0
+the Houndmaster.17.0
+the Prodigy.25.0
+the Prodding.1.0
+of the Clouds.14.0
+Toadsquasher.3.0
+the Tenderizer.16.0
+the Real Deal.12.0
+the Capturer.16.0
+the Streamlined.5.0
+the Hut Builder.4.0
+the Axeman.12.0
+the Swordsman.11.0
+the Spearman.12.0
+the Wispy.3.3
+the Blue-Blooded.10.3
+the Tailed.6.3
+the Tale-Teller.3.0
+Talltaled.6.0
+the Dungeon-Delving.19.3
+the Swimmer.5.3
+the Shallow.1.3
+of the Pits.11.0
+of the Pit.10.0
+Smellypits.1.0
+the Alien.50.0
+the Lurker.3.0
+the Statue.5.3
+the Orc-Faced.5.3
+the Goblin-Lover.6.0
+the Goblin-Hunter.10.0
+Spikeshoed.12.0
+Steeltoed.11.0
+the Deep-Explorer.17.0
+Skyrider.20.0
+Cutflesh.18.0
+the Manhating.12.3
+Stonebeard.15.0
+Coppereye.6.0
+the Runner.10.0
+the Weak-Hearted.-10.3
+the Fainter.-7.0
+the Hound-Lover.6.0
+the Mechanical.20.0
+Brighteyed.1.0
+the Experienced.22.3
+the Pincher.3.0
+the de-Masked.-1.3
+Platinum-Lance.29.0
+the Cobalt.17.0
+the Gaunt.-5.3
+the Rude.-1.3
+Lockjaw.-1.0
+Godtouched.37.0
+the Rock Lobster.8.0
+Thinlipped.-1.0
+the Mathematical.11.3
+the Calculated.12.3
+the Quick-Thinking.12.3
+the Slow-Minded.-5.3
+the Slow-Thinking.-5.3
+the Mousey.-1.3
+the Sheepish.-1.3
+Noblebreed.10.0
+the Seductive.5.3
+the Silly.-1.3
+the Peevish.-2.3
+the Mask-Wearing.9.3
+the Gremlin.5.0
+the Beesmasher.9.0
+Whisky-drinker.1.0
+of the Future.39.0
+of the Past.29.0
+the Firebomer.20.0
+the Venomclawed.21.3
+Bloodboiled.16.0
+Larvabrained.-5.0
+Litterbearing.1.0
+the Tanner.3.0
+the Lute Player.1.0
+Thickskulled.17.0
+the Healthy.20.3
+the Plague-Carrying.-5.0
+Bigstomach.-1.0
+Largearmed.15.0
+the Fire Stealer.17.0
+the Stunted.-6.3
+the Boulder Breaking.17.3
+the Crushed.-5.3
+Nine-Toed.-1.0
+the Spellsword.26.0
+the Duelist.19.0
+Sun Soul.25.0
+Half-Armed.-2.0
+of the Sun.15.0
+of the Moon.16.0
+of the Stars.17.0
+of the Mud.9.0
+the Bumbling Fool.-10.0
+the Charged.5.0
+the Charger.10.0
+Donkey Rider.12.0
+Dragon Rider.63.0
+Joke-Teller.1.0
+Wine-Guzzler.-2.0
+Ale-Gullzer.-2.0
+Fat-Fingers.-1.0
+the Oakskinned.19.3
+the Relisher.5.0
+the Pyromancer.23.0
+the Crafter.9.0
+the Bonecrafter.19.0
+the Goldsmith.11.0
+Man-Melter.17.0
+the Warforged.30.0
+Peace-Lover.1.0
+the Pet.0.3
+the Energetic.5.3
+the Melted.-2.3
+the Kisser.1.0
+the Criminal.11.0
+Gold-Stealer.7.0
+the Mastermind.30.3
+the World Destroyer.41.0
+Bushbeard.11.0
+the Pirate Smasher.24.0
+the Talkative.3.3
+Coldtouch.10.0
+Flamefoot.12.0
+Flameheart.19.0
+Greypelt.9.0
+Whiskerface.3.0
+the Whiskered.2.0
+the Deep.9.0
+the Profound.11.0
+the Bamboozler.3.0
+the Bamboozled.-5.3
+Winedrinker.1.0
+Elvenborn.10.0
+Dragonborn.30.0
+Two-Timer.1.0
+Orcborn.9.0
+Dwarfborn.8.0
+the Advanced.29.3
+the Complainer.-3.0
+the Cutesy.-3.0
+Willowblossom.5.0
+Eastborn.5.0
+Westborn.5.0
+Northborn.6.0
+Southborn.7.0
+the Devilish.6.0
+the Charred.-3.0
+Fireeater.19.0
+Kobold-Flayer.17.0
+Two-Teeth.2.0
+the Oafish.-6.3
+Pigskinned.10.0
+the Timid.-2.3
+the Boarish.7.0
+Mild-Mannered.0.0
+Time-Teller.5.0
+the Wincer.-3.0
+the Sparksinger.26.0
+the Winddancer.19.0
+the Earthsculptor.11.0
+the Oceanpainter.5.0
+the Skyskater.21.0
+Agent of the Sun.44.0
+son of Blood.21.0
+son of Filth.1.0
+the Filthy.-2.0
+the Hygenic.10.0
+the Cloudy-Eyed.3.0
+Stoneshield.15.0
+Ironshield.13.0
+Woodshield.9.0
+Goldshield.30.0
+the Tinkerer.10.0
+the Armorsmith.11.0
+the Annoyance.6.0
+the Annoying.1.3
+Beatlebrained.-5.0
+the Devilwinged.19.0
+Halk-clawed.11.0
+Snake-toothed.5.0
+Badger-toothed.3.0
+Evileyed.10.0
+the Helpful.6.3
+the Hateful.5.3
+the Mole.1.0
+the Spy.15.0
+the Agent.15.0
+the Double-Agent.16.0
+Fishbreeder.1.0
+Acidbreath.13.0
+Dragontooth.15.0
+the Fanged.9.3
+Vampirefanged.13.0
+Sword-Eating.9.0
+Sword-Eater.9.0
+Booze-Guzzler.-2.0
+the Heart-Broken.-4.3
+the Serf.-1.0
+of the Fire Plane.22.0
+of the Water Plane.12.0
+of the Earthen Plane.11.0
+of the Sky Plane.22.0
+of the Dark Plane.25.0
+of the Light Plane.21.0
+Fleshy-Foot.7.0
+the Freak.3.0
+the Finger-Remover.16.0
+Nail-Biter.-3.0
+Thunder Hammer.34.0
+the Albino.11.3
+the Trapper.9.0
+Spike Foot.17.0
+Tongue Twister.6.0
+Tongue Taker.25.0
+the Horde Smasher.31.0
+the Horde Breaker.30.0
+the Grave Digger.7.0
+the Entangled.-5.3
+of the Vines.7.0
+of the Jungle.9.0
+of the Reef.8.0
+of the Waves.6.0
+of the Tides.6.0
+of the Ruins.8.0
+the Ruined.-8.3
+the Impaled.-6.3
+the Collector.5.0
+Salt-Licker.3.0
+the Scary.15.3
+Crab Claws.11.0
+of the Rats.1.0
+the Jeweller.12.0
+the Slaver.15.3
+the Slaver of the North.16.0
+the Magic Fruit Farmer.11.0
+the Wizard of the East.21.0
+the Hydrophobe.-5.0
+the Expelled Apprentice.11.0
+the Expelled Wizard.20.0
+the Expelled Mage.20.0
+the Ex-Archmage.30.0
+of the Hallows.11.0
+of the Caves.12.0
+of the Goblins.7.0
+of the Orcs.13.0
+the Grand Wizard.31.0
+the Vampire Hunter.25.0
+the Vampire Slayer.26.0
+Bane of Vampires.30.0
+the Werewolf.45.0
+Woodcarver.3.0
+Foxpelt.4.0
+Bane of Darkness.39.0
+Smiter of Evil.34.0
+the Expired.-10.3
+the Planes Walker.35.0
+the Planes Explorer.37.0
+the Planes Hopper.32.0
+Shield of the Faithful.17.0
+the Connected.11.3
+the Commander of Death.55.0
+Warrior of the Moon.29.0
+Hand of the Faithful.10.0
+Skinripper.13.0
+Swiftfoot.7.0
+the Useless.-10.3
+the Wasteful.-3.3
+the Resourceful.12.3
+Mindbreaker.31.0
+the Ascended Mind.45.0
+of the Hive.3.0
+of the Horde.5.0
+the Horde Commander.20.0
+the Sleepy.-2.3
+Oathbreaker.-1.0
+the Keeper of Forbidden Knowledge.44.0
+Master of the 5 Forms.40.0
+Three Armed.29.3
+Limp-Legged.-8.3
+the Haggard Warlock.17.0
+Webfoot.6.3
+the Immovable Object.39.0
+the Soulless.-5.3
+the Unkindled.6.3
+the Kindled.5.3
+the Revolutionary.19.3
+the Spirited.17.3
+the Friendless.-3.3
+the Socialite.8.3
+the Sycophant.6.0
+the Just.6.3
+the Unjust.5.3
+the Tyrannical.11.3
+of Noble Birth.7.0
+the Pretty.5.3
+the Grandiose.19.3
+the Narcissist.1.3
+the Swole.21.3
+Ironstride.17.0
+Wargjaw.10.0
+the Gorehound.28.0
+the Beastbreaker.27.0
+the Bloodbeast.26.0
+Cindersoul.16.0
+the Sandstorm.23.0
+the Bloody Dervish.15.0
+of the Bloodied Hand.14.0
+Shatterskull.20.0
+Skullshatter.21.0
+the Seducer of Goblins.1.0
+Blackpike.25.0
+Ironhide.23.0
+Demon-Flayer.56.0
+Bloodpelt.10.0
+Gorepelt.11.0
+the Champion of Goblins.20.0
+of the Thousand Slain.31.0
+of the Endless Rage.17.0
+of the Ravenous Flame.30.0
+the Corpsemulcher.20.0
+the Bonemulcher.24.0
+the Foemulcher.25.0
+Foegrinder.24.0
+the Gentle Soul.0.0
+the Betrayed.1.0
+the Spurned.-1.0
+the Gambling Man.1.0
+of the Silver Tongue.6.0
+the Silver-tongued.6.0
+the Kindred Spirit.0.0
+the Undertaker.12.0
+the Graverobber.3.0
+the Exhumed.-10.0
+of the Eternal Crusade.45.0
+the Everlasting.21.0
+the Ever-vigilant.11.0
+the Moron.-5.0
+the Idiot.-5.0
+the Thick-headed.6.3
+the Vengeful Son.17.0
+Goblin-Friend.5.0
+the Skulltaker.31.0
+the Headtaker.30.0
+the Bonemasher.24.0
+the Brazen.9.3
+the Foolish.-1.3
+the Bearer of Truths.11.0
+the Vapid.-2.3
+of the Broken Mind.-3.0
+of the Unbreakable Spirit.14.0
+the Iron-willed.13.0
+of the Iron Will.13.0
+the Devastator.16.0
+the Siegebreaker.21.0
+of the Shieldwall.16.0
+Ebonshield.23.0
+Blackheart.19.0
+the Scorned.1.0
+of the Broken Spear.6.0
+of the Shattered Shield.7.0
+Soulshatterer.29.0
+the Heartpiercer.25.0
+the Foepiercer.23.0
+the Skullpiercer.26.0
+Blackjaw.20.0
+Ironjaw.19.0
+of the Mist.6.0
+of the Mists.7.0
+of the Still Mist.6.0
+Hailhowl.11.0
+the Bloodtide.14.0
+the Scrutinized.-3.3
+Bloodbeard.24.0
+Ironbeard.22.0
+Blackblood.29.0
+the Blood-Drunk.6.0
+Blood-drinker.14.0
+of the Steady Hand.6.0
+of the Blackened Soul.19.0
+the Bewildered.3.3
+the Bane of Bad Bards.20.0
+the Conspirator.10.0
+the Breaker of Baubles.9.0
+the Rugged One.11.0
+the Wayfarer.13.0
+Four-Toes.4.0
+Silk-Tongue.11.0
+Witch Whisperer.19.0
+Fence-Dweller.0.0
+the Castrating Concatenator.12.0
+the Horse-faced Heckler.4.0
+the Imbecilic Indignitary.-4.0
+the Muck-raker.-1.0
+the Not Nice.3.0
+the Quill Queller.6.0
+the Tepid Tongue.1.0
+the Vicissitudinous Visionary.19.0
+the Cloudshaper.15.0
+the Manchild.-5.0
+the Metallurgist.6.0
+the Undying.21.3
+the Unyielding.17.3
+the Desolate.5.3
+the Despair.19.0
+the Boneless.-3.0
+Hardruler.19.0
+Shaggy-Breaches.1.0
+Whiteshirt.1.0
+Snake-Eye.11.0
+the Stranger.19.0
+the Shieldbearer.14.0
+the Squire.6.0
+the Wanderer.26.0
+the Strider.12.0
+the Corpulent.-2.3
+the Crazy.9.3
+the Crazed.1.3
+the Ended.1.0
+Brokentooth.-1.0
+the Glorious.27.3
+the Sot.-3.3
+Greatsword.31.0
+the Silver Fox.11.0
+the Yokel.4.3
+the Master.29.3
+the Deposed.11.3
+the Eunuch.-2.3
+Windwalker.19.0
+Skywalker.29.0
+the Leper.-4.0
+the Royal.10.3
+the Chieftain.19.0
+the Bandit.7.3
+the Brigand.11.3
+the Rabid.13.3
+the Heartbreaker.6.0
+the Stabby.9.3
+the Destroyer of Worlds.41.0
+the Mean.5.3
+the Stalwart.10.3
+the Stout.6.3
+the Gallant.10.3
+the Merciless.11.3
+the Dauntless.13.3
+the Repulsive.-2.3
+the Weird.1.3
+the Wretched.5.3
+Treehugger.3.0
+the Restless.5.3
+the Bullant.6.0
+the Wyrm.33.0
+the Watched.10.0
+the Grand.6.0
+the Terror of the South.26.0
+the Terror of the North.24.0
+the Terror of the East.21.0
+the Terror of the West.22.0
+the Cleaved.8.0
+the Reaper.17.0
+Slave of Gods.-5.0
+the Shallow.1.0
+the Basilisk.26.0
+Follower of the Golden Hand.15.0
+Donkey Teeth.-1.0
+the Ignoramus.-1.0
+the Beastmaster.10.0
+the Horned Death.25.0
+the Snowflake.-2.0
+the Repugnant.-1.3
+the Gentle.3.3
+the Troublemaker.6.0
+the Raging Maniac.16.0
+the Battering Ram.21.0
+the Sky-Rider.24.0
+the Troglodyte.-2.0
+the Black Horseman.14.0
+the Sad.-3.3
+the Red Corsair.11.0
+the Keeper of Secrets.12.0
+the Laughing Rider.19.0
+the Torcher of Towns.14.0
+the Despoiler.3.0
+the Flayer of Peasants.11.0
+the Northern Rage.19.0
+the Whirlwind of Death.26.0
+the Bannerlord.22.0
+the Kingmaker.17.0
+the Face Puncher.12.0
+the Winemaker.6.0
+the Jail Breaker.19.0
+the Robber of Clouds.19.0
+the Knight Slayer.34.0
+the Enforcer.14.0
+the Bell Ringer.6.0
+the Unbeliever.5.0
+of the Road.9.0
+of the Sea.8.0
+Grudgebearer.-1.0
+Gut-Eater.5.0
+Belly-Buster.4.0
+Tooth-Taker.2.0
+Rotten-Apple.-1.0
+Feet-Taker.5.0
+Corpse-Feast.4.0
+Heart-Thief.9.0
+the Enraged.19.3
+the Hearder.3.0
+the Menacing.9.0
+the Redeemer.10.0
+the Brittle-Boned.-4.3
+the Claw.9.0
+the Graced.11.3
+the Goblin Slayer.14.0
+the Golden.25.3
+the Forgotten One.39.0
+the Kiss of Death.38.0
+Soulreaper.27.0
+Harvester of Souls.29.0
+Death's Right Hand.30.0
+the Master of None.-1.0
+Stormborn.12.0
+the Smuggler.4.0
+the Branded.-1.3
+the Freed.3.3
+the Bloodpaid.13.0
+the Toiled.-1.3
+the Escapee.6.3
+the Hunted.5.3
+the Castrated.-4.3
+the Unyoked.-3.0
+Redmane.10.0
+the Sun-Kissed.7.3
+the Anvil.13.0
+the Dice Roller.4.0
+the Obsidian.36.3
+Obsidian Blade.31.0
+of the Jade Halls.19.0
+the Twice-Risen.14.0
+the Gargoyle.7.3
+the Meatgrinder.25.0
+the Medicus.6.0
+of a Thousand Battles.43.0
+Castlestormer.21.0
+Fortstormer.16.0
+Bloodied Throne.15.0
+of the Bloodied Path.32.0
+of the Dark Omens.11.0
+the Shadowless.18.0
+the Stoolfighter.4.0
+the Bar-Brawler.11.0
+the Drunken Fighter.5.0
+the Liquid Courage.1.0
+the Paradox.0.0
+Bane of Pirates.23.0
+Law of the Seas.26.0
+the Crowned.10.3
+the Heretic.7.3
+the Unbeliever.3.0
+God-killer.67.0
+Bane of Crowns.36.0
+Shieldbearer.15.0
+the Steadfast.11.3
+Hellfury.32.0
+the Purger.19.0
+the Enlightened.13.3
+the Word of God.19.0
+the Candle.6.3
+Godsword.49.0
+the First and the Last.34.0
+the Spymaster.19.3
+the Fortunate.5.3
+the Boatmaker.2.0
+the Anchor.7.0
+the Volatile.8.3
+the Executioner.14.0
+the Hangman.13.0
+the Cold-Eyed.6.0
+the Frozen Face.9.0
+the Emotionless.9.0
+the Last Child.3.0
+the First Born.5.0
+of the Lost Bloodline.19.0
+of the Forgotten Bloodline.18.0
+the Rightful Heir.9.0
+Throneseeker.11.0
+the Salty Dog.9.0
+the Seasoned Veteran.24.0
+the Unproven.-1.3
+the Incontinent.-3.3
+the Pantswetter.-4.0
+the Enslaver.6.0
+the Rusted.4.0
+the Rusty.4.0
+Bane of Wolves.6.0
+the Sandman.9.0
+of the 3 Seas.16.0
+of the 4 Seas.17.0
+of the 5 Seas.18.0
+the Pathfinder.15.0
+the Poisoner.14.0
+the Cook.4.0
+the Oakbane.5.0
+Forest Fire.6.0
+Woodburner.3.0
+Amber-Skin.12.0
+Diamond-Skull.34.0
+the Ambusher.21.0
+Nightskin.11.0
+the Moonpraiser.15.0
+the Eternal Champion.41.0
+the Cat.6.0
+the Landlubber.1.0
+the Sunken.5.3
+the Graverobber.2.0
+Peacebearer.10.0
+Bearer of Peace.10.0
+the Lawful.5.3
+the Judge.10.0
+the Butterfly.6.0
+the Bee.9.0
+the Wasp.14.0
+the Hornet.15.0
+the Master of Arms.32.0
+the Weaponmaster.29.0
+the Speartip.19.0
+the Gift of God.40.0
+the Envy of Gods.45.0
+the Kingmaker.34.0
+Burning Heart.15.0
+of a Thousand Tongues.48.0
+of a Thousand Names.41.0
+of a Thousand Faces.56.0
+Cold Eyes.6.0
+the Leech.3.0
+the Lecher.4.0
+the Womanizer.5.0
+the Eternal.34.3
+the Loud.4.3
+World-Crier.30.0
+the Wordsmith.5.0
+Ivory Beak.10.0
+Bronze Beak.9.0
+Iron Beak.8.0
+Wood Beak.6.0
+Steel Beak.11.0
+Silver Beak.12.0
+Gold Beak.13.0
+Ivory Tusk.11.0
+Bronze Tusk.10.0
+Iron Tusk.9.0
+Wood Tusk.7.0
+Steel Tusk.12.0
+Silver Tusk.13.0
+Gold Tusk.14.0
+the Teacher of Owls.11.0
+Boiled-Skin.1.0
+Skin-Boiler.26.0
+the Unburnable.21.3
+the Messenger.3.3
+the Banished.-1.3
+the Banisher.18.0
+the Spellweaver.21.3
+the Plump.1.3
+the Elephant.30.3
+the Craftsman.10.0
+Ratpelt.4.0
+Wispheart.19.0
+Orc-Blooded.11.0
+the Snorer.1.0
+the Baker.2.0
+Fleshbaker.5.0
+the Whiner.-5.0
+Fishcatcher.3.0
+the Fisherman.3.3
+Time-Stopper.55.0
+the Worldy.33.3
+Sun-Setter.6.0
+the Bowyer.7.0
+the Sellsword.7.0
+Lightheart.10.0
+Big-Eared.4.0
+Elf-Eared.4.0
+Piglicker.-3.0
+the Fanatical.4.3
+the Madman.9.0
+the Bulwark.21.0
+Bulwark of the Weak.23.0
+the Infertile.-4.3
+the Ascended.59.3
+the Womanly.5.3
+the Manly.5.3
+the Poisonous.11.3
+the Toxic.-4.3
+Sewage Drinker.-10.0
+the Bleeder.-4.0
+of the Leaves.3.0
+the Untouchable.26.3
+the Grey Pigrim.9.0
+the Saint of Swords.42.0
+the Unconquered Champion.46.0
+the Adjutant.19.3
+the Woe.1.0
+the Calamity.-1.3
+the Mirror Knight.24.0
+the Blade of Mercy.27.0
+the Bumbling Conjurer.11.0
+the Diabolist.16.3
+the Doddering Sage.4.0
+the Fortunate Fool.1.0
+the Hierophant.10.0
+the Valiant Champion.23.0
+the Vagrant Spear.17.0
+the Scorched Apostate.11.0
+the Rogue Sorcerer.27.0
+the Painted Knife.18.0
+the Lone Swordsman.19.0
+Tombmaker.28.0
+of the Everdark.32.0
+of the Kingdom Under.33.0
+of the Golden Bloom.34.0
+the First Under Night.11.0
+the Scribe.1.3
+the Augur.5.0
+the Warden of the West.30.0
+the Warden of the South.30.0
+the Warden of the East.30.0
+the Warden of the North.30.0
+the Unnerving.23.3
+the Shatterer.5.0
+the Deceased.-26.0
+the One Legged.-4.3
+the Big Lipped.2.3
+the Double Chin.-5.3
+the Addict.-5.3
+the Alcoholic.-4.3
+the Three-Legged.26.3
+the Joyful.10.3
+the Dungeoneer.9.0
+the Dungeon Master.27.0
+the Archmage.42.0
+the Methodical.10.3
+Small-Eared.1.3
+Big-Toed.2.3
+Big-Brained.17.3
+the Whimsical.5.3
+the Musical.10.3
+the Stone Slinger.12.0
+the Trapper.11.0
+Wood Flesh.12.0
+Fleshsnatcher.19.0
+the Stone Head.20.3
+the Madgistrate.7.0
+the Exiled.1.3
+the Demigod.66.0
+the Sheepchaser.2.0
+the Moon Chaser.9.0
+the Lamb.1.3
+the Arse.5.3
+the Six Fingered.12.3
+the Reckless One.16.0
+the Foul Blooded.10.3
+the Artless.2.3
+the Dredged One.23.0
+the Filth Licker.-6.0
+the Yellow Bellied.-4.3
+the Torn Trickster.5.0
+the Devil Witch.10.0
+the Untouched Master.50.0
+the Daft One.1.0
+the Daft.1.3
+the Soulless Regent.32.0
+the Pilfered Heart.-3.0
+the Plagued.-3.3
+the Contagious.-4.3
+the Herpetic.-5.3
+the Unmoveable.33.3
+the Stoneheart.25.3
+the Wily.10.3
+the Unstoppable Force.42.0
+the Omega.29.3
+the Sultry.5.3
+the Default.0.3
+Gaptooth.1.0
+the Compressor.12.0
+of Broken Limits.99.0
+the Wet.2.3
+the Toothy.1.3
+the Jumpy.2.3
+the Jerk.10.0
+the Simpleton.-2.0
+the Simple.1.0
+the Complex.19.3
+the Enigmatic.20.3
+the Half-wit.-2.3
+the Brain.16.0
+the Brainy.10.3
+the Brainless.-5.3
+the Mindless.-4.3
+the Spider.11.3
+the Imbecile.-6.0
+the Bloodless.10.3
+the Stretched.5.0
+the Drooling.-3.3
+the Cheeky.7.3
+of the Temple.9.0
+the Returned.5.3
+the Revenant.6.3
+the Inbred.-10.3
+the Ironic.1.3
+the Sarcastic.5.3
+the Trustworthy.12.3
+the Ambiguous.2.3
+the Hopelessly Lost.-3.3
+the Bully.10.3
+the Bullied.1.3
+the Convict.3.3
+the Convicted.2.3
+the Pining.-3.3
+the Even Younger.2.3
+the Rotting.-5.3
+the Smirking.5.3
+of Doom.30.0
+the Doomed.-6.3
+the Magician.19.0
+the Intellectual.20.3
+the Nosy.3.3
+the Starry-eyed.10.3
+the Love-stricken.6.3
+the Cloudy.6.3
+the Lovelorn.-3.3
+the Lively.16.3
+the Lethargic.-5.3
+the Catatonic.-6.3
+the Blight.7.0
+the Incomprehensible.46.3
+the Helpless.-10.3
+Half-Face.-5.0
+Scarface.15.0
+the Salivating.1.3
+the Savior.27.3
+the Forgotten.10.3
+the Unknown.1.3
+the Hairy.5.3
+the Skeletal.10.3
+the Underfed.-5.3
+the Light.12.3
+of the Night.19.0
+the Night.12.3
+the Livid.16.3
+the Monkey.10.3
+the Orangutan.11.3
+the Earthy.7.3
+the Bold.24.3
+the Ghoul.12.3
+the Youngster.11.0
+the Frost Walker.17.0
+the Lumberjack.12.0
+the Trickster.10.3
+the Failed Bard.2.0
+the Moody.5.3
+the Witless.-6.3
+the Sun God.59.0
+the Newborn.1.3
+the Angelic.12.3
+the Angel.15.3
+the Disgruntled.2.3
+of the Stars.29.0
+the Unwashed.-3.3
+the Pox.-5.3
+the Haemorrhagic.15.3
+the Transcendent.42.3
+the Ethereal.39.3
+the Gourmand.3.0
+the Donkey.3.3
+One-arm.-2.0
+the Legless.-5.3
+the Dancer.12.0
+the Chef.6.0
+the Witch.22.3
+the Witchblade.25.0
+No-Limbs.-10.0
+the Hungry.-3.3
+the Sun Eater.45.0
+Sun-Eater.46.0
+the Virtuoso.26.0
+the Greatest.40.3
+the Godslayer.69.0
+the Smelly.-2.3
+the Patron.5.3
+the Blood-Patron.25.0
+the Well-Wisher.3.0
+the Friend.5.3
+the Benefactor.6.3
+the Advocate.7.3
+the Backer.6.3
+Bloody Nose.-5.0
+One Ball.-15.0
+the Shrieking.5.3
+the Wyvern.29.3
+the Wyvern Slayer.53.0
+the Bane of Wyverns.59.0
+the Wyvern Rider.51.0
+the Wyvern Hunter.49.0
+the Wyvernskinned.11.0
+the Toadskin.3.3
+the Toad-Roaster.5.0
+the Band of Toads.3.0
+the Toad Slayer.2.0
+the Ant Slayer.1.0
+the Bane of Ants.1.0
+the Warg.16.3
+the Wargling.5.0
+the Warglike.11.0
+the Warg-Caller.8.0
+the Warg-Rider.17.0
+the Warg Slayer.22.0
+the Warg Eater.14.0
+the Hard of Hearing.-10.0
+the Leafburner.5.0
+Longfoot.3.0
+the Explorer.11.0
+the Far-Explorer.31.0
+the Near-Explorer.3.0
+the Skull-Drinker.29.0
+the Bonespur.-25.0
+the Lunar.19.3
+the Deathsetter.41.0
+the Bloodsoaked.17.3
+the Urinator.1.0
+the Urinated.-5.3
+the Blackspur.13.0
+the Bronzespur.8.0
+the Ironspur.7.0
+the Redspur.7.0
+the Silverspur.8.0
+the Whitespur.6.0
+the Angry.9.3
+the Anger.20.0
+of Gone Times.-2.0
+of Old Times.11.0
+of Better Days.-5.0
+Shadowcloak.21.0
+the Audacious.9.0
+the Whelk.-10.0
+the Envoy.5.0
+the Dream-Feaster.39.0
+The Agonised.-5.0
+the Opal.11.0
+the Opaline.10.0
+of the Farbogs.9.0
+Nightwing.19.0
+the Pilferer.1.0
+the Crawler.2.0
+the Fighting Eagle.40.0
+the Brave.29.3
+the Impaler.39.0
+the Walker.5.0
+the Braver.34.3
+the Bravest.37.3
+the Firebringer.25.0
+the Joker.1.0
+the Mouse-eater.-5.0
+the Mouse Heart.-3.0
+the Mouse-like.-5.0
+the Lifestealer.41.0
+the Wallbreaker.25.0
+the Boulder.30.3
+the Tombstone.21.3
+the Warforger.29.0
+the Warchaser.34.0
+the Warmaker.45.0
+the Unready.-5.3
+the Overdramatic.-10.3
+Lionheart.30.0
+Longshanks.10.0
+Redtooth.19.0
+Blacktooth.6.0
+Bloodtooth.10.0
+Sharptooth.19.0
+Greentooth.10.0
+Stonetooth.29.0
+Glasstooth.7.0
+Beartooth.16.0
+Wolftooth.14.0
+Dogtooth.4.0
+Curvetooth.3.0
+Bucktooth.-1.0
+Ogretooth.29.0
+Glowtooth.15.0
+Squaretooth.3.0
+Aleblood.5.0
+Meadblood.4.0
+the Meadblood.4.3
+Boozeblood.3.0
+the Ale-Gobbler.13.0
+the Ale-Chugger.11.0
+the Ale-Slammer.10.0
+the Aleblood.5.3
+the Blackout-Drunk.-30.3
+the Mead-Guzzler.9.0
+Alebreath.3.0
+the Accident-Prone.-5.0
+Moonborn.10.0
+Moonshine.3.0
+Moonlove.4.0
+Rivers.1.0
+the Old-Hero.10.0
+the Once-Heroic.15.0
+the Once-Champion.11.0
+Once-Known.3.0
+the Once-Known.4.3
+the Once-Famed.4.3
+the Once-King.20.0
+the Once-God.25.0
+the Twice-Heroic.20.0
+the Twice-Known.6.3
+the Twice-King.29.0
+the Roof Hopper.9.0
+the Skytoucher.19.0
+the Soultoucher.21.0
+the Bloodtoucher.16.0
+the Skulltoucher.17.0
+the Bonetoucher.15.0
+the Bladetoucher.4.0
+the Corpsetoucher.2.0
+the Deathtoucher.49.0
+the Facebreaker.15.0
+the Facemelter.30.0
+the Facecleaver.31.0
+the Facemasher.32.0
+the Facecrusher.33.0
+the Facestealer.40.0
+the Face-Eater.49.0
+the Facecarver.31.0
+the Fleshsculptor.39.0
+Hardaxe.15.0
+Stoneaxe.12.0
+Longaxe.17.0
+the Axe-Wielder.20.0
+the Axe Tosser.32.0
+the Axe-Swinger.21.0
+the Axe.39.3
+Bloodaxe.36.0
+Boneaxe.30.0
+Skullaxe.40.0
+Half-Axe.10.0
+the Twisted.5.3
+the Earcutter.11.0
+the Toecutter.19.0
+the Mask.10.3
+the Mask-Hater.3.0
+One-Eye.14.0
+the Eye-Gouger.34.0
+the Scavenger.30.0
+the Vault-Raider.36.0
+the Door-Watcher.6.0
+the Vapourman.9.0
+the Positive.10.3
+the Negative.-10.3
+the Headstrong.39.3
+the Hard-Head.16.0
+the Hungover.-10.3
+the Hammered.-10.3
+the Painter.3.0
+the Fleshpainter.37.0
+the Corpsemaker.36.0
+the Corpsetwister.41.0
+the Corpsegrinder.42.0
+the Corpsemangler.41.0
+the Corpse-Eater.15.0
+the Horsehead.34.3
+the Hammerhead.47.3
+the Hollow-Brain.-15.0
+the Hollow-Mind.-10.0
+the Hollow-Head.-10.0
+the Hollow-Skull.-5.0
+the Winged.5.3
+the Goldwinged.10.0
+the Bladeswinger.16.0
+the Spearswinger.17.0
+the Lout.-3.0
+the Bigot.-10.0
+the Beast-Tamer.15.0
+the Beast-Eater.49.0
+the False-Promiser.-15.0
+the Bardbarian.35.0
+the Battlebard.16.0
+the Tourist.1.0
+the Swiper.5.0
+the Goldswiper.6.0
+the Skullswitcher.39.0
+the Switcher.3.0
+the Swooper.6.0
+the Roguelike.29.0
+the Rogue.39.3
+the Blighter.3.0
+the Dastard.12.0
+the Dastardly.11.3
+the Lowlife.-4.0
+the Varlet.-3.0
+the Scallywag.-2.0
+the Ne'er-do-well.3.0
+the Scrote.1.0
+Scote.1.0
+the Meany.6.0
+the Wastrel.-5.0
+the Charlatan.-15.3
+the Miscreant.-5.0
+the Reprobate.-3.0
+Arrowfoot.5.0
+the Regretful.-10.3
+the Sunlooker.-5.0
+the Suncaller.12.0
+the Sun-Dancer.5.0
+the Sunny.3.3
+the Muscular.35.3
+the Shameful.-5.3
+the Dogfaced.2.3
+the Firewalker.29.0
+the Rosefaced.1.3
+the Leafclad.5.3
+the Swordclad.39.3
+the Shieldclad.25.3
+the Boneclad.34.3
+the Ironclad.29.3
+the Steelclad.30.3
+the Bronzeclad.30.3
+the Woodclad.12.3
+the Stoneclad.15.3
+the Crystalclad.44.3
+the Skullclad.36.3
+the Hideclad.14.3
+the Goldclad.33.3
+the Glassclad.10.3
+the Silkclad.3.3
+the Obsidianclad.50.3
+the Twitchy.-10.3
+the Worthless.-6.3
+the Dog Rider.9.0
+the Dog Whisperer.7.0
+the Cat Whisperer.5.0
+the Horse Whisperer.6.0
+the Beast Whisperer.30.0
+the Whisper.25.3
+the Everloving.10.3
+the Noteworthy.23.3
+Longbraid.5.0
+the Sower of Discord.25.0
+the Bloodbraided.29.3
+Blackbraid.6.0
+Redbraid.6.0
+Whitebraid.5.0
+Greenbraid.4.0
+the Sower of Dismay.15.0
+the Sower of Dissent.14.0
+of the Cloudstone.8.0
+of the Seastone.8.0
+of the Windstone.8.0
+of the Earthstone.8.0
+of the Waterstone.8.0
+of the Oceanstone.8.0
+of the Nightstone.8.0
+of the Blackstone.8.0
+of the Darkstone.8.0
+of the Whitestone.8.0
+of the Skystone.8.0
+the Tombraider.30.3
+the Tombrobber.17.3
+the Tombtaker.17.3
+Bitterblossom.10.0
+of the Tar Pit.6.0
+the Wartutor.19.3
+the Battletutor.15.3
+the Tutor.10.3
+the Depthwalker.22.3
+the Depthdiver.21.3
+the Depthswimmer.20.3
+the Depthclimber.23.3
+Aeon.33.3
+the Unhallowed.10.3
+the Vault Robber.16.0
+the Stirring.5.3
+the Golden Fang.27.0
+the Alms Collector.10.0
+the Line-Slinger.15.0
+the Faceshifter.11.0
+the Faceswapper.11.0
+the Excavator.16.0
+the Slumbering.-5.3
+the Bloodforger.26.3
+the Bloodsworn.29.3
+the Bloodtracker.27.3
+the Bloodtracer.26.3
+the Bloodmaker.26.3
+the Bloodwatcher.21.0
+the Bloodsweater.19.0
+the Disturbed.10.3
+the Armour.15.3
+the Armour-Clad.30.3
+the Artisan.5.3
+the Sunspeaker.29.0
+the Floodcaller.19.3
+the Geode.10.3
+the Dissident.10.3
+the Master of Waves.25.0
+the Meandering.5.3
+Fiend Seeker.11.0
+Monster Seeker.13.0
+Fortune Seeker.5.0
+Wealth Seeker.5.0
+Demon Seeker.5.0
+Love Seeker.5.0
+Hate Seeker.1.0
+Sun Seeker.14.0
+Light Seeker.13.0
+Dark Seeker.16.0
+Moon Seeker.15.0
+Night Seeker.12.0
+Day Seeker.11.0
+World Seeker.19.0
+the Nesting.5.3
+the Umbral.19.3
+the Rot.-5.3
+the Chainswinger.16.0
+the Chainwhirler.17.0
+the Chainbearer.2.0
+the Chainwearer.1.0
+the Chainlord.29.0
+the Chained.5.1
+the Chained.-5.3
+the Chainwalker.15.0
+the Sellchain.19.0
+of the Hood.25.0
+Hoodbearer.10.0
+Hood.35.0
+the Hood.12.0
+of the Cloak.15.0
+Cloakbearer.12.0
+the Cloaked.13.3
+Cloak.7.0
+of the Scarf.20.0
+Scarfbearer.6.0
+the Scarf.8.0
+the Firesnatcher.22.0
+the Watersnatcher.20.0
+the Windsnatcher.20.0
+the Bonesnatcher.25.0
+the Childsnatcher.1.0
+the Goldsnatcher.5.0
+the Soulsnatcher.33.0
+the Lifesnatcher.29.0
+the Stonesnatcher.15.0
+the Skullsnatcher.24.0
+the Stonethrower.5.0
+Stonethrower.3.0
+the Thrower of Stones.4.0
+Stoneskipper.1.0
+Stonetosser.1.0
+Smallriver.1.0
+Longtrail.1.0
+Littlerock.1.0
+Halfroad.1.0
+Oddstream.1.0
+Horn.3.0
+Blade.4.0
+Sand.2.0
+Snow.2.0
+Wind.2.0
+Storm.2.0
+Star.3.0
+Moon.3.0
+Sun.3.0
+Ohm.1.0
+Elfson.5.0
+Dwarfson.10.0
+Orcson.15.0
+Demonson.22.0
+Ogreson.19.0
+Giantson.20.0
+Gnomeson.1.0
+Trollson.25.0
+Battle-Born.19.0
+Mountainborn.12.0
+Honey-Hand.5.0
+Bronzeblood.13.0
+Redhand.14.0
+Blackhand.16.0
+Doomhand.16.0
+Once-Honoured.5.3
+Brandy-Mug.2.0
+Crag-Jumper.10.0
+the Underling.5.3
+Dogsbreath.-5.0
+Houndsbreath.-6.0
+the Flamebreather.29.0
+the Frostbreather.25.0
+the Stormbreather.32.0
+Firebreath.12.0
+Frostbreath.10.0
+Icebreath.11.0
+Stormbreath.13.0
+Deathbreath.14.0
+Doombreath.30.0
+Doom-Breather.29.0
+Darkbreath.19.0
+Lightbreath.19.0
+the Firebreather.31.0
+the Windbreather.31.0
+the Icebreather.31.0
+the Mountainjumper.22.0
+the Dunejumper.7.0
+the Hilljumper.8.0
+the Chasmjumper.25.0
+the Craterjumper.11.0
+the Holejumper.7.0
+the Cliffjumper.25.0
+the Northern Ranger.40.0
+the Southern Wanderer.35.0
+the Eastern Scout.20.0
+Lovespoon.10.0
+the Bane of Savages.44.0
+the Faraway Warrior.22.0
+the Faraway Warlord.31.0
+Darkhilt.7.0
+Darkhand.8.0
+Darkblade.12.0
+Darkheart.12.0
+Darkpommel.5.0
+Darkguard.11.0
+Darkwood.9.0
+Darklance.12.0
+Darkbow.12.0
+Darkblood.15.0
+Darkfoot.7.0
+Darkhorse.7.0
+Darksky.12.0
+the Fan.5.0
+of the Freehills.10.0
+of the Deep Halls.45.0
+of the Lost Spire.50.0
+of the Trees.25.0
+the Stumbler.-5.0
+the Uneven.-6.3
+the Dizzy.-3.3
+the Unsteady.-4.3
+the Wobbly.-4.3
+the Shaky.-4.3
+the Woozy.-5.3
+the Off-Balance.-6.3
+the Kraken.45.0
+the Kraken-Slayer.47.0
+the Kraken Follower.10.0
+the Kraken Worshipper.9.0
+Beastbait.-5.0
+the Stinky.-10.3
+the Stench.-9.0
+Magister of Greed.30.0
+Magister of Love.31.0
+Magister of Death.45.0
+Magister of Solace.25.0
+Farseeing.10.0
+the Mariner.12.0
+the Bright.18.3
+Protector of the Weak.32.0
+Protector of Life.32.0
+Gentleheart.5.0
+the Voiceless One.10.0
+Longtail.18.0
+the Restorer.17.0
+the Faraway Lord.40.0
+the Faraway King.55.0
+the Faraway Hero.46.0
+the Faraway Prince.50.0
+the Faraway Champion.45.0
+the Savage Conqueror.44.0
+the Unstoppable Conqueror.55.0
+the Magnificent Conqueror.50.0
+the Mighty Conqueror.51.0
+the Old Conqueror.39.0
+the New Conqueror.40.0
+the Failed Conqueror.-5.0
+the Ancient Conqueror.60.0
+the Unprepared.-10.3
+the Underprepared.-5.3
+the Imperial Conqueror.50.0
+the Man-Spider.34.0
+the Unbeatable.50.3
+the Foreigner.10.0
+of Foreign Lands.15.0
+the Beatable.-5.3
+the Beaten.-15.3
+the Badly Beaten.-20.0
+the Much Beaten.-17.0
+the Hollow.15.3
+the Hollow-Hand.15.0
+the Hollow-Heart.20.0
+the Mortally-Wounded.-40.0
+the Mortal.1.3
+the One-Eared.-7.3
+the Feared.40.3
+the Earless.-15.3
+the Drifter.5.3
+the Drifting Man.15.0
+Creator of Foul Flatulence.5.0
+the Sea Champion.55.0
+the Champion of the Sea.56.0
+the Coast Champion.31.0
+the Champion of the Coast.32.0
+the Sea Warden.29.0
+the Sea Watcher.19.0
+the Sea Wanderer.31.0
+the Sea-Hater.5.0
+the Blistering.-8.0
+the Blister-Covered.-18.0
+the Lifeless.-40.3
+the Unconscious.-35.3
+the Rough Lover.34.0
+the Steel Gryphon.43.0
+the Iron Gryphon.36.0
+the Sandblade.35.0
+the Hornet.25.0
+Batkiller.19.0
+of the Skull.20.0
+the Skull.30.3
+Roof Smasher.-5.0
+the Oaken.10.3
+the Soft.-5.3
+the Jewel Thief.15.0
+the Highwayman.16.0
+the Leaf Smoker.-10.0
+the Pawn.1.0
+the Rook.10.0
+the Warscreamer.20.0
+the Warcrier.19.0
+the Warbard.19.0
+the Razorbeard.25.0
+the Forest Champion.49.0
+the Forest Follower.12.0
+the Forest Forsaken.-10.0
+the Wild Child.19.0
+the Childish.-5.3
+the Infantile.-10.3
+the Senile.-15.3
+the Aged.-15.3
+the Frog-legged.10.0
+the Steel-leg.5.0
+the Oak-leg.-5.0
+the Four-legged.39.3
+the Pestering.10.3
+the Nemesis of Order.30.0
+the Nemesis of Virtue.31.0
+the Nemesis of Vice.-5.0
+the Nemesis of Chaos.30.0
+the Divine Punisher.65.0
+the Instrument of Fate.69.0
+the Divine Protector.70.0
+the Divine Smiter.65.0
+the Divine Serenity.40.0
+the Divine Deceiver.66.0
+the Once-Known.-5.3
+the Washup.-5.3
+the Waste.-15.3
+the Waster.-15.0
+the Drunk.-10.3
+the Doombringer.39.3
+the Doomsayer.20.3
+the One Who Smells.-5.0
+the Water-Walker.25.0
+the Water-Watcher.10.0
+the Water-Waker.20.0
+the Water-Whistler.15.0
+the Wallbuilder.10.0
+the Climber of Walls.19.0
+the Bane of Hounds.9.0
+of Smallhaven.5.0
+of Rihhm.4.0
+of Darkdale.10.0
+the Bane of Nomads.39.0
+the Bane of Orcs.38.0
+the Bane of Man.35.0
+the Bane of Elves.36.0
+the Bane of Dwarves.37.0
+the Bane of Trolls.42.0
+the Bane of Ogres.39.0
+the Bane of Ents.40.0
+the Bane of Gnolls.20.0
+the Bane of Liches.40.0
+the Bane of the Undead.26.0
+the Bane of Snotlings.5.0
+the Bane of Goblins.10.0
+the Bane of Vampires.37.0
+the Bane of Demons.59.0
+the Bane of Gremlins.6.0
+the Bane of Giants.43.0
+the Bane of Fiends.31.0
+the Bane of Imps.7.0
+the Bane of Mermen.29.0
+the Bane of Wizards.37.0
+the Bane of Minotaurs.38.0
+the Bane of Halflings.-5.0
+the Bane of Barbarians.39.0
+the Bane of Civilisation.25.0
+the Bane of the Living.29.0
+the Bane of the Lost.39.0
+the Bane of the Forgotten.40.0
+the Red Rider.29.0
+the Blue Rider.22.0
+the Grey Rider.33.0
+the Dark Rider.35.0
+the Light Rider.29.0
+the Gold Rider.36.0
+the Bronze Rider.32.0
+the Black Rider.35.0
+the Night Rider.30.0
+the White Rider.25.0
+the Day Rider.15.0
+the Bridgewatcher.30.0
+the Wallwatcher.25.0
+the Doorwatcher.15.0
+the Gatewatcher.28.0
+the Overwatcher.30.0
+the Nightwatcher.31.0
+the Hillwatcher.12.0
+the Mountainwatcher.29.0
+the Crabber.2.0
+the Defeated.-10.3
+the Wormlike.-22.3
+the Maggotlike.-20.3
+Maggotbreath.3.0
+Bogbreath.4.0
+Stinkbreath.2.0
+Skunkbreath.3.0
+the Third Son.5.0
+the Fourth Son.4.0
+the Second Son.8.0
+the Lie Spreader.-5.0
+the Unright.15.3
+the Scolded.-12.0
+the Crippled.-36.3
+the Cripple.-39.3
+the Bleeder.-20.0
+the Weakling.-30.0
+the Wimp.-30.3
+the Exessively Cowardly.-40.3
+the Gifted.32.3
+the Gifted One.34.0
+the Worm.-5.0
+the Two-Teeth.-2.0
+of the Winter.29.0
+of the Summer.25.0
+of the Spring.26.0
+of the Autumn.25.0
+the Oppressor of Souls.44.0
+the Existence Demolisher.42.0
+the Brain Basher.39.0
+the Skin Eater.34.0
+the Warden of Domains.40.0
+the Firestarter.29.0
+the Champion of Men.38.0
+the Champion of the Trodden.34.0
+the Voiceless.15.3
+The Voiceless One.29.0
+the Squirmer.-10.0
+the Self-Proclaimed Demi-God.120.0
+the Self-Proclaimed Demi-God.5.0
+the Adored Savior.45.0
+the Mentor.30.0
+Doomwhisper.29.0
+the Dreadwhisperer.29.0
+the Childeater.19.0
+the Twin.5.3
+the Morbidly Obese.-25.3
+Dragonthorne.15.0
+Bringer of Doom.39.0
+Snakeroot.15.0
+Stonebug.10.0
+Emberfist.12.0
+Gorehelm.22.0
+Runestrike.16.0
+Doomblood.30.0
+Frostclaw.20.0
+The Cobra.28.0
+the Champion Of Dragons.43.0
+Bone Hair.20.0
+the Remarkable.35.3
+the Dagger Hurler.23.0
+the Thrower.12.0
+the Blade Thrower.23.0
+the Axe Thrower.32.0
+the Javellin Thrower.33.0
+the Spear Thrower.32.0
+the Dagger Thrower.25.0
+Black-Eyes.5.0
+Red-Eyes.5.0
+Brown-Eyes.5.0
+Green-Eyes.5.0
+the Great and Powerful.75.3
+Redblade.38.0
+Blackblade.37.0
+Whiteblade.32.0
+Swiftblade.37.0
+Fastblade.37.0
+Longblade.33.0
+Quickblade.35.0
+Shortblade.26.0
+Sharpblade.31.0
+Greenblade.31.0
+Bloodblade.39.0
+Dirtblade.34.0
+Wetblade.27.0
+the Slab.30.0
+the Solemn.12.3
+Emerald-Eyes.25.0
+the Deathmarked.10.3
+the Gnawer.22.0
+the Gnasher.21.0
+the Gnarled.2.3
+the Haggered.-5.3
+the Hypocrite.-2.3
+the Hypnotist.20.3
+the Hypnotized.-10.3
+the Hopeless.-5.3
+the Hopeful.5.3
+the Sunscorched.-5.3
+the Dangerous.40.3
+the Endangered.-15.3
+the Drained.-10.3
+the Fearful.-6.3
+the Murderous.39.3
+the Versatile.36.3
+the Zodiac.18.3
+the Grotesque.12.3
+the Honorless.15.3
+the Horrid.10.3
+the Juggler.6.0
+the Nobody.1.0
+the Monk.5.3
+the Feral.10.3
+Maidensbane.12.0
+the Overworked.-20.3
+the Flagbearer.5.0
+the Bannerman.6.0
+the Snotty.-8.3
+the Devout.5.3
+the Devil.60.3
+the Devilish.15.3
+the Freedom Fighter.31.0
+the Rebelious One.19.0
+the Farter.1.0
+the Flatulent.1.3
+the Over Fed.-6.3
+the Guardian of the Key.35.0
+the Dogwalker.3.0
+the Treelover.5.0
+the Tree.12.3
+the Limp.-9.3
+the Creep.5.3
+the Creepy.15.3
+the Befouled.-15.3
+the Brick.39.3
+the Barrel.34.3
+the Mast.49.3
+the Able.9.3
+the All-fair.10.3
+the Ambitious.20.3
+the Ill-fated.-35.3
+the Badly Endowed.-10.3
+Frailmane.-15.0
+Weakhand.-5.0
+Softmind.-25.0
+Lowborn.-3.0
+the Soft-Mind.-25.0
+the Weak-Hand.-5.0
+the Brain-Damaged.-39.3
+the Weak-Minded.-10.3
+the Sickly.-9.3
+the Unhealthy.-11.3
+the Feeble.-19.3
+the Puny.-3.3
+the Puny-Hands.-4.0
+the Infirm.-23.3
+the Ailing.-17.3
+the Incapacitated.-45.3
+the Inadequate.-2.3
+the Whisper.26.3
+the Swindler.5.0
+the Agoniser.44.0
+the Wrinkled.-20.3
+the Befuddled.-25.3
+the Bed-Wetter.-40.0
+the Lowly.-40.3
+the Lowly Maggot.-43.0
+the Lowly Worm.-44.0
+the Lowest.-48.3
+the Trodden.-10.3
+the Underdog.15.3
+the Braindead.-40.3
+the Almost-Dead.-42.3
+the Half-Deceased.-25.3
+the Numbskull.-10.3
+the Poorly.-9.0
+the Unloved.-10.3
+the Aborted.-41.3
+the Divorced.-5.3
+the Depressed.-15.3
+the Anxious.-15.3
+the Pitiful.-20.3
+the Mentally-Ill.-25.3
+the Slow.-5.3
+the Tyrant.41.3
+the Bloodthirsty.23.3
+the Majestic.39.3
+the Peacemaker.21.3
+the Scornful.12.3
+the Exalted.33.3
+the Forsaken.-1.3
+the Coward.-5.3
+the Bitten.-4.3
+the Gangrenous.-15.3
+of Blackrow.33.0
+of Dockrow.30.0
+of the Slums.-2.0
+of Guildrow.10.0
+the Forgotten Hero.40.0
+the Forgotten General.42.0
+the Forgotten Captain.15.0
+the Forgotten Warlord.35.0
+the Forgotten Champion.36.0
+the Forgotten Knight.32.0
+the Forgotten Warrior.25.0
+the Forgotten Lord.39.0
+the Forgotten King.45.0
+the Moonskin.23.3
+the Moonlight.50.3
+the Sunlight.50.3
+the Raven-Haired.20.3
+the Bloodletter.15.0
+the Unrepentant.10.3
+the Cruel.39.3
+the Omnipotent.99.3
+the All-Seeing.98.3
+the Bloodseeker.32.3
+the Pale.1.3
+the Arrogant.15.3
+the Stinger.23.0
+the Punisher.26.3
+the Ragged.2.3
+the Somber.10.3
+the Crestfallen.-5.3
+the Ruthless.44.3
+the Unforgiving.36.3
+the Heartstriker.53.3
+the Vagabond.12.3
+the Hellhound.49.3
+the Sorrow.50.3
+the Sorrowful.2.3
+the Screamer.35.0
+the Shrieker.36.0
+the Stalker.39.0
+the Vile.21.3
+the Nefarious.11.3
+the Maleficent.49.3
+the Rotten.-3.3
+the Depraved.-10.3
+the Treacherous.10.3
+the Vengeful.44.3
+the Ugly.-5.3
+the Menace.25.3
+the Flesh-eater.26.0
+the Last of his blood.70.0
+the Clumsy.-5.3
+the Faithful.23.3
+the Merciful.24.3
+the Foolhardy.19.3
+the Cheesemaker.5.3
+the Watcher of the Dead.42.0
+the Seeker of the night.41.0
+the Finger-Eater.33.0
+the Long Finger.12.0
+the Big Nose.9.3
+the Chosen One.125.0
+the Long Nose.9.3
+the Neophyte.-2.3
+the Fledgling.3.3
+the Heavy.45.3
+the Pugilist.43.3
+the Boltman.39.0
+the Clawman.46.0
+the Writer.-2.0
+the Mud-Eater.5.0
+the Grundler.23.0
+the Griddler.23.0
+the Graddler.23.0
+the Grobbler.23.0
+the Gribbler.23.0
+the Gut Grinder.40.0
+the Desperate.14.3
+the Undecided.1.3
+the Iron Bear.39.0
+the Great Bear.53.0
+Great Bear.54.0
+the Pig-Farmer.15.0
+the Horse Trainer.21.0
+the Fletcher.17.0
+the Woodsman.20.0
+the Pig-Breeder.10.0
+the Blind Warrior.10.0
+the Blind Bandit.5.0
+the Blind Monk.-5.0
+Iron Grip.36.0
+Bear Claw.41.0
+Black Stone.25.0
+Green Stone.24.0
+Elfstone.26.0
+Blood Stone.27.0
+Chaos Stone.29.0
+Shadow Stone.26.0
+the Wild boar.31.0
+the Elephant.41.0
+the Scholar.2.3
+the Hammer Hand.35.0
+the Iron Pirate.41.0
+the Iron Captain.47.0
+the Steel Captain.48.0
+the Black Pirate.42.0
+the Red Pirate.41.0
+the Famous Pirate.47.0
+the Oak Heart.12.0
+the Iron Heart.29.0
+the Cold Heart.10.0
+the Kind Heart.9.0
+of Stony Hill.20.0
+of the Wild Hills.20.0
+of the Red Hill.20.0
+of the Green Hill.20.0
+of the Barren Hills.20.0
+of the Long Hills.20.0
+of the North Shore.20.0
+of the South Shore.20.0
+of the East Shore.20.0
+of the West Shore.20.0
+of the Wild Shore.24.0
+of the Black Shore.27.0
+of the Pirate Shore.25.0
+of the Far Shore.21.0
+of the Farthest Shore.21.0
+of the Last Shore.21.0
+of the Cold Shore.22.0
+of the Troll Shore.29.0
+of the Deepest Shore.29.0
+the Apprentice.10.0
+the Acolyte.5.0
+the Novice.15.0
+the Journeyman.20.0
+Hook.5.0
+Death-Hook.46.0
+Meat-Hook.21.0
+son of the Soil.10.0
+the Silversmith.21.0
+the Earthshaker.49.0
+the Cagefighter.35.0
+the Betrayer.2.0
+the Backstabber.1.0
+the Murderer.29.0
+the Ripper.32.0
+the Condemned.15.0
+the Gambler.3.0
+the Sneak.5.0
+the Disowned.-5.3
+the Dishonored.10.3
+the Fallen.15.3
+the Pariah.10.3
+the Outcast.19.3
+the Broken.-14.3
+the Damned.-5.3
+the Deathbringer.49.3
+the Deathchaser.27.0
+the Corpsemaster.38.0
+the Spirit Slayer.35.0
+the Soul Ripper.30.0
+the Flayer.39.0
+the Blood Drinker.25.0
+the Music Lover.4.0
+the Diseased.-15.3
+the Infectious.-10.3
+the Festering.-20.3
+the Challenger.999.0
+the Monster-Hunter.44.0
+the Monster-Killer.45.0
+the Legend.50.0
+the Unforgettable.42.3
+the Proud.12.3
+friend of Man.13.0
+friend of the Sea.10.0
+friend of the Sky.10.0
+friend of the Forest.10.0
+friend of the Stone.10.0
+friend of Orcs.16.0
+friend of Gnomes.10.0
+friend of Demons.20.0
+friend of Dogs.11.0
+the Starborn.35.3
+the Fireborn.35.3
+the Cloudborn.35.3
+the Earthborn.35.3
+the Stoneborn.35.3
+the Frostborn.35.3
+of the Darkness.46.0
+of the Depths.47.0
+of the Jungle.23.0
+of the Inferno.30.0
+of the Shadows.39.0
+Darknessborn.60.0
+Heart-Eater.39.0
+the Offended.-15.3
+Steelfoot.32.0
+Redfoot.15.0
+Greenfoot.14.0
+Bluefoot.15.0
+Blackfoot.16.0
+Greyfoot.15.0
+Whitefoot.15.0
+Purplefoot.1.0
+Yellowfoot.2.0
+Amberfoot.16.0
+Grassfoot.16.0
+Waterfoot.16.0
+Earthfoot.16.0
+Sunfoot.16.0
+Moonfoot.16.0
+Orangefoot.15.0
+Ironfoot.29.0
+Goldfoot.28.0
+Bladefoot.32.0
+Bowfoot.27.0
+Badfoot.-3.0
+Mouldfoot.-10.0
+Dirtyfoot.-5.0
+the Boot.26.0
+Brother of Darkness.54.0
+the Fate Weaver.100.0
+Voidrider.99.0
+Ironmaw.34.0
+Ironfist.33.0
+Steelclaw.35.0
+Ironclaw.34.0
+Steelmaw.35.0
+Bloodfist.31.0
+Bloodyfist.19.0
+Bloody-Fists.20.0
+the Hand of Revenge.41.0
+the Fist of Revenge.45.0
+Wolf-Eater.15.0
+Dog-Eater.11.0
+Cat-Eater.9.0
+the Lovely.8.0
+the Robber.19.0
+the Scared.-10.0
+the Giant.60.0
+the Raw.12.0
+the Maniac.39.0
+the Fanatic.15.0
+the Fearsome.41.0
+the Charming.10.0
+Monster-Slayer.44.0
+Beast-Slayer.43.0
+the Attacker.26.0
+Goldbeard.27.0
+Bluebeard.25.0
+Goldenbeard.27.0
+Darkmane.38.0
+Bloodmane.49.0
+Lion's Mane.44.0
+Shaggy Hair.5.0
+the Silver Haired.-1.3
+the Fat.-5.3
+the Bald.10.3
+the Squat.-10.0
+the Oathkeeper.41.0
+the Promise Keeper.10.0
+the Craven.1.3
+the Quail.2.0
+the Runt.-15.3
+the Awkward.-5.3
+the Virgin.-10.3
+the Portly.-22.3
+the Gentleman.15.3
+the Ladylike.-2.3
+the Delicate.-20.3
+the Dainty.-5.3
+the Pot-Belly.-23.3
+the Flat-Foot.-8.3
+Deathadder.65.0
+Blacksnake.34.0
+Whitesnake.35.0
+Serpent's Bane.45.0
+Manbane.70.0
+Orcbane.71.0
+Trollbane.73.0
+Entbane.74.0
+Goblinsbane.31.0
+Goblinbane.34.0
+the Prime.81.0
+the Primed.25.0
+the Supreme.79.0
+the Remembered.30.0
+the Shameless.10.0
+the Rebellious.16.3
+of the South Coast.15.0
+son of the Coast.13.0
+of Shaian.20.0
+of Arasuk.5.0
+of Barbaria.79.0
+of Battania.40.0
+of Calradia.45.0
+of the Free Hills.5.0
+the Wonderer.10.0
+the Sightless.-20.3
+the Everseer.35.0
+the Greenseer.21.0
+the Redseer.22.0
+the Blackseer.23.0
+the White-eyed.50.3
+the Brother.5.3
+the All-Father.9.0
+the All-Brother.8.0
+the Wrecked.1.3
+the Shipwrecked.2.0
+the Havok.23.3
+the Havok-Bringer.39.0
+the Ravenclaw.27.3
+the Lionclaw.39.3
+the Bearclaw.55.3
+the Dragonclaw.65.3
+the Wolfclaw.29.3
+the Tigerclaw.35.3
+the Cubclaw.15.3
+the Beastclaw.55.3
+the Meditative.1.3
+the Bannerholder.10.0
+the Muffled.3.3
+the Man.10.3
+the Boy.5.3
+the Swordsinger.44.0
+the Spearsinger.46.0
+the Bladesinger.45.0
+the Leaf-Eater.0.0
+the Mirror-Lover.3.0
+the Thick-Skulled.55.0
+Spider-Hater.2.0
+Monster-Hater.10.0
+Elf-Hater.18.0
+Troll-Hater.17.0
+Orc-Hater.8.0
+Goblin-Hater.3.0
+Gnoll-Hater.4.0
+Gnome-Hater.3.0
+Ghost-Hater.1.0
+Ogre-Hater.16.0
+Man-Hater.12.0
+Vampire-Hater.22.0
+Ent-Hater.18.0
+Trow-Hater.11.0
+Demon-Hater.22.0
+Titan-Hater.21.0
+King-Hater.12.0
+Crown-Hater.5.0
+Rat-Hater.3.0
+Wolf-Hater.9.0
+Witch-Hater.15.0
+Dwarf-Hater.17.0
+Harpy-Hater.17.0
+Mage-Hater.19.0
+Dryad-Hater.11.0
+Naga-Hater.12.0
+Kobold-Hater.8.0
+Giant-Hater.19.0
+Imp-Hater.2.0
+Zombie-Hater.5.0
+Fiend-Hater.6.0
+Ghoul-Hater.6.0
+Lich-Hater.15.0
+Elder-Hater.5.0
+the Steamed.10.0
+the Released.30.0
+the Drizzler.0.0
+the Fairie.20.0
+of the Red Tower.50.0
+the Gusty-Briefs.-3.0
+the Pecker.-2.3
+the Hummingbird.10.3
+the Bucket.0.3
+the Bucket Knight.50.0
+the Fancyman.70.3
+the Bulldog.41.3
+the Brash.13.3
+the Abraised.-4.3
+the Bristled.5.3
+the Bristle-Backed.10.3
+the Boat.15.3
+the Crossbow.39.3
+the Cross.12.3
+the Arch.15.3
+the Narrow-Nosed.10.3
+the Horse-Faced.3.3
+the Duck-Faced.-10.3
+the Twice-Abandoned.2.3
+the Everlone.13.3
+the Much Despised.-3.3
+the Tradesman.7.3
+the One-Horn.5.3
+the Guardian of the Demon Gate.42.0
+the Guardian of the Ancient Isle.44.0
+the Seller.4.0
+the Crouched.1.3
+the Roof-Runner.35.3
+the Wartorn.14.3
+the Rushed.4.3
+the Hurried.3.3
+the Aching.-5.3
+the Itching.-1.3
+the Woodworker.11.3
+the Huntsman.19.0
+the Blacksmith.25.0
+the Smith.24.0
+the Bored.10.3
+the Boring.5.3
+the Elated.6.3
+the Road Warrior.54.0
+the Road Watcher.31.0
+the Roadwarrior.34.0
+the Road.10.3
+the Bookkeeper.1.0
+the Tome.10.3
+the Well-Read.5.3
+the Keeper.21.3
+the Necrophile.19.0
+the Windwatcher.45.0
+the Wavewatcher.45.0
+the Stormwatcher.45.0
+the Firewatcher.45.0
+the Weak Willed.-9.3
+the Strong Willed.30.3
+the Strong Heart.40.3
+the Bold Hearted.40.3
+the Collector of Kelp.10.0
+the Green Bean.9.0
+the Red Bean.5.0
+the Orange Bean.5.0
+the Golden Bean.9.0
+the Purple Bean.5.0
+the Exquisite Bean.8.0
+the Silver Bean.7.0
+the Lady Bean.6.0
+the Black Bean.5.0
+the Yellow Bean.5.0
+the Blue Bean.5.0
+the Grey Bean.5.0
+the Brown Bean.5.0
+the White Bean.5.0
+the Bronze Bean.5.0
+the Black Heart.29.0
+the Dead Heart.19.0
+the Pure Heart.39.0
+the Hero of Light.69.0
+the Hero of Dark.70.0
+the Hero of Darkness.71.0
+the Hero of Fire.68.0
+the Hero of Water.68.0
+the Hero of Earth.68.0
+the Hero of Wind.68.0
+the Hero of Lightning.65.0
+the Hero of Storms.68.0
+the Hero of Kings.64.0
+the Hero of Men.71.0
+the Hero of Stone.67.0
+the Hero of the Sun.72.0
+the Hero of the Stars.72.0
+the Hero of the Moon.72.0
+the Hero.40.3
+the Heroic.42.3
+the Lone.39.3
+the Windcaller.55.3
+the Wildwind.49.3
+the Windrider.51.0
+the Husk.20.3
+the Lonely.38.3
+the Abandoned.26.3
+the Kinslayer.30.3
+the Destroyer.80.3
+the Annihilator.82.3
+the Destructor.76.0
+the Putrid.18.3
+the Rancid.15.3
+the Hellish.20.3
+the Darkspawn.40.3
+the Hellspawn.50.3
+the Demonspawn.90.3
+the Chaotic.50.3
+the Bringer of Chaos.50.0
+the Bringer of Destruction.52.0
+the Stallion.35.3
+the Sparrow.25.3
+the Lion.40.3
+the Bear.45.3
+the Boar.43.3
+the Pig.15.3
+the Wolf.25.3
+the Noble.35.0
+the Valiant.40.3
+the Defiant.45.3
+the Great.76.3
+the Strong.65.3
+the Bloody.34.3
+the Bloodied.44.3
+the One-Eyed.10.0
+the Three-Eyed.60.0
+the Knave.10.0
+the Grave.21.0
+the Goliath.95.3
+the Invincible.100.3
+the Gladiator.30.0
+the Mad.10.3
+the Mad Man.15.0
+the Vicious.45.3
+the Triumphant.35.3
+the Defiler.45.0
+the Red.15.0
+the Scaly.25.3
+the Scaled.26.0
+the Blue.15.3
+the Green.15.3
+the Pink.15.3
+the Purple.15.3
+the Orange.15.3
+the Red-Eyed.12.0
+the Green-Eyed.12.0
+the Blue-Eyed.12.0
+the Brown-Eyed.12.0
+the Blood-Stained.25.0
+the Torturer.55.0
+the Tortured.10.3
+the Athletic.25.0
+the Terror.55.0
+the Terrorised.10.0
+the Terrible.54.3
+the Iron-Skulled.65.3
+the Gold-Skulled.67.3
+the Steel-Skulled.67.3
+the Bronze-Skulled.66.3
+the Dragonheart.70.3
+the Butcher.45.3
+the Avenger.55.0
+the Foul.30.3
+the Foul Mouthed.20.0
+the Warborn.40.3
+the Veteran.25.3
+the Immortal.105.3
+the Strong-Armed.25.3
+the Weak-Armed.-5.3
+the Bow-Legged.-5.3
+the Fool.-10.3
+the Fooled.-10.3
+the Thrice Fooled.-30.3
+the Twice Fooled.-20.3
+the Many-Times-Fooled.-40.0
+the Unaware.-12.3
+the Dull.-15.3
+the Black-Hearted.35.3
+the Swift.40.3
+the Dragon-Slayer.95.0
+the Giant-Slayer.75.0
+the Lion Heart.45.0
+the Wolf Heart.40.0
+the Outlaw.15.3
+the Barbarian.55.3
+the Barbaric.50.3
+the Conqueror.45.3
+the Nightwind.75.3
+the Daywind.35.3
+the Skywind.65.3
+the Nightmare.35.3
+the Cheat.15.0
+the Widowmaker.65.0
+the Three-Toes.-20.0
+the Greedy.5.3
+the Three-Fingers.-10.0
+the Hunter.25.0
+the Crow.41.3
+the Dirty.-5.3
+the Slinger.20.0
+the Salty.10.3
+the Unsullied.67.3
+the Spear.50.3
+the Sword.50.3
+the Shield.45.3
+the Mammoth.78.3
+the Sphinx.76.3
+the Thunderbird.74.3
+the Frail.-10.3
+the Rich.35.3
+the Poor.40.3
+the Wealthy.35.3
+the Unwell.-10.3
+the Peasant.10.3
+the Soldier.30.3
+the Knight.70.3
+of the East.20.0
+of the North.20.0
+of the South.20.0
+of the Coast.20.0
+of the Shore.20.0
+of the Mountain.40.0
+of the Cliffs.40.0
+of the Vale.20.0
+of the Dale.20.0
+of the Valley.50.0
+of the Valleys.50.0
+of the Lake.20.0
+of the Hill.25.0
+of the Hills.25.0
+the Mountain.40.3
+the Handsome.60.3
+the Pretty-Boy.30.0
+the Beautiful.50.3
+the Protector.65.0
+the Protected.70.3
+the Poet.34.3
+the Quick.56.3
+the Shy.30.3
+the Jackal.25.3
+the Pygmy.15.3
+the Eager.25.3
+the Hydra.75.3
+the Corrupted.30.3
+the Corruptor.50.0
+the Fiend.15.3
+the Fiendish.25.3
+the Dwarflike.10.3
+the Elflike.12.3
+the Trolllike.16.3
+the Orclike.14.3
+the Myrmidon.35.3
+the Greminlike.-5.3
+the Berserker.55.3
+the Unicorn.67.3
+the Centaur.56.3
+the Ogrelike.55.3
+the Slimey.32.3
+the Dryad.28.3
+the Alien.35.3
+the Implike.-20.3
+the Cyclops.68.3
+the Reptilian.20.3
+the Reptile.24.3
+the Grinning.35.3
+the Smiling.35.3
+of the Forrest.25.0
+of the Woods.25.0
+of the Moors.25.0
+of the Dawn.30.0
+of the Sands.35.0
+of the Waters.25.0
+of the River.25.0
+of the Creek.25.0
+of the Deep.40.0
+of the Flames.35.0
+of the Ocean.35.0
+the Wounded.-25.3
+of the Colds.35.0
+the Seeker.45.3
+the Gale.45.3
+the Forceful.65.3
+the White.50.3
+the Black.50.3
+the Grumpy.30.3
+the Stubborn.20.3
+the Kingslayer.60.0
+the Skywatcher.40.3
+the Sinner.30.3
+the Zealous.35.3
+the Wicked.40.3
+the Warlock.45.0
+the Wise.65.3
+the Warlike.50.0
+the Liar.39.3
+the True.59.3
+the Infamous.49.3
+the Undead.79.3
+the Ancient.89.3
+the Fair.30.3
+the Unfair.31.3
+the Bow.38.3
+the Arrow.48.3
+the Learned.48.3
+the Imp.18.3
+the Clown.0.3
+the Faithless.10.3
+the Curly.30.3
+the Lawgiver.55.3
+the Lawless.55.3
+the Orc.55.3
+the Ogre-Faced.55.3
+the Pig-Faced.15.3
+the Hesitant.45.3
+the Luckless.-5.3
+the Neutral.0.3
+the Pirate.30.3
+the Dominator.60.0
+the Chief.50.3
+the Shaman.30.3
+the Peon.-5.3
+the Crusader.55.0
+the Flaccid.-6.3
+the Dim.-5.3
+the Dim-Witted.-10.3
+the Lavish.25.3
+the Summoner.20.0
+the Dreamer.40.3
+the Dreamy.40.3
+the Diplomat.50.3
+the Diplomatic.50.3
+the Thief.10.3
+the Warmonger.50.3
+the Warhammer.55.3
+the Rat.-1.3
+the Magnificent.50.3
+the Bard.20.3
+the Nameless.1.3
+the Unnamed.10.3
+the Faceless.45.3
+the Alchemist.25.3
+the Reborn.50.3
+the Chronicled.67.3
+the Seducer.22.3
+the Civil.15.3
+the Wrathful.66.3
+the Magister.55.0
+the Magi.52.3
+the Civilized.16.3
+the Arcane.75.3
+the Intoxicated.-5.3
+the Drunkard.-5.3
+the Plague.65.3
+the Panther.34.3
+the Creator.79.3
+the Warden.66.3
+the Druid.55.3
+the Tusked.42.3
+the Travelled.40.3
+the Tall.20.3
+the Short.10.3
+the Needy.-10.3
+the Tower.80.3
+the Worthy.55.3
+the Unworthy.-35.3
+the Beast.55.3
+the Warty.5.3
+the Sadist.55.3
+the Sadistic.53.3
+the Riddled.35.3
+the Enigma.45.3
+the Fox.65.3
+the Hawk.62.3
+the Kind.35.3
+the Crabby.15.3
+the Paladin.68.0
+the Razor.75.3
+of the Isle.49.0
+the Two Faced.55.0
+the Brutal.55.0
+the Brute.56.0
+the Islander.48.0
+the Loyalist.46.3
+the Rebel.46.3
+the Loyal.35.3
+the Eater.25.3
+the World-Eater.59.0
+the Glutton.-10.0
+the Gluttonous.-10.3
+the Furious.55.3
+the Infuriated.50.3
+the Fury.55.0
+the Cremator.65.0
+the Cunning.56.3
+the Gatekeeper.65.0
+the Cutthroat.56.3
+the Blasphemer.38.0
+God Hater.20.0
+the Unknowable.999.0
+the Farmer.10.0
+the Woodcutter.20.0
+the Clever.45.3
+the Grandfather.55.0
+the Father.6.0
+the Elder.55.0
+the Masked.55.3
+the Jester.25.0
+the Mysterious.55.3
+the Hermit.-3.3
+the Acrobat.34.0
+the Necromancer.36.3
+the Ghastly.25.3
+the Bulllike.55.3
+the Boarlike.52.3
+the Playful.35.3
+the Toothless.-5.3
+the Bastard.55.3
+the Rascal.15.3
+the Skull-Laden.55.3
+the Skull-Bearer.57.0
+the Bone-Laden.45.3
+the Bone-Bearer.47.0
+the Bonebreaker.65.0
+the Bonesnapper.67.0
+the Skullcracker.61.0
+the Nutcracker.34.0
+the Hunchback.-15.3
+the Golem.59.3
+the Guard Captain.75.0
+the Guard.45.0
+the General.55.0
+the Captain.42.0
+the Guardian.41.0
+the Mercenary.43.3
+the Mercenary Captain.58.0
+the Scout.35.0
+the Discarded.41.3
+the Cursed.-15.3
+the Bandaged.25.3
+the Raven.65.0
+the Misty.25.0
+the Gravemaker.55.0
+the Gravefiller.55.0
+the Gravedigger.14.0
+the Armorer.45.0
+the Gauntlet.45.0
+the Helm.45.0
+the Pauldron.45.3
+the Raider.49.0
+the Usurper.55.3
+the Upstart.35.0
+the Black.40.3
+the Blue.35.3
+the Rose.39.3
+the Blood.45.1
+the Moon.45.3
+the Ivy.35.1
+the Silk.30.1
+the Fiery.37.1
+the Lowborn.30.3
+the Highborn.40.3
+the Bronze.30.1
+the Copper.29.1
+the Silver.34.1
+the Steel.40.1
+the Gold.37.1
+the Platinum.40.1
+the Golden.37.1
+the Cloud.42.1
+the Lake.34.1
+the Hill.35.1
+the Old.-10.1
+the River.34.1
+the Discraced.25.1
+the Valley.30.1
+the Crater.30.1
+the Miner.30.1
+the Minor.10.1
+the Little.20.1
+the Big.40.1
+the Tall.36.1
+the Dark.54.1
+the Horrible.32.1
+the Turncoat.22.1
+the White.28.1
+the Lilac.28.1
+the Red.28.1
+the Green.28.1
+the Grey.28.1
+the Bearded.38.1
+the Three Chinned.20.3
+the Wide Belly.10.0
+The Wind.49.1
+the Lightning.49.1
+the Vagrant.30.1
+the Lost.30.1
+the Tattered.10.1
+the Icy.35.1
+the Frosty.40.1
+of the Three Hills.43.0
+of the Two Hills.42.0
+of the Lost.45.0
+Blood Hands.60.0
+Black Hands.45.0
+Bloody Hands.45.0
+the Calm.45.3
+the Calmed.45.3
+the Nauseous.-10.0
+the Pious.22.3
+Goldglove.34.0
+Coldglove.34.0
+Redglove.34.0
+Goldfist.35.0
+Coldfist.35.0
+Redfist.35.0
+Goldhelm.35.0
+Bluefist.35.0
+Goldbane.35.0
+Coldbane.35.0
+Silverblood.35.0
+Silverbane.35.0
+Silverfist.35.0
+Goldblood.35.0
+Bronzefist.35.0
+the Redskinned.35.3
+the Spineless.34.3
+the Firmhanded.45.3
+the Lewd.10.3
+the Cruel Eyed.34.3
+the Loose Handed.20.0
+the Once Dead.50.3
+the Long Dead.30.3
+the Hurricane.60.3
+the Callous.20.3
+the Carnivore.23.3
+the Herbivore.22.3
+the Carnivorous.23.3
+the Brandished.13.0
+the Yeilding.10.3
+the Unyeilding.59.3
+the Holy.45.3
+the Unholy.35.3
+the Unlikely.4.3
+the Untimely.25.3
+the Rock.60.3
+the Thunder.62.3
+the Hard-Shouldered.42.0
+of the White Bridge.40.0
+of the Blue Bridge.40.0
+of the Lost Keep.40.0
+of the Outlands.42.0
+of the Deadlands.45.0
+of the Lostlands.44.0
+of the Old Lands.40.0
+the Outsider.44.3
+the Wandered.42.0
+the Worldly.43.3
+the Built.34.3
+the Clenched.24.0
+the Powerful.46.3
+the Bug-Eyed.3.3
+the Courtesan.14.0
+the Cold-Handed.18.3
+the Armless.-20.3
+the Deathseeker.50.3
+the Suicidal.-49.3
+the Barrel-Chested.30.0
+the Oracle.30.0
+the Lute.10.0
+the Looter.-2.0
+the Once-Famed.5.3
+the Graceless.11.3
+the Tactless.-2.0
+the Turtle.25.0
+the Salvation.30.0
+of the Underworld.60.0
+the Beloved.25.3
+the Dragon.59.3
+the Sharp.29.3
+the Shiny.39.3
+the Goblin.49.1
+the Demon.79.3
+the Orcish.69.3
+the Underworld.81.1
+the Outland.32.1
+the Thickskinned.19.1
+the Foulmouthed.13.1
+the Freckled.9.1
+the Gangly.-3.0
+the Dusty.11.1
+the Tooth.21.1
+the Sailor.14.0
+the Steel Fist.30.0
+the Sand.55.1
+the Gutted.5.0
+the Heart-Wrenched.-20.0
+the Sullied.-7.0
+the Severed.-8.0
+the Silver Skinned.65.1
+the Black Eye.12.0
+the Bronze Skinned.64.1
+Longbeard.25.0
+Redbeard.26.0
+Blackbeard.25.0
+Braidbeard.23.0
+Whitebeard.26.0
+Greybeard.13.0
+Lowbeard.11.0
+Firebeard.27.0
+Snowbeard.25.0
+Sandbeard.24.0
+Scruffybeard.5.0
+Littlebeard.4.0
+Shortbeard.3.0
+Weirdbeard.15.0
+Knotbeard.5.0
+the Beardbaron.40.0
+Beardbearer.10.0
+Windbeard.25.0
+the Rugged.20.0
+the Centurion.67.0
+the Godly.90.3
+of the Swamp.24.0
+the Snowman.35.0
+the Vacant.-10.0
+the Magnate.53.0
+the Mighty.59.3
+the Idle.-30.0
+the Fragile.-20.0
+the Evil.46.3
+the Harsh.20.0
+the Traitor.10.0
+the Eye.34.0
+the Nose.31.0
+the Ear.31.0
+the Scant.5.0
+the Frog.10.0
+the Toad.11.0
+the Roach.-4.0
+the Shamed.-11.3
+the Messy.10.3
+the Drab.-5.0
+the Pesky.5.3
+the Sloppy.-5.3
+the Coveted.39.3
+the Covenant.45.3
+the Phantom.51.3
+the Anguished.-20.3
+the Burdened.-15.3
+the Unburdened.35.3
+the Insane.40.3
+the Mercyful.50.3
+the False.-10.3
+the Serpent.43.3
+the Curator.24.0
+the Goat.35.3
+the Young.49.3
+the Inept.-3.3
+the Landless.30.3
+the Friendless.21.3
+the Ox.34.3
+the Venomous.44.3
+the Manslayer.59.3
+the Godless.23.3
+the Exhalted.42.3
+the Orphan.15.3
+the Gutless.-10.3
+the Sentinel.49.0
+the Marvelous.57.0
+the Bolt.38.0
+the Free.40.3
+the Hideous.2.3
+the Captive.-8.3
+the Guilty.15.3
+the Pretender.-8.0
+the Twice Killed.38.3
+the Once Killed.28.3
+the Thrice Killed.48.3
+the Lame.-5.3
+the Daring.25.0
+the Dogslayer.30.0
+the Witcher.55.0
+of the Ashes.46.0
+the Champion of Gold.74.0
+the Champion of Steel.70.0
+the Champion of Rock.70.0
+the Champion of the Forest.45.0
+the Champion of Iron.67.0
+the Champion of Bronze.65.0
+the Champion of Snow.65.0
+the Champion of Dreams.55.0
+the Champion of Ash.65.0
+the Champion of the Sun.75.0
+the Champion of the Moon.74.0
+the Champion of Hate.69.0
+the Champion of Anger.69.0
+the Champion of Lust.50.0
+the Champion of Gluttony.-10.0
+the Champion of Greed.30.0
+the Champion of Sloth.-10.0
+the Champion of Wrath.55.0
+the Champion of Pride.50.0
+the Champion of Envy.40.0
+the Champion of Sins.35.0
+the Champion of Fear.70.0
+the Champion of Winds.69.0
+the Champion of Storms.72.0
+the Champion of the Stars.73.0
+the Champion of Sands.65.0
+the Champion of Dunes.45.0
+the Champion of Hearts.50.0
+the Champion of Hands.56.0
+the Champion of Bones.59.0
+the Champion of Blood.72.0
+the Champion of the Hills.20.0
+the Champion of Mountains.68.0
+the Champion of the Depths.69.0
+the Champion of Ashes.65.0
+the Champion of Light.69.0
+the Champion of Fire.69.0
+the Champion of Dirt.65.0
+the Champion of Dust.65.0
+the Champion of Dark.70.0
+the Champion of Darkness.71.0
+the Champion of Death.76.0
+the Champion of Love.71.0
+the Champion of Flames.70.0
+the Champion of Stone.75.0
+the Champion of Earth.70.0
+the Champion of Night.74.0
+the Champion of Day.75.0
+the Champion of Wind.69.0
+the Panicked.-2.3
+the Flower.25.3
+the Milk Drinker.-40.0
+the Mutant.67.3
+the Tiny.-3.3
+the Shepherd.15.0
+the Behemoth.77.3
+the Hunched.-20.3
+the Well Endowed.20.3
+the King of Fools.-15.0
+the Lord of Fools.-10.0
+the Knight of Fools.-5.0
+the Deserter.5.3
+the Deserted.15.3
+the Far Seeker.25.0
+the Far Seer.31.0
+the Ghoulish.10.3
+the Adoring.25.3
+the Adored.29.3
+the Arrowed.35.0
+the Arch-Backed.-16.3
+the Solid.40.3
+the Sold.0.3
+the Iron-Nose.30.0
+of the Far North.79.0
+of the Wild North.37.0
+of the Near North.15.0
+of Thickblood.55.0
+of Fort Northwatch.37.0
+of Fort Gorthmek.43.0
+of Fort Kullak.36.0
+of Monfort Mine.25.0
+of Hlok Mine.30.0
+of Shallowrock Mine.31.0
+of the Black Market.49.0
+of the Brawlers Pit.47.0
+of Bloodied Skulls.45.0
+of Bloodied Bones.43.0
+of Bloodied Loins.22.0
+of Bloodied Cloaks.44.0
+of Bloodied Darkness.46.0
+of Bloodied Lands.45.0
+of the Iron Hills.80.0
+of the Ancient Isle.78.0
+of the Isle of Skulls.78.0
+the Flea.-25.3
+the Laughing Stock.-14.0
+the Well Fed.5.3
+the Last of his Line.45.0.
+the Bloodwalker.51.0
+the Bloodswimmer.30.0
+the Bloodwasher.25.0
+the Bloodpainter.41.0
+the Bloodcollector.49.0
+the Unstable.-10.3
+the Stable.1.3
+the Very-Stable-Genius.-50.3
+the Capable.30.3
+the Incapable.-5.3
+the Manipulator.5.3
+the Axe-Manipulator.39.0
+the Cacti Grazer.10.0
+Forestbeard.12.0
+Mountainbeard.13.0
+Waterbeard.12.0
+Earthbeard.5.0
+Metalbeard.20.0
+Stonebeard.10.0
+Skybeard.8.0
+the Seaweedbeard.5.3
+the Beard of the Moon.19.0
+the Beard of the Sun.10.0
+the Beard of the Stars.16.0
+the Beard of the Sky.10.0
+the Beard of the Clouds.10.0
+the Beard of the Storms.12.0
+the Beard of the Winds.10.0
+the Beard of the Seas.11.0
+the Beard of the Land.15.0
+the Beard of the World.25.0
+the Beard of the Universe.30.0
+the Beard of Life.32.0
+the Beard of Death.35.0
+the Beard of Time.32.0
+the Beard of Space.20.0
+the Beard of Infinity.30.0
+the Beard of Eternity.40.0

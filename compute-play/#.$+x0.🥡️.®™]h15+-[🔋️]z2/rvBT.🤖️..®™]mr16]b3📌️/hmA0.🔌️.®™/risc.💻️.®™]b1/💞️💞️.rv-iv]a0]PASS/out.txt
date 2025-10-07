@@ -1,0 +1,73 @@
+EXEC: opcode=0, op1=1, op2=2
+NAND r1, r2 -> r1
+PC: 2, REG: [0,15,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=1, op1=1, op2=0
+LOAD r1, mem[0]
+PC: 4, REG: [0,1,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=2, op1=1, op2=2
+STORE r1, mem[2]
+PC: 6, REG: [0,1,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=3, op1=1, op2=0
+JUMP r1 -> PC=2
+PC: 2, REG: [0,1,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=0, op1=1, op2=0
+NAND r1, r0 -> r1
+PC: 4, REG: [0,15,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=2, op1=1, op2=2
+STORE r1, mem[2]
+PC: 6, REG: [0,15,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=3, op1=1, op2=0
+JUMP r1 -> PC=30
+PC: 30, REG: [0,15,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 32, REG: [15,15,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 34, REG: [0,15,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 36, REG: [15,15,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 38, REG: [0,15,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 40, REG: [15,15,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 42, REG: [0,15,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 44, REG: [15,15,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 46, REG: [0,15,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 48, REG: [15,15,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 50, REG: [0,15,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 52, REG: [15,15,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 54, REG: [0,15,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 56, REG: [15,15,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 58, REG: [0,15,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 60, REG: [15,15,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 62, REG: [0,15,0,0,0,0,0,0], MEM[0]: 1
+EXEC: opcode=0, op1=0, op2=0
+NAND r0, r0 -> r0
+PC: 64, REG: [15,15,0,0,0,0,0,0], MEM[0]: 1
+Halted: PC out of bounds

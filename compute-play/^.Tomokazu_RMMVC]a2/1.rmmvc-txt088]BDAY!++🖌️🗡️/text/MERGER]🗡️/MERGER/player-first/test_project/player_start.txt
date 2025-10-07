@@ -1,0 +1,3 @@
+# Player starting position
+# Format: x,y,map_id,text,plat,2d,3d,ar
+5,5,0,0,0,1,0,0

@@ -1,0 +1,43 @@
+🏎️🏎️🏎️🏎️🏎️🏎️🏎️🏎️🏎️🏎️🏎️🏎️🏎️🏎️🏎️🏎️🏎️🏎️🏎️🏎️🏎️
+@1.editor\]a2\]0004.c                          │
+│   ./+x/1.editor]a2]0004.+x 5_static.txt          │
+│   Enter game name:                               │
+│   still asking for name. i assume this is        │
+│   because it didn't load the one passed as       │
+│   arg?    
+
+<- doesn't even really matter. 
+
+i  just want to add more events to my map info. 
+
+i mean if u wanna get this up 2 speed with parsing our actual project data, or making a converter...
+🏎️🏎️🏎️🏎️🏎️🏎️🏎️🏎️🏎️🏎️🏎️🏎️🏎️🏎️🏎️🎣️u could tune this up , it maynot be so bad. (show it real dir + events123)
+🔧️👩‍🏭️🔧️👩‍🏭️🔧️👩‍🏭️🔧️👩‍🏭️🔧️👩‍🏭️🔧️👩‍🏭️🔧️👩‍🏭️🔧️👩‍🏭️🔧️👩‍🏭️🔧️👩‍🏭️🔧️👩‍🏭️
+./+x/1.editor]a2]0004.+x 5_static.txt 
+Enter game name: 
+1
+
+Editor Menu:
+1. Edit Map (using map_editor module)
+2. Manage Players
+3. Manage Enemies
+4. Manage Items
+5. Manage Events
+6. Manage Battles
+7. Save and Exit
+5
+Events:
+1. 2 2, type=battle, param=Battle1
+2. Add new event
+
+
+🔧️👩‍🏭️🔧️👩‍🏭️🔧️👩‍🏭️🔧️👩‍🏭️🔧️👩‍🏭️🔧️👩‍🏭️🔧️👩‍🏭️🔧️👩‍🏭️🔧️👩‍🏭️🔧️👩‍🏭️🔧️👩‍🏭️
+🪟️ i wanna do events, i wanna make window menus for stuff like websites/ daws / games w/e = html ]nos🪟️
+[+] windows for ascii are diff, but should have compat (using index's or w/e 1:1 is doable if intenioned[+]
+
+( RMMINi works 2 do
+
+ want to add numbered indexes to the existing menu options that
+  are already displayed, and enable arrow key control for navigating within each option.
+  Let me modify the code to implement this:
+

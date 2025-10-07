@@ -1,0 +1,104 @@
+### ⚡ Optimization Opportunities
+1. **Generalize Data Structure** 🛠️:
+   - **Issue**: The `GameObject` struct is hardcoded to store `emoji_idx`, `fg_color`, and `bg_color`. This limits flexibility if you want to add new properties (e.g., transparency or rotation).
+   - **Solution**: Use a more generic data structure, like a key-value map or a dynamic attribute system, to store tile properties. Example:
+     ```c
+     typedef struct {
+         int attributes[10]; // Flexible array for properties
+         int attribute_count;
+     } GameObject;
+     ```
+     This allows adding new attributes without changing the struct.
+
+2. **Decouple Raycasting** 📍:
+   - **Issue**: Raycasting functions (`screen_to_world_ray`, `ray_intersects_box`) are in the model but rely on OpenGL state (e.g., `glGetDoublev`). This mixes rendering concerns with data logic.
+   - **Solution**: Move raycasting to a separate module (e.g., `raycast.c`) that interfaces with the view for OpenGL data and returns results to the model. This keeps the model focused on data.
+
+3. **Abstract File I/O** 💾:
+   - **Issue**: File operations (e.g., `save_canvas`, `load_canvas`) are embedded in the model, tying it to specific file formats.
+   - **Solution**: Create a `FileIO` module to handle saving/loading, passing data to/from the model via a generic interface:
+     ```c
+     int save_state(GameObject ***canvas, int layers, int rows, int cols, const char *filename);
+     int load_state(GameObject ***canvas, int *layers, int *rows, int *cols, const char *filename);
+     ```
+
+4. **Reduce Global Variables** 🌍:
+   - **Issue**: Global variables like `canvas`, `tab_bank`, and `camera_x` create tight coupling and make the model less reusable.
+   - **Solution**: Encapsulate globals in a `ModelContext` struct and pass it to functions:
+     ```c
+     typedef struct {
+         GameObject ***canvas;
+         GameObject *tab_bank;
+         float camera_x, camera_y, camera_z;
+         // ... other state
+     } ModelContext;
+     ```
+
+### 🛡️ Separation of Concerns
+- **Current State**: The model is mostly independent but leaks rendering logic (raycasting) and file I/O.
+- **Goal**: Make the model a pure data manager. Move rendering-related logic to the view and file operations to a dedicated module. This ensures the model can be reused in different contexts (e.g., a web-based version).
+
+---
+
+## 📱 The Controller (Remote) - `controller_gl.c`
+
+### 🎮 Controlling the Show
+The **Controller** (`controller_gl.c`) is the remote, handling user inputs and updating the model. It processes keyboard, mouse, and terminal inputs to trigger actions like painting, filling, or camera movement.
+
+### 📲 How It Works
+- **Input Bindings** 🔢: A dynamic array (`InputBinding`) maps keys (e.g., `'f'`, `'w'`) to actions (e.g., `INPUT_ACTION_FILL`, `INPUT_ACTION_CAMERA_FORWARD`).
+- **Handlers**:
+  - `keyboard`: Processes key presses (e.g., `' '` paints, `'f'` selects fill tool).
+  - `special`: Handles arrow keys for moving the selector.
+  - `idle`: Checks terminal input for real-time actions.
+  - `mouse`: Handles clicks for UI interactions and 3D block selection via raycasting.
+- **Actions**: Calls model functions (e.g., `set_canvas_tile`, `flood_fill`) based on input actions.
+
+### ⚡ Optimization Opportunities
+1. **Generalize Input System** 🎹:
+   - **Issue**: Input bindings are hardcoded in `init_input_bindings`, and some keys are duplicated in `keyboard` and `idle` (e.g., `'f'`, `'z'`).
+   - **Solution**: Consolidate input handling into a single system using the `InputBinding` array. Remove redundant checks in `keyboard` and `idle` by routing all inputs through `find_input_binding` and `handle_input_action`.
+
+2. **Event-Driven Input** 📡:
+   - **Issue**: The `idle` function polls terminal input using `select`, which is inefficient and mixes input detection with action handling.
+   - **Solution**: Use an event-driven approach with a callback system. Define an `InputEvent` struct and a queue:
+     ```c
+     typedef struct {
+         unsigned char key;
+         int modifiers;
+         InputAction action;
+     } InputEvent;
+     void enqueue_input(InputEvent event);
+     void process_input_queue();
+     ```
+     This decouples input detection from processing, improving performance.
+
+3. **Decouple View Updates** 🖼️:
+   - **Issue**: The controller directly calls `glutPostRedisplay` to trigger view updates, coupling it to the view.
+   - **Solution**: Introduce a `ViewUpdate` callback that the controller triggers instead:
+     ```c
+     typedef void (*ViewUpdateCallback)(void);
+     void set_view_update_callback(ViewUpdateCallback cb);
+     ```
+     The view can then register its `display` function as the callback.
+
+4. **State Machine for Tools** 🔄:
+   - **Issue**: Tool states (e.g., `erase_fill_mode`, `pending_quit`) are managed with global flags, leading to potential bugs.
+   - **Solution**: Use a state machine for tool modes:
+     ```c
+     typedef enum {
+         TOOL_STATE_PAINT,
+         TOOL_STATE_FILL,
+         TOOL_STATE_RECTANGLE,
+         TOOL_STATE_ERASE,
+         TOOL_STATE_ERASE_FILL
+     } ToolState;
+     void set_tool_state(ToolState state);
+     ```
+     This centralizes tool logic and reduces scattered conditionals.
+
+### 🛡️ Separation of Concerns
+- **Current State**: The controller is tightly coupled to the view via `glutPostRedisplay` and to the model via direct function calls.
+- **Goal**: Make the controller a pure input processor. Use callbacks for view updates and model interactions, allowing it to work with different models or views (e.g., a text-based UI).
+
+---

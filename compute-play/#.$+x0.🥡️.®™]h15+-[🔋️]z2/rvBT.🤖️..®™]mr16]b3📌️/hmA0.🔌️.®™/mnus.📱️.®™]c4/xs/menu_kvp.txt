@@ -1,0 +1,7 @@
+end_turn ../hmA0.🔌️.®™/turn.➡️.®™/+x/increment_turn]a0.+x
+hunger ../hmA0.🔌️.®™/hlth.🤍️.®™/+x/hunger.😋️]a0.+x
+subs ./+x/sub_menu_io_test.+x
+slave ./+x/test_slave.+x
+confirm]a0 ./+x/test_confirm]a0.+x
+enter]a1 ./+x/test_enter]a1.+x
+enter]b1 ./+x/test_enter]b1.+x

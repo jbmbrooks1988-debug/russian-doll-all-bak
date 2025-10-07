@@ -1,0 +1,5 @@
+userhash hmA1.🟪️.®™
+neuron_0 nucleus:dna=ATGC...,ions:Na+=0.1,K+=0.2
+neuron_1 nucleus:dna=ATGC...,ions:Na+=0.15,K+=0.25
+chemical_reactions reaction_0:rate=0.01,product=ATP
+status embryonic  # Tracks cellular modeling progress

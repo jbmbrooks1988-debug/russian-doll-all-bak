@@ -1,0 +1,1396 @@
+Loaded song 1: Rare Chord Nem7add491113 (harmony in 31-edo).mp3
+Loaded song 2: Rare Chords Supermothrian Polychords Maj7b4b8131416b23 (harmony in 31-edo).mp3
+Loaded song 3: hi_world.mp3
+Loaded song 4: hi_test.mp3
+Loaded song 5: test.mp3
+Loaded song 6: hi_world_test_hi.mp3
+Loaded song 7: gowon_eating_a_big_butt.mp3
+Loaded song 8: hi.mp3
+Loaded song 9: world.mp3
+Loaded song 10: hi_world.mp3
+Loaded song 11: hi_test.mp3
+Loaded song 12: test.mp3
+Loaded song 13: hi_world_test_hi.mp3
+Loaded song 14: gowon_eating_a_big_butt.mp3
+Loaded song 15: hi.mp3
+Loaded song 16: world.mp3
+Loaded song 17: hi_world.mp3
+Loaded song 18: hi_test.mp3
+Loaded song 19: test.mp3
+Loaded song 20: I'm_sorry,_I_don't_understand_that_command_yet..mp3
+Loaded song 21: hi_world_test_hi.mp3
+Loaded song 22: gowon_eating_a_big_butt.mp3
+Loaded song 23: 163014_audio.mp3
+Loaded song 24: 163106_audio.mp3
+Loaded song 25: hi.mp3
+Loaded song 26: world.mp3
+Loaded song 27: sine.mp3
+Loaded song 28: ♣️.🧜‍♀️️🧚‍♀️️🏝️[mi-LANDS]🦪️:
+Loaded song 29: 🏴‍☠️️🦜️💩️🏝️
+Loaded song 30: grand-open-creed.mp3
+Loaded song 31: ♣️.🧜‍♀️️🧚‍♀️️🏝️[mi-LANDS]🦪️:
+Loaded song 32: 🏴‍☠️️🦜️💩️🏝️
+Loaded song 33: output.mp3
+Loaded song 34: ♣️.🧜‍♀️️🧚‍♀️️🏝️[mi-LANDS]🦪️:
+Loaded song 35: 🏴‍☠️️🦜️💩️🏝️
+Loaded song 36: output.mp3
+Loaded song 37: 76e939_audio.mp3
+Loaded song 38: you are cool and you.mp3
+Loaded song 39: Hi there this is you.mp3
+Loaded song 40: f300ad_audio]wgu-1rst.mp3
+Loaded song 41: m.instrument_example_MP3_700KB.mp3
+Loaded song 42: m.gowon_eating_a_big_butt.mp3.mixed.mp3
+Loaded song 43: final_3085c3]jb.mp4.trimmed.mp3
+Loaded song 44: m.gowon_eating_a_big_butt.mp3
+Loaded song 45: output.mp3
+Loaded song 46: #.ACOUSTI.🤵🏽‍♂️️CA[a0]🪕️]deadlike
+Loaded song 47: 🎩️
+Loaded song 48: ill-b-free]deadlike]a0.mp3
+Loaded song 49: output.mp3
+Loaded song 50: output.mp3
+Loaded song 51: hi_world.mp3
+Loaded song 52: hi_test.mp3
+Loaded song 53: test.mp3
+Loaded song 54: hi_world_test_hi.mp3
+Loaded song 55: gowon_eating_a_big_butt.mp3
+Loaded song 56: hi.mp3
+Loaded song 57: world.mp3
+Loaded song 58: diffusion_output.mp3
+Loaded song 59: -0.red5gumball)in.low.mars.orbit.mp3
+Loaded song 60: 04.GrandDragon]MInor.mp3
+Loaded song 61: output.mp3
+Loaded song 62: hi_world.mp3
+Loaded song 63: hi_test.mp3
+Loaded song 64: test.mp3
+Loaded song 65: hi_world_test_hi.mp3
+Loaded song 66: gowon_eating_a_big_butt.mp3
+Loaded song 67: hi.mp3
+Loaded song 68: world.mp3
+Loaded song 69: #.audi.sol.samples]Royaltyfree]xl
+Loaded song 70: _FREE_ OLD KANYE WEST COLLEGE DROPOUT TYPE BEAT _TAKE ME HOME_.mp3
+Loaded song 71: #.audi.sol.samples]Royaltyfree]xl
+Loaded song 72: [FREE] J COLE TYPE BEAT - ＂SOULFUL DRILL (FREESTYLE)＂.mp3
+Loaded song 73: XVS.🕹️xoGames-
+Loaded song 74: amb_bell_tibet3.mp3
+Loaded song 75: XVS.🕹️xoGames-
+Loaded song 76: plm_metal_sharpen.mp3
+Loaded song 77: XVS.🕹️xoGames-
+Loaded song 78: plc_bell_warn.mp3
+Loaded song 79: XVS.🕹️xoGames-
+Loaded song 80: plm_drop_boot.mp3
+Loaded song 81: XVS.🕹️xoGames-
+Loaded song 82: mco_bite_chew.mp3
+Loaded song 83: XVS.🕹️xoGames-
+Loaded song 84: plc_hit_hay.mp3
+Loaded song 85: XVS.🕹️xoGames-
+Loaded song 86: amb_gong_chinese.mp3
+Loaded song 87: XVS.🕹️xoGames-
+Loaded song 88: sto_bell_register2.mp3
+Loaded song 89: XVS.🕹️xoGames-
+Loaded song 90: plm_break_plates.mp3
+Loaded song 91: XVS.🕹️xoGames-
+Loaded song 92: pls_tone_goblet.mp3
+Loaded song 93: XVS.🕹️xoGames-
+Loaded song 94: mco_bite_long.mp3
+Loaded song 95: XVS.🕹️xoGames-
+Loaded song 96: pls_man_spit.mp3
+Loaded song 97: XVS.🕹️xoGames-
+Loaded song 98: plm_bottle_clinks.mp3
+Loaded song 99: XVS.🕹️xoGames-
+Loaded song 100: plm_break_canister.mp3
+Loaded song 101: XVS.🕹️xoGames-
+Loaded song 102: plc_miss_arrow2.mp3
+Loaded song 103: XVS.🕹️xoGames-
+Loaded song 104: plc_hit_groan.mp3
+Loaded song 105: XVS.🕹️xoGames-
+Loaded song 106: plm_close_hatch.mp3
+Loaded song 107: XVS.🕹️xoGames-
+Loaded song 108: plm_door_dungeon.mp3
+Loaded song 109: XVS.🕹️xoGames-
+Loaded song 110: plm_click_switch.mp3
+Loaded song 111: XVS.🕹️xoGames-
+Loaded song 112: mco_squish_hit.mp3
+Loaded song 113: XVS.🕹️xoGames-
+Loaded song 114: plm_coins_pour.mp3
+Loaded song 115: XVS.🕹️xoGames-
+Loaded song 116: plm_chimes_jangle.mp3
+Loaded song 117: XVS.🕹️xoGames-
+Loaded song 118: plc_hit_body.mp3
+Loaded song 119: XVS.🕹️xoGames-
+Loaded song 120: mco_bite_chomp.mp3
+Loaded song 121: XVS.🕹️xoGames-
+Loaded song 122: plm_glass_smashing.mp3
+Loaded song 123: XVS.🕹️xoGames-
+Loaded song 124: plm_door_open.mp3
+Loaded song 125: XVS.🕹️xoGames-
+Loaded song 126: plm_bang_dumpster.mp3
+Loaded song 127: XVS.🕹️xoGames-
+Loaded song 128: plm_break_smash.mp3
+Loaded song 129: XVS.🕹️xoGames-
+Loaded song 130: pls_bell_hibell_soft.mp3
+Loaded song 131: XVS.🕹️xoGames-
+Loaded song 132: plm_door_slam.mp3
+Loaded song 133: XVS.🕹️xoGames-
+Loaded song 134: mco_bite_hard.mp3
+Loaded song 135: XVS.🕹️xoGames-
+Loaded song 136: id_good_ooo.mp3
+Loaded song 137: XVS.🕹️xoGames-
+Loaded song 138: pls_tone_elec.mp3
+Loaded song 139: XVS.🕹️xoGames-
+Loaded song 140: plm_break_wood.mp3
+Loaded song 141: XVS.🕹️xoGames-
+Loaded song 142: mco_dino_yawn.mp3
+Loaded song 143: XVS.🕹️xoGames-
+Loaded song 144: pls_tone_scrape.mp3
+Loaded song 145: XVS.🕹️xoGames-
+Loaded song 146: plm_book_pageturn.mp3
+Loaded song 147: XVS.🕹️xoGames-
+Loaded song 148: mco_thoing_deep.mp3
+Loaded song 149: XVS.🕹️xoGames-
+Loaded song 150: plm_cork_squeak.mp3
+Loaded song 151: XVS.🕹️xoGames-
+Loaded song 152: mco_howl_deep.mp3
+Loaded song 153: XVS.🕹️xoGames-
+Loaded song 154: mco_creature_groan.mp3
+Loaded song 155: XVS.🕹️xoGames-
+Loaded song 156: mco_card_shuffle.mp3
+Loaded song 157: XVS.🕹️xoGames-
+Loaded song 158: pls_man_yell.mp3
+Loaded song 159: XVS.🕹️xoGames-
+Loaded song 160: mco_frog_trill.mp3
+Loaded song 161: XVS.🕹️xoGames-
+Loaded song 162: plc_miss_swish.mp3
+Loaded song 163: XVS.🕹️xoGames-
+Loaded song 164: plc_die_laugh.mp3
+Loaded song 165: XVS.🕹️xoGames-
+Loaded song 166: mco_howl_distressed.mp3
+Loaded song 167: XVS.🕹️xoGames-
+Loaded song 168: mco_dino_slur.mp3
+Loaded song 169: XVS.🕹️xoGames-
+Loaded song 170: amb_bell_tibet2.mp3
+Loaded song 171: XVS.🕹️xoGames-
+Loaded song 172: plm_jar_ding.mp3
+Loaded song 173: XVS.🕹️xoGames-
+Loaded song 174: amb_guitar_chord.mp3
+Loaded song 175: XVS.🕹️xoGames-
+Loaded song 176: plm_break_shatter.mp3
+Loaded song 177: XVS.🕹️xoGames-
+Loaded song 178: id_bad_dang.mp3
+Loaded song 179: XVS.🕹️xoGames-
+Loaded song 180: sto_man_hey.mp3
+Loaded song 181: XVS.🕹️xoGames-
+Loaded song 182: plc_hit_arrow.mp3
+Loaded song 183: XVS.🕹️xoGames-
+Loaded song 184: mco_bite_soft.mp3
+Loaded song 185: XVS.🕹️xoGames-
+Loaded song 186: plm_door_knob.mp3
+Loaded song 187: XVS.🕹️xoGames-
+Loaded song 188: plm_glass_breaking.mp3
+Loaded song 189: XVS.🕹️xoGames-
+Loaded song 190: id_ego_yeah2.mp3
+Loaded song 191: XVS.🕹️xoGames-
+Loaded song 192: mco_hit_whip.mp3
+Loaded song 193: XVS.🕹️xoGames-
+Loaded song 194: sto_bell_ding.mp3
+Loaded song 195: XVS.🕹️xoGames-
+Loaded song 196: plm_break_glass.mp3
+Loaded song 197: XVS.🕹️xoGames-
+Loaded song 198: plm_door_shut.mp3
+Loaded song 199: XVS.🕹️xoGames-
+Loaded song 200: plm_spell3.mp3
+Loaded song 201: XVS.🕹️xoGames-
+Loaded song 202: plm_aim_wand.mp3
+Loaded song 203: XVS.🕹️xoGames-
+Loaded song 204: plm_door_creak.mp3
+Loaded song 205: XVS.🕹️xoGames-
+Loaded song 206: plm_cork_pop.mp3
+Loaded song 207: XVS.🕹️xoGames-
+Loaded song 208: plm_click_dry.mp3
+Loaded song 209: XVS.🕹️xoGames-
+Loaded song 210: pls_man_sigh.mp3
+Loaded song 211: XVS.🕹️xoGames-
+Loaded song 212: id_good_wow.mp3
+Loaded song 213: XVS.🕹️xoGames-
+Loaded song 214: id_good_hey2.mp3
+Loaded song 215: XVS.🕹️xoGames-
+Loaded song 216: mco_attack_spray.mp3
+Loaded song 217: XVS.🕹️xoGames-
+Loaded song 218: plm_wood_thud.mp3
+Loaded song 219: XVS.🕹️xoGames-
+Loaded song 220: plc_hit_anvil2.mp3
+Loaded song 221: XVS.🕹️xoGames-
+Loaded song 222: id_good_hmm.mp3
+Loaded song 223: XVS.🕹️xoGames-
+Loaded song 224: sum_bell_hand.mp3
+Loaded song 225: XVS.🕹️xoGames-
+Loaded song 226: sum_chime_jangle.mp3
+Loaded song 227: XVS.🕹️xoGames-
+Loaded song 228: sto_bell_desk.mp3
+Loaded song 229: XVS.🕹️xoGames-
+Loaded song 230: mco_tube_hit.mp3
+Loaded song 231: XVS.🕹️xoGames-
+Loaded song 232: id_ego_yes.mp3
+Loaded song 233: XVS.🕹️xoGames-
+Loaded song 234: plm_coins_shake.mp3
+Loaded song 235: XVS.🕹️xoGames-
+Loaded song 236: id_ego_yeah.mp3
+Loaded song 237: XVS.🕹️xoGames-
+Loaded song 238: mco_man_mumble.mp3
+Loaded song 239: XVS.🕹️xoGames-
+Loaded song 240: mco_ceramic_trill.mp3
+Loaded song 241: XVS.🕹️xoGames-
+Loaded song 242: mco_dub_wobble.mp3
+Loaded song 243: XVS.🕹️xoGames-
+Loaded song 244: mco_howl_long.mp3
+Loaded song 245: XVS.🕹️xoGames-
+Loaded song 246: sum_angel_song.mp3
+Loaded song 247: XVS.🕹️xoGames-
+Loaded song 248: plc_hit_grunt2.mp3
+Loaded song 249: XVS.🕹️xoGames-
+Loaded song 250: amb_dungeon_echowet.mp3
+Loaded song 251: XVS.🕹️xoGames-
+Loaded song 252: amb_bell_metal1.mp3
+Loaded song 253: XVS.🕹️xoGames-
+Loaded song 254: sto_bell_register1.mp3
+Loaded song 255: XVS.🕹️xoGames-
+Loaded song 256: pls_tone_guiro.mp3
+Loaded song 257: XVS.🕹️xoGames-
+Loaded song 258: plm_open_case.mp3
+Loaded song 259: XVS.🕹️xoGames-
+Loaded song 260: amb_door_doom.mp3
+Loaded song 261: XVS.🕹️xoGames-
+Loaded song 262: id_ego_whoa.mp3
+Loaded song 263: XVS.🕹️xoGames-
+Loaded song 264: mco_mouse_squeaks.mp3
+Loaded song 265: XVS.🕹️xoGames-
+Loaded song 266: amb_gong_low.mp3
+Loaded song 267: XVS.🕹️xoGames-
+Loaded song 268: plm_click_wood.mp3
+Loaded song 269: XVS.🕹️xoGames-
+Loaded song 270: plm_door_opening.mp3
+Loaded song 271: XVS.🕹️xoGames-
+Loaded song 272: sum_lion_growl.mp3
+Loaded song 273: XVS.🕹️xoGames-
+Loaded song 274: id_bad_hmph.mp3
+Loaded song 275: XVS.🕹️xoGames-
+Loaded song 276: mco_dino_low.mp3
+Loaded song 277: XVS.🕹️xoGames-
+Loaded song 278: amb_gong_strike.mp3
+Loaded song 279: XVS.🕹️xoGames-
+Loaded song 280: mco_bite_short.mp3
+Loaded song 281: XVS.🕹️xoGames-
+Loaded song 282: id_good_huh.mp3
+Loaded song 283: XVS.🕹️xoGames-
+Loaded song 284: amb_thunder_roll.mp3
+Loaded song 285: XVS.🕹️xoGames-
+Loaded song 286: mco_thoing_backwards.mp3
+Loaded song 287: XVS.🕹️xoGames-
+Loaded song 288: sto_bell_ringing.mp3
+Loaded song 289: XVS.🕹️xoGames-
+Loaded song 290: mco_click_vibra.mp3
+Loaded song 291: XVS.🕹️xoGames-
+Loaded song 292: plm_click_switch2.mp3
+Loaded song 293: XVS.🕹️xoGames-
+Loaded song 294: id_bad_aww.mp3
+Loaded song 295: XVS.🕹️xoGames-
+Loaded song 296: mco_creature_yelp.mp3
+Loaded song 297: XVS.🕹️xoGames-
+Loaded song 298: sto_coins_countertop.mp3
+Loaded song 299: XVS.🕹️xoGames-
+Loaded song 300: plm_door_echolock.mp3
+Loaded song 301: XVS.🕹️xoGames-
+Loaded song 302: plm_chest_unlatch.mp3
+Loaded song 303: XVS.🕹️xoGames-
+Loaded song 304: plm_door_wooden.mp3
+Loaded song 305: XVS.🕹️xoGames-
+Loaded song 306: plm_coins_dump.mp3
+Loaded song 307: XVS.🕹️xoGames-
+Loaded song 308: plm_door_entrance.mp3
+Loaded song 309: XVS.🕹️xoGames-
+Loaded song 310: sum_bell_crystal.mp3
+Loaded song 311: XVS.🕹️xoGames-
+Loaded song 312: plm_zap_rod.mp3
+Loaded song 313: XVS.🕹️xoGames-
+Loaded song 314: sum_ghost_moan.mp3
+Loaded song 315: XVS.🕹️xoGames-
+Loaded song 316: mco_attack_breath.mp3
+Loaded song 317: XVS.🕹️xoGames-
+Loaded song 318: mco_strange_music.mp3
+Loaded song 319: XVS.🕹️xoGames-
+Loaded song 320: amb_bell_metal2.mp3
+Loaded song 321: XVS.🕹️xoGames-
+Loaded song 322: plm_door_bolt.mp3
+Loaded song 323: XVS.🕹️xoGames-
+Loaded song 324: plm_levelup.mp3
+Loaded song 325: XVS.🕹️xoGames-
+Loaded song 326: plc_hit_grunt.mp3
+Loaded song 327: XVS.🕹️xoGames-
+Loaded song 328: amb_dungeon_echo.mp3
+Loaded song 329: XVS.🕹️xoGames-
+Loaded song 330: pls_tone_clavelo8.mp3
+Loaded song 331: XVS.🕹️xoGames-
+Loaded song 332: mco_spray_long.mp3
+Loaded song 333: XVS.🕹️xoGames-
+Loaded song 334: plc_miss_arrow.mp3
+Loaded song 335: XVS.🕹️xoGames-
+Loaded song 336: plm_lock_distant.mp3
+Loaded song 337: XVS.🕹️xoGames-
+Loaded song 338: mco_cuica_rubbing.mp3
+Loaded song 339: XVS.🕹️xoGames-
+Loaded song 340: sto_bell_dingaling.mp3
+Loaded song 341: XVS.🕹️xoGames-
+Loaded song 342: pls_man_sniff.mp3
+Loaded song 343: XVS.🕹️xoGames-
+Loaded song 344: pls_tone_conk.mp3
+Loaded song 345: XVS.🕹️xoGames-
+Loaded song 346: id_good_hey.mp3
+Loaded song 347: XVS.🕹️xoGames-
+Loaded song 348: mco_bite_dainty.mp3
+Loaded song 349: XVS.🕹️xoGames-
+Loaded song 350: pls_man_gulp_new.mp3
+Loaded song 351: XVS.🕹️xoGames-
+Loaded song 352: plm_door_creakshut.mp3
+Loaded song 353: XVS.🕹️xoGames-
+Loaded song 354: mco_strange_thwoink.mp3
+Loaded song 355: XVS.🕹️xoGames-
+Loaded song 356: plc_hit_anvil.mp3
+Loaded song 357: XVS.🕹️xoGames-
+Loaded song 358: pls_bell_bowl.mp3
+Loaded song 359: XVS.🕹️xoGames-
+Loaded song 360: pls_tone_blurk.mp3
+Loaded song 361: XVS.🕹️xoGames-
+Loaded song 362: id_ego_woohoo.mp3
+Loaded song 363: XVS.🕹️xoGames-
+Loaded song 364: mco_bite_regular.mp3
+Loaded song 365: XVS.🕹️xoGames-
+Loaded song 366: mco_howl_croak.mp3
+Loaded song 367: XVS.🕹️xoGames-
+Loaded song 368: sum_piano_scrape.mp3
+Loaded song 369: XVS.🕹️xoGames-
+Loaded song 370: plm_chest_latch.mp3
+Loaded song 371: XVS.🕹️xoGames-
+Loaded song 372: plm_floor_creak.mp3
+Loaded song 373: XVS.🕹️xoGames-
+Loaded song 374: mco_snarl_short.mp3
+Loaded song 375: XVS.🕹️xoGames-
+Loaded song 376: pls_man_oooh.mp3
+Loaded song 377: XVS.🕹️xoGames-
+Loaded song 378: plm_chain_light.mp3
+Loaded song 379: XVS.🕹️xoGames-
+Loaded song 380: plm_bang_ceramic.mp3
+Loaded song 381: XVS.🕹️xoGames-
+Loaded song 382: mco_rubber_thud.mp3
+Loaded song 383: XVS.🕹️xoGames-
+Loaded song 384: id_bad_hmm.mp3
+Loaded song 385: XVS.🕹️xoGames-
+Loaded song 386: plm_cabinet_open.mp3
+Loaded song 387: XVS.🕹️xoGames-
+Loaded song 388: pls_bell_chime_new.mp3
+Loaded song 389: XVS.🕹️xoGames-
+Loaded song 390: sum_gong_temple.mp3
+Loaded song 391: XVS.🕹️xoGames-
+Loaded song 392: amb_thunder_rain.mp3
+Loaded song 393: XVS.🕹️xoGames-
+Loaded song 394: sto_man_haha.mp3
+Loaded song 395: XVS.🕹️xoGames-
+Loaded song 396: pls_tone_clave6.mp3
+Loaded song 397: XVS.🕹️xoGames-
+Loaded song 398: plm_eat_bite.mp3
+Loaded song 399: XVS.🕹️xoGames-
+Loaded song 400: sto_bell_jingles.mp3
+Loaded song 401: XVS.🕹️xoGames-
+Loaded song 402: plm_break_glass2.mp3
+Loaded song 403: XVS.🕹️xoGames-
+Loaded song 404: mco_bite_small.mp3
+Loaded song 405: XVS.🕹️xoGames-
+Loaded song 406: plm_bang_metal.mp3
+Loaded song 407: XVS.🕹️xoGames-
+Loaded song 408: pls_tone_headstock.mp3
+Loaded song 409: XVS.🕹️xoGames-
+Loaded song 410: amb_gong_undertone.mp3
+Loaded song 411: XVS.🕹️xoGames-
+Loaded song 412: pls_breathe_in.mp3
+Loaded song 413: XVS.🕹️xoGames-
+Loaded song 414: sum_ghost_wail.mp3
+Loaded song 415: XVS.🕹️xoGames-
+Loaded song 416: plm_lock_case.mp3
+Loaded song 417: XVS.🕹️xoGames-
+Loaded song 418: mco_liquid_squirt.mp3
+Loaded song 419: XVS.🕹️xoGames-
+Loaded song 420: plm_glass_break.mp3
+Loaded song 421: XVS.🕹️xoGames-
+Loaded song 422: pls_bell_sustain.mp3
+Loaded song 423: XVS.🕹️xoGames-
+Loaded song 424: plm_floor_creak2.mp3
+Loaded song 425: XVS.🕹️xoGames-
+Loaded song 426: mco_thud_crash.mp3
+Loaded song 427: XVS.🕹️xoGames-
+Loaded song 428: mco_shake_roll.mp3
+Loaded song 429: XVS.🕹️xoGames-
+Loaded song 430: mco_dino_talk.mp3
+Loaded song 431: XVS.🕹️xoGames-
+Loaded song 432: plm_door_squeaky.mp3
+Loaded song 433: XVS.🕹️xoGames-
+Loaded song 434: amb_pulse_low.mp3
+Loaded song 435: XVS.🕹️xoGames-
+Loaded song 436: pls_tone_stick.mp3
+Loaded song 437: XVS.🕹️xoGames-
+Loaded song 438: mco_howl_high.mp3
+Loaded song 439: XVS.🕹️xoGames-
+Loaded song 440: plm_spell1.mp3
+Loaded song 441: XVS.🕹️xoGames-
+Loaded song 442: mco_bite_munch.mp3
+Loaded song 443: XVS.🕹️xoGames-
+Loaded song 444: plm_use_staff.mp3
+Loaded song 445: XVS.🕹️xoGames-
+Loaded song 446: mco_squish_snap.mp3
+Loaded song 447: XVS.🕹️xoGames-
+Loaded song 448: plm_coins_light.mp3
+Loaded song 449: XVS.🕹️xoGames-
+Loaded song 450: mco_bite_gnash.mp3
+Loaded song 451: XVS.🕹️xoGames-
+Loaded song 452: pls_bell_glass.mp3
+Loaded song 453: XVS.🕹️xoGames-
+Loaded song 454: plm_door_rusty.mp3
+Loaded song 455: XVS.🕹️xoGames-
+Loaded song 456: id_good_ooh.mp3
+Loaded song 457: XVS.🕹️xoGames-
+Loaded song 458: mco_castanet_trill.mp3
+Loaded song 459: XVS.🕹️xoGames-
+Loaded song 460: plm_spell2.mp3
+Loaded song 461: XVS.🕹️xoGames-
+Loaded song 462: id_bad_ohh.mp3
+Loaded song 463: XVS.🕹️xoGames-
+Loaded song 464: plm_cabinet_shut.mp3
+Loaded song 465: XVS.🕹️xoGames-
+Loaded song 466: sum_bell_tone.mp3
+Loaded song 467: XVS.🕹️xoGames-
+Loaded song 468: plm_door_latch.mp3
+Loaded song 469: XVS.🕹️xoGames-
+Loaded song 470: pls_bell_mute.mp3
+Loaded song 471: XVS.🕹️xoGames-
+Loaded song 472: plm_click_switch3.mp3
+Loaded song 473: XVS.🕹️xoGames-
+Loaded song 474: amb_bell_tibet1.mp3
+Loaded song 475: XVS.🕹️xoGames-
+Loaded song 476: plm_metal_clank.mp3
+Loaded song 477: XVS.🕹️xoGames-
+Loaded song 478: pls_man_ugh.mp3
+Loaded song 479: XVS.🕹️xoGames-
+Loaded song 480: mco_creature_choking.mp3
+Loaded song 481: XVS.🕹️xoGames-
+Loaded song 482: sum_laugh_evil2.mp3
+Loaded song 483: XVS.🕹️xoGames-
+Loaded song 484: sto_bell_shop.mp3
+Loaded song 485: XVS.🕹️xoGames-
+Loaded song 486: sum_ghost_oooo.mp3
+Loaded song 487: XVS.🕹️xoGames-
+Loaded song 488: amb_door_iron.mp3
+Loaded song 489: XVS.🕹️xoGames-
+Loaded song 490: pls_man_argoh.mp3
+Loaded song 491: XVS.🕹️xoGames-
+Loaded song 492: mco_scurry_dry.mp3
+Loaded song 493: XVS.🕹️xoGames-
+Loaded song 494: sto_man_whoohaha.mp3
+Loaded song 495: XVS.🕹️xoGames-
+Loaded song 496: pls_man_sob.mp3
+Loaded song 497: XVS.🕹️xoGames-
+Loaded song 498: pls_man_scream2.mp3
+Loaded song 499: grand-open-creed.mp3
+Loaded song 500: post-disciple-in.mp3
+Loaded song 501: come-over.secret]0001.mp3
+Loaded song 502: come-over-bridge]0000.mp3
+Loaded song 503: come-over-4jesus]0000.mp3
+Loaded song 504: 2.alt-again?.mp3
+Loaded song 505: 1.dan-alt?.mp3
+Loaded song 506: 3.dan-2many.mp3
+Loaded song 507: 0.bilzeri.an]EmC]0000.mp3
+Loaded song 508: low-orb.mp3
+Loaded song 509: low-orb-diff.mp3
+Loaded song 510: mp3.mp3
+Loaded song 511: mp3.mp3
+Loaded song 512: mp3.mp3
+Loaded song 513: mp3.mp3
+Loaded song 514: AnyConvcom-14-heart-ofa.cloud.mp3
+Loaded song 515: zamzar.com__12 Just Breathe 12.mp3
+Loaded song 516: AnyConvcom-6-Jungle-Queen-06.mp3
+Loaded song 517: AnyConvcom-15-Happy-Ending-15.mp3
+Loaded song 518: AnyConvcom-3-Forever-21-03.mp3
+Loaded song 519: 2.Infinite-SoL.mp3
+Loaded song 520: 1.onlineconverter.com1love-is-a-disease.mp3
+Loaded song 521: zamzar.com__11 Another Cinderalla story 11.mp3
+Loaded song 522: AnyConvcom-8-Come-My-Way-08.mp3
+Loaded song 523: AnyConvcom-4-Selena-04.mp3
+Loaded song 524: AnyConvcom-13-You-cant-leave-me.mp3
+Loaded song 525: AnyConvcom-7-Never-Never-Land-07.mp3
+Loaded song 526: AnyConvcom-5-No-Place-like-Home.mp3
+Loaded song 527: AnyConvcom-10-NO-10.mp3
+Loaded song 528: AnyConvcom-9-cell.mp3
+Loaded song 529: Lucky Land.mp3
+Loaded song 530: Nuclear Reactor_1.mp3
+Loaded song 531: Planetary Lights Vampire nights BASS .mp3
+Loaded song 532: saint francis.mp3
+Loaded song 533: Polygon checkerboard 3D.mp3
+Loaded song 534: stop stepper.mp3
+Loaded song 535: Sun City trap.mp3
+Loaded song 536: Planetary Lights.mp3
+Loaded song 537: FUN HOUSE EXTRAVAGANZA!.mp3
+Loaded song 538: Sun and games.mp3
+Loaded song 539: Rube Goldberg City.mp3
+Loaded song 540: sun quiglley trampoline girls.mp3
+Loaded song 541: crytpo nite instrumental.mp3
+Loaded song 542: some wear the sun (cracked).mp3
+Loaded song 543: Sun City trap EXPOSED.mp3
+Loaded song 544: stellar.mp3
+Loaded song 545: nuclearReactor.mp3
+Loaded song 546: Planetary Lights Vampire nights BASS.mp3
+Loaded song 547: the blood of the martyrs is universal^@^(carbon8 )lyfe4m copi.mp3
+Loaded song 548: some wear the sun.mp3
+Loaded song 549: saint francis .mp3
+Loaded song 550: ORgalia normalized.mp3
+Loaded song 551: sunCityMini.mp3
+Loaded song 552: pEATXAh.mp3
+Loaded song 553: pervasiveElectrons.mp3
+Loaded song 554: (Counter Clockwise)Forever Lonely.mp3
+Loaded song 555: Rube Goldberg City -jbonly.mp3
+Loaded song 556: clockWatcher.mp3
+Loaded song 557: Running INTO time VOX(ENDX).mp3
+Loaded song 558: Dojo on a mountain side shrouded in clouds.mp3
+Loaded song 559: clockWise.mp3
+Loaded song 560: quantitativeShogun.mp3
+Loaded song 561: Still your mined.mp3
+Loaded song 562: Good Time.mp3
+Loaded song 563: Take your time.mp3
+Loaded song 564: The judgement and lifting of souls in court.mp3
+Loaded song 565: Pheonix kall.mp3
+Loaded song 566: Dusty spring field (into the dust dessert).mp3
+Loaded song 567: dustMoney.mp3
+Loaded song 568: raiders.mp3
+Loaded song 569: Dustopia.mp3
+Loaded song 570: @x.Horseshoe halo blues.mp3
+Loaded song 571: The judgement and lifting of the souls in court.mp3
+Loaded song 572: -.Play Dead-rescued.mp3
+Loaded song 573: Death and hell too lokis gambi.mp3
+Loaded song 574: 20.Sextillionaire -jbonly.mp3
+Loaded song 575: Ghost whispers.mp3
+Loaded song 576: boogie board boogie woogie.mp3
+Loaded song 577: Posideania feeding frenzy.mp3
+Loaded song 578: Death and All Her friends.mp3
+Loaded song 579: The nothing Particle.mp3
+Loaded song 580: qurantine +++ triple gggoooddd.mp3
+Loaded song 581: qurantine (vampCal).mp3
+Loaded song 582: qurantine AllahAlone instrumental.mp3
+Loaded song 583: qurantine (day200) yacked out (alone).mp3
+Loaded song 584: 11.red run.mp3
+Loaded song 585: The new west mbdtreality000.mp3
+Loaded song 586: The new west mbdtreality(old).mp3
+Loaded song 587: she like rock and roll (vampiric redux).mp3
+Loaded song 588: Sad lyfe.mp3
+Loaded song 589: Ginger Clone.mp3
+Loaded song 590: mecha ball.mp3
+Loaded song 591: 11.red run -.mp3
+Loaded song 592: Fuck machine (dodging me)VX.mp3
+Loaded song 593: dustyMecha.mp3
+Loaded song 594: BIG APPLE.mp3
+Loaded song 595: rust bucket.mp3
+Loaded song 596: nmnl 06.eastern promises.mp3
+Loaded song 597: nmnl 02.I look good (telescope).mp3
+Loaded song 598: nmnl 03.Come from nothing.mp3
+Loaded song 599: nmnl 04.Transmission.mp3
+Loaded song 600: nmnl 5.Shadow kid.mp3
+Loaded song 601: nmnl 01.gotham reckoning.mp3
+Loaded song 602: nmnl 08.fuck everyone( RAW).mp3
+Loaded song 603: nmnl 7.no money no love.mp3
+Loaded song 604: nmnl battle ofthe sovereigns.mp3
+Loaded song 605: nmnl 04.y yu mad tho.mp3
+Loaded song 606: 01.Sing along with splk3.mp3
+Loaded song 607: Icing (let them eat cake).mp3
+Loaded song 608: rodeo clown.mp3
+Loaded song 609: me against the world.mp3
+Loaded song 610: super war(unicorn).mp3
+Loaded song 611: 20.Ikarus rising.mp3
+Loaded song 612: -1.super war.mp3
+Loaded song 613: super war_1.mp3
+Loaded song 614: 20.irule.mp3
+Loaded song 615: 04.Grand Dragon.mp3
+Loaded song 616: 10.Friday Nite .mp3
+Loaded song 617: 10.Imagination RIG.mp3
+Loaded song 618: 07.Necromance Clean.mp3
+Loaded song 619: 01.GrandOpening]FIN.mp3
+Loaded song 620: -1.501.of.fortune-blood.crypto.mp3
+Loaded song 621: Shadow kid dungeons.mp3
+Loaded song 622: 07.Necromance.mp3
+Loaded song 623: 1.All AMerican black and gray.mp3
+Loaded song 624: 15.Draw us together-jobonly.mp3
+Loaded song 625: -.06.Afterlife ink (jbsd katakombs.nud.mp3
+Loaded song 626: Spirit pencil _6#01.aif.mp3
+Loaded song 627: 05.Soul Pen (game bible).mp3
+Loaded song 628: -1.501.dier of 4tune]0001.mp3
+Loaded song 629: 08.Necromantic.mp3
+Loaded song 630: -01.GRAND.OPENING]norm]2027.mp3
+Loaded song 631: -01.GRAND.OPENING]clip]2027.mp3
+Loaded song 632: 5.out of this world----.mp3
+Loaded song 633: 05.Soul Pen.mp3
+Loaded song 634: shadow moses.mp3
+Loaded song 635: -20.SP.mighteir than.tsots (credits)splk3.mp3
+Loaded song 636: 01.GRAND OP-goodasitgets(w:onu+).mp3
+Loaded song 637: Shadow kid.mp3
+Loaded song 638: Spirit pencil _6#01.mp3
+Loaded song 639: -7.Perfect(halleluja chorus).mp3
+Loaded song 640: SPikes mature lemonade.mp3
+Loaded song 641: 01.GRAND OPENING-flyingV.mp3
+Loaded song 642: Spirit pencil _8#01.aif.mp3
+Loaded song 643: 1.All American Gray Ops.mp3
+Loaded song 644: -1.vksol.dier of fortune]punished.mp3
+Loaded song 645: 01.GRAND OP-ult]2022.mp3
+Loaded song 646: 5.out of this world[trump].mp3
+Loaded song 647: Spirit pencil _8#01.mp3
+Loaded song 648: 10.Friday Nite funkin.Break.mp3
+Loaded song 649: 01.Grand Opening.mp3
+Loaded song 650: 5.out of this world.mp3
+Loaded song 651: 6.Digital Halo soul os 3.1[final].mp3
+Loaded song 652: 06.Perfect.mp3
+Loaded song 653: static smoothie INST.mp3
+Loaded song 654: Soul Server.mp3
+Loaded song 655: meatReality.mp3
+Loaded song 656: Suicide party.mp3
+Loaded song 657: Rejecting the source code.mp3
+Loaded song 658: meetReality.mp3
+Loaded song 659: circuit bent mods.mp3
+Loaded song 660: STatic.smoothie[hacktar].mp3
+Loaded song 661: Date with destiny.mp3
+Loaded song 662: 01.rpgLauncher.mp3
+Loaded song 663: -.Kool Breeze]solonly.mp3
+Loaded song 664: -1.elements of harmony-jbonly.mp3
+Loaded song 665: forsaken.mp3
+Loaded song 666: Forgotten melody.mp3
+Loaded song 667: fantasy5lyfe.mp3
+Loaded song 668: -.Diamond dogs.mp3
+Loaded song 669: -01.GRAND.OPENING(2)karkazods.mp3
+Loaded song 670: -1.Gem Stone.mp3
+Loaded song 671: -GEM (HSN)Kitted.mp3
+Loaded song 672: Clown Coalition- jbonly.mp3
+Loaded song 673: 02.American African Highway(this ones 4 africa).mp3
+Loaded song 674: -01.GRAND.OPENING(2)karkazods+Dru4ava.mp3
+Loaded song 675: Kromed out Kark Killah.mp3
+Loaded song 676: The Love Particle.mp3
+Loaded song 677: baby blue bird.mp3
+Loaded song 678: MaylliCARTOON.mp3
+Loaded song 679: gravenImage.mp3
+Loaded song 680: Save yourself.mp3
+Loaded song 681: Save yourselfx.mp3
+Loaded song 682: Freedom pain.mp3
+Loaded song 683: The final frontier.mp3
+Loaded song 684: Lost.mp3
+Loaded song 685: Planet X.mp3
+Loaded song 686: Lost(hikkikomori thug lyfe).mp3
+Loaded song 687: Lost(drive).mp3
+Loaded song 688: Graven image is human.mp3
+Loaded song 689: Hunted.mp3
+Loaded song 690: Fuzz ball.mp3
+Loaded song 691: Exotic(the great and powerful).mp3
+Loaded song 692: SLAVE.mp3
+Loaded song 693: Extremophiles.mp3
+Loaded song 694: -.Rahweh.mp3
+Loaded song 695: mommies little debil.mp3
+Loaded song 696: THE EVIL ONE EYE.mp3
+Loaded song 697: 18.The Soul(vox).mp3
+Loaded song 698: 10.Imagination(134).mp3
+Loaded song 699: 11.The best kind of amazing(149).mp3
+Loaded song 700: 18.The Soul (140).mp3
+Loaded song 701: 1.The soul pen_8#03.mp3
+Loaded song 702: Spirit pencil _6#01.mp3
+Loaded song 703: Spirit pencil _8#01.mp3
+Loaded song 704: 16.The end of the world (Its not)(150).mp3
+Loaded song 705: 08.Perfect(150).mp3
+Loaded song 706: 17. blood works.mp3
+Loaded song 707: feel real.mp3
+Loaded song 708: You're not ready..mp3
+Loaded song 709: I wont be leavin you.mp3
+Loaded song 710: 15.Draw us together.mp3
+Loaded song 711: Imagination station.mp3
+Loaded song 712: INFINITY.ORB!infinity.or.mp3
+Loaded song 713: Fast (gotta go).mp3
+Loaded song 714: 02.Advantasy (an adventure fantasy).mp3
+Loaded song 715: slimeBall.mp3
+Loaded song 716: hotCross.mp3
+Loaded song 717: metroidVania (peace4warDriving).mp3
+Loaded song 718: garbage time.mp3
+Loaded song 719: Get on my level.mp3
+Loaded song 720: if i had a soul it would be a black hole.mp3
+Loaded song 721: golden girls.mp3
+Loaded song 722: Minute by minute.mp3
+Loaded song 723: innovative thinkers.mp3
+Loaded song 724: emotive.mp3
+Loaded song 725: Numerology.mp3
+Loaded song 726: Ultranova.mp3
+Loaded song 727: she like rock and roll she like rock and roll Triple gggoooddd.mp3
+Loaded song 728: goldAngelBrown.mp3
+Loaded song 729: neon exodus .mp3
+Loaded song 730: staring at the sun1.mp3
+Loaded song 731: 17.afraid of that-broc.mp3
+Loaded song 732: Golus Eahsa the dog tortise.mp3
+Loaded song 733: heavenlyKiss.mp3
+Loaded song 734: INTRO- ted parasitic(xofile) Baddi+.mp3
+Loaded song 735: Truth or triple dog dare.mp3
+Loaded song 736: slimeBall-1.mp3
+Loaded song 737: fight city.mp3
+Loaded song 738: fingersOfMen.mp3
+Loaded song 739: broken toy.mp3
+Loaded song 740: phat shame.mp3
+Loaded song 741: Red Blooded Rock and Roll.mp3
+Loaded song 742: War Path math.mp3
+Loaded song 743: Time bomb.mp3
+Loaded song 744: OMGstreetwise.mp3
+Loaded song 745: the only one.mp3
+Loaded song 746: 3.The God Delusion+.mp3
+Loaded song 747: 18.The Soul(vox).mp3
+Loaded song 748: Dancing like a fool thru fractals.mp3
+Loaded song 749: financial Instrument.mp3
+Loaded song 750: LARGE HADRON KOLLIDER(longtail.mp3
+Loaded song 751: To Be(or w_e).mp3
+Loaded song 752: 15.Rock Bottom.mp3
+Loaded song 753: 11.The best kind of amazing(149) 1.mp3
+Loaded song 754: Hot Tip Friction.mp3
+Loaded song 755: 20.The edge of the sky(dance of the living souls).mp3
+Loaded song 756: Horseshoe halo blues(lazy kit).mp3
+Loaded song 757: 3dos.mp3
+Loaded song 758: Nothing (if thats even possible).mp3
+Loaded song 759: Dog Eat Dog WORLD.mp3
+Loaded song 760: holy play 3D.mp3
+Loaded song 761: come from nothing.mp3
+Loaded song 762: Futuristic love.mp3
+Loaded song 763: paradise on earth.mp3
+Loaded song 764: rawsta.mp3
+Loaded song 765: activityNight.mp3
+Loaded song 766: Not Riley.mp3
+Loaded song 767: big boi.mp3
+Loaded song 768: 17.afraid of that[nonin].mp3
+Loaded song 769: she like rock and roll.mp3
+Loaded song 770: godsGangster-1.mp3
+Loaded song 771: The Under Kover Sting Loop.mp3
+Loaded song 772: To Be(or w:e).mp3
+Loaded song 773: Sole heir.mp3
+Loaded song 774: presidentPrincess.mp3
+Loaded song 775: sloGod.mp3
+Loaded song 776: Chopsticks.mp3
+Loaded song 777: 09.Twister.mp3
+Loaded song 778: 13.Anime(TT).mp3
+Loaded song 779: Nebulae.mp3
+Loaded song 780: matureLemonAids.mp3
+Loaded song 781: dolemite jr.mp3
+Loaded song 782: Theoroms.mp3
+Loaded song 783: -.The Under Kover Sting.mp3
+Loaded song 784: 11.The Greatest of them All INST.mp3
+Loaded song 785: 8.Black Magic[rock].mp3
+Loaded song 786: LARGE HADRON.mp3
+Loaded song 787: -.In the world.mp3
+Loaded song 788: battle of the sovereigns .mp3
+Loaded song 789: loveGameTSOTS.mp3
+Loaded song 790: 16.The first time.mp3
+Loaded song 791: KEWL KIDX KLUB.mp3
+Loaded song 792: qurantine (day 222).mp3
+Loaded song 793: The prince of blood.mp3
+Loaded song 794: dandelions.mp3
+Loaded song 795: Angel Dust Mountain.mp3
+Loaded song 796: 18.The Soul (140) 1.mp3
+Loaded song 797: the moment.mp3
+Loaded song 798: charisma pt2.mp3
+Loaded song 799: Spy Trip 13.mp3
+Loaded song 800: family friend.mp3
+Loaded song 801: Volume(mizi).mp3
+Loaded song 802: 10.Imagination(134).mp3
+Loaded song 803: 14.The whole wide world (wants you dead).mp3
+Loaded song 804: theroms.mp3
+Loaded song 805: 17.alone up there.mp3
+Loaded song 806: IN II THE SUN.mp3
+Loaded song 807: 11.Chimochio[past].mp3
+Loaded song 808: 05.Magick.mp3
+Loaded song 809: 0044.bellovania.4400.mp3
+Loaded song 810: i love you.mp3
+Loaded song 811: Dog Eat Dog.mp3
+Loaded song 812: God kuture - Edit Bubbly.mp3
+Loaded song 813: Mutagen.mp3
+Loaded song 814: Gangster.mp3
+Loaded song 815: The easy way.mp3
+Loaded song 816: 11.Chimochio[new].mp3
+Loaded song 817: the sol.mp3
+Loaded song 818: Black Light.mp3
+Loaded song 819: tsots life.mp3
+Loaded song 820: Bad Luck.mp3
+Loaded song 821: The boss maylikat bwby brux.mp3
+Loaded song 822: Dragon fly(phreaked).mp3
+Loaded song 823: The Absolute.mp3
+Loaded song 824: electric shadow kid.mp3
+Loaded song 825: After all (final credit voxin.mp3
+Loaded song 826: TSOTS Online 5lyfe.mp3
+Loaded song 827: Marazak quell -.mp3
+Loaded song 828: 12.Uh Oh.mp3
+Loaded song 829: 2.A Shepherds Farm and ranch[amend].mp3
+Loaded song 830: 11.MasterPeace.mp3
+Loaded song 831: 16.Glow in the dark nukes[rock].mp3
+Loaded song 832: start up .mp3
+Loaded song 833: tsotsServers.mp3
+Loaded song 834: growth team.mp3
+Loaded song 835: Nuclear Reactor.mp3
+Loaded song 836: Magic Mirror.mp3
+Loaded song 837: 11.Cool Kids Club.mp3
+Loaded song 838: Home Run(inside baseball).mp3
+Loaded song 839: sinest sisters.mp3
+Loaded song 840: dolemite.mp3
+Loaded song 841: 4.fortune.mp3
+Loaded song 842: KandyKoated.Trapeggs]Inst.mp3
+Loaded song 843: 19.The end of the world (Its not).mp3
+Loaded song 844: Smash hit.mp3
+Loaded song 845: holyGhost in the machine (reborn.mp3
+Loaded song 846: Brother against Brother.mp3
+Loaded song 847: codex.mp3
+Loaded song 848: Glitch hood.mp3
+Loaded song 849: The Under Kover Sting_1.mp3
+Loaded song 850: No means Yes (undercover).mp3
+Loaded song 851: Klub hel 2 kastle of despair.mp3
+Loaded song 852: glistenin.mp3
+Loaded song 853: godsGangster.mp3
+Loaded song 854: The Long WInded GOodbye.mp3
+Loaded song 855: presidentPrincess-1.mp3
+Loaded song 856: transparent.mp3
+Loaded song 857: mulligan.mp3
+Loaded song 858: Already King_1.mp3
+Loaded song 859: fairy tale.mp3
+Loaded song 860: Edge Dangerman.mp3
+Loaded song 861: ba[tised.mp3
+Loaded song 862: opportunities.mp3
+Loaded song 863: Big Mouth.mp3
+Loaded song 864: censor the people.mp3
+Loaded song 865: goldenGirls.mp3
+Loaded song 866: Heaven.mp3
+Loaded song 867: Foal in Love(bd).mp3
+Loaded song 868: 12.BIG ATMAN[rock].mp3
+Loaded song 869: jb-Heart of a cloud INSTRUMENTAL.mp3
+Loaded song 870: theONLYONE.mp3
+Loaded song 871: tPop.mp3
+Loaded song 872: HEAVY METAL SUN.mp3
+Loaded song 873: Numerology nhilism normalized.mp3
+Loaded song 874: Birthday Party.mp3
+Loaded song 875: 11.The best kind of amazing(149).mp3
+Loaded song 876: 8.Black Magic[FINAL].mp3
+Loaded song 877: Bath time.mp3
+Loaded song 878: hop on the dragon.mp3
+Loaded song 879: diddy kong racing.mp3
+Loaded song 880: gossip.mp3
+Loaded song 881: qurantine (allah loan).mp3
+Loaded song 882: Disturbing truths.mp3
+Loaded song 883: peerGroup.mp3
+Loaded song 884: 11.Chimochio[wav].mp3
+Loaded song 885: silly farts.mp3
+Loaded song 886: #tsotsonline.mp3
+Loaded song 887: 10.Imagination(134).aif.mp3
+Loaded song 888: abadaboiabarMohammed.mp3
+Loaded song 889: Losing Control.mp3
+Loaded song 890: Phreakers(jb).mp3
+Loaded song 891: Rush Hour.mp3
+Loaded song 892: little debbie and the electron shakes.mp3
+Loaded song 893: 17.My Soul(old).mp3
+Loaded song 894: laser futures.mp3
+Loaded song 895: You're not ready.mp3
+Loaded song 896: Kandy Koated Kunts.mp3
+Loaded song 897: luna.mp3
+Loaded song 898: AEON.mp3
+Loaded song 899: blvdBornDisciple++ (instrumental) .mp3
+Loaded song 900: neuro links.mp3
+Loaded song 901: 16.The end of the world (Its not)(150).aif.mp3
+Loaded song 902: future city jazz noir.mp3
+Loaded song 903: golden girl JAMB.mp3
+Loaded song 904: blvdBornDisciple (baking soda in Minnesota) - stereo.mp3
+Loaded song 905: Monkeys in the mind.mp3
+Loaded song 906: The Multiverse.mp3
+Loaded song 907: 13.Karkazods (Post-covid+).mp3
+Loaded song 908: THE INFINITY ORB! copy.mp3
+Loaded song 909: fallIntoTheWrongHands.mp3
+Loaded song 910: All is fair in love and war.mp3
+Loaded song 911: REKT.mp3
+Loaded song 912: creation itself.mp3
+Loaded song 913: crack.The bottom drops out.mp3
+Loaded song 914: purple heart string.mp3
+Loaded song 915: 12.desert wave.mp3
+Loaded song 916: VXteams.mp3
+Loaded song 917: 11.Chimochio[wav] 1.mp3
+Loaded song 918: peanut butter lunchables.mp3
+Loaded song 919: UNBREAKKKABLE.mp3
+Loaded song 920: Theoroms of nihilist love Normalized.mp3
+Loaded song 921: UTOPIANESQUE.mp3
+Loaded song 922: macaroni metal mafi INSTRUMENTAL.mp3
+Loaded song 923: magik monolith.mp3
+Loaded song 924: illusionOfALifetime.mp3
+Loaded song 925: 18.Re-animated.mp3
+Loaded song 926: covid-19.mp3
+Loaded song 927: KING.mp3
+Loaded song 928: -..Klockwise mind.mp3
+Loaded song 929: The Under Kover Sting(sneak peak) 2.mp3
+Loaded song 930: -.Gods.mp3
+Loaded song 931: Titanic.mp3
+Loaded song 932: 3DevilsvsAngelandtheHolySword.mp3
+Loaded song 933: mjolk.mp3
+Loaded song 934: Addiction.mp3
+Loaded song 935: 2.A Shepherds Farm and ranch[rock].mp3
+Loaded song 936: Holy night vision and the faces o death.mp3
+Loaded song 937: covid-19(corona).mp3
+Loaded song 938: Hearts on fire.mp3
+Loaded song 939: $p.Unobtanium Man.mp3
+Loaded song 940: The Under Kover Sting.mp3
+Loaded song 941: timeShoeFactory.mp3
+Loaded song 942: neon exodus.mp3
+Loaded song 943: tsots inside.mp3
+Loaded song 944: blvdBornDisciple++ (instrumental).mp3
+Loaded song 945: electric slumber party people(phreked!).mp3
+Loaded song 946: cipher.mp3
+Loaded song 947: 04.we prayed.mp3
+Loaded song 948: -1.Gameboy.mp3
+Loaded song 949: quranteen instrumental.mp3
+Loaded song 950: aDogEatDogProduction(katLivesMatter).mp3
+Loaded song 951: White Russian.mp3
+Loaded song 952: The fruit of lif[mp3float @ 0x5b752b8c4480] Could not update timestamps for skipped samples.
+[mp3float @ 0x5b752b8e0700] Could not update timestamps for skipped samples.
+[mp3float @ 0x5b752b8e0700] Could not update timestamps for discarded samples.
+[mp3 @ 0x5b752b8c63c0] Failed to read frame size: Could not seek to 1026.
+Could not open file /media/no/b7ced73c-5231-4462-b98d-64e38fe2df9e/home/jbez/Music/SP.ONLY.Make.DAW]2727]solonly/SP.ONLY.Make.DAW]2727]solonly/Mp3.M4a.merge.fix]795/17.My Soul(old).mp3
+[mp3 @ 0x5b752b8c63c0] Estimating duration from bitrate, this may be inaccurate
+[mp3float @ 0x5b752b8c4ac0] Could not update timestamps for skipped samples.
+Could not open file STICKY]🕹️/▶️.Fun-&-Games]Play🕹️/angband]ON]🏰️]0000/lib/sounds/mco_howl_long.mp3
+[mp3float @ 0x5b752b8ddc80] overread, skip -5 enddists: -2 -2
+[mp3 @ 0x5b752b8c63c0] Estimating duration from bitrate, this may be inaccurate
+[mp3float @ 0x5b752b8d8780] overread, skip -5 enddists: -2 -2
+[mp3 @ 0x5b752b8c63c0] Failed to read frame size: Could not seek to 1026.
+Could not open file /media/no/b7ced73c-5231-4462-b98d-64e38fe2df9e/home/jbez/Music/SP.ONLY.Make.DAW]2727]solonly/SP.ONLY.Make.DAW]2727]solonly/Mp3.M4a.merge.fix]795/Birthday Party.mp3
+[mp3 @ 0x5b752b8c63c0] Estimating duration from bitrate, this may be inaccurate
+[mp3float @ 0x5b752b8e36c0] overread, skip -6 enddists: -5 -5
+[mp3float @ 0x5b752b8e36c0] overread, skip -7 enddists: -6 -6
+[mp3 @ 0x5b752b8c63c0] Failed to read frame size: Could not seek to 1026.
+Could not open file /media/no/b7ced73c-5231-4462-b98d-64e38fe2df9e/home/jbez/Music/SP.ONLY.Make.DAW]2727]solonly/SP.ONLY.Make.DAW]2727]solonly/$.Punch.Dpwm.Metal.Mixs]FpgaDr-/BAD/little debbie and the electron shakes+.mp3
+[mp3 @ 0x5b752b8c63c0] Estimating duration from bitrate, this may be inaccurate
+[mp3 @ 0x5b752b8c63c0] Failed to read frame size: Could not seek to 1026.
+Could not open file /media/no/b7ced73c-5231-4462-b98d-64e38fe2df9e/home/jbez/Music/SP.ONLY.Make.DAW]2727]solonly/SP.ONLY.Make.DAW]2727]solonly/jbm.AOG.mp3.INST]7.0000/jokerGang.mp3
+[mp3 @ 0x5b752b8c63c0] Estimating duration from bitrate, this may be inaccurate
+e.mp3
+Loaded song 953: 08.Perfect(150).aif.mp3
+Loaded song 954: 16.Black Night of the Soul Pen ulterior.mp3
+Loaded song 955: the time factory.mp3
+Loaded song 956: twisted parasitic.underground.mp3
+Loaded song 957: Already King.mp3
+Loaded song 958: cool world.mp3
+Loaded song 959: black eyes metalion dragonOLD21.mp3
+Loaded song 960: Truth or triple dog dare VC.mp3
+Loaded song 961: loveitFreestyle+drop.mp3
+Loaded song 962: Gods.mp3
+Loaded song 963: RAIN MAN (toyota).mp3
+Loaded song 964: my life now.mp3
+Loaded song 965: laPetitMortet.mp3
+Loaded song 966: digitalSheep.mp3
+Loaded song 967: 17.afraid of that.mp3
+Loaded song 968: heaven insurance.mp3
+Loaded song 969: ^@^(carbon8ion BASED )lyfe4m.mp3
+Loaded song 970: start up.mp3
+Loaded song 971: little miss lonely eyes and la petite mort.mp3
+Loaded song 972: camera shy now.mp3
+Loaded song 973: shifting paradigms.mp3
+Loaded song 974: blackstarStation-1.mp3
+Loaded song 975: fuck everyone(non normalized4).mp3
+Loaded song 976: IN TIME.mp3
+Loaded song 977: 09.Gooey Louie (gorrila glue).mp3
+Loaded song 978: Just your luck.mp3
+Loaded song 979: -1.03.Under Investigation.mp3
+Loaded song 980: Planetary Light LITE.mp3
+Loaded song 981: little debbie and the electron shakes_1.mp3
+Loaded song 982: battle sovs.mp3
+Loaded song 983: (mustache rock)Sad lyfe.mp3
+Loaded song 984: detectivePikachu.mp3
+Loaded song 985: killin these niggas.mp3
+Loaded song 986: God kuture.mp3
+Loaded song 987: Volume.mp3
+Loaded song 988: Dark city elders.mp3
+Loaded song 989: cut me up grim dark.mp3
+Loaded song 990: The forbiden planet.mp3
+Loaded song 991: 18.The Soul (140).mp3
+Loaded song 992: VXmercMerc.mp3
+Loaded song 993: 02.Lucky day 193.mp3
+Loaded song 994: bowDown.mp3
+Loaded song 995: loveMachine.mp3
+Loaded song 996: thuckywiseMetalson.mp3
+Loaded song 997: Beach friends.mp3
+Loaded song 998: To be or not to be.mp3
+Loaded song 999: shifting paradigms .mp3
+Loaded song 1000: Now this is Yolo.mp3
+Loaded 1000 songs from playlist.txt (1000 lines processed)
+Song at index 176: XVS.🕹️xoGames-
+MP3 Player GUI started. Ensure mp3_player_cli is running.
+Mouse click: button=0, state=0, x=487, y=97
+Adjusted y: 1003
+Shuffle button clicked
+Sent command: SHUFFLE_ON
+Shuffle ON
+Mouse click: button=0, state=1, x=487, y=97
+Adjusted y: 1003
+Mouse click: button=0, state=0, x=90, y=121
+Adjusted y: 979
+No button clicked, checking for song selection
+Mouse click: button=0, state=1, x=90, y=121
+Adjusted y: 979
+Mouse click: button=0, state=0, x=87, y=117
+Adjusted y: 983
+Play button clicked
+Sent command: PLAY 0
+Mouse click: button=0, state=1, x=87, y=117
+Adjusted y: 983
+Mouse click: button=0, state=0, x=297, y=111
+Adjusted y: 989
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=297, y=111
+Adjusted y: 989
+Mouse click: button=0, state=0, x=281, y=111
+Adjusted y: 989
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=281, y=111
+Adjusted y: 989
+Mouse click: button=0, state=0, x=282, y=108
+Adjusted y: 992
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=282, y=108
+Adjusted y: 992
+Mouse click: button=0, state=0, x=282, y=108
+Adjusted y: 992
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=282, y=108
+Adjusted y: 992
+Mouse click: button=0, state=0, x=282, y=108
+Adjusted y: 992
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=282, y=108
+Adjusted y: 992
+Mouse click: button=0, state=0, x=282, y=110
+Adjusted y: 990
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=282, y=110
+Adjusted y: 990
+Mouse click: button=0, state=0, x=258, y=101
+Adjusted y: 999
+No button clicked, checking for song selection
+Mouse click: button=0, state=1, x=258, y=101
+Adjusted y: 999
+Mouse click: button=0, state=0, x=282, y=104
+Adjusted y: 996
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=282, y=104
+Adjusted y: 996
+Mouse click: button=0, state=0, x=287, y=109
+Adjusted y: 991
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=287, y=109
+Adjusted y: 991
+Mouse click: button=0, state=0, x=287, y=1[mp3 @ 0x5b752b8c63c0] Estimating duration from bitrate, this may be inaccurate
+Could not open file /media/no/b7ced73c-5231-4462-b98d-64e38fe2df9e/home/jbez/Desktop/XVS.🕹️xoGames-
+[mp3 @ 0x5b752b8c63c0] Estimating duration from bitrate, this may be inaccurate
+[mp3float @ 0x5b752b8c4980] Could not update timestamps for skipped samples.
+[mp3float @ 0x5b752b8c4980] Could not update timestamps for discarded samples.
+[mp3 @ 0x5b752b8c63c0] Failed to read frame size: Could not seek to 1026.
+Could not open file /media/no/b7ced73c-5231-4462-b98d-64e38fe2df9e/home/jbez/Music/SP.ONLY.Make.DAW]2727]solonly/SP.ONLY.Make.DAW]2727]solonly/The501-compress0R+-/kruft/05.Soul Pen(vox-solo).mp3
+Could not open file STICKY]🕹️/▶️.Fun-&-Games]Play🕹️/angband]ON]🏰️]0000/lib/sounds/sto_man_whoohaha.mp3
+[mp3 @ 0x5b752b8c63c0] Estimating duration from bitrate, this may be inaccurate
+[mp3 @ 0x5b752b8c63c0] Estimating duration from bitrate, this may be inaccurate
+[mp3 @ 0x5b752b8c63c0] Estimating duration from bitrate, this may be inaccurate
+Could not open file STICKY]🕹️/▶️.Fun-&-Games]Play🕹️/angband]ON]🏰️]0000/lib/sounds/sum_bell_hand.mp3
+[mp3 @ 0x5b752b8c63c0] Estimating duration from bitrate, this may be inaccurate
+[mp3 @ 0x5b752b8c63c0] Estimating duration from bitrate, this may be inaccurate
+[mp3 @ 0x5b752b8c63c0] Estimating duration from bitrate, this may be inaccurate
+Could not open file STICKY]🕹️/▶️.Fun-&-Games]Play🕹️/angband]ON]🏰️]0000/lib/sounds/mco_dino_low.mp3
+Could not open file STICKY]🕹️/▶️.Fun-&-Games]Play🕹️/angband]ON]🏰️]0000/lib/sounds/mco_dino_low.mp3
+[mp3 @ 0x5b752b8c63c0] Estimating duration from bitrate, this may be inaccurate
+Could not open file /media/no/b7ced73c-5231-4462-b98d-64e38fe2df9e/home/jbez/Desktop/XVS.🕹️xoGames-
+[mp3 @ 0x5b752b8c63c0] Estimating duration from bitrate, this may be inaccurate
+[mp3 @ 0x5b752b8c63c0] Format mp3 detected only with low score of 1, misdetection possible!
+[mp3 @ 0x5b752b8c63c0] Failed to read frame size: Could not seek to 5119.
+Could not open file /media/no/b7ced73c-5231-4462-b98d-64e38fe2df9e/home/jbez/Music/SP.ONLY.Make.DAW]2727]solonly/SP.ONLY.Make.DAW]2727]solonly/jbm.AOG.mp3.INST]7.0000/-20.soulpen is mightier than sword (cred INST.mp3
+Could not open file STICKY]🕹️/▶️.Fun-&-Games]Play🕹️/angband]ON]🏰️]0000/lib/sounds/mco_spray_long.mp3
+Could not open file /media/no/b7ced73c-5231-4462-b98d-64e38fe2df9e/home/jbez/Desktop/XVS.🕹️xoGames-
+[mp3float @ 0x5b752b8dc380] Could not update timestamps for skipped samples.
+Could not open file /media/no/b7ced73c-5231-4462-b98d-64e38fe2df9e/home/jbez/Desktop/XVS.🕹️xoGames-
+[mp3 @ 0x5b752b8c63c0] Estimating duration from bitrate, this may be inaccurate
+[mp3 @ 0x5b752b8c63c0] Failed to read frame size: Could not seek to 1026.
+Could not open file /media/no/b7ced73c-5231-4462-b98d-64e38fe2df9e/home/jbez/Music/SP.ONLY.Make.DAW]2727]solonly/SP.ONLY.Make.DAW]2727]solonly/Mp3.M4a.merge.fix]795/blackEyeSocket.mp3
+09
+Adjusted y: 991
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=287, y=109
+Adjusted y: 991
+Mouse click: button=0, state=0, x=293, y=106
+Adjusted y: 994
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=293, y=106
+Adjusted y: 994
+Mouse click: button=0, state=0, x=293, y=106
+Adjusted y: 994
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=293, y=106
+Adjusted y: 994
+Mouse click: button=0, state=0, x=293, y=106
+Adjusted y: 994
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=293, y=106
+Adjusted y: 994
+Mouse click: button=0, state=0, x=333, y=341
+Adjusted y: 759
+No button clicked, checking for song selection
+Song 493 clicked
+Sent command: PLAY 493
+Mouse click: button=0, state=1, x=333, y=341
+Adjusted y: 759
+Mouse click: button=0, state=0, x=299, y=114
+Adjusted y: 986
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=299, y=114
+Adjusted y: 986
+Mouse click: button=0, state=0, x=267, y=115
+Adjusted y: 985
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=267, y=115
+Adjusted y: 985
+Mouse click: button=0, state=0, x=284, y=105
+Adjusted y: 995
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=284, y=105
+Adjusted y: 995
+Mouse click: button=0, state=0, x=284, y=105
+Adjusted y: 995
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=284, y=105
+Adjusted y: 995
+Mouse click: button=0, state=0, x=284, y=105
+Adjusted y: 995
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=284, y=105
+Adjusted y: 995
+Mouse click: button=0, state=0, x=284, y=105
+Adjusted y: 995
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=284, y=105
+Adjusted y: 995
+Mouse click: button=0, state=0, x=74, y=126
+Adjusted y: 974
+No button clicked, checking for song selection
+Mouse click: button=0, state=1, x=74, y=126
+Adjusted y: 974
+Mouse click: button=0, state=0, x=77, y=113
+Adjusted y: 987
+Play button clicked
+Sent command: PLAY 627
+Mouse click: button=0, state=1, x=77, y=113
+Adjusted y: 987
+Mouse click: button=0, state=0, x=196, y=119
+Adjusted y: 981
+Stop button clicked
+Sent command: STOP
+Mouse click: button=0, state=1, x=196, y=119
+Adjusted y: 981
+Mouse click: button=0, state=0, x=285, y=109
+Adjusted y: 991
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=285, y=109
+Adjusted y: 991
+Mouse click: button=0, state=0, x=96, y=109
+Adjusted y: 991
+Play button clicked
+Sent command: PLAY 275
+Mouse click: button=0, state=1, x=96, y=109
+Adjusted y: 991
+Mouse click: button=0, state=0, x=289, y=100
+Adjusted y: 1000
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=289, y=100
+Adjusted y: 1000
+Mouse click: button=0, state=0, x=289, y=100
+Adjusted y: 1000
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=289, y=100
+Adjusted y: 1000
+Mouse click: button=0, state=0, x=289, y=100
+Adjusted y: 1000
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=289, y=100
+Adjusted y: 1000
+Mouse click: button=0, state=0, x=289, y=100
+Adjusted y: 1000
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=289, y=100
+Adjusted y: 1000
+Mouse click: button=0, state=0, x=289, y=100
+Adjusted y: 1000
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=289, y=100
+Adjusted y: 1000
+Mouse click: button=0, state=0, x=289, y=100
+Adjusted y: 1000
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=289, y=100
+Adjusted y: 1000
+Mouse click: button=0, state=0, x=289, y=100
+Adjusted y: 1000
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=289, y=100
+Adjusted y: 1000
+Mouse click: button=0, state=0, x=289, y=107
+Adjusted y: 993
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=289, y=107
+Adjusted y: 993
+Mouse click: button=0, state=0, x=289, y=107
+Adjusted y: 993
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=289, y=107
+Adjusted y: 993
+Mouse click: button=0, state=0, x=362, y=[mp3 @ 0x5b752b8c63c0] Estimating duration from bitrate, this may be inaccurate
+[mp3 @ 0x5b752b8c63c0] Estimating duration from bitrate, this may be inaccurate
+[mp3 @ 0x5b752b8c63c0] Estimating duration from bitrate, this may be inaccurate
+[mp3float @ 0x5b752b8e9300] Could not update timestamps for skipped samples.
+[mp3 @ 0x5b752b8c63c0] Estimating duration from bitrate, this may be inaccurate
+[mp3 @ 0x5b752b8c63c0] Estimating duration from bitrate, this may be inaccurate
+[mp3 @ 0x5b752b8c63c0] Estimating duration from bitrate, this may be inaccurate
+[mp3float @ 0x5b752b8c4980] Could not update timestamps for skipped samples.
+[mp3float @ 0x5b752b8c4980] Could not update timestamps for discarded samples.
+[mp3 @ 0x5b752b8c63c0] Failed to read frame size: Could not seek to 1026.
+Could not open file /media/no/b7ced73c-5231-4462-b98d-64e38fe2df9e/home/jbez/Desktop/XVS.🕹️xoGames-
+[mp3 @ 0x5b752b8c63c0] Estimating duration from bitrate, this may be inaccurate
+[mp3float @ 0x5b752b8e4580] overread, skip -6 enddists: -4 -4
+[mp3float @ 0x5b752b8e4580] overread, skip -5 enddists: -2 -2
+[mp3 @ 0x5b752b8c63c0] Failed to read frame size: Could not seek to 1026.
+Could not open file /media/no/b7ced73c-5231-4462-b98d-64e38fe2df9e/home/jbez/Desktop/XVS.🕹️xoGames-
+Could not open file STICKY]🕹️/▶️.Fun-&-Games]Play🕹️/angband]ON]🏰️]0000/lib/sounds/plm_aim_wand.mp3
+Could not open file STICKY]🕹️/▶️.Fun-&-Games]Play🕹️/angband]ON]🏰️]0000/lib/sounds/mco_bite_regular.mp3
+[mp3 @ 0x5b752b8c63c0] Estimating duration from bitrate, this may be inaccurate
+[mp3 @ 0x5b752b8c63c0] Estimating duration from bitrate, this may be inaccurate
+[mp3 @ 0x5b752b8c63c0] Failed to read frame size: Could not seek to 1026.
+Could not open file STICKY]🕹️/▶️.Fun-&-Games]Play🕹️/angband]ON]🏰️]0000/lib/sounds/sto_bell_register1.mp3
+[mp3 @ 0x5b752b8c63c0] Estimating duration from bitrate, this may be inaccurate
+[mp3float @ 0x5b752b8d6000] overread, skip -5 enddists: -2 -2
+[mp3 @ 0x5b752b8c63c0] Failed to read frame size: Could not seek to 1026.
+Could not open file STICKY]🕹️/▶️.Fun-&-Games]Play🕹️/angband]ON]🏰️]0000/lib/sounds/sto_bell_shop.mp3
+X connection to :0 broken (explicit kill or server shutdown).
+108
+Adjusted y: 992
+Prev button clicked
+Sent command: PREV
+Mouse click: button=0, state=1, x=362, y=108
+Adjusted y: 992
+Mouse click: button=0, state=0, x=291, y=93
+Adjusted y: 1007
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=291, y=93
+Adjusted y: 1007
+Mouse click: button=0, state=0, x=348, y=100
+Adjusted y: 1000
+Prev button clicked
+Sent command: PREV
+Mouse click: button=0, state=1, x=348, y=100
+Adjusted y: 1000
+Mouse click: button=0, state=0, x=348, y=100
+Adjusted y: 1000
+Prev button clicked
+Sent command: PREV
+Mouse click: button=0, state=1, x=348, y=100
+Adjusted y: 1000
+Mouse click: button=0, state=0, x=348, y=100
+Adjusted y: 1000
+Prev button clicked
+Sent command: PREV
+Mouse click: button=0, state=1, x=348, y=100
+Adjusted y: 1000
+Mouse click: button=0, state=0, x=348, y=100
+Adjusted y: 1000
+Prev button clicked
+Sent command: PREV
+Mouse click: button=0, state=1, x=348, y=100
+Adjusted y: 1000
+Mouse click: button=0, state=0, x=348, y=100
+Adjusted y: 1000
+Prev button clicked
+Sent command: PREV
+Mouse click: button=0, state=1, x=348, y=100
+Adjusted y: 1000
+Mouse click: button=0, state=0, x=309, y=105
+Adjusted y: 995
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=309, y=105
+Adjusted y: 995
+Mouse click: button=6, state=0, x=216, y=84
+Adjusted y: 1016
+Mouse click: button=6, state=1, x=216, y=84
+Adjusted y: 1016
+Mouse click: button=0, state=0, x=270, y=96
+Adjusted y: 1004
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=270, y=96
+Adjusted y: 1004
+Mouse click: button=0, state=0, x=293, y=85
+Adjusted y: 1015
+No button clicked, checking for song selection
+Mouse click: button=0, state=1, x=293, y=85
+Adjusted y: 1015
+Mouse click: button=0, state=0, x=293, y=92
+Adjusted y: 1008
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=293, y=92
+Adjusted y: 1008
+Mouse click: button=0, state=0, x=293, y=92
+Adjusted y: 1008
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=293, y=92
+Adjusted y: 1008
+Mouse click: button=0, state=0, x=293, y=92
+Adjusted y: 1008
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=293, y=92
+Adjusted y: 1008
+Mouse click: button=0, state=0, x=288, y=109
+Adjusted y: 991
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=288, y=109
+Adjusted y: 991
+Mouse click: button=0, state=0, x=273, y=119
+Adjusted y: 981
+Next button clicked
+Sent command: NEXT
+Mouse click: button=0, state=1, x=273, y=119
+Adjusted y: 981

@@ -1,0 +1,4 @@
+0000000000000011  # Chip: modem_out (3)
+0000000000001011  # Address: 10 (write to 10.txt)
+0000000000000001  # Input_value: 1
+0000000000000000  # Ignored

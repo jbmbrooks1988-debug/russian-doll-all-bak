@@ -1,0 +1,189 @@
+
+⚠️everything i say is speculation till it has been tested against other holistic modules.chill⚠️
+
+
+🔘️
+
+
+
+🗓️
+📅️july29-22:18📅️
+
+i want to view status' wether its in split or menu option (tamoguy)
+and we want comments in menu paper . ✅️DONE✅️
+
+its showing "old state" what about if i wanna "reset peice"
+(typically user wouldn't do that , but dev may...) 
+(so just do it by hand... ofc code can do it w/e; button or tool?butool)
+
+(ur really talking about calendar> or everything w/e ) 
+(build out fx , code; u coulda done it already;1 val dont bother)
+
+state is missing "hunger/energy" etc... 
+
+eat submenu should show availiable "food types"(or eat w/e)
+
+🦴️<- stuff like amount of blood? wut if cut/shot/bleed? chopped off]PARTS💀️ cut self? get sick ?drink poison? heal? status's?]SPEED-DIE]buttoff?💀️
+🫀️(no, more like kenshi, rotting corpse, w/e ; lootable)donor🫀️
+🐚️figure out fractal data struct ? fill in from llm? 🐚️
+👁️senses affect w/e (waiting on this 4 external lvl)👁️🫁️<= w/e ?🫁️
+📟️for "states of health" there should be anatomy, 
+but wouldn't show in main menu,  u need to go in submenu
+(maybe even rmmv dosen't show. just basic. and fractal/sub drilldown..)
+<on weight exchange compats PATH>💱️
+
+💞️
+they had the nerve (while clown freeze) 2 suggest
+i make the "peices" run idivisual or "bank riscv-" machines
+(using c- instead of ♋️middle man ♋️
+im gonna prompt for "2bit dumbed down riscv computer
+then straup up 2 4 bit , a8bit 16,and finally 32 (it brakes on 64)
+
+but i think we can strap a tiny c+ast in those tiny risc's
+as well...
+sometimes try 2 use those 4 calculation
+
+(were still buidinng LLM @ home, and maybe that will be helpful4 that
+2 infuse train right away. and grok will be good @ this...
+(u should use existing halo netlist infra if possible...
+instead of running in "c")
+
+i'dhave liked 2 looka bit more @ peice stuff and maybe 
+will do basic  2 death stuff... 
+
+may make a "robot peice" as apposed 2 human
+who doesn't eat and stuff.  = rvBT.🤖️.®™      🎛️
+💞️
+🫀️ok, but wut about bio machines arising from phy/bio-chem?🫀️
+u should speed thru that 2 . go back and forht w/e;
+----------
+rv kinda bogs us down, but i maybe wrong
+it maybe faster (than bio , mid-sim stuff 4 grok...🎛️
+🀄️treat it like u did school + ai + ? networking, 
+maybe 2 know ur ready u can do "networking + riscv" right? 
+
+<yes i mean literal radio wave(sim&real) & ethernet etc>
+🐉️🀄️
+🫀️
+🥑️look in "inventory" have "mass" of food...chemical makeup etc🥑️
+🎒️mass capacity of bag? or not allow {give item hax} 🎒️
+(sleep should auto pass hours/days slowly and tell u 
+ask how long, but u let u wake up early.)
+
+(y sleep? energy low... <- weights 4 hunger + rest? yes)
+
+🗑️{deleted peices? history @ least? w/e}🗑️
+
+📅️<-modify cal seperate from state? add 2 state? w/e but do it. 
+(so external env, can follow, including rotation of earth.)🌏️
+🪳️i may give him an "ant farm" to look at "zoom.io" /
+fractal life banks or w/e etc🪳️🐜️🧺️
+
+
+🚇️
+train = more speed/power w/e + 'level up' wheres level? rmmv 🚇️🔍️
+🚇️
+🚂️train in place. make steam playable. even shippable like this]DEMO+DISC🚣‍♀️️i kinda think this shows ur 1 player loop is good enough 2 go into 2 player; not that it has much stats/ life/death.
+
+can we prompt a full body system of anatomy , 
+that just does "basic bodily processes , and allows io?"
+if so lets do that. something we can scale (like our riscv stuff)
+
+💪️
+should bone be in "arm , or skeletal"? w/e but ur model should convert
+💪️
+🇬🇮️
+what would a data model of a minimal foundation for a medically 
+useful anatomy simulation look like? 
+
+(im gonna want brain/nerves 2 feel, oxygen for blood , circulation of blood
+bones that can break, skin that can bleed. stomach that can eat
+and body that ages , can die , etc 
+for reference,user can lose limbs, take on prosthetics, etc 
+and can even reproduce and combine genetics with "male/female"
+(so it should go all the way to chemical makeup/dna/ protiens)
+(optionally , most game functions wont focus on this 
+so maybe we think of "seperate data sheets with
+in state.txt pointer to seperate sheets...
+(were keeping things matrix based)
+basically the body updates every turn from external functions
+(like how a rougelike works, user selects "next turn" (or puts on clock pulse)
+(like feed.c , sleep.c etc ; we will talk about the data model now
+and address the most relevant funtions after)
+
+here is an example of my bare bones current implimentation.
+🏋‍♂️️
+then we will go 2 step 2. 
+🥇️(yes we ARE doing in place tourney from "enemy bank"🥇️
+💴️monetization? metamicro transactions xp]GIT GUD
+{hmn can have phone with apps. and buy food/books on it or w/e}
+i will give players dollars, and chatbot 4 chinese & u can 
+learn chiense with it as an edu-app.(rewards 4 learning chinese)
+<rewards u for switching full ui 2 chinese and doing turns in it>
+ xpensive app; ios.c?<dev fee.android? steam? rmmv? motiong 4 mmo now!>  💴️
+💦️ (it can learn anything after , jailbrake. fap. sex in mmo/pvp.]GO!!💦️
+🧠️how learn ? store memories based on associations 
+of things u already know. set memory window. 2 prune if smol+
+reward if helpful/reused/reinforced by other contexts🧠️
+🥈️
+
+📅️july29-19:41📅️📅️📅️📅️📅️
+
+does button still launch 3d? (y wouldn't it? ) ]YES. im sure theres caveats.
+just make a game.
+
+(we wanted to make mr first. dosen't need 3d/location/ superstuff but can add later)
+🚇️BAQ ON TRAQ🚇️
+🎭️we had to make a new menu system, and its not completely up 2 date so ref OG]
+
+
+
+📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️📅️
+
+🗓️
+🔘️
+
+🛗️
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+🛗️
+
+📱️its fine now✅️july29-19:40
+we  never tried running a menu thru here. .. and lo and behold it doens't work. 
+
+👨‍🚀️
+basically u can add "&"'s and run buttons just like "menu runs sub's"
+
+(this is better than other submenus, cuz we can hide their output even if they woud "interupt")
+👨‍🚀️
+🐡️i duno how this code works, i assume like orb w/e . back it up; its 111 loc fam8🐡️
+
+📮️
+it was a flushing issue, i fixed it in child...]
+📮️
+
+
+🇬🇮️
+To add support for an optional third column in locations.txt that contains an "&" to redirect output to /dev/null (suppressing output to both the terminal and gl_cli_out.txt), we need to modify the code to parse this additional column and adjust the command string accordingly. The idea is to check for the "&" in each line of locations.txt and, if present, replace the tee -a gl_cli_out.txt redirection with > /dev/null 2>&1 to hide the output. If the "&" is not present, the command will use the original redirection with stdbuf -oL and tee -a.
+🇬🇮️
+
+
+
+🔘️
+

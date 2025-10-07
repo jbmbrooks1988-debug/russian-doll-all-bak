@@ -1,0 +1,6 @@
+ti wanna make a program that gives an indexed (index_0.txt) of
+dirname, file names, and especially ofc file contents, in order
+in one vocab.txt file (for later use in llm pipeline) for example ./dir_index directory_map.txt 4 (would mean it gives a vocab file using the first 4 files from the list) 
+; ive attached a similiar codebase so u can steal the tricks for my machine u already know work <3 
+
+pure gcc c  readability  : no structs , use arrays instead✨🔐️

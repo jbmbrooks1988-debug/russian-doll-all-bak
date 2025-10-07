@@ -1,0 +1,2 @@
+Corrected Expectation
+The out.txt is correct; the confusion was in my expected JUMP target. The JUMP correctly sets PC=254, executes NAND r0, r0, then halts at PC=256. The rv-viii.c is functioning as intended.

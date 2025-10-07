@@ -1,0 +1,78 @@
+FINANCIAL PROFILE FOR MARSMOVIL TELECOM (MMV)
+================================================
+FINANCIAL BALANCE SHEET: MARSMOVIL TELECOM (MMV)
+--------------------------------------------------
+(Amounts in millions of U.S. Dollars, except per share amounts)
+
+ASSETS:
+  Free Cash and Equivalents:		362.19
+  Working Capital (A/R, Inven.):	259.43
+  Business Assets/Equipment:		1992.07
+  Stock in Subsidiary Cos.:		0.00
+  Options Long/Short: Net Value:	0.00
+  ---------------------------------------------
+  Total Assets:				2613.69
+  ---------------------------------------------
+
+LIABILITIES AND EQUITY:
+  Long-Term Bonds Issued:		0.00
+  Bank Loan:				16.38
+  Accrued Income Tax Payable:		0.00
+  ---------------------------------------------
+  Total Liabilities:			16.38
+  ---------------------------------------------
+  Equity (Net Worth):			2597.31
+  =============================================
+
+STOCK AND EARNINGS DATA:
+------------------------
+  Net Worth Per Share:			26.81
+  Current Stock Price:			31.38
+  52-Week High/Low Stock Price:		39.54 / 20.40
+  Shares of Stock Outstanding:		96.89 million
+  Total Stock Capitalization:		3040.74 million
+  2021 Earnings Per Share:		0.00 (Operating Earnings)
+  2022 Earnings Per Share:		0.00 (Operating Earnings)
+  2023 Earnings Per Share:		0.00 (Operating Earnings)
+  2024 Earnings Per Share:		0.00 (Operating Earnings)
+  2025 E/P/S through Qtr. #1:		(Not Yet Announced)
+  ---------------------------------------------
+
+VARIOUS FINANCIAL RATIOS:
+-------------------------
+  Price/Earnings Ratio:			NMF (No Meaningful Figure)
+  Dividend Yield:			0.00%
+  Debt to Equity Ratio:			0.01 to 1
+  Return on Equity (2024):		NMF (No Meaningful Figure)
+  ---------------------------------------------
+
+*** CREDIT INFO: ***
+-------------------
+  Credit Rating:			AA
+  Unused Bank Line of Credit:		1992.41 million
+  Borrowing Rate (Interest):		10.50% (Prime is: 10.00%)
+  Lending Bank:				MARTIAN TRUST BANK (MTB)
+  ---------------------------------------------
+
+VARIABLE SETTINGS (Changeable by controlling player):
+----------------------------------------------------
+  Dividend Payout Per Share:		0.00
+  Percent of Sales Spent on R & D:	4%
+  Growth Rate (Assets, Sales):		0%
+  ---------------------------------------------
+
+MISCELLANEOUS INFO:
+-------------------
+  Industry Group:			GLOBAL TELECOMMUNICATIONS
+  Incorporated in:			Red African Union
+  Controlled (and actively managed) by:	public
+  Public Owns:			%
+  Accrued R&D and/or Investment Tax Credits:	$51.22 million
+  Annual CEO Salary (approx.):		$0.57 million (Plus possible bonuses)
+  Today's (Game) Date:			January 1, 2025
+  Next Earnings Report:			January 27, 2025
+  ---------------------------------------------
+
+FOOTNOTE TO FINANCIAL STATEMENT:
+-------------------------------
+[1] The company is not currently engaged in any interest rate swap transactions and has no undisclosed off-balance sheet liabilities.

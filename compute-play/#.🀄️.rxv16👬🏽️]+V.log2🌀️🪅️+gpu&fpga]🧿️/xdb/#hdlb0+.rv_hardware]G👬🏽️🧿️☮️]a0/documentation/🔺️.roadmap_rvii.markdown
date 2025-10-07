@@ -1,0 +1,231 @@
+📳️# 🚀 RV-II Computer Roadmap in HDLb0 🖥️
+
+This roadmap outlines the steps to build an **RV-II computer** using the **HDLb0 emulator** (`0.QRWN.👑️]a3]2]PURE.c`) with pure 16-bit binary instructions, not C code. We’ll define the chips (like XOR and Adder) needed, tools for automation, and address the RAM clearing issue. Key Performance Indicators (KPIs) ensure we stay on track for a simple, portable architecture that can be implemented in other languages (bash, assembly, VHDL, etc.). Let’s build a tiny computer! 🌟
+
+## 🎯 Objective
+Create a functional RV-II computer in HDLb0 that emulates the 2-bit RV-II processor (as in `rv-ii.c`) using only NAND-based binary instructions. The system will:
+- Support RV-II’s instruction set: NAND, LOAD, STORE, JUMP.
+- Use 16-bit binary instructions in `program.txt`.
+- Run on HDLb0’s 256-byte RAM, switches, and tape.
+- Be simple for porting to bash, assembly, VHDL, etc.
+
+## 🛠️ Step-by-Step Plan
+
+### Step 1: Define Required Chips in Binary 🔲
+RV-II uses NAND as its core operation, with LOAD, STORE, and JUMP handled by HDLb0’s pass-through logic (chip_location = 0) or program flow. We need chips to emulate RV-II’s logic and build a 2-bit computer.
+
+#### 1.1 XOR Chip
+**Purpose**: RV-II’s NAND can compute any logic, but XOR is useful for arithmetic (e.g., Adder). XOR: `A XOR B = (A NAND (A NAND B)) NAND (B NAND (A NAND B))`.
+
+**Binary Implementation** (chip_location = 1 for NAND):
+```
+0000000000000001  // NAND: T1 = A NAND B -> RAM[16]
+0000000000010000  // Output to RAM[16]
+0000000000000101  // Input A: switch_0 (5)
+0000000000000110  // Input B: switch_1 (6)
+
+0000000000000001  // NAND: T2 = A NAND T1 -> RAM[17]
+0000000000010001  // Output to RAM[17]
+0000000000000101  // Input A: switch_0 (5)
+0000000000010000  // Input B: RAM[16]
+
+0000000000000001  // NAND: T3 = B NAND T1 -> RAM[18]
+0000000000010010  // Output to RAM[18]
+0000000000000110  // Input B: switch_1 (6)
+0000000000010000  // Input B: RAM[16]
+
+0000000000000001  // NAND: T4 = T2 NAND T3 -> RAM[19]
+0000000000010011  // Output to RAM[19]
+0000000000010001  // Input A: RAM[17]
+0000000000010010  // Input B: RAM[18]
+```
+- **Inputs**: `switch_0` (5), `switch_1` (6).
+- **Output**: RAM[19] (XOR result).
+- **KPI**: Verify XOR truth table (0,0→0; 0,1→1; 1,0→1; 1,1→0) in `cli_tape.txt` within 2 clock cycles.
+
+#### 1.2 1-Bit Adder Chip
+**Purpose**: Computes `Sum = A XOR B` and `Carry = A AND B` for RV-II arithmetic. AND: `A AND B = NOT (A NAND B)`.
+
+**Binary Implementation**:
+```
+0000000000000001  // NAND: T1 = A NAND B -> RAM[16]
+0000000000010000  // Output to RAM[16]
+0000000000000101  // Input A: switch_0 (5)
+0000000000000110  // Input B: switch_1 (6)
+
+0000000000000001  // NAND: T2 = A NAND T1 -> RAM[17]
+0000000000010001  // Output to RAM[17]
+0000000000000101  // Input A: switch_0 (5)
+0000000000010000  // Input B: RAM[16]
+
+0000000000000001  // NAND: T3 = B NAND T1 -> RAM[18]
+0000000000010010  // Output to RAM[18]
+0000000000000110  // Input B: switch_1 (6)
+0000000000010000  // Input B: RAM[16]
+
+0000000000000001  // NAND: Sum = T2 NAND T3 -> RAM[19]
+0000000000010011  // Output to RAM[19]
+0000000000010001  // Input A: RAM[17]
+0000000000010010  // Input B: RAM[18]
+
+0000000000000001  // NAND: Carry = T1 NAND T1 -> RAM[20]
+0000000000010100  // Output to RAM[20]
+0000000000010000  // Input A: RAM[16]
+0000000000010000  // Input B: RAM[16]
+```
+- **Inputs**: `switch_0` (5), `switch_1` (6).
+- **Outputs**: Sum in RAM[19], Carry in RAM[20].
+- **KPI**: Verify Adder truth table (e.g., 1,1→Sum=0,Carry=1) in 3 clock cycles.
+
+#### 1.3 Pass-Through for LOAD/STORE
+**Purpose**: RV-II’s LOAD (`reg[op1] = mem[op2]`) and STORE (`mem[op2] = reg[op1]`) are implemented using HDLb0’s chip_location = 0 with blank inputs (2 or 3).
+
+**LOAD Example** (load RAM[10] to RAM[15]):
+```
+0000000000000000  // No chip (pass-through)
+0000000000001111  // Output to RAM[15]
+0000000000001010  // Input A: RAM[10]
+0000000000000011  // Input B: blank (3)
+```
+- **KPI**: RAM[15] matches RAM[10] in 1 cycle.
+
+**STORE Example** (store RAM[15] to RAM[11]):
+```
+0000000000000000  // No chip
+0000000000001011  // Output to RAM[11]
+0000000000001111  // Input A: RAM[15]
+0000000000000011  // Input B: blank (3)
+```
+- **KPI**: RAM[11] matches RAM[15] in 1 cycle.
+
+#### 1.4 JUMP Logic
+**Purpose**: RV-II’s JUMP sets `pc = (reg[op1] & 0x7) * 2`. In HDLb0, this requires reading a register value (simulated via RAM) and adjusting program flow.
+
+**Implementation**: Use multiple instructions to compute the jump address and simulate via RAM updates. Example (jump to RAM[15] * 2):
+```
+0000000000000000  // Pass-through: Load RAM[15] to RAM[20]
+0000000000010100  // Output to RAM[20]
+0000000000001111  // Input A: RAM[15]
+0000000000000011  // Input B: blank (3)
+```
+- **Note**: HDLb0 lacks direct PC control, so JUMP requires manual program restructuring (e.g., repeat instructions at different addresses).
+- **KPI**: Simulate JUMP by ensuring correct RAM address is used in next cycle.
+
+### Step 2: Build RV-II Emulator in HDLb0 🖥️
+Combine chips to emulate RV-II’s 4 registers, 16-byte memory, and instruction set.
+
+#### 2.1 Memory Mapping
+- **Registers**: Map `r0-r3` to RAM[0-3].
+- **Memory**: Map `mem[0-15]` to RAM[4-19].
+- **PC**: Track in RAM[20] (updated each cycle).
+- **Instruction Fetch**: Read `mem[pc]` and `mem[pc+1]` from RAM[4+pc] and RAM[5+pc].
+
+#### 2.2 Instruction Decoding
+For each RV-II instruction:
+- **NAND**: Use XOR/Adder logic (Step 1.1).
+- **LOAD/STORE**: Use pass-through (Step 1.3).
+- **JUMP**: Update RAM[20] (PC) based on register value.
+
+**Example Program** (RV-II NAND r1, r2):
+```
+0000000000000001  // NAND: r1 = r1 NAND r2
+0000000000000001  // Output to RAM[1] (r1)
+0000000000000001  // Input A: RAM[1] (r1)
+0000000000000010  // Input B: RAM[2] (r2)
+```
+- **KPI**: Execute RV-II’s example `in.txt` (1 2 5 0 9 2 13 0) correctly, matching `out.txt` trace in <10 cycles.
+
+### Step 3: Develop Automation Tools 🛠️
+To simplify chip creation and combination (like a netlist):
+
+#### 3.1 Binary Program Generator
+- **Purpose**: Convert human-readable HDL (e.g., `NAND 5 6 -> 16`) to 16-bit binary.
+- **Tool**: A C program to parse and output `program.txt`.
+- **Example Input**:
+  ```
+  NAND 5 6 -> 16
+  NAND 5 16 -> 17
+  ```
+- **Output**:
+  ```
+  0000000000000001 0000000000010000 0000000000000101 0000000000000110
+  0000000000000001 0000000000010001 0000000000000101 0000000000010000
+  ```
+- **KPI**: Generate a 4-instruction program in <1 second.
+
+#### 3.2 Netlist Combiner
+- **Purpose**: Combine multiple chip definitions (e.g., XOR + Adder) into a single `program.txt`.
+- **Tool**: A script to append binary instructions with address remapping.
+- **KPI**: Combine two 4-instruction chips into one program in <1 second.
+
+#### 3.3 Simulator
+- **Purpose**: Preview HDLb0 program output without running the emulator.
+- **Tool**: A C program to simulate RAM, tape, and clock cycles.
+- **KPI**: Simulate 10 cycles of a 5-instruction program in <2 seconds.
+
+### Step 4: Fix RAM Clearing Issue 🧠
+**Problem**: HDLb0 clears RAM on read (`input > 15`), which disrupts multi-step logic (e.g., XOR needs T1 in RAM[16] for multiple steps).
+
+**Proposed Fix**:
+- **Hold Read, Write New Plus Old**: Modify `resolve_input` in `0.QRWN.👑️]a3]2]PURE.c` to:
+  1. Read RAM value.
+  2. Store it temporarily.
+  3. Write back unchanged values plus new outputs.
+- **Implementation**:
+  - Update `resolve_input` to avoid clearing RAM unless explicitly needed.
+  - Example:
+    ```c
+    if (raw_input > 15) {
+        int addr = raw_input % 256;
+        int value = ram[addr]; // Read without clearing
+        return value;
+    }
+    ```
+  - Ensure `write_ram` preserves all unchanged RAM values.
+- **Impact on Chips**: Prevents data loss in XOR/Adder, allowing reuse of intermediate results (e.g., T1 in RAM[16]).
+- **KPI**: Run XOR program without data loss in RAM[16] across 3 cycles.
+
+**Why Fix?**: Essential for chip design, as XOR and Adder rely on persistent RAM for intermediate values. Keeps architecture simple by avoiding workarounds (e.g., copying RAM).
+
+### Step 5: Test and Validate 🧪
+- **Test XOR/Adder**: Run programs from Step 1, verify outputs in `cli_tape.txt` and RAM.
+- **Test RV-II Program**: Run the example `in.txt` (1 2 5 0 9 2 13 0) in HDLb0, match `out.txt` trace.
+- **KPI**: Achieve 100% accuracy on RV-II example in <15 cycles.
+
+### Step 6: Port to Other Languages 🌍
+- **Goal**: Ensure HDLb0’s binary format and logic are portable.
+- **Languages**: Bash (script-based emulator), assembly (low-level), VHDL (hardware).
+- **Approach**:
+  - Document binary format (16-bit instructions, input codes).
+  - Implement NAND, pass-through, and RAM logic in each language.
+- **KPI**: Port XOR chip to VHDL and run in a simulator (e.g., ModelSim) in <1 week.
+
+## 📊 KPIs
+1. **Chip Design**:
+   - XOR: Correct output in <2 cycles.
+   - Adder: Sum and Carry in <3 cycles.
+   - LOAD/STORE: Correct in 1 cycle.
+2. **RV-II Emulation**: Run `in.txt` example with correct `out.txt` in <15 cycles.
+3. **Tools**:
+   - Generator: 4-instruction program in <1 second.
+   - Combiner: Merge two chips in <1 second.
+   - Simulator: 10 cycles in <2 seconds.
+4. **RAM Fix**: XOR program runs without data loss in <3 cycles.
+5. **Portability**: XOR in VHDL in <1 week.
+
+## 🛠️ Tools Needed
+1. **Binary Program Generator** (C):
+   - Parse human-readable HDL to 16-bit binary.
+   - Example: `NAND 5 6 -> 16` → `0000000000000001 0000000000010000 0000000000000101 0000000000000110`.
+2. **Netlist Combiner** (Python/Bash):
+   - Merge chip programs, remap RAM addresses.
+3. **Simulator** (C):
+   - Predict HDLb0 program output for debugging.
+4. **VHDL Simulator** (ModelSim/GHDL):
+   - Test binary instructions in hardware context.
+
+## 🐛 Addressing RAM Clearing
+The RAM clearing fix is critical for chip reliability without complicating the architecture. It ensures XOR and Adder work as expected, maintaining simplicity for porting. Other bugs (e.g., file I/O, validation) are acceptable for now, as they don’t block chip design.
+
+## 🎯 Conclusion
+This roadmap builds an RV-II computer in HDLb0 using binary NAND-based chips (XOR, Adder), pass-through for LOAD/STORE, and manual JUMP logic. Automation tools and the RAM fix streamline development while keeping the spec portable. Let’s code this tiny computer! 💪😄

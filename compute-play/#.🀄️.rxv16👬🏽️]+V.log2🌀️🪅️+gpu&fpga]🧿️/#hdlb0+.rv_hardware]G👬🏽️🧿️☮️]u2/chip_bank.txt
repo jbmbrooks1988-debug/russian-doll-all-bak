@@ -1,0 +1,6 @@
++x/nand]z0]FIXD.+x
++x/modem_in]a1.+x
++x/modem_out]a1.+x
++x/mux.+x
++x/d_flip_flop.+x
++x/xor.+x

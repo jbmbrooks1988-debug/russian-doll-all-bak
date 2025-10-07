@@ -1,0 +1,4 @@
+in gcc c , i wanna make a game that will show 1 chinese character , and 4 english words , and user has to pick correct index. (also vice versa) and sometimes be emojis as well. 
+
+
+🔢️🔡️🗡️

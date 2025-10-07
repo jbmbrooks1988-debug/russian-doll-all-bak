@@ -1,0 +1,29 @@
+🤑️🦉️🤑️🏦️🏢️🏪️
+
+should probably just make discreet modules for each company. 
+
+
+( has employees, produces goods , buys services ) 
+(can prompt as fake but modify by removing random gen and making it "trade with other corp)
+(would leave it fake for now till infra is build(HONESTLY do both who cares!)
+(and have it trade with other companies using orch .
+
+(can even do both no orch just 2 see "how it should work"
+
+
+
+(will copy vars used in wsr)
+
+
+*were not even gonna do company "TYPE right now , just get basic w/e going"
+
+*modifications are easier this way , *(ticker just reads updating dump ) 
+(we get our own historical prices {store how u wish yahoo jason was stored ;) }
+
+
+(are there anything else besides company in wsr? 
+(GOVERNMENT , and theoretically citizens making b2c purchases ,(so maybe have slot for b2b and b2c , and b2c can always be ai "TILL DEEPER MEX ;)...) 🤑️
+
+(ppl in sim city, monopoly w/e, then real estate can make more sense , food , jobs etc. 
+
+then wars and tarrifs and stuff  {treaties w/e} "CIV/SIMS micro macro-2d/3d/1d ) 

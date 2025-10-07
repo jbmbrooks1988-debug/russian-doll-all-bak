@@ -1,0 +1,19 @@
+tear into these . they are a raw "something"
+that will fill in multiversal blanks.
+
+add gui. add more steps and tangents . etc
+
+(more granular info on the 'things in banks' etc. 
+ability 2 take things out or put them in while game loop runs
+4 fun but also 2 learn 2 think about archs. 
+can this refactor into an event loop. should it? ...
+
+_______________________________________________
+controls for user are HUGE and first. (self and teams/property)s
+then both of these are second
+ crafting. <micro macro>
+ events <micro/macro/mid> ie biology/astronomy/property&tech
+ 
+ (but they all seem 2 rely on one another...
+ trick> start small on self, then teams / property>
+ ________________________________________

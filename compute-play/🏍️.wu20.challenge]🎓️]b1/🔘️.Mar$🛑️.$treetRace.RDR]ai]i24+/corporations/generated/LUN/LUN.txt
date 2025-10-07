@@ -1,0 +1,83 @@
+FINANCIAL PROFILE FOR LUNAR FINANCE (LUN)
+================================================
+FINANCIAL BALANCE SHEET: LUNAR FINANCE (LUN)
+--------------------------------------------------
+(Amounts in millions of U.S. Dollars, except per share amounts)
+
+ASSETS:
+  Free Cash and Equivalents:		1564.40
+  Stock in Subsidiary Corps.:		0.00
+  Options Long/Short: Net Value:	0.00
+  Government Bonds (mkt. value):	0.00
+  Corporate Bonds (mkt. value):	0.00
+  Business Loan Portfolio:		622.35
+  Consumer Loan Portfolio:		250.29
+  Mortgage Loans/Securities:		877.64
+  Less: Bad Debt Reserves:		-178.03
+  ---------------------------------------------
+  Total Assets:				3136.65
+  ---------------------------------------------
+
+LIABILITIES AND EQUITY:
+  Long-Term Bonds Issued:		0.00
+  Demand Deposits:			376.61
+  Certificates of Deposit:		376.61
+  Interbank Debt -- Fed Funds:		0.00
+  Accrued Income Tax Payable:		0.00
+  ---------------------------------------------
+  Total Liabilities:			1777.17
+  ---------------------------------------------
+  Equity (Net Worth):			1359.49
+  =============================================
+
+STOCK AND EARNINGS DATA:
+------------------------
+  Net Worth Per Share:			73.20
+  Current Stock Price:			78.77
+  52-Week High/Low Stock Price:		100.58 / 69.72
+  Shares of Stock Outstanding:		18.57 million
+  Total Stock Capitalization:		1462.97 million
+  2022 Earnings Per Share:		0.00 (Operating Earnings)
+  2023 Earnings Per Share:		0.00 (Operating Earnings)
+  2024 Earnings Per Share:		0.00 (Operating Earnings)
+  2025 Earnings Per Share:		0.00 (Operating Earnings)
+  2026 E/P/S through Qtr. #2:		0.00 (Operating Earnings)
+  ---------------------------------------------
+
+VARIOUS FINANCIAL RATIOS:
+-------------------------
+  Price/Earnings Ratio:			NMF (No Meaningful Figure)
+  Dividend Yield:			0.00%
+  Debt to Equity Ratio:			0.00 to 1
+  Bad Debt Reserve Ratio:		10.17%
+  Reserves to Deposits %:		10.02%
+  Return on Equity (2025):		NMF (No Meaningful Figure)
+  ---------------------------------------------
+
+*** CREDIT INFO: ***
+-------------------
+  Credit Rating:			AA
+  Borrowing Rate (Interbank):		9.21% (LIBOR is: 8.91%)
+  ---------------------------------------------
+
+VARIABLE SETTINGS (Changeable by controlling player):
+----------------------------------------------------
+  Dividend Payout Per Share:		0.00
+  % of Net Interest for Advertising:	1%
+  ---------------------------------------------
+
+MISCELLANEOUS INFO:
+-------------------
+  Industry Group:			BANKING
+  Incorporated in:			UNITED STATES
+  Controlled (and actively managed) by:	test_acc
+  Wholly owned by:			test_acc
+  Tax Loss Carryover:			$487.75 million
+  Annual CEO Salary (approx.):		$0.44 million (Plus possible bonuses)
+  Today's (Game) Date:			January 1, 2026
+  Next Earnings Report:			April 1, 2026
+  ---------------------------------------------
+
+FOOTNOTE TO FINANCIAL STATEMENT:
+-------------------------------
+[1] The company is not currently engaged in any interest rate swap transactions and has no undisclosed off-balance sheet liabilities.

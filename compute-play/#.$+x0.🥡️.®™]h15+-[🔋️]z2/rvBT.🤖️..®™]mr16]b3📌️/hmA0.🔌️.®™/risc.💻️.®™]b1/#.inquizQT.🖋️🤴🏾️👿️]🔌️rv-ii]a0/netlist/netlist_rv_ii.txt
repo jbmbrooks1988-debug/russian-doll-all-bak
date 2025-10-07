@@ -1,0 +1,11 @@
+# NAND for REG0 if INST_0=0
+./+x/nand.+x INPUT_E INPUT_E TMP_NOT_INST_0
+./+x/nand.+x INPUT_A INPUT_C TMP_NAND_0
+./+x/nand.+x INPUT_B INPUT_D TMP_NAND_1
+./+x/nand.+x TMP_NOT_INST_0 TMP_NAND_0 OUTPUT_A
+./+x/nand.+x TMP_NOT_INST_0 TMP_NAND_1 OUTPUT_B
+# Pass-through REG1
+./+x/nand.+x INPUT_C INPUT_C OUTPUT_C
+./+x/nand.+x INPUT_D INPUT_D OUTPUT_D
+# Pass-through INST_0
+./+x/nand.+x INPUT_E INPUT_E OUTPUT_E

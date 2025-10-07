@@ -1,0 +1,175 @@
+🚝️🚝️🚝️🧐️sometimes(often times) the architecture can clarify the focus of WHAT ACTUALLY NEEDS 2 BE DONE🧐️🚝️🚝️🚝️🚝️🚝️🚝️
+
+🐩️ u have to PREPOODLE , OR WILL HAVE TO GO BACK AND POODILIFY EVERYTHING 
+
+what? show it ur POODLE framework. it does "blah blah blah" 
+
+honestly every module u want should work inside poodle, but lets do a recursive 
+
+cuz i have to "REDO" : yahoo-market , and do "DISCORD" / P2P b4 its 2 late... its the way ]VERTEBR8
+
+🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️🐩️
+
+spex:
+#include <GL/glut.h>
+🗡️automate discipline/principles first;behavior will follow🗡️ 
+
+❓️tell it to tell u if its confused about any aspect
+of the task, so u dont have to guess. -litecone❓️
+
+POPULAR BREAK TRIX =  INPUT ; FILE IO ; (MENU?)
+ 
+✨✨✨✨✨
+main.c is growing way to large.  lets breakout modules to refactor  to have less loc's.🌮
+✨
+RULES/PRINCIPLES : for modularity and reuse ; we like to break code up into executable modules (seperate .c files)
+{i dont want to link them on compile or use externs/headers, i want them to beable to be self contained aside from data io}
+and executing them with system(); ex : system(./+x/"nand.+x 16 0 1");(or pipe etc) when they are needed.
+
+if we need to share data among modules it should be easy because we shoud  write
+ to an external file or pipe 
+
+our executables are compiled as ".+x" and stored in "/+x/"
+ readability  : no structs , use arrays instead✨
+ that will get us "client/investor" ready ! ;) <3 😘 Keep rocking it! 🚀💹️💸️
+⚠️
+ may be "cd+]a0.+x 
+ ]** = "version delimiter" and should be ignored if present
+ ⚠️
+readability : use arrys not structs. no new headers. 
+
+
+✨
+ task: just remove all functionality ,  i will put it back module by module (instead of monolith) once we have gui in a fresh , foundational state.
+✨✨✨✨✨✨✨✨✨✨✨✨✨
+if we need to share data among modules it should be easy because we shoud be writing 
+to a 6 digit alphabeta random hash auto save file.txt or pipe 
+
+our executables are compiled as ".+x" and stored in "/+x/"
+
+🥡️
+i wanna change location of locations.txt to being read from ../kvp.txt (for dynamic centralized location change) ; heres kvp.txt  ( order of entries maybe dynamic, dont expect a certain order; comments = # + text )
+
+read 🤳️ as our key for value from ../kvp.txt
+
+
+fall back to "original location" if ../kvp isn't present
+🥡️
+❤️‍🩹️🫂️🤗️❤️‍🩹️🫂️🤗️❤️‍🩹️🫂️🤗️❤️‍🩹️🫂️🤗️❤️‍🩹️🫂️🤗️❤️‍🩹️🫂️🤗️❤️‍🩹️🫂️🤗️❤️‍🩹️🫂️🤗️❤️‍🩹️🫂️🤗️❤️‍🩹️🫂️🤗️❤️‍🩹️🫂️🤗️
+ do it at your own pace if 1shot is too much. just setup steps and kpis and we will walk thru them over a few prompts
+ ❤️‍🩹️🫂️🤗️❤️‍🩹️🫂️🤗️❤️‍🩹️🫂️🤗️❤️‍🩹️🫂️🤗️❤️‍🩹️🫂️🤗️❤️‍🩹️🫂️🤗️
+ 🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️
+ can i get these instructions as a easily readable readme.md (use lots of emojis/ "----" seperators , font sizes etc <3
+ 🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️🗺️
+🚇️🚇️🚇️🚇️🚇️🚇️🚇️🚇️🚇️🚇️🚇️🚇️🚇️🚇️🚇️🚇️🚇️
+
+i like this code but i dont like structs or pointers. can we just use vanilla chars and arrays somehow?
+
+*sometimes it will "destruct structs but still keep pointers :/ 
+
+📅️APR6 ] 
+
+if getting "stuttered cli" its super ez usually some combo of flush or \r  (probably \r)
+
+   fflush(stdout);
+    printf("\r");
+    printf("\n=== Menu ===\n");
+    printf("\r");
+📅️
+🏍️🏍️🏍️🏍️🏍️🏍️🏍️🏍️🏍️🏍️🏍️
+
+
+❔️
+try prompting in "systems" not "steps"
+may help u debug when ai starts messing up...
+❔️
+
+please show code in a copy paste-able format. 
+💾️
+id like to add auto-save & load game state. we can save and load to .txt 
+
+
+💾️
+🥈️
+ can we move the "options" for player menu to a .txt file it reads from , so i can add w/e new player menu options i want?
+ 🥈️
+🔮️
+
+for modularity and reuse
+id like to break "ORCHESTRATION BREAK(O.R.B.)" the tangential functions of this up into executable modules (seperate .c files)
+{i dont want to link them on compile or use externs, i want them to beable to be self contained aside from data io}
+and executing them with system(); ex : system(./+x/"xor.+x 16 0 1"); when they are needed.
+no popen or anything either.
+if we need to share data among modules it should be easy because we shoud be writing 
+to the auto save file, so we can just read and write from those
+
+our executables are compiled as ".+x" and stored in "/+x/"
+please do not affect any of the original functionality
+
+ please show code in a copy paste-able format. 
+ no " </xaiArtifact> "
+🪜️
+lets make a five step + kpis plan for doing that without degrading functionality.
+then i will add 3d grid canvas , rotation and raytrace/grid highlighting drawing 
+so include the 5 steps and kpi's 2 go into that (10 steps in all) 
+🪜️
+💔️
+(ive attached latest codebase + an example "main" from a differnt "ORB" project 2 make sure were on the same page) <3
+❤️‍🩹️
+
+🔮️
+
+
+🔮️
+🏍️🏍️🏍️🏍️🏍️🏍️🏍️🏍️🏍️🏍️🏍️🏍️🏍️🏍️🏍️🏍️🏍️🏍️🏍️🏍️🏍️🏍️
+
+👑️🏍️i woud do these fast b4 grok dissapears + its school related 4 sure{even more than p2p/2d/3d}🏍️
+
+
+
+
+🏪️
+https://kairosoft.fandom.com/wiki/Game_Dev_Story
+
+are you familiar with this game? i want to impliment the full game in pure gcc c 
+(without new struct defines, just arrays) 
+
+we will build it step by step. give me and outline of the steps 
+and the first step of code
+
+🅰️
+🏪️
+🏦️
+
+
+
+has it heard of wsr? how far can it prompt on its own? show it that foundation + new stuff u want.
+
+tell me the rules/ gameplay , if i was gonna make my own version? fill in its blanks. 
+
+
+take smol incrimental steps if u can .  (start with 1 player , no biggie; try 2 get full sim i know it can, 
+start with "5-10 companies+ make ur own")<-remember companies have their own ai 2 make choices
+hard coded ? (FINITE STATE MACHINE? ) or rl/mlp? can u modularize/orch break the ai quick even 4 1 player yes with grok... 
+
+
+
+<people and coordinates ARE important , but dont sweat 4 now , just keep super macro "# of employees / world pop , geo etc.>
+<if theres SOMETHIGN we can refine it, if its not native mex will prompt it after native is orch broken ;) >
+🏦️
+🔮️
+cant orch break this. everything does something for everything else 🦹‍♂️️just keep using fresh context ttill it works🦹‍♂️️
+📧️can they at least be "FUNC" broken"? 📧️
+⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
+💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️
+💣️vibe-blow "its just not there yet"-jonathan blow/primagen team💣️🪚️buz kill = 🪚️🪚️🪚️🪚️🪚️🪚️🪚️🪚️🪚️🪚️🪚️🪚️🪚️🪚️🪚️
+u really should "NEVER EXCEED 500-700', or even orch breaking is gonna be a chore] ur being childish about this 
+🔒️alot are modlocked 2 be fair🔒️ 🆘️🛠️live and learn🛠️🐙️git-gud🐙️🐙️🐙️🐙️🐙️🐙️🐙️🐙️🐙️🐙️🐙️🐙️🐙️
+
+this is not big deal its the easiest (if not for api) EZ af codebase 2 just reprompt more responsibly . 
+🧙‍♀️️u do know this is "work" , right? 🧙‍♀️️its not magic, u have 2 repromt it. ask 4 a simpler version or w/e 🧙‍♀️️
+💰️do u want the free billions of dollars or not? 💰️💰️💰️💰️💰️💰️💰️💰️💰️💰️💰️💰️💰️💰️💰️
+👿️do u wanna learn the ez way or the hard way ? 👿️👿️👿️👿️👿️👿️👿️👿️👿️👿️👿️👿️👿️👿️👿️👿️
+💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️💣️
+♟️if u do peices, this will fix itself♟️
+⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️♻️

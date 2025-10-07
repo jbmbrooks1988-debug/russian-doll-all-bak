@@ -1,0 +1,4 @@
+0000000000000010 # Chip: modem_in (2)
+0000000000011010 # Read from modem/26.txt 
+0000000000000000 # Write to cli_tape.txt 
+0000000000000000 # Ignored

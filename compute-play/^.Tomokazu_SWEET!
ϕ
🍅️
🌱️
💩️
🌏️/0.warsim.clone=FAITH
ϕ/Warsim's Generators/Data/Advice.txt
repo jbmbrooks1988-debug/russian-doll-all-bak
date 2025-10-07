@@ -1,0 +1,260 @@
+999.1 = GENERIC ADVICE (135)
+999.2 = GARGALLOCK (20)
+999.3 = GARGALLOCK POST UPGRADE (5)
+999.4 = THRONE ROOM ADVICE (1)
+999.5 = ASLONA GENERAL (30)
+999.6 = ASLONA SPYMASTER (35)
+999.7 = ASLONA STEWARD (5)
+999.8 = ASLONA DIPLOMAT (20)
+1.Anything is an official title if you're brave enough
+1.Avoid fighting deatheaters or souleaters. If you ever find any, hide or crush them before they conquer you.
+1.Use all the help you can get.
+1.Conquest and violence are the way in this world, use them where you can.
+1.My advice is ask advice. Haha got you there, no my real advice is brutally murder all your enemies.
+1.If you're hiring mercenary companies, assess their skill, not just their number of troops. A hundred weak mercenaries are nothing next to ten elite warriors.
+1.Some mercenary groups charge fees for capturing lands to mitigate the risk, not all of them though.
+1.If you think a mercenary group is not up to the task but you wish to hurt your enemy regardless, hire them for a single attack and send them to their death.
+1.The Arena can be a great source of income.
+1.Exploration and conquest are the keys to forming a large empire.
+1.I have heard whispers of a place on a mountain that disperses death.
+1.Beware of he who uses madness as a mask.
+1.Beware of those who offer you advice... except for me of course.
+1.Don't trust everything you hear from people. Do not forget that folk lie.
+1.Treat musicians well and they will visit you more. The guild of musicians holds a fair bit of influence.
+1.My advice is don't give gold to people for advice...
+1.One who conquers small settlements, will eventually have the power to conquer big ones.
+1.My advice? Don't give gold to men who offer advice... hahahahaha
+1.Do not take mere word on face value. Some folk seek to distort the truth.
+1.Don't put your trust in any but yourself. Only you truly have your interests at heart.
+1.Don't let the rebels get the better of you. If the rebellion has a bigger army than you, they will seem less like a rebellion and more like the next government.
+1.Trading is important, trade posts help. Bigger and better trade posts can hold and send more goods and caravans, which in turn can make you rich.
+1.Leave no enemy alive. Even a small scrap of an enemy can grow in time and come back to bite you.
+1.Vassals are the way forward for any realm, if you can make someone your vassal instead of having to go to war with them you have an sure ally who will do as you command.
+1.Be kind to bards and they may let you into their little vault of lyrics.
+1.They speak of a hidden city in the south, but my advice would be not to search for something best left hidden.
+1.Skirmishes are a good way to thin out enemy armies.
+1.The Blackmarket is not a place to ignore, having it under your control has many benefits.
+1.Make sure you pay the wages of your troops or set aside enough for them, unpaid soldiers can cause great issues.
+1.It's always best to be reserved and stoic in all situations, emotions can be abused and taken advantage of.
+1.Bandits are a scourge, but having them on your side can turn the tides.
+1.If you're exploring, some stuff should be destroyed like demon totems, but other stuff like the Harvest Stone shouldn't.
+1.Bandit raids can be devastating, palisades stop them getting in.
+1.Raiders can crush a kingdom.
+1.People don't like oppressors, just so you know.
+1.Don't take things too seriously, you may look more a fool if you do.
+1.Don't loan money to friends unless you're prepared to lose both.
+1.Don't eat brown snow. No really, if you do you're gonna have a bad time.
+1.Be careful to treat those who protect you well. Should they be mistreated, you may find yourself unprotected.
+1.Avoid pissing off too many people, a sea of enemies can drown you.
+1.A little advice... avoid the Blackmarket at all costs... place is dangerous.
+1.Soldiers and knights are men of fortune too. Sometimes they follow high wages more than competent leaders.
+1.I'd advise against hiring too many slaves if you plan to do so. Slave revolts can get nasty.
+1.Dead enemies are better than living friends. A ruler is better unmatched by any than matched by a friend, for friends are fickle.
+1.Deatheaters are a dangerous foe. Kill them before they grow too strong to stop.
+1.They say that tails never fails. I'd agree, a heavy head never helps.
+1.The Demonic Horde is crushed by number, not skill. Shame really.
+1.If you hire all of the warriors from the Wild North Mercenary Post the place will be empty and you can take it bloodlessly.
+1.I hear there is a lost Kobold city, not much to do there though.
+1.Don't eat yellow snow, nasty stuff. Looks tastier than it is.
+1.Never attribute to malice that which can be adequately explained by stupidity.
+1.The Black Bank is a dangerous place. They say even the most prestigious rulers are not safe from the Black Bank's 'collectors'.
+1.The Militia is an important force in the realm. They fight off monsters and smaller threats.
+1.The Demon Horde has repeatedly attacked the realm for millennia. Countless kingdoms have fallen to them.
+1.The amount you can bet in the Arena is directly related to your number of lands.
+1.A necromancer is not to be trusted. The more skilled ones can create an army of the undead with ease.
+1.Don't pee against the wind, it will blow back at you. If you do pee against the wind, do it at an angle that will soak the person to the side of you, leaving you fresh and clean to romp another day.
+1.Vampires are not to be trusted, even the civilised ones. The moment they get hungry they become trouble for all.
+1.My advice? Beware of advisors, sometimes... in fact most times, you get gossip and hearsay, no advice...
+1.Explore all you can. The areas dotted around the kingdom offer many interesting resources vital to making any real impact as a ruler.
+1.Invasion is sometimes the only choice when it comes to weakening other kingdoms, but skirmishing or raiding to thin out the defensive troops can be a smart move also.
+1.Once we were an Empire, unmatched by anything in the lands until things began to fall apart. A string of bad rulers and well timed disasters began the downfall.
+1.If you think a mercenary group will die on their first mission, just hire them once.
+1.Fort Gorthmek is certainly interesting in design, old orcish architecture likely.
+1.The Musician's Guild have a secret archive of song lyrics locked behind a big iron door. Only friends of the guild are permitted to see it.
+1.The Blackmarket is probably a good place to own, but make sure you protect it. Bandits won't take kindly to you holding it and will want it back.
+1.If you have only one territory, do anything that you can. Find the weakest rival and take a land from them quickly or you could find yourself landless.
+1.I advise you explore all there is to explore. A person who knows the world and it's options is a person who will not soon find themselves in a situation with no solutions.
+1.Want some advice... you rule people, then you must be aware of the demon threat. Left unchallenged it will kill us all. All those in power and choosing to ignore it, because if it's as real as the history books tell us then we are doomed.
+1.Mercenaries that cost little but have lots of troops are not the most ideal to provide your own men to. Chances are they have sub-par training methods.
+1.Yurik the Oppressor, lord of Fort Gorthmek, is only a half-orc, though most of his troops are pure-blooded orcs.
+1.There are some who support rebels, claiming them to be the path to a better future.
+1.There is one who claims the western Wishing Well contains a minuscule amount of magic energy.
+1.The Gibbering Monk is a fool, and fools enjoy to watch him.
+1.The Mystic Hut is truly a place of fools. Poor men enter and a few rich men leave.
+1.The Mystic Hut is rumored to be a front for some kind of demonic force.
+1.I hear of an artifact called the Scepter of the Goblin God, it is said to convince all goblins that the holder of the Scepter is a god.
+1.There is a demonic presence in the Blackmarket. It has always slightly unnerved me.
+1.I heard from a sailor of an ancient island far beyond the sea.
+1.I heard a tale of an old box that ate a million souls.
+1.The Slaver's Fort is better off in your hands. Each year you may hire new slavers and gain more men. You can use them or sell them making them a very valuable asset to hold.
+1.The Brawlers pit was a favorite place for kings back in the days of the empire. It  has fallen into disrepair in recent times but fights still take place.
+1.I once saw a man beaten so bad in the Brawlers Pit that he was killed. His family had to be compensated. It was costly for the fight master.
+1.Unless you've got a superior army, it's often more worthwhile to buy a fort than attack it.
+1.Slaves and slave soldiers can be a good source of peasants and soldiers. Just hire a great deal of them and grant them freedom.
+1.Faradal the Kinslayer is guarded by a small army of Elite Guards and Rebel Lords.
+1.Prior to the rebellion, Faradal the Kinslayer was a man of great and honorable reputation.
+1.The Citadel of the Holy Order of Roses is occupied by a growing population of Champions of the Order, who are much more powerful than the order's knights.
+1.Orbs of Chaos make the world slightly more chaotic when placed on top of iron.
+1.I once visited the Magic Theatre. I found it rather disappointing personally.
+1.They say a ruler who ends slavery of goblins is a wise one. The goblins are fans of blindly following those they perceive in certain lights.
+1.the Bandit horde take a similar flag to that held by the demons. Perhaps they see themselves as human demons. Many would be inclined to agree.
+1.if you buy troops only to sell them later on, make note that you'll be losing half your money.
+1.The Iron Hills are said to be home to the pits, whatever that means.
+1.There is rumored to be a knightly order dedicated entirely to the destruction of the Bandit Horde.
+1.Phenor the Bandit Overlord has trained several bandit elites known as Slayers. They protect him and remain close to him. Be sure you have a strong enough army if you are ever to face them.
+1.Phenor the Bandit Overlord is one of the strongest fighters in the realm. Be wary of him if you ever meet him.
+1.There are many Disgraced Heroes who surround Phenor the Bandit Overlord. While some are weak most still retain a good sword arm, be wary.
+1.Should the rebellion be crushed, its many supporters will eventually flock back to us.
+1.Though Faradal the Kinslayer may have grown up with a good reputation, his second in command, Rhesus the Slayer, is a man with a very dark past.
+1.Its odd, Aehlan the book seller will only open his shop when the Library is built. His books have valuable information essential to any smart ruler.
+1.It is said the Near North can be united, but only with a lot of blood.
+1.if one were to destroy any of the stones of the north, the northerners would never forgive them. Some have threatened this but haven't live for long.
+1.The Strength Stone is said to give strength to those who rub it three times. It has been used by many a desperate fighter and many believe it to work.
+1.The Thickblood Tavern holds more rough and violent men than the arena on tournament day. An honest man avoid the tavern like a plague.
+1.While slavery is undesirable for a fair ruler, they are certainly a means to great gain. Rulers before have taken this too far though and have held armies of slaves greater than their populations, with this comes revolt.
+1.While slavery is undesirable for a ruler of fair morals, slaves offer a great number of advantages over their free counterparts just watch that they do not revolt.
+1.the Wild North is still safer than the Far North, but neither are a place you'd want to find yourself.
+1.the Near North is the only safe place in the north, and that's only if you stretch the definition of 'safe' a little bit.
+1.Phenor the Bandit Overlord is a powerful man indeed. If he is a man, many speculate he is some kind of a monster but I don't believe that.
+1.Treat your people well in the throne room and they will spread the word of your kindness all around.
+1.Sending knights out to quest is a good idea. Some of them will succeed and return with great news and possible riches.
+1.If the throne room is boring you, hire a steward to take care of it.
+1.I have heard of a settlement where the goblins live freely far to the west.
+1.A person who owes the bank but owns an army might want to destroy the bank, erase the loan through violence.
+1.The Arena is a great asset to own.
+1.Trade agreements are tantamount to the success of the ruler who wishes not to conquer everything, but instead to live in harmony with it.
+1.Trade posts to note are the Eastern Trade Post, to the east, Nalli trade Post, far in the south, and the Wagon man's Post in the west.
+1.The bigger your trade post the more gold you stand to make from the trade deals with your friends.
+1.Friendly rulers may grant you gifts of gold in celebration of positive diplomatic deals with them.
+1.Sending back any runaway people from other kingdoms is a good way to build a better relationship with them.
+1.War is less favourable than peace... but this isn't called Peacesim is it!?
+1.Sometimes a truce, even temporary, can allow a kingdom to rebuild.
+1.Beware the diplomacy of a kingdom that appears psychotic or mad. They are quick to break truces.
+1.If you have enough gold, you can bribe some groups to cease their operation, buying a faction out of existence as it were.
+1.Diplomacy is a key part of ruling a kingdom.
+1.The Demon Gate is the key to stopping the Demon Horde from ever returning, but no mortal has ever survived going inside a gate.
+1.The best advice I could give is that there are many tools available to a ruler to achieve victory. Use a mix of all you can and you will be unstoppable.
+1.If you should capture the Blackmarket do not leave it unprotected. Those bandits will be back to capture it if it's undefended.
+1.Be wary of the Bandits, for they have crippled many a kingdom with their raids and thievery.
+1.I have heard of a goblin town in the thick forests of the west.
+1.I have heard of great archers to the west who make their home among the thick forests.
+1.I have heard of a talking tree in the thick woodlands out to the west.
+1.There are savage folk all over, from the wildermen of the north to the savage woodsmen of the west.
+1.Avoid the western forests if you can, filled with goblins and savages.
+2.There are always pickpocketers somewhere in the Blackmarket. Check near the Bug Hunter's Hut, or the East Dock Company, I bet they are there.
+2.This Blackmarket has existed for decades, all manner of strange come through here.
+2.The coin flipper here in the Blackmarket, is surprisingly one of the few who aren't cheats.
+2.The Seer of Minds once wished to be a real seer. Though in the end the only magic he learned was how to manipulate smoke. His prophecies are false.
+2.I am the Great Gar'Gallock. If you wish to learn from me be prepared to pay for it, that is the advice I give.
+2.There are some that insult the advice of I, the great Gar'Gallock, but I know many things that are known by few. A person of wisdom would listen.
+2.It's odd, Aehlan the book seller will only open his shop when the Library is built. His books have valuable information essential to any smart ruler.
+2.That slum pit is a rough place, shame no one takes bets there. It's a good place for free fights though, they fight just as aggressively as the Fighter's Pit warriors do.
+2.If you're looking for a few troops to join your retinue, seek the scum of the Slums District. They work for cheap.
+2.A great treasure awaits he who can solve the riddles of the slums creature.
+2.Mag's soup kitchen serves food that would be rejected by a man on the brink of starving to death, avoid it.
+2.There is a small gathering of mushroom takers in Dockrow, look for the abandoned houses near Mag's kitchen.
+2.Be here on the 100th year, we celebrate century festival. You can find out how long until this festival by visiting the century clock.
+2.There is a wheel that spins and dispenses riches here in the market stalls.
+2.There are many curious stalls here in the Central District, visit them and see what you find.
+2.That beast Chelob, is half human and half goblin.
+2.It is known that a knight of the realm's battlescore is 150, keep this in mind if you seek to challenge Chelob the beast of the well.
+2.The treasury here in the Blackmarket holds great wealth. If you own the market the wealth is yours.
+2.Blackrow is a place that should not be tread, unless ye seek death.
+2.There are strange folk who live in the sewers and that scares most away but there's more than meets the eye down there.
+3.I hear the sudden death gambler here will play any ruleset of sudden death.
+3.Ask the sudden death gambler in this district 69 when he asks what game mode you want to play, you'll play a hidden version of the game with 100 dice.
+3.If the market is booming, ask locals to join you. Folk are more are inclined to come now that the market is bigger.
+3.That gambling den is easy, my advice is go for the arm wrestling. Pick the toughest sounding guy and you'll win more than you'll lose.
+3.Gambling den tip, play guess the dice and increase the bet by three times as much if you lose, that way eventually you'll win, or end up on a losing streak so bad you're bankrupt. It is what it is.
+4.You don't have to deal with everyone here in the throne room remember, you are in charge.
+4.My advice is treat us throne room advisors and wise men well, in return you shall learn the secrets you need to know.
+5.One who conquers small settlements, will eventually have the power to conquer big ones.
+5.Don't let the rebels get the better of you. If the rebellion has a bigger army than you, they will seem less like a rebellion and more like the next government.
+5.Leave no enemy alive, even a small scrap of an enemy can grow in time and come back to bite you.
+5.Vassals are the way forward for any realm, if you can make someone your vassal instead of having to go to war with them you have an sure ally who will do as you command.
+5.Bandits are a scourge, but having them onside can turn the tides.
+5.Make sure you pay the wages of your troops or set aside enough for them. Unpaid soldiers can cause great issues.
+5.Skrimishes are a good way to thin out enemy armies.
+5.If you're hiring mercenary companies, assess their skill, not just their number of troops. One hundred weak mercenaries are nothing next to ten elite warriors.
+5.Some mercenary groups charge fees for capturing lands to mitigate the risk, not all of them though.
+5.If you think a mercenary group is not up to the task but you wish to hurt your enemy regardless, hire them for a single attack and send them to their death.
+5.If you are tired of being asked about the use of bluetrii before battle just ask me to change it.
+5.It's always a good idea to learn as much as you can of your enemy before you launch an attack.
+5.If you wish to see the state of the realm I have faction rankings available to be seen, just ask.
+5.You may wish to personalise the list of places we can attack, if you wish dead groups to be hidden, or independents or bandits, just ask me and I can change it for you.
+5.Paying the troops a higher wage is a smart way to build military morale.
+5.If you aren't interested in hiring them, you should absolutely arm the militia to the teeth and order them to get as involved in military affairs as you can. A beefy additional army behind us is always welcome.
+5.Peace is better than war, but peace comes through the dismantling of our enemies.
+5.Bandit raids can be devastating, palisades stop them getting in.
+5.If you hire all of the warriors from the wild north mercenary post the place will be empty, and you can take it bloodlessly.
+5.The Demonic Horde is crushed by number not skill, shame really.
+5.Dead enemies are better than living friends. A ruler is better unmatched by any than matched by a friend, for friends are fickle.
+5.I'd advise against hiring too many slaves if you plan to do so. Slave revolts can get nasty.
+5.Soldiers and knights are men of fortune too, sometimes they follow high wages more than competent leaders.
+5.Invasion is sometimes the only choice when it comes to weakening other kingdoms, but skirmishing or raiding to thin out the defensive troops can be a smart move also.
+5.The Militia is an important force in the kingdom, they fight off monsters and smaller threats.
+5.if you think a mercenary group will die on their first mission, just hire them once.
+5.Mercenaries that cost little but have lots of troops are not the most ideal to provide your own men to. Chances are they have sub-par training methods.
+5.if you buy troops only to sell them later on, make note that you'll be losing half your money.
+5.While slavery is undesirable for a fair ruler, they are certainly a means to great gain. Rulers before have taken this too far though and have held armies of slaves greater than their populations, with this comes revolt.
+5.While slavery is undesirable for a ruler of fair morals, slaves offer a great number of advantages over their free counterparts just watch that they do not revolt.
+6.They speak of a hidden city in the south, but my advice would be not to search for something best left hidden.
+6.I have learned of a hidden city in the south, but my advice would be not to search for something best left hidden.
+6.The Blackmarket is not a place to ignore, having it under your control has many benefits.
+6.If you're exploring, some stuff should be destroyed like demon totems, but other stuff like the Harvest Stone shouldn't.
+6.I hear there is a lost Kobold city, not much to do there though.
+6.Explore all you can. The areas dotted around the kingdom offer many interesting resources vital to making any real impact as ruler.
+6.The Black Bank is a dangerous place. They say even the most prestigious rulers are not safe from the Black Bank's 'collectors'.
+6.Fort Gorthmek is certainly interesting in design, old orcish architecture likely.
+6.The Musician's Guild have a secret archive of song lyrics locked behind a big iron door. Only friends of the guild are permitted to see it.
+6.I advise you explore all there is to explore. A person who knows the world and it's options is a person who will not soon find themself in a situation with no solutions.
+6.Yurik the Oppressor, lord of Fort Gorthmek is only a half-orc though most of his troops are pure-blooded orcs.
+6.I heard from a sailor of an ancient island far beyond the sea.
+6.I heard a tale of an old box that ate a million souls.
+6.I hear of an artifact called the Scepter of the Goblin God. It is said to convince all goblins that the holder of the Scepter is a god.
+6.The Mystic Hut is rumored to be a front for some kind of demonic force.
+6.The Mystic Hut is truly a place of fools, poor men enter and a few rich men leave.
+6.The Citadel of the Holy Order of Roses is occupied by a growing population of Champions of the Order, who are much more powerful than the order's knights.
+6.Faradal the Kinslayer is guarded by a small army of Elite Guards and Rebel Lords.
+6.The Brawlers pit was a favorite place for kings back in the days of the empire, it  has fallen into disrepair in recent times but fights still take place.
+6.Though Faradal the Kinslayer may have grown up with a good reputation, his second in command Rhesus the Slayer, is a man with a very dark past.
+6.Should the rebellion be crushed its many supporters will eventually flock back to us.
+6.There are many Disgraced Heroes who surround Phenor the Bandit Overlord, while some are weak most still retain a good sword arm, be wary.
+6.Phenor the Bandit Overlord has trained several bandit elites known as Slayers. They protect him and remain close to him, be sure you have a strong enough army if you are ever to face them.
+6.Phenor the Bandit Overlord is one of the strongest fighters in the realm, be wary of him if you ever meet him.
+6.the Bandit horde take a similar flag to that held by the demons, perhaps they see themselves as human demons, many would be inclined to agree.
+6.the Near North is the only safe place in the north, and that's only if you stretch the definition of 'safe' a little bit.
+6.the Wild North is still safer than the Far North, but neither are a place you'd want to find yourself.
+6.The Thickblood tavern holds more rough and violent men than the arena on tournament day, any honest person should avoid the tavern like a plague.
+6.The Strength Stone is said to give strength to those who rub it three times. It has been used by many a desperate fighter and many believe it to work.
+6.Be wary of the Bandits, for they have crippled many a kingdom with their raids and thievery.
+6.I have heard of a goblin town in the thick forests of the west.
+6.I have heard of great archers to the west, who make their home among the thick forests.
+6.I have heard of a talking tree in the thick to the west.
+6.There are savage folk deep in both the northern and western lands.
+6.Avoid the western forests if you can, filled with goblins and savages.
+7.I'd advise against hiring too many slaves if you plan to, slave revolts can get nasty.
+7.Renovating your throne room if it's not at its best will draw in more people.
+7.Treat your people well in the throne room and they will spread the word of your kindness all around.
+7.Sending knights out to quest is a good idea, some of them will succeed and return with great news and possible riches.
+7.Check my reports and make sure you are satisfied with my work.
+8.Trading is important and trade posts help. Bigger and better trade posts can hold and send more goods and caravans, which in turn can make you rich.
+8.Vassals are the way forward for any realm, if you can make someone your vassal instead of having to go to war with them you have an sure ally who will do as you command.
+8.Bandits are a scourge, but having them onside can turn the tides.
+8.People don't like oppressors, just so you know.
+8.Slaves and slave soldiers can be a good source of peasants and soldiers. Just hire a great deal of them and grant them freedom.
+8.Unless you've got a superior army, it's often more worthwhile to buy a fort than attack it.
+8.They say a ruler who ends slavery of goblins is a wise one. The goblins are fans of blindly following those they perceive in certain lights.
+8.if one were to destroy any of the stones of the north, the northerners would never forgive them. Some have threatened this but haven't lived for long.
+8.Trade agreements are tantamount to the success of the ruler who wishes not to conquer everything, but instead to live in harmony with it.
+8.Trade posts to note are the Eastern Trade Post, to the east, Nalli Trade Post, far in the south, and the Wagon Man's Post in the west.
+8.The bigger your trade post, the more gold you stand to make from the trade deals with your friends.
+8.Friendly rulers may grant you gifts of gold in celebration of positive diplomatic deals with them.
+8.Sending back any runaway people from other kingdoms is a good way to build a better relationship with them.
+8.Train me up if I am having trouble speaking to far away or small groups. A well trained diplomat is important.
+8.Sometimes a truce, even temporary, can allow a kingdom to rebuild.
+8.War is less favourable than peace... but this isn't called Peacesim is it!?
+8.A diplomat trained in the goblin tongue can speak to goblin rulers and make deals.
+8.Beware the diplomacy of a kingdom that appears psychotic or mad. They are quick to break truces.
+8.If you have enough gold, you can bribe some groups to cease their operation, buying a faction out of existence as it were.
+8.Diplomacy is a key part of ruling a realm.

@@ -1,0 +1,61 @@
+
+🪓️🤷🏽‍♂️️🧪️
+(how could it hurt 2 have a 'versatile 3d game (2d or 3d realtime/tactics
+single player/ multi + ai or df ai management screens etc
+depending on mode. for labbing. data prep , etc. 
++ adding scripting in tegrating tight ai into event loop etc
+🪓️
+use z levels and seperate data sheet for maps. +2d-view swap & rougelike
+aim 2 backwards compat with peices/rmmv, this is just a lab.
+
+>event loop etc
+
+<honestly we want to make a "tactics" version of minecraft in 3d /2d
+that shows availiable move space
+(no we want o beable 2 switch between real time or tactics.
+and still allow multiparty management. + ai builds mvp fast so lets go
+
+(we can work out a plugin system, and use rmmv plugs (may use as player)
+<and gives us versatility (ie unity/vs unreal compat/xchange rate)
+(we can de construct etc
+>>ill probably have diff forks of this
+
+(and somehow later impose login screen + profile pre game start
+(ie 'app starter screen'🪓️
+
+🪵️
+honestlly this is a better place long term 2 drop in chemi
+visualization etc. cuz u should have commited 2 this codebase
+and have ways where u have figured out how to "data orb-break"
+out important micro-macro mechanical blox...
+rmmvc is good 2 we want compatibility this isn't a competition its code..
+< should all be used as tools to give us speed/ synergy +fun etc>]STOKED
+🪵️
+
+(i want emoji 2 look 3d from all sides <- llm-vis does this
+we can do this for items. + we have an image voxelizer
++ we can fractal break things up.
+
+
+can we use chinese or emojis but have text at bottom on hover? 
+📼️
+>yt making final fantasy tactics in godot
+Miso Bot
+APP
+ — 
+11:32 PM
+https://youtube.com/watch?v=iXnKYtTZrAo
+YouTube
+Chaff Games
+I Remade Final Fantasy Tactics In Godot
+📼️
+(dont forget chrono cross elements and field effects!) 
+intermediary mex make play fun, and teach u 2 modularly swap out 
+differetn forx / xp riments...🍴️🫕️now were cooking 4 real 🫕️
+
+
+
+🐡️
+b-b-but what about fully recurse fvlly swapple fx liek 
+'forum social IN MC' we will do taht with plugins etc later 
+(we are doing scripting/plugins) but its nice 2 have 'lab-kit'🐡️
