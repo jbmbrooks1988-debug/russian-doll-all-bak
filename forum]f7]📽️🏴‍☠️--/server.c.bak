@@ -1,0 +1,539 @@
+#define _GNU_SOURCE // For memmem
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <time.h>
+#include <sys/stat.h>
+#include <signal.h>
+#include <ctype.h>
+
+#define PORT 8080
+#define BUFFER_SIZE 8192
+
+// Function prototypes
+void handle_request(int client_socket);
+void serve_file(int client_socket, const char *path, const char *content_type);
+void handle_post(int client_socket, char *body, int content_length, const char *boundary);
+void not_found(int client_socket);
+void server_error(int client_socket);
+char *get_content_type(const char *path);
+void generate_posts_html(int client_socket);
+void url_decode(char *dst, const char *src);
+void *memmem(const void *haystack, size_t haystacklen, const void *needle, size_t needlelen);
+
+
+int main() {
+    int server_fd;
+    struct sockaddr_in address;
+    int opt = 1;
+    socklen_t addrlen = sizeof(address);
+
+    signal(SIGCHLD, SIG_IGN);
+
+    mkdir("posts", 0777);
+    mkdir("uploads", 0777);
+
+    if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
+        perror("socket failed");
+        exit(EXIT_FAILURE);
+    }
+
+    if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt))) {
+        perror("setsockopt");
+        exit(EXIT_FAILURE);
+    }
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = INADDR_ANY;
+    address.sin_port = htons(PORT);
+
+    if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0) {
+        perror("bind failed");
+        exit(EXIT_FAILURE);
+    }
+    if (listen(server_fd, 10) < 0) {
+        perror("listen");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("Server listening on http://localhost:%d\n", PORT);
+
+    while (1) {
+        int client_socket;
+        if ((client_socket = accept(server_fd, (struct sockaddr *)&address, &addrlen)) < 0) {
+            perror("accept");
+            continue;
+        }
+        
+        pid_t pid = fork();
+        if (pid == 0) { // Child process
+            close(server_fd);
+            handle_request(client_socket);
+            close(client_socket);
+            exit(0);
+        } else if (pid > 0) { // Parent process
+            close(client_socket);
+        } else {
+            perror("fork");
+            close(client_socket);
+        }
+    }
+
+    return 0;
+}
+
+void handle_request(int client_socket) {
+    char buffer[BUFFER_SIZE] = {0};
+    long bytes_read = read(client_socket, buffer, BUFFER_SIZE - 1);
+    if (bytes_read <= 0) return;
+
+    char method[16], uri[256], version[16];
+    sscanf(buffer, "%s %s %s", method, uri, version);
+
+    char decoded_uri[256];
+    url_decode(decoded_uri, uri);
+
+    printf("Request: %s %s\n", method, decoded_uri);
+
+    if (strcmp(method, "GET") == 0) {
+        if (strcmp(decoded_uri, "/") == 0 || strcmp(decoded_uri, "/index.html") == 0) {
+            serve_file(client_socket, "index.html", "text/html");
+        } else if (strcmp(decoded_uri, "/posts.php") == 0) {
+            generate_posts_html(client_socket);
+        } else if (strncmp(decoded_uri, "/uploads/", 9) == 0 || strncmp(decoded_uri, "/posts/", 7) == 0) {
+            size_t filepath_len = strlen(decoded_uri) + 2; // for "./" and null
+            char *filepath = malloc(filepath_len);
+            if (filepath) {
+                snprintf(filepath, filepath_len, ".%s", decoded_uri);
+                serve_file(client_socket, filepath, get_content_type(filepath));
+                free(filepath);
+            }
+        } else {
+            not_found(client_socket);
+        }
+    } else if (strcmp(method, "POST") == 0) {
+        if (strcmp(decoded_uri, "/post") == 0) {
+            char *cl_header = strcasestr(buffer, "Content-Length:");
+            int content_length = 0;
+            if (cl_header) {
+                sscanf(cl_header, "Content-Length: %d", &content_length);
+            }
+
+            char *ct_header = strcasestr(buffer, "Content-Type:");
+            if (ct_header && strcasestr(ct_header, "multipart/form-data")) {
+                char *boundary_start = strcasestr(ct_header, "boundary=");
+                if (boundary_start) {
+                    boundary_start += 9;
+                    char *boundary_end = strchr(boundary_start, '\r');
+                    if (!boundary_end) boundary_end = boundary_start + strlen(boundary_start);
+                    
+                    char boundary[128];
+                    int boundary_len = boundary_end - boundary_start;
+                    strncpy(boundary, boundary_start, boundary_len);
+                    boundary[boundary_len] = '\0';
+
+                    char *body_start_ptr = strstr(buffer, "\r\n\r\n");
+                    if (body_start_ptr && content_length > 0) {
+                        body_start_ptr += 4;
+                        int header_len = body_start_ptr - buffer;
+                        int body_already_read = bytes_read - header_len;
+
+                        char *full_body = malloc(content_length + 1);
+                        if (!full_body) { server_error(client_socket); return; }
+                        
+                        memcpy(full_body, body_start_ptr, body_already_read);
+                        int remaining = content_length - body_already_read;
+                        
+                        bytes_read = body_already_read;
+                        while (remaining > 0) {
+                            long chunk_read = read(client_socket, full_body + bytes_read, remaining);
+                            if (chunk_read <= 0) break;
+                            bytes_read += chunk_read;
+                            remaining -= chunk_read;
+                        }
+                        full_body[content_length] = '\0';
+                        
+                        handle_post(client_socket, full_body, content_length, boundary);
+                        free(full_body);
+                    }
+                } else {
+                    fprintf(stderr, "ERROR: multipart/form-data without boundary.\n");
+                    server_error(client_socket);
+                }
+            } else {
+                fprintf(stderr, "ERROR: POST request is not multipart/form-data.\n");
+                server_error(client_socket);
+            }
+        } else {
+            not_found(client_socket);
+        }
+    } else {
+        not_found(client_socket);
+    }
+}
+
+void handle_post(int client_socket, char *body, int content_length, const char *boundary) {
+    fprintf(stderr, "DEBUG: handle_post started. content_length=%d, boundary='%s'\n", content_length, boundary);
+
+    char full_boundary[132];
+    snprintf(full_boundary, sizeof(full_boundary), "--%s", boundary);
+    size_t full_boundary_len = strlen(full_boundary);
+
+    char *text_content = NULL;
+    char *image_content = NULL;
+    char image_filename[256] = "";
+    size_t image_size = 0;
+
+    char *current_pos = body;
+    char *end_pos = body + content_length;
+
+    while (current_pos < end_pos) {
+        char *boundary_pos = memmem(current_pos, end_pos - current_pos, full_boundary, full_boundary_len);
+        if (!boundary_pos) {
+            fprintf(stderr, "DEBUG: No more boundaries found.\n");
+            break;
+        }
+
+        char *part_start = boundary_pos + full_boundary_len;
+        if (part_start >= end_pos || (part_start[0] == '-' && part_start[1] == '-')) {
+            fprintf(stderr, "DEBUG: End boundary found.\n");
+            break;
+        }
+        part_start += 2; // Skip \r\n
+
+        char *headers_end = memmem(part_start, end_pos - part_start, "\r\n\r\n", 4);
+        if (!headers_end) {
+            fprintf(stderr, "ERROR: Malformed part: no header-body separator.\n");
+            break;
+        }
+        size_t headers_len = headers_end - part_start;
+
+        char *data_start = headers_end + 4;
+        char *next_boundary_pos = memmem(data_start, end_pos - data_start, full_boundary, full_boundary_len);
+        if (!next_boundary_pos) {
+            fprintf(stderr, "ERROR: Malformed part: no closing boundary.\n");
+            break;
+        }
+        size_t data_len = next_boundary_pos - data_start - 2; // -2 for \r\n
+
+        if (memmem(part_start, headers_len, "name=\"text_content\"", 19)) {
+            fprintf(stderr, "DEBUG: Found 'text_content' part, size %zu.\n", data_len);
+            text_content = malloc(data_len + 1);
+            if (text_content) {
+                memcpy(text_content, data_start, data_len);
+                text_content[data_len] = '\0';
+            }
+        } else if (memmem(part_start, headers_len, "name=\"image\"", 11)) {
+            char *filename_ptr = memmem(part_start, headers_len, "filename=\"", 10);
+            if (filename_ptr) {
+                filename_ptr += 10;
+                char *filename_end = memchr(filename_ptr, '"', headers_end - filename_ptr);
+                if (filename_end) {
+                    int len = filename_end - filename_ptr;
+                    if (len > 0 && len < sizeof(image_filename)) {
+                        strncpy(image_filename, filename_ptr, len);
+                        image_filename[len] = '\0';
+                        fprintf(stderr, "DEBUG: Found 'image' part, filename='%s', size %zu.\n", image_filename, data_len);
+                        image_content = malloc(data_len);
+                        if (image_content) {
+                            memcpy(image_content, data_start, data_len);
+                            image_size = data_len;
+                        }
+                    }
+                }
+            }
+        }
+        current_pos = next_boundary_pos;
+    }
+
+    if (!text_content) {
+        fprintf(stderr, "ERROR: Post failed: text_content not found in form data.\n");
+        server_error(client_socket);
+        if (image_content) free(image_content);
+        return;
+    }
+
+    long timestamp = time(NULL);
+    char post_filename[256];
+    sprintf(post_filename, "%ld.txt", timestamp);
+
+    char post_filepath[512];
+    sprintf(post_filepath, "posts/%s", post_filename);
+    FILE *post_file = fopen(post_filepath, "w");
+    if (post_file) {
+        fputs(text_content, post_file);
+        fclose(post_file);
+        fprintf(stderr, "DEBUG: Saved text content to %s\n", post_filepath);
+    } else {
+        fprintf(stderr, "ERROR: Failed to open %s for writing.\n", post_filepath);
+        server_error(client_socket);
+        free(text_content);
+        if (image_content) free(image_content);
+        return;
+    }
+
+    char *saved_image_filename = NULL;
+    if (image_content && strlen(image_filename) > 0 && image_size > 0) {
+        int required_len = snprintf(NULL, 0, "%ld-%s", timestamp, image_filename);
+        saved_image_filename = malloc(required_len + 1);
+        if (saved_image_filename) {
+            sprintf(saved_image_filename, "%ld-%s", timestamp, image_filename);
+
+            int path_len = snprintf(NULL, 0, "uploads/%s", saved_image_filename);
+            char *image_filepath = malloc(path_len + 1);
+            if (image_filepath) {
+                sprintf(image_filepath, "uploads/%s", saved_image_filename);
+                FILE *image_file = fopen(image_filepath, "wb");
+                if (image_file) {
+                    fwrite(image_content, 1, image_size, image_file);
+                    fclose(image_file);
+                    fprintf(stderr, "DEBUG: Saved image to %s\n", image_filepath);
+                } else {
+                    fprintf(stderr, "ERROR: Failed to open %s for writing.\n", image_filepath);
+                    free(saved_image_filename);
+                    saved_image_filename = NULL;
+                }
+                free(image_filepath);
+            } else {
+                free(saved_image_filename);
+                saved_image_filename = NULL;
+            }
+        }
+    }
+
+    FILE *index_file = fopen("posts/index.csv", "a");
+    if (index_file) {
+        fprintf(index_file, "%ld,%s,%s\n", timestamp, post_filename, saved_image_filename ? saved_image_filename : "");
+        fclose(index_file);
+        fprintf(stderr, "DEBUG: Updated posts/index.csv\n");
+    } else {
+        fprintf(stderr, "CRITICAL: Failed to open posts/index.csv for appending.\n");
+        remove(post_filepath);
+        server_error(client_socket);
+    }
+
+    if (saved_image_filename) free(saved_image_filename);
+    free(text_content);
+    if (image_content) free(image_content);
+
+    const char *response = "HTTP/1.1 303 See Other\r\nLocation: /\r\n\r\n";
+    write(client_socket, response, strlen(response));
+    fprintf(stderr, "DEBUG: Post successful. Redirecting client.\n");
+}
+
+
+void serve_file(int client_socket, const char *path, const char *content_type) {
+    FILE *file = fopen(path, "rb");
+    if (file == NULL) {
+        fprintf(stderr, "WARN: File not found: %s\n", path);
+        not_found(client_socket);
+        return;
+    }
+
+    fseek(file, 0, SEEK_END);
+    long file_size = ftell(file);
+    fseek(file, 0, SEEK_SET);
+
+    char header[256];
+    sprintf(header, "HTTP/1.1 200 OK\r\nContent-Type: %s\r\nContent-Length: %ld\r\n\r\n", content_type, file_size);
+    write(client_socket, header, strlen(header));
+
+    char buffer[BUFFER_SIZE];
+    size_t bytes_read;
+    while ((bytes_read = fread(buffer, 1, sizeof(buffer), file)) > 0) {
+        write(client_socket, buffer, bytes_read);
+    }
+    fclose(file);
+}
+
+void generate_posts_html(int client_socket) {
+    char response_header[256];
+    size_t body_capacity = BUFFER_SIZE * 4;
+    char *response_body = malloc(body_capacity);
+    if (!response_body) { server_error(client_socket); return; }
+    size_t body_len = 0;
+    response_body[0] = '\0';
+
+    char line_buffer[1024];
+    FILE *index_file = fopen("posts/index.csv", "r");
+
+    struct post_data {
+        long timestamp;
+        char filename[256];
+        char image_filename[256];
+        struct post_data *next;
+    };
+
+    struct post_data *head = NULL;
+
+    if (index_file) {
+        while (fgets(line_buffer, sizeof(line_buffer), index_file)) {
+            char *ts_str = line_buffer;
+            char *fn_str = strchr(ts_str, ',');
+            if (!fn_str) continue;
+            *fn_str = '\0';
+            fn_str++;
+
+            char *ifn_str = strchr(fn_str, ',');
+            if (!ifn_str) continue;
+            *ifn_str = '\0';
+            ifn_str++;
+
+            char *newline = strchr(ifn_str, '\n');
+            if (newline) *newline = '\0';
+
+            struct post_data *new_post = malloc(sizeof(struct post_data));
+            if (!new_post) continue;
+
+            new_post->timestamp = atol(ts_str);
+            strncpy(new_post->filename, fn_str, sizeof(new_post->filename) - 1);
+            new_post->filename[sizeof(new_post->filename) - 1] = '\0';
+            strncpy(new_post->image_filename, ifn_str, sizeof(new_post->image_filename) - 1);
+            new_post->image_filename[sizeof(new_post->image_filename) - 1] = '\0';
+            
+            new_post->next = head;
+            head = new_post;
+        }
+        fclose(index_file);
+    }
+
+    if (head == NULL) {
+        strcpy(response_body, "<p>No posts available.</p>");
+        body_len = strlen(response_body);
+    } else {
+        struct post_data *current = head;
+        while (current) {
+            char time_str[64];
+            time_t post_time = current->timestamp;
+            strftime(time_str, sizeof(time_str), "%Y-%m-%d %H:%M:%S", localtime(&post_time));
+
+            char post_content_path[512];
+            snprintf(post_content_path, sizeof(post_content_path), "posts/%s", current->filename);
+            FILE *content_file = fopen(post_content_path, "r");
+            char post_text[1024] = "Content not found.";
+            if (content_file) {
+                size_t len = fread(post_text, 1, sizeof(post_text) - 1, content_file);
+                post_text[len] = '\0';
+                fclose(content_file);
+            }
+            
+            char escaped_text[2048] = "";
+            char *p_in = post_text;
+            char *p_out = escaped_text;
+            while (*p_in && (p_out - escaped_text < sizeof(escaped_text) - 6)) {
+                if (*p_in == '<') { strcat(p_out, "&lt;"); p_out += 4; }
+                else if (*p_in == '>') { strcat(p_out, "&gt;"); p_out += 4; }
+                else if (*p_in == '&') { strcat(p_out, "&amp;"); p_out += 5; }
+                else { *p_out++ = *p_in; }
+                p_in++;
+            }
+            *p_out = '\0';
+
+            char media_html[512] = "";
+            if (strlen(current->image_filename) > 0) {
+                const char *dot = strrchr(current->image_filename, '.');
+                if (dot && strcmp(dot, ".webm") == 0) {
+                    snprintf(media_html, sizeof(media_html),
+                             "<video src=\"/uploads/%s\" controls width=\"100%%\" style=\"max-width: 500px;\">",
+                             current->image_filename);
+                } else {
+                    snprintf(media_html, sizeof(media_html),
+                             "<img src=\"/uploads/%s\" alt=\"Post image\" class=\"post-image\">",
+                             current->image_filename);
+                }
+            }
+
+            const char *format_string = "<div class=\"post\"><div class=\"post-meta\">Posted on: %s</div><p>%s</p>%s</div>";
+            int post_div_len = snprintf(NULL, 0, format_string, time_str, escaped_text, media_html);
+            char *post_div = malloc(post_div_len + 1);
+
+            if (post_div) {
+                sprintf(post_div, format_string, time_str, escaped_text, media_html);
+                if (body_len + post_div_len >= body_capacity) {
+                    body_capacity += post_div_len;
+                    char *new_body = realloc(response_body, body_capacity);
+                    if (!new_body) { free(response_body); free(post_div); server_error(client_socket); return; }
+                    response_body = new_body;
+                }
+                strcat(response_body, post_div);
+                body_len += post_div_len;
+                free(post_div);
+            }
+
+            struct post_data *temp = current;
+            current = current->next;
+            free(temp);
+        }
+    }
+
+    sprintf(response_header, "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: %ld\r\n\r\n", body_len);
+    write(client_socket, response_header, strlen(response_header));
+    write(client_socket, response_body, body_len);
+    free(response_body);
+}
+
+void not_found(int client_socket) {
+    const char *response = "HTTP/1.1 404 Not Found\r\nContent-Type: text/plain\r\n\r\nNot Found";
+    write(client_socket, response, strlen(response));
+}
+
+void server_error(int client_socket) {
+    const char *response = "HTTP/1.1 500 Internal Server Error\r\nContent-Type: text/plain\r\n\r\nInternal Server Error";
+    write(client_socket, response, strlen(response));
+}
+
+char *get_content_type(const char *path) {
+    const char *dot = strrchr(path, '.');
+    if (dot) {
+        if (strcmp(dot, ".html") == 0) return "text/html";
+        if (strcmp(dot, ".css") == 0) return "text/css";
+        if (strcmp(dot, ".js") == 0) return "application/javascript";
+        if (strcmp(dot, ".jpg") == 0) return "image/jpeg";
+        if (strcmp(dot, ".jpeg") == 0) return "image/jpeg";
+        if (strcmp(dot, ".png") == 0) return "image/png";
+        if (strcmp(dot, ".gif") == 0) return "image/gif";
+        if (strcmp(dot, ".svg") == 0) return "image/svg+xml";
+        if (strcmp(dot, ".webm") == 0) return "video/webm";
+        if (strcmp(dot, ".txt") == 0) return "text/plain";
+    }
+    return "application/octet-stream";
+}
+
+void url_decode(char *dst, const char *src) {
+    char a, b;
+    while (*src) {
+        if ((*src == '%') &&
+            ((a = src[1]) && (b = src[2])) &&
+            (isxdigit(a) && isxdigit(b))) {
+            if (a >= 'a') a -= 'a'-'A';
+            if (a >= 'A') a -= ('A' - 10);
+            else a -= '0';
+            if (b >= 'a') b -= 'a'-'A';
+            if (b >= 'A') b -= ('A' - 10);
+            else b -= '0';
+            *dst++ = 16*a + b;
+            src+=3;
+        } else if (*src == '+') {
+            *dst++ = ' ';
+            src++;
+        } else {
+            *dst++ = *src++;
+        }
+    }
+    *dst++ = '\0';
+}
+
+void *memmem(const void *haystack, size_t haystacklen, const void *needle, size_t needlelen) {
+    if (needlelen == 0) return (void *)haystack;
+    if (haystacklen < needlelen) return NULL;
+    const char *h = haystack;
+    for (size_t i = 0; i <= haystacklen - needlelen; i++) {
+        if (memcmp(h + i, needle, needlelen) == 0) {
+            return (void *)(h + i);
+        }
+    }
+    return NULL;
+}

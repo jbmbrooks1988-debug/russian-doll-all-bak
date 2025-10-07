@@ -1,0 +1,23 @@
+# Chapter 1 Final Test: Atomic Structure
+
+## Fill in the blank:
+
+1. Atoms are composed of three subatomic particles: protons which have a _____ charge, neutrons which are _____, and electrons which have a _____ charge.
+
+2. The atomic number of an element is determined by the number of _____ in its nucleus.
+
+3. According to the Aufbau principle, electrons fill _____ energy levels first before occupying _____ energy levels.
+
+4. The four quantum numbers that describe each electron are the principal quantum number (n), angular momentum quantum number (l), magnetic quantum number (ml), and _____.
+
+5. Elements with the same atomic number but different numbers of neutrons are called _____.
+
+6. The Heisenberg _____ principle states that we cannot simultaneously know both the exact position and momentum of an electron.
+
+7. In electron configuration notation like 1s² 2s² 2p⁴, the "2" in "2s²" represents the _____ quantum number.
+
+8. The s orbital has a _____ shape and can hold a maximum of _____ electrons.
+
+9. _____ was the scientist who discovered electrons and proposed the "plum pudding" model of the atom.
+
+10. The arrangement of elements by increasing atomic number with similar properties recurring periodically is described by the _____ table.

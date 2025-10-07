@@ -1,0 +1,33 @@
+# Comprehensive Final Exam: Chemistry 101
+
+## Fill in the blank:
+
+1. The subatomic particle with a positive charge located in the nucleus is called the _____.
+
+2. The atomic number of an element is determined by the number of _____ in its nucleus.
+
+3. In electron configuration notation, the letter "s" represents a sublevel that can hold a maximum of _____ electrons.
+
+4. Chemical bonds formed by the sharing of electrons between atoms are called _____ bonds.
+
+5. The VSEPR theory predicts molecular shapes based on repulsion between _____ pairs around the central atom.
+
+6. The strongest type of intermolecular force occurs when hydrogen is bonded to fluorine, oxygen, or _____.
+
+7. In a balanced chemical equation, the number of atoms of each element must be the same on both sides according to the law of conservation of _____.
+
+8. The minimum energy required for a reaction to occur is called the _____ energy.
+
+9. At chemical equilibrium, the rate of the forward reaction equals the rate of the _____ reaction.
+
+10. The equilibrium constant K is calculated as the concentrations of products raised to their coefficients divided by the concentrations of reactants raised to their _____.
+
+11. In quantum mechanics, the principal quantum number (n) describes the electron's energy _____.
+
+12. The molecular geometry of water (H₂O) is _____ due to the presence of lone pairs on the oxygen atom.
+
+13. A combustion reaction typically involves a substance reacting with _____.
+
+14. The rate law expression shows how reaction rate depends on reactant _____.
+
+15. Le Chatelier's principle predicts how a system at equilibrium responds to changes in concentration, temperature, or _____.

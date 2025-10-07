@@ -1,0 +1,92 @@
+🦄️
+🥋️i like this so much id do it right now with qwen-cli but my spine is day off'd
+👖️
+🛹️would be ground breaking. this would be EVERYTHING 4 us (esp if human use 2 ie ♟️cheqers-rl♟️
+💫️
+🤩️
+y i dont do it NOW NOW ? 
+ill need a rl / attention ; maybe we should make a more mobile version
+but use same "DATA STRUCT" From "3FAME"📁️or access it meta do u dont feel bogged down/ w/e starting fresh wuldn't hurt necessarily ; u could still bring old over if fresh wasn't working🤩️
+💫️
+👨🏽‍🚀️make it for humans first. ,then make it for 'checkers rl' then attention/mlp👨🏽‍🚀️
+🤔️
+not just 1 quiz but a series of quizes
+🤔️
+🤯️
+>corpus = do attention  
++quiz  = do rl + use attetion if it helps = somehow combine both weights when pass🤯️
+
+
+
+
+✡️
+i want to make a mini curriculum for chem 101 
+{&later 102etc (pull from student♟️mem)}
+
+3 chapters 
+with 3 'corpuses' each , each with a mini quiz
+then a final test after each chapter
+then a big test of all 3 chapters. 
+
+this is just a demo/proof of concept , because we are going to 
+score the human quizes using rl style weight / bias scoring; 
+then try to have an  agent take the same quiz using a word bank and rl weights ,
+and score them; to see which learns faster human or ai.get it?
+step 2 we are going to add an attention mechanism to the weights after
+step 1 , so that the rl can use the attention weights and try to 
+predict the answer {quizes are 'fill in the blank' so attention prediction should lend itself well to this}
+
+the whole point is to put together a small but functional ai training suite. 
+
+
+our data model for vocab tokens and weights/biases looks like this: 
+number word embedding pe weight bias1 bias2 bias3 bias4
+
+rl data can be stored in bias info , pe & weight are used for attention
+u can also use other external .txt files to store data. 
+
+we have a premade llm in 
+3.stage.llm]👬🏾️]MoE+rl+dis.cas]917/
+
+so use that instead of reinventing the wheel , when applicable.
+
+each "rl agent" is a "peice or student" and will have their own folder for mem 
+ie "student♟️_001/" <- this way we can do science on multiple students human or ai
+
+ good luck <3
+✡️
+
+🅰️
+ │ ✓  TodoWrite Update todos                                                │
+ │                                                                          │
+ │    ◐  Define the structure of the chem 101 curriculum with 3 chapters, 3 │
+ │       corpuses per chapter, and quizzes                                  │
+ │    ○  Create vocabulary model for chem terms and concepts                │
+ │    ○  Implement quiz system with fill-in-the-blank questions             │
+ │    ○  Set up student memory system with folders for each student         │
+ │    ○  Implement RL scoring system for human and AI quiz performance      │
+ │    ○  Create AI agent that uses word bank and RL weights to take quizzes │
+ │    ○  Implement comparison between human and AI learning speeds          │
+ │    ○  Implement attention mechanism for answer prediction   
+
+
+🅰️
+🆎️look through the folder then write a architectural diagram in arch.md
+note :the blank should always come after the question so attention  prediction can be tested   
+
+_____________________
+
+
+
+
+
+
+
+
+
+
+
+
+ (and microbio after;etc) hsk 1 (chinese)
+👨🏽‍⚖️️ca bar exam
+🥋️

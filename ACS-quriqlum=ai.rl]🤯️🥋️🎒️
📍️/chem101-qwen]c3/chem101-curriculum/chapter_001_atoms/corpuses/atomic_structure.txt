@@ -1,0 +1,21 @@
+# Atomic Structure Corpus
+
+## Basic Concepts
+Atoms are the basic units of matter and the defining structure of elements. They are composed of three subatomic particles:
+- Protons: positively charged particles in the nucleus
+- Neutrons: neutral particles in the nucleus  
+- Electrons: negatively charged particles in orbitals around the nucleus
+
+## Atomic Number and Mass Number
+- Atomic number: the number of protons in an atom's nucleus; defines the element
+- Mass number: the sum of protons and neutrons in the nucleus
+- Isotopes: atoms of the same element with different numbers of neutrons
+
+## Electron Configuration
+Electrons are arranged in energy levels (shells) and subshells (s, p, d, f). The arrangement follows:
+- Aufbau principle: electrons fill lower energy levels first
+- Pauli exclusion principle: no two electrons can have the same quantum numbers
+- Hund's rule: electrons fill orbitals singly before pairing up
+
+## Periodic Table Organization
+Elements are arranged by increasing atomic number, with similar properties recurring periodically based on electron configuration.

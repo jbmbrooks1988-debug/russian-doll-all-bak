@@ -1,0 +1,23 @@
+# Chemical Kinetics Corpus
+
+## Reaction Rates
+Reaction rate measures how fast reactants are converted to products:
+- Rate = change in concentration of reactant or product over time
+- Factors affecting rate: temperature, concentration, surface area, catalysts
+- Rate law: rate = k[A]^m[B]^n, where k is rate constant and m, n are reaction orders
+
+## Activation Energy
+- Minimum energy needed for a reaction to occur
+- Catalysts lower activation energy without being consumed
+- Arrhenius equation relates rate constant to temperature and activation energy
+
+## Collision Theory
+For a reaction to occur:
+- Reactants must collide with proper orientation
+- Collisions must have sufficient energy (≥ activation energy)
+- Higher temperatures increase collision frequency and energy
+
+## Reaction Mechanisms
+- Elementary steps that make up the overall reaction
+- Rate-determining step: slowest step in the mechanism
+- Intermediates: species formed in one step and consumed in another

@@ -1,0 +1,30 @@
+# Chemical Nomenclature Corpus
+
+## Ionic Compounds
+Naming ionic compounds involves:
+- Cation (positive ion) named first, using element name
+- Anion (negative ion) named second, with -ide ending
+- For transition metals with multiple charges, use Roman numerals in parentheses
+
+Common polyatomic ions:
+- NH₄⁺: ammonium
+- OH⁻: hydroxide
+- NO₃⁻: nitrate
+- SO₄²⁻: sulfate
+- CO₃²⁻: carbonate
+- PO₄³⁻: phosphate
+
+## Molecular Compounds
+Naming molecular compounds involves prefixes to indicate number of atoms:
+- Mono-: 1
+- Di-: 2
+- Tri-: 3
+- Tetra-: 4
+- Penta-: 5
+- Hexa-: 6
+
+## Acids
+Acids are named based on the anion:
+- Anions ending in -ide become hydro___ic acids
+- Anions ending in -ate become -ic acids
+- Anions ending in -ite become -ous acids

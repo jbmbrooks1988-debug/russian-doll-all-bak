@@ -1,0 +1,511 @@
+AminoAcid,Atom1,Atom2,BondOrder
+Glycine,1,2,1.0
+Glycine,2,3,2.0
+Glycine,2,4,1.0
+Glycine,1,5,1.0
+Glycine,1,6,1.0
+Glycine,1,7,1.0
+Glycine,4,8,1.0
+Glycine,5,9,1.0
+Glycine,5,10,1.0
+Alanine,1,2,1.0
+Alanine,2,3,1.0
+Alanine,3,4,2.0
+Alanine,3,5,1.0
+Alanine,2,6,1.0
+Alanine,1,7,1.0
+Alanine,1,8,1.0
+Alanine,1,9,1.0
+Alanine,3,10,1.0
+Alanine,4,11,1.0
+Alanine,6,12,1.0
+Alanine,6,13,1.0
+Valine,1,2,1.0
+Valine,2,3,1.0
+Valine,3,4,2.0
+Valine,3,5,1.0
+Valine,2,6,1.0
+Valine,1,7,1.0
+Valine,1,8,1.0
+Valine,7,9,1.0
+Valine,7,10,1.0
+Valine,7,11,1.0
+Valine,1,12,1.0
+Valine,3,13,1.0
+Valine,6,14,1.0
+Valine,6,15,1.0
+Valine,7,16,1.0
+Valine,7,17,1.0
+Valine,8,18,1.0
+Valine,8,19,1.0
+Valine,8,20,1.0
+Leucine,1,2,1.0
+Leucine,2,3,1.0
+Leucine,3,4,2.0
+Leucine,3,5,1.0
+Leucine,2,6,1.0
+Leucine,1,7,1.0
+Leucine,7,8,1.0
+Leucine,7,9,1.0
+Leucine,1,10,1.0
+Leucine,1,11,1.0
+Leucine,3,12,1.0
+Leucine,4,13,1.0
+Leucine,6,14,1.0
+Leucine,6,15,1.0
+Leucine,7,16,1.0
+Leucine,8,17,1.0
+Leucine,8,18,1.0
+Leucine,9,19,1.0
+Leucine,9,20,1.0
+Leucine,9,21,1.0
+Isoleucine,1,2,1.0
+Isoleucine,2,3,1.0
+Isoleucine,3,4,2.0
+Isoleucine,3,5,1.0
+Isoleucine,2,6,1.0
+Isoleucine,1,7,1.0
+Isoleucine,7,8,1.0
+Isoleucine,7,9,1.0
+Isoleucine,1,10,1.0
+Isoleucine,1,11,1.0
+Isoleucine,3,12,1.0
+Isoleucine,4,13,1.0
+Isoleucine,6,14,1.0
+Isoleucine,6,15,1.0
+Isoleucine,7,16,1.0
+Isoleucine,8,17,1.0
+Isoleucine,8,18,1.0
+Isoleucine,8,19,1.0
+Isoleucine,9,20,1.0
+Isoleucine,9,21,1.0
+Isoleucine,9,22,1.0
+Methionine,1,2,1.0
+Methionine,2,3,1.0
+Methionine,3,4,2.0
+Methionine,3,5,1.0
+Methionine,2,6,1.0
+Methionine,1,7,1.0
+Methionine,7,8,1.0
+Methionine,8,9,1.0
+Methionine,9,10,1.0
+Methionine,1,11,1.0
+Methionine,1,12,1.0
+Methionine,3,13,1.0
+Methionine,4,14,1.0
+Methionine,6,15,1.0
+Methionine,6,16,1.0
+Methionine,7,17,1.0
+Methionine,7,18,1.0
+Methionine,8,19,1.0
+Methionine,10,20,1.0
+Methionine,10,21,1.0
+Methionine,10,22,1.0
+Proline,1,2,1.0
+Proline,2,3,1.0
+Proline,3,4,2.0
+Proline,3,5,1.0
+Proline,2,6,1.0
+Proline,6,7,1.0
+Proline,7,8,1.0
+Proline,8,9,1.0
+Proline,1,9,1.0
+Proline,1,10,1.0
+Proline,1,11,1.0
+Proline,3,12,1.0
+Proline,7,13,1.0
+Proline,7,14,1.0
+Proline,8,15,1.0
+Proline,9,16,1.0
+Phenylalanine,1,2,1.0
+Phenylalanine,2,3,1.0
+Phenylalanine,3,4,2.0
+Phenylalanine,3,5,1.0
+Phenylalanine,2,6,1.0
+Phenylalanine,1,7,1.0
+Phenylalanine,7,8,1.0
+Phenylalanine,8,9,1.5
+Phenylalanine,9,10,1.5
+Phenylalanine,10,11,1.5
+Phenylalanine,11,12,1.5
+Phenylalanine,12,13,1.5
+Phenylalanine,13,8,1.5
+Phenylalanine,1,14,1.0
+Phenylalanine,1,15,1.0
+Phenylalanine,3,16,1.0
+Phenylalanine,4,17,1.0
+Phenylalanine,6,18,1.0
+Phenylalanine,6,19,1.0
+Phenylalanine,7,20,1.0
+Phenylalanine,9,21,1.0
+Phenylalanine,10,22,1.0
+Phenylalanine,11,23,1.0
+Tryptophan,1,2,1.0
+Tryptophan,2,3,1.0
+Tryptophan,3,4,2.0
+Tryptophan,3,5,1.0
+Tryptophan,2,6,1.0
+Tryptophan,1,7,1.0
+Tryptophan,7,8,1.0
+Tryptophan,8,9,1.5
+Tryptophan,9,10,1.5
+Tryptophan,10,11,1.5
+Tryptophan,11,12,1.5
+Tryptophan,12,13,1.5
+Tryptophan,13,8,1.5
+Tryptophan,1,14,1.0
+Tryptophan,1,15,1.0
+Tryptophan,3,16,1.0
+Tryptophan,4,17,1.0
+Tryptophan,6,18,1.0
+Tryptophan,6,19,1.0
+Tryptophan,7,20,1.0
+Tryptophan,9,21,1.0
+Tryptophan,10,22,1.0
+Tryptophan,11,23,1.0
+Tryptophan,12,24,1.0
+Tryptophan,13,25,1.0
+Serine,1,2,1.0
+Serine,2,3,1.0
+Serine,3,4,2.0
+Serine,3,5,1.0
+Serine,2,6,1.0
+Serine,1,7,1.0
+Serine,1,8,1.0
+Serine,1,9,1.0
+Serine,3,10,1.0
+Serine,4,11,1.0
+Serine,6,12,1.0
+Serine,6,13,1.0
+Serine,7,14,1.0
+Threonine,1,2,1.0
+Threonine,2,3,1.0
+Threonine,3,4,2.0
+Threonine,3,5,1.0
+Threonine,2,6,1.0
+Threonine,1,7,1.0
+Threonine,7,8,1.0
+Threonine,1,9,1.0
+Threonine,1,10,1.0
+Threonine,3,11,1.0
+Threonine,4,12,1.0
+Threonine,6,13,1.0
+Threonine,6,14,1.0
+Threonine,7,15,1.0
+Threonine,8,16,1.0
+Threonine,8,17,1.0
+Threonine,8,18,1.0
+Cysteine,1,2,1.0
+Cysteine,2,3,1.0
+Cysteine,3,4,2.0
+Cysteine,3,5,1.0
+Cysteine,2,6,1.0
+Cysteine,1,7,1.0
+Cysteine,1,8,1.0
+Cysteine,1,9,1.0
+Cysteine,3,10,1.0
+Cysteine,4,11,1.0
+Cysteine,6,12,1.0
+Cysteine,6,13,1.0
+Cysteine,7,14,1.0
+Tyrosine,1,2,1.0
+Tyrosine,2,3,1.0
+Tyrosine,3,4,2.0
+Tyrosine,3,5,1.0
+Tyrosine,2,6,1.0
+Tyrosine,1,7,1.0
+Tyrosine,7,8,1.0
+Tyrosine,8,9,1.5
+Tyrosine,9,10,1.5
+Tyrosine,10,11,1.5
+Tyrosine,11,12,1.5
+Tyrosine,12,13,1.5
+Tyrosine,13,8,1.5
+Tyrosine,1,14,1.0
+Tyrosine,1,15,1.0
+Tyrosine,3,16,1.0
+Tyrosine,4,17,1.0
+Tyrosine,6,18,1.0
+Tyrosine,6,19,1.0
+Tyrosine,7,20,1.0
+Tyrosine,9,21,1.0
+Tyrosine,10,22,1.0
+Tyrosine,11,23,1.0
+Tyrosine,12,24,1.0
+Tyrosine,14,25,1.0
+Asparagine,1,2,1.0
+Asparagine,2,3,1.0
+Asparagine,3,4,1.0
+Asparagine,4,5,1.0
+Asparagine,4,6,2.0
+Asparagine,2,7,1.0
+Asparagine,7,8,1.0
+Asparagine,7,9,2.0
+Asparagine,1,10,1.0
+Asparagine,1,11,1.0
+Asparagine,2,12,1.0
+Asparagine,3,13,1.0
+Asparagine,3,14,1.0
+Asparagine,5,15,1.0
+Asparagine,5,16,1.0
+Asparagine,8,17,1.0
+Glutamine,1,2,1.0
+Glutamine,2,3,1.0
+Glutamine,3,4,1.0
+Glutamine,4,5,1.0
+Glutamine,5,6,1.0
+Glutamine,5,7,2.0
+Glutamine,2,8,1.0
+Glutamine,8,9,1.0
+Glutamine,8,10,2.0
+Glutamine,1,11,1.0
+Glutamine,1,12,1.0
+Glutamine,2,13,1.0
+Glutamine,3,14,1.0
+Glutamine,3,15,1.0
+Glutamine,4,16,1.0
+Glutamine,4,17,1.0
+Glutamine,6,18,1.0
+Glutamine,6,19,1.0
+Glutamine,9,20,1.0
+Aspartic Acid,1,2,1.0
+Aspartic Acid,2,3,1.0
+Aspartic Acid,3,4,1.0
+Aspartic Acid,4,5,1.0
+Aspartic Acid,4,6,2.0
+Aspartic Acid,2,7,1.0
+Aspartic Acid,7,8,1.0
+Aspartic Acid,7,9,2.0
+Aspartic Acid,1,10,1.0
+Aspartic Acid,1,11,1.0
+Aspartic Acid,2,12,1.0
+Aspartic Acid,3,13,1.0
+Aspartic Acid,3,14,1.0
+Aspartic Acid,5,15,1.0
+Aspartic Acid,8,16,1.0
+Glutamic Acid,1,2,1.0
+Glutamic Acid,2,3,1.0
+Glutamic Acid,3,4,1.0
+Glutamic Acid,4,5,1.0
+Glutamic Acid,5,6,1.0
+Glutamic Acid,5,7,2.0
+Glutamic Acid,2,8,1.0
+Glutamic Acid,8,9,1.0
+Glutamic Acid,8,10,2.0
+Glutamic Acid,1,11,1.0
+Glutamic Acid,1,12,1.0
+Glutamic Acid,2,13,1.0
+Glutamic Acid,3,14,1.0
+Glutamic Acid,3,15,1.0
+Glutamic Acid,4,16,1.0
+Glutamic Acid,4,17,1.0
+Glutamic Acid,6,18,1.0
+Glutamic Acid,9,19,1.0
+Lysine,1,2,1.0
+Lysine,2,3,1.0
+Lysine,3,4,1.0
+Lysine,4,5,1.0
+Lysine,5,6,1.0
+Lysine,6,7,1.0
+Lysine,2,8,1.0
+Lysine,8,9,1.0
+Lysine,8,10,2.0
+Lysine,1,11,1.0
+Lysine,1,12,1.0
+Lysine,2,13,1.0
+Lysine,3,14,1.0
+Lysine,3,15,1.0
+Lysine,4,16,1.0
+Lysine,4,17,1.0
+Lysine,5,18,1.0
+Lysine,5,19,1.0
+Lysine,6,20,1.0
+Lysine,6,21,1.0
+Lysine,7,22,1.0
+Lysine,7,23,1.0
+Lysine,9,24,1.0
+Arginine,1,2,1.0
+Arginine,2,3,1.0
+Arginine,3,4,1.0
+Arginine,4,5,1.0
+Arginine,5,6,1.0
+Arginine,6,7,1.0
+Arginine,7,8,1.0
+Arginine,7,9,2.0
+Arginine,2,10,1.0
+Arginine,10,11,1.0
+Arginine,10,12,2.0
+Arginine,1,13,1.0
+Arginine,1,14,1.0
+Arginine,2,15,1.0
+Arginine,3,16,1.0
+Arginine,3,17,1.0
+Arginine,4,18,1.0
+Arginine,4,19,1.0
+Arginine,5,20,1.0
+Arginine,5,21,1.0
+Arginine,6,22,1.0
+Arginine,8,23,1.0
+Arginine,8,24,1.0
+Arginine,9,25,1.0
+Arginine,11,26,1.0
+Histidine,1,2,1.0
+Histidine,2,3,1.0
+Histidine,3,4,1.0
+Histidine,4,5,1.5
+Histidine,5,6,1.5
+Histidine,6,7,1.5
+Histidine,7,8,1.5
+Histidine,2,9,1.0
+Histidine,9,10,1.0
+Histidine,9,11,2.0
+Histidine,8,4,1.5
+Histidine,1,12,1.0
+Histidine,1,13,1.0
+Histidine,2,14,1.0
+Histidine,3,15,1.0
+Histidine,3,16,1.0
+Histidine,5,17,1.0
+Histidine,7,18,1.0
+Histidine,8,19,1.0
+Histidine,10,20,1.0
+# Your existing lines from Glycine to Tyrosine go here (copy from your file, ensuring no truncation)
+# ... (insert your bonds for the 13 amino acids)
+
+# Generated missing amino acids:
+Asparagine,1,2,1.0
+Asparagine,2,3,1.0
+Asparagine,3,4,1.0
+Asparagine,4,5,1.0
+Asparagine,4,6,2.0
+Asparagine,2,7,1.0
+Asparagine,7,8,1.0
+Asparagine,7,9,2.0
+Asparagine,1,10,1.0
+Asparagine,1,11,1.0
+Asparagine,2,12,1.0
+Asparagine,3,13,1.0
+Asparagine,3,14,1.0
+Asparagine,5,15,1.0
+Asparagine,5,16,1.0
+Asparagine,8,17,1.0
+Glutamine,1,2,1.0
+Glutamine,2,3,1.0
+Glutamine,3,4,1.0
+Glutamine,4,5,1.0
+Glutamine,5,6,1.0
+Glutamine,5,7,2.0
+Glutamine,2,8,1.0
+Glutamine,8,9,1.0
+Glutamine,8,10,2.0
+Glutamine,1,11,1.0
+Glutamine,1,12,1.0
+Glutamine,2,13,1.0
+Glutamine,3,14,1.0
+Glutamine,3,15,1.0
+Glutamine,4,16,1.0
+Glutamine,4,17,1.0
+Glutamine,6,18,1.0
+Glutamine,6,19,1.0
+Glutamine,9,20,1.0
+Aspartic Acid,1,2,1.0
+Aspartic Acid,2,3,1.0
+Aspartic Acid,3,4,1.0
+Aspartic Acid,4,5,1.0
+Aspartic Acid,4,6,2.0
+Aspartic Acid,2,7,1.0
+Aspartic Acid,7,8,1.0
+Aspartic Acid,7,9,2.0
+Aspartic Acid,1,10,1.0
+Aspartic Acid,1,11,1.0
+Aspartic Acid,2,12,1.0
+Aspartic Acid,3,13,1.0
+Aspartic Acid,3,14,1.0
+Aspartic Acid,5,15,1.0
+Aspartic Acid,8,16,1.0
+Glutamic Acid,1,2,1.0
+Glutamic Acid,2,3,1.0
+Glutamic Acid,3,4,1.0
+Glutamic Acid,4,5,1.0
+Glutamic Acid,5,6,1.0
+Glutamic Acid,5,7,2.0
+Glutamic Acid,2,8,1.0
+Glutamic Acid,8,9,1.0
+Glutamic Acid,8,10,2.0
+Glutamic Acid,1,11,1.0
+Glutamic Acid,1,12,1.0
+Glutamic Acid,2,13,1.0
+Glutamic Acid,3,14,1.0
+Glutamic Acid,3,15,1.0
+Glutamic Acid,4,16,1.0
+Glutamic Acid,4,17,1.0
+Glutamic Acid,6,18,1.0
+Glutamic Acid,9,19,1.0
+Lysine,1,2,1.0
+Lysine,2,3,1.0
+Lysine,3,4,1.0
+Lysine,4,5,1.0
+Lysine,5,6,1.0
+Lysine,6,7,1.0
+Lysine,2,8,1.0
+Lysine,8,9,1.0
+Lysine,8,10,2.0
+Lysine,1,11,1.0
+Lysine,1,12,1.0
+Lysine,2,13,1.0
+Lysine,3,14,1.0
+Lysine,3,15,1.0
+Lysine,4,16,1.0
+Lysine,4,17,1.0
+Lysine,5,18,1.0
+Lysine,5,19,1.0
+Lysine,6,20,1.0
+Lysine,6,21,1.0
+Lysine,7,22,1.0
+Lysine,7,23,1.0
+Lysine,9,24,1.0
+Arginine,1,2,1.0
+Arginine,2,3,1.0
+Arginine,3,4,1.0
+Arginine,4,5,1.0
+Arginine,5,6,1.0
+Arginine,6,7,1.0
+Arginine,7,8,1.0
+Arginine,7,9,2.0
+Arginine,2,10,1.0
+Arginine,10,11,1.0
+Arginine,10,12,2.0
+Arginine,1,13,1.0
+Arginine,1,14,1.0
+Arginine,2,15,1.0
+Arginine,3,16,1.0
+Arginine,3,17,1.0
+Arginine,4,18,1.0
+Arginine,4,19,1.0
+Arginine,5,20,1.0
+Arginine,5,21,1.0
+Arginine,6,22,1.0
+Arginine,8,23,1.0
+Arginine,8,24,1.0
+Arginine,9,25,1.0
+Arginine,11,26,1.0
+Histidine,1,2,1.0
+Histidine,2,3,1.0
+Histidine,3,4,1.0
+Histidine,4,5,1.5
+Histidine,5,6,1.5
+Histidine,6,7,1.5
+Histidine,7,8,1.5
+Histidine,2,9,1.0
+Histidine,9,10,1.0
+Histidine,9,11,2.0
+Histidine,8,4,1.5
+Histidine,1,12,1.0
+Histidine,1,13,1.0
+Histidine,2,14,1.0
+Histidine,3,15,1.0
+Histidine,3,16,1.0
+Histidine,5,17,1.0
+Histidine,7,18,1.0
+Histidine,8,19,1.0
+Histidine,10,20,1.0

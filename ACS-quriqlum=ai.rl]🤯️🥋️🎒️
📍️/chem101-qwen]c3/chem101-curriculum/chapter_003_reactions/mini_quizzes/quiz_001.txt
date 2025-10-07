@@ -1,0 +1,23 @@
+# Chapter 3 Mini Quiz: Chemical Reactions
+
+## Fill in the blank:
+
+1. In a synthesis reaction, two or more substances combine to form a _____ product.
+
+2. The law of conservation of mass requires that chemical equations must be _____.
+
+3. The _____ reaction type has the general form AB + CD → AD + CB.
+
+4. In the rate law equation rate = k[A]^m[B]^n, the letter k represents the _____ constant.
+
+5. The minimum energy needed for a reaction to occur is called the _____ energy.
+
+6. According to collision theory, reactants must collide with proper orientation and sufficient _____.
+
+7. In a reversible reaction at equilibrium, the rates of the forward and reverse reactions are _____.
+
+8. When the equilibrium constant K is greater than 1, the reaction favors the _____.
+
+9. Le Chatelier's principle states that when a system at equilibrium is disturbed, it shifts to _____ the effect of the disturbance.
+
+10. Pure solids and liquids are not included in the _____ expression for a reaction.

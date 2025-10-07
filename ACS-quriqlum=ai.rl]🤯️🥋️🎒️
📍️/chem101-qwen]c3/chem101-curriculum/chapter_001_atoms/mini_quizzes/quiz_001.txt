@@ -1,0 +1,23 @@
+# Chapter 1 Mini Quiz: Atomic Structure
+
+## Fill in the blanks:
+
+1. Atoms are composed of three subatomic particles: protons, neutrons, and _______.
+
+2. The atomic number of an element is determined by the number of _______ in its nucleus.
+
+3. Electrons are arranged in energy levels called _______ and sublevels called _______.
+
+4. The _______ principle states that electrons fill lower energy levels before higher ones.
+
+5. Elements are arranged on the periodic table in order of increasing _______ number.
+
+6. The current atomic model describes electrons in terms of probability distributions called _______.
+
+7. The four quantum numbers that describe an electron are principal, angular momentum, magnetic, and _______.
+
+8. _______ are atoms of the same element with different numbers of neutrons.
+
+9. The s orbital has a _______ shape and can hold a maximum of _______ electrons.
+
+10. The electron configuration of carbon (atomic number 6) is 1s² 2s² _______.

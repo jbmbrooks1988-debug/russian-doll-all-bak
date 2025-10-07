@@ -1,0 +1,28 @@
+# Chemical Reactions and Equations Corpus
+
+## Types of Chemical Reactions
+Common reaction types include:
+- Synthesis: A + B → AB
+- Decomposition: AB → A + B
+- Single displacement: A + BC → AC + B
+- Double displacement: AB + CD → AD + CB
+- Combustion: substance reacts with oxygen, often producing heat and light
+
+## Balancing Chemical Equations
+Chemical equations must satisfy the law of conservation of mass:
+- Same number of each type of atom on both sides of the equation
+- Use coefficients to balance, not changing subscripts
+- Balance elements that appear in only one compound on each side first
+- Balance oxygen and hydrogen last
+
+## Reaction Stoichiometry
+Stoichiometry uses balanced equations to determine:
+- Mole ratios between reactants and products
+- Theoretical yield of products
+- Limiting reactant identification
+- Percent yield calculations
+
+## Chemical Equations Notation
+- (s) = solid, (l) = liquid, (g) = gas, (aq) = aqueous solution
+- Δ above arrow indicates heat used
+- Catalysts written above the arrow

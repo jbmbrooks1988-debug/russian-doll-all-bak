@@ -1,0 +1,22 @@
+# Chemical Equilibrium Corpus
+
+## Dynamic Equilibrium
+- Occurs in reversible reactions when forward and reverse rates are equal
+- Concentrations of reactants and products remain constant
+- Equilibrium can be approached from either direction
+
+## Equilibrium Constant (K)
+- K = [products]^coefficients / [reactants]^coefficients
+- Pure solids and liquids are not included in equilibrium expression
+- K > 1 favors products, K < 1 favors reactants
+- Temperature dependent
+
+## Le Chatelier's Principle
+When a system at equilibrium is disturbed:
+- System shifts to minimize the effect of the disturbance
+- Changes in concentration, pressure/volume, or temperature affect equilibrium position
+
+## Applications
+- Haber process for ammonia synthesis
+- Acid-base equilibria in biological systems
+- Solubility equilibria

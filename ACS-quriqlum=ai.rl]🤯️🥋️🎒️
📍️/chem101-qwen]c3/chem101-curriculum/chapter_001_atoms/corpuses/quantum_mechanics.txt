@@ -1,0 +1,22 @@
+# Atomic Structure Corpus 3: Quantum Mechanics
+
+## Quantum Numbers
+Each electron in an atom can be described by four quantum numbers:
+1. Principal quantum number (n): energy level, values 1, 2, 3, ...
+2. Angular momentum quantum number (l): shape of orbital, values 0 to n-1
+3. Magnetic quantum number (ml): orientation of orbital, values -l to +l
+4. Spin quantum number (ms): spin direction, values +1/2 or -1/2
+
+## Orbital Shapes
+- s orbitals: spherical, hold 2 electrons
+- p orbitals: dumbbell-shaped, hold 6 electrons (3 orientations)
+- d orbitals: complex shapes, hold 10 electrons (5 orientations)
+- f orbitals: even more complex, hold 14 electrons (7 orientations)
+
+## Electron Configuration Notation
+Electron configurations are written using the format nl^x where:
+- n is the principal quantum number
+- l is the letter designation (s, p, d, f)
+- x is the number of electrons in that sublevel
+
+Example: Carbon (6 electrons): 1s² 2s² 2p²

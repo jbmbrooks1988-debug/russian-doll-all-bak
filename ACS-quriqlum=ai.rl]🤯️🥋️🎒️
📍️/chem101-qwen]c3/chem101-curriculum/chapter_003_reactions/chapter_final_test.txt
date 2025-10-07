@@ -1,0 +1,23 @@
+# Chapter 3 Final Test: Chemical Reactions
+
+## Fill in the blank:
+
+1. The five main types of chemical reactions are synthesis, decomposition, single displacement, double displacement, and _____ reactions.
+
+2. When balancing chemical equations, you must have the same number of each type of _____ on both sides of the equation.
+
+3. The general form of a double displacement reaction is AB + CD → _____ + _____.
+
+4. In the rate law rate = k[A]^m[B]^n, the exponents m and n are called reaction _____.
+
+5. A _____ increases reaction rate by lowering the activation energy without being consumed.
+
+6. At equilibrium, the concentrations of reactants and products remain constant, but the reactions continue at the _____ rate.
+
+7. According to Le Chatelier's principle, increasing the temperature of an exothermic reaction will shift the equilibrium toward the _____.
+
+8. The equilibrium constant expression excludes _____ and _____ phases.
+
+9. In the Arrhenius equation, the relationship between rate constant and temperature is described in terms of activation _____ and a pre-exponential factor.
+
+10. The _____ step in a reaction mechanism is always the slowest and determines the overall reaction rate.

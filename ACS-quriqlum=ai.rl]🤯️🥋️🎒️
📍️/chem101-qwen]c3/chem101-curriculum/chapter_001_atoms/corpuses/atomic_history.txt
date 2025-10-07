@@ -1,0 +1,15 @@
+# Atomic Structure Corpus 2: Historical Development
+
+## Early Atomic Theories
+- Democritus: first to propose atomos (indivisible particles) concept around 400 BCE
+- John Dalton: atomic theory in early 1800s stating all matter is made of atoms
+- J.J. Thomson: discovered electrons, proposed "plum pudding" model
+- Ernest Rutherford: gold foil experiment revealed atomic nucleus
+- Niels Bohr: planetary model with electrons in fixed orbits
+- Erwin Schrödinger: quantum mechanical model describing electron probability clouds
+
+## Modern Atomic Model
+The current quantum mechanical model describes electrons in terms of probability distributions called orbitals, rather than fixed paths. This model incorporates:
+- Wave-particle duality
+- Heisenberg uncertainty principle
+- Quantum numbers that define electron properties

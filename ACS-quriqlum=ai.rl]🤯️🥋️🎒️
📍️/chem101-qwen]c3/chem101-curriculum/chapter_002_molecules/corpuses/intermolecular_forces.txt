@@ -1,0 +1,23 @@
+# Intermolecular Forces Corpus
+
+## Types of Intermolecular Forces
+Intermolecular forces are attractions between molecules that affect physical properties:
+- London dispersion forces: weakest, present in all molecules, increase with molecular size
+- Dipole-dipole forces: occur between polar molecules
+- Hydrogen bonding: strongest intermolecular force, occurs when H is bonded to F, O, or N
+
+## Physical Properties Affected
+Intermolecular forces influence:
+- Boiling and melting points
+- Vapor pressure
+- Surface tension
+- Viscosity
+- Solubility
+
+## Relationship to Molecular Structure
+- Larger molecules have stronger London dispersion forces
+- Polar molecules have higher boiling points than nonpolar molecules of similar size
+- Hydrogen bonding significantly increases boiling points (e.g., water vs. H₂S)
+
+## Phase Changes
+Phase changes involve breaking or forming intermolecular forces without changing the chemical identity of the substance. Energy is absorbed to break forces (melting, vaporization) and released when forces form (condensation, freezing).

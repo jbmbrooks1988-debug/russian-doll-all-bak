@@ -1,0 +1,42 @@
+=== Chatbot MOE Debug Log ===
+Prompt: large
+Desired length: 2
+Temperature: 0.100000
+Using 1 training sets:
+  1. /home/no/Desktop/👬🏾️/sept_17/3.stage.llm]👬🏾️]MoE+@rl]9.17.19]b1/3.stage.llm]👬🏾️]MoE+@rl]9.17.19/curriculum/corpus]similarity10/corpus]similarity10.txt
+========================
+
+
+Debug: Current word: large (index: 98)
+Temperature: 0.100000
+Considering top 5 scores:
+  1. cat (index: 101): 0.498526
+  2. large (index: 98): 0.131294
+  3. sprint (index: 100): 0.095220
+  4. run (index: 99): 0.082137
+  5. textbook (index: 89): 0.050951
+Chosen word: run (index: 99)
+
+Debug: Current word: run (index: 99)
+Temperature: 0.100000
+Considering top 5 scores:
+  1. cat (index: 101): 0.470143
+  2. large (index: 98): 0.126915
+  3. sprint (index: 100): 0.115992
+  4. run (index: 99): 0.088253
+  5. textbook (index: 89): 0.055819
+Chosen word: cat (index: 101)
+
+Debug: Current word: cat (index: 23)
+Temperature: 0.100000
+Considering top 5 scores:
+  1. cat (index: 101): 0.274291
+  2. river (index: 62): 0.177822
+  3. 7 (index: 51): 0.097876
+  4. large (index: 98): 0.086761
+  5. sprint (index: 100): 0.055059
+Chosen word: 7 (index: 51)
+
+=== Final Response ===
+run cat 
+======================

@@ -1,0 +1,32 @@
+https://dev.drugbank.com/guides/tutorials/interactions
+⚗️
+AI Overview
+pKa is the negative base-10 logarithm of the acid dissociation constant (Ka). A lower pKa value indicates a stronger acid, meaning it dissociates more readily and donates protons more easily. Conversely, a higher pKa indicates a weaker acid. The pKa is a useful measure for comparing the acidity of different compounds, especially when the pH is known. 
+What pKa means:
+Acidity Strength: A key characteristic of pKa is that it quantifies an acid's strength. 
+Scale: The logarithmic scale makes it easier to work with very small Ka values. 
+Conjugate Base: A stronger acid will have a weaker conjugate base, and a weaker acid will have a stronger conjugate base. 
+How to use pKa:
+Comparing Acids: A lower pKa means a stronger acid. For example, lactic acid (pKa = 3.5) is more acidic than acetic acid (pKa = 4.76). 
+Buffer Solutions: In a buffer solution containing a weak acid (HA) and its conjugate base (A-), the relationship between pH and pKa is described by the Henderson-Hasselbalch equation: pH = pKa + log([A-]/[HA]). 
+Determining Acid vs. Base Form:
+If the pH is less than the pKa, the acid is present in its protonated (acidic) form. 
+If the pH is equal to the pKa, the concentrations of the acid and its conjugate base are equal. 
+If the pH is greater than the pKa, the conjugate base form predominates. 
+⚗️
+
+The main difference is that alkanes are saturated hydrocarbons with only single carbon-carbon bonds, while alkenes are unsaturated hydrocarbons that contain at least one carbon-carbon double bond. This structural difference makes alkenes more reactive than alkanes. Alkenes also show a distinct reaction with bromine water, changing its color from orange to colorless, a test not observed with alkanes. 
+Here's a breakdown of their key differences:
+Alkanes
+Bonding: Contain only single covalent bonds between carbon atoms. 
+Saturation: Considered saturated hydrocarbons because they have the maximum possible number of hydrogen atoms bonded to their carbon backbone. 
+Reactivity: Less reactive than alkenes due to the presence of strong single bonds. 
+Example: Methane (CH₄) is the simplest alkane. 
+Alkenes
+Bonding: Contain at least one double covalent bond between two carbon atoms. 
+Saturation: Are unsaturated hydrocarbons because the double bond prevents the carbon chain from holding the maximum number of hydrogen atoms. 
+Reactivity: More reactive than alkanes due to the presence of the weaker pi bond in the double bond. 
+Key Test: React with bromine water, causing the solution to turn colorless. 
+Example: Ethene (C₂H₄) is the simplest alkene. 
+
+⚗️⚗️⚗️⚗️⚗️⚗️⚗️⚗️⚗️⚗️⚗️⚗️⚗️

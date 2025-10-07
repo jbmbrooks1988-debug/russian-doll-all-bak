@@ -1,0 +1,27 @@
+# Molecular Structure Corpus
+
+## Chemical Bonding
+Chemical bonds form when atoms combine to achieve stable electron configurations. The main types of chemical bonds are:
+- Ionic bonds: formed by transfer of electrons between metals and nonmetals
+- Covalent bonds: formed by sharing of electrons between nonmetals
+- Metallic bonds: formed by a "sea" of delocalized electrons in metals
+
+## Molecular Geometry
+The three-dimensional shape of molecules is determined by:
+- Valence Shell Electron Pair Repulsion (VSEPR) theory
+- Electron pairs around the central atom repel each other to minimize repulsion
+- Common molecular geometries include linear, trigonal planar, tetrahedral, trigonal bipyramidal, and octahedral
+
+## Lewis Structures
+Lewis structures represent the valence electrons of atoms in molecules using dots and lines. Rules for drawing Lewis structures:
+- Count total valence electrons
+- Arrange atoms with least electronegative atom usually in the center
+- Connect atoms with single bonds first
+- Distribute remaining electrons as lone pairs to satisfy octet rule
+- Form multiple bonds if needed to satisfy octet rule
+
+## Polarity
+Molecular polarity depends on:
+- Electronegativity differences between atoms
+- Molecular geometry
+- Symmetrical molecules with polar bonds can be nonpolar overall
