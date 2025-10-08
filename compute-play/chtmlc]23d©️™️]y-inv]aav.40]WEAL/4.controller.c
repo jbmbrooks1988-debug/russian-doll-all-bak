@@ -21,6 +21,10 @@ void model_send_input(const char* input);
 void model_navigate_dir(const char* subdir);
 char (*model_get_dir_entries(int* count))[256];
 
+// Extern declarations for window dimensions from view.c
+extern int window_width;
+extern int window_height;
+
 typedef struct {
     char type[20];
     int x, y, width, height;
@@ -121,8 +125,13 @@ void init_controller() {
     // Nothing to initialize for now
 }
 
+// Coordinate transformation helper
+int convert_y_to_opengl_coords(int y) {
+    return window_height - y;
+}
+
 void mouse(int button, int state, int x, int y) {
-    int ry = 600 - y; // 600 is the window height
+    int ry = convert_y_to_opengl_coords(y); // Convert from window coordinates (y=0 at top) to OpenGL coordinates (y=0 at bottom)
 
     if (button == 0) { // Left mouse button
         if (state == 0) { // Mouse button down
@@ -139,7 +148,7 @@ void mouse(int button, int state, int x, int y) {
                 }
 
                 int abs_x = parent_x + elements[i].x;
-                int abs_y = parent_y + elements[i].y;
+                int abs_y = window_height - (parent_y + elements[i].y + elements[i].height); // Convert to OpenGL coordinates to match view.c
                 
                 // Special handling for menuitems when their parent menu is open
                 if (strcmp(elements[i].type, "menuitem") == 0 && elements[i].parent != -1 && 
@@ -244,15 +253,9 @@ void mouse(int button, int state, int x, int y) {
             if (clicked_textfield_index != -1) {
                 elements[clicked_textfield_index].is_active = 1;
             }
-        } else { // Mouse button up
-            active_slider_index = -1; // Stop dragging slider
-        }
-        glutPostRedisplay(); // Redraw to show active textfield/cursor or checkbox state or slider value
-    }
-    else if (button == 2) { // Right mouse button
-        if (state == 0) { // Mouse button down
-            int menu_clicked = 0;
-            // Check for right-click on a menu to open it as a context menu
+            
+            // Check if click was outside any menu element to close open menus
+            int clicked_on_menu = 0;
             for (int i = 0; i < num_elements; i++) {
                 int parent_x = 0;
                 int parent_y = 0;
@@ -264,79 +267,125 @@ void mouse(int button, int state, int x, int y) {
                 }
 
                 int abs_x = parent_x + elements[i].x;
-                int abs_y = parent_y + elements[i].y;
+                int abs_y = window_height - (parent_y + elements[i].y + elements[i].height); // Convert to OpenGL coordinates
+                
+                // Special handling for menuitems when their parent menu is open (they're drawn in submenu)
+                if (strcmp(elements[i].type, "menuitem") == 0 && elements[i].parent != -1 && 
+                    strcmp(elements[elements[i].parent].type, "menu") == 0 && 
+                    elements[elements[i].parent].is_open) {
+                    // Calculate submenu position (under the parent menu)
+                    int parent_menu = elements[i].parent;
+                    int parent_menu_abs_x = 0;
+                    int parent_menu_abs_y = 0;
+                    int parent_menu_parent = elements[parent_menu].parent;
+                    while (parent_menu_parent != -1) {
+                        parent_menu_abs_x += elements[parent_menu_parent].x;
+                        parent_menu_abs_y += elements[parent_menu_parent].y;
+                        parent_menu_parent = elements[parent_menu_parent].parent;
+                    }
+                    int submenu_x = parent_menu_abs_x + elements[parent_menu].x;
+                    int submenu_y = parent_menu_abs_y + elements[parent_menu].y + elements[parent_menu].height;
+                    
+                    // Calculate position of this item in the submenu
+                    int item_position = 0;
+                    for (int j = 0; j < num_elements; j++) {
+                        if (elements[j].parent == parent_menu && 
+                            strcmp(elements[j].type, "menuitem") == 0) {
+                            if (j == i) { // If this is our element
+                                break;
+                            }
+                            item_position++;
+                        }
+                    }
+                    
+                    // Update absolute position to submenu coordinates
+                    abs_x = submenu_x;
+                    abs_y = submenu_y + (item_position * 20); // 20px height per menu item
+                }
 
                 if (x >= abs_x && x <= abs_x + elements[i].width &&
                     ry >= abs_y && ry <= abs_y + elements[i].height) {
-                    if (strcmp(elements[i].type, "menu") == 0) {
-                        // Open the menu (close any other open menus first)
-                        // First close all other menus
-                        for (int j = 0; j < num_elements; j++) {
-                            if (strcmp(elements[j].type, "menu") == 0) {
-                                elements[j].is_open = 0;
-                            }
-                        }
-                        
-                        // Then open this menu
-                        elements[i].is_open = 1;
-                        if (strlen(elements[i].onClick) > 0) {
-                            handle_element_event(elements[i].onClick);
-                        }
-                        printf("Right-clicked menu '%s' opened as context menu\\n", elements[i].label);
-                        glutPostRedisplay();
-                        menu_clicked = 1;
+                    if (strcmp(elements[i].type, "menu") == 0 || strcmp(elements[i].type, "menuitem") == 0) {
+                        clicked_on_menu = 1;  // Clicked on a menu or menu item, don't close menus
                         break;
                     }
                 }
             }
             
-            // If no menu was right-clicked, open a generic context menu at the click position
-            if (!menu_clicked) {
-                // Close any currently open menus first
-                for (int j = 0; j < num_elements; j++) {
-                    if (strcmp(elements[j].type, "menu") == 0) {
-                        elements[j].is_open = 0;
-                    }
-                }
-                
-                // Find a generic context menu in the UI (if it exists)
-                int generic_context_menu_idx = -1;
+            // If click was outside any menu, close all open menus
+            if (!clicked_on_menu) {
+                int menus_closed = 0;
                 for (int i = 0; i < num_elements; i++) {
-                    if (strcmp(elements[i].type, "menu") == 0 && 
-                        strcmp(elements[i].label, "Generic Context Menu") == 0) {
-                        generic_context_menu_idx = i;
-                        break;
+                    if (strcmp(elements[i].type, "menu") == 0 && elements[i].is_open) {
+                        // If this is the generic context menu, reset its position to a default/invisible location
+                        if (strcmp(elements[i].label, "Generic Context Menu") == 0) {
+                            // Reset to off-screen position to ensure it doesn't linger where the user clicked
+                            elements[i].x = -1000;  // Move off-screen
+                            elements[i].y = -1000;  // Move off-screen
+                        }
+                        elements[i].is_open = 0;
+                        printf("Closed menu '%s' as click was outside menu area\\n", elements[i].label);
+                        menus_closed = 1;
                     }
+                }
+                if (menus_closed) {
+                    glutPostRedisplay(); // Redraw to hide closed menus
+                }
+            }
+        } else { // Mouse button up
+            active_slider_index = -1; // Stop dragging slider
+        }
+        glutPostRedisplay(); // Redraw to show active textfield/cursor or checkbox state or slider value
+    }
+    else if (button == 2) { // Right mouse button
+        if (state == 0) { // Mouse button down
+            // Close any currently open menus first
+            for (int j = 0; j < num_elements; j++) {
+                if (strcmp(elements[j].type, "menu") == 0) {
+                    elements[j].is_open = 0;
+                }
+            }
+            
+            // Find a generic context menu in the UI (if it exists)
+            int generic_context_menu_idx = -1;
+            for (int i = 0; i < num_elements; i++) {
+                if (strcmp(elements[i].type, "menu") == 0 && 
+                    strcmp(elements[i].label, "Generic Context Menu") == 0) {
+                    generic_context_menu_idx = i;
+                    break;
+                }
+            }
+            // Removed the loop that checks if you clicked on a menu to open it as a context menu
+            // Only use the generic context menu
+            
+            if (generic_context_menu_idx != -1) {
+                // Position the menu at the click location using real-world coordinates (y=0 at top)
+                elements[generic_context_menu_idx].x = x;
+                elements[generic_context_menu_idx].y = y;  // Use original y since context menu uses real-world coordinates
+                
+                // Make sure the menu is within window bounds
+                if (elements[generic_context_menu_idx].x + elements[generic_context_menu_idx].width > window_width) {
+                    elements[generic_context_menu_idx].x = window_width - elements[generic_context_menu_idx].width;
+                }
+                if (elements[generic_context_menu_idx].y + elements[generic_context_menu_idx].height + 
+                    20 * elements[generic_context_menu_idx].menu_items_count > window_height) {
+                    elements[generic_context_menu_idx].y = window_height - elements[generic_context_menu_idx].height - 
+                        20 * elements[generic_context_menu_idx].menu_items_count;
                 }
                 
-                if (generic_context_menu_idx != -1) {
-                    // Position the menu at the click location
-                    elements[generic_context_menu_idx].x = x;
-                    elements[generic_context_menu_idx].y = ry;  // Use ry since it's already converted
-                    
-                    // Make sure the menu is within window bounds
-                    if (elements[generic_context_menu_idx].x + elements[generic_context_menu_idx].width > 800) {
-                        elements[generic_context_menu_idx].x = 800 - elements[generic_context_menu_idx].width;
-                    }
-                    if (elements[generic_context_menu_idx].y + elements[generic_context_menu_idx].height + 
-                        20 * elements[generic_context_menu_idx].menu_items_count > 600) {
-                        elements[generic_context_menu_idx].y = 600 - elements[generic_context_menu_idx].height - 
-                            20 * elements[generic_context_menu_idx].menu_items_count;
-                    }
-                    
-                    if (elements[generic_context_menu_idx].x < 0) elements[generic_context_menu_idx].x = 0;
-                    if (elements[generic_context_menu_idx].y < 0) elements[generic_context_menu_idx].y = 0;
-                    
-                    elements[generic_context_menu_idx].is_open = 1;
-                    printf("Generic context menu opened at position (%d, %d)\\n", x, ry);
-                    glutPostRedisplay();
-                } else {
-                    printf("Right-clicked at position (%d, %d) - no generic context menu defined\\n", x, ry);
-                }
+                if (elements[generic_context_menu_idx].x < 0) elements[generic_context_menu_idx].x = 0;
+                if (elements[generic_context_menu_idx].y < 0) elements[generic_context_menu_idx].y = 0;
+                
+                elements[generic_context_menu_idx].is_open = 1;
+                printf("Generic context menu opened at position (%d, %d)\\n", x, y);
+                glutPostRedisplay();
+            } else {
+                printf("Right-clicked at position (%d, %d) - no generic context menu defined\\n", x, y);
+            }
+            
             }
         }
     }
-}
 
 void run_module_handler() {
     printf("Running module...\n");

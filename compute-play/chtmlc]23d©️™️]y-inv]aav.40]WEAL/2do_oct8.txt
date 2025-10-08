@@ -1,0 +1,91 @@
+# CHTML Paint-like Editor Development - 2do for October 8
+
+## Goal
+Build a customizable "paint" like 2D/3D editor using the CHTML framework with:
+1. Color picker window containing 8 42x42 swatches (first being 'clear/')
+2. Swatches arranged in a sidebar on the left side
+3. 2D/3D picker buttons moved to a "top header bar"
+4. Grid in 2D and 3D canvas for placing chosen picker content as blocks at grid points
+5. Logic for block placement to go in game_ipc.c
+
+## Current State
+- CHTML framework with MVC+ architecture complete
+- Emoji texture caching implemented
+- 2D/3D canvas with mode switching
+- Basic UI elements: canvas, button, panel, header, text, window
+- Lighting temporarily disabled for consistent 2D/3D colors
+
+## Phase 1: Arrange Current CHTML Canvas Elements
+### Priority 1: Layout Setup
+- [ ] Create main CHTML file with top header bar containing 2D/3D buttons
+- [ ] Add canvas area for drawing
+- [ ] Reserve space for left sidebar (for future swatch picker)
+- [ ] Ensure layout is responsive across different window sizes
+
+### Priority 2: Header Component
+- [ ] Move existing 2D/3D mode switching buttons to header
+- [ ] Style header appropriately (color, height, positioning)
+- [ ] Ensure header remains fixed at top regardless of canvas interactions
+- [ ] Test that mode switching still works correctly
+
+### Priority 3: Canvas Component
+- [ ] Position canvas area below header and to the right of sidebar space
+- [ ] Ensure canvas still renders 2D/3D properly after layout changes
+- [ ] Verify canvas sizing and aspect ratio remains appropriate
+
+## Phase 2: Add New Swatch Picker Elements
+### Priority 4: Swatch Sidebar
+- [ ] Add new UI element type: swatch picker sidebar
+- [ ] Create 8 swatch elements of 42x42 size arranged vertically
+- [ ] Implement first swatch as 'clear' function
+- [ ] Add swatch selection state tracking
+
+### Priority 5: Swatch Interaction
+- [ ] Add mouse click handling for swatch selection
+- [ ] Visual feedback for selected swatch
+- [ ] Communication of selected swatch to game module
+
+## Phase 3: Grid System Implementation
+### Priority 6: Grid Overlay
+- [ ] Add grid rendering to canvas in both 2D and 3D modes
+- [ ] Implement grid coordinate mapping
+- [ ] Ensure grid is visible but doesn't overwhelm content
+
+### Priority 7: Grid Interactions
+- [ ] Add block placement logic in game module
+- [ ] Map canvas clicks to grid coordinates
+- [ ] Implement grid snapping for accurate placement
+- [ ] Handle block removal/clearing functionality
+
+## Phase 4: Integration & Testing
+### Priority 8: Full Integration
+- [ ] Connect all UI elements to game module logic
+- [ ] Ensure swatch selection affects subsequent canvas placements
+- [ ] Test complete workflow: select swatch → click canvas → place block
+- [ ] Verify 2D/3D switching works with grid and swatches
+
+## Backup Strategy
+- [ ] Before each major phase, create backup in @back/ directory
+- [ ] Use zip/tar to compress current working state
+- [ ] Name backups with timestamp and phase: e.g., chtml_paint_phase1_20251008.zip
+- [ ] Update this 2do file with progress before each backup
+
+## Immediate Next Steps (Today)
+1. Create initial CHTML layout with header and canvas positioning
+2. Move 2D/3D buttons to header and test functionality
+3. Reserve space for sidebar in layout
+4. Create backup of current state before adding new elements
+5. Test that existing functionality still works after layout changes
+
+## Success Criteria
+- [ ] Header contains 2D/3D buttons and remains fixed at top
+- [ ] Canvas area is properly positioned below header
+- [ ] Sidebar space is reserved for future swatch picker
+- [ ] All existing functionality (2D/3D switching) continues to work
+- [ ] Layout is properly structured for Phase 2 additions
+
+## Notes
+- Focus on layout first using existing CHTML elements
+- Add new functionality in subsequent phases
+- Maintain consistent visual appearance throughout development
+- Follow MVC+ architecture principles for all new components

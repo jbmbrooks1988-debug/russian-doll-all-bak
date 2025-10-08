@@ -1,0 +1,17 @@
+<window width="800" height="600" label="Paint-like Editor">
+    <!-- Top Header Bar -->
+    <header y="0" width="800" height="40" color="#444444">
+        <button id="switch_to_2d" x="10" y="10" width="80" height="20" label="2D Mode" onClick="switch_to_2d_handler"/>
+        <button id="switch_to_3d" x="100" y="10" width="80" height="20" label="3D Mode" onClick="switch_to_3d_handler"/>
+        <text x="200" y="25" value="CHTML Paint Editor" color="#FFFFFF"/>
+    </header>
+    
+    <!-- Main Canvas Area (to the right of reserved sidebar space) -->
+    <canvas id="main_canvas" x="120" y="0" width="670" height="540" label="Drawing Canvas" 
+            viewMode="2d" onClick="canvas_click_handler"/>
+    
+    <!-- Panel for sidebar space reservation (will contain swatches in future) -->
+    <panel x="10" y="50" width="100" height="540" color="#222222">
+        <text x="10" y="20" value="Swatches" color="#AAAAAA"/>
+    </panel>
+</window>

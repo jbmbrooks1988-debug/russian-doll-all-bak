@@ -91,10 +91,35 @@ int num_elements = 0;
 int window_width = 800;
 int window_height = 600;
 
+// Emoji texture cache system
+#define MAX_CACHED_EMOJIS 256
+typedef struct {
+    unsigned int codepoint;
+    GLuint texture_id;
+    int width;
+    int height;
+    int advance_x;  // For proper text flow
+    int loaded;     // Whether this cache entry is populated
+} EmojiCacheEntry;
+
+EmojiCacheEntry emoji_cache[MAX_CACHED_EMOJIS];
+int emoji_cache_size = 0;
+
 // FreeType variables for emoji rendering
 FT_Library ft;
 FT_Face emoji_face;
 float emoji_scale = 1.0f;
+
+// Coordinate transformation helper functions
+// Convert from real-world coordinates (y=0 at top) to OpenGL coordinates (y=0 at bottom)  
+int convert_y_to_opengl(int y) {
+    return window_height - y;
+}
+
+// Calculate absolute Y position with coordinate transformation (used in draw_element)
+int calculate_absolute_y(int parent_y, int element_y, int element_height) {
+    return window_height - (parent_y + element_y + element_height);
+}
 
 // FreeType initialization for emoji rendering
 void init_freetype() {
@@ -140,6 +165,62 @@ void init_freetype() {
     printf("Emoji font loaded, size: %d, scale: %f\n", loaded_emoji_size, emoji_scale);
 }
 
+// Initialize the emoji cache
+void init_emoji_cache() {
+    for (int i = 0; i < MAX_CACHED_EMOJIS; i++) {
+        emoji_cache[i].loaded = 0;
+        emoji_cache[i].texture_id = 0;
+        emoji_cache[i].codepoint = 0;
+        emoji_cache[i].width = 0;
+        emoji_cache[i].height = 0;
+        emoji_cache[i].advance_x = 0;
+    }
+    emoji_cache_size = 0;
+}
+
+// Find an emoji in the cache
+int find_emoji_in_cache(unsigned int codepoint) {
+    for (int i = 0; i < emoji_cache_size && i < MAX_CACHED_EMOJIS; i++) {
+        if (emoji_cache[i].codepoint == codepoint && emoji_cache[i].loaded) {
+            return i;
+        }
+    }
+    return -1; // Not found
+}
+
+// Add an emoji to the cache - only creates the texture ID, doesn't upload data yet
+int add_emoji_to_cache(unsigned int codepoint) {
+    // Check if emoji is already in cache
+    int existing_index = find_emoji_in_cache(codepoint);
+    if (existing_index != -1) {
+        return existing_index;
+    }
+    
+    // If cache is full, we could implement a replacement strategy
+    // For now, just return if cache is full
+    if (emoji_cache_size >= MAX_CACHED_EMOJIS) {
+        // Optional: Implement LRU or other cache replacement strategy
+        return -1;
+    }
+    
+    // Generate a texture ID for this emoji
+    GLuint texture_id;
+    glGenTextures(1, &texture_id);
+    
+    // Add to cache
+    emoji_cache[emoji_cache_size].codepoint = codepoint;
+    emoji_cache[emoji_cache_size].texture_id = texture_id;
+    emoji_cache[emoji_cache_size].width = 0;
+    emoji_cache[emoji_cache_size].height = 0;
+    emoji_cache[emoji_cache_size].advance_x = 0;
+    emoji_cache[emoji_cache_size].loaded = 0; // Will be set to 1 when texture data is uploaded
+    
+    int index = emoji_cache_size;
+    emoji_cache_size++;
+    
+    return index;
+}
+
 // Function to decode UTF-8 character to Unicode codepoint
 int decode_utf8(const unsigned char* str, unsigned int* codepoint) {
     if (str[0] < 0x80) {
@@ -168,45 +249,119 @@ int decode_utf8(const unsigned char* str, unsigned int* codepoint) {
     return 1;
 }
 
-// Function to render a single emoji character at given position
-void render_emoji(unsigned int codepoint, float x, float y) {
-    if (!emoji_face) return; // Skip if emoji font not loaded
+// Function to render a single emoji character at given position using cache
+// Returns the advance width for proper text flow
+int render_emoji(unsigned int codepoint, float x, float y) {
+    if (!emoji_face) return 0; // Skip if emoji font not loaded, return 0 for advance width
     
-    FT_Error err = FT_Load_Char(emoji_face, codepoint, FT_LOAD_RENDER | FT_LOAD_COLOR);
-    if (err) {
-        fprintf(stderr, "Warning: Could not load glyph for codepoint U+%04X\n", codepoint);
-        return;
+    // Check if emoji is already in cache
+    int cache_index = find_emoji_in_cache(codepoint);
+    GLuint texture_id = 0;
+    int width = 0, height = 0;
+    int advance_x = 0;
+
+    if (cache_index != -1) {
+        // Emoji is in cache, use it
+        texture_id = emoji_cache[cache_index].texture_id;
+        width = emoji_cache[cache_index].width;
+        height = emoji_cache[cache_index].height;
+        advance_x = emoji_cache[cache_index].advance_x;
+    } else {
+        // Emoji not in cache, need to load and add to cache
+        FT_Error err = FT_Load_Char(emoji_face, codepoint, FT_LOAD_RENDER | FT_LOAD_COLOR);
+        if (err) {
+            fprintf(stderr, "Warning: Could not load glyph for codepoint U+%04X\n", codepoint);
+            return 0; // Return 0 for advance width on error
+        }
+
+        FT_GlyphSlot slot = emoji_face->glyph;
+        if (!slot->bitmap.buffer) {
+            fprintf(stderr, "Warning: No bitmap for glyph U+%04X\n", codepoint);
+            return 0; // Return 0 for advance width on error
+        }
+
+        // Handle different pixel modes
+        GLint format = GL_RGBA;
+        if (slot->bitmap.pixel_mode == FT_PIXEL_MODE_BGRA) {
+            format = GL_BGRA;
+        } else if (slot->bitmap.pixel_mode == FT_PIXEL_MODE_GRAY) {
+            format = GL_LUMINANCE_ALPHA;
+        }
+
+        // Add emoji to cache to get a texture ID
+        cache_index = add_emoji_to_cache(codepoint);
+        if (cache_index == -1) {
+            // Cache is full, just load and render without caching
+            GLuint temp_texture;
+            glGenTextures(1, &temp_texture);
+            glBindTexture(GL_TEXTURE_2D, temp_texture);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, slot->bitmap.width, slot->bitmap.rows, 0, 
+                         format, GL_UNSIGNED_BYTE, slot->bitmap.buffer);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+            glEnable(GL_TEXTURE_2D);
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+            float scale_factor = emoji_scale;
+            float w = slot->bitmap.width * scale_factor;
+            float h = slot->bitmap.rows * scale_factor;
+            
+            // Calculate position so that emoji aligns with text baseline
+            float x2 = x;
+            float y2 = y;  // Position the emoji at the same baseline as regular text
+
+            glBegin(GL_QUADS);
+            glTexCoord2f(0.0, 1.0); glVertex2f(x2, y2);
+            glTexCoord2f(1.0, 1.0); glVertex2f(x2 + w, y2);
+            glTexCoord2f(1.0, 0.0); glVertex2f(x2 + w, y2 + h);
+            glTexCoord2f(0.0, 0.0); glVertex2f(x2, y2 + h);
+            glEnd();
+
+            glDisable(GL_TEXTURE_2D);
+            glDisable(GL_BLEND);
+            glBindTexture(GL_TEXTURE_2D, 0);
+            glDeleteTextures(1, &temp_texture);
+            glColor3f(1.0f, 1.0f, 1.0f);
+            // Calculate rough advance width for uncached emoji
+            if (FT_Load_Char(emoji_face, codepoint, FT_LOAD_RENDER | FT_LOAD_COLOR) == 0) {
+                return emoji_face->glyph->advance.x >> 6; // advance is in 1/64th pixels
+            } else {
+                return 0; // fallback if loading fails
+            }
+        }
+
+        // Get the texture ID from the cache
+        texture_id = emoji_cache[cache_index].texture_id;
+        width = slot->bitmap.width;
+        height = slot->bitmap.rows;
+        advance_x = slot->advance.x >> 6; // advance is in 1/64th pixels
+
+        // Upload texture data to the cached texture
+        glBindTexture(GL_TEXTURE_2D, texture_id);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, 
+                     format, GL_UNSIGNED_BYTE, slot->bitmap.buffer);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        // Update cache entry with dimensions and advance
+        emoji_cache[cache_index].width = width;
+        emoji_cache[cache_index].height = height;
+        emoji_cache[cache_index].advance_x = slot->advance.x >> 6; // advance is in 1/64th pixels
+        emoji_cache[cache_index].loaded = 1; // Mark as fully loaded
     }
 
-    FT_GlyphSlot slot = emoji_face->glyph;
-    if (!slot->bitmap.buffer) {
-        fprintf(stderr, "Warning: No bitmap for glyph U+%04X\n", codepoint);
-        return;
-    }
-
-    // Handle different pixel modes
-    GLint format = GL_RGBA;
-    if (slot->bitmap.pixel_mode == FT_PIXEL_MODE_BGRA) {
-        format = GL_BGRA;
-    } else if (slot->bitmap.pixel_mode == FT_PIXEL_MODE_GRAY) {
-        format = GL_LUMINANCE_ALPHA;
-    }
-
-    GLuint texture;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, slot->bitmap.width, slot->bitmap.rows, 0, 
-                 format, GL_UNSIGNED_BYTE, slot->bitmap.buffer);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
+    // Render using the texture
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    glBindTexture(GL_TEXTURE_2D, texture_id);
+
     float scale_factor = emoji_scale;
-    float w = slot->bitmap.width * scale_factor;
-    float h = slot->bitmap.rows * scale_factor;
+    float w = width * scale_factor;
+    float h = height * scale_factor;
     
     // Calculate position so that emoji aligns with text baseline
     float x2 = x;
@@ -222,8 +377,8 @@ void render_emoji(unsigned int codepoint, float x, float y) {
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_BLEND);
     glBindTexture(GL_TEXTURE_2D, 0);
-    glDeleteTextures(1, &texture);
     glColor3f(1.0f, 1.0f, 1.0f);
+    return advance_x;
 }
 
 // Function to check if a string contains emoji characters
@@ -276,14 +431,10 @@ void render_text_with_emojis(const char* str, float x, float y, float color[3]) 
         if (is_emoji) {
             // Render emoji using FreeType
             // Adjust the y position to align with text baseline - emojis might need vertical adjustment
-            render_emoji(codepoint, current_x, current_y);  // Using same y as text baseline
+            int advance_width = render_emoji(codepoint, current_x, current_y);  // Using same y as text baseline
             
             // Move position forward based on emoji advance width
-            if (emoji_face && FT_Load_Char(emoji_face, codepoint, FT_LOAD_RENDER | FT_LOAD_COLOR) == 0) {
-                current_x += emoji_face->glyph->advance.x >> 6; // advance is in 1/64th pixels
-            } else {
-                current_x += 32; // fallback width
-            }
+            current_x += advance_width;
         } else {
             // For regular ASCII characters, we need to render with GLUT but properly spaced
             // Find the next emoji or end of string
@@ -599,6 +750,7 @@ void parse_chtml(const char* filename) {
 
 void init_view(const char* filename) {
     init_freetype();  // Initialize FreeType for emoji rendering
+    init_emoji_cache();  // Initialize emoji texture cache
     parse_chtml(filename);
 }
 
@@ -612,7 +764,7 @@ void draw_element(UIElement* el) {
     }
 
     int abs_x = parent_x + el->x;
-    int abs_y = parent_y + el->y;
+    int abs_y = calculate_absolute_y(parent_y, el->y, el->height); // Convert from real-world to OpenGL coordinates (y=0 at top becomes y=window_height at bottom)
 
     if (strcmp(el->type, "canvas") == 0) {
         // Draw a border for the canvas
@@ -674,83 +826,38 @@ void draw_element(UIElement* el) {
             glPopMatrix();
         }
     } else if (strcmp(el->type, "menu") == 0) {
-        // Draw menu bar background
-        glColor3fv(el->color);
-        glBegin(GL_QUADS);
-        glVertex2i(abs_x, abs_y);
-        glVertex2i(abs_x + el->width, abs_y);
-        glVertex2i(abs_x + el->width, abs_y + el->height);
-        glVertex2i(abs_x, abs_y + el->height);
-        glEnd();
+        // For context menus (like "Generic Context Menu"), only draw the menu bar when open
+        // For permanent menu bars, always draw the menu bar
+        int should_draw_menu_bar = 1; // By default, draw for permanent menu bars
         
-        // Draw menu text - center it vertically in the menu bar
-        glColor3f(1.0f, 1.0f, 1.0f);
-        int text_offset_x = 5;
-        // Center the text vertically: start from the bottom of the menu and add centered offset
-        int text_offset_y = (el->height / 2) - 6;  // Adjusted to position text properly in menu
-        glRasterPos2i(abs_x + text_offset_x, abs_y + text_offset_y);
-        for (char* c = el->label; *c != '\0'; c++) {
-            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c);
+        // Check if this is likely a context menu (by label or other heuristics)
+        if (strcmp(el->label, "Generic Context Menu") == 0) {
+            // This is a context menu - only draw if it's open
+            should_draw_menu_bar = el->is_open;
         }
         
-        // If menu is open, draw submenu items
-        if (el->is_open) {
-            // Calculate submenu position - need to check if it would go outside window bounds
-            int submenu_start_y = abs_y + el->height;
-            int submenu_end_y = abs_y + el->height + 20 * el->menu_items_count;
-            
-            // If submenu would go outside window bounds, draw it above the menu instead
-            if (submenu_end_y > window_height) {
-                submenu_start_y = abs_y - 20 * el->menu_items_count;
-                if (submenu_start_y < 0) {
-                    submenu_start_y = 0; // Ensure it doesn't go above the window
-                }
-            }
-            
-            glColor3f(1.0f, 1.0f, 0.0f); // Bright yellow for submenu background to make it visible
+        if (should_draw_menu_bar) {
+            // Draw menu bar background
+            glColor3fv(el->color);
             glBegin(GL_QUADS);
-            glVertex2i(abs_x, submenu_start_y); // Position submenu appropriately
-            glVertex2i(abs_x + el->width, submenu_start_y);
-            glVertex2i(abs_x + el->width, submenu_start_y + 20 * el->menu_items_count); // Each item is ~20px high
-            glVertex2i(abs_x, submenu_start_y + 20 * el->menu_items_count);
+            glVertex2i(abs_x, abs_y);
+            glVertex2i(abs_x + el->width, abs_y);
+            glVertex2i(abs_x + el->width, abs_y + el->height);
+            glVertex2i(abs_x, abs_y + el->height);
             glEnd();
             
-            // Draw submenu items explicitly here
-            for (int i = 0; i < num_elements; i++) {
-                if (elements[i].parent == (el - elements) && strcmp(elements[i].type, "menuitem") == 0) {
-                    // Calculate position of this item in the submenu
-                    int item_position = 0;
-                    for (int j = 0; j < num_elements; j++) {
-                        if (elements[j].parent == (el - elements) && 
-                            strcmp(elements[j].type, "menuitem") == 0) {
-                            if (j == i) { // If this is our element
-                                break;
-                            }
-                            item_position++;
-                        }
-                    }
-                    
-                    // Calculate the y position for this specific menu item
-                    int item_y = submenu_start_y + item_position * 20;
-                    
-                    // Draw the submenu item
-                    glColor3f(0.7f, 0.7f, 0.9f); // Light blue for menu items
-                    glBegin(GL_QUADS);
-                    glVertex2i(abs_x, item_y);
-                    glVertex2i(abs_x + elements[i].width, item_y);
-                    glVertex2i(abs_x + elements[i].width, item_y + 20);
-                    glVertex2i(abs_x, item_y + 20);
-                    glEnd();
-                    
-                    // Draw menu item text
-                    glColor3f(0.0f, 0.0f, 0.0f); // Black text for menu items
-                    glRasterPos2i(abs_x + 5, item_y + 15);
-                    for (char* c = elements[i].label; *c != '\0'; c++) {
-                        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
-                    }
-                }
+            // Draw menu text - center it vertically in the menu bar
+            glColor3f(1.0f, 1.0f, 1.0f);
+            int text_offset_x = 5;
+            // Center the text vertically: start from the bottom of the menu and add centered offset
+            int text_offset_y = (el->height / 2) - 6;  // Adjusted to position text properly in menu
+            glRasterPos2i(abs_x + text_offset_x, abs_y + text_offset_y);
+            for (char* c = el->label; *c != '\0'; c++) {
+                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c);
             }
         }
+        
+
     } else if (strcmp(el->type, "menuitem") == 0) {
         // Draw menu item - only if it's not part of an open menu (since those are drawn in the menu section)
         int parent_menu_index = el->parent;
@@ -956,6 +1063,13 @@ void draw_element(UIElement* el) {
 
 
 void cleanup_freetype() {
+    // Clean up cached emoji textures
+    for (int i = 0; i < emoji_cache_size && i < MAX_CACHED_EMOJIS; i++) {
+        if (emoji_cache[i].loaded) {
+            glDeleteTextures(1, &emoji_cache[i].texture_id);
+        }
+    }
+    
     if (emoji_face) {
         FT_Done_Face(emoji_face);
         emoji_face = NULL;
@@ -999,7 +1113,7 @@ void display() {
     for (int i = 0; i < num_elements; i++) {
         if (strcmp(elements[i].type, "menu") == 0 && elements[i].is_open) {
             // Draw this open menu's submenu items
-            // Calculate absolute position of menu
+            // Calculate absolute position of menu using same transformation as draw_element
             int parent_x = 0;
             int parent_y = 0;
             int current_parent = elements[i].parent;
@@ -1010,7 +1124,7 @@ void display() {
             }
 
             int abs_x = parent_x + elements[i].x;
-            int abs_y = parent_y + elements[i].y;
+            int abs_y = calculate_absolute_y(parent_y, elements[i].y, elements[i].height); // Same transformation as draw_element
             
             // Calculate submenu position - need to check if it would go outside window bounds
             int submenu_start_y = abs_y + elements[i].height;
@@ -1093,8 +1207,9 @@ void canvas_render_sample(int x, int y, int width, int height) {
     if (is_3d) {
         // --- 3D Rendering Mode ---
         glEnable(GL_DEPTH_TEST);
-        glEnable(GL_LIGHTING);
-        glEnable(GL_LIGHT0);
+        // Temporarily disable lighting for consistent color appearance with 2D mode
+        // glEnable(GL_LIGHTING);
+        // glEnable(GL_LIGHT0);
 
         // Setup projection matrix for 3D
         glMatrixMode(GL_PROJECTION);
@@ -1131,7 +1246,7 @@ void canvas_render_sample(int x, int y, int width, int height) {
         glPopMatrix(); // Pop projection
         glMatrixMode(GL_MODELVIEW);
         glDisable(GL_DEPTH_TEST);
-        glDisable(GL_LIGHTING);
+        // glDisable(GL_LIGHTING);  // Not needed since we didn't enable it
 
     } else {
         // --- 2D Rendering Mode ---
