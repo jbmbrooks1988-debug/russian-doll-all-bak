@@ -1,2 +1,0 @@
-aggressive_bias:0.1
-defensive_bias:-0.1

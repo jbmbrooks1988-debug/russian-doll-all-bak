@@ -1,6 +1,0 @@
-<window title="Game Canvas" width="800" height="600">
-    <canvas id="game_canvas" x="50" y="50" width="400" height="300" label="Game Canvas" color="#CCCCCC" />
-    <button id="run_module_button" x="500" y="100" width="150" height="30" label="Run Module" onClick="run_module_handler" />
-    <text id="instructions" x="50" y="50" value="Use arrow keys to move the blue square" color="#000000" />
-    <text id="position_display" x="500" y="180" value="Position: (400, 300)" color="#000000" />
-</window>

@@ -1,3 +1,0 @@
-primitive primitive.txt
-log log.txt
-rgb rgb.txt

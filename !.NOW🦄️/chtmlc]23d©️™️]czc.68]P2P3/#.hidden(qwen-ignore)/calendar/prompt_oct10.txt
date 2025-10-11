@@ -1,0 +1,56 @@
+## Required Changes for Canvas Click Functionality
+
+Both alternative architectures (event-driven and multi-threaded) have the same issue: canvas click functionality is not properly implemented to communicate with external modules, causing the color picker text elements to not update.
+
+### Problem:
+- Canvas clicks are detected but coordinates are not sent to modules
+- Text elements don't update when colors are clicked in the demo
+
+### Required Fix:
+In both `4.controller.c` files, find the canvas click handling section that currently looks like:
+
+```c
+                    } else if (strcmp(elements[i].type, "canvas") == 0) {
+                        if (strlen(elements[i].onClick) > 0) {
+                            handle_element_event(elements[i].onClick);
+                        } else {
+                            printf("Canvas '%s' clicked at (%d, %d)\n", elements[i].label, x, ry);
+                        }
+                    } else if (strcmp(elements[i].type, "dirlist") == 0) {
+```
+
+Replace it with:
+
+```c
+                    } else if (strcmp(elements[i].type, "canvas") == 0) {
+                        if (strlen(elements[i].onClick) > 0) {
+                            handle_element_event(elements[i].onClick);
+                        } else {
+                            printf("Canvas '%s' clicked at (%d, %d)\n", elements[i].label, x, ry);
+                        }
+                        
+                        // Calculate relative coordinates within the canvas for the module
+                        int canvas_abs_x = parent_x + elements[i].x;
+                        int canvas_abs_y = window_height - (parent_y + elements[i].y + elements[i].height); // Convert to OpenGL coords
+                        
+                        // Calculate relative coordinates within canvas
+                        int rel_x = x - canvas_abs_x;
+                        int rel_y = ry - canvas_abs_y;
+                        
+                        // Make sure the click is within canvas bounds before sending
+                        if (rel_x >= 0 && rel_x <= elements[i].width && rel_y >= 0 && rel_y <= elements[i].height) {
+                            printf("Canvas '%s' clicked at relative (%d, %d)\n", elements[i].label, rel_x, rel_y);
+                            
+                            // Send canvas click information to the module using relative coordinates
+                            char canvas_input[100];
+                            snprintf(canvas_input, sizeof(canvas_input), "CANVAS:%d,%d", rel_x, rel_y);
+                            model_send_input(canvas_input);
+                        }
+                    } else if (strcmp(elements[i].type, "dirlist") == 0) {
+```
+
+### Additional Context:
+- The main architecture already has this functionality working
+- This fix enables two-way communication: canvas clicks → module → text element updates
+- The coordinates are converted to canvas-local coordinates as expected by modules
+- This enables the color picker demo to function properly in both alternative architectures

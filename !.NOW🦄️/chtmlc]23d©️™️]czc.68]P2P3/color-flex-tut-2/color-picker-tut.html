@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Color Picker - Tutorial Version</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #222;
+            color: #fff;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        #container {
+            display: flex;
+            border: 1px solid #444;
+            padding: 10px;
+            background-color: #333;
+        }
+        #color-palette {
+            display: flex;
+            flex-wrap: wrap;
+            width: 110px; /* Width for 3 items: 3*(32+4) = 108px, plus some buffer */
+            height: 120px; /* Show 3 rows of 3 items (9 total) like the original */
+            overflow-y: auto;
+            border: 1px solid #555;
+            padding: 2px;
+        }
+        .palette-item {
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid #555;
+            margin: 2px;
+            font-size: 24px;
+        }
+        .palette-item.selected {
+            border: 2px solid yellow;
+        }
+        #status {
+            margin-top: 10px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div>
+            <h3>Colors</h3>
+            <div id="color-palette"></div>
+            <div id="status">Select a color!</div>
+        </div>
+    </div>
+
+    <script src="color-picker-script.js"></script>
+</body>
+</html>

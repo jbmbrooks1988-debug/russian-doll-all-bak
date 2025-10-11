@@ -1,0 +1,25 @@
+<window width="800" height="600" color="#222222">
+    <header y="0" width="800" height="50" color="#333333">
+        <text x="10" y="10" value="Color Grid with Vertical Slider Demo" color="#FFFFFF"/>
+    </header>
+    
+    <panel x="10" y="60" width="780" height="530" color="#444444">
+        <!-- Instructions -->
+        <text x="20" y="10" value="Use the vertical slider to scroll through 27 colors (9 at a time)" color="#FFFFFF"/>
+        
+        <!-- Vertical slider to control which set of 9 colors to show -->
+        <slider id="color_slider" x="50" y="50" width="20" height="300" min="0" max="18" value="0" step="1" label="Color Set" />
+        
+        <!-- Canvas to display the color squares -->
+        <canvas id="color_canvas" x="100" y="50" width="120" height="120" label="Color Grid" color="#333333" onClick="canvas_click_handler" />
+        
+        <!-- Text elements to show info about clicked color -->
+        <text id="clicked_color_index" x="250" y="70" value="Clicked Color Index: None" color="#FFFFFF" />
+        <text id="clicked_color_name" x="250" y="100" value="Clicked Color Name: None" color="#FFFFFF" />
+        <text id="clicked_color_rgb" x="250" y="130" value="Clicked Color RGB: None" color="#FFFFFF" />
+        
+        <!-- Additional info -->
+        <text x="250" y="180" value="Click on any color square to see its details" color="#FFFFFF"/>
+        <text x="250" y="210" value="Use slider to scroll through different color sets" color="#FFFFFF"/>
+    </panel>
+</window>

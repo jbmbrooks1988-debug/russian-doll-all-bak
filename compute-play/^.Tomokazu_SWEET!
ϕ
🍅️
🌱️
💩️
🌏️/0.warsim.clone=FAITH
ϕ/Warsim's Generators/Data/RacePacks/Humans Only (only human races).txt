@@ -1,6 +1,0 @@
-Men.1.0.0.0.100.5.Peasant.50.Soldier.100.Knight.150.known to settle and grow great kingdoms men are known to be more adaptable and diverse than most
-Men.1.0.0.0.100.5.Barbarian.55.Barbarian Warrior.120.Barbarian of Krom.199.known to wander the land Ignorant to the civil customs of other men
-Men.1.0.0.0.95.5.Berserk Man.60.Berserker Warrior.130.Berserker Chief.179.known to eat psychoactive plants before battle to give themselves berserk abilities
-Folk.1.0.0.0.99.5.Peon.44.Warrior.102.Master.152.known very little, they are simple folk
-Cannibals.1.0.0.2.70.3.Cannibal.55.Cannibal Flesh-Carver.105.Cannibal Bone-Warrior.145.known for eating their own kind, these beasts hunt in packs and prey on other groups of humans
-Elders.1.0.0.0.40.6.Elder.104.High-Elder.170.High-Elder Champion.240.known as intelligent men who create vast libraries and study well on all they can

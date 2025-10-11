@@ -1,9 +1,0 @@
-player:2
-hp:100
-attack:10
-defense:0
-x:5
-y:7
-z:0
-symbol : 🎬
-symbol : 🦊

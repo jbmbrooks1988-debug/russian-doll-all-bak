@@ -1,2 +1,0 @@
-NONAME
-Gogs Names.txt

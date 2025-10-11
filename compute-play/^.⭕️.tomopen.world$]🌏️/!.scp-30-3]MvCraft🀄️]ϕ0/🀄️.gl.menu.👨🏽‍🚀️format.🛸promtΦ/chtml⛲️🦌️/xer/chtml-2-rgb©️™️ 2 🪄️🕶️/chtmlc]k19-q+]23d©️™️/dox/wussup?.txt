@@ -1,6 +1,0 @@
-WHAT HAS BEEN TRIED:
-1. Changed submenu background color to bright yellow (distinct from everything else)
-(change back ofc) 
-
-> load images somehow with stb-header. for w/e reason (games/ forums etc) +
-music/vides (may want ffmpeg. but w/e cool) 

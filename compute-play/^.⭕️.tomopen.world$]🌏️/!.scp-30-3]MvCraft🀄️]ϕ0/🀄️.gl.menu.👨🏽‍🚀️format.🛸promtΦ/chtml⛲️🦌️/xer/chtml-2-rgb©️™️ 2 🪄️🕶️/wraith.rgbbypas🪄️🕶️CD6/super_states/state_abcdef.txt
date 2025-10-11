@@ -1,5 +1,0 @@
-symbol P
-piece 2 2 8
-color 1.0 0.0 0.0
-size 1.1
-shape cube

@@ -1,0 +1,21 @@
+<window width="800" height="600" color="#808080">
+    <header y="0" width="800" height="50" color="#333333">
+        <text x="10" y="10" value="Vertical Slider Test" color="#FFFFFF"/>
+    </header>
+    
+    <panel x="10" y="60" width="780" height="530" color="#444444">
+        <!-- Horizontal slider -->
+        <slider id="horizontal_slider" x="50" y="50" width="200" height="20" min="0" max="100" value="50" step="1" label="Horizontal Slider" />
+        
+        <!-- Vertical slider - taller than it is wide -->
+        <slider id="vertical_slider" x="300" y="50" width="20" height="200" min="0" max="100" value="50" step="1" label="Vertical Slider" />
+        
+        <!-- Another vertical slider example -->
+        <slider id="vertical_slider2" x="350" y="50" width="15" height="150" min="0" max="100" value="30" step="1" label="Vertical Slider 2" />
+        
+        <!-- Label to show slider values -->
+        <text id="h_slider_value" x="50" y="90" value="Horizontal: 50" color="#FFFFFF" />
+        <text id="v_slider_value" x="300" y="270" value="Vertical: 50" color="#FFFFFF" />
+        <text id="v2_slider_value" x="350" y="220" value="Vertical2: 30" color="#FFFFFF" />
+    </panel>
+</window>

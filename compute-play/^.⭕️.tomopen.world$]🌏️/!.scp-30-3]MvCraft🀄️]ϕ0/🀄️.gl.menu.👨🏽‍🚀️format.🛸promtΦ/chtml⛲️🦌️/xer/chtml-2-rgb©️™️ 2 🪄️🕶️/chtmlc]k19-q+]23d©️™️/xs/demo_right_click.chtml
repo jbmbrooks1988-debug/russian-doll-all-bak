@@ -1,8 +1,0 @@
-<window title="Right Click Menu Test" width="800" height="600">
-    <menu id="context_menu" x="100" y="500" width="200" height="25" label="Context Menu" color="#555555" onClick="menu_click_handler">
-        <menuitem x="0" y="0" width="200" height="20" label="Option 1" color="#CCCCCC" onClick="option1_handler" />
-        <menuitem x="0" y="0" width="200" height="20" label="Option 2" color="#CCCCCC" onClick="option2_handler" />
-        <menuitem x="0" y="0" width="200" height="20" label="Option 3" color="#CCCCCC" onClick="option3_handler" />
-    </menu>
-    <text x="10" y="300" value="Left-click menu to toggle, Right-click menu for context menu" color="#000000" />
-</window>

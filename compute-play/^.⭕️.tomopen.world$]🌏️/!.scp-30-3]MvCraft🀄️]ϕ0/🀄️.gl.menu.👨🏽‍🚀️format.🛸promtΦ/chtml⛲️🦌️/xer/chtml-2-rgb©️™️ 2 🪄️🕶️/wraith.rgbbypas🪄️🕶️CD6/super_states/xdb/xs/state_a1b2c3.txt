@@ -1,4 +1,0 @@
-symbol Q
-x 10
-y 5
-z 5

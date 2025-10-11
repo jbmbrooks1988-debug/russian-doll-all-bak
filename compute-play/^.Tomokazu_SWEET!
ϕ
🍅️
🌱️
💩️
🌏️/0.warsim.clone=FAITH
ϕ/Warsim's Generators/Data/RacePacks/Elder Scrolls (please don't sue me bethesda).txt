@@ -1,6 +1,0 @@
-Vampires.1.0.0.4.68.6.Thrall.30.Vampire.160.Vampire Bloodlord.260.known to hide in the shadows and rely on the blood of the innocent to stay strong
-Elves.1.0.0.5.75.6.Elf.50.Elven Guardian.120.Elven Elite.170.known for their great instinct and generally peaceful and isolationist nature elves are a powerful race
-Necromancers.1.0.0.4.50.6.Novice Necromancer.105.Adept Necromancer.140.Master Necromancer.210.known as one of the biggest threats in the realm necromancers frequently dabble in the darks arts and summon undead armies to do their bidding
-Men.1.0.0.0.100.5.Barbarian.55.Barbarian Warrior.120.Barbarian of Krom.199.known to wander the land Ignorant to the civil customs of other men
-Orcs.2.0.0.6.105.4.Orc.60.Orcish Warrior.115.Orcish Champion.145.known for their brutish appearance and protruding tusks orcs are a powerful race of warriors
-Lizardmen.2.0.0.6.105.3.Lizardman.52.Armored Lizardman.99.Lizardman Warrior.120.known as half-men half-lizard these creatures are aggressive and barely civilized

@@ -1,0 +1,168 @@
+# CHTML IPC Optimization Guide
+
+## Current Architecture Analysis
+The current system uses:
+- Text-based semicolon-delimited IPC (SHAPE;VAR;ARRAY)
+- Pipe-based communication with fork/exec
+- 60 FPS rendering limit
+- Immediate mode OpenGL (glBegin/glEnd)
+
+## Profiling Results
+(To be filled in after running with profiler)
+
+## Optimization Opportunities
+
+### 1. IPC-Specific Optimizations
+
+#### A. Binary Protocol Implementation
+Instead of text-based format:
+```
+Current: "SHAPE;SQUARE;player;100.0;100.0;0.0;30.0;30.0;5.0;0.0;1.0;0.0;1.0"
+Binary: [4-byte type][32-byte label][3*float pos][3*float size][4*float color]
+```
+
+Structure example:
+```c
+typedef struct {
+    uint32_t msg_type;      // 1=SHAPE, 2=VAR, 3=ARRAY
+    uint32_t msg_size;      // Size in bytes
+    char label[32];         // Object label
+    float x, y, z;          // Position
+    float width, height, depth;  // Dimensions
+    float color[4];         // RGBA
+} binary_shape_msg_t;
+```
+
+#### B. Shared Memory Alternative
+For high-frequency updates:
+- Create shared memory segment using `shmget`/`shmat`
+- Both processes read/write to same memory location
+- Use semaphores for synchronization
+
+#### C. Memory-Mapped Files
+- Map a file to memory using `mmap`
+- More persistent than shared memory
+- Better for complex state synchronization
+
+### 2. Data Reduction Techniques
+
+#### A. Delta Updates
+```c
+// Instead of sending complete state every time
+// Send only what changed
+printf("UPDATE;player_x;105.0\n");  // Only send changed value
+printf("UPDATE;player_y;95.0\n");   // Only send changed value
+```
+
+#### B. Adaptive Update Rate
+- Send updates every N frames based on change threshold
+- More frequent for fast-moving objects
+- Less frequent for static data
+
+#### C. Data Compression
+- Compress large arrays using simple algorithms
+- Run-length encoding for repeated values
+- Quantization for floating points (reduce precision)
+
+### 3. Process Architecture Improvements
+
+#### A. Threading Approach
+- Dedicated IPC thread for non-blocking data handling
+- Message queue between IPC thread and main thread
+- Producer-consumer pattern for UI updates
+
+#### B. Asynchronous I/O
+- Use `select()` or `poll()` for non-blocking I/O
+- Event-driven architecture instead of polling
+- Better resource utilization
+
+### 4. Pipeline Optimizations
+
+#### A. Message Batching
+```c
+// Batch multiple messages in single write operation
+char buffer[4096];
+int offset = 0;
+offset += snprintf(buffer + offset, sizeof(buffer) - offset, 
+                   "SHAPE;SQUARE;p1;%f;%f;...", x1, y1);
+offset += snprintf(buffer + offset, sizeof(buffer) - offset, 
+                   "SHAPE;CIRCLE;p2;%f;%f;...", x2, y2);
+write(pipe_fd, buffer, offset);
+```
+
+#### B. Zero-Copy Techniques
+- Use scatter-gather I/O (`writev`) to avoid buffer copying
+- Memory-mapped I/O for large data
+
+### 5. Graphics Pipeline Optimizations
+
+#### A. OpenGL Modernization
+Current: `glBegin/glEnd` (immediate mode - slow)
+Better: Vertex Buffer Objects (VBOs) + Vertex Array Objects (VAOs)
+Best: Instanced rendering for multiple similar objects
+
+#### B. Render Batching
+- Group similar objects in single draw calls
+- Reduce state changes (shaders, textures, materials)
+- Use texture atlases
+
+#### C. Level of Detail (LOD)
+- Simplify geometry for distant objects
+- Reduce draw calls for far-away items
+
+### 6. System-Level Optimizations
+
+#### A. Buffering Strategy
+- Adjust pipe buffer sizes
+- Optimize read/write buffer sizes
+- Use larger buffers for bulk data
+
+#### B. Process Affinity
+- Pin processes to specific CPU cores
+- Reduce context switching overhead
+- Better cache utilization
+
+#### C. Memory Management
+- Pre-allocate all structures to avoid malloc/free overhead
+- Use memory pools for frequent allocations
+- Reduce memory fragmentation
+
+## Implementation Priority (High to Low Impact)
+
+### Immediate (Easy Wins):
+1. Optimize existing text parsing (avoid repeated string operations)
+2. Profile current system to identify actual bottlenecks
+3. Reduce unnecessary UI updates
+
+### Medium Term:
+1. Implement delta updates
+2. Optimize rendering pipeline (reduce draw calls)
+3. Add message batching
+
+### Long Term:
+1. Migrate to binary protocol
+2. Implement shared memory
+3. Modernize OpenGL rendering
+
+## Current Bottleneck Indicators
+
+### IPC is bottleneck if:
+- `update_model()` takes >1ms consistently
+- High CPU usage in pipe operations
+- Delays between module output and UI update
+
+### Graphics is bottleneck if:
+- `display()` function takes >10ms
+- Frame rate drops below 60 FPS with static content
+- High GPU usage with simple scenes
+
+### Memory is bottleneck if:
+- Frequent malloc/free operations
+- Memory fragmentation
+- High memory usage growth over time
+
+## Measurement Tools
+1. Add timing code to critical functions
+2. Use `strace` to analyze system calls
+3. Use `perf` for CPU profiling
+4. Monitor memory usage with `top`/`htop`

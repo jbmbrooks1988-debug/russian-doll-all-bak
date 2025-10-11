@@ -1,3 +1,0 @@
-attack_enemy:1.0
-move_to_center:0.5
-retreat_when_low_hp:0.8

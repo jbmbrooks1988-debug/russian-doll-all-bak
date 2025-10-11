@@ -1,8 +1,0 @@
-Peasant.10633
-Soldier.2994
-Knight.108
-Tribal Goblin.6854
-Tribal Goblin Berserker.928
-Tribal Goblin Warlord.152
-Bandit.6275
-Bandit Warlord.748

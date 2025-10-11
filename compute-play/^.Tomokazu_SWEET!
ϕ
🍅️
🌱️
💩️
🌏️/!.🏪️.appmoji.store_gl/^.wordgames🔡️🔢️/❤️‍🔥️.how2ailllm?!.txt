@@ -1,4 +1,0 @@
-
-
-make one shot versions of these. and we can focus more on , adding 2 corpus. 
-reteesting /rl.etc 

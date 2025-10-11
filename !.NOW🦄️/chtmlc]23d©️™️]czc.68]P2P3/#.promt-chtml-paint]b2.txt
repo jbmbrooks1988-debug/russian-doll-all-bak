@@ -1,0 +1,111 @@
+./chtmlc]23d©️™️]aaq.41]IPC++.+x test_enhanced.chtml module/+x/enhanced_game_ipc.+x
+<we should update the other 2 archs whenever we modify mvc> 
+==============================
+this is our framework : chtml
+we made it from scratch to render chtml gui in open gl.we use it to hold gui seperately so we can prompt smaller contexts 
+and get more focused code outputs from llms.
+its an "mvc" architecture :
+currently it has a horizontal slider, but does not go vertical (as far as i know) 
+can we make the framework support a vertical slider somehow. (we can edit mvc code to alter framework) ?
+2.
+heres the test
+(we want to make sure we can specify a starting slider value : 1 )
+then  we want to send its value (1-255) to a canvas in module/.c that will show a 120x120 square color canvas of the 255 color value (the slider should be verticle next to this color canvas
+ 3.
+ lets do a slightly more sophisticated demo of the slider and 27 color canvas: 
+will show 9 40x40 (120x120)color squares at a time depending on position of the slider 
+
+we should test its correspondence with canvas so
+when user clicks the canvas there should be a text element telling color and its index number, that was clicked
+
+they will beable to place the chosen color in the "level canvas"
+
+it is supposed to work like :
+@color-flex-tut-2/color-picker-tut.html & its js
+
+
+
+we will compile test when appropriate and save zip tar to /back 
+
+ ./chtmlc]23d©️™️]aaq.41]IPC++.+x            
+   test_enhanced.chtml                           
+   module/+x/enhanced_game_ipc.+x to run         
+   code @xh.compile.dir.link.+x.sh to            
+   compile chtml mvc linked and                  
+   @module/xsh.compile-all.+x.sh to compile      
+   modules.
+----------------------
+CAUTION : 
+    // Convert window coordinates to OpenGL                     
+       //  coordinates for proper Y direction                                
+   int opengl_y = convert_y_to_opengl_coords(y);               
+         // Convert window y to OpenGL y          
+───────────────────────────╯
+
+additionally on the level canvas there should be a "🗡️"  that is movable with arrow keys  ( and c/v)z&x=lvl
+"🚴🏽‍♂️️" emoji as playable character (can jump , not fly)
+and 2 "👻️" ai characters
+
+
+
+we dont need flex yet ,we just need to do the color render in canvas + a "thumb scroll
+
+🎖️🎖️🎖️🎖️🎖️🎖️🎖️🎖️🎖️🎖️🎖️🎖️🎖️🎖️
+this is our framework : chtml
+we made it from scratch to render chtml gui in open gl.we use it to hold gui seperately so we can prompt smaller contexts 
+and get more focused code outputs from llms.
+its an "mvc" architecture :
+
+
+we would like it to work to beable to do what
+
+   and its javascript file are doing , "pretending our .chtml is the html , and our module.c is the .js file) 
+we want the code to work as similiarly as possible, so developers can go back and forth without confusion . get it? 
+
+(lets remake the .html project in chtml as a proof that we are moving the chtml framework to be closer in line with
+html / css / js
+
+
+how ? show a canvas with colors and use slider to scroll the (starting slider at "0")
+
+ we need the same functionality        
+   that means 120x120 window of 40x40 square color pickers with       
+   thumb scroll (existing slider is fine)  to view more and printing of selected color           
+   under on selection. this would be copy and prove we are ready 
+
+
+   when color is picked its  'written' on screen. also thumb  can be a regular slider all 
+     it has to do is communicate with module for what colors to display. 
+     (that way it could be placed anywhere else on screen, this is most  
+    html/js like solution) can u do that thats teh best supreme solution , get it?  
+
+we will compile test when appropriate and save zip tar to /back
+also chtml_legend.md should be updated when a new html like feature is implimented
+🎖️🎖️🎖️🎖️🎖️🎖️🎖️🎖️🎖️🎖️🎖️🎖️🎖️🎖️🎖️
+
+
+
+
+
+
+
+
+
+
+
+
+
+✅️
+
+
+
+turns out we shouldn't even really be doing color picker yet (its not that hard )
+⁉️
+the real thing is : 
+ we need better ipc, it currently passes "shape , x,y (no z;lol wtf) etc " its moronic
+can we pass a variable size array , or labled item each time? this is supposed to accomodate everything from
+dynamic webpages, simple 2d games with a few vars, to full triple a games with tons of differnt vars,
+
+how do you recommend we modify our ipc (model.c ) to be more extensible going forward?  
+⁉️]DONE
+📬️

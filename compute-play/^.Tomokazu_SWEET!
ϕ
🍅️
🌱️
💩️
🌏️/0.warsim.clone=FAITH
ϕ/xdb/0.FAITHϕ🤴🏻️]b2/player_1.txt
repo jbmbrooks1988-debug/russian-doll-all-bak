@@ -1,2 +1,0 @@
-Name: j
-Type: Human

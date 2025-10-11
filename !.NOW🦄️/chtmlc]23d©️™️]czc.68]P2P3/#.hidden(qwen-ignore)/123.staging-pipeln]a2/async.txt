@@ -1,0 +1,100 @@
+# Asynchronous and Non-blocking IPC Implementation for CHTML Framework
+
+## Current Issues
+- The current system can block when reading from pipes
+- UI updates are tied to module communication
+- No proper async handling of module responses
+
+## Proposed Asynchronous Architecture
+
+### 1. Threading Approach
+The most straightforward way to make the system non-blocking is to use separate threads:
+
+- Main Thread: Handles UI rendering and user input
+- IPC Thread: Handles all communication with the module
+- Message Queue: Thread-safe buffer for IPC data
+
+### 2. Implementation Components
+
+#### A. Thread-Safe Data Structures
+- Use mutex-protected queues for communication between threads
+- Implement atomic operations for shared state variables
+- Use condition variables for thread synchronization
+
+#### B. Asynchronous IPC Handler
+```c
+typedef struct {
+    pthread_mutex_t mutex;
+    char buffer[4096];
+    int data_ready;
+    int should_exit;
+} ipc_data_t;
+
+void* ipc_thread_func(void* arg) {
+    ipc_data_t* data = (ipc_data_t*)arg;
+    char local_buffer[4096];
+    
+    while (!data->should_exit) {
+        // Non-blocking read from pipe
+        int bytes_read = read_non_blocking(data->pipe_fd, local_buffer, sizeof(local_buffer)-1);
+        if (bytes_read > 0) {
+            pthread_mutex_lock(&data->mutex);
+            memcpy(data->buffer, local_buffer, bytes_read);
+            data->buffer[bytes_read] = '\0';
+            data->data_ready = 1;
+            pthread_mutex_unlock(&data->mutex);
+        }
+        usleep(1000); // 1ms sleep to prevent busy waiting
+    }
+    return NULL;
+}
+```
+
+#### C. Non-blocking Pipe Reading
+- Use `fcntl()` to set pipes to non-blocking mode
+- Use `select()` or `poll()` to check for available data
+- Implement timeout mechanisms to prevent blocking
+
+#### D. Message Queue System
+- Implement a thread-safe queue for incoming messages
+- Use atomic operations to manage queue state
+- Process messages in batches during the idle loop
+
+### 3. Benefits of Async Implementation
+
+- UI remains responsive regardless of module communication status
+- No blocking on pipe reads
+- Better handling of slow or unresponsive modules
+- More predictable frame rates
+- Improved user experience
+
+### 4. Technical Implementation Steps
+
+1. Add threading library support (pthread)
+2. Create thread-safe data structures for IPC communication
+3. Implement a separate thread for module communication
+4. Use non-blocking I/O operations
+5. Implement proper synchronization mechanisms (mutexes, condition variables)
+6. Add timeout handling for unresponsive modules
+7. Integrate with the existing idle loop
+
+### 5. Challenges and Considerations
+
+- Thread safety for shared data structures
+- Proper cleanup and resource management
+- Potential race conditions
+- Increased complexity of debugging
+- Memory management in multi-threaded environment
+- Deadlock prevention
+
+### 6. Alternative: Event Loop Approach
+
+Instead of threads, implement an event-driven architecture:
+- Use `select()` or `poll()` to monitor multiple file descriptors
+- Process events in a single-threaded event loop
+- Maintains simplicity while achieving non-blocking behavior
+- Easier to debug than multi-threaded approach
+
+The event loop approach would be simpler to implement and maintain while still providing non-blocking behavior.
+🤯️
+(i may have it make both + existing ; and see which gets prompted rmmvc faster)🤯️

@@ -1,5 +1,0 @@
-x 0
-y 0
-z 6
-symbol P
-piece 2 2 5

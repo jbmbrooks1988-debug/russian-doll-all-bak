@@ -1,9 +1,0 @@
-player:1
-hp:100
-attack:10
-defense:0
-x:4
-y:1
-z:0
-symbol : ⚤
-symbol : 😋

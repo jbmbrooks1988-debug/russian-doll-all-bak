@@ -1,3 +1,0 @@
-symbol Z
-piece 2 2 9
-color 0.0 0.0 1.0

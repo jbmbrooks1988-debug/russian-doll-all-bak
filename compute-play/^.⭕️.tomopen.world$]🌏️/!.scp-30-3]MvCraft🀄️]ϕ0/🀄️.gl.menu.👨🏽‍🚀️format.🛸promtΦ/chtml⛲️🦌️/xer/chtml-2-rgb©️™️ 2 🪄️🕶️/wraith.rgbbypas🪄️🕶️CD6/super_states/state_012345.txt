@@ -1,2 +1,0 @@
-symbol R
-piece 15 10 4

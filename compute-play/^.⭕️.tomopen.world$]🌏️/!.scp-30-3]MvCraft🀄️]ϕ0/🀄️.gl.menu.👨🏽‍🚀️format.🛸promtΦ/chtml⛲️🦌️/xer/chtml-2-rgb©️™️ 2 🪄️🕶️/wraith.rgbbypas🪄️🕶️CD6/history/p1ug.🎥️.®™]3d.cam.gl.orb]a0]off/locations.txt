@@ -1,8 +1,0 @@
-state ../../state.txt
-maps ../../maps/
-log ../../log.txt
-commands ../../commands_gl.txt
-maps_data ../../maps_data.txt
-state_data ../../state_data.txt
-camera_data_ar ../../camera_data_ar.bin
-camera_data_webcam ../../camera_data_webcam.bin

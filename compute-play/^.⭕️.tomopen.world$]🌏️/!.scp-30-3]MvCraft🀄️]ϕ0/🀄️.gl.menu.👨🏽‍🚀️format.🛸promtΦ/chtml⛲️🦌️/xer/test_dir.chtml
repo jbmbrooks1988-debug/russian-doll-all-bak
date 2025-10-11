@@ -1,5 +1,0 @@
-<window width="800" height="600" label="Directory Explorer">
-    <panel x="10" y="10" width="780" height="580" color="#333333">
-        <dirlist x="20" y="20" width="740" height="540" label="Directory Listing" path="."/>
-    </panel>
-</window>
