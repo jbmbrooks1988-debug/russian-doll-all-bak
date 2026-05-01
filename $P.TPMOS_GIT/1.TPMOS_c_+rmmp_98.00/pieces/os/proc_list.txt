@@ -1,0 +1,12 @@
+24856 orchestrator
+24878 joystick_input
+24880 response_handler
+24876 keyboard_input
+24881 chtpm_parser
+24890 renderer
+24892 clock_daemon
+24893 gl_renderer
+loader_module=24916
+lsr_lsr_manager=24970
+loader_module=25008
+lsr_manager=25024

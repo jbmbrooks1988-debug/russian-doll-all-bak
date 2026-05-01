@@ -1,0 +1,38 @@
+_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help] +] -]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol....  GoStock Price.......
+Controlled By.....Acting Now.......
+
+Day Passage Speed: 
+Player: 
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER 
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..      
+Other Assets....   
+Total Assets.....  
+Less Debt....      
+Net Worth........  
+----------------------------------------------
+FINANCIAL NEWS HEADLINES []
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Prime Rate: 
+Long Bond: Short Bond: 
+Spot Crude: Silver: 
+Spot Gold: Spot Wheat: 
+GDP Growth: Spot Corn: 
+------------------------------------------
+Enter your choice (or 'n' to quit): 
+
++=========================================================+
+Nav > _

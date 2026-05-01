@@ -1,0 +1,902 @@
+=== NEW SESSION at 2026-05-01 03:25:19 ===
+
+--- FRAME UPDATE at 2026-05-01 03:25:19 ---
++===========================================================+
+|                                                           |
+|           C H T P M + O S   C L I   v2.0                 |
+|                                                           |
+|  CHTPM+OS Main Menu                                      |
+|                                                           |
+|  [>] 1. [Project Loader]                             |
+|  [ ] 2. [App Store (Fondu)]                          |
+|  [ ] 3. [Status]  [ ] 4. [GL-OS]                                          |
+|  [ ] 5. [Process Monitor]                            |
+|  [ ] 6. [Toggle Frame History (Current: )]                                         |
+|  [ ] 7. [Help]                                            |
+|                                                           |
++===========================================================+
+|  Running Applications: None                               |
+|  System Time: 08:00:00 | Turn: 0 | Key: None |
++===========================================================+
+|                                                           |
+|  $ | [ ] 8. [test]                                                 |                                                 |
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-01 03:25:20 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [>] 1. [+-demo]
+[ ] 2. [404-test]
+[ ] 3. [ai-labs]
+[ ] 4. [aow]
+[ ] 5. [aow-2d]
+[ ] 6. [bot-editor]
+[ ] 7. [bots-sov]
+[ ] 8. [chat-op]
+[ ] 9. [checkers]
+[ ] 10. [cyoa-engine]
+[ ] 11. [demo_1]
+[ ] 12. [fuzz-op]
+[ ] 13. [gitlet]
+[ ] 14. [gltpm-demo]
+[ ] 15. [hangman]
+[ ] 16. [lsr]
+[ ] 17. [man-add]
+[ ] 18. [man-ops]
+[ ] 19. [man-pal]
+[ ] 20. [mp3-store]
+[ ] 21. [op-ed]
+[ ] 22. [op-ed-gl]
+[ ] 23. [p2p-net]
+[ ] 24. [piececraft-3d]
+[ ] 25. [quiz-engine]
+[ ] 26. [template]
+[ ] 27. [test_fondu]
+[ ] 28. [user]
+[ ] 29. [xsr]
+[ ] 30. [yahoo]
+ ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 31. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-01 03:25:20 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [>] 1. [+-demo]
+[ ] 2. [404-test]
+[ ] 3. [ai-labs]
+[ ] 4. [aow]
+[ ] 5. [aow-2d]
+[ ] 6. [bot-editor]
+[ ] 7. [bots-sov]
+[ ] 8. [chat-op]
+[ ] 9. [checkers]
+[ ] 10. [cyoa-engine]
+[ ] 11. [demo_1]
+[ ] 12. [fuzz-op]
+[ ] 13. [gitlet]
+[ ] 14. [gltpm-demo]
+[ ] 15. [hangman]
+[ ] 16. [lsr]
+[ ] 17. [man-add]
+[ ] 18. [man-ops]
+[ ] 19. [man-pal]
+[ ] 20. [mp3-store]
+[ ] 21. [op-ed]
+[ ] 22. [op-ed-gl]
+[ ] 23. [p2p-net]
+[ ] 24. [piececraft-3d]
+[ ] 25. [quiz-engine]
+[ ] 26. [template]
+[ ] 27. [test_fondu]
+[ ] 28. [user]
+[ ] 29. [xsr]
+[ ] 30. [yahoo]
+ ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 31. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-01 03:25:33 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [>] 1. [+-demo]
+[ ] 2. [404-test]
+[ ] 3. [ai-labs]
+[ ] 4. [aow]
+[ ] 5. [aow-2d]
+[ ] 6. [bot-editor]
+[ ] 7. [bots-sov]
+[ ] 8. [chat-op]
+[ ] 9. [checkers]
+[ ] 10. [cyoa-engine]
+[ ] 11. [demo_1]
+[ ] 12. [fuzz-op]
+[ ] 13. [gitlet]
+[ ] 14. [gltpm-demo]
+[ ] 15. [hangman]
+[ ] 16. [lsr]
+[ ] 17. [man-add]
+[ ] 18. [man-ops]
+[ ] 19. [man-pal]
+[ ] 20. [mp3-store]
+[ ] 21. [op-ed]
+[ ] 22. [op-ed-gl]
+[ ] 23. [p2p-net]
+[ ] 24. [piececraft-3d]
+[ ] 25. [quiz-engine]
+[ ] 26. [template]
+[ ] 27. [test_fondu]
+[ ] 28. [user]
+[ ] 29. [xsr]
+[ ] 30. [yahoo]
+ ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 31. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > 1_
+
+
+--- FRAME UPDATE at 2026-05-01 03:25:34 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [ ] 1. [+-demo]
+[ ] 2. [404-test]
+[ ] 3. [ai-labs]
+[ ] 4. [aow]
+[ ] 5. [aow-2d]
+[ ] 6. [bot-editor]
+[ ] 7. [bots-sov]
+[ ] 8. [chat-op]
+[ ] 9. [checkers]
+[ ] 10. [cyoa-engine]
+[ ] 11. [demo_1]
+[ ] 12. [fuzz-op]
+[ ] 13. [gitlet]
+[ ] 14. [gltpm-demo]
+[ ] 15. [hangman]
+[>] 16. [lsr]
+[ ] 17. [man-add]
+[ ] 18. [man-ops]
+[ ] 19. [man-pal]
+[ ] 20. [mp3-store]
+[ ] 21. [op-ed]
+[ ] 22. [op-ed-gl]
+[ ] 23. [p2p-net]
+[ ] 24. [piececraft-3d]
+[ ] 25. [quiz-engine]
+[ ] 26. [template]
+[ ] 27. [test_fondu]
+[ ] 28. [user]
+[ ] 29. [xsr]
+[ ] 30. [yahoo]
+ ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 31. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > 16_
+
+
+--- FRAME UPDATE at 2026-05-01 03:25:34 ---
+╔═══════════════════════════════════════════════════════════╗
+║             L S R   I N I T I A L I Z A T I O N             ║
+╠═══════════════════════════════════════════════════════════╣
+║                                                           ║
+║  Initializing Lunar Economy...                            ║
+║  [SYSTEM]: 50 Corporations found in assets.               ║
+║  [SYSTEM]: 50 Governments found in assets.                ║
+║                                                           ║
+║  Running migration to Piece Model...                      ║
+║  Done. All entities updated with [LSR] methods.           ║
+║                                                           ║
+║  Starting analysis loop...                                ║
+║  Done. Initial stock prices calculated.                   ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [>] 1. [Launch Lunar Map (2D)]                   ║
+║  [ ] 2. [Enter Financial Dashboard]                ║
+║  [ ] 3. [Back to Main Menu]                          ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-01 03:25:36 ---
+╔═══════════════════════════════════════════════════════════╗
+║ LAYOUT ID: lsr.chtpm ║
+║                                                           ║
+║             LSR             ║
+║                                                           ║
+║  Pet Name:                                      ║
+║  Status: active                                         ║
+║  Turn: 0 | Time: 08:00:00                           ║
+║                                                           ║
+║  Hunger: /100 | Happiness: /100           ║
+║  Energy: /100 | Level:                        ║
+║                                                           ║
+║  GAME MAP:                                                ║
+║  [>] 1. [Control Map]                                     ║
++=========================================================+
+| [Z-LEVEL]: 1                                               |
++=========================================================+
+|  ####################                                     |
+|  #  UUUUUUUUUUUUUUUT#                                     |
+|  #  U..............T#                                     |
+|  #  U....RRR.......T#                                     |
+|  #  U....RRR.......T#                                     |
+|  #  U....RRR.......T#                                     |
+|  #  U.X..RRR.......T#                                     |
+|  #  U...............#                                     |
+|  #  UUUUUUUUUUUUUUUU#                                     |
+|  ####################                                     |
+
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║ [RESP]:                                     ║
+║ [ACTIVE]: xlector | [KEY]: None                  ║
+╠═══════════════════════════════════════════════════════════╣
+║  [No Methods] ║
+║  [ ] 2. [Back to Selector (9)]                         ║
+║  [ ] 3. [Exit to Menu]                          ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-01 03:25:38 ---
+╔═══════════════════════════════════════════════════════════╗
+║ LAYOUT ID: lsr.chtpm ║
+║                                                           ║
+║             LSR             ║
+║                                                           ║
+║  Pet Name:                                      ║
+║  Status: active                                         ║
+║  Turn: 0 | Time: 08:00:00                           ║
+║                                                           ║
+║  Hunger: /100 | Happiness: /100           ║
+║  Energy: /100 | Level:                        ║
+║                                                           ║
+║  GAME MAP:                                                ║
+║  [ ] 1. [Control Map]                                     ║
++=========================================================+
+| [Z-LEVEL]: 1                                               |
++=========================================================+
+|  ####################                                     |
+|  #  UUUUUUUUUUUUUUUT#                                     |
+|  #  U..............T#                                     |
+|  #  U....RRR.......T#                                     |
+|  #  U....RRR.......T#                                     |
+|  #  U....RRR.......T#                                     |
+|  #  U.X..RRR.......T#                                     |
+|  #  U...............#                                     |
+|  #  UUUUUUUUUUUUUUUU#                                     |
+|  ####################                                     |
+
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║ [RESP]:                                     ║
+║ [ACTIVE]: xlector | [KEY]: None                  ║
+╠═══════════════════════════════════════════════════════════╣
+║  [No Methods] ║
+║  [>] 2. [Back to Selector (9)]                         ║
+║  [ ] 3. [Exit to Menu]                          ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-01 03:25:41 ---
+╔═══════════════════════════════════════════════════════════╗
+║ LAYOUT ID: lsr.chtpm ║
+║                                                           ║
+║             LSR             ║
+║                                                           ║
+║  Pet Name:                                      ║
+║  Status: active                                         ║
+║  Turn: 0 | Time: 08:00:00                           ║
+║                                                           ║
+║  Hunger: /100 | Happiness: /100           ║
+║  Energy: /100 | Level:                        ║
+║                                                           ║
+║  GAME MAP:                                                ║
+║  [ ] 1. [Control Map]                                     ║
++=========================================================+
+| [Z-LEVEL]: 1                                               |
++=========================================================+
+|  ####################                                     |
+|  #  UUUUUUUUUUUUUUUT#                                     |
+|  #  U..............T#                                     |
+|  #  U....RRR.......T#                                     |
+|  #  U....RRR.......T#                                     |
+|  #  U....RRR.......T#                                     |
+|  #  U.X..RRR.......T#                                     |
+|  #  U...............#                                     |
+|  #  UUUUUUUUUUUUUUUU#                                     |
+|  ####################                                     |
+
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║ [RESP]:                                     ║
+║ [ACTIVE]: xlector | [KEY]: None                  ║
+╠═══════════════════════════════════════════════════════════╣
+║  [No Methods] ║
+║  [>] 2. [Back to Selector (9)]                         ║
+║  [ ] 3. [Exit to Menu]                          ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-01 03:25:41 ---
+╔═══════════════════════════════════════════════════════════╗
+║ LAYOUT ID: lsr.chtpm ║
+║                                                           ║
+║             LSR             ║
+║                                                           ║
+║  Pet Name:                                      ║
+║  Status: active                                         ║
+║  Turn: 0 | Time: 08:00:00                           ║
+║                                                           ║
+║  Hunger: /100 | Happiness: /100           ║
+║  Energy: /100 | Level:                        ║
+║                                                           ║
+║  GAME MAP:                                                ║
+║  [ ] 1. [Control Map]                                     ║
++=========================================================+
+| [Z-LEVEL]: 1                                               |
++=========================================================+
+|  ####################                                     |
+|  #  UUUUUUUUUUUUUUUT#                                     |
+|  #  U..............T#                                     |
+|  #  U....RRR.......T#                                     |
+|  #  U....RRR.......T#                                     |
+|  #  U....RRR.......T#                                     |
+|  #  U.X..RRR.......T#                                     |
+|  #  U...............#                                     |
+|  #  UUUUUUUUUUUUUUUU#                                     |
+|  ####################                                     |
+
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║ [RESP]:                                     ║
+║ [ACTIVE]: xlector | [KEY]: None                  ║
+╠═══════════════════════════════════════════════════════════╣
+║  [No Methods] ║
+║  [ ] 2. [Back to Selector (9)]                         ║
+║  [>] 3. [Exit to Menu]                          ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-01 03:25:42 ---
+╔═══════════════════════════════════════════════════════════╗
+║ LAYOUT ID: lsr.chtpm ║
+║                                                           ║
+║             LSR             ║
+║                                                           ║
+║  Pet Name:                                      ║
+║  Status: active                                         ║
+║  Turn: 0 | Time: 08:00:00                           ║
+║                                                           ║
+║  Hunger: /100 | Happiness: /100           ║
+║  Energy: /100 | Level:                        ║
+║                                                           ║
+║  GAME MAP:                                                ║
+║  [ ] 1. [Control Map]                                     ║
++=========================================================+
+| [Z-LEVEL]: 1                                               |
++=========================================================+
+|  ####################                                     |
+|  #  UUUUUUUUUUUUUUUT#                                     |
+|  #  U..............T#                                     |
+|  #  U....RRR.......T#                                     |
+|  #  U....RRR.......T#                                     |
+|  #  U....RRR.......T#                                     |
+|  #  U.X..RRR.......T#                                     |
+|  #  U...............#                                     |
+|  #  UUUUUUUUUUUUUUUU#                                     |
+|  ####################                                     |
+
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║ [RESP]:                                     ║
+║ [ACTIVE]: xlector | [KEY]: None                  ║
+╠═══════════════════════════════════════════════════════════╣
+║  [No Methods] ║
+║  [>] 2. [Back to Selector (9)]                         ║
+║  [ ] 3. [Exit to Menu]                          ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-01 03:25:42 ---
+╔═══════════════════════════════════════════════════════════╗
+║ LAYOUT ID: lsr.chtpm ║
+║                                                           ║
+║             LSR             ║
+║                                                           ║
+║  Pet Name:                                      ║
+║  Status: active                                         ║
+║  Turn: 0 | Time: 08:00:00                           ║
+║                                                           ║
+║  Hunger: /100 | Happiness: /100           ║
+║  Energy: /100 | Level:                        ║
+║                                                           ║
+║  GAME MAP:                                                ║
+║  [ ] 1. [Control Map]                                     ║
++=========================================================+
+| [Z-LEVEL]: 1                                               |
++=========================================================+
+|  ####################                                     |
+|  #  UUUUUUUUUUUUUUUT#                                     |
+|  #  U..............T#                                     |
+|  #  U....RRR.......T#                                     |
+|  #  U....RRR.......T#                                     |
+|  #  U....RRR.......T#                                     |
+|  #  U.X..RRR.......T#                                     |
+|  #  U...............#                                     |
+|  #  UUUUUUUUUUUUUUUU#                                     |
+|  ####################                                     |
+
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║ [RESP]:                                     ║
+║ [ACTIVE]: xlector | [KEY]: None                  ║
+╠═══════════════════════════════════════════════════════════╣
+║  [No Methods] ║
+║  [>] 2. [Back to Selector (9)]                         ║
+║  [ ] 3. [Exit to Menu]                          ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-01 03:25:42 ---
+╔═══════════════════════════════════════════════════════════╗
+║ LAYOUT ID: lsr.chtpm ║
+║                                                           ║
+║             LSR             ║
+║                                                           ║
+║  Pet Name:                                      ║
+║  Status: active                                         ║
+║  Turn: 0 | Time: 08:00:00                           ║
+║                                                           ║
+║  Hunger: /100 | Happiness: /100           ║
+║  Energy: /100 | Level:                        ║
+║                                                           ║
+║  GAME MAP:                                                ║
+║  [ ] 1. [Control Map]                                     ║
++=========================================================+
+| [Z-LEVEL]: 1                                               |
++=========================================================+
+|  ####################                                     |
+|  #  UUUUUUUUUUUUUUUT#                                     |
+|  #  U..............T#                                     |
+|  #  U....RRR.......T#                                     |
+|  #  U....RRR.......T#                                     |
+|  #  U....RRR.......T#                                     |
+|  #  U.X..RRR.......T#                                     |
+|  #  U...............#                                     |
+|  #  UUUUUUUUUUUUUUUU#                                     |
+|  ####################                                     |
+
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║ [RESP]:                                     ║
+║ [ACTIVE]: xlector | [KEY]: None                  ║
+╠═══════════════════════════════════════════════════════════╣
+║  [No Methods] ║
+║  [ ] 2. [Back to Selector (9)]                         ║
+║  [>] 3. [Exit to Menu]                          ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-01 03:25:43 ---
++===========================================================+
+|                                                           |
+|           C H T P M + O S   C L I   v2.0                 |
+|                                                           |
+|  CHTPM+OS Main Menu                                      |
+|                                                           |
+|  [>] 1. [Project Loader]                             |
+|  [ ] 2. [App Store (Fondu)]                          |
+|  [ ] 3. [Status]  [ ] 4. [GL-OS]                                          |
+|  [ ] 5. [Process Monitor]                            |
+|  [ ] 6. [Toggle Frame History (Current: )]                                         |
+|  [ ] 7. [Help]                                            |
+|                                                           |
++===========================================================+
+|  Running Applications: None                               |
+|  System Time: 08:00:00 | Turn: 0 | Key: None |
++===========================================================+
+|                                                           |
+|  $ | [ ] 8. [test]                                                 |                                                 |
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-01 03:25:44 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [>] 1. [+-demo]
+[ ] 2. [404-test]
+[ ] 3. [ai-labs]
+[ ] 4. [aow]
+[ ] 5. [aow-2d]
+[ ] 6. [bot-editor]
+[ ] 7. [bots-sov]
+[ ] 8. [chat-op]
+[ ] 9. [checkers]
+[ ] 10. [cyoa-engine]
+[ ] 11. [demo_1]
+[ ] 12. [fuzz-op]
+[ ] 13. [gitlet]
+[ ] 14. [gltpm-demo]
+[ ] 15. [hangman]
+[ ] 16. [lsr]
+[ ] 17. [man-add]
+[ ] 18. [man-ops]
+[ ] 19. [man-pal]
+[ ] 20. [mp3-store]
+[ ] 21. [op-ed]
+[ ] 22. [op-ed-gl]
+[ ] 23. [p2p-net]
+[ ] 24. [piececraft-3d]
+[ ] 25. [quiz-engine]
+[ ] 26. [template]
+[ ] 27. [test_fondu]
+[ ] 28. [user]
+[ ] 29. [xsr]
+[ ] 30. [yahoo]
+ ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 31. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-01 03:25:44 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [>] 1. [+-demo]
+[ ] 2. [404-test]
+[ ] 3. [ai-labs]
+[ ] 4. [aow]
+[ ] 5. [aow-2d]
+[ ] 6. [bot-editor]
+[ ] 7. [bots-sov]
+[ ] 8. [chat-op]
+[ ] 9. [checkers]
+[ ] 10. [cyoa-engine]
+[ ] 11. [demo_1]
+[ ] 12. [fuzz-op]
+[ ] 13. [gitlet]
+[ ] 14. [gltpm-demo]
+[ ] 15. [hangman]
+[ ] 16. [lsr]
+[ ] 17. [man-add]
+[ ] 18. [man-ops]
+[ ] 19. [man-pal]
+[ ] 20. [mp3-store]
+[ ] 21. [op-ed]
+[ ] 22. [op-ed-gl]
+[ ] 23. [p2p-net]
+[ ] 24. [piececraft-3d]
+[ ] 25. [quiz-engine]
+[ ] 26. [template]
+[ ] 27. [test_fondu]
+[ ] 28. [user]
+[ ] 29. [xsr]
+[ ] 30. [yahoo]
+ ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 31. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-01 03:25:45 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [>] 1. [+-demo]
+[ ] 2. [404-test]
+[ ] 3. [ai-labs]
+[ ] 4. [aow]
+[ ] 5. [aow-2d]
+[ ] 6. [bot-editor]
+[ ] 7. [bots-sov]
+[ ] 8. [chat-op]
+[ ] 9. [checkers]
+[ ] 10. [cyoa-engine]
+[ ] 11. [demo_1]
+[ ] 12. [fuzz-op]
+[ ] 13. [gitlet]
+[ ] 14. [gltpm-demo]
+[ ] 15. [hangman]
+[ ] 16. [lsr]
+[ ] 17. [man-add]
+[ ] 18. [man-ops]
+[ ] 19. [man-pal]
+[ ] 20. [mp3-store]
+[ ] 21. [op-ed]
+[ ] 22. [op-ed-gl]
+[ ] 23. [p2p-net]
+[ ] 24. [piececraft-3d]
+[ ] 25. [quiz-engine]
+[ ] 26. [template]
+[ ] 27. [test_fondu]
+[ ] 28. [user]
+[ ] 29. [xsr]
+[ ] 30. [yahoo]
+ ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 31. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > 1_
+
+
+--- FRAME UPDATE at 2026-05-01 03:25:45 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [ ] 1. [+-demo]
+[ ] 2. [404-test]
+[ ] 3. [ai-labs]
+[ ] 4. [aow]
+[ ] 5. [aow-2d]
+[ ] 6. [bot-editor]
+[ ] 7. [bots-sov]
+[ ] 8. [chat-op]
+[ ] 9. [checkers]
+[ ] 10. [cyoa-engine]
+[ ] 11. [demo_1]
+[ ] 12. [fuzz-op]
+[ ] 13. [gitlet]
+[ ] 14. [gltpm-demo]
+[ ] 15. [hangman]
+[>] 16. [lsr]
+[ ] 17. [man-add]
+[ ] 18. [man-ops]
+[ ] 19. [man-pal]
+[ ] 20. [mp3-store]
+[ ] 21. [op-ed]
+[ ] 22. [op-ed-gl]
+[ ] 23. [p2p-net]
+[ ] 24. [piececraft-3d]
+[ ] 25. [quiz-engine]
+[ ] 26. [template]
+[ ] 27. [test_fondu]
+[ ] 28. [user]
+[ ] 29. [xsr]
+[ ] 30. [yahoo]
+ ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 31. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > 16_
+
+
+--- FRAME UPDATE at 2026-05-01 03:25:46 ---
+╔═══════════════════════════════════════════════════════════╗
+║             L S R   I N I T I A L I Z A T I O N             ║
+╠═══════════════════════════════════════════════════════════╣
+║                                                           ║
+║  Initializing Lunar Economy...                            ║
+║  [SYSTEM]: 50 Corporations found in assets.               ║
+║  [SYSTEM]: 50 Governments found in assets.                ║
+║                                                           ║
+║  Running migration to Piece Model...                      ║
+║  Done. All entities updated with [LSR] methods.           ║
+║                                                           ║
+║  Starting analysis loop...                                ║
+║  Done. Initial stock prices calculated.                   ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [>] 1. [Launch Lunar Map (2D)]                   ║
+║  [ ] 2. [Enter Financial Dashboard]                ║
+║  [ ] 3. [Back to Main Menu]                          ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-01 03:25:46 ---
+╔═══════════════════════════════════════════════════════════╗
+║             L S R   I N I T I A L I Z A T I O N             ║
+╠═══════════════════════════════════════════════════════════╣
+║                                                           ║
+║  Initializing Lunar Economy...                            ║
+║  [SYSTEM]: 50 Corporations found in assets.               ║
+║  [SYSTEM]: 50 Governments found in assets.                ║
+║                                                           ║
+║  Running migration to Piece Model...                      ║
+║  Done. All entities updated with [LSR] methods.           ║
+║                                                           ║
+║  Starting analysis loop...                                ║
+║  Done. Initial stock prices calculated.                   ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [>] 1. [Launch Lunar Map (2D)]                   ║
+║  [ ] 2. [Enter Financial Dashboard]                ║
+║  [ ] 3. [Back to Main Menu]                          ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-01 03:25:47 ---
+╔═══════════════════════════════════════════════════════════╗
+║             L S R   I N I T I A L I Z A T I O N             ║
+╠═══════════════════════════════════════════════════════════╣
+║                                                           ║
+║  Initializing Lunar Economy...                            ║
+║  [SYSTEM]: 50 Corporations found in assets.               ║
+║  [SYSTEM]: 50 Governments found in assets.                ║
+║                                                           ║
+║  Running migration to Piece Model...                      ║
+║  Done. All entities updated with [LSR] methods.           ║
+║                                                           ║
+║  Starting analysis loop...                                ║
+║  Done. Initial stock prices calculated.                   ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 1. [Launch Lunar Map (2D)]                   ║
+║  [>] 2. [Enter Financial Dashboard]                ║
+║  [ ] 3. [Back to Main Menu]                          ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-01 03:25:47 ---
+_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help] +] -]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol....  GoStock Price.......
+Controlled By.....Acting Now.......
+
+Day Passage Speed: 
+Player: 
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER 
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..      
+Other Assets....   
+Total Assets.....  
+Less Debt....      
+Net Worth........  
+----------------------------------------------
+FINANCIAL NEWS HEADLINES []
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Prime Rate: 
+Long Bond: Short Bond: 
+Spot Crude: Silver: 
+Spot Gold: Spot Wheat: 
+GDP Growth: Spot Corn: 
+------------------------------------------
+Enter your choice (or 'n' to quit): 
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-01 03:25:47 ---
+_______________________________________________________
+0.^] 1.File] 2.Game Options] 3.Settings] 4.Help] +] -]
+Active Entity Selected: 
+5.Select Player] 6.Culture] 7.Entity Info] 8.Select Corp.] 9.History] 10.General]
+11.Tools] 12.Buy/Sell] 13.Financing] 14.Private] 15.Management] 16.Other Trans]
+Stock Symbol....  GoStock Price.......
+Controlled By.....Acting Now.......
+
+Day Passage Speed: 
+Player: 
+17.End Turn] 18.Misc. Menu] 19.Chart] 20.Auto] 21.Watchlist]
+22.TICKER 
+----------------------------------
+My Balance Sheet:
+Cash (CD's)..      
+Other Assets....   
+Total Assets.....  
+Less Debt....      
+Net Worth........  
+----------------------------------------------
+FINANCIAL NEWS HEADLINES []
+
+-Quick Search Functions:-
+23.Research Report] 24.List Portfolio] 25.List Futures]
+26.Financial Profile] 27.List Options] 28.DB Search]
+29.Earnings Report] 30.Shareholder List] 31.My Corporations]
+----------------------------------
+Commodity Prices/Indexes/Indicators:
+Stock Index: Prime Rate: 
+Long Bond: Short Bond: 
+Spot Crude: Silver: 
+Spot Gold: Spot Wheat: 
+GDP Growth: Spot Corn: 
+------------------------------------------
+Enter your choice (or 'n' to quit): 
+
++=========================================================+
+Nav > _
+

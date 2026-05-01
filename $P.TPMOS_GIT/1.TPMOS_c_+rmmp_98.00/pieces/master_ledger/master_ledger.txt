@@ -1,0 +1,39 @@
+[2026-05-01 03:25:19] FrameRendered: at 2026-05-01 03:25:19 | Source: renderer
+[2026-05-01 03:25:20] FrameRendered: at 2026-05-01 03:25:20 | Source: renderer
+[2026-05-01 03:25:20] FrameRendered: at 2026-05-01 03:25:20 | Source: renderer
+[2026-05-01 03:25:33] InputReceived: key_code=49 | Source: keyboard_linux
+[2026-05-01 03:25:33] FrameRendered: at 2026-05-01 03:25:33 | Source: renderer
+[2026-05-01 03:25:34] InputReceived: key_code=54 | Source: keyboard_linux
+[2026-05-01 03:25:34] FrameRendered: at 2026-05-01 03:25:34 | Source: renderer
+[2026-05-01 03:25:34] InputReceived: key_code=13 | Source: keyboard_linux
+[2026-05-01 03:25:34] FrameRendered: at 2026-05-01 03:25:34 | Source: renderer
+[2026-05-01 03:25:36] InputReceived: key_code=13 | Source: keyboard_linux
+[2026-05-01 03:25:36] FrameRendered: at 2026-05-01 03:25:36 | Source: renderer
+[2026-05-01 03:25:38] InputReceived: key_code=1003 | Source: keyboard_linux
+[2026-05-01 03:25:38] FrameRendered: at 2026-05-01 03:25:38 | Source: renderer
+[2026-05-01 03:25:41] FrameRendered: at 2026-05-01 03:25:41 | Source: renderer
+[2026-05-01 03:25:41] InputReceived: key_code=1003 | Source: keyboard_linux
+[2026-05-01 03:25:41] FrameRendered: at 2026-05-01 03:25:41 | Source: renderer
+[2026-05-01 03:25:42] InputReceived: key_code=1002 | Source: keyboard_linux
+[2026-05-01 03:25:42] FrameRendered: at 2026-05-01 03:25:42 | Source: renderer
+[2026-05-01 03:25:42] InputReceived: key_code=13 | Source: keyboard_linux
+[2026-05-01 03:25:42] FrameRendered: at 2026-05-01 03:25:42 | Source: renderer
+[2026-05-01 03:25:42] InputReceived: key_code=1003 | Source: keyboard_linux
+[2026-05-01 03:25:42] FrameRendered: at 2026-05-01 03:25:42 | Source: renderer
+[2026-05-01 03:25:43] InputReceived: key_code=13 | Source: keyboard_linux
+[2026-05-01 03:25:43] FrameRendered: at 2026-05-01 03:25:43 | Source: renderer
+[2026-05-01 03:25:44] InputReceived: key_code=13 | Source: keyboard_linux
+[2026-05-01 03:25:44] FrameRendered: at 2026-05-01 03:25:44 | Source: renderer
+[2026-05-01 03:25:44] FrameRendered: at 2026-05-01 03:25:44 | Source: renderer
+[2026-05-01 03:25:45] InputReceived: key_code=49 | Source: keyboard_linux
+[2026-05-01 03:25:45] FrameRendered: at 2026-05-01 03:25:45 | Source: renderer
+[2026-05-01 03:25:45] InputReceived: key_code=54 | Source: keyboard_linux
+[2026-05-01 03:25:45] FrameRendered: at 2026-05-01 03:25:45 | Source: renderer
+[2026-05-01 03:25:46] InputReceived: key_code=13 | Source: keyboard_linux
+[2026-05-01 03:25:46] FrameRendered: at 2026-05-01 03:25:46 | Source: renderer
+[2026-05-01 03:25:46] FrameRendered: at 2026-05-01 03:25:46 | Source: renderer
+[2026-05-01 03:25:47] InputReceived: key_code=1003 | Source: keyboard_linux
+[2026-05-01 03:25:47] FrameRendered: at 2026-05-01 03:25:47 | Source: renderer
+[2026-05-01 03:25:47] InputReceived: key_code=13 | Source: keyboard_linux
+[2026-05-01 03:25:47] FrameRendered: at 2026-05-01 03:25:47 | Source: renderer
+[2026-05-01 03:25:47] FrameRendered: at 2026-05-01 03:25:47 | Source: renderer
