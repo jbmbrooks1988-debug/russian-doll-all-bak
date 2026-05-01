@@ -201424,4 +201424,5 @@ Spot Crude: $100.00		Silver: $20.00
 Spot Gold: $1,200.00		Spot Wheat: $5.00
 GDP Growth: 2.5%		Spot Corn: $5.00
 ------------------------------------------
-Enter your choice (or 'n' to quit): [?25h
+Enter your choice (or 'n' to quit): [?25hSIGINT received in game.c (pid 329308)
+[?25h[?25h[?25h
