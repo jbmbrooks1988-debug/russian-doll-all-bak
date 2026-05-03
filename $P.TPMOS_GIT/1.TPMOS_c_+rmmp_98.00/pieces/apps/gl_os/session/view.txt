@@ -1,4 +1,0 @@
-DESKTOP_VIEW
-BG: #000044
-WINDOW_COUNT: 1
-WINDOW | 1 | 70 | 70 | 400 | 300 | Terminal 1 | terminal | 0

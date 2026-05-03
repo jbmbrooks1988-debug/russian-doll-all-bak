@@ -1,1 +1,0 @@
-type=player\nname=Adam\npos_x=10\npos_y=5\npos_z=0\n
