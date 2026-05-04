@@ -1,0 +1,157 @@
+ollama run llama3-groq-tool-use
+
+
+Qwen-Coder (specifically Qwen 2.5/3 Coder) is not fundamentally different in its core Transformer architecture from Llama 3. However, they are distinct models with different training data, tokenizers, and, crucially, different fine-tuning for "agentic" tool-calling behaviors. [1, 2]  
+Yes, a  (or similar, like ) can be modified to use Llama 3, but simply swapping the model file will likely break the "agentic" function-calling features (file system operations) because the "fs/execution ops" are not baked into the binary structure of the model, but are instead "fine-tuned behaviors" prompted to output specific JSON patterns. [3, 4, 5]  
+Here is the breakdown of why this works, and why it fails. 
+1. Are they fundamentally different? 
+
+• Architecture: Both Qwen and Llama 3 are decoder-only Transformers. 
+• Similarities: They both utilize techniques like RoPE (Rotary Position Embedding) and SwiGLU. 
+• Differences: 
+
+	• Tokenizer: Qwen uses a SentencePiece Unigram tokenizer (optimized for multilingual/Chinese), while Llama 3 uses a Byte-Pair Encoding (BPE) tokenizer. A  configured for Qwen's tokenizer will produce gibberish or high latency with Llama 3. 
+	• Fine-tuning: Qwen-Coder is heavily fine-tuned to act as an agent—constantly producing JSON structures designed to call external tools (e.g., , ). [4, 6, 7]  
+
+2. Why can't Qwen-CLI just use Llama 3? 
+ relies on a specific "Prompt Template" to tell the model: "You are an agent. When you need to read a file, output ". [8, 9, 10, 11]  
+If you swap in Llama 3: 
+
+1. Tokenizer Mismatch: The CLI will pass tokens that Llama 3 doesn't understand correctly, leading to poor output. 
+2. Tool-Calling Failure: If Llama 3 is not specifically tuned to the exact same prompt template (), it will respond with "Sure, I can read that file for you!" in plain English, rather than the raw JSON output required by the  parser to execute the file system operation. [12, 13]  
+
+3. How are the 'fs/execution ops' baked in? 
+The operations are not "compiled" into the neural network; they are fine-tuned behaviors. 
+
+• Prompting & Output Schema: Qwen-Coder models are trained on massive datasets where the target output is not natural language, but rather: 
+• Agentic Framework: The  CLI, as shown in Qwen-Code's architecture, constantly parses the model's output. If it sees that specific JSON format, it triggers the Python function to read the file, then feeds the file content back to the model. 
+• Why Qwen Coder specifically? Qwen Coder is specialized to output these technical formats over conversational text, which is why it excels at agent work. [4, 18]  
+
+Summary of Differences for Adaptation 
+
+| Feature [19, 20, 21, 22, 23] | Qwen-Coder | Llama 3 | Impact on CLI Swap  |
+| --- | --- | --- | --- |
+| Tokenizer | SentencePiece | BPE | Requires Tokenizer update  |
+| Function Calling | Native  tuning | Requires specialized  version | Needs new prompt template  |
+| Output Style | High-density JSON/Code | Conversational/Structured | Needs custom parsing logic  |
+
+Can I modify it to use Llama 3? 
+Yes. To make Llama 3 work, you must: 
+
+1. Use the Llama-3-Groq-Tool-Use version (or similar fine-tune). 
+2. Update the CLI to use Llama 3's tokenizer. 
+3. Change the "system prompt" to match the OpenAI-compatible tool calling format that your  parsing logic expects. [24]  
+
+AI responses may include mistakes.
+
+[1] https://medium.com/@meisshaily/qwen-2-5-vs-llama-3-complete-performance-comparison-of-open-source-llms-1095a1ec20a5
+[2] https://www.reddit.com/r/LocalLLaMA/comments/1fo538p/the_qwen25_architecture_is_a_lot_like_llama331/
+[3] https://magazine.sebastianraschka.com/p/qwen3-from-scratch
+[4] https://www.reddit.com/r/ollama/comments/1qyn1tc/help_qwen_25_coder_7b_stuck_on_json_responses/
+[5] https://qwen.readthedocs.io/en/v2.0/framework/function_call.html
+[6] https://praveenax.medium.com/llama-or-qwen-architecture-wondering-whats-what-the-55175f4cd80c
+[7] https://www.alibabacloud.com/help/en/model-studio/qwen-coder
+[8] https://qwen.readthedocs.io/en/latest/framework/function_call.html
+[9] https://qwen.readthedocs.io/en/stable/framework/function_call.html
+[10] https://www.reddit.com/r/LocalLLaMA/comments/1m6zz1v/kimi_k2_vs_qwen3_coder_480b/
+[11] https://akitaonrails.com/en/2026/04/05/testing-llms-open-source-and-commercial-can-anyone-beat-claude-opus/
+[12] https://www.reddit.com/r/LocalLLaMA/comments/1lhdu5q/the_qwen_tokenizer_seems_to_be_better_than_the/
+[13] https://dev.to/vishva_ram/qwen-3-the-open-source-llm-changing-ai-for-developers-1hig
+[14] https://www.marktechpost.com/2023/10/07/all-you-need-to-know-about-the-qwen-large-language-models-llms-series/
+[15] https://qwenlm.github.io/qwen-code-docs/en/developers/tools/introduction/
+[16] https://blog.logrocket.com/qwen-3-coder-agentic-cli/
+[17] https://blog.getbind.co/qwen-code-cli-vs-gemini-cli-which-one-is-better/
+[18] https://www.reddit.com/r/LocalLLaMA/comments/1r2c34d/qwen_coder_next_is_an_odd_model/
+[19] https://www.ankursnewsletter.com/p/comparing-open-source-ai-models-llama
+[20] https://www.reddit.com/r/LocalLLM/comments/1p6mr0g/qwencode_cli_local_ollama_how_to_enable_function/
+[21] https://www.ankursnewsletter.com/p/comparing-open-source-ai-models-llama
+[22] https://www.kaggle.com/models/qwen-lm/qwen3-coder
+[23] https://www.youtube.com/watch?v=K2hKZCsWn60
+[24] https://medium.com/data-science/unleash-llama3-how-you-can-use-the-latest-big-tech-open-source-llm-3bae9c3f5cd0
+
+Can I modify it to use Llama 3?Yes. To make Llama 3 work, you must:Use the Llama-3-Groq-Tool-Use version (or similar fine-tune).Update the CLI to use Llama 3's tokenizer.Change the "system prompt" to match the OpenAI-compatible tool calling format that your qwen-cli parsing logic expects.
+
+
+
+Llama-3-Groq-Tool-Use is a series of Llama 3 models (available in 8B and 70B sizes) specifically fine-tuned by [Groq](https://groq.com/blog/introducing-llama-3-groq-tool-use-models) and [Glaive](https://glaive.ai/) to excel at function calling and structured tool use. Unlike standard Llama 3, which might respond in conversational prose, these models are trained to output precise JSON payloads that "agentic" CLIs need to execute commands like reading files or searching the web. [1, 2, 3, 4, 5] 
+## Using it with Ollama [6] 
+Yes, you can use these models with Ollama to achieve a workflow similar to qwen-cli.
+
+* Model Availability: You can download them directly via Ollama using ollama pull llama3-groq-tool-use:8b or ollama pull llama3-groq-tool-use:70b. [2, 7, 8] 
+* Structured Output: Because these are fine-tuned for tool use, they consistently output the <tool_call> tags and JSON schemas required for external execution, which standard models often fail to do reliably. [4, 9] 
+* Agentic Capabilities: While the model provides the "brain" for tool calling, you still need an agentic harness (like LangGraph, CrewAI, or a modified CLI) to actually perform the actions based on the model's output. [10, 11, 12] 
+
+## Key Benefits
+
+* Top-Tier Performance: The 70B version has held top rankings on the Berkeley Function Calling Leaderboard, outperforming many larger closed-source models in accuracy. [1, 13] 
+* Low Latency: When run on Groq's cloud API, these models are "screamingly fast" (up to 1050 tokens/s), making agentic "loops" feel instantaneous. [13] 
+* Local Execution: You can run the 8B version locally with [Ollama](https://ollama.com/library/llama3-groq-tool-use) on consumer hardware like an RTX 3060 or Apple Silicon Mac for private tool-calling workflows. [14] 
+
+Would you like a Python snippet showing how to set up a basic file-system tool using this model and the Ollama library?
+
+[1] [https://medium.com](https://medium.com/@thomas_reid/using-the-new-groq-tool-use-llm-models-04538125b613)
+[2] [https://ollama.com](https://ollama.com/library/llama3-groq-tool-use)
+[3] [https://www.youtube.com](https://www.youtube.com/watch?v=K2hKZCsWn60&t=10)
+[4] [https://huggingface.co](https://huggingface.co/Groq/Llama-3-Groq-8B-Tool-Use)
+[5] [https://ollama.com](https://ollama.com/library/llama3-groq-tool-use)
+[6] [https://www.youtube.com](https://www.youtube.com/watch?v=02cdCd43Ccc)
+[7] [https://ollama.com](https://ollama.com/library/llama3-groq-tool-use:8b)
+[8] [https://www.reddit.com](https://www.reddit.com/r/LocalLLM/comments/1p6mr0g/qwencode_cli_local_ollama_how_to_enable_function/)
+[9] [https://www.reddit.com](https://www.reddit.com/r/LocalLLM/comments/1p6mr0g/qwencode_cli_local_ollama_how_to_enable_function/)
+[10] [https://www.youtube.com](https://www.youtube.com/watch?v=lvQ96Ssesfk)
+[11] [https://www.youtube.com](https://www.youtube.com/watch?v=b-wk1ZJKl0s#:~:text=Meta%20highlighted%20function%20calling%20or%20tool%20usage,explores%20the%20capabilities%20of%20LLAMA%203.1%20agents.)
+[12] [https://www.mindstudio.ai](https://www.mindstudio.ai/blog/qwen-3-6-plus-agentic-harness-vs-chat-mode)
+[13] [https://simonwillison.net](https://simonwillison.net/2024/Jul/17/llama-3-groq-tool-use-models/)
+[14] [https://makiai.com](https://makiai.com/en/what-it-is-and-how-to-install-and-run-locally-the-llm-ai-llama3-groq-tool-use/)
+
+
+
+
+
+This is the "aha!" moment regarding how agentic models work.
+When you run ollama run in the terminal, you are just in a standard chat window. It’s like talking to ChatGPT in a browser. Even though the model is capable of calling tools, there is no "hand" connected to its "brain" to actually touch your hard drive.
+## Why it said "I can't directly write files":
+
+   1. Safety & Sandboxing: Ollama (the software) does not give LLMs permission to access your file system by default. That would be a massive security risk.
+   2. Missing Execution Loop: The model saw your request and looked for a "tool" (a function) it could call. Since you are in a basic chat, no tools were provided to it. It defaulted back to being a helpful assistant and offered to write the text for you instead.
+
+## How qwen-cli does it:
+The qwen-cli isn't just a model; it is a Python program wrapper.
+
+* The Model: Says "I want to call the write_file function with the argument test-m4.txt."
+* The CLI: Sees that JSON/hidden message, pauses the conversation, runs open('test-m4.txt', 'w').write('hi') on your computer, and then tells the model "Okay, I did that."
+
+## How to make it work right now:
+To actually let it write files, you need to run a script that gives it a "write" tool. Here is a minimal Python "Hand" for your model:
+
+import ollamaimport os
+# 1. Define the 'Hand' (The actual action)def write_to_file(filename, content):
+    with open(filename, 'w') as f:
+        f.write(content)
+    return f"Successfully wrote to {filename}"
+# 2. Define the 'Tools' list (The instructions for the brain)tools = [{
+    'type': 'function',
+    'function': {
+        'name': 'write_to_file',
+        'description': 'Write text content to a local file',
+        'parameters': {
+            'type': 'object',
+            'properties': {
+                'filename': {'type': 'string'},
+                'content': {'type': 'string'},
+            },
+            'required': ['filename', 'content'],
+        },
+    },
+}]
+# 3. The Execution Loopmessages = [{'role': 'user', 'content': 'write hi to test-m4.txt'}]response = ollama.chat(model='llama3-groq-tool-use', messages=messages, tools=tools)
+# 4. Check if the brain wants to use the handif response.message.tool_calls:
+    for tool in response.message.tool_calls:
+        if tool.function.name == 'write_to_file':
+            result = write_to_file(**tool.function.arguments)
+            print(result) # This actually creates the file!
+
+Would you like me to help you wrap this into a small script so you can use it just like your other CLIs?
+
+-----
+Do you want to add a "read_file" or "list_directory" tool to the list so it can actually see what's on your desktop too?

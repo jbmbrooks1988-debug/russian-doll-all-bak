@@ -1,4 +1,0 @@
-project_id=lsr
-active_target_id=xlector
-current_z=0
-last_key=None

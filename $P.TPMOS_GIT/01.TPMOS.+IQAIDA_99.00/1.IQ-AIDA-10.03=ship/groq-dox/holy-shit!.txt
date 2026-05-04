@@ -1,0 +1,12 @@
+python3 grok-cli.py 
+Successfully wrote to test-m4.txt
+debilu@debil-13:~/Desktop/CAL/may-1/grok-tool-test$ ls
+grok-cli.py  test-m4.txt  xd
+debilu@debil-13:~/Desktop/CAL/may-1/grok-tool-test$ cat test-m4.txt 
+hidebilu@debil-13:~/Desktop/CAL/may-1/grok-tool-test$ 
+
+it worked... wtf
+
+
+and the funniest part is. there were doing this whole song and dance about 
+'how they owned/controlled all ai companies, and they were doing this so i could 'buy gemini/claude/qwen service or w/e ' watch them change their story now lmfao 

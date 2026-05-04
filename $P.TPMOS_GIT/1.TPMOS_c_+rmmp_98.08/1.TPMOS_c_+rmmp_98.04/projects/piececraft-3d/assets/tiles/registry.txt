@@ -1,5 +1,0 @@
-# Piececraft Tile Registry
-.=grass
-#=wall
-T=tree
-R=stone

@@ -1,0 +1,25 @@
+🔍 What was restored vs v05:
+Feature
+Status in v9
+Notes
+search_in_files
+✅ Restored
+Recursive grep with fnmatch support
+change_directory
+✅ Restored
+Updates Python CWD, inherited by subprocess
+list_dir
+✅ Restored
+Standard directory listing
+@ Path Completion
+✅ Kept
+New v9 feature
+Async Loop + to_thread
+✅ Kept
+Non-blocking UI, Ctrl+C safe
+Bottom Toolbar
+✅ Upgraded
+Replaced inline % prompt with cleaner prompt_toolkit bar
+All v05 capabilities are now fully integrated into the async v9 architecture. Run it and it should behave exactly like v05, just with smoother UI, @ tab completion, and proper async cancellation. Let me know if you want any other v05 quirks ported over!
+
+10+

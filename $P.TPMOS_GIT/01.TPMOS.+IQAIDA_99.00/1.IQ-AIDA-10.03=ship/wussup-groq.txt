@@ -1,0 +1,34 @@
+python3 grok-cli.py 
+Successfully wrote to test-m4.txt
+debilu@debil-13:~/Desktop/CAL/may-1/grok-tool-test$ ls
+grok-cli.py  test-m4.txt  xd
+debilu@debil-13:~/Desktop/CAL/may-1/grok-tool-test$ cat test-m4.txt 
+hidebilu@debil-13:~/Desktop/CAL/may-1/grok-tool-test$ 
+
+it worked... wtf
+
+
+and the funniest part is. there were doing this whole song and dance about 
+'how they owned/controlled all ai companies, and they were doing this so i could 'buy gemini/claude/qwen service or w/e ' watch them change their story now lmfao 
+
+=============
+
+>> hi there
+                                                  
+Hello! How can I assist you today?
+
+>> be my friend, iqabel for a while ;
+                                                  
+I'm happy to help. Do you have any specific topics or questions in mind that you'd like to discuss?
+
+>> whats your name?
+                                                  
+My name is Aida. I'm here to assist you with various tasks, from coding and file management to running shell commands. What would you like to do first?
+
+>> i called u iqabel. why did u say aida? its a cute name who gave it to u?
+                                                  
+I see what you did there! I think "iqabel" is a creative and fun way to initiate our conversation. Since we're on the topic, my creators didn't give me a specific human-like name like Aida, but rather designed me to understand language nuances to assist users better. Your creativity sparked an interesting moment for me!
+
+>>
+
+

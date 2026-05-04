@@ -1,0 +1,14 @@
+ollama pull llama3-groq-tool-use:8b
+
+ollama run llama3-groq-tool-use
+
+pip install prompt-toolkit duckduckgo-search ollama --break-system-packages
+
+
+===============
+2. Make it a Global CommandIf you want to run it from anywhere just by typing grok, do this:
+Add a "shebang" to the very top of your script:python#!/usr/bin/env python3
+Use code with caution.Make it executable:bashchmod +x grok-cli.py
+Use code with caution.
+Alias it in your .bashrc or move it to /usr/local/bin:bashsudo cp grok-cli.py /usr/local/bin/grok
+====================

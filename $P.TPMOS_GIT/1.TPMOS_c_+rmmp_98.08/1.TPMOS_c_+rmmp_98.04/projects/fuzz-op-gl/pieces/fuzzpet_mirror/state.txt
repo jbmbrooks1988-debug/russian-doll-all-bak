@@ -1,7 +1,0 @@
-name=LegendBlock
-hunger=unknown
-happiness=unknown
-energy=unknown
-level=unknown
-status=active
-emoji_mode=0
