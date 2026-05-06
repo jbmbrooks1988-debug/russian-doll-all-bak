@@ -1,0 +1,3 @@
+turn=62
+time=11:07:59
+mode=auto

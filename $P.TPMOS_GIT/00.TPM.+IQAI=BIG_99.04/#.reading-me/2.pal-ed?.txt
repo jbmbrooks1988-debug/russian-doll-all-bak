@@ -1,0 +1,52 @@
+Let’s step back and look at the architecture first. In a system where **“the filesystem is the database”** and **“if it’s not in a file, it’s a lie,”** how would you expect script execution and persistence to differ from a traditional game engine? 
+
+In TPMOS, `prisc+x` isn’t a persistent VM. It’s an **ephemeral interpreter** that:
+1. Parses a `.asm` file into an in-memory instruction array.
+2. Loads ops from `default_op.txt` (or project manifests).
+3. Executes sequentially until `halt` or script end.
+4. Exits. All state lives in `state.txt` files; the interpreter doesn’t retain registers between runs.
+
+### 🔍 Answering Your Questions (Based on the Textbook)
+**1. How does it run a "main script" + "piece scripts"?**  
+It doesn’t run them concurrently in one process. Instead:
+- A **main event script** is typically triggered by a manager on layout load or pulse tick.
+- **Piece scripts** are bound to methods in `piece.pdl` (e.g., `METHOD | on_interact | scripts/chest.asm`). When the parser routes input to that piece, the manager or parser spawns `prisc+x scripts/chest.asm`.
+- Coordination happens via **file-based IPC** (`history.txt`, `frame_changed.txt`, shared state files). If you need cross-script communication, you write/read to disk between calls.
+
+**2. Is save/load/play functioning yet?**  
+Architecturally, **yes**. TPMOS doesn’t use traditional save/load routines. `state.txt` *is* the save. On startup, managers resolve paths via `location_kvp`, read piece states, and continue from where the filesystem left off. The textbook treats this as foundational, not a "feature to implement." Playability depends on whether your managers correctly initialize from those mirrors and handle truncation/reset safely.
+
+**3. Is the PAL editor scripting working yet?**  
+The core is **implemented but maturing**. `op-ed` includes a PAL editor (`pal_editor_module.c`) that:
+- Writes `.asm` files
+- Binds them to piece methods via `piece.pdl`
+- Triggers `prisc+x` on execution
+However, advanced features like **real-time register visibility** and **Scratch/RPGMaker visual blocks** are marked `(planned)`. The text reads like a living design guide: the plumbing exists, but UX polish and high-level abstractions are still being forged.
+
+---
+
+### 🤖 Succinct Agent Prompt (Copy-Paste Ready)
+To avoid wasting cycles, we need the agent to trace actual execution paths, not summarize design docs. Use this:
+
+```text
+Analyze the TPMOS source code to verify the working state of three subsystems. For each, trace the exact execution path, cite file paths + function names, and classify as: [FUNCTIONAL], [PARTIAL/STUB], or [MISSING]. Provide concrete code snippets as evidence.
+
+1. PAL Script Execution & Orchestration
+   - How does `prisc+x` load, parse, and run `.asm` scripts? Trace `main()` → instruction dispatch → `OP`/`call`/`exec` execution.
+   - Verify op registration: `default_op.txt` parsing, Fondu manifest integration, and how custom ops are dispatched (`popen`/`system`/`fork`).
+   - Can a "main event" script and piece-bound scripts coexist? Trace how input/layout routing triggers separate `prisc+x` invocations.
+
+2. PAL Editor Integration (`op-ed`)
+   - Locate `pal_editor_module.c` or equivalent. Does it actually write `.pdl`/`.asm` bindings that trigger `prisc+x`?
+   - Which features are fully implemented vs. marked as TODO/planned? Quote the relevant code or comments.
+
+3. State Persistence (Save/Load/Play Loop)
+   - How do managers/pieces initialize from `state.txt` and `location_kvp` on startup? Trace the `resolve_paths()` → `fopen()` → state parsing flow.
+   - Is there a formal save/load routine, or is persistence purely filesystem-driven? Verify how the 12-step pipeline handles shutdown/restart state recovery.
+   - Flag any missing guards (e.g., `stat()` race conditions, file truncation resets) that would break persistence.
+
+Output: Bullet-point status per subsystem. Include exact line references. Highlight any critical gaps preventing a stable "play → persist → resume" loop. Do not summarize the textbook; only report what the code actually does.
+```
+
+### 🧭 Your Turn
+Before handing this to the agent, what’s your intuition: **Should piece-bound scripts run synchronously (blocking the pulse until `halt`), or should they spawn as background ops and signal completion via a flag file?** How you answer that will dictate whether your C manager needs `waitpid()` or `stat()` polling for PAL triggers.

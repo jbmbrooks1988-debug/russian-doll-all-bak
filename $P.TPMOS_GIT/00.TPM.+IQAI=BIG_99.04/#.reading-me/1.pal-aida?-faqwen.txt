@@ -1,0 +1,44 @@
+📘 AIDA-PAL FSM: Beginner Guide
+================================
+What is this?
+- A high-level state machine that mimics an AI agent loop, written in PAL (Prisc Assembly Language)
+- Runs on prisc+x.c interpreter
+- Replaces in-memory Python state with registers + plaintext files
+
+🧠 Core Concept
+- PAL doesn’t have objects or async. It has: registers (r0-r15), labels, jumps (j/beq), and custom ops (OP ...)
+- State = register value or file content
+- Tools = custom ops defined in .txt files
+- Context = history.txt / state.txt / memory
+
+🔁 The FSM Loop
+1. IDLE: Poll for input (read_history / check flag)
+2. THINK: Dispatch to LLM-like op or log "processing"
+3. EXEC: Run tools (OP read_file, OP run_command, etc.)
+4. RETURN: Write results, clear temp files, jump to IDLE
+5. ERROR: Catch failures, log, sleep, retry or halt
+
+📦 How to Map Python → PAL
+- Python list/dict → registers or key=value in state.txt
+- Python function call → OP custom_name args
+- Python async/sleep → sleep <ms> between heavy ops
+- Python context window → read_history + read_pos for size tracking
+
+⚠️ Newbie Pitfalls
+- Forgetting halt → interpreter runs into garbage
+- No sleep between file reads/writes → stale data
+- Infinite j/beq loops → CPU spikes (always bound with counters)
+- Assuming ops return instantly → PAL blocks until system() finishes
+
+🔧 Getting Started
+1. Define states in r15 (0=IDLE, 1=THINK, etc.)
+2. Write main loop with labels: start, check_input, dispatch, wait
+3. Register custom ops in ops.txt
+4. Use beq to branch on tool results
+5. Always end paths with halt or j start
+
+📖 Next Steps
+- Draft your state diagram
+- Map each Python tool to an OP
+- Decide where history/context lives
+- We’ll assemble the full script together

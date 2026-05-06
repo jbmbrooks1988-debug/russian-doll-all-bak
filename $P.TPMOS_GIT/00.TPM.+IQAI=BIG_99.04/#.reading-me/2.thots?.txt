@@ -1,0 +1,30 @@
+
+
+
+investigation gives lots of good info. 
+
+how is save load? 
+didn't we used to have one? 
+wanna grab it back (its in a new screen? 
+w/e figure that out , it wont be that hard ) & worth it 
+
+start trying 2 see how far the last ai got. 
+maybe try 2 make save/load/ play ur own game.
+
+and ask the ai 2 make a clone of existing game 
+
+(including start screen, this is why i wanted to make a start
+screen for fuzz op and maybe a save/save as button 
+
+and load 
+
+
+
+
+
+next : 
+
+i want everything (entire /tpmos -ascii -gl ) to be in pal 
+(and i want to have to login and install apps per user 
+and i want cli control w/o even ascii gui, ie "/tpmos -cmd -user jb -wallet balance"
+

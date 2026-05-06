@@ -1,0 +1,18 @@
+Analyze the TPMOS source code to verify the working state of three subsystems. For each, trace the exact execution path, cite file paths + function names, and classify as: [FUNCTIONAL], [PARTIAL/STUB], or [MISSING]. Provide concrete code snippets as evidence.
+
+1. PAL Script Execution & Orchestration
+   - How does `prisc+x` load, parse, and run `.asm` scripts? Trace `main()` → instruction dispatch → `OP`/`call`/`exec` execution.
+   - Verify op registration: `default_op.txt` parsing, Fondu manifest integration, and how custom ops are dispatched (`popen`/`system`/`fork`).
+   - Can a "main event" script and piece-bound scripts coexist? Trace how input/layout routing triggers separate `prisc+x` invocations.
+
+2. PAL Editor Integration (`op-ed`)
+   - Locate `pal_editor_module.c` or equivalent. Does it actually write `.pdl`/`.asm` bindings that trigger `prisc+x`?
+   - Which features are fully implemented vs. marked as TODO/planned? Quote the relevant code or comments.
+
+3. State Persistence (Save/Load/Play Loop)
+   - How do managers/pieces initialize from `state.txt` and `location_kvp` on startup? Trace the `resolve_paths()` → `fopen()` → state parsing flow.
+   - Is there a formal save/load routine, or is persistence purely filesystem-driven? Verify how the 12-step pipeline handles shutdown/restart state recovery.
+   - Flag any missing guards (e.g., `stat()` race conditions, file truncation resets) that would break persistence.
+
+Output: Bullet-point status per subsystem. Include exact line references. Highlight any critical gaps preventing a stable "play → persist → resume" loop. Do not summarize the textbook; only report what the code actually does.
+

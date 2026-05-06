@@ -1,0 +1,6 @@
+next : 
+
+i want everything (entire /tpmos -ascii -gl ) to be in pal 
+(and i want to have to login and install apps per user 
+and i want cli control w/o even ascii gui, ie "/tpmos -cmd -user jb -wallet balance"
+
