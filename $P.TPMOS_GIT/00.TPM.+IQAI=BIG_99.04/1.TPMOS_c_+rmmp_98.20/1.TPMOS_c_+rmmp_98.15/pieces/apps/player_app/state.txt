@@ -1,8 +1,0 @@
-ai_state=IDLE
-iqabel_fsm=IDLE
-qwen_response_area=║ Waiting for input...                                                       ║
-sys_msg=Ready.
-active_target_id=loader
-project_id=fuzz-op
-app_title=FUZZ-OP PET SIM
-emoji_mode=OFF

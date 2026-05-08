@@ -1,5 +1,0 @@
-active_target_id=user_main
-input_mode=0
-username_input=
-password_input=
-auth_response=

@@ -1,0 +1,523 @@
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+[17:36:57] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[17:36:57] PARSER: forked module pid=205728
+[17:36:57] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=205728
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+[17:36:57] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=205728
+[17:36:57] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=205728
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+LOAD_PROJECT: name=+-demo, found=1, current_layout=projects/+-demo/layouts/+-demo.chtpm
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+[17:55:06] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[17:55:06] PARSER: forked module pid=207569
+[17:55:06] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=207569
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+[17:55:06] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=207569
+[17:55:06] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=207569
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+LOAD_PROJECT: name=+-demo, found=1, current_layout=projects/+-demo/layouts/+-demo.chtpm
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+[18:01:35] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[18:01:35] PARSER: forked module pid=209084
+[18:01:35] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=209084
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+[18:01:35] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=209084
+[18:01:35] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=209084
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+LOAD_PROJECT: name=+-demo, found=1, current_layout=projects/+-demo/layouts/+-demo.chtpm
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
