@@ -1,0 +1,3 @@
+project_id=p2p-net
+wallet_address=abc123def456
+p2p_response=Forked debug peer agent...

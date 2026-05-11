@@ -1,8 +1,0 @@
-# P2P-NET Peer List
-# Format: wallet_address|ip|port|subnet|last_seen|status
-abc123def456789...|127.0.0.1|8001|chat|1775106600|active
-def456ghi789012...|127.0.0.1|8001|chat|1775106595|active
-ghi789jkl012345...|192.168.1.100|8001|chat|1775106580|active
-jkl012mno345678...|127.0.0.1|8000|general|1775106600|active
-mno345pqr678901...|192.168.1.105|8000|general|1775106590|active
-pqr678stu901234...|127.0.0.1|8002|auction|1775106550|active

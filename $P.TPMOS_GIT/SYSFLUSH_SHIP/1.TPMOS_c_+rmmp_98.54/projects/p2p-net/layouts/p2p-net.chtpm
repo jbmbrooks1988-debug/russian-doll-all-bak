@@ -1,0 +1,37 @@
+<piece_id>p2p-dashboard</piece_id>
+<type>app</type>
+<module>projects/p2p-net/manager/+x/p2p_manager.+x</module>
+<layout>
+╔═══════════════════════════════════════════════════════════╗
+║           P 2 P   M E S S A G E   C E N T E R            ║
+║                                                           ║
+║  Account: ${wallet_address}                               ║
+║  Wallets: ${wallet_selector}                              ║
+║  Subnets: ${subnet_list}                                  ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  INBOX (${unread_count} unread / ${total_count} total)    ║
+║  ─────────────────────────────────────────────────────    ║
+║  ${inbox_list}                                            ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  MESSAGE PREVIEW                                          ║
+║  ─────────────────────────────────────────────────────    ║
+║  ${message_preview}                                       ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  PEERS (${peer_count} connected)                          ║
+║  ─────────────────────────────────────────────────────    ║
+║  ${peer_list}                                             ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  ACTIONS                                                  ║
+║  <button label="Compose Message" onClick="KEY:1" />   <button label="Check Inbox" onClick="KEY:2" />     ║
+║  <button label="Reply Message" onClick="KEY:3" />     <button label="Read Message" onClick="KEY:4" />     ║
+║  <button label="Join Subnet" onClick="KEY:5" />       <button label="Leave Subnet" onClick="KEY:6" />     ║
+║  <button label="Switch Account" onClick="KEY:7" />    <button label="Debug-Append" onClick="KEY:8" />     ║
+╠═══════════════════════════════════════════════════════════╣
+║  [RESP]: ${p2p_response}                                  ║
+║  [KEY]: ${last_key}                                       ║
+╚═══════════════════════════════════════════════════════════╝
+</layout>

@@ -1,9 +1,0 @@
-wallet=abc123def456
-unread_count=1
-total_count=1
-msg_0_id=msg_001
-msg_0_from=def456ghi789
-msg_0_subject=Re: Hello!
-msg_0_subnet=chat
-msg_0_timestamp=2026-04-02 17:49:23
-msg_0_read=0

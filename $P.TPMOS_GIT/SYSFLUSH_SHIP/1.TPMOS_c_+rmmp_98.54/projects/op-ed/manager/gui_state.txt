@@ -1,0 +1,13 @@
+module_path=projects/op-ed/manager/+x/op-ed_manager.+x
+active_layout_id=op-ed.chtpm
+app_title=OP-ED ADVANCED EDITOR
+project_id=op-ed
+active_gui_index=1
+last_key=None
+selector_pos=(5,5,0)
+editor_response=[RESP]:                                                  
+editor_status_2=[POS]: (5,5,0) | [H-BEAT]: 0 | [KEY]: None               
+map_palette_view=ADD [map_0001_z0.txt] 
+glyph_palette_view=[#] . R T @ & Z X ? ! 
+armed_glyph=#
+projects_list_view=[user] op-ed-gl quiz-engine man-add lsr bot-editor test_fondu yahoo trunk blank op-ed ai-labs 404-test chat-op man-ops template bots-sov fuzz-op qwen man-pal checkers aow-2d fuzz-op-gl xsr demo_1 cyoa-engine 

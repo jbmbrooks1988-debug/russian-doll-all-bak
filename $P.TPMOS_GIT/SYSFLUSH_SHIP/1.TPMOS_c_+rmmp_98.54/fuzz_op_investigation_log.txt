@@ -1,0 +1,28 @@
+# Fuzz-Op Bug Investigation - Step 5: Auditing Fuzz-Op Manager State Writes (Continued)
+
+## Action Taken: Ensured `active_target_id` Persistence for Fuzz-Op
+
+I have modified `projects/fuzz-op/manager/fuzz-op_manager.c` to address the issue of `active_target_id` not being correctly set or persisted for Fuzz-Op.
+
+**Changes Made:**
+
+1.  **`save_manager_state()` Modification:**
+    *   Added logic to check if `current_project` is `"fuzz-op"` and `active_target_id` is still the default `"xlector"` when reading the legacy `player_app/manager/state.txt`.
+    *   If this condition is met, it writes `active_target_id=pet_01` instead of `"xlector"` when reconstructing the state file. This ensures that the correct active target is saved.
+    *   The code also explicitly writes `active_target_id=%s` using the (potentially updated) global `active_target_id` variable.
+
+2.  **`write_gui_state()` Modification:**
+    *   Similar logic is implicitly handled as `write_gui_state()` now writes the potentially updated global `active_target_id` variable. It also directly fetches pet stats using `get_state_fast(active_target_id, ...)` and calls `popen` for `piece_methods` using `active_target_id`.
+
+**Rationale:**
+The manager was defaulting to `"xlector"` for `active_target_id` and not updating it to a Fuzz-Op specific entity like `"pet_01"`. By ensuring `active_target_id` is correctly set to `"pet_01"` when Fuzz-Op is active and persisting this value, the manager should now fetch the correct pet state and methods.
+
+## Verification
+The modified `fuzz-op_manager.c` has been compiled successfully.
+
+## Next Steps for Investigation
+1.  **Test Fuzz-Op Launch:** Relaunch Fuzz-Op to observe if the correct layout loads, pet stats appear, and action methods are now visible.
+2.  **Check `active_target_id` Persistence:** Verify if the `active_target_id` remains correctly set to `pet_01` (or the selected entity) and is saved/loaded.
+3.  **Address ESC Key:** Investigate ESC key behavior once the core state and method loading issues are resolved.
+
+Please confirm you'd like me to proceed with testing Fuzz-Op's launch after this change.

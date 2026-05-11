@@ -1,0 +1,42 @@
+# P2P-NET Restoration Report & Diff
+
+## The Problem
+The `p2p-net` project regression was caused by two conflicting "fixes" following the CHTPM parser refactor:
+1.  **Improper Manager Logic:** The `p2p_manager.c` was writing to legacy state paths (`pieces/apps/player_app/manager/state.txt`) instead of the new standard `projects/p2p-net/manager/gui_state.txt`. It also lacked the actual logic to scan the filesystem for peers, subnets, and messages, using hardcoded placeholders instead.
+2.  **Parser Hardcoding:** To compensate for the broken manager, previous agents hardcoded a complex `load_p2p_dashboard_state()` function directly into `chtpm_parser.c`. This violated the "Dumb Theater" principle where the parser should only load provided state and never know about project-specific folder structures.
+3.  **"Generic" Layout Confusion:** The current `p2p-net.chtpm` was being interpreted as "generic" because it was either failing to load due to module path mismatches or was showing empty data because of the state file misalignment.
+
+## The Fix
+To restore `p2p-net` to its functional state while respecting the new architecture, the following steps are taken:
+
+### 1. chtpm_parser.c (Clean up)
+- Remove `load_p2p_dashboard_state()` and all calls to it.
+- Ensure the parser remains "blind" and only loads `gui_state.txt`.
+
+### 2. p2p_manager.c (Migration)
+- Migrate the filesystem scanning logic (peers, subnets, inbox) from the parser into the manager.
+- Update the manager to write all aggregated UI variables to `projects/p2p-net/manager/gui_state.txt`.
+- Update the manager to use the `gui_state.txt` for live UI updates.
+
+### 3. p2p-net.chtpm (Restoration)
+- Ensure the layout matches the "old" (good) version but retains the `<module>` tag required to launch the manager in the new architecture.
+
+## Detailed Diff
+
+### chtpm_parser.c
+```diff
+- static void load_p2p_dashboard_state(void) { ... }
+- if (strcmp(proj_id, "p2p-net") == 0) load_p2p_dashboard_state();
+```
+
+### p2p_manager.c
+```diff
+- if (asprintf(&path, "%s/pieces/apps/player_app/manager/state.txt", project_root) != -1)
++ if (asprintf(&path, "%s/projects/p2p-net/manager/gui_state.txt", project_root) != -1)
++ // Added peer/subnet/inbox scanning logic...
+```
+
+### p2p-net.chtpm
+```diff
++ <module>projects/p2p-net/manager/+x/p2p_manager.+x</module>
+```

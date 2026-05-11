@@ -1,4 +1,0 @@
-wallet_address=def456ghi789
-current_subnet=chat
-last_response=Switched to account: def456ghi789
-wallet_selector=abc123def456 [def456ghi789]

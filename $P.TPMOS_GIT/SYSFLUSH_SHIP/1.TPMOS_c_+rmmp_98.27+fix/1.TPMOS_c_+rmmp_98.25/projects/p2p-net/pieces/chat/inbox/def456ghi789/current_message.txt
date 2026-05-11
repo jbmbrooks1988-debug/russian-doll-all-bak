@@ -1,7 +1,0 @@
-msg_id=msg_001
-from=abc123def456
-to=def456ghi789
-subject=Hello!
-timestamp=2026-04-02 17:48:51
-subnet=chat
-body=Hi there! Testing P2P email protocol.

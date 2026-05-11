@@ -1,0 +1,2020 @@
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+[17:36:57] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[17:36:57] PARSER: forked module pid=205728
+[17:36:57] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=205728
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+[17:36:57] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=205728
+[17:36:57] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=205728
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+LOAD_PROJECT: name=+-demo, found=1, current_layout=projects/+-demo/layouts/+-demo.chtpm
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+[17:55:06] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[17:55:06] PARSER: forked module pid=207569
+[17:55:06] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=207569
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+[17:55:06] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=207569
+[17:55:06] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=207569
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+LOAD_PROJECT: name=+-demo, found=1, current_layout=projects/+-demo/layouts/+-demo.chtpm
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects//pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+[18:01:35] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[18:01:35] PARSER: forked module pid=209084
+[18:01:35] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=209084
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+[18:01:35] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=209084
+[18:01:35] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=209084
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+PARSER: resolve_dynamic_pdl_path(active_id=loader, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/loader/piece.pdl
+PARSER: Finished reading PDL. Found 32 methods. Path: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/pieces/apps/playrm/loader/loader.pdl
+LOAD_PROJECT: name=+-demo, found=1, current_layout=projects/+-demo/layouts/+-demo.chtpm
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+PARSER: resolve_dynamic_pdl_path(active_id=selector, project_id=+-demo)
+PARSER: Checked path failed: /home/jb/Desktop/ele-desk+cal/m7/1.TPMOS_c_+rmmp_98.23+2/1.TPMOS_c_+rmmp_98.25/projects/+-demo/pieces/selector/piece.pdl
+PARSER: Failed to resolve PDL for selector
+PARSER: fopen failed for path: NULL
+[03:05:46] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[03:05:46] PARSER: forked module pid=585938
+[03:05:46] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=585938
+[03:05:46] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=585938
+[03:05:46] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=585938
+[03:09:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[03:09:13] PARSER: forked module pid=586384
+[03:09:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=586384
+[03:09:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=586384
+[03:09:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=586384
+[03:09:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=586384
+[03:09:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=586384
+[03:09:30] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[03:09:30] PARSER: forked module pid=587705
+[03:09:30] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=587705
+[03:09:30] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=587705
+[03:09:30] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=587705
+[03:09:30] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=587705
+[03:09:30] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=587705
+[03:13:32] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[03:13:32] PARSER: forked module pid=588116
+[03:13:32] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=588116
+[03:13:32] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=588116
+[03:13:32] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=588116
+[03:13:32] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=588116
+[03:13:32] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=588116
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[03:16:08] PARSER: forked module pid=589504
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589504
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589504
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589504
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589508
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589508
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589512
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589512
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589516
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589516
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589520
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589520
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589524
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589524
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589528
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589528
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589532
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589532
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589536
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589536
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589540
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589540
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589544
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589544
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589548
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589548
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589552
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589552
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589556
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589556
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589560
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589560
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589564
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589564
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589568
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589568
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589572
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589572
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589576
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589576
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589580
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589580
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589584
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589584
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589588
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589588
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589592
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589592
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589596
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589596
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589600
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589600
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589604
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589604
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589608
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589608
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589612
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589612
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589616
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589616
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589620
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589620
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589624
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589624
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589628
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589628
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589632
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589632
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589636
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589636
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589640
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589640
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589644
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589644
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589648
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589648
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589652
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589652
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589656
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589656
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589660
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589660
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589664
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589664
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589668
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589668
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589672
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589672
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:08] PARSER: forked module pid=589676
+[03:16:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589676
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589680
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589680
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589684
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589684
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589688
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589688
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589692
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589692
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589696
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589696
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589700
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589700
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589704
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589704
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589708
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589708
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589712
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589712
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589716
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589716
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589720
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589720
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589724
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589724
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589728
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589728
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589732
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589732
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589736
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589736
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589740
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589740
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589744
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589744
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589748
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589748
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589752
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589752
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589756
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589756
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589760
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589760
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589764
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589764
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589768
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589768
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589772
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589772
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589776
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589776
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589780
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589780
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589784
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589784
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589788
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589788
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589792
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589792
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589796
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589796
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589800
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589800
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589804
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589804
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589808
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589808
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589812
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589812
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589816
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589816
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589820
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589820
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589824
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589824
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589828
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589828
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589832
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589832
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589836
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589836
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589840
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589840
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589844
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589844
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589848
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589848
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589852
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589852
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589856
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589856
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589860
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589860
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589864
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589864
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:09] PARSER: forked module pid=589868
+[03:16:09] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589868
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589872
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589872
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589876
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589876
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589880
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589880
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589884
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589884
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589888
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589888
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589892
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589892
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589896
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589896
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589900
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589900
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589904
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589904
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589908
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589908
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589912
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589912
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589916
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589916
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589920
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589920
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589924
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589924
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589928
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589928
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589932
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589932
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589936
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589936
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589940
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589940
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589944
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589944
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589948
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589948
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589952
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589952
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589956
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589956
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589960
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589960
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589964
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589964
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589968
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589968
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589972
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589972
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589976
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589976
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589980
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589980
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589984
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589984
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589988
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589988
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589992
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589992
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=589996
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=589996
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=590000
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590000
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=590004
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590004
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=590008
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590008
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=590012
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590012
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=590016
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590016
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=590020
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590020
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=590024
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590024
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=590028
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590028
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=590032
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590032
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=590036
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590036
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=590040
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590040
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=590044
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590044
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=590048
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590048
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=590052
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590052
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=590056
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590056
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:10] PARSER: forked module pid=590060
+[03:16:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590060
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590064
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590064
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590068
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590068
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590072
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590072
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590076
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590076
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590080
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590080
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590084
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590084
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590088
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590088
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590092
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590092
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590096
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590096
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590100
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590100
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590104
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590104
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590108
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590108
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590112
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590112
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590116
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590116
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590120
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590120
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590124
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590124
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590128
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590128
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590132
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590132
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590136
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590136
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590140
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590140
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590144
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590144
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590148
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590148
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590152
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590152
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590156
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590156
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590160
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590160
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590164
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590164
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590168
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590168
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590172
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590172
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590176
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590176
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590180
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590180
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590184
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590184
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590188
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590188
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590192
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590192
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590196
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590196
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590200
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590200
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590204
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590204
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590208
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590208
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590212
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590212
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590216
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590216
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590220
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590220
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590224
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590224
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590228
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590228
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590232
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590232
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590236
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590236
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590240
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590240
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590244
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590244
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590248
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590248
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:11] PARSER: forked module pid=590252
+[03:16:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590252
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590256
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590256
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590260
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590260
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590264
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590264
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590268
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590268
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590272
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590272
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590276
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590276
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590280
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590280
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590284
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590284
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590288
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590288
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590292
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590292
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590296
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590296
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590300
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590300
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590304
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590304
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590308
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590308
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590312
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590312
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590316
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590316
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590320
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590320
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590324
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590324
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590328
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590328
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590332
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590332
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590336
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590336
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590340
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590340
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590344
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590344
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590348
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590348
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590352
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590352
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590356
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590356
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590360
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590360
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590364
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590364
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590368
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590368
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590372
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590372
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590376
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590376
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590380
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590380
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590384
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590384
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590388
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590388
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590392
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590392
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590396
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590396
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590400
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590400
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590404
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590404
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590408
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590408
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590412
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590412
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590416
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590416
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590420
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590420
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590424
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590424
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590428
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590428
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590432
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590432
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590436
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590436
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590440
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590440
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:12] PARSER: forked module pid=590444
+[03:16:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590444
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590448
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590448
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590452
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590452
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590456
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590456
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590460
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590460
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590464
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590464
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590468
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590468
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590472
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590472
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590476
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590476
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590480
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590480
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590484
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590484
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590488
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590488
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590492
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590492
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590496
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590496
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590500
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590500
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590504
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590504
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590508
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590508
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590512
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590512
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590516
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590516
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590520
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590520
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590524
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590524
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590528
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590528
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590532
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590532
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590536
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590536
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590540
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590540
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590544
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590544
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590548
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590548
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590552
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590552
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590556
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590556
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590560
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590560
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590564
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590564
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590568
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590568
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590572
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590572
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590576
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590576
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590580
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590580
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590584
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590584
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590588
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590588
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590592
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590592
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590596
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590596
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590600
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590600
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590604
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590604
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590608
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590608
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590612
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590612
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590616
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590616
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590620
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590620
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=-1
+[03:16:13] PARSER: forked module pid=590624
+[03:16:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=590624
+[03:18:58] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[03:18:58] PARSER: forked module pid=592010
+[03:18:58] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592010
+[03:18:58] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592010
+[03:18:58] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592010
+[03:18:58] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592010
+[03:18:58] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592010
+[03:19:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592010
+[03:19:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592010
+[03:19:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592010
+[03:19:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592010
+[03:19:11] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=592010
+[03:19:11] PARSER: forked module pid=592017
+[03:19:11] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=592017
+[03:19:46] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[03:19:46] PARSER: forked module pid=592141
+[03:19:46] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592141
+[03:19:46] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592141
+[03:19:46] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592141
+[03:19:46] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592141
+[03:19:46] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592141
+[03:19:50] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592141
+[03:19:50] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592141
+[03:19:50] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592141
+[03:19:50] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592141
+[03:20:06] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[03:20:06] PARSER: forked module pid=592196
+[03:20:06] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592196
+[03:20:06] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592196
+[03:20:06] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592196
+[03:20:06] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592196
+[03:20:06] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592196
+[03:20:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592196
+[03:20:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592196
+[03:20:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592196
+[03:20:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592196
+[03:20:12] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=592196
+[03:20:12] PARSER: forked module pid=592203
+[03:20:12] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=592203
+[03:21:01] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[03:21:01] PARSER: forked module pid=592249
+[03:21:01] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592249
+[03:21:01] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592249
+[03:21:01] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592249
+[03:21:01] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592249
+[03:21:01] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592249
+[03:21:15] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592249
+[03:21:15] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592249
+[03:21:15] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592249
+[03:21:15] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=592249
+[03:21:15] PARSER: launch_module(projects/op-ed/manager/+x/op-ed_manager.+x) pid=592249
+[03:21:15] PARSER: forked module pid=592255
+[03:21:15] PARSER: launch_module(projects/op-ed/manager/+x/op-ed_manager.+x) pid=592255
+[03:21:15] PARSER: launch_module(projects/op-ed/manager/+x/op-ed_manager.+x) pid=592255
+[03:21:15] PARSER: launch_module(projects/op-ed/manager/+x/op-ed_manager.+x) pid=592255
+[00:50:35] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[00:50:35] PARSER: forked module pid=6748
+[00:50:35] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=6748
+[00:50:35] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=6748
+[00:50:35] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=6748
+[00:50:35] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=6748
+[00:50:35] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=6748
+[00:50:40] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=6748
+[00:50:40] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=6748
+[00:50:40] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=6748
+[00:50:40] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=6748
+[00:50:40] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=6748
+[00:50:40] PARSER: forked module pid=6761
+[00:50:40] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=6761
+[00:51:37] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[00:51:37] PARSER: forked module pid=7059
+[00:51:37] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=7059
+[00:51:37] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=7059
+[00:51:37] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=7059
+[00:51:37] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=7059
+[00:51:37] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=7059
+[00:52:04] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=7059
+[00:52:04] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=7059
+[00:52:05] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=7059
+[00:52:05] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=7059
+[00:52:05] PARSER: launch_module(projects/op-ed/manager/+x/op-ed_manager.+x) pid=7059
+[00:52:05] PARSER: forked module pid=7074
+[00:52:05] PARSER: launch_module(projects/op-ed/manager/+x/op-ed_manager.+x) pid=7074
+[00:52:05] PARSER: launch_module(projects/op-ed/manager/+x/op-ed_manager.+x) pid=7074
+[00:52:05] PARSER: launch_module(projects/op-ed/manager/+x/op-ed_manager.+x) pid=7074
+[01:01:30] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[01:01:30] PARSER: forked module pid=7290
+[01:01:30] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=7290
+[01:01:30] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=7290
+[01:01:30] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=7290
+[01:01:30] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=7290
+[01:01:30] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=7290
+[01:01:36] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=7290
+[01:01:36] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=7290
+[01:01:36] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=7290
+[01:01:36] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=7290
+[01:01:36] PARSER: launch_module(projects/chat-op/manager/+x/chat-op_manager.+x) pid=7290
+[01:01:36] PARSER: forked module pid=7305
+[01:01:36] PARSER: launch_module(projects/chat-op/manager/+x/chat-op_manager.+x) pid=7305
+[01:01:36] PARSER: launch_module(projects/chat-op/manager/+x/chat-op_manager.+x) pid=7305
+[01:01:36] PARSER: launch_module(projects/chat-op/manager/+x/chat-op_manager.+x) pid=7305
+[01:01:50] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[01:01:50] PARSER: forked module pid=7358
+[01:01:50] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=7358
+[01:01:50] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=7358
+[01:01:50] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=7358
+[01:01:50] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=7358
+[01:01:50] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=7358
+[01:01:54] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=7358
+[01:01:54] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=7358
+[01:01:54] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=7358
+[01:01:54] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=7358
+[01:02:05] PARSER: launch_module(projects/quiz-engine/manager/+x/quiz-engine_manager.+x) pid=7358
+[01:02:05] PARSER: forked module pid=7396
+[01:02:05] PARSER: launch_module(projects/quiz-engine/manager/+x/quiz-engine_manager.+x) pid=7396
+[01:06:02] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[01:06:02] PARSER: forked module pid=8813
+[01:06:02] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=8813
+[01:06:02] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=8813
+[01:06:02] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=8813
+[01:06:02] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=8813
+[01:06:02] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=8813
+[01:06:07] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=8813
+[01:06:07] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=8813
+[01:06:07] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=8813
+[01:06:07] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=8813
+[01:06:07] PARSER: launch_module(projects/op-ed/manager/+x/op-ed_manager.+x) pid=8813
+[01:06:07] PARSER: forked module pid=8828
+[01:06:07] PARSER: launch_module(projects/op-ed/manager/+x/op-ed_manager.+x) pid=8828
+[01:06:07] PARSER: launch_module(projects/op-ed/manager/+x/op-ed_manager.+x) pid=8828
+[01:06:07] PARSER: launch_module(projects/op-ed/manager/+x/op-ed_manager.+x) pid=8828
+[01:06:07] PARSER: launch_module(projects/op-ed/manager/+x/op-ed_manager.+x) pid=8828
+[01:06:07] PARSER: launch_module(projects/op-ed/manager/+x/op-ed_manager.+x) pid=8828
+[01:06:34] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[01:06:34] PARSER: forked module pid=8909
+[01:06:34] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=8909
+[01:06:34] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=8909
+[01:06:34] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=8909
+[01:06:34] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=8909
+[01:06:34] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=8909
+[01:06:41] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=8909
+[01:06:41] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=8909
+[01:06:41] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=8909
+[01:06:41] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=8909
+[01:14:42] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[01:14:42] PARSER: forked module pid=10341
+[01:14:42] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10341
+[01:14:42] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10341
+[01:14:42] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10341
+[01:14:42] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10341
+[01:14:42] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10341
+[01:14:46] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10341
+[01:14:46] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10341
+[01:14:46] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10341
+[01:14:46] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10341
+[01:15:36] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[01:15:36] PARSER: forked module pid=10405
+[01:15:36] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10405
+[01:15:36] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10405
+[01:15:36] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10405
+[01:15:36] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10405
+[01:15:36] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10405
+[01:15:39] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10405
+[01:15:39] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10405
+[01:15:39] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10405
+[01:15:39] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10405
+[01:15:39] PARSER: launch_module(projects/quiz-engine/manager/+x/quiz-engine_manager.+x) pid=10405
+[01:15:39] PARSER: forked module pid=10418
+[01:15:39] PARSER: launch_module(projects/quiz-engine/manager/+x/quiz-engine_manager.+x) pid=10418
+[01:19:20] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[01:19:20] PARSER: forked module pid=10555
+[01:19:20] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10555
+[01:19:20] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10555
+[01:19:20] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10555
+[01:19:20] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10555
+[01:19:20] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10555
+[01:19:24] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10555
+[01:19:24] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10555
+[01:19:24] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10555
+[01:19:24] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10555
+[01:19:24] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=10555
+[01:19:24] PARSER: forked module pid=10569
+[01:19:24] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=10569
+[01:19:56] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[01:19:56] PARSER: forked module pid=10624
+[01:19:56] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10624
+[01:19:56] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10624
+[01:19:56] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10624
+[01:19:56] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10624
+[01:19:56] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10624
+[01:20:01] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10624
+[01:20:01] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10624
+[01:20:01] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10624
+[01:20:01] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=10624
+[01:20:01] PARSER: launch_module(projects/op-ed/manager/+x/op-ed_manager.+x) pid=10624
+[01:20:01] PARSER: forked module pid=10638
+[01:20:01] PARSER: launch_module(projects/op-ed/manager/+x/op-ed_manager.+x) pid=10638
+[01:20:01] PARSER: launch_module(projects/op-ed/manager/+x/op-ed_manager.+x) pid=10638
+[01:20:01] PARSER: launch_module(projects/op-ed/manager/+x/op-ed_manager.+x) pid=10638
+[01:20:01] PARSER: launch_module(projects/op-ed/manager/+x/op-ed_manager.+x) pid=10638
+[01:20:01] PARSER: launch_module(projects/op-ed/manager/+x/op-ed_manager.+x) pid=10638
+[01:26:22] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[01:26:22] PARSER: forked module pid=12048
+[01:26:22] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=12048
+[01:26:22] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=12048
+[01:26:22] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=12048
+[01:26:22] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=12048
+[01:26:22] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=12048
+[01:26:24] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=12048
+[01:26:24] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=12048
+[01:26:24] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=12048
+[01:26:24] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=12048
+[01:26:59] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[01:26:59] PARSER: forked module pid=12132
+[01:26:59] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=12132
+[01:26:59] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=12132
+[01:26:59] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=12132
+[01:27:00] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=12132
+[01:27:00] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=12132
+[01:27:16] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=12132
+[01:27:16] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=12132
+[01:27:16] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=12132
+[01:27:16] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=12132
+[01:27:16] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=12132
+[01:27:16] PARSER: forked module pid=12150
+[01:27:16] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=12150
+[01:43:21] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[01:43:21] PARSER: forked module pid=15190
+[01:43:21] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=15190
+[01:43:21] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=15190
+[01:43:21] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=15190
+[01:43:21] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=15190
+[01:43:21] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=15190
+[01:43:43] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=15190
+[01:43:43] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=15190
+[01:43:43] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=15190
+[01:43:43] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=15190
+[01:43:43] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=15190
+[01:43:43] PARSER: forked module pid=15215
+[01:43:43] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=15215
+[01:47:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[01:47:10] PARSER: forked module pid=16623
+[01:47:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=16623
+[01:47:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=16623
+[01:47:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=16623
+[01:47:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=16623
+[01:47:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=16623
+[01:47:15] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=16623
+[01:47:15] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=16623
+[01:47:15] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=16623
+[01:47:15] PARSER: forked module pid=16636
+[01:47:15] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=16636
+[01:47:15] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=16636
+[01:47:15] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=16636
+[01:58:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[01:58:10] PARSER: forked module pid=18132
+[01:58:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=18132
+[01:58:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=18132
+[01:58:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=18132
+[01:58:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=18132
+[01:58:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=18132
+[01:58:14] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=18132
+[01:58:14] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=18132
+[01:58:14] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=18132
+[01:58:14] PARSER: forked module pid=18146
+[01:58:14] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=18146
+[01:58:14] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=18146
+[01:58:14] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=18146
+[02:01:28] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[02:01:28] PARSER: forked module pid=19520
+[02:01:28] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=19520
+[02:01:28] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=19520
+[02:01:28] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=19520
+[02:01:28] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=19520
+[02:01:28] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=19520
+[02:01:31] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=19520
+[02:01:31] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=19520
+[02:01:31] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=19520
+[02:01:31] PARSER: forked module pid=19533
+[02:01:31] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=19533
+[02:01:31] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=19533
+[02:01:31] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=19533
+[02:30:28] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[02:30:28] PARSER: forked module pid=604754
+[02:30:28] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=604754
+[02:30:28] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=604754
+[02:30:28] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=604754
+[02:30:28] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=604754
+[02:30:28] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=604754
+[02:31:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[02:31:11] PARSER: forked module pid=606241
+[02:31:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=606241
+[02:31:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=606241
+[02:31:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=606241
+[02:31:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=606241
+[02:31:11] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=606241
+[02:31:15] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=606241
+[02:31:15] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=606241
+[02:31:15] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=606241
+[02:31:15] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=606241
+[02:31:15] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=606241
+[02:31:15] PARSER: forked module pid=606259
+[02:31:15] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=606259
+[02:37:47] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[02:37:47] PARSER: forked module pid=614147
+[02:37:47] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=614147
+[02:37:47] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=614147
+[02:37:47] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=614147
+[02:37:47] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=614147
+[02:37:47] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=614147
+[02:37:52] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=614147
+[02:37:52] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=614147
+[02:37:52] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=614147
+[02:37:52] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=614147
+[02:37:52] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=614147
+[02:37:52] PARSER: forked module pid=614166
+[02:37:52] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=614166
+[02:45:29] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=-1
+[02:45:29] PARSER: forked module pid=617904
+[02:45:29] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=617904
+[02:45:29] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=617904
+[02:45:29] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=617904
+[02:45:34] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=617904
+[02:45:34] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=617904
+[02:47:26] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=-1
+[02:47:26] PARSER: forked module pid=618982
+[02:47:26] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=618982
+[02:47:26] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=618982
+[02:47:26] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=618982
+[02:52:32] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[02:52:32] PARSER: forked module pid=621478
+[02:52:32] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=621478
+[02:52:32] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=621478
+[02:52:32] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=621478
+[02:52:32] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=621478
+[02:52:32] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=621478
+[02:52:48] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=621478
+[02:52:48] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=621478
+[02:52:48] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=621478
+[02:52:48] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=621478
+[02:52:48] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=621478
+[02:52:48] PARSER: forked module pid=621588
+[02:52:48] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=621588
+[02:54:04] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=-1
+[02:54:04] PARSER: forked module pid=621960
+[02:54:04] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=621960
+[02:54:04] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=621960
+[02:54:04] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=621960
+[02:54:06] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=621960
+[02:54:06] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=621960
+[02:54:13] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=-1
+[02:54:13] PARSER: forked module pid=622087
+[02:54:13] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=622087
+[02:54:13] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=622087
+[02:54:13] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=622087
+[02:54:18] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=622087
+[02:54:18] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=622087
+[03:20:15] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=-1
+[03:20:15] PARSER: forked module pid=646910
+[03:20:15] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=646910
+[03:20:15] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=646910
+[03:20:15] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=646910
+[03:23:33] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=-1
+[03:23:33] PARSER: forked module pid=649502
+[03:23:33] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=649502
+[03:23:33] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=649502
+[03:23:33] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=649502
+[03:26:19] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[03:26:19] PARSER: forked module pid=651306
+[03:26:19] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=651306
+[03:26:19] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=651306
+[03:26:19] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=651306
+[03:26:19] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=651306
+[03:26:19] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=651306
+[03:26:24] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=651306
+[03:26:24] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=651306
+[03:26:24] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=651306
+[03:26:24] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=651306
+[03:26:24] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=651306
+[03:26:24] PARSER: forked module pid=651335
+[03:26:24] PARSER: launch_module(projects/playrm/manager/+x/playrm_manager.+x) pid=651335
+[03:33:03] PARSER: launch_module(projects/fuzz-op/manager/+x/fuzz-op_manager.+x) pid=-1
+[03:33:03] PARSER: forked module pid=40
+[03:33:03] PARSER: launch_module(projects/fuzz-op/manager/+x/fuzz-op_manager.+x) pid=40
+[03:33:03] PARSER: launch_module(projects/fuzz-op/manager/+x/fuzz-op_manager.+x) pid=40
+[03:33:03] PARSER: launch_module(projects/fuzz-op/manager/+x/fuzz-op_manager.+x) pid=40
+[03:33:52] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[03:33:52] PARSER: forked module pid=657493
+[03:33:52] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=657493
+[03:33:52] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=657493
+[03:33:52] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=657493
+[03:33:52] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=657493
+[03:33:52] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=657493
+[03:33:54] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=657493
+[03:33:54] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=657493
+[03:33:54] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=657493
+[03:33:54] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=657493
+[03:33:54] PARSER: launch_module(projects/fuzz-op/manager/+x/fuzz-op_manager.+x) pid=657493
+[03:33:54] PARSER: forked module pid=657511
+[03:33:54] PARSER: launch_module(projects/fuzz-op/manager/+x/fuzz-op_manager.+x) pid=657511
+[03:33:54] PARSER: launch_module(projects/fuzz-op/manager/+x/fuzz-op_manager.+x) pid=657511
+[03:33:54] PARSER: launch_module(projects/fuzz-op/manager/+x/fuzz-op_manager.+x) pid=657511
+[03:33:54] PARSER: launch_module(projects/fuzz-op/manager/+x/fuzz-op_manager.+x) pid=657511
+[03:33:54] PARSER: launch_module(projects/fuzz-op/manager/+x/fuzz-op_manager.+x) pid=657511
+[03:33:58] PARSER: launch_module(projects/fuzz-op/manager/+x/fuzz-op_manager.+x) pid=657511
+[03:33:58] PARSER: launch_module(projects/fuzz-op/manager/+x/fuzz-op_manager.+x) pid=657511
+[03:34:47] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=-1
+[03:34:47] PARSER: forked module pid=657837
+[03:34:47] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=657837
+[03:34:47] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=657837
+[03:34:47] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=657837
+[07:17:12] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=-1
+[07:17:12] PARSER: forked module pid=601357
+[07:17:12] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=601357
+[07:17:12] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=601357
+[07:17:12] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=601357
+[07:21:57] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=-1
+[07:21:57] PARSER: forked module pid=604223
+[07:21:57] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=604223
+[07:21:57] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=604223
+[07:21:57] PARSER: launch_module(pieces/apps/gl_os/plugins/+x/gl_os_session.+x) pid=604223
+[07:24:20] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[07:24:20] PARSER: forked module pid=604705
+[07:24:20] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=604705
+[07:24:20] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=604705
+[07:24:20] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=604705
+[07:24:20] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=604705
+[07:24:20] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=604705
+[07:24:28] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=604705
+[07:24:28] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=604705
+[07:24:28] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=604705
+[07:24:28] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=604705
+[07:24:28] PARSER: launch_module(projects/chat-op/manager/+x/chat-op_manager.+x) pid=604705
+[07:24:28] PARSER: forked module pid=604712
+[07:24:28] PARSER: launch_module(projects/chat-op/manager/+x/chat-op_manager.+x) pid=604712
+[07:24:41] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[07:24:41] PARSER: forked module pid=604977
+[07:24:41] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=604977
+[07:24:41] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=604977
+[07:24:41] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=604977
+[07:24:53] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=604977
+[07:24:53] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=604977
+[07:24:53] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=604977
+[07:24:53] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=604977
+[07:24:53] PARSER: launch_module(projects/chat-op/manager/+x/chat-op_manager.+x) pid=604977
+[07:24:53] PARSER: forked module pid=604983
+[07:24:53] PARSER: launch_module(projects/chat-op/manager/+x/chat-op_manager.+x) pid=604983
+[07:44:10] PARSER: launch_module(projects/mp3-store/manager/+x/mp3-store_manager.+x) pid=-1
+[07:44:10] PARSER: forked module pid=5
+[07:44:10] PARSER: launch_module(projects/mp3-store/manager/+x/mp3-store_manager.+x) pid=5
+[07:44:10] PARSER: launch_module(projects/mp3-store/manager/+x/mp3-store_manager.+x) pid=5
+[07:44:10] PARSER: launch_module(projects/mp3-store/manager/+x/mp3-store_manager.+x) pid=5
+[07:44:10] PARSER: launch_module(projects/mp3-store/manager/+x/mp3-store_manager.+x) pid=5
+[07:44:10] PARSER: launch_module(projects/mp3-store/manager/+x/mp3-store_manager.+x) pid=5
+MP3_MANAGER: process_command(MP3:PLAY:rb&u.book1.page76-v1.0.mp3)
+MP3_MANAGER: process_command(MP3:PLAY:rb&u.book1.page76-v1.0.mp3)
+[07:45:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[07:45:12] PARSER: forked module pid=609512
+[07:45:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609512
+[07:45:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609512
+[07:45:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609512
+[07:45:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609512
+[07:45:12] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609512
+[07:45:15] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609512
+[07:45:15] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609512
+[07:45:15] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609512
+[07:45:15] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609512
+[07:45:29] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[07:45:29] PARSER: forked module pid=609563
+[07:45:29] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609563
+[07:45:29] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609563
+[07:45:29] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609563
+[07:45:29] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609563
+[07:45:29] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609563
+[07:45:42] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609563
+[07:45:42] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609563
+[07:45:42] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609563
+[07:45:42] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609563
+[07:45:42] PARSER: launch_module(projects/mp3-store/manager/+x/mp3-store_manager.+x) pid=609563
+[07:45:42] PARSER: forked module pid=609569
+[07:45:42] PARSER: launch_module(projects/mp3-store/manager/+x/mp3-store_manager.+x) pid=609569
+[07:45:42] PARSER: launch_module(projects/mp3-store/manager/+x/mp3-store_manager.+x) pid=609569
+[07:45:42] PARSER: launch_module(projects/mp3-store/manager/+x/mp3-store_manager.+x) pid=609569
+[07:45:48] PARSER: launch_module(projects/mp3-store/manager/+x/mp3-store_manager.+x) pid=609569
+[07:45:48] PARSER: launch_module(projects/mp3-store/manager/+x/mp3-store_manager.+x) pid=609569
+MP3_MANAGER: process_input(key=57)
+[07:45:50] PARSER: launch_module(projects/mp3-store/manager/+x/mp3-store_manager.+x) pid=609569
+[07:45:50] PARSER: launch_module(projects/mp3-store/manager/+x/mp3-store_manager.+x) pid=609569
+MP3_MANAGER: process_input(key=57)
+[07:45:53] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[07:45:53] PARSER: forked module pid=609641
+[07:45:53] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609641
+[07:45:53] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609641
+[07:45:53] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609641
+[07:45:53] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609641
+[07:45:53] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609641
+[07:45:57] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609641
+[07:45:57] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609641
+[07:45:57] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609641
+[07:45:57] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609641
+[07:46:06] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[07:46:06] PARSER: forked module pid=609693
+[07:46:06] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609693
+[07:46:06] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609693
+[07:46:06] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609693
+[07:46:06] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609693
+[07:46:06] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609693
+[07:46:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609693
+[07:46:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609693
+[07:46:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609693
+[07:46:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=609693
+[07:53:58] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[07:53:58] PARSER: forked module pid=611782
+[07:53:58] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=611782
+[07:53:58] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=611782
+[07:53:58] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=611782
+[07:53:58] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=611782
+[07:53:58] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=611782
+[07:53:59] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=611782
+[07:53:59] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=611782
+[07:53:59] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=611782
+[07:53:59] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=611782
+[07:53:59] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=611782
+[07:53:59] PARSER: forked module pid=611788
+[07:53:59] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=611788
+[07:53:59] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=611788
+[07:53:59] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=611788
+[07:54:25] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[07:54:25] PARSER: forked module pid=611836
+[07:54:25] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=611836
+[07:54:25] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=611836
+[07:54:25] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=611836
+[07:54:25] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=611836
+[07:54:25] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=611836
+[07:54:30] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=611836
+[07:54:30] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=611836
+[07:54:30] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=611836
+[07:54:30] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=611836
+[03:59:01] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[03:59:01] PARSER: forked module pid=1022354
+[03:59:02] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1022354
+[03:59:02] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1022354
+[03:59:02] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1022354
+[03:59:02] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1022354
+[03:59:02] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1022354
+[03:59:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1022354
+[03:59:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1022354
+[03:59:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1022354
+[03:59:10] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1022354
+[03:59:10] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1022354
+[03:59:10] PARSER: forked module pid=1022398
+[03:59:10] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1022398
+[03:59:10] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1022398
+[03:59:10] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1022398
+[14:57:48] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[14:57:48] PARSER: forked module pid=1191933
+[14:57:48] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1191933
+[14:57:48] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1191933
+[14:57:48] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1191933
+[14:57:48] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1191933
+[14:57:48] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1191933
+[14:57:51] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1191933
+[14:57:51] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1191933
+[14:57:51] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1191933
+[14:57:51] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1191933
+[14:57:51] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1191933
+[14:57:51] PARSER: forked module pid=1191958
+[14:57:51] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1191958
+[14:57:51] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1191958
+[14:57:51] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1191958
+[15:22:47] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[15:22:47] PARSER: forked module pid=1200929
+[15:22:47] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1200929
+[15:22:47] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1200929
+[15:22:47] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1200929
+[15:22:47] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1200929
+[15:22:47] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1200929
+[15:22:53] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1200929
+[15:22:53] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1200929
+[15:22:53] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1200929
+[15:22:53] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1200929
+[15:22:53] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1200929
+[15:22:53] PARSER: forked module pid=1200966
+[15:22:53] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1200966
+[15:22:53] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1200966
+[15:22:53] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1200966
+[15:28:49] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[15:28:49] PARSER: forked module pid=1204094
+[15:28:49] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1204094
+[15:28:49] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1204094
+[15:28:49] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1204094
+[15:28:49] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1204094
+[15:28:49] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1204094
+[15:28:52] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1204094
+[15:28:52] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1204094
+[15:28:52] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1204094
+[15:28:52] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1204094
+[15:28:52] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1204094
+[15:28:52] PARSER: forked module pid=1204112
+[15:28:52] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1204112
+[15:28:52] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1204112
+[15:28:52] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1204112
+[15:28:55] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1204112
+[15:28:55] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1204112
+[15:37:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[15:37:13] PARSER: forked module pid=1208210
+[15:37:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1208210
+[15:37:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1208210
+[15:37:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1208210
+[15:37:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1208210
+[15:37:13] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1208210
+[15:37:16] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1208210
+[15:37:16] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1208210
+[15:37:16] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1208210
+[15:37:16] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=1208210
+[15:37:16] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1208210
+[15:37:16] PARSER: forked module pid=1208234
+[15:37:16] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1208234
+[15:37:16] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1208234
+[15:37:16] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1208234
+[15:37:17] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1208234
+[15:37:17] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1208234
+[15:37:20] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1208234
+[15:37:20] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1208234
+[15:37:22] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1208234
+[15:37:22] PARSER: launch_module(projects/p2p-net/manager/+x/p2p_manager.+x) pid=1208234
