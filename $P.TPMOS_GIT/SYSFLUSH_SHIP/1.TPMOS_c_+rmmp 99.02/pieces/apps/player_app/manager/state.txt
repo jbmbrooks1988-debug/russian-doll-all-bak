@@ -1,0 +1,3 @@
+project_id=cyoa-engine
+app_title=RED WHITE AND U: CYOA PLAYER
+active_target_id=engine

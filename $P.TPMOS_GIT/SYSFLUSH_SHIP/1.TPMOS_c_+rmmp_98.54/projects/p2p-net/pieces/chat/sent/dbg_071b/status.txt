@@ -1,3 +1,0 @@
-unread_count=0
-total_messages=95
-last_checked=2026-05-11 15:37:22

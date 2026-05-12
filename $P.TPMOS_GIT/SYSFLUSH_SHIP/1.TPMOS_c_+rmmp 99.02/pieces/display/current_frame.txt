@@ -1,0 +1,39 @@
+╔═══════════════════════════════════════════════════════════╗
+║             RED WHITE AND U: CYOA PLAYER                          ║
+╠═══════════════════════════════════════════════════════════╣
+║ Book: 0.rb&u-book_1 ║
+║ Page: 3 ║
+╠═══════════════════════════════════════════════════════════╣
+║                                                           ║
+║  You hesitate. Your finger hovers over the trigger, but    ║
+║  you can't bring yourself to shoot. The child looks so     ║
+║  small, so helpless. Your commander shoves you aside and   ║
+║  raises his own weapon, but it's too late. A woman runs    ║
+║  out from the alley, scoops up the child, and disappears   ║
+║  back into the shadows. Your commander is furious.         ║
+║  "What's wrong with you, 735?" he snarls. "You're a        ║
+║  soldier, not a social worker. I'll be reporting you for   ║
+║  insubordination." He storms off, leaving you alone in     ║
+║  the street. You have disobeyed a direct order. You have   ║
+║  shown weakness. But as you look at the empty alley where  ║
+║  the young man and his mother disappeared, you feel a      ║
+║  strange sense of relief. You have chosen the path of      ║
+║  defiance. But where will it lead?                         ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║ Choices:                                                  ║
+║  See dynamic menu below for choices             ║
+╠═══════════════════════════════════════════════════════════╣
+║  [>] 1. [If you report to your commander for punishment, (Page 6)]
+[ ] 2. [If you desert your post and follow the young man and his mother, (Page 7)]
+[ ] 3. [d, (Page 7)]
+[ ] 4. [Audio: PLAY]
+[ ] 5. [Audio: STOP]
+ ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 6. [Back to Book List (ESC)]                     ║
+║  [ ] 7. [Exit to Menu]                          ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _

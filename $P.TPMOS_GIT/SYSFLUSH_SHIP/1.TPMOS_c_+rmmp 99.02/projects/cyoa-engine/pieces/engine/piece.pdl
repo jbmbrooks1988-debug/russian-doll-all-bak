@@ -1,0 +1,10 @@
+SECTION      | KEY                | VALUE
+----------------------------------------
+META         | piece_id           | engine
+STATE        | name               | CYOA Engine
+
+METHOD       | If you report to your commander for punishment, (Page 6) | CYOA:SELECT:0
+METHOD       | If you desert your post and follow the young man and his mother, (Page 7) | CYOA:SELECT:1
+METHOD       | d, (Page 7) | CYOA:SELECT:2
+METHOD       | Audio: PLAY | CYOA:PLAY
+METHOD       | Audio: STOP | CYOA:STOP
