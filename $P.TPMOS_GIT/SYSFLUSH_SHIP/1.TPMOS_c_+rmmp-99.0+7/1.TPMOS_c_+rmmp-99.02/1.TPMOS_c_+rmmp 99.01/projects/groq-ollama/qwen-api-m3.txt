@@ -1,0 +1,63 @@
+# Groq-Ollama CLI API Documentation (M3)
+**Target Binary:** `/home/debilu/.nvm/versions/node/v22.18.0/bin/groq-ollama`
+**Status:** DRAFT | Based on CLI Help & Initial Tests
+
+---
+
+## 1. Core Execution Patterns
+
+### 1.1 One-Shot Prompt (Recommended for Bridge)
+Used for stateless queries where a single response is required.
+```bash
+groq-ollama "Your prompt here" -y --output-format text
+```
+- `-y, --yolo`: Automatically accepts all actions (essential for non-interactive bot use).
+- `--output-format`: `text` (clean prose), `json` (structured), or `stream-json`.
+
+### 1.2 JSON Structured Output
+For cases where the manager needs to parse specific fields (e.g., extracting commands).
+```bash
+groq-ollama "Analyze this ledger and return JSON" -y --output-format json
+```
+
+### 1.3 System Prompt Injection
+Override or append to the base behavior of the model.
+- `--system-prompt "text"`: Completely replace the default instructions.
+- `--append-system-prompt "text"`: Add specific TPMOS rules (e.g., "Always output JSON blocks").
+
+---
+
+## 2. Key Options for TPMOS Integration
+
+| Option | Flag | Purpose |
+| :--- | :--- | :--- |
+| **YOLO Mode** | `-y` | Prevents the CLI from hanging on "Do you want to run this command?" prompts. |
+| **Output Format** | `-o` | Controls parsing complexity. `json` is preferred for `iqabel` logic. |
+| **Model** | `-m` | Specify which Groq-Ollama variant to use (if multiple installed). |
+| **Quiet/Debug** | `-d` | Use for troubleshooting the bridge connection. |
+| **No Recording** | `--chat-recording false` | Prevents filling up disk with session history in bot loops. |
+
+---
+
+## 3. Technical Constraints & Pitfalls
+
+### 3.1 Timeout Sensitivity
+- **Observation:** On slower hardware, the initial model load can exceed 5 minutes.
+- **Bridge Strategy:** The `groq-ollama_bridge` must implement a generous timeout or a heartbeat check. Do NOT use `waitpid()` without a timeout mechanism if the system is under heavy load.
+
+### 3.2 Pathing
+- The `groq-ollama` CLI expects a workspace context. When calling from the Bridge, ensure the working directory is set to the project root or use `--include-directories`.
+
+### 3.3 ANSI Escape Codes
+- In `--output-format text` mode, the model may return ANSI color codes or markdown decorators.
+- **Requirement:** The Bridge must strip non-printable characters before writing to `state.txt` to avoid parser corruption.
+
+---
+
+## 4. Example: "The Bot-Writes-Its-Own-Op" Prompt
+```bash
+groq-ollama "Write a TPMOS C Op that reads pieces/keyboard/history.txt and returns the last keycode. Use the fork/exec pattern." -y --system-prompt "$(cat projects/groq-ollama/prompts/op_standards.txt)" --output-format text
+```
+
+---
+*"The CLI is the interface; the Bridge is the translation layer."*

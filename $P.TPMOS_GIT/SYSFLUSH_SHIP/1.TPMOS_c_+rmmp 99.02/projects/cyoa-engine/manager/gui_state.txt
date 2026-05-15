@@ -1,7 +1,0 @@
-module_path=projects/cyoa-engine/manager/+x/cyoa-engine_manager.+x
-active_layout_id=projects/cyoa-engine/layouts/cyoa.chtpm
-app_title=RED WHITE AND U: CYOA PLAYER
-book_name=0.rb&u-book_1
-page_num=3
-page_content=║  You hesitate. Your finger hovers over the trigger, but    ║\n║  you can't bring yourself to shoot. The child looks so     ║\n║  small, so helpless. Your commander shoves you aside and   ║\n║  raises his own weapon, but it's too late. A woman runs    ║\n║  out from the alley, scoops up the child, and disappears   ║\n║  back into the shadows. Your commander is furious.         ║\n║  "What's wrong with you, 735?" he snarls. "You're a        ║\n║  soldier, not a social worker. I'll be reporting you for   ║\n║  insubordination." He storms off, leaving you alone in     ║\n║  the street. You have disobeyed a direct order. You have   ║\n║  shown weakness. But as you look at the empty alley where  ║\n║  the young man and his mother disappeared, you feel a      ║\n║  strange sense of relief. You have chosen the path of      ║\n║  defiance. But where will it lead?                         ║
-choices_content=║  See dynamic menu below for choices             ║
