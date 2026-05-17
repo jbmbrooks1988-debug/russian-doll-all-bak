@@ -1,0 +1,21 @@
+<panel>
+    <module>projects/op-ed/manager/+x/op-ed_manager.+x</module>
+    
+    <text label="╔══════════════ F I L E   M E N U ════════════╗" /><br/>
+    <text label="║ PROJECT: ${project_id}                        " /><text label="║" /><br/>
+    <text label="║                                               ║" /><br/>
+    
+    <text label="║  " /><button label="SAVE TO SLOT" onClick="KEY:7" /><text label="                           ║" /><br/>
+    <text label="║  " /><button label="BROWSE SLOTS" href="projects/op-ed/layouts/load_slot.chtpm" /><text label="                           ║" /><br/>
+    <text label="║  " /><button label="SAVE AS (Clone)" onClick="KEY:s" /><text label="                        ║" /><br/>
+    <text label="║  " /><button label="PROJECT LOADER" href="projects/op-ed/layouts/load_menu.chtpm" /><text label="                         ║" /><br/>
+    <text label="║  " /><button label="PLAY PROJECT" onClick="KEY:p" /><text label="                           ║" /><br/>
+    <text label="║  " /><button label="BACK TO EDITOR" href="projects/op-ed/layouts/op-ed.chtpm" /><text label="                         ║" /><br/>
+    
+    <text label="║                                               ║" /><br/>
+    <text label="╠═══════════════════════════════════════════════╣" /><br/>
+    <row label="${editor_response}" /><br/>
+    <text label="╚═══════════════════════════════════════════════╝" /><br/>
+    
+    <interact src="pieces/apps/player_app/history.txt" />
+</panel>

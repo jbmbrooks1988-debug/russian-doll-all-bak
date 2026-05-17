@@ -1,0 +1,50 @@
+# TPMOS FS Handoff: The op-ed Game Engine & Macro Orchestration
+**Date:** 2026-05-17
+**Status:** Architectural Guidance (Post-FileOp Standardization)
+
+## 1. The op-ed Philosophy: "The Editor is the Engine"
+Unlike standard CHTPM projects (which are static maps with basic logic), an `op-ed` project is a dynamic application driven by a **Macro PAL Orchestration Script**.
+
+### A. Map Modification & Persistence
+- **RMMP Grid**: Maps are stored as `.txt` files in `projects/<id>/maps/`. When you "modify" the map in the editor, the manager writes the glyph change directly to the file.
+- **Sovereign pieces**: When an "Event" (e.g., a chest or NPC) is placed, a directory is created in `projects/<id>/pieces/<entity_id>/`. This directory contains the `piece.pdl` (logic) and `state.txt` (variables).
+
+### B. GUI Block Scripting (Scratch/RPG Maker Style)
+- **Concept**: Instead of writing PAL assembly manually, the `EVENT` menu in `op-ed` will present "Blocks" (e.g., [MOVE PET], [SHOW MESSAGE], [SWITCH LAYOUT]).
+- **Mapping**: For detailed mapping of Scratch and RPG Maker commands to PAL instructions, see `#.ref/rmmp&scratch-how2.txt`.
+- **Compilation**: The editor translates these blocks into `.asm` (PAL Assembly) files stored in `projects/<id>/scripts/`.
+- **Binding**: These scripts are bound to `METHOD` keys in the Piece PDL (e.g., `METHOD | interact | projects/<id>/scripts/chest_open.asm`).
+
+## 2. Project Management & Slots
+
+### [SAVE TO SLOT]
+- **The Checkpoint System**: This does NOT overwrite your source code in `projects/`. Instead, it creates a **Versioned Snapshot** in `projects/user/pieces/profiles/<username>/saves/<project_id>/<slot_name>/`.
+- **Purpose**: Use this for "Safe Points" before making major architectural changes or to save different "Game States" for testing.
+
+### [BROWSE SLOTS]
+- **The Time Machine**: This opens the Slot Browser (`load_slot.chtpm`), allowing you to pick a previously saved snapshot. Selecting a slot overwrites the current editor buffer with that snapshot's data.
+
+### Redirecting Project Loading
+- `op-ed` requires a "Workspace" mode. By changing the `current_project` variable in the manager, the editor redirects all its file operations (Read Map, Write PDL) to that specific folder. Fundamentally, `op-ed` acts as a "Compiler" that operates on the target directory.
+
+## 3. Orchestration & Local Play (PRISCV)
+
+### The Macro PAL Script
+Every `op-ed` project will have a master script (e.g., `main_orch.asm`). This script is executed by the `priscv` (PAL Interpreter). 
+- It handles:
+  1. **Layout Transitions**: Telling the OS to switch from `title.chtpm` to `world.chtpm`.
+  2. **World State**: Managing variables that persist across different maps.
+  3. **Op Sequencing**: Running background tasks (like `stat_decay`) in a loop.
+
+### Local "Play" Mode (Testing)
+- When you click **[PLAY PROJECT]**, the manager launches the project's macro script locally. 
+- It uses the shared system assets (`pieces/apps/playrm`) to render the game, allowing you to test the logic exactly as it will behave after export.
+
+### Exporting for Production
+- **Standalone Package**: Exporting gathers the project's `maps/`, `pieces/`, `layouts/`, and `scripts/` into a single container.
+- **Bootloader**: It generates a `run.sh` that initializes the `location_kvp` and starts the `priscv` interpreter on the project's macro script, effectively turning the project into a standalone app.
+
+## 4. Immediate Architectural Goals
+1. **Implement the Event Editor**: A sub-layout that writes PAL commands to `.asm` files.
+2. **Standardize the Macro Script**: Define a template for `main_orch.asm` that all `op-ed` projects must follow to be "bootable."
+3. **Priscv Integration**: Ensure the editor can "Hot Reload" PAL scripts without restarting the manager.

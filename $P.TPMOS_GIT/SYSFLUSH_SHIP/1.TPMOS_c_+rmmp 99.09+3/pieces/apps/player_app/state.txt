@@ -1,0 +1,10 @@
+project_id=op-ed
+gui_focus=1
+active_gui_index=1
+last_key=None
+selector_pos=(5,5,0)
+editor_response=[RESP]:                                                  
+editor_status_2=[POS]: (5,5,0) | [H-BEAT]: 0 | [KEY]: None               
+map_palette_view=ADD [map_0001_z0.txt] 
+glyph_palette_view=[#] . R T @ & Z X ? ! 
+armed_glyph=#
