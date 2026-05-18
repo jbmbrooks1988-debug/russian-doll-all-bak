@@ -10,9 +10,9 @@ Unlike standard CHTPM projects (which are static maps with basic logic), an `op-
 - **Sovereign pieces**: When an "Event" (e.g., a chest or NPC) is placed, a directory is created in `projects/<id>/pieces/<entity_id>/`. This directory contains the `piece.pdl` (logic) and `state.txt` (variables).
 
 ### B. GUI Block Scripting (Scratch/RPG Maker Style)
-- **Concept**: Instead of writing PAL assembly manually, the `EVENT` menu in `op-ed` will present "Blocks" (e.g., [MOVE PET], [SHOW MESSAGE], [SWITCH LAYOUT]).
-- **Mapping**: For detailed mapping of Scratch and RPG Maker commands to PAL instructions, see `#.ref/rmmp&scratch-how2.txt`.
-- **Compilation**: The editor translates these blocks into `.asm` (PAL Assembly) files stored in `projects/<id>/scripts/`.
+- **Concept**: Instead of writing low-level assembly (JMP, CMP), the `EVENT` menu in `op-ed` will present "High-Level Ops" as Blocks (e.g., [IF THEN], [FOREVER], [MOVE ENTITY]).
+- **Mapping**: For detailed mapping of Scratch and RPG Maker commands to specialized logic Ops (e.g., `if_op.+x`), see `#.ref/rmmp&scratch-how2.txt`.
+- **Compilation**: The editor translates these blocks into `CALL` sequences in the project's macro orchestration script.
 - **Binding**: These scripts are bound to `METHOD` keys in the Piece PDL (e.g., `METHOD | interact | projects/<id>/scripts/chest_open.asm`).
 
 ## 2. Project Management & Slots
