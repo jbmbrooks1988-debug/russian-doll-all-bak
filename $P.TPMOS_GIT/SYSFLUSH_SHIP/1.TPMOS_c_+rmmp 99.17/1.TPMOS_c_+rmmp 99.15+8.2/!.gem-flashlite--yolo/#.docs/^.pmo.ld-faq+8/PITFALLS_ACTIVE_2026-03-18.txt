@@ -1017,6 +1017,30 @@ USER PITFALLS :
 - AFFECTED AREAS: chtpm_parser.c (LOAD_PROJECT), loader_module.c (mkdir), user_manager.c (auth_user), and any shared ops constructed with system().
 - TPM PRINCIPLE: "The shell is a fickle beast. Quote your paths or be devoured by the void (space)."
 
+97) MANUAL SUBMENU TRACKING (THE m19 INCIDENT)
+- SYMPTOM: Submenu navigation feels broken, indices conflict with main menu, or [>] markers appear doubled/misplaced.
+- ROOT CAUSE: Manager attempting to handle arrow keys and selection markers manually instead of using the Parser's native `ACTIVATE` pattern.
+- MANDATE: Use `<button onClick="ACTIVATE">` for submenus. Let the Parser handle all focus and navigation.
+- TPM PRINCIPLE: "UI logic belongs to the Theater (Parser); content generation belongs to the Muscle (Manager)."
+
+98) GATED DYNAMIC MARKUP (EMPTY SUBMENU BUG)
+- SYMPTOM: Submenu "activates" and shows a "Back" button, but the dynamic content variable is empty.
+- ROOT CAUSE: Manager gating the publication of `${menu_markup}` behind a `g_menu_mode` variable that is no longer being toggled.
+- FIX: The Manager should ALWAYS write the markup to `gui_state.txt`. The Parser's `ACTIVATE` scoping handles visibility automatically.
+- TPM PRINCIPLE: "The Muscle projects all options; the Theater chooses what to show."
+
+99) ILLEGAL COMMAND INJECTION PREFIXES
+- SYMPTOM: Buttons with `onClick` strings (e.g., `COMMAND:SET_API`) fail to appear in `history.txt`.
+- ROOT CAUSE: `chtpm_parser.c` only supports specific prefixes for command injection: `MP3:`, `OP:`, and `SET_`.
+- FIX: Use a supported prefix like `SET_` (e.g., `onClick="SET_API:..."`). The parser will automatically prepend `COMMAND: ` in the history file.
+- TPM PRINCIPLE: "Speak the language of the Theater if you want your commands to be heard."
+
+100) BRITTLE HISTORY PARSING (TIMESTAMP DRIFT)
+- SYMPTOM: Commands appear in `history.txt` but are ignored by the Manager.
+- ROOT CAUSE: Manager using `strncmp(line, "COMMAND:", 8)` which fails when timestamps or other metadata precede the command.
+- FIX: Use `strstr(line, "MY_COMMAND:")` to find the command anywhere in the history line.
+- TPM PRINCIPLE: "Look for the signal, ignore the noise."
+
 ================================================================================
 END OF NEW PITFALLS
 ================================================================================
