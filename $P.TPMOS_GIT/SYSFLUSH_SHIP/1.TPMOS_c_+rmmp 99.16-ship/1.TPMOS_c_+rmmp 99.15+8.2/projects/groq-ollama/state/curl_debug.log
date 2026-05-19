@@ -1,0 +1,18 @@
+*   Trying 10.0.0.144:11434...
+* Connected to 10.0.0.144 (10.0.0.144) port 11434 (#0)
+> POST /api/chat HTTP/1.1
+> Host: 10.0.0.144:11434
+> User-Agent: curl/7.81.0
+> Accept: */*
+> Content-Type: application/json
+> Content-Length: 1311
+> 
+} [1311 bytes data]
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 200 OK
+< Content-Type: application/json; charset=utf-8
+< Date: Tue, 19 May 2026 04:23:17 GMT
+< Content-Length: 375
+< 
+{ [375 bytes data]
+* Connection #0 to host 10.0.0.144 left intact

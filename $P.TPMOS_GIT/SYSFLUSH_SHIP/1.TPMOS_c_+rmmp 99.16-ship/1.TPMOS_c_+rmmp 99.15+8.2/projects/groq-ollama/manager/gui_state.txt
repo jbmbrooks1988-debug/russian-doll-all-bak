@@ -1,0 +1,10 @@
+module_path=projects/groq-ollama/manager/+x/groq-ollama_manager.+x
+active_layout_id=groq-ollama.chtpm
+ai_state=IDLE
+active_api=http://10.0.0.144:11434
+ctx_pct=0%
+iqabel_fsm=IDLE
+groq-ollama_response_area=║ Connected to http://10.0.0.144:11434                                       ║
+groq-ollama_api_menu=        <button label="local" onClick="SET_API:http://localhost:11434" /><br/>        <button label="macbook" onClick="SET_API:http://10.0.0.144:11434" /><br/>        <button label="desktop" onClick="SET_API:http://10.0.0.187:11434" /><br/>        <button label="debian" onClick="SET_API:http://10.0.0.16:11434" /><br/>
+sys_msg=Switched to llama3:latest
+input_text=

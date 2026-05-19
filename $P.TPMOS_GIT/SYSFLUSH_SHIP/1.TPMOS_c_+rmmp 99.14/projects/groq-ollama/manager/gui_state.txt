@@ -1,9 +1,0 @@
-module_path=projects/groq-ollama/manager/+x/groq-ollama_manager.+x
-active_layout_id=groq-ollama.chtpm
-ai_state=IDLE
-active_api=http://localhost:11434
-ctx_pct=13%
-iqabel_fsm=IDLE
-groq-ollama_response_area=║ Ready for input...                                                         ║
-sys_msg=Initialized.
-input_text=
