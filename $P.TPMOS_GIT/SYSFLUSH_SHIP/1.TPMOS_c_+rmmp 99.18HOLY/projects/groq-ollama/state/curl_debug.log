@@ -1,0 +1,20 @@
+*   Trying 10.0.0.144:8080...
+* Connected to 10.0.0.144 (10.0.0.144) port 8080 (#0)
+> POST /v1/chat/completions HTTP/1.1
+> Host: 10.0.0.144:8080
+> User-Agent: curl/7.81.0
+> Accept: */*
+> Content-Type: application/json
+> Content-Length: 515
+> 
+} [515 bytes data]
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 200 OK
+< Content-Type: application/json; charset=utf-8
+< Keep-Alive: timeout=5, max=100
+< Server: llama.cpp
+< Access-Control-Allow-Origin: 
+< Content-Length: 655
+< 
+{ [655 bytes data]
+* Connection #0 to host 10.0.0.144 left intact
