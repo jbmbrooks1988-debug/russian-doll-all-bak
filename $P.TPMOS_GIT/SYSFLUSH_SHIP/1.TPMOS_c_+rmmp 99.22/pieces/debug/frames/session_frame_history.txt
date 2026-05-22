@@ -1,0 +1,341 @@
+=== NEW SESSION at 2026-05-21 16:40:37 ===
+
+--- FRAME UPDATE at 2026-05-21 16:40:37 ---
++===========================================================+
+|                                                           |
+|           C H T P M + O S   C L I   v2.0                 |
+|                                                           |
+|  CHTPM+OS Main Menu                                      |
+|                                                           |
+|  [>] 1. [Project Loader]                             |
+|  [ ] 2. [App Store (Fondu)]                          |
+|  [ ] 3. [Status]  [ ] 4. [GL-OS]                                          |
+|  [ ] 5. [Process Monitor]                            |
+|  [ ] 6. [Toggle Frame History (Current: )]                                         |
+|  [ ] 7. [Help]                                            |
+|                                                           |
++===========================================================+
+|  Running Applications: None                               |
+|  System Time: 08:00:00 | Turn: 0 | Key: None |
++===========================================================+
+|                                                           |
+|  $ | [ ] 8. [hi]                                                 |                                                 |
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-21 16:40:39 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [>] 1. [xsr]                                           ║
+║  [ ] 2. [user]                                          ║
+║  [ ] 3. [checkers]                                      ║
+║  [ ] 4. [cyoa-engine]                                   ║
+║  [ ] 5. [man-ops]                                       ║
+║  [ ] 6. [gltpm-demo]                                    ║
+║  [ ] 7. [chat-op]                                       ║
+║  [ ] 8. [test_fondu]                                    ║
+║  [ ] 9. [p2p-net]                                       ║
+║  [ ] 10. [trunk]                                         ║
+║  [ ] 11. [bots-sov]                                      ║
+║  [ ] 12. [piececraft-3d]                                 ║
+║  [ ] 13. [fuzz-op]                                       ║
+║  [ ] 14. [404-test]                                      ║
+║  [ ] 15. [op-ed]                                         ║
+║  [ ] 16. [lsr]                                           ║
+║  [ ] 17. [demo_1]                                        ║
+║  [ ] 18. [man-pal]                                       ║
+║  [ ] 19. [hangman]                                       ║
+║  [ ] 20. [yahoo]                                         ║
+║  [ ] 21. [man-add]                                       ║
+║  [ ] 22. [bot-editor]                                    ║
+║  [ ] 23. [aow-2d]                                        ║
+║  [ ] 24. [mp3-store]                                     ║
+║  [ ] 25. [gitlet]                                        ║
+║  [ ] 26. [groq-ollama]                                   ║
+║  [ ] 27. [+-demo]                                        ║
+║  [ ] 28. [template]                                      ║
+║  [ ] 29. [ai-labs]                                       ║
+║  [ ] 30. [agy-text-editor]                               ║
+║  [ ] 31. [blank]                                         ║
+║  [ ] 32. [aow]                                           ║
+║  [ ] 33. [fuzz-op-gl]                                    ║
+║  [ ] 34. [quiz-engine]                                   ║
+║  [ ] 35. [op-ed-gl]                                      ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 36. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-21 16:40:42 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [ ] 1. [xsr]                                           ║
+║  [ ] 2. [user]                                          ║
+║  [>] 3. [checkers]                                      ║
+║  [ ] 4. [cyoa-engine]                                   ║
+║  [ ] 5. [man-ops]                                       ║
+║  [ ] 6. [gltpm-demo]                                    ║
+║  [ ] 7. [chat-op]                                       ║
+║  [ ] 8. [test_fondu]                                    ║
+║  [ ] 9. [p2p-net]                                       ║
+║  [ ] 10. [trunk]                                         ║
+║  [ ] 11. [bots-sov]                                      ║
+║  [ ] 12. [piececraft-3d]                                 ║
+║  [ ] 13. [fuzz-op]                                       ║
+║  [ ] 14. [404-test]                                      ║
+║  [ ] 15. [op-ed]                                         ║
+║  [ ] 16. [lsr]                                           ║
+║  [ ] 17. [demo_1]                                        ║
+║  [ ] 18. [man-pal]                                       ║
+║  [ ] 19. [hangman]                                       ║
+║  [ ] 20. [yahoo]                                         ║
+║  [ ] 21. [man-add]                                       ║
+║  [ ] 22. [bot-editor]                                    ║
+║  [ ] 23. [aow-2d]                                        ║
+║  [ ] 24. [mp3-store]                                     ║
+║  [ ] 25. [gitlet]                                        ║
+║  [ ] 26. [groq-ollama]                                   ║
+║  [ ] 27. [+-demo]                                        ║
+║  [ ] 28. [template]                                      ║
+║  [ ] 29. [ai-labs]                                       ║
+║  [ ] 30. [agy-text-editor]                               ║
+║  [ ] 31. [blank]                                         ║
+║  [ ] 32. [aow]                                           ║
+║  [ ] 33. [fuzz-op-gl]                                    ║
+║  [ ] 34. [quiz-engine]                                   ║
+║  [ ] 35. [op-ed-gl]                                      ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 36. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > 3_
+
+
+--- FRAME UPDATE at 2026-05-21 16:40:42 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [ ] 1. [xsr]                                           ║
+║  [ ] 2. [user]                                          ║
+║  [ ] 3. [checkers]                                      ║
+║  [ ] 4. [cyoa-engine]                                   ║
+║  [ ] 5. [man-ops]                                       ║
+║  [ ] 6. [gltpm-demo]                                    ║
+║  [ ] 7. [chat-op]                                       ║
+║  [ ] 8. [test_fondu]                                    ║
+║  [ ] 9. [p2p-net]                                       ║
+║  [ ] 10. [trunk]                                         ║
+║  [ ] 11. [bots-sov]                                      ║
+║  [ ] 12. [piececraft-3d]                                 ║
+║  [ ] 13. [fuzz-op]                                       ║
+║  [ ] 14. [404-test]                                      ║
+║  [ ] 15. [op-ed]                                         ║
+║  [ ] 16. [lsr]                                           ║
+║  [ ] 17. [demo_1]                                        ║
+║  [ ] 18. [man-pal]                                       ║
+║  [ ] 19. [hangman]                                       ║
+║  [ ] 20. [yahoo]                                         ║
+║  [ ] 21. [man-add]                                       ║
+║  [ ] 22. [bot-editor]                                    ║
+║  [ ] 23. [aow-2d]                                        ║
+║  [ ] 24. [mp3-store]                                     ║
+║  [ ] 25. [gitlet]                                        ║
+║  [ ] 26. [groq-ollama]                                   ║
+║  [ ] 27. [+-demo]                                        ║
+║  [ ] 28. [template]                                      ║
+║  [ ] 29. [ai-labs]                                       ║
+║  [>] 30. [agy-text-editor]                               ║
+║  [ ] 31. [blank]                                         ║
+║  [ ] 32. [aow]                                           ║
+║  [ ] 33. [fuzz-op-gl]                                    ║
+║  [ ] 34. [quiz-engine]                                   ║
+║  [ ] 35. [op-ed-gl]                                      ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 36. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > 30_
+
+
+--- FRAME UPDATE at 2026-05-21 16:40:43 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [>] 1. [xsr]                                           ║
+║  [ ] 2. [user]                                          ║
+║  [ ] 3. [checkers]                                      ║
+║  [ ] 4. [cyoa-engine]                                   ║
+║  [ ] 5. [man-ops]                                       ║
+║  [ ] 6. [gltpm-demo]                                    ║
+║  [ ] 7. [chat-op]                                       ║
+║  [ ] 8. [test_fondu]                                    ║
+║  [ ] 9. [p2p-net]                                       ║
+║  [ ] 10. [trunk]                                         ║
+║  [ ] 11. [bots-sov]                                      ║
+║  [ ] 12. [piececraft-3d]                                 ║
+║  [ ] 13. [fuzz-op]                                       ║
+║  [ ] 14. [404-test]                                      ║
+║  [ ] 15. [op-ed]                                         ║
+║  [ ] 16. [lsr]                                           ║
+║  [ ] 17. [demo_1]                                        ║
+║  [ ] 18. [man-pal]                                       ║
+║  [ ] 19. [hangman]                                       ║
+║  [ ] 20. [yahoo]                                         ║
+║  [ ] 21. [man-add]                                       ║
+║  [ ] 22. [bot-editor]                                    ║
+║  [ ] 23. [aow-2d]                                        ║
+║  [ ] 24. [mp3-store]                                     ║
+║  [ ] 25. [gitlet]                                        ║
+║  [ ] 26. [groq-ollama]                                   ║
+║  [ ] 27. [+-demo]                                        ║
+║  [ ] 28. [template]                                      ║
+║  [ ] 29. [ai-labs]                                       ║
+║  [ ] 30. [agy-text-editor]                               ║
+║  [ ] 31. [blank]                                         ║
+║  [ ] 32. [aow]                                           ║
+║  [ ] 33. [fuzz-op-gl]                                    ║
+║  [ ] 34. [quiz-engine]                                   ║
+║  [ ] 35. [op-ed-gl]                                      ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 36. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-21 16:40:43 ---
+╔════════════ A G Y   E D I T O R ════════════╗
+║                                             ║
+║  Hello World from TPMOS Text Editor!      ║
+║  This is a simple file.                   ║
+║  We can edit, save and load.              ║
+║  hi new                                   ║
+║                                             ║
+║                                             ║
+║                                             ║
+╠═════════════════════════════════════════════╣
+║ INPUT: | [>] 1. [hi]                                                 |
+║                                             ║
+╠═════════════════════════════════════════════╣
+║  [ ] 2. [APPEND LINE]                                   ║
+║  [ ] 3. [CLEAR FILE]                                    ║
+║  [ ] 4. [FILE MENU]                                     ║
+║  [ ] 5. [EXIT TO OS]                                    ║
+╚═════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-21 16:40:45 ---
+╔════════════ A G Y   E D I T O R ════════════╗
+║                                             ║
+║  Hello World from TPMOS Text Editor!      ║
+║  This is a simple file.                   ║
+║  We can edit, save and load.              ║
+║  hi new                                   ║
+║                                             ║
+║                                             ║
+║                                             ║
+╠═════════════════════════════════════════════╣
+║ INPUT: | [ ] 1. [hi]                                                 |
+║                                             ║
+╠═════════════════════════════════════════════╣
+║  [>] 2. [APPEND LINE]                                   ║
+║  [ ] 3. [CLEAR FILE]                                    ║
+║  [ ] 4. [FILE MENU]                                     ║
+║  [ ] 5. [EXIT TO OS]                                    ║
+╚═════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-21 16:40:45 ---
+╔════════════ A G Y   E D I T O R ════════════╗
+║                                             ║
+║  Hello World from TPMOS Text Editor!      ║
+║  This is a simple file.                   ║
+║  We can edit, save and load.              ║
+║  hi new                                   ║
+║                                             ║
+║                                             ║
+║                                             ║
+╠═════════════════════════════════════════════╣
+║ INPUT: | [ ] 1. [hi]                                                 |
+║                                             ║
+╠═════════════════════════════════════════════╣
+║  [ ] 2. [APPEND LINE]                                   ║
+║  [>] 3. [CLEAR FILE]                                    ║
+║  [ ] 4. [FILE MENU]                                     ║
+║  [ ] 5. [EXIT TO OS]                                    ║
+╚═════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-21 16:40:45 ---
+╔════════════ A G Y   E D I T O R ════════════╗
+║                                             ║
+║  Hello World from TPMOS Text Editor!      ║
+║  This is a simple file.                   ║
+║  We can edit, save and load.              ║
+║  hi new                                   ║
+║                                             ║
+║                                             ║
+║                                             ║
+╠═════════════════════════════════════════════╣
+║ INPUT: | [ ] 1. [hi]                                                 |
+║                                             ║
+╠═════════════════════════════════════════════╣
+║  [ ] 2. [APPEND LINE]                                   ║
+║  [ ] 3. [CLEAR FILE]                                    ║
+║  [>] 4. [FILE MENU]                                     ║
+║  [ ] 5. [EXIT TO OS]                                    ║
+╚═════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-21 16:40:45 ---
+╔══════════════ F I L E   M E N U ════════════╗
+║                                             ║
+║  FILE: projects/agy-text-editor/pieces/do ║
+║                                             ║
+║  [>] 1. [SAVE FILE]                      ║
+║  [ ] 2. [SAVE AS...]                     ║
+║  [ ] 3. [LOAD FILE...]                   ║
+║  [ ] 4. [BACK TO EDITOR]                 ║
+║                                             ║
+╠═════════════════════════════════════════════╣
+| ║  Ready.                                   ║         |
+
+╚═════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+

@@ -1,0 +1,16 @@
+module_path=projects/agy-text-editor/manager/+x/agy-text-editor_manager.+x
+active_layout_id=editor.chtpm
+editor_content=<text label="║  Hello World from TPMOS Text Editor!      ║" /><br/><text label="║  This is a simple file.                   ║" /><br/><text label="║  We can edit, save and load.              ║" /><br/><text label="║  hi new                                   ║" /><br/><text label="║                                             ║" /><br/><text label="║                                             ║" /><br/>
+input_line=hihi
+active_file_info_line=<text label="║  FILE: projects/agy-text-editor/pieces/do ║" /><br/>
+editor_response_line=║  Ready.                                   ║
+browser_mode_header=<text label="║  MODE: LOAD FILE                            ║" /><br/>
+browser_current_dir_line=<text label="║  DIR: projects/agy-text-editor            ║" /><br/>
+search_query_val=
+file_path_input_val=projects/agy-text-editor/pieces/document.txt
+autocomplete_suggestions_markup=<text label="║  SUGGESTIONS:                               ║" /><br/><text label="║  " /><button label="...ditor/pieces/document.txt" onClick="AUTOCOMPLETE:projects/agy-text-editor/pieces/document.txt" /><text label="   " /><text label=" ║" /><br/>
+directory_browser_markup=<text label="║  " /><button label="[..] Up" onClick="SET_DIR:projects" /><text label="                        " /><text label=" ║" /><br/><text label="║  " /><button label="layouts/" onClick="SET_DIR:projects/agy-text-editor/layouts" /><text label="                       " /><text label=" ║" /><br/><text label="║  " /><button label="manager/" onClick="SET_DIR:projects/agy-text-editor/manager" /><text label="                       " /><text label=" ║" /><br/><text label="║  " /><button label="pieces/" onClick="SET_DIR:projects/agy-text-editor/pieces" /><text label="                        " /><text label=" ║" /><br/><text label="║  " /><button label="project.pdl" onClick="LOAD_FILE:projects/agy-text-editor/project.pdl" /><text label="                    " /><text label=" ║" /><br/>
+browser_action_buttons_markup=<text label="║  " /><button label="LOAD FILE" onClick="LOAD_ACTION" /><text label="                      " /><text label=" ║" /><br/><text label="║  " /><button label="CANCEL" href="projects/agy-text-editor/layouts/file_menu.chtpm" /><text label="                        " /><text label=" ║" /><br/>
+slot_name_input=default
+slot_info_line=║  CURRENT SLOT: default                    ║
+slot_selection_markup=<text label="║  [Slots deprecated]                    ║" /><br/>

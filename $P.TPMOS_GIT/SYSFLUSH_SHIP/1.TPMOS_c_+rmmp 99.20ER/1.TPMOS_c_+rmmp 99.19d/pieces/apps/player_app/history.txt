@@ -1,2 +1,0 @@
-27
-COMMAND: MP3:PLAY:rb&u.book1.page76-v1.0.mp3

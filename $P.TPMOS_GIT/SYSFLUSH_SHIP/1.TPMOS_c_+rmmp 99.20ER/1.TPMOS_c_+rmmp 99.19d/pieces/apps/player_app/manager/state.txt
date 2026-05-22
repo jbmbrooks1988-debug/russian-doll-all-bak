@@ -1,2 +1,0 @@
-project_id=mp3-store
-active_target_id=mp3_player
