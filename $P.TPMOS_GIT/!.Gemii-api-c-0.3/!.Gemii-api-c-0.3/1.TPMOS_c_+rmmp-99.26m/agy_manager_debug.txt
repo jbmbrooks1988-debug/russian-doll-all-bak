@@ -1,0 +1,1855 @@
+Processing key: 56
+Processing key: 56
+Processing key: 13
+Enter pressed in browser, active_idx: 2
+Auto-action on Enter for path: hi.txt
+Processing key: 13
+Enter pressed in browser, active_idx: 2
+Auto-action on Enter for path: hi.txt
+Processing key: 56
+Processing key: 56
+Processing key: 56
+Processing key: 56
+Processing key: 56
+Processing key: 1003
+Interact key: 1003
+Processing key: 1003
+Interact key: 1003
+Processing key: 1002
+Interact key: 1002
+Processing key: 13
+Interact key: 13
+Processing key: 1001
+Interact key: 1001
+Processing key: 1001
+Interact key: 1001
+Processing key: 1002
+Interact key: 1002
+Processing key: 1003
+Interact key: 1003
+Processing key: 100
+Interact key: 100
+Processing key: 102
+Interact key: 102
+Processing key: 119
+Interact key: 119
+Processing key: 1002
+Interact key: 1002
+Processing key: 99
+Interact key: 99
+Processing key: 1001
+Interact key: 1001, current pos: (0, 0), total_lines: 2
+New pos: (1, 0), total_lines: 2
+Processing key: 1001
+Interact key: 1001, current pos: (1, 0), total_lines: 2
+New pos: (2, 0), total_lines: 2
+Processing key: 1001
+Interact key: 1001, current pos: (2, 0), total_lines: 2
+New pos: (3, 0), total_lines: 2
+Processing key: 1003
+Interact key: 1003, current pos: (3, 0), total_lines: 2
+New pos: (1, 1), total_lines: 2
+Processing key: 1003
+Interact key: 1003, current pos: (1, 1), total_lines: 2
+New pos: (0, 2), total_lines: 3
+Processing key: 1001
+Interact key: 1001, current pos: (0, 2), total_lines: 3
+New pos: (1, 2), total_lines: 3
+Processing key: 1000
+Interact key: 1000, current pos: (1, 2), total_lines: 3
+New pos: (0, 2), total_lines: 3
+Processing key: 1002
+Interact key: 1002, current pos: (0, 2), total_lines: 3
+New pos: (0, 1), total_lines: 3
+Processing key: 102
+Interact key: 102, current pos: (0, 1), total_lines: 3
+New pos: (1, 1), total_lines: 3
+Processing key: 100
+Interact key: 100, current pos: (1, 1), total_lines: 3
+New pos: (2, 1), total_lines: 3
+Processing key: 97
+Interact key: 97, current pos: (2, 1), total_lines: 3
+New pos: (1, 1), total_lines: 3
+Processing key: 13
+Interact key: 13, current pos: (1, 1), total_lines: 3
+New pos: (0, 2), total_lines: 4
+Processing key: 1001
+Interact key: 1001, current pos: (0, 2), total_lines: 4
+New pos: (1, 2), total_lines: 4
+Processing key: 1001
+Interact key: 1001, current pos: (1, 2), total_lines: 4
+New pos: (2, 2), total_lines: 4
+Processing key: 1003
+Interact key: 1003, current pos: (2, 2), total_lines: 4
+New pos: (1, 3), total_lines: 4
+Processing key: 1000
+Interact key: 1000, current pos: (1, 3), total_lines: 4
+New pos: (0, 3), total_lines: 4
+Processing key: 1001
+Interact key: 1001, current pos: (0, 3), total_lines: 4
+New pos: (1, 3), total_lines: 4
+Processing key: 1000
+Interact key: 1000, current pos: (1, 3), total_lines: 4
+New pos: (0, 3), total_lines: 4
+Processing key: 1002
+Interact key: 1002, current pos: (0, 3), total_lines: 4
+New pos: (0, 2), total_lines: 4
+Processing key: 1001
+Interact key: 1001, current pos: (0, 0), total_lines: 4
+New pos: (1, 0), total_lines: 4
+Processing key: 1001
+Interact key: 1001, current pos: (1, 0), total_lines: 4
+New pos: (2, 0), total_lines: 4
+Processing key: 1003
+Interact key: 1003, current pos: (2, 0), total_lines: 4
+New pos: (1, 1), total_lines: 4
+Processing key: 1003
+Interact key: 1003, current pos: (1, 1), total_lines: 4
+New pos: (1, 2), total_lines: 4
+Processing key: 1002
+Interact key: 1002, current pos: (1, 2), total_lines: 4
+New pos: (1, 1), total_lines: 4
+gui_state.txt updated. Cursor pos: (0, 0)
+Processing key: 1001
+Interact key: 1001, current pos: (0, 0), total_lines: 4
+New pos: (1, 0), total_lines: 4
+gui_state.txt updated. Cursor pos: (1, 0)
+Render triggered (Markers hit)
+Processing key: 1001
+Interact key: 1001, current pos: (1, 0), total_lines: 4
+New pos: (2, 0), total_lines: 4
+gui_state.txt updated. Cursor pos: (2, 0)
+Render triggered (Markers hit)
+Processing key: 1001
+Interact key: 1001, current pos: (2, 0), total_lines: 4
+New pos: (3, 0), total_lines: 4
+gui_state.txt updated. Cursor pos: (3, 0)
+Render triggered (Markers hit)
+Processing key: 1003
+Interact key: 1003, current pos: (3, 0), total_lines: 4
+New pos: (1, 1), total_lines: 4
+gui_state.txt updated. Cursor pos: (1, 1)
+Render triggered (Markers hit)
+Processing key: 104
+Interact key: 104, current pos: (1, 1), total_lines: 4
+New pos: (2, 1), total_lines: 4
+gui_state.txt updated. Cursor pos: (2, 1)
+Render triggered (Markers hit)
+Processing key: 105
+Interact key: 105, current pos: (2, 1), total_lines: 4
+New pos: (3, 1), total_lines: 4
+gui_state.txt updated. Cursor pos: (3, 1)
+Render triggered (Markers hit)
+Processing key: 32
+Interact key: 32, current pos: (3, 1), total_lines: 4
+New pos: (4, 1), total_lines: 4
+gui_state.txt updated. Cursor pos: (4, 1)
+Render triggered (Markers hit)
+Processing key: 104
+Interact key: 104, current pos: (4, 1), total_lines: 4
+New pos: (5, 1), total_lines: 4
+gui_state.txt updated. Cursor pos: (5, 1)
+Render triggered (Markers hit)
+Processing key: 111
+Interact key: 111, current pos: (5, 1), total_lines: 4
+New pos: (6, 1), total_lines: 4
+gui_state.txt updated. Cursor pos: (6, 1)
+Render triggered (Markers hit)
+Processing key: 119
+Interact key: 119, current pos: (6, 1), total_lines: 4
+New pos: (3, 0), total_lines: 4
+gui_state.txt updated. Cursor pos: (3, 0)
+Render triggered (Markers hit)
+Processing key: 32
+Interact key: 32, current pos: (3, 0), total_lines: 4
+New pos: (4, 0), total_lines: 4
+gui_state.txt updated. Cursor pos: (4, 0)
+Render triggered (Markers hit)
+Processing key: 97
+Interact key: 97, current pos: (4, 0), total_lines: 4
+New pos: (3, 0), total_lines: 4
+gui_state.txt updated. Cursor pos: (3, 0)
+Render triggered (Markers hit)
+Processing key: 1003
+Interact key: 1003, current pos: (3, 0), total_lines: 4
+New pos: (3, 1), total_lines: 4
+gui_state.txt updated. Cursor pos: (3, 1)
+Render triggered (Markers hit)
+Processing key: 1001
+Interact key: 1001, current pos: (3, 1), total_lines: 4
+New pos: (4, 1), total_lines: 4
+gui_state.txt updated. Cursor pos: (4, 1)
+Render triggered (Markers hit)
+Processing key: 1001
+Interact key: 1001, current pos: (4, 1), total_lines: 4
+New pos: (5, 1), total_lines: 4
+gui_state.txt updated. Cursor pos: (5, 1)
+Render triggered (Markers hit)
+Processing key: 1001
+Interact key: 1001, current pos: (5, 1), total_lines: 4
+New pos: (6, 1), total_lines: 4
+gui_state.txt updated. Cursor pos: (6, 1)
+Render triggered (Markers hit)
+Processing key: 1001
+Interact key: 1001, current pos: (6, 1), total_lines: 4
+New pos: (7, 1), total_lines: 4
+gui_state.txt updated. Cursor pos: (7, 1)
+Render triggered (Markers hit)
+Processing key: 1001
+Interact key: 1001, current pos: (7, 1), total_lines: 4
+New pos: (8, 1), total_lines: 4
+gui_state.txt updated. Cursor pos: (8, 1)
+Render triggered (Markers hit)
+Processing key: 119
+Interact key: 119, current pos: (8, 1), total_lines: 4
+New pos: (4, 0), total_lines: 4
+gui_state.txt updated. Cursor pos: (4, 0)
+Render triggered (Markers hit)
+Processing key: 32
+Interact key: 32, current pos: (4, 0), total_lines: 4
+New pos: (5, 0), total_lines: 4
+gui_state.txt updated. Cursor pos: (5, 0)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (0, 0)
+Processing key: 1001
+Interact key: 1001, current pos: (0, 0), total_lines: 4
+New pos: (1, 0), total_lines: 4
+gui_state.txt updated. Cursor pos: (1, 0)
+Render triggered (Markers hit)
+Processing key: 1001
+Interact key: 1001, current pos: (1, 0), total_lines: 4
+New pos: (2, 0), total_lines: 4
+gui_state.txt updated. Cursor pos: (2, 0)
+Render triggered (Markers hit)
+Processing key: 1001
+Interact key: 1001, current pos: (2, 0), total_lines: 4
+New pos: (3, 0), total_lines: 4
+gui_state.txt updated. Cursor pos: (3, 0)
+Render triggered (Markers hit)
+Processing key: 1001
+Interact key: 1001, current pos: (3, 0), total_lines: 4
+New pos: (4, 0), total_lines: 4
+gui_state.txt updated. Cursor pos: (4, 0)
+Render triggered (Markers hit)
+Processing key: 1003
+Interact key: 1003, current pos: (4, 0), total_lines: 4
+New pos: (4, 1), total_lines: 4
+gui_state.txt updated. Cursor pos: (4, 1)
+Render triggered (Markers hit)
+Processing key: 1003
+Interact key: 1003, current pos: (4, 1), total_lines: 4
+New pos: (2, 2), total_lines: 4
+gui_state.txt updated. Cursor pos: (2, 2)
+Render triggered (Markers hit)
+Processing key: 1003
+Interact key: 1003, current pos: (2, 2), total_lines: 4
+New pos: (1, 3), total_lines: 4
+gui_state.txt updated. Cursor pos: (1, 3)
+Render triggered (Markers hit)
+Processing key: 1003
+Interact key: 1003, current pos: (1, 3), total_lines: 4
+New pos: (0, 4), total_lines: 5
+gui_state.txt updated. Cursor pos: (0, 4)
+Render triggered (Markers hit)
+Processing key: 104
+Interact key: 104, current pos: (0, 4), total_lines: 5
+New pos: (1, 4), total_lines: 5
+gui_state.txt updated. Cursor pos: (1, 4)
+Render triggered (Markers hit)
+Processing key: 105
+Interact key: 105, current pos: (1, 4), total_lines: 5
+New pos: (2, 4), total_lines: 5
+gui_state.txt updated. Cursor pos: (2, 4)
+Render triggered (Markers hit)
+Processing key: 32
+Interact key: 32, current pos: (2, 4), total_lines: 5
+New pos: (3, 4), total_lines: 5
+gui_state.txt updated. Cursor pos: (3, 4)
+Render triggered (Markers hit)
+Processing key: 104
+Interact key: 104, current pos: (3, 4), total_lines: 5
+New pos: (4, 4), total_lines: 5
+gui_state.txt updated. Cursor pos: (4, 4)
+Render triggered (Markers hit)
+Processing key: 111
+Interact key: 111, current pos: (4, 4), total_lines: 5
+New pos: (5, 4), total_lines: 5
+gui_state.txt updated. Cursor pos: (5, 4)
+Render triggered (Markers hit)
+Processing key: 119
+Interact key: 119, current pos: (5, 4), total_lines: 5
+New pos: (1, 3), total_lines: 5
+gui_state.txt updated. Cursor pos: (1, 3)
+Render triggered (Markers hit)
+Processing key: 32
+Interact key: 32, current pos: (1, 3), total_lines: 5
+New pos: (2, 3), total_lines: 5
+gui_state.txt updated. Cursor pos: (2, 3)
+Render triggered (Markers hit)
+Processing key: 97
+Interact key: 97, current pos: (2, 3), total_lines: 5
+New pos: (1, 3), total_lines: 5
+gui_state.txt updated. Cursor pos: (1, 3)
+Render triggered (Markers hit)
+Processing key: 114
+Interact key: 114, current pos: (1, 3), total_lines: 5
+New pos: (2, 3), total_lines: 5
+gui_state.txt updated. Cursor pos: (2, 3)
+Render triggered (Markers hit)
+Processing key: 101
+Interact key: 101, current pos: (2, 3), total_lines: 5
+New pos: (3, 3), total_lines: 5
+gui_state.txt updated. Cursor pos: (3, 3)
+Render triggered (Markers hit)
+Processing key: 32
+Interact key: 32, current pos: (3, 3), total_lines: 5
+New pos: (4, 3), total_lines: 5
+gui_state.txt updated. Cursor pos: (4, 3)
+Render triggered (Markers hit)
+Processing key: 117
+Interact key: 117, current pos: (4, 3), total_lines: 5
+New pos: (5, 3), total_lines: 5
+gui_state.txt updated. Cursor pos: (5, 3)
+Render triggered (Markers hit)
+Processing key: 32
+Interact key: 32, current pos: (5, 3), total_lines: 5
+New pos: (6, 3), total_lines: 5
+gui_state.txt updated. Cursor pos: (6, 3)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (0, 0)
+Processing key: 57
+gui_state.txt updated. Cursor pos: (0, 0)
+Render triggered (Markers hit)
+Processing key: 57
+gui_state.txt updated. Cursor pos: (6, 3)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (0, 0)
+gui_state.txt updated. Cursor pos: (0, 0)
+gui_state.txt updated. Cursor pos: (0, 0)
+gui_state.txt updated. Cursor pos: (0, 0)
+Processing key: 56
+gui_state.txt updated. Cursor pos: (0, 0)
+Render triggered (Markers hit)
+Processing key: 56
+gui_state.txt updated. Cursor pos: (0, 0)
+Render triggered (Markers hit)
+Processing key: 13
+Processing key: 13
+Enter pressed in browser, active_idx: 2
+Enter pressed in browser, active_idx: 2
+Auto-action on Enter for path: hi.txt
+Auto-action on Enter for path: hi.txt
+gui_state.txt updated. Cursor pos: (0, 0)
+gui_state.txt updated. Cursor pos: (0, 0)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (0, 0)
+Processing key: 57
+gui_state.txt updated. Cursor pos: (0, 0)
+Render triggered (Markers hit)
+Processing key: 57
+gui_state.txt updated. Cursor pos: (0, 0)
+Render triggered (Markers hit)
+Processing key: 57
+gui_state.txt updated. Cursor pos: (0, 0)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (0, 0)
+gui_state.txt updated. Cursor pos: (0, 0)
+gui_state.txt updated. Cursor pos: (0, 0)
+gui_state.txt updated. Cursor pos: (0, 0)
+Processing key: 57
+gui_state.txt updated. Cursor pos: (0, 0)
+Render triggered (Markers hit)
+Processing key: 57
+gui_state.txt updated. Cursor pos: (0, 0)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (0, 0)
+gui_state.txt updated. Cursor pos: (0, 0)
+Processing key: 1003
+Interact key: 1003, current pos: (0, 0), total_lines: 5
+New pos: (0, 1), total_lines: 5
+gui_state.txt updated. Cursor pos: (0, 1)
+Render triggered (Markers hit)
+Processing key: 1003
+Processing key: 1003
+Interact key: 1003, current pos: (0, 0), total_lines: 5
+Interact key: 1003, current pos: (0, 0), total_lines: 5
+New pos: (0, 1), total_lines: 5
+New pos: (0, 1), total_lines: 5
+gui_state.txt updated. Cursor pos: (0, 1)
+gui_state.txt updated. Cursor pos: (0, 1)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Processing key: 1003
+Interact key: 1003, current pos: (0, 0), total_lines: 5
+New pos: (0, 1), total_lines: 5
+gui_state.txt updated. Cursor pos: (0, 1)
+Render triggered (Markers hit)
+Processing key: 1003
+Interact key: 1003, current pos: (0, 1), total_lines: 5
+New pos: (0, 2), total_lines: 5
+gui_state.txt updated. Cursor pos: (0, 2)
+Render triggered (Markers hit)
+Processing key: 1003
+Interact key: 1003, current pos: (0, 1), total_lines: 5
+New pos: (0, 2), total_lines: 5
+gui_state.txt updated. Cursor pos: (0, 2)
+Processing key: 1003
+Interact key: 1003, current pos: (0, 1), total_lines: 5
+New pos: (0, 2), total_lines: 5
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (0, 2)
+Processing key: 1003
+Interact key: 1003, current pos: (0, 1), total_lines: 5
+New pos: (0, 2), total_lines: 5
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (0, 2)
+Render triggered (Markers hit)
+Processing key: 1003
+Interact key: 1003, current pos: (0, 2), total_lines: 5
+New pos: (0, 3), total_lines: 5
+gui_state.txt updated. Cursor pos: (0, 3)
+Render triggered (Markers hit)
+Processing key: 1003
+Interact key: 1003, current pos: (0, 2), total_lines: 5
+New pos: (0, 3), total_lines: 5
+Processing key: 1003
+Interact key: 1003, current pos: (0, 2), total_lines: 5
+New pos: (0, 3), total_lines: 5
+gui_state.txt updated. Cursor pos: (0, 3)
+gui_state.txt updated. Cursor pos: (0, 3)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Processing key: 1003
+Interact key: 1003, current pos: (0, 2), total_lines: 5
+New pos: (0, 3), total_lines: 5
+gui_state.txt updated. Cursor pos: (0, 3)
+Render triggered (Markers hit)
+Processing key: 1003
+Interact key: 1003, current pos: (0, 3), total_lines: 5
+New pos: (0, 4), total_lines: 5
+gui_state.txt updated. Cursor pos: (0, 4)
+Render triggered (Markers hit)
+Processing key: 1003
+Processing key: 1003
+Processing key: 1003
+Interact key: 1003, current pos: (0, 3), total_lines: 5
+Interact key: 1003, current pos: (0, 3), total_lines: 5
+Interact key: 1003, current pos: (0, 3), total_lines: 5
+New pos: (0, 4), total_lines: 5
+New pos: (0, 4), total_lines: 5
+New pos: (0, 4), total_lines: 5
+gui_state.txt updated. Cursor pos: (0, 4)
+gui_state.txt updated. Cursor pos: (0, 4)
+gui_state.txt updated. Cursor pos: (0, 4)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Processing key: 1003
+Processing key: 1003
+Interact key: 1003, current pos: (0, 4), total_lines: 5
+Interact key: 1003, current pos: (0, 4), total_lines: 5
+New pos: (0, 5), total_lines: 6
+New pos: (0, 5), total_lines: 6
+Processing key: 1003
+Interact key: 1003, current pos: (0, 4), total_lines: 5
+New pos: (0, 5), total_lines: 6
+Processing key: 1003
+Interact key: 1003, current pos: (0, 4), total_lines: 5
+gui_state.txt updated. Cursor pos: (0, 5)
+New pos: (0, 5), total_lines: 6
+gui_state.txt updated. Cursor pos: (0, 5)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (0, 5)
+gui_state.txt updated. Cursor pos: (0, 5)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Processing key: 1003
+Interact key: 1003, current pos: (0, 5), total_lines: 6
+New pos: (0, 6), total_lines: 7
+Processing key: 1003
+Interact key: 1003, current pos: (0, 5), total_lines: 6
+New pos: (0, 6), total_lines: 7
+Processing key: 1003
+Interact key: 1003, current pos: (0, 5), total_lines: 6
+New pos: (0, 6), total_lines: 7
+Processing key: 1003
+Interact key: 1003, current pos: (0, 5), total_lines: 6
+New pos: (0, 6), total_lines: 7
+gui_state.txt updated. Cursor pos: (0, 6)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (0, 6)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (0, 6)
+gui_state.txt updated. Cursor pos: (0, 6)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (0, 6), total_lines: 7
+New pos: (0, 5), total_lines: 6
+Processing key: 127
+Interact key: 127, current pos: (0, 6), total_lines: 7
+New pos: (0, 5), total_lines: 6
+gui_state.txt updated. Cursor pos: (0, 5)
+gui_state.txt updated. Cursor pos: (0, 5)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (0, 6), total_lines: 7
+New pos: (0, 5), total_lines: 6
+gui_state.txt updated. Cursor pos: (0, 5)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (0, 6), total_lines: 7
+New pos: (0, 5), total_lines: 6
+gui_state.txt updated. Cursor pos: (0, 5)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (0, 5), total_lines: 6
+New pos: (5, 4), total_lines: 5
+Processing key: 127
+Processing key: 127
+gui_state.txt updated. Cursor pos: (5, 4)
+Interact key: 127, current pos: (0, 5), total_lines: 6
+Interact key: 127, current pos: (0, 5), total_lines: 6
+New pos: (5, 4), total_lines: 5
+New pos: (5, 4), total_lines: 5
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (5, 4)
+Render triggered (Markers hit)
+Processing key: 127
+gui_state.txt updated. Cursor pos: (5, 4)
+Interact key: 127, current pos: (0, 5), total_lines: 6
+New pos: (5, 4), total_lines: 5
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (5, 4)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (5, 4), total_lines: 5
+New pos: (4, 4), total_lines: 5
+gui_state.txt updated. Cursor pos: (4, 4)
+Processing key: 127
+Interact key: 127, current pos: (5, 4), total_lines: 5
+New pos: (4, 4), total_lines: 5
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (5, 4), total_lines: 5
+New pos: (4, 4), total_lines: 5
+Processing key: 127
+Interact key: 127, current pos: (5, 4), total_lines: 5
+New pos: (4, 4), total_lines: 5
+gui_state.txt updated. Cursor pos: (4, 4)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (4, 4)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (4, 4)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (4, 4), total_lines: 5
+New pos: (3, 4), total_lines: 5
+gui_state.txt updated. Cursor pos: (3, 4)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (4, 4), total_lines: 5
+New pos: (3, 4), total_lines: 5
+Processing key: 127
+gui_state.txt updated. Cursor pos: (3, 4)
+Interact key: 127, current pos: (4, 4), total_lines: 5
+New pos: (3, 4), total_lines: 5
+Processing key: 127
+Render triggered (Markers hit)
+Interact key: 127, current pos: (4, 4), total_lines: 5
+New pos: (3, 4), total_lines: 5
+gui_state.txt updated. Cursor pos: (3, 4)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (3, 4)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (3, 4), total_lines: 5
+New pos: (2, 4), total_lines: 5
+gui_state.txt updated. Cursor pos: (2, 4)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (3, 4), total_lines: 5
+New pos: (2, 4), total_lines: 5
+gui_state.txt updated. Cursor pos: (2, 4)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (3, 4), total_lines: 5
+New pos: (2, 4), total_lines: 5
+Processing key: 127
+gui_state.txt updated. Cursor pos: (2, 4)
+Interact key: 127, current pos: (3, 4), total_lines: 5
+New pos: (2, 4), total_lines: 5
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (2, 4)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (2, 4), total_lines: 5
+New pos: (1, 4), total_lines: 5
+gui_state.txt updated. Cursor pos: (1, 4)
+Processing key: 127
+Interact key: 127, current pos: (2, 4), total_lines: 5
+New pos: (1, 4), total_lines: 5
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (2, 4), total_lines: 5
+New pos: (1, 4), total_lines: 5
+gui_state.txt updated. Cursor pos: (1, 4)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (1, 4)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (2, 4), total_lines: 5
+New pos: (1, 4), total_lines: 5
+gui_state.txt updated. Cursor pos: (1, 4)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (1, 4), total_lines: 5
+New pos: (0, 4), total_lines: 5
+Processing key: 127
+Interact key: 127, current pos: (1, 4), total_lines: 5
+New pos: (0, 4), total_lines: 5
+gui_state.txt updated. Cursor pos: (0, 4)
+gui_state.txt updated. Cursor pos: (0, 4)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (1, 4), total_lines: 5
+New pos: (0, 4), total_lines: 5
+gui_state.txt updated. Cursor pos: (0, 4)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (1, 4), total_lines: 5
+New pos: (0, 4), total_lines: 5
+gui_state.txt updated. Cursor pos: (0, 4)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (0, 4), total_lines: 5
+New pos: (7, 3), total_lines: 4
+gui_state.txt updated. Cursor pos: (7, 3)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (0, 4), total_lines: 5
+New pos: (7, 3), total_lines: 4
+Processing key: 127
+Interact key: 127, current pos: (0, 4), total_lines: 5
+New pos: (7, 3), total_lines: 4
+gui_state.txt updated. Cursor pos: (7, 3)
+gui_state.txt updated. Cursor pos: (7, 3)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (0, 4), total_lines: 5
+New pos: (7, 3), total_lines: 4
+gui_state.txt updated. Cursor pos: (7, 3)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (7, 3), total_lines: 4
+New pos: (6, 3), total_lines: 4
+Processing key: 127
+Interact key: 127, current pos: (7, 3), total_lines: 4
+New pos: (6, 3), total_lines: 4
+gui_state.txt updated. Cursor pos: (6, 3)
+Processing key: 127
+Interact key: 127, current pos: (7, 3), total_lines: 4
+New pos: (6, 3), total_lines: 4
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (6, 3)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (6, 3)
+Processing key: 127
+Interact key: 127, current pos: (7, 3), total_lines: 4
+New pos: (6, 3), total_lines: 4
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (6, 3)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (6, 3), total_lines: 4
+New pos: (5, 3), total_lines: 4
+Processing key: 127
+Interact key: 127, current pos: (6, 3), total_lines: 4
+gui_state.txt updated. Cursor pos: (5, 3)
+New pos: (5, 3), total_lines: 4
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (6, 3), total_lines: 4
+New pos: (5, 3), total_lines: 4
+gui_state.txt updated. Cursor pos: (5, 3)
+gui_state.txt updated. Cursor pos: (5, 3)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (6, 3), total_lines: 4
+New pos: (5, 3), total_lines: 4
+gui_state.txt updated. Cursor pos: (5, 3)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (5, 3), total_lines: 4
+New pos: (4, 3), total_lines: 4
+Processing key: 127
+Interact key: 127, current pos: (5, 3), total_lines: 4
+New pos: (4, 3), total_lines: 4
+gui_state.txt updated. Cursor pos: (4, 3)
+gui_state.txt updated. Cursor pos: (4, 3)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (5, 3), total_lines: 4
+New pos: (4, 3), total_lines: 4
+gui_state.txt updated. Cursor pos: (4, 3)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (5, 3), total_lines: 4
+New pos: (4, 3), total_lines: 4
+gui_state.txt updated. Cursor pos: (4, 3)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (4, 3), total_lines: 4
+New pos: (3, 3), total_lines: 4
+gui_state.txt updated. Cursor pos: (3, 3)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (4, 3), total_lines: 4
+New pos: (3, 3), total_lines: 4
+Processing key: 127
+Interact key: 127, current pos: (4, 3), total_lines: 4
+New pos: (3, 3), total_lines: 4
+Processing key: 127
+Interact key: 127, current pos: (4, 3), total_lines: 4
+New pos: (3, 3), total_lines: 4
+gui_state.txt updated. Cursor pos: (3, 3)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (3, 3)
+gui_state.txt updated. Cursor pos: (3, 3)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (3, 3), total_lines: 4
+New pos: (2, 3), total_lines: 4
+gui_state.txt updated. Cursor pos: (2, 3)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (3, 3), total_lines: 4
+New pos: (2, 3), total_lines: 4
+gui_state.txt updated. Cursor pos: (2, 3)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (3, 3), total_lines: 4
+New pos: (2, 3), total_lines: 4
+Processing key: 127
+Interact key: 127, current pos: (3, 3), total_lines: 4
+New pos: (2, 3), total_lines: 4
+gui_state.txt updated. Cursor pos: (2, 3)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (2, 3)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (2, 3), total_lines: 4
+New pos: (1, 3), total_lines: 4
+Processing key: 127
+Interact key: 127, current pos: (2, 3), total_lines: 4
+gui_state.txt updated. Cursor pos: (1, 3)
+New pos: (1, 3), total_lines: 4
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (2, 3), total_lines: 4
+New pos: (1, 3), total_lines: 4
+gui_state.txt updated. Cursor pos: (1, 3)
+gui_state.txt updated. Cursor pos: (1, 3)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (2, 3), total_lines: 4
+New pos: (1, 3), total_lines: 4
+gui_state.txt updated. Cursor pos: (1, 3)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (1, 3), total_lines: 4
+New pos: (0, 3), total_lines: 4
+Processing key: 127
+Interact key: 127, current pos: (1, 3), total_lines: 4
+New pos: (0, 3), total_lines: 4
+gui_state.txt updated. Cursor pos: (0, 3)
+Processing key: 127
+Interact key: 127, current pos: (1, 3), total_lines: 4
+New pos: (0, 3), total_lines: 4
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (0, 3)
+gui_state.txt updated. Cursor pos: (0, 3)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (1, 3), total_lines: 4
+New pos: (0, 3), total_lines: 4
+gui_state.txt updated. Cursor pos: (0, 3)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (0, 3), total_lines: 4
+New pos: (2, 2), total_lines: 3
+gui_state.txt updated. Cursor pos: (2, 2)
+Processing key: 127
+Interact key: 127, current pos: (0, 3), total_lines: 4
+New pos: (2, 2), total_lines: 3
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (2, 2)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (0, 3), total_lines: 4
+New pos: (2, 2), total_lines: 3
+gui_state.txt updated. Cursor pos: (2, 2)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (0, 3), total_lines: 4
+New pos: (2, 2), total_lines: 3
+gui_state.txt updated. Cursor pos: (2, 2)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (2, 2), total_lines: 3
+New pos: (1, 2), total_lines: 3
+Processing key: 127
+Interact key: 127, current pos: (2, 2), total_lines: 3
+New pos: (1, 2), total_lines: 3
+gui_state.txt updated. Cursor pos: (1, 2)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (1, 2)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (2, 2), total_lines: 3
+New pos: (1, 2), total_lines: 3
+gui_state.txt updated. Cursor pos: (1, 2)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (2, 2), total_lines: 3
+New pos: (1, 2), total_lines: 3
+gui_state.txt updated. Cursor pos: (1, 2)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (1, 2), total_lines: 3
+New pos: (0, 2), total_lines: 3
+gui_state.txt updated. Cursor pos: (0, 2)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (1, 2), total_lines: 3
+New pos: (0, 2), total_lines: 3
+Processing key: 127
+Interact key: 127, current pos: (1, 2), total_lines: 3
+New pos: (0, 2), total_lines: 3
+gui_state.txt updated. Cursor pos: (0, 2)
+gui_state.txt updated. Cursor pos: (0, 2)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (1, 2), total_lines: 3
+New pos: (0, 2), total_lines: 3
+gui_state.txt updated. Cursor pos: (0, 2)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (0, 2), total_lines: 3
+New pos: (8, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (8, 1)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (0, 2), total_lines: 3
+New pos: (8, 1), total_lines: 2
+Processing key: 127
+Interact key: 127, current pos: (0, 2), total_lines: 3
+New pos: (8, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (8, 1)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (8, 1)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (0, 2), total_lines: 3
+New pos: (8, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (8, 1)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (8, 1), total_lines: 2
+New pos: (7, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (7, 1)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (8, 1), total_lines: 2
+New pos: (7, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (7, 1)
+Processing key: 127
+Render triggered (Markers hit)
+Interact key: 127, current pos: (8, 1), total_lines: 2
+New pos: (7, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (7, 1)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (8, 1), total_lines: 2
+New pos: (7, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (7, 1)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (7, 1), total_lines: 2
+New pos: (6, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (6, 1)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (7, 1), total_lines: 2
+New pos: (6, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (6, 1)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (7, 1), total_lines: 2
+New pos: (6, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (6, 1)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (7, 1), total_lines: 2
+New pos: (6, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (6, 1)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (6, 1), total_lines: 2
+New pos: (5, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (5, 1)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (6, 1), total_lines: 2
+New pos: (5, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (5, 1)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (6, 1), total_lines: 2
+New pos: (5, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (5, 1)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (6, 1), total_lines: 2
+New pos: (5, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (5, 1)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (5, 1), total_lines: 2
+New pos: (4, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (4, 1)
+Processing key: 127
+Interact key: 127, current pos: (5, 1), total_lines: 2
+New pos: (4, 1), total_lines: 2
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (4, 1)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (5, 1), total_lines: 2
+New pos: (4, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (4, 1)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (5, 1), total_lines: 2
+New pos: (4, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (4, 1)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (4, 1), total_lines: 2
+New pos: (3, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (3, 1)
+Processing key: 127
+Interact key: 127, current pos: (4, 1), total_lines: 2
+New pos: (3, 1), total_lines: 2
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (3, 1)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (4, 1), total_lines: 2
+New pos: (3, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (3, 1)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (4, 1), total_lines: 2
+New pos: (3, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (3, 1)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (3, 1), total_lines: 2
+New pos: (2, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (2, 1)
+Processing key: 127
+Render triggered (Markers hit)
+Interact key: 127, current pos: (3, 1), total_lines: 2
+New pos: (2, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (2, 1)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (3, 1), total_lines: 2
+New pos: (2, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (2, 1)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (3, 1), total_lines: 2
+New pos: (2, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (2, 1)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (2, 1), total_lines: 2
+New pos: (1, 1), total_lines: 2
+Processing key: 127
+Interact key: 127, current pos: (2, 1), total_lines: 2
+New pos: (1, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (1, 1)
+Processing key: 127
+Interact key: 127, current pos: (2, 1), total_lines: 2
+Render triggered (Markers hit)
+New pos: (1, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (1, 1)
+Render triggered (Markers hit)
+Processing key: 127
+gui_state.txt updated. Cursor pos: (1, 1)
+Interact key: 127, current pos: (2, 1), total_lines: 2
+New pos: (1, 1), total_lines: 2
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (1, 1)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (1, 1), total_lines: 2
+Processing key: 127
+New pos: (0, 1), total_lines: 2
+Interact key: 127, current pos: (1, 1), total_lines: 2
+New pos: (0, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (0, 1)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (0, 1)
+Processing key: 127
+Interact key: 127, current pos: (1, 1), total_lines: 2
+Render triggered (Markers hit)
+New pos: (0, 1), total_lines: 2
+Processing key: 127
+Interact key: 127, current pos: (1, 1), total_lines: 2
+New pos: (0, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (0, 1)
+gui_state.txt updated. Cursor pos: (0, 1)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (0, 1), total_lines: 2
+New pos: (5, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (5, 0)
+Processing key: 127
+Interact key: 127, current pos: (0, 1), total_lines: 2
+New pos: (5, 0), total_lines: 1
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (5, 0)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (0, 1), total_lines: 2
+New pos: (5, 0), total_lines: 1
+Processing key: 127
+Interact key: 127, current pos: (0, 1), total_lines: 2
+New pos: (5, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (5, 0)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (5, 0)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (5, 0), total_lines: 1
+New pos: (4, 0), total_lines: 1
+Processing key: 127
+Interact key: 127, current pos: (5, 0), total_lines: 1
+New pos: (4, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (4, 0)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (5, 0), total_lines: 1
+New pos: (4, 0), total_lines: 1
+Processing key: 127
+Interact key: 127, current pos: (5, 0), total_lines: 1
+New pos: (4, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (4, 0)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (4, 0)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (4, 0)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (4, 0), total_lines: 1
+New pos: (3, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (3, 0)
+Processing key: 127
+Interact key: 127, current pos: (4, 0), total_lines: 1
+New pos: (3, 0), total_lines: 1
+Processing key: 127
+Interact key: 127, current pos: (4, 0), total_lines: 1
+New pos: (3, 0), total_lines: 1
+Processing key: 127
+Interact key: 127, current pos: (4, 0), total_lines: 1
+New pos: (3, 0), total_lines: 1
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (3, 0)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (3, 0)
+gui_state.txt updated. Cursor pos: (3, 0)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (3, 0), total_lines: 1
+New pos: (2, 0), total_lines: 1
+Processing key: 127
+Interact key: 127, current pos: (3, 0), total_lines: 1
+New pos: (2, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (2, 0)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (2, 0)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (3, 0), total_lines: 1
+New pos: (2, 0), total_lines: 1
+Processing key: 127
+Interact key: 127, current pos: (3, 0), total_lines: 1
+New pos: (2, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (2, 0)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (2, 0)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (2, 0), total_lines: 1
+New pos: (1, 0), total_lines: 1
+Processing key: 127
+Interact key: 127, current pos: (2, 0), total_lines: 1
+New pos: (1, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (1, 0)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (1, 0)
+Processing key: 127
+Interact key: 127, current pos: (2, 0), total_lines: 1
+Render triggered (Markers hit)
+New pos: (1, 0), total_lines: 1
+Processing key: 127
+Interact key: 127, current pos: (2, 0), total_lines: 1
+New pos: (1, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (1, 0)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (1, 0)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (1, 0), total_lines: 1
+New pos: (0, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (0, 0)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (1, 0), total_lines: 1
+New pos: (0, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (0, 0)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (1, 0), total_lines: 1
+New pos: (0, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (0, 0)
+Render triggered (Markers hit)
+Processing key: 127
+Interact key: 127, current pos: (1, 0), total_lines: 1
+New pos: (0, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (0, 0)
+Render triggered (Markers hit)
+Processing key: 110
+Processing key: 110
+Processing key: 110
+Interact key: 110, current pos: (0, 0), total_lines: 1
+New pos: (1, 0), total_lines: 1
+Interact key: 110, current pos: (0, 0), total_lines: 1
+Interact key: 110, current pos: (0, 0), total_lines: 1
+New pos: (1, 0), total_lines: 1
+New pos: (1, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (1, 0)
+gui_state.txt updated. Cursor pos: (1, 0)
+gui_state.txt updated. Cursor pos: (1, 0)
+Render triggered (Markers hit)
+Processing key: 110
+Interact key: 110, current pos: (0, 0), total_lines: 1
+Render triggered (Markers hit)
+New pos: (1, 0), total_lines: 1
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (1, 0)
+Render triggered (Markers hit)
+Processing key: 101
+Interact key: 101, current pos: (1, 0), total_lines: 1
+New pos: (2, 0), total_lines: 1
+Processing key: 101
+Interact key: 101, current pos: (1, 0), total_lines: 1
+New pos: (2, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (2, 0)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (2, 0)
+Render triggered (Markers hit)
+Processing key: 101
+Processing key: 101
+Interact key: 101, current pos: (1, 0), total_lines: 1
+Interact key: 101, current pos: (1, 0), total_lines: 1
+New pos: (2, 0), total_lines: 1
+New pos: (2, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (2, 0)
+gui_state.txt updated. Cursor pos: (2, 0)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Processing key: 119
+Interact key: 119, current pos: (2, 0), total_lines: 1
+New pos: (2, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (2, 0)
+Processing key: 119
+Render triggered (Markers hit)
+Interact key: 119, current pos: (2, 0), total_lines: 1
+New pos: (2, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (2, 0)
+Render triggered (Markers hit)
+Processing key: 119
+Interact key: 119, current pos: (2, 0), total_lines: 1
+New pos: (2, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (2, 0)
+Render triggered (Markers hit)
+Processing key: 119
+Interact key: 119, current pos: (2, 0), total_lines: 1
+New pos: (2, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (2, 0)
+Render triggered (Markers hit)
+Processing key: 32
+Interact key: 32, current pos: (2, 0), total_lines: 1
+New pos: (3, 0), total_lines: 1
+Processing key: 32
+Interact key: 32, current pos: (2, 0), total_lines: 1
+New pos: (3, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (3, 0)
+Render triggered (Markers hit)
+Processing key: 32
+Interact key: 32, current pos: (2, 0), total_lines: 1
+New pos: (3, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (3, 0)
+gui_state.txt updated. Cursor pos: (3, 0)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Processing key: 32
+Interact key: 32, current pos: (2, 0), total_lines: 1
+New pos: (3, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (3, 0)
+Render triggered (Markers hit)
+Processing key: 116
+Interact key: 116, current pos: (3, 0), total_lines: 1
+New pos: (4, 0), total_lines: 1
+Processing key: 116
+Interact key: 116, current pos: (3, 0), total_lines: 1
+New pos: (4, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (4, 0)
+gui_state.txt updated. Cursor pos: (4, 0)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Processing key: 116
+Interact key: 116, current pos: (3, 0), total_lines: 1
+New pos: (4, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (4, 0)
+Render triggered (Markers hit)
+Processing key: 116
+Interact key: 116, current pos: (3, 0), total_lines: 1
+New pos: (4, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (4, 0)
+Render triggered (Markers hit)
+Processing key: 101
+Interact key: 101, current pos: (4, 0), total_lines: 1
+New pos: (5, 0), total_lines: 1
+Processing key: 101
+Interact key: 101, current pos: (4, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (5, 0)
+New pos: (5, 0), total_lines: 1
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (5, 0)
+Render triggered (Markers hit)
+Processing key: 101
+Processing key: 101
+Interact key: 101, current pos: (4, 0), total_lines: 1
+New pos: (5, 0), total_lines: 1
+Interact key: 101, current pos: (4, 0), total_lines: 1
+New pos: (5, 0), total_lines: 1
+gui_state.txt updated. Cursor pos: (5, 0)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (5, 0)
+Render triggered (Markers hit)
+Processing key: 115
+Interact key: 115, current pos: (5, 0), total_lines: 1
+New pos: (0, 1), total_lines: 2
+Processing key: 115
+gui_state.txt updated. Cursor pos: (0, 1)
+Interact key: 115, current pos: (5, 0), total_lines: 1
+New pos: (0, 1), total_lines: 2
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (0, 1)
+Render triggered (Markers hit)
+Processing key: 115
+Interact key: 115, current pos: (5, 0), total_lines: 1
+New pos: (0, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (0, 1)
+Render triggered (Markers hit)
+Processing key: 115
+Interact key: 115, current pos: (5, 0), total_lines: 1
+New pos: (0, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (0, 1)
+Render triggered (Markers hit)
+Processing key: 116
+Interact key: 116, current pos: (0, 1), total_lines: 2
+New pos: (1, 1), total_lines: 2
+Processing key: 116
+Interact key: 116, current pos: (0, 1), total_lines: 2
+New pos: (1, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (1, 1)
+gui_state.txt updated. Cursor pos: (1, 1)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Processing key: 116
+Interact key: 116, current pos: (0, 1), total_lines: 2
+New pos: (1, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (1, 1)
+Render triggered (Markers hit)
+Processing key: 116
+Interact key: 116, current pos: (0, 1), total_lines: 2
+New pos: (1, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (1, 1)
+Render triggered (Markers hit)
+Processing key: 32
+Interact key: 32, current pos: (1, 1), total_lines: 2
+New pos: (2, 1), total_lines: 2
+Processing key: 32
+gui_state.txt updated. Cursor pos: (2, 1)
+Interact key: 32, current pos: (1, 1), total_lines: 2
+New pos: (2, 1), total_lines: 2
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (2, 1)
+Processing key: 32
+Interact key: 32, current pos: (1, 1), total_lines: 2
+Render triggered (Markers hit)
+New pos: (2, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (2, 1)
+Render triggered (Markers hit)
+Processing key: 32
+Interact key: 32, current pos: (1, 1), total_lines: 2
+New pos: (2, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (2, 1)
+Render triggered (Markers hit)
+Processing key: 102
+Interact key: 102, current pos: (2, 1), total_lines: 2
+New pos: (3, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (3, 1)
+Render triggered (Markers hit)
+Processing key: 102
+Processing key: 102
+Interact key: 102, current pos: (2, 1), total_lines: 2
+Interact key: 102, current pos: (2, 1), total_lines: 2
+New pos: (3, 1), total_lines: 2
+New pos: (3, 1), total_lines: 2
+Processing key: 102
+gui_state.txt updated. Cursor pos: (3, 1)
+Interact key: 102, current pos: (2, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (3, 1)
+New pos: (3, 1), total_lines: 2
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (3, 1)
+Render triggered (Markers hit)
+Processing key: 105
+Interact key: 105, current pos: (3, 1), total_lines: 2
+New pos: (4, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (4, 1)
+Render triggered (Markers hit)
+Processing key: 105
+Processing key: 105
+Interact key: 105, current pos: (3, 1), total_lines: 2
+New pos: (4, 1), total_lines: 2
+Interact key: 105, current pos: (3, 1), total_lines: 2
+New pos: (4, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (4, 1)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (4, 1)
+Render triggered (Markers hit)
+Processing key: 105
+Interact key: 105, current pos: (3, 1), total_lines: 2
+New pos: (4, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (4, 1)
+Render triggered (Markers hit)
+Processing key: 108
+Interact key: 108, current pos: (4, 1), total_lines: 2
+New pos: (5, 1), total_lines: 2
+Processing key: 108
+Interact key: 108, current pos: (4, 1), total_lines: 2
+New pos: (5, 1), total_lines: 2
+Processing key: 108
+Interact key: 108, current pos: (4, 1), total_lines: 2
+New pos: (5, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (5, 1)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (5, 1)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (5, 1)
+Render triggered (Markers hit)
+Processing key: 108
+Interact key: 108, current pos: (4, 1), total_lines: 2
+New pos: (5, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (5, 1)
+Render triggered (Markers hit)
+Processing key: 101
+Interact key: 101, current pos: (5, 1), total_lines: 2
+New pos: (6, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (6, 1)
+Render triggered (Markers hit)
+Processing key: 101
+Interact key: 101, current pos: (5, 1), total_lines: 2
+New pos: (6, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (6, 1)
+Render triggered (Markers hit)
+Processing key: 101
+Interact key: 101, current pos: (5, 1), total_lines: 2
+New pos: (6, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (6, 1)
+Render triggered (Markers hit)
+Processing key: 101
+Interact key: 101, current pos: (5, 1), total_lines: 2
+New pos: (6, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (6, 1)
+Render triggered (Markers hit)
+Processing key: 32
+Interact key: 32, current pos: (6, 1), total_lines: 2
+New pos: (7, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (7, 1)
+Render triggered (Markers hit)
+Processing key: 32
+Interact key: 32, current pos: (6, 1), total_lines: 2
+New pos: (7, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (7, 1)
+Render triggered (Markers hit)
+Processing key: 32
+Interact key: 32, current pos: (6, 1), total_lines: 2
+New pos: (7, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (7, 1)
+Render triggered (Markers hit)
+Processing key: 32
+Interact key: 32, current pos: (6, 1), total_lines: 2
+New pos: (7, 1), total_lines: 2
+gui_state.txt updated. Cursor pos: (7, 1)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (0, 0)
+Processing key: 56
+gui_state.txt updated. Cursor pos: (0, 0)
+Render triggered (Markers hit)
+Processing key: 56
+Processing key: 56
+Processing key: 56
+gui_state.txt updated. Cursor pos: (7, 1)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (7, 1)
+gui_state.txt updated. Cursor pos: (7, 1)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Processing key: 56
+gui_state.txt updated. Cursor pos: (7, 1)
+Render triggered (Markers hit)
+Processing key: 13
+Processing key: 13
+Processing key: 13
+Processing key: 13
+Processing key: 13
+Enter pressed in browser, active_idx: 2
+Enter pressed in browser, active_idx: 2
+Enter pressed in browser, active_idx: 2
+Enter pressed in browser, active_idx: 2
+Enter pressed in browser, active_idx: 2
+Auto-action on Enter for path: test.txt
+Auto-action on Enter for path: test.txt
+Auto-action on Enter for path: test.txt
+Auto-action on Enter for path: test.txt
+Auto-action on Enter for path: test.txt
+gui_state.txt updated. Cursor pos: (0, 0)
+gui_state.txt updated. Cursor pos: (7, 1)
+gui_state.txt updated. Cursor pos: (7, 1)
+gui_state.txt updated. Cursor pos: (7, 1)
+gui_state.txt updated. Cursor pos: (7, 1)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (0, 0)
+gui_state.txt updated. Cursor pos: (0, 0)
+Processing key: 57
+gui_state.txt updated. Cursor pos: (0, 0)
+Render triggered (Markers hit)
+Processing key: 57
+gui_state.txt updated. Cursor pos: (0, 0)
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (0, 0)
+gui_state.txt updated. Cursor pos: (0, 0)
+Invalid project_root in KVP, falling back to '.'
+gui_state.txt updated. Cursor pos: (0, 0)
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+gui_state.txt updated. Cursor pos: (0, 0)
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+gui_state.txt updated. Cursor pos: (0, 0)
+Processing key: 57
+gui_state.txt updated. Cursor pos: (0, 0)
+Processing key: 57
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (0, 0)
+Render triggered (Markers hit)
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+gui_state.txt updated. Cursor pos: (0, 0)
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+gui_state.txt updated. Cursor pos: (0, 0)
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+gui_state.txt updated. Cursor pos: (0, 0)
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+gui_state.txt updated. Cursor pos: (0, 0)
+Processing key: 57
+Processing key: 57
+gui_state.txt updated. Cursor pos: (0, 0)
+gui_state.txt updated. Cursor pos: (0, 0)
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+gui_state.txt updated. Cursor pos: (0, 0)
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+gui_state.txt updated. Cursor pos: (0, 0)
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+System state synced to /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+System state synced to /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt
+Processing key: 57
+Processing key: 57
+gui_state.txt updated. Cursor pos: (0, 0)
+System state synced to /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (0, 0)
+System state synced to /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt
+Render triggered (Markers hit)
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+System state synced to /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+System state synced to /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+System state synced to /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+System state synced to /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt
+Processing key: 57
+gui_state.txt updated. Cursor pos: (0, 0)
+System state synced to /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt
+Render triggered (Markers hit)
+Processing key: 57
+gui_state.txt updated. Cursor pos: (0, 0)
+System state synced to /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt
+Render triggered (Markers hit)
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+System state synced to /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+System state synced to /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+System state synced to /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+System state synced to /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+System state synced to /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+System state synced to /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt
+Processing key: 57
+gui_state.txt updated. Cursor pos: (0, 0)
+Processing key: 57
+gui_state.txt updated. Cursor pos: (0, 0)
+System state synced to /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt
+System state synced to /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+System state synced: active_file=projects/agy-text-editor/pieces/document.txt
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+System state synced: active_file=projects/agy-text-editor/pieces/document.txt
+Processing key: 57
+gui_state.txt updated. Cursor pos: (0, 0)
+System state synced: active_file=projects/agy-text-editor/pieces/document.txt
+Render triggered (Markers hit)
+Processing key: 57
+gui_state.txt updated. Cursor pos: (0, 0)
+System state synced: active_file=projects/agy-text-editor/pieces/document.txt
+Render triggered (Markers hit)
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+Called sync_state_op: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22 projects/agy-text-editor/pieces/document.txt
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+Called sync_state_op: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22 projects/agy-text-editor/pieces/document.txt
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+Called sync_state_op: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22 projects/agy-text-editor/pieces/document.txt
+Processing key: 57
+gui_state.txt updated. Cursor pos: (0, 0)
+Processing key: 57
+gui_state.txt updated. Cursor pos: (0, 0)
+Called sync_state_op: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22 projects/agy-text-editor/pieces/document.txt
+Render triggered (Markers hit)
+Called sync_state_op: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22 projects/agy-text-editor/pieces/document.txt
+Render triggered (Markers hit)
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+Called sync_state_op: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22 projects/agy-text-editor/pieces/document.txt
+Processing key: 56
+Processing key: 56
+gui_state.txt updated. Cursor pos: (0, 0)
+gui_state.txt updated. Cursor pos: (0, 0)
+Called sync_state_op: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22 projects/agy-text-editor/pieces/document.txt
+Called sync_state_op: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22 projects/agy-text-editor/pieces/document.txt
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Processing key: 56
+gui_state.txt updated. Cursor pos: (0, 0)
+Called sync_state_op: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22 projects/agy-text-editor/pieces/document.txt
+Render triggered (Markers hit)
+Processing key: 13
+Enter pressed in browser, active_idx: 2
+Auto-action on Enter for path: hi-re.txt
+Handling command: [SAVE_AS_ACTION]
+SAVE_AS_ACTION triggered, path buffer: hi-re.txt
+Save Op failed: 127
+gui_state.txt updated. Cursor pos: (0, 0)
+Processing key: 13
+Enter pressed in browser, active_idx: 2
+Auto-action on Enter for path: hi-re.txt
+Handling command: [SAVE_AS_ACTION]
+SAVE_AS_ACTION triggered, path buffer: hi-re.txt
+Processing key: 13
+Enter pressed in browser, active_idx: 2
+Auto-action on Enter for path: hi-re.txt
+Handling command: [SAVE_AS_ACTION]
+Save Op failed: 127
+SAVE_AS_ACTION triggered, path buffer: hi-re.txt
+Called sync_state_op: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22 projects/agy-text-editor/pieces/document.txt
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (0, 0)
+Called sync_state_op: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22 projects/agy-text-editor/pieces/document.txt
+Save Op failed: 127
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (0, 0)
+Called sync_state_op: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22 projects/agy-text-editor/pieces/document.txt
+Render triggered (Markers hit)
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22' 'projects/agy-text-editor/pieces/document.txt'
+Op exited with code: 0
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22' 'projects/agy-text-editor/pieces/document.txt'
+Op exited with code: 0
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22' 'projects/agy-text-editor/pieces/document.txt'
+Op exited with code: 0
+Processing key: 56
+Processing key: 56
+gui_state.txt updated. Cursor pos: (0, 0)
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22' 'projects/agy-text-editor/pieces/document.txt'
+Op exited with code: 0
+Render triggered (Markers hit)
+gui_state.txt updated. Cursor pos: (0, 0)
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22' 'projects/agy-text-editor/pieces/document.txt'
+Op exited with code: 0
+Render triggered (Markers hit)
+Processing key: 13
+Enter pressed in browser, active_idx: 2
+Auto-action on Enter for path: hi-2.txt
+Handling command: [SAVE_AS_ACTION]
+SAVE_AS_ACTION triggered, path buffer: hi-2.txt
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/save_file_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/hi-2.txt'
+Processing key: 13
+Enter pressed in browser, active_idx: 2
+Auto-action on Enter for path: hi-2.txt
+Handling command: [SAVE_AS_ACTION]
+SAVE_AS_ACTION triggered, path buffer: hi-2.txt
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/save_file_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/hi-2.txt'
+Op exited with code: 0
+Project metadata saved to /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22' 'projects/agy-text-editor/hi-2.txt'
+Op exited with code: 0
+Op exited with code: 0
+Render triggered (Markers hit)
+Project metadata saved to /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22' 'projects/agy-text-editor/hi-2.txt'
+Op exited with code: 0
+Render triggered (Markers hit)
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22' 'projects/agy-text-editor/hi-2.txt'
+Op exited with code: 0
+Processing key: 57
+Processing key: 57
+gui_state.txt updated. Cursor pos: (0, 0)
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22' 'projects/agy-text-editor/hi-2.txt'
+Op exited with code: 0
+Render triggered (Markers hit)
+Processing key: 57
+gui_state.txt updated. Cursor pos: (0, 0)
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22' 'projects/agy-text-editor/hi-2.txt'
+gui_state.txt updated. Cursor pos: (0, 0)
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22' 'projects/agy-text-editor/hi-2.txt'
+Op exited with code: 0
+Render triggered (Markers hit)
+Op exited with code: 0
+Render triggered (Markers hit)
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22' 'projects/agy-text-editor/hi-2.txt'
+Op exited with code: 0
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22' 'projects/agy-text-editor/hi-2.txt'
+Op exited with code: 0
+Processing key: 57
+Processing key: 57
+gui_state.txt updated. Cursor pos: (0, 0)
+gui_state.txt updated. Cursor pos: (0, 0)
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22' 'projects/agy-text-editor/hi-2.txt'
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22' 'projects/agy-text-editor/hi-2.txt'
+Op exited with code: 0
+Op exited with code: 0
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt' 'project_id' 'agy-text-editor'
+Op exited with code: 0
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt' 'active_project' 'projects/agy-text-editor/hi-2.txt'
+Op exited with code: 0
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt' 'current_map' 'projects/agy-text-editor/hi-2.txt'
+Op exited with code: 0
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt' 'project_id' 'agy-text-editor'
+Op exited with code: 0
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt' 'active_project' 'projects/agy-text-editor/hi-2.txt'
+Op exited with code: 0
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt' 'current_map' 'projects/agy-text-editor/hi-2.txt'
+Op exited with code: 0
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt' 'project_id' 'agy-text-editor'
+Op exited with code: 0
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt' 'active_project' 'projects/agy-text-editor/hi-2.txt'
+Op exited with code: 0
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt' 'current_map' 'projects/agy-text-editor/hi-2.txt'
+Op exited with code: 0
+Processing key: 57
+Processing key: 57
+gui_state.txt updated. Cursor pos: (0, 0)
+gui_state.txt updated. Cursor pos: (0, 0)
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt' 'project_id' 'agy-text-editor'
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt' 'project_id' 'agy-text-editor'
+Op exited with code: 0
+Op exited with code: 0
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt' 'active_project' 'projects/agy-text-editor/hi-2.txt'
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt' 'active_project' 'projects/agy-text-editor/hi-2.txt'
+Op exited with code: 0
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt' 'current_map' 'projects/agy-text-editor/hi-2.txt'
+Op exited with code: 0
+Executing Op: '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/manager/ops/sync_state_op.+x' '/home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/pieces/apps/player_app/manager/state.txt' 'current_map' 'projects/agy-text-editor/hi-2.txt'
+Op exited with code: 0
+Op exited with code: 0
+Render triggered (Markers hit)
+Render triggered (Markers hit)
+Resolved project_root to: /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22
+Project metadata loaded from /home/jb/Desktop/ele-desk+cal/may22/1.TPMOS_c_+rmmp 99.33/1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+Manager (PID 16078) already running. Exiting.
+Manager (PID 16078) already running. Exiting.
+Processing key: 57
+gui_state.txt updated. Cursor pos: (0, 0)
+Render triggered (Markers hit)
+Manager (PID 16078) already running. Exiting.
+Manager (PID 16078) already running. Exiting.
+Resolved project_root to: /home/debilu/Desktop/CAL/may-21/1.TPMOS_c_+rmmp 99.23
+Project metadata loaded from /home/debilu/Desktop/CAL/may-21/1.TPMOS_c_+rmmp 99.23/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+Processing key: 57
+gui_state.txt updated. Cursor pos: (0, 0)
+Render triggered (Markers hit)
+Resolved project_root to: /home/debilu/Desktop/CAL/may-21/1.TPMOS_c_+rmmp 99.23
+Project metadata loaded from /home/debilu/Desktop/CAL/may-21/1.TPMOS_c_+rmmp 99.23/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+Processing key: 57
+gui_state.txt updated. Cursor pos: (0, 0)
+Render triggered (Markers hit)
+Resolved project_root to: /home/debilu/Desktop/CAL/may-21/1.TPMOS_c_+rmmp 99.23
+Project metadata loaded from /home/debilu/Desktop/CAL/may-21/1.TPMOS_c_+rmmp 99.23/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+Resolved project_root to: /home/debilu/Desktop/CAL/may-21/1.TPMOS_c_+rmmp 99.23
+Scanning directory: /home/debilu/Desktop/CAL/may-21/1.TPMOS_c_+rmmp 99.23/projects
+Resolved project_root to: /home/debilu/Desktop/CAL/may-21/1.TPMOS_c_+rmmp 99.23
+Project metadata loaded from /home/debilu/Desktop/CAL/may-21/1.TPMOS_c_+rmmp 99.23/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+Resolved project_root to: /home/debilu/Desktop/CAL/may-21/1.TPMOS_c_+rmmp 99.23
+Project metadata loaded from /home/debilu/Desktop/CAL/may-21/1.TPMOS_c_+rmmp 99.23/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+Manager (PID 13507) already running. Exiting.
+Manager (PID 13507) already running. Exiting.
+Manager (PID 13507) already running. Exiting.
+Resolved project_root to: /home/debilu/Desktop/CAL/may-21/1.TPMOS_c_+rmmp 99.23
+Project metadata loaded from /home/debilu/Desktop/CAL/may-21/1.TPMOS_c_+rmmp 99.23/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+Manager (PID 14961) already running. Exiting.
+Manager (PID 14961) already running. Exiting.
+Manager (PID 14961) already running. Exiting.
+Processing key: 56
+gui_state.txt updated. Cursor pos: (0, 0)
+Render triggered (Markers hit)
+Manager (PID 14961) already running. Exiting.
+Manager (PID 14961) already running. Exiting.
+Manager (PID 14961) already running. Exiting.
+Processing key: 57
+gui_state.txt updated. Cursor pos: (0, 0)
+Render triggered (Markers hit)
+Manager (PID 14961) already running. Exiting.
+Manager (PID 14961) already running. Exiting.
+Resolved project_root to: /home/debilu/Desktop/CAL/may-21/1.TPMOS_c_+rmmp 99.23
+Project metadata loaded from /home/debilu/Desktop/CAL/may-21/1.TPMOS_c_+rmmp 99.23/projects/agy-text-editor/project.pdl
+gui_state.txt updated. Cursor pos: (0, 0)
+Manager (PID 15097) already running. Exiting.

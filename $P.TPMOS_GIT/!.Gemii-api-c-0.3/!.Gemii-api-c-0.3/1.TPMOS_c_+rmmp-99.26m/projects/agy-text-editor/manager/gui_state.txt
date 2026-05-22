@@ -1,0 +1,18 @@
+module_path=projects/agy-text-editor/manager/+x/agy-text-editor_manager.+x
+active_layout_id=editor.chtpm
+project_id=agy-text-editor
+active_project=projects/agy-text-editor/hi-2.txt
+editor_map=<text label="║  [X]ne te                                 ║" /><br/><text label="║  t file                                   ║" /><br/><text label="║                                           ║" /><br/><text label="║                                           ║" /><br/><text label="║                                           ║" /><br/><text label="║                                           ║" /><br/><text label="║                                           ║" /><br/><text label="║                                           ║" /><br/>
+input_line=hihi
+active_file_info_line=<text label="║  FILE: projects/agy-text-editor/hi-2.txt  ║" /><br/>
+editor_response_line=║  Ready.                                   ║
+browser_mode_header=<text label="║  MODE: LOAD FILE                            ║" /><br/>
+browser_current_dir_line=<text label="║  DIR: projects/agy-text-editor            ║" /><br/>
+search_query_val=
+file_path_input_val=projects/agy-text-editor/hi-2.txt
+autocomplete_suggestions_markup=<text label="║  SUGGESTIONS:                               ║" /><br/><text label="║  " /><button label=".../agy-text-editor/hi-2.txt" onClick="AUTOCOMPLETE:projects/agy-text-editor/hi-2.txt" /><text label="   " /><text label=" ║" /><br/>
+directory_browser_markup=<text label="║  " /><button label="<- BACK" onClick="SET_DIR:projects" /><text label="                        " /><text label=" ║" /><br/><text label="║  " /><button label="[DIR] layouts/" onClick="SET_DIR:projects/agy-text-editor/layouts" /><text label="                 " /><text label=" ║" /><br/><text label="║  " /><button label="[DIR] manager/" onClick="SET_DIR:projects/agy-text-editor/manager" /><text label="                 " /><text label=" ║" /><br/><text label="║  " /><button label="[DIR] pieces/" onClick="SET_DIR:projects/agy-text-editor/pieces" /><text label="                  " /><text label=" ║" /><br/><text label="║  " /><button label="....file-op-ed-m22.txt (4KB)" onClick="LOAD_FILE:projects/agy-text-editor/!.file-op-ed-m22.txt" /><text label="   " /><text label=" ║" /><br/><text label="║  " /><button label="...editpm-plan-m21.txt (4KB)" onClick="LOAD_FILE:projects/agy-text-editor/file-editpm-plan-m21.txt" /><text label="   " /><text label=" ║" /><br/><text label="║  " /><button label="[FIL] hi-2.txt (14B)" onClick="LOAD_FILE:projects/agy-text-editor/hi-2.txt" /><text label="          " /><text label=" ║" /><br/><text label="║  " /><button label="[FIL] hi.txt (32B)" onClick="LOAD_FILE:projects/agy-text-editor/hi.txt" /><text label="            " /><text label=" ║" /><br/><text label="║  " /><button label="... map-load-study.txt (3KB)" onClick="LOAD_FILE:projects/agy-text-editor/map-load-study.txt" /><text label="  " /><text label=" ║" /><br/><text label="║  ... and 2 more items ...                 ║" /><br/>
+browser_action_buttons_markup=<text label="║  " /><button label="LOAD FILE" onClick="LOAD_ACTION" /><text label="                     " /><text label=" ║" /><br/><text label="║  " /><button label="CANCEL" href="projects/agy-text-editor/layouts/file_menu.chtpm" /><text label="                        " /><text label=" ║" /><br/>
+slot_name_input=default
+slot_info_line=║  CURRENT SLOT: default                    ║
+slot_selection_markup=<text label="║  [Slots deprecated]                    ║" /><br/>

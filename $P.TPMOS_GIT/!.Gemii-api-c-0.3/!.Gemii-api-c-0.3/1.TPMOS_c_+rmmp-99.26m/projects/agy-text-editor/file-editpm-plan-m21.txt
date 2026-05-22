@@ -1,0 +1,58 @@
+# AGY Text Editor: Phase 1 Completion Plan (File Operations)
+**Date:** 2026-05-21
+**Project:** agy-text-editor
+**Status:** HANDOFF READY (CRITICAL BUG: Load Project Still Broken)
+
+## 1. Objective
+Complete the "Traditional File Explorer" experience, transition the editor to a map-based `INTERACT` system with a mobile camera, and port this robust file system to `op-ed`.
+
+## 2. Phase 1: File Explorer & Save/Load Polish [IN PROGRESS]
+- **Visual Cues:** `[DIR]`/`[FIL]` indicators and file sizes (KB/MB). [DONE]
+- **Auto-Save/Enter:** Enter (13/10) triggers save/load. [DONE]
+- **Sticky Explorer:** Stay in browser after Save/Load. [DONE]
+- **Load Project:** Clicking a filename should auto-load, but is **BROKEN**. [CRITICAL]
+- **Sanity Check:** Added `ACTIVE: ${active_project}` line to browser/menu, but clobbering persists. [BUG]
+
+## 3. Phase 2: Map-Based Editor (INTERACT Mode) [COMPLETED]
+- **UI Transition:** Replaced `cli_io` with an interactive map. [DONE]
+- **Standard Cursor:** Implemented `[X]` xlector-style cursor. [DONE]
+- **State Management:** Manager tracks `cursor_x`, `cursor_y` and handles wasd/arrow input. [DONE]
+- **Camera/View:** Implemented vertical/horizontal scrolling as cursor moves. [DONE]
+- **FIXED:** Render pipeline trigger optimized; every keypress pulses `frame_changed.txt`. [DONE]
+
+## 4. Known Issues & Handoff Mission
+- **THE MISSION: Fix Load Project.** Clicking a file in the browser (LOAD_FILE) fails to load contents into the map or update the sanity var.
+    - **NEW STRATEGY: Strict Op-ed Emulation.** We will stop "re-inventing the wheel" and strictly adopt the `op-ed` manager's synchronization patterns.
+    - **Implementation Details:**
+        1. **Metadata Sync:** Use `project.pdl` to track editor state, including the `active_file_path`.
+        2. **Global State Sync:** Adopt the `op-ed` style `sync_system_project_id()` and `sync_active_project()` patterns to write directly to `pieces/apps/player_app/manager/state.txt`.
+        3. **Deterministic Transitions:** Ensure every load/save command triggers a deterministic layout transition and frame pulse (`frame_changed.txt`) exactly like `op-ed`.
+        4. **Bypass Race Conditions:** By writing to the sovereign global state (`player_app/manager/state.txt`), we ensure the Parser stays in sync with the Manager's reality, preventing the clobbering seen with `cli_io` buffers.
+- **DELIVERABLE:** Once the Load Project bug is confirmed fixed, the next agent must document the final system functionality in a new file: `projects/agy-text-editor/file-op-dox.txt`.
+
+## 5. Phase 3: Op-ed Integration [TODO]
+- **Objective:** Port this filesystem logic to `op-ed_manager.c` and replace its slot-based menu.
+
+## 6. Resources for Next Agent
+- **Manager:** `projects/agy-text-editor/manager/agy-text-editor_manager.c`
+- **Reference:** `projects/op-ed/manager/op-ed_manager.c` (Proven sync patterns)
+- **Log:** `agy_manager_debug.txt`
+
+    - It explicitly writes to `pieces/apps/player_app/manager/state.txt` AND `pieces/display/frame_changed.txt` to force a full theater refresh.
+    - Suggestion: Align `agy-text-editor`'s `load_from_path` more closely with `op-ed`'s `load_selected_project()` which calls `load_project_metadata()` and `sync_current_map()` sequentially.
+- **BUG (Clobbered UI):** The Parser's `cli_io` sync to `gui_state.txt` may clobber Manager-written variables like `active_project`.
+- **INTERACT Keys:** Movement and typing are functional but rely on the Manager winning the `gui_state.txt` write race.
+
+## 5. Phase 3: Op-ed Integration [TODO]
+- **Objective:** Completely replace the legacy `op-ed` file menu with this refined browser.
+- **Op-ed Context:** Current `op-ed` uses `projects/user/ops/+x/file_op.+x` for slot-based loading. The new browser should bypass slots and provide direct filesystem access, calling `load_project_metadata()` and `scan_maps()` upon successful selection.
+
+## 6. Resources for Next Agent
+- **Manager:** `projects/agy-text-editor/manager/agy-text-editor_manager.c`
+- **Reference Manager:** `projects/op-ed/manager/op-ed_manager.c` (See `load_selected_project`)
+- **Layouts:** `projects/agy-text-editor/layouts/`
+- **Working Buffer:** `projects/agy-text-editor/pieces/document.txt`
+- **Debug Log:** `agy_manager_debug.txt` (Crucial for tracing the LOAD_FILE fail)
+
+---
+*"Geography is destiny. If it's not in a file, it's a lie."*

@@ -1,0 +1,10 @@
+SECTION      | KEY                | VALUE
+----------------------------------------
+META         | project_id         | agy-text-editor
+META         | version            | 1.0
+META         | entry_layout       | projects/agy-text-editor/layouts/editor.chtpm
+
+STATE        | active_file        | projects/agy-text-editor/hi-2.txt
+STATE        | cursor_x           | 0
+STATE        | cursor_y           | 0
+RESPONSE     | default            | Saved to projects/agy-text-editor/hi-2.txt

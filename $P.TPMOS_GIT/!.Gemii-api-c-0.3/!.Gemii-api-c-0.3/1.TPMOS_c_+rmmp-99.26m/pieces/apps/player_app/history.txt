@@ -1,0 +1,2 @@
+COMMAND: SET_API:https://generativelanguage.googleapis.com
+13

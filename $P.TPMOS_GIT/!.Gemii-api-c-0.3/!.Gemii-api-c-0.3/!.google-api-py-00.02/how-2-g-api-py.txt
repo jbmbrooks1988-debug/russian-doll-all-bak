@@ -1,0 +1,126 @@
+
+pip install -U google-genai
+
+python -m pip install -U google-api-core
+
+
+--------
+
+
+
+Out of the box, none of them natively support Google OAuth login for free tier consumer accounts, as they are engineered strictly to connect via standard API keys. However, the community has built a direct workaround for OpenCode. [1, 2] 
+The breakdown of how these tools handle free consumer quotas and OAuth authentication highlights significant differences in implementation:
+## 1. OpenCode (With Community Plugin)
+
+* OAuth Status: Natively, OpenCode only accepts standard Google AI Studio API keys. However, you can install the third-party community plugin opencode-gemini-auth via NPM.
+* How it works: This plugin lets you complete a web-based Google OAuth login right inside OpenCode. It taps directly into the exact same free-tier consumer limits or Google AI Pro/Ultra subscription quotas used by the deprecated Gemini CLI.
+* Note: Google considers using third-party software with consumer OAuth a policy violation, so your account risks hitting automated abuse flags. [1, 2] 
+
+## 2. Aider
+
+* OAuth Status: No. Aider does not support Google account OAuth browser handshakes.
+* How it works: It strictly requires you to export your Gemini API key as an environment variable (export GEMINI_API_KEY="your_key"). You can easily generate a free-tier key with generous rate limits by visiting Google AI Studio.
+
+## 3. Crush
+
+* OAuth Status: No. Crush is built strictly for direct backend API connections.
+* How it works: Like Aider, it will not prompt a browser window to sign into your personal Google account. It requires a manual API key configuration. [1] 
+
+------------------------------
+## The Recommended Path: Google AI Studio (Free Tier)
+To completely bypass the headache of brittle OAuth plugins and account warning flags, the easiest solution is to use the official, completely free Gemini API key tier: [2, 3] 
+
+   1. Go to Google AI Studio and log in with your normal Google account.
+   2. Click Create API Key.
+   3. Select the Free Tier (which offers a highly generous daily quota for personal use).
+   4. Inject that key into OpenCode, Aider, or Crush. [1, 4] 
+
+If you'd like to get started with this setup, let me know:
+
+* Which of the three tools (OpenCode, Aider, or Crush) you want to configure first.
+* If you need the shell commands to permanently save your API key to your terminal profile (.bashrc or .zshrc).
+
+I can guide you through the quick, 2-minute setup to get your open-source terminal workflow up and running.
+
+[1] [https://syntackle.com](https://syntackle.com/blog/google-gemini-ai-subscription-with-opencode/)
+[2] [https://www.npmjs.com](https://www.npmjs.com/package/opencode-gemini-auth)
+[3] [https://www.reddit.com](https://www.reddit.com/r/opencodeCLI/comments/1q7yggk/psa_using_claude_code_oauth_in_thirdparty_tools/)
+[4] [https://github.com](https://github.com/anomalyco/opencode/issues/402)
+-----------------------
+You can install the OpenCode CLI tool on your system using an official installation script, a node package manager, or standard package managers depending on your operating system. [1] 
+Ensure you have a modern terminal emulator installed (like [WezTerm](https://wezterm.org/), Alacritty, Ghostty, or Kitty) for the layout to render correctly. [2] 
+------------------------------
+## Method 1: The Quick Install Script (macOS & Linux)
+The fastest approach on macOS and Linux is the official curl script, which automatically detects your operating system architecture, downloads the correct binary, and updates your system path. [3] 
+
+curl -fsSL https://opencode.ai/install | bash
+
+Once the download is complete, verify the binary is active on your PATH: [4] 
+
+opencode --version
+
+## Method 2: Via Node Package Managers (Cross-Platform) [4] 
+If you already work with Node.js, you can install the global opencode-ai package using your favorite manager. [1, 3] 
+
+* npm: npm install -g opencode-ai
+* Bun: bun install -g opencode-ai
+* pnpm: pnpm install -g opencode-ai [1] 
+
+## Method 3: Native OS Package Managers
+If you prefer managing software packages natively through your operating system distribution toolchains, use the following commands: [5] 
+
+* macOS / Linux (Homebrew):
+
+brew install anomalyco/tap/opencode
+```
+
+* Arch Linux (AUR):
+
+paru -S opencode-bin
+```
+
+* Windows (Chocolatey): Use your admin command prompt:
+
+choco install opencode
+```
+
+* Windows (Scoop):
+
+scoop install opencode
+```
+
+
+[6, 7, 8] 
+
+------------------------------
+## Initializing and Connecting Your Gemini Key
+Once the terminal package is successfully added, navigate to your active coding repository and follow these exact steps to activate your workspace with a Gemini configuration: [1, 4] 
+
+   1. Launch OpenCode: Open your terminal inside your project directory and execute the initialization routine:
+   
+   cd /path/to/your/project
+   opencode
+   
+   2. Connect a Provider: Inside the OpenCode TUI interface, type the following command to link your backend API connection:
+   
+   /connect
+   
+   3. Select your desired provider from the visual interactive terminal checklist and paste your free-tier API key generated via Google AI Studio.
+   4. Scan Your Repository: Run the initialization command to analyze your project structure and create an automated tracking map (AGENTS.md):
+   
+   /init
+   
+   [1, 4, 9] 
+
+Would you like the specific configuration snippets to permanently save your Gemini API key directly inside your terminal profile environment (.bashrc or .zshrc) so you never have to re-enter it?
+
+[1] [https://opencode.ai](https://opencode.ai/docs/)
+[2] [https://opencode.ai](https://opencode.ai/docs/)
+[3] [https://www.nxcode.io](https://www.nxcode.io/resources/news/opencode-install-guide-step-by-step-2026)
+[4] [https://milvus.io](https://milvus.io/ai-quick-reference/how-do-i-install-opencode-on-my-computer)
+[5] [https://milvus.io](https://milvus.io/ai-quick-reference/how-do-i-install-opencode-on-my-computer)
+[6] [https://www.youtube.com](https://www.youtube.com/watch?v=38a-R32IP9Y)
+[7] [https://opencode.ai](https://opencode.ai/download)
+[8] [https://www.youtube.com](https://www.youtube.com/watch?v=Ke7eTqP3KY8&t=461)
+[9] [https://www.youtube.com](https://www.youtube.com/watch?v=uZGDO0L-Dr4)
+

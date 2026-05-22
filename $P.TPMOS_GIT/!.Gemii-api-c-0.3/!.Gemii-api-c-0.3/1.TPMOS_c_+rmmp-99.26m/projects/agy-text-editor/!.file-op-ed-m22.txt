@@ -1,0 +1,66 @@
+# Project Pivot: Modular File Ops (Op-ed Handoff)
+**Date:** 2026-05-22
+**Project:** op-ed / agy-text-editor
+**Status:** STRATEGIC PIVOT (Handoff Ready)
+
+## 1. Context & Rationale
+The hardcoded file loading logic in `agy-text-editor_manager.c` is currently failing (suspected race conditions and state clobbering by the Parser's `cli_io` sync). More importantly, it violates the TPMOS philosophy of "Thin Modules" and "Muscle in Ops". 
+
+Instead of patching a broken model, we are pivoting to implement a robust, reusable file system within `op-ed` by factoring out its existing loading logic into discrete, executable Ops.
+
+## 2. Objective
+-   **Primary:** Create modular, standalone executable Ops for file/project/map operations.
+-   **Secondary:** Integrate these Ops into `op-ed` to replace its internal logic.
+-   **Tertiary:** Port these working Ops back to `agy-text-editor` once proven.
+
+## 3. The "Muscle in Ops" Model
+Following `!.TPMOS_ONBORD_BIBLE_2.md`:
+-   **MODULE (Manager):** Orchestrates the UI, reads piece state, and launches Ops.
+-   **OP (Executable):** Performs the heavy lifting (file copies, path resolution, PDL writing).
+-   **Benefit:** Ops are atomic and can be tested/called from any project, preventing "reinventing the wheel".
+
+## 4. Why Loading is "Harder" here than in op-ed
+A critical architectural difference exists:
+- **op-ed Pattern (Sovereign Handover):** The manager simply writes `current_map=path` to `state.txt`. The **Theater (Parser)** then loads and renders that file. The manager doesn't need to "know" the contents of the map to move the cursor.
+- **agy-text-editor Pattern (Memory Import):** The manager must load the file contents into its **own RAM** (`document_lines[100]`) to handle text editing, wasd movement, and backspace. 
+- **The Bug:** If the manager restarts (due to process instability), it loses its RAM contents. If the "Load" operation doesn't perfectly sync the working buffer AND reload the manager's RAM, the editor appears empty or unchanged.
+
+## 5. TPMOS Compliance: Truly Reusable Ops
+To be truly TPMOS compliant and reusable, our Ops must stop hardcoding project-specific paths and live in a shared system directory.
+
+### Global Ops Directory:
+All shared executable modules must be placed in: `pieces/ops/`
+- Source: `pieces/ops/src/`
+- Binary: `pieces/ops/+x/`
+
+### New Op Signatures:
+1.  **load_file_op.c:** `Usage: load_file_op.+x <source_path> <target_buffer_path> <pdl_to_update>`
+    -   *Logic:* Atomically copies source to target and updates the `active_file` field in the specified PDL.
+2.  **sync_state_op.c:** `Usage: sync_state_op.+x <state_txt_path> <key> <value>`
+    -   *Logic:* Surgically updates or appends a key/value pair in any TPM-standard `state.txt` file.
+
+By using these generic signatures, `op-ed`, `agy-text-editor`, and any future project can use the **exact same binaries**.
+
+## 6. Handoff Mission for Next Agent
+### Step A: Establish Global Muscle
+1.  Create the `pieces/ops/src` and `pieces/ops/+x` directories if they do not exist.
+2.  Implement `load_file_op.c` and `sync_state_op.c` in `pieces/ops/src/` using the generic signatures above.
+3.  Compile them into `pieces/ops/+x/`.
+
+### Step B: op-ed Refactor (The Gold Standard)
+1.  Modify `projects/op-ed/manager/op-ed_manager.c` to remove internal state-sync logic.
+2.  Replace direct `state.txt` writes in `sync_current_map()` and `sync_system_project_id()` with `fork/exec` calls to the new global Ops in `pieces/ops/+x/`.
+3.  **Verify:** Ensure `op-ed` still switches maps and projects perfectly.
+
+### Step C: agy-text-editor Integration
+1.  Update `projects/agy-text-editor/manager/agy-text-editor_manager.c` to use these same global Ops.
+2.  Ensure `load_from_path` calls the global `load_file_op.+x` to update its `document.txt` working buffer and then calls `load_document_to_buffer()` to refresh RAM.
+3.  **Verify:** Ensure loading a file now updates the UI and persists to the global `player_app` state.
+
+## 7. Current Resources
+-   **Onboarding Bible:** `1.TPMOS_c_+rmmp 99.22/!.gem-flashlite--yolo/!.evo&obs/!.TPMOS_ONBORD_BIBLE_2.md`
+-   **op-ed Manager (Working Sync):** `1.TPMOS_c_+rmmp 99.22/projects/op-ed/manager/op-ed_manager.c`
+-   **Study Document:** `1.TPMOS_c_+rmmp 99.22/projects/agy-text-editor/map-load-study.txt`
+
+## 8. Golden Rule
+*"If it's not in a file, it's a lie. The module is thin; the muscle is in the Op."*
