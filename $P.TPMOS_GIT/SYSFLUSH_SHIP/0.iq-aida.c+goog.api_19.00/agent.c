@@ -28,7 +28,7 @@ static FILE* debug_fp = NULL;
 static int feat_completion = 1;
 static int feat_summarize = 1;
 static struct termios orig_termios;
-static char current_api_url[256] = "http://localhost:11434";
+static char current_api_url[256] = "https://generativelanguage.googleapis.com";
 
 void sig_handler(int sig) { 
     (void)sig; 
@@ -301,33 +301,54 @@ static char* make_path(const char* base, const char* file) { char* out = NULL; i
 
 static char current_model[256] = "llama3:latest";
 
-static void resolve_local_model() {
-    char* tags_file = "state/ollama_tags.json";
-    char* curl_args[] = {"curl", "-s", "http://localhost:11434/api/tags", "-o", tags_file, NULL};
-    run_tool(curl_args[0], curl_args);
-    
-    // Attempt to find a 'groq' model first
-    char* find_args[] = {"./tools/json_parser", tags_file, "name", NULL};
-    char* models = run_tool(find_args[0], find_args);
-    
-    if (models) {
-        char* copy = strdup(models);
-        char* token = strtok(copy, "  ");
-        int found = 0;
-        while (token) {
-            if (strstr(token, "groq")) {
-                strncpy(current_model, token, 255);
-                found = 1; break;
+static char* get_gemini_api_key() {
+    char* key_env = getenv("GEMINI_API_KEY");
+    if (key_env && strlen(key_env) > 0) {
+        return strdup(key_env);
+    }
+    FILE* f = fopen("../!.google-api-py-00.01/google-lilsol-api-key.txt", "r");
+    if (!f) {
+        f = fopen("google-lilsol-api-key.txt", "r");
+    }
+    if (f) {
+        char buf[256];
+        if (fgets(buf, sizeof(buf), f)) {
+            char* p = buf;
+            while (*p && (*p == ' ' || *p == '\t' || *p == '\r' || *p == '\n')) p++;
+            size_t len = strlen(p);
+            while (len > 0 && (p[len-1] == ' ' || p[len-1] == '\t' || p[len-1] == '\r' || p[len-1] == '\n')) {
+                p[len-1] = '\0';
+                len--;
             }
-            token = strtok(NULL, "  ");
+            fclose(f);
+            if (len > 0) return strdup(p);
+        } else {
+            fclose(f);
         }
-        if (!found) {
-            // Fallback to first available model if no groq found
-            char* first = strtok(strdup(models), "  ");
-            if (first) strncpy(current_model, first, 255);
+    }
+    return NULL;
+}
+
+static void resolve_local_model() {
+    FILE* f = fopen("config/model.txt", "r");
+    if (f) {
+        if (fgets(current_model, sizeof(current_model), f)) {
+            char* p = current_model;
+            while (*p && (*p == ' ' || *p == '\t' || *p == '\r' || *p == '\n')) p++;
+            if (p != current_model) {
+                memmove(current_model, p, strlen(p) + 1);
+            }
+            size_t len = strlen(current_model);
+            while (len > 0 && (current_model[len-1] == ' ' || current_model[len-1] == '\t' || current_model[len-1] == '\r' || current_model[len-1] == '\n')) {
+                current_model[len-1] = '\0';
+                len--;
+            }
         }
-        free(copy);
-        free(models);
+        fclose(f);
+    }
+    if (strlen(current_model) == 0 || strncmp(current_model, "gemini-", 7) != 0) {
+        strncpy(current_model, "gemini-2.5-flash", sizeof(current_model) - 1);
+        current_model[sizeof(current_model) - 1] = '\0';
     }
     printf("\033[90m[System] Resolved Model: %s\033[0m\n", current_model);
 }
@@ -496,29 +517,72 @@ int main() {
             if (!feat_summarize) { printf("Summarization is disabled in config/features.txt\n"); continue; }
             printf("Summarizing conversation...\n");
             log_session_frame("/summarize", "Summarizing conversation...");
-            char* read_args[] = {"./tools/json_state", "read", ctx_file, NULL};
-            char* context = run_tool(read_args[0], read_args);
-            
-            char model[256];
-            strncpy(model, current_model, 255);
 
-            FILE* pf = fopen(tmp_prompt, "w");
-            if (pf) {
-                fprintf(pf, "{\"model\":\"%s\",\"format\":\"json\",\"stream\":false,\"messages\":[{\"role\":\"system\",\"content\":\"Condense the following conversation into a concise summary of facts, decisions, and current project state. Respond ONLY with a JSON object containing a 'summary' key.\"},{\"role\":\"user\",\"content\":\"%s\"}]}", model, context);
-                fclose(pf);
+            char* api_key = get_gemini_api_key();
+            if (!api_key) {
+                fprintf(stderr, "\033[91m[ERR] Google Gemini API Key not found in environment or file.\033[0m\n");
+                continue;
             }
-            free(context);
+            char* key_header = NULL;
+            asprintf(&key_header, "x-goog-api-key: %s", api_key);
+            free(api_key);
+
+            char* sum_sys_instruction = "Condense the following conversation into a concise summary of facts, decisions, and current project state. Respond ONLY with a JSON object containing a 'summary' key.";
+            char* build_args[] = {"./tools/gemini_payload_builder", ctx_file, tmp_prompt, "0", sum_sys_instruction, NULL};
+            char* build_res = run_tool(build_args[0], build_args);
+            if (build_res) free(build_res);
 
             start_spinner();
-            char* body_arg = NULL; 
-            char* api_path = NULL;
-            if (asprintf(&body_arg, "@%s", tmp_prompt) != -1 && asprintf(&api_path, "%s/api/chat", current_api_url) != -1) {
-                char* full_curl[] = {"curl", "-s", "-H", "Content-Type: application/json", api_path, "-d", body_arg, "-o", tmp_llm, NULL};
-                run_tool(full_curl[0], full_curl);
+            unlink(tmp_llm);
+            char* curl_url = NULL;
+            asprintf(&curl_url, "%s/v1beta/models/%s:generateContent", current_api_url, current_model);
+            pid_t curl_pid = fork();
+            if (curl_pid == 0) {
+                char* body_arg = NULL;
+                if (asprintf(&body_arg, "@%s", tmp_prompt) != -1) {
+                    char* curl_args[] = {
+                        "curl", "-s", "--max-time", "120",
+                        "-H", "Content-Type: application/json",
+                        "-H", key_header,
+                        curl_url,
+                        "-d", body_arg,
+                        "-o", tmp_llm,
+                        NULL
+                    };
+                    execvp(curl_args[0], curl_args);
+                }
+                _exit(127);
             }
-            stop_spinner(); free(body_arg); free(api_path);
+            free(curl_url);
+            int curl_status = 0;
+            while (1) {
+                pid_t r = waitpid(curl_pid, &curl_status, WNOHANG);
+                if (r == curl_pid) break;
+                if (r == -1 && errno != EINTR) break;
+                if (action_interrupted) { kill(curl_pid, SIGTERM); break; }
+                usleep(50000);
+            }
+            stop_spinner();
+            free(key_header);
 
-            char* p_ext[] = {"./tools/json_parser", tmp_llm, "content", NULL};
+            if (action_interrupted) {
+                printf("\n\033[91m[Action Cancelled]\033[0m\n");
+                continue;
+            }
+
+            if (!WIFEXITED(curl_status) || WEXITSTATUS(curl_status) != 0 || access(tmp_llm, F_OK) != 0) {
+                fprintf(stderr, "\033[91m[ERR] LLM call failed (exit: %d).\033[0m\n", 
+                        WIFEXITED(curl_status) ? WEXITSTATUS(curl_status) : -1);
+                char* p_err[] = {"./tools/json_parser", tmp_llm, "message", NULL};
+                char* err_msg = run_tool(p_err[0], p_err);
+                if (err_msg && strlen(err_msg) > 0) {
+                    fprintf(stderr, "\033[93m[API Error] %s\033[0m\n", err_msg);
+                    free(err_msg);
+                }
+                continue;
+            }
+
+            char* p_ext[] = {"./tools/json_parser", tmp_llm, "text", NULL};
             char* content_json = run_tool(p_ext[0], p_ext);
             if (content_json) {
                 FILE* cf = fopen(tmp_content, "w"); if (cf) { fputs(content_json, cf); fclose(cf); }
@@ -582,35 +646,43 @@ int main() {
         run_tool(u_args[0], u_args);
 
         while (keep_running && !action_interrupted) {
-            // 2. Read Full Context for API Call
-            char* ctx_read_args[] = {"./tools/json_state", "read", ctx_file, NULL};
-            char* context = run_tool(ctx_read_args[0], ctx_read_args);
+            // 2. Read Full Context for API Call and Build Payload
+            char* build_args[] = {"./tools/gemini_payload_builder", ctx_file, tmp_prompt, NULL};
+            char* build_res = run_tool(build_args[0], build_args);
+            if (build_res) free(build_res);
 
-            char model[256];
-            strncpy(model, current_model, 255);
-
-            FILE* pf = fopen(tmp_prompt, "w");
-            if (!pf) { perror("fopen tmp_prompt"); free(context); break; }
-            fprintf(pf, "{\"model\":\"%s\",\"format\":\"json\",\"stream\":false,\"messages\":%s}\n", 
-                    model, context && strlen(context) > 2 ? context : "[]");
-            fclose(pf); free(context);
+            char* api_key = get_gemini_api_key();
+            if (!api_key) {
+                fprintf(stderr, "\033[91m[ERR] Google Gemini API Key not found in environment or file.\033[0m\n");
+                break;
+            }
+            char* key_header = NULL;
+            asprintf(&key_header, "x-goog-api-key: %s", api_key);
+            free(api_key);
 
             start_spinner();
             unlink(tmp_llm);
-                        // API Key Handling: Groq API requires an Authorization header.
-            // In a production environment, fetch this from env or secure config.
-            // Example: char* groq_api_key = getenv("GROQ_API_KEY");
-            // if (groq_api_key) { ... add "-H", "Authorization: Bearer ...", ... }
+            char* curl_url = NULL;
+            asprintf(&curl_url, "%s/v1beta/models/%s:generateContent", current_api_url, current_model);
+
             pid_t curl_pid = fork();
             if (curl_pid == 0) {
                 char* body_arg = NULL;
-                char* api_path = NULL;
-                if (asprintf(&body_arg, "@%s", tmp_prompt) != -1 && asprintf(&api_path, "%s/api/chat", current_api_url) != -1) {
-                    char* curl_args[] = {"curl", "-s", "--max-time", "120", "-H", "Content-Type: application/json", api_path, "-d", body_arg, "-o", tmp_llm, NULL};
+                if (asprintf(&body_arg, "@%s", tmp_prompt) != -1) {
+                    char* curl_args[] = {
+                        "curl", "-s", "--max-time", "120",
+                        "-H", "Content-Type: application/json",
+                        "-H", key_header,
+                        curl_url,
+                        "-d", body_arg,
+                        "-o", tmp_llm,
+                        NULL
+                    };
                     execvp(curl_args[0], curl_args);
                 }
                 _exit(127);
             }
+            free(curl_url);
             int curl_status = 0;
             while (1) {
                 pid_t r = waitpid(curl_pid, &curl_status, WNOHANG);
@@ -620,6 +692,7 @@ int main() {
                 usleep(50000);
             }
             stop_spinner();
+            free(key_header);
 
             if (action_interrupted) {
                 printf("\n\033[91m[Action Cancelled]\033[0m\n");
@@ -627,35 +700,54 @@ int main() {
             }
 
             if (!WIFEXITED(curl_status) || WEXITSTATUS(curl_status) != 0 || access(tmp_llm, F_OK) != 0) {
-                fprintf(stderr, "\033[91m[ERR] LLM call failed (exit: %d, access: %d).\033[0m\n", 
-                        WIFEXITED(curl_status) ? WEXITSTATUS(curl_status) : -1, access(tmp_llm, F_OK));
-                break;
+                fprintf(stderr, "\033[91m[ERR] Curl failed (exit: %d).\033[0m\n", 
+                        WIFEXITED(curl_status) ? WEXITSTATUS(curl_status) : -1);
+                continue;
             }
 
-            // 3. Extract message.content or tool_calls
-            char* p_ext[] = {"./tools/json_parser", tmp_llm, "content", NULL};
-            char* content_json = run_tool(p_ext[0], p_ext);
+            // Check for API-level error first
+            char* p_err[] = {"./tools/json_parser", tmp_llm, "message", NULL};
+            char* err_msg = run_tool(p_err[0], p_err);
+            if (err_msg && strlen(err_msg) > 0) {
+                fprintf(stderr, "\033[93m[API Error] %s\033[0m\n", err_msg);
+                free(err_msg);
+                continue;
+            }
+
+            // 3. Extract text response or functionCall
+            char* p_ext[] = {"./tools/json_parser", tmp_llm, "text", NULL};
+            char* text_response = run_tool(p_ext[0], p_ext);
             
-            char* p_calls[] = {"./tools/json_parser", tmp_llm, "tool_calls", NULL};
-            char* tool_calls = run_tool(p_calls[0], p_calls);
+            char* p_calls[] = {"./tools/json_parser", tmp_llm, "functionCall", NULL};
+            char* function_call = run_tool(p_calls[0], p_calls);
+
+            if ((!text_response || strlen(text_response) == 0) && (!function_call || strlen(function_call) == 0)) {
+                // If both are empty, check if we have any other error indication
+                char* p_err_obj[] = {"./tools/json_parser", tmp_llm, "error", NULL};
+                char* err_obj = run_tool(p_err_obj[0], p_err_obj);
+                if (err_obj && strlen(err_obj) > 0) {
+                    fprintf(stderr, "\033[93m[API Error Object] %s\033[0m\n", err_obj);
+                    free(err_obj);
+                } else {
+                    fprintf(stderr, "\033[90m[Debug] Raw response saved to state/llm_response.json\033[0m\n");
+                }
+            }
 
             char* tool_name = NULL;
             char* args_json = NULL;
 
-            if (tool_calls && strlen(tool_calls) > 2) {
-                // Native tool calls found. Extract name and arguments from the first call.
-                // Note: Our json_parser is simple, it will find the first "name" and "arguments" keys.
+            if (function_call && strlen(function_call) > 2) {
                 FILE* fcalls = fopen("state/tool_calls.tmp", "w");
-                if (fcalls) { fputs(tool_calls, fcalls); fclose(fcalls); }
+                if (fcalls) { fputs(function_call, fcalls); fclose(fcalls); }
                 
                 char* p_tn[] = {"./tools/json_parser", "state/tool_calls.tmp", "name", NULL};
                 tool_name = run_tool(p_tn[0], p_tn);
-                char* p_ta[] = {"./tools/json_parser", "state/tool_calls.tmp", "arguments", NULL};
+                char* p_ta[] = {"./tools/json_parser", "state/tool_calls.tmp", "args", NULL};
                 args_json = run_tool(p_ta[0], p_ta);
                 unlink("state/tool_calls.tmp");
-            } else if (content_json && strlen(content_json) > 0) {
+            } else if (text_response && strlen(text_response) > 0) {
                 FILE* fcont = fopen(tmp_content, "w");
-                if (fcont) { fputs(content_json, fcont); fclose(fcont); }
+                if (fcont) { fputs(text_response, fcont); fclose(fcont); }
                 
                 char* p_tn[] = {"./tools/json_parser", tmp_content, "tool", NULL};
                 tool_name = run_tool(p_tn[0], p_tn);
@@ -739,23 +831,30 @@ int main() {
                     printf("\033[90m[Action: %s]\033[0m\n", tool_name);
                     printf("\033[92m>> %s\033[0m\n", result);
                     
-                    // Native tool use wants the assistant message with tool_calls, then the tool result.
-                    // For our simplified JSON in content, we append the content_json.
-                    char* a_args[] = {"./tools/json_state", "append", ctx_file, "assistant", content_json && strlen(content_json) > 0 ? content_json : "{\"tool\": \"...\"}", NULL};
+                    char* assistant_json = NULL;
+                    asprintf(&assistant_json, "{\"name\":\"%s\",\"args\":%s}", tool_name, args_json && strlen(args_json) > 0 ? args_json : "{}");
+                    char* a_args[] = {"./tools/json_state", "append", ctx_file, "assistant", assistant_json, NULL};
                     run_tool(a_args[0], a_args);
+                    free(assistant_json);
+
                     char* t_args[] = {"./tools/json_state", "append", ctx_file, "tool", result, NULL};
                     run_tool(t_args[0], t_args);
                     free(result);
-                    free(tool_name); free(args_json); free(content_json); free(tool_calls);
+                    free(tool_name); free(args_json); free(function_call); free(text_response);
                     continue; // Loop back for tool result
                 }
             }
 
-            char* p_resp[] = {"./tools/json_parser", tmp_content, "response", NULL};
-            char* resp = run_tool(p_resp[0], p_resp);
-            
+            char* resp = NULL;
+            if (text_response && strlen(text_response) > 0) {
+                FILE* fcont = fopen(tmp_content, "w");
+                if (fcont) { fputs(text_response, fcont); fclose(fcont); }
+                char* p_resp[] = {"./tools/json_parser", tmp_content, "response", NULL};
+                resp = run_tool(p_resp[0], p_resp);
+            }
             if (!resp || strlen(resp) == 0) {
-                free(resp); resp = strdup(content_json && strlen(content_json) > 0 ? content_json : "(empty)");
+                if (resp) free(resp);
+                resp = (text_response && strlen(text_response) > 0) ? strdup(text_response) : strdup("(empty)");
             }
 
             printf("\033[92m>> %s\033[0m\n", resp);
@@ -766,7 +865,7 @@ int main() {
             last_resp = strdup(resp);
             log_session_frame(line, resp);
 
-            free(resp); free(tool_name); free(args_json); free(content_json); free(tool_calls);
+            free(resp); free(tool_name); free(args_json); free(function_call); free(text_response);
             break; // Final response received
         }
     }

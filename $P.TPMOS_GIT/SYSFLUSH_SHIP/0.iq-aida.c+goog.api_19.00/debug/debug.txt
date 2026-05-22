@@ -1,5 +1,3 @@
-[DEBUG] Forking: curl -s http://localhost:11434/api/tags -o state/ollama_tags.json
-[DEBUG] Forking: ./tools/json_parser state/ollama_tags.json name
 [DEBUG] Forking: ./tools/json_state read state/context.json
 [DEBUG] Forking: ./tools/json_state append state/context.json system You are Aida, an expert technical coding agent. 
 When asked about code, architecture, or documentation:
@@ -21,11 +19,19 @@ Tools:
 
 [DEBUG] Forking: ./tools/json_state read state/context.json
 [DEBUG] Forking: ./tools/json_state append state/context.json user test
-[DEBUG] Forking: ./tools/json_state read state/context.json
-[DEBUG] Forking: ./tools/json_parser state/llm_response.json content
-[DEBUG] Forking: ./tools/json_parser state/llm_response.json tool_calls
-[DEBUG] Forking: ./tools/json_parser state/llm_content.json tool
-[DEBUG] Forking: ./tools/json_parser state/llm_content.json args
-[DEBUG] Forking: ./tools/json_parser state/llm_content.json response
-[DEBUG] Forking: ./tools/json_state append state/context.json assistant I'm sorry, but I don't understand what you're asking. Could you please provide more context or specify what you need help with?
+[DEBUG] Forking: ./tools/gemini_payload_builder state/context.json state/prompt.json
+[DEBUG] Forking: ./tools/json_parser state/llm_response.json message
+[DEBUG] Forking: ./tools/gemini_payload_builder state/context.json state/prompt.json
+[DEBUG] Forking: ./tools/json_parser state/llm_response.json message
+[DEBUG] Forking: ./tools/gemini_payload_builder state/context.json state/prompt.json
+[DEBUG] Forking: ./tools/json_parser state/llm_response.json message
+[DEBUG] Forking: ./tools/gemini_payload_builder state/context.json state/prompt.json
+[DEBUG] Forking: ./tools/json_parser state/llm_response.json message
+[DEBUG] Forking: ./tools/gemini_payload_builder state/context.json state/prompt.json
+[DEBUG] Forking: ./tools/json_parser state/llm_response.json message
+[DEBUG] Forking: ./tools/gemini_payload_builder state/context.json state/prompt.json
+[DEBUG] Forking: ./tools/json_parser state/llm_response.json message
+[DEBUG] Forking: ./tools/gemini_payload_builder state/context.json state/prompt.json
+[DEBUG] Forking: ./tools/json_parser state/llm_response.json message
+[DEBUG] Forking: ./tools/gemini_payload_builder state/context.json state/prompt.json
 [DEBUG] Forking: ./tools/json_state read state/context.json
