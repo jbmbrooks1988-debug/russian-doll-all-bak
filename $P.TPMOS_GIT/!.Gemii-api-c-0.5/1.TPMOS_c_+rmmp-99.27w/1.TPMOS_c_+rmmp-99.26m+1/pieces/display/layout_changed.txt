@@ -1,0 +1,1 @@
+projects/lsr/layouts/lsr_setup.chtpm
