@@ -1,0 +1,8 @@
+module_path=projects/agy-text-editor/manager/+x/agy-text-editor_manager.+x
+active_layout_id=editor.chtpm
+project_id=agy-text-editor
+active_project=projects/agy-text-editor/proof.txt
+editor_map=<text label="║  [X]                                      ║" /><br/><text label="║  44                                       ║" /><br/><text label="║  4                                        ║" /><br/><text label="║  hi344ne te                               ║" /><br/><text label="║  t file                                   ║" /><br/><text label="║  hihi                                     ║" /><br/><text label="║                                           ║" /><br/><text label="║                                           ║" /><br/>
+input_line=
+active_file_info_line=<text label="║  FILE: projects/agy-text-editor/proof.txt ║" /><br/>
+editor_response_line=║  Ready.                                        ║

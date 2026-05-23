@@ -1,0 +1,23 @@
+# Comparison: Fuzz-Op vs Agy-Text-Editor
+
+## 1. Reactivity
+- **Fuzz-Op**: `<panel time_reactive="true">`. The parser refreshes the frame frequently, allowing the manager to push updates (like hunger/energy) without user input.
+- **Agy-Editor**: `<panel>`. Only refreshes on user input or when `frame_changed.txt` is hit.
+
+## 2. Manager Loop
+- **Fuzz-Op**: Proactive. Updates GUI state and triggers renders even without new history keys if needed (though mostly input-driven, the `sync_focus` and frequent loops keep it alive). It uses multiple threads to handle different input sources.
+- **Agy-Editor**: Reactive. `update_gui_state()` is ONLY called if `processed_this_line` is true. If `INTERACT` is clicked, the parser might not log a key that the manager "processes", so the view remains stale until the FIRST move/edit key.
+
+## 3. Initial State
+- **Fuzz-Op**: Calls `save_manager_state()` (which writes GUI state) before entering the loop.
+- **Agy-Editor**: `update_gui_state()` was commented out before the loop.
+
+## 4. Path Resolution
+- **Fuzz-Op**: Uses `project_root` relative to CWD or KVP, consistently building paths.
+- **Agy-Editor**: Was using relative paths, recently updated to attempt absolute but might have consistency issues.
+
+## Solution Plan:
+1. Enable `time_reactive="true"` in `editor.chtpm`.
+2. Un-comment `update_gui_state()` and `trigger_render()` before the main loop in `agy-text-editor_manager.c`.
+3. Call `update_gui_state()` and `trigger_render()` periodically or at least once at the start of the loop to ensure the initial "INTERACT" view is populated.
+4. Ensure `is_active_layout` is robust.

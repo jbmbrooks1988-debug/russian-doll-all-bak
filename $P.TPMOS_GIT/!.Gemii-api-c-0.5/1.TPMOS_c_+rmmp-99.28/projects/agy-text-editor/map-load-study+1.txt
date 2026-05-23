@@ -1,0 +1,42 @@
+# Map Load Study: op-ed vs agy-text-editor (TPMOS Pivot Edition)
+**Date:** 2026-05-23
+**Status:** UPDATED WITH "MUSCLE IN OPS" GUIDANCE
+
+## 1. The Core Architectural Failure
+The `agy-text-editor` load pipeline is failing because it violates the "Thin Module" principle. It tries to perform heavy file I/O and path resolution internally in C code, leading to:
+- **Race Conditions:** The manager and the Parser fight over `gui_state.txt` and `state.txt` while `cli_io` is active.
+- **Memory Fragility:** It loads file contents into a RAM buffer (`document_lines`). If the process restarts or the layout shifts, the RAM is lost, and the UI appears empty.
+
+## 2. TPMOS Vision: Sovereign "Muscle" Pattern
+To fix the LOADER, we must stop "fixing" the C code and instead **outsource the complexity to Ops.** In the TPMOS vision, the Manager is just a UI layer; the Ops are the truth.
+
+### The New Load Contract:
+1. **Thin Manager:** Receives the `LOAD` command and the path. It does **zero** file copying itself.
+2. **Global Op:** The Manager spawns `load_file_op.+x <source> <target_buffer> <pdl_to_update>`.
+3. **Atomic Sync:** The Op handles the atomic copy and updates the "Sovereign State" on disk.
+4. **RAM Refresh:** Only *after* the Op returns does the Manager reload its internal RAM buffer from the now-stable disk buffer.
+
+## 3. Implementation Guidance (For Next Agent)
+The following steps will make `agy-text-editor` TPMOS-compliant and resolve the loading bugs:
+
+### Step A: Externalize the Load Muscle
+- Replace the internal `load_from_path()` logic in `agy-text-editor_manager.c` with a `fork/exec` call to the global `pieces/ops/file-op/+x/load_file_op.+x`.
+- **Reason:** This ensures the file copy happens in a dedicated process, preventing the Manager's RAM state from being clobbered during the I/O wait.
+
+### Step B: Sovereign State Synchronization
+- Use `sync_op.+x` to write the `active_file` and `project_id` to `pieces/apps/player_app/manager/state.txt`.
+- **Reason:** This informs the Parser and the rest of the OS of the change through a standardized, atomic_i___l__ [KPF], 
+ — 
+2:11 AM
+i have an MBA binary rather than a risky `fopen("w")` call from the Manager.
+
+### Step C: Automate the Handover
+- After the Ops complete, the Manager must:
+    1. Call `load_document_to_buffer()` to sync its RAM with the new disk truth.
+    2. Transition the layout back to `editor.chtpm` by appending to `layout_changed.txt`.
+- **Reason:** This mimics the successful "Handover" pattern used in `op-ed`.
+
+## 4. The Golden Rule of the Fix
+*"If the Manager is doing the heavy lifting, the Manager is broken."* 
+
+The fix is not to make the C code smarter; it is to make the C code **thinner** by calling the existing Ops infrastructure. This proves that the OS is just a collection of PAL scripts and Ops, where the Manager is simply the current interface to those muscles.

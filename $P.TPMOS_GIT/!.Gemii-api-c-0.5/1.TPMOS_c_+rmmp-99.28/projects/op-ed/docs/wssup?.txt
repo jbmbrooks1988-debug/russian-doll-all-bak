@@ -1,0 +1,25 @@
+
+
+dev questions : 
+what about games player? , how is that going to play the fuzzpet mirror project to test it? should we do the player first in that case (for testability?)? 
+or at the same time ? . also current maps should be in its own game "default-game" or test-game w/e 
+we can start with multiple to test the file loader....
+
+id like to prove that the basic file save loader can save and load basic project without having to go 
+fully deep and handle events yet. 
+id also like to prove that the player can run a basic project? 
+
+i think the (meta?) phases should be slices of "current phases" get it? can we be more specific of that
+its more careful testable an iterative also long term vision: 
+
+for player , what can we reuse of current tpmos 
+we will need an orchestrator right? key input? chtpm parser? do u see that stuff in the macro tpmos system
+give more granular insight into exactly how that will work in relation to exporting , since
+right now player can use built in tpmos infra(which is modular and should be easily copied for export) 
+
+for context tho. at some point it maybe very feasible that the entire tpmos 
+could be remade running just the pal asm player and ops to deliver the same experience it currently does. 
+does that make sense? can u communicate that idea pattern in our documents? 
+
+<ill probably go fix 'agy-file-exitor' loader seperatly>
+
