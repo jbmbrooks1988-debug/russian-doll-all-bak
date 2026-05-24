@@ -1,0 +1,276 @@
+UBUNTU DESKTOP FREEZE INVESTIGATION REPORT
+==========================================
+Date: April 2, 2026
+System: jb-Inspiron-3655
+Kernel: 6.8.0-106-generic
+GPU: AMD Mullins [Radeon R4/R5 Graphics] [1002:9851] (rev 45)
+
+================================================================================
+ROOT CAUSE: AMD GPU DRIVER HANG (amdgpu/radeon)
+================================================================================
+
+The desktop freeze was caused by the AMD GPU driver locking up, which blocked
+gnome-shell and all GPU-accelerated applications.
+
+================================================================================
+EVIDENCE FROM LOGS
+================================================================================
+
+1. TASK HANG MESSAGES (Apr 02 19:20-19:22):
+   - `browser 4:rcs0:5057 blocked for more than 245 seconds`
+   - `kworker/u9:0:7474 blocked for more than 245 seconds`
+   - `kworker/u9:1:8207 blocked for more than 245 seconds`
+   - `gnome-shell:1356 blocked for more than 368 seconds`
+
+   The "rcs0" (Render Command Streamer 0) indicates GPU hardware queue hang.
+   The kworker/u9:* threads are AMD GPU driver workqueues.
+
+2. SYSTEM REBOOT (Apr 02 19:29):
+   - Boot ID changed, indicating hard reboot after freeze
+   - TPM firmware bug detected on boot (not related to freeze)
+
+3. GNOME SHELL FAILURES (Apr 02 19:30):
+   - Multiple "Failed to start Application launched by gnome-session-binary"
+   - Tracker miner failure (file indexer)
+   - These are POST-REBOOT issues, not the cause
+
+================================================================================
+WHY THIS HAPPENED
+================================================================================
+
+The AMD Radeon R4/R5 (Mullins APU) has known issues with:
+
+1. **GPU Hangs Under Load**: The amdgpu/radeon driver can deadlock when:
+   - OpenGL applications create complex contexts (GL-OS, browsers)
+   - Multiple GPU contexts compete for hardware queues
+   - Memory allocation fails and driver doesn't recover gracefully
+
+2. **Kernel 6.8.0-106 Bugs**: This specific kernel version has reported
+   amdgpu hangs on older GCN 1.0/1.1 hardware (Mullins is GCN 1.1)
+
+3. **Cascading Failure Pattern**:
+   ```
+   Browser GPU acceleration hangs (rcs0)
+     ↓
+   AMD GPU driver workqueues block (kworker/u9:*)
+     ↓
+   GNOME shell can't render (blocked on GPU)
+     ↓
+   Complete desktop freeze (input still works, display frozen)
+     ↓
+   User forced to hard reboot
+   ```
+
+================================================================================
+LIKELY TRIGGERS IN YOUR WORKFLOW
+================================================================================
+
+Based on your TPMOS work:
+
+1. **GL-OS OpenGL Desktop**: 
+   - Opens OpenGL context for rendering
+   - If running during freeze, likely contributor
+   - Command: `pieces/apps/gl_os/plugins/+x/gl_desktop.+x`
+
+2. **Browser Hardware Acceleration**:
+   - Browser's GPU acceleration (rcs0 thread)
+   - Web pages with WebGL or video decoding
+   - The `browser 4:rcs0` thread was the FIRST to hang
+
+3. **Multiple GPU Contexts**:
+   - Running GL-OS + browser simultaneously
+   - Both competing for same GPU hardware queue
+   - Driver deadlock when contexts switch
+
+================================================================================
+IMMEDIATE FIXES (Prevent Recurrence)
+================================================================================
+
+PRIORITY 1: Disable Browser Hardware Acceleration
+───────────────────────────────────────────────────
+This is the most likely trigger based on logs.
+
+For Chrome/Chromium:
+  Settings → System → "Use graphics acceleration when available" → OFF
+
+For Firefox:
+  Settings → General → Performance → Uncheck "Use recommended performance settings"
+  → Set "Content process limit" to 4
+  → about:config → layers.acceleration.disabled → true
+
+PRIORITY 2: Add GPU Driver Recovery Parameters
+────────────────────────────────────────────────
+Edit /etc/default/grub:
+  GRUB_CMDLINE_LINUX_DEFAULT="quiet splash amdgpu.gpu_recovery=1"
+
+Then run:
+  sudo update-grub
+
+This enables automatic GPU hang recovery instead of full system freeze.
+
+PRIORITY 3: Create GPU Hang Watchdog Script
+────────────────────────────────────────────
+Create a script to detect and kill hung GPU processes BEFORE they freeze
+the entire desktop.
+
+See: #.tools/gpu_watchdog.sh (below)
+
+================================================================================
+LONG-TERM SOLUTIONS
+================================================================================
+
+OPTION A: Update Kernel (Recommended)
+──────────────────────────────────────
+Kernel 6.8.0-106 has known amdgpu bugs. Update to:
+- 6.8.0-111 or later (Ubuntu 22.04 HWE)
+- Or 6.11+ from mainline
+
+Check for updates:
+  apt list --upgradable | grep linux-image
+
+Install newer kernel:
+  sudo apt install linux-generic-hwe-22.04
+
+OPTION B: Use Radeon Driver Instead of AMDGPU
+──────────────────────────────────────────────
+Mullins (GCN 1.1) works better with legacy radeon driver:
+
+Edit /etc/default/grub:
+  GRUB_CMDLINE_LINUX_DEFAULT="quiet splash radeon.si_support=1 amdgpu.si_support=0"
+
+Then:
+  sudo update-grub
+  sudo reboot
+
+NOTE: This may reduce performance but increases stability.
+
+OPTION C: Disable GPU Acceleration in GL-OS
+────────────────────────────────────────────
+If GL-OS is causing hangs, modify it to use software rendering:
+
+In gl_desktop.c, before OpenGL context creation:
+  setenv("LIBGL_ALWAYS_SOFTWARE", "1", 1);
+
+Or launch with:
+  LIBGL_ALWAYS_SOFTWARE=1 ./pieces/apps/gl_os/plugins/+x/gl_desktop.+x
+
+This will be slower but won't hang the GPU.
+
+================================================================================
+GPU WATCHDOG SCRIPT (Prevention)
+================================================================================
+
+Create: #.tools/gpu_watchdog.sh
+
+This script monitors for GPU hangs and kills offending processes before
+they freeze the entire desktop.
+
+#!/bin/bash
+# GPU Hang Watchdog - Detects and recovers from GPU hangs
+# Install: Add to crontab or run as background daemon
+
+THRESHOLD=30  # seconds before considering process "hung"
+CHECK_INTERVAL=10  # seconds between checks
+
+while true; do
+    # Check for processes blocked on GPU
+    dmesg | tail -20 | grep -q "blocked for more than"
+    if [ $? -eq 0 ]; then
+        echo "[$(date)] GPU hang detected! Attempting recovery..."
+        
+        # Log the hang
+        dmesg | tail -50 >> /tmp/gpu_hang_$(date +%Y%m%d_%H%M%S).log
+        
+        # Try to reset GPU (requires root)
+        echo "Attempting GPU reset via sysfs..."
+        echo 1 | sudo tee /sys/class/drm/card0/device/reset 2>/dev/null
+        
+        # If reset fails, kill top GPU consumers
+        if [ $? -ne 0 ]; then
+            echo "GPU reset failed. Killing top GPU consumers..."
+            ps aux | grep -E "gl_desktop|chrome|firefox|browser" | \
+                grep -v grep | awk '{print $2}' | \
+                xargs -r kill -TERM
+        fi
+        
+        # Wait for recovery
+        sleep 5
+    fi
+    
+    sleep $CHECK_INTERVAL
+done
+
+================================================================================
+DIAGNOSTIC COMMANDS (For Future Investigation)
+================================================================================
+
+When freeze occurs, run these BEFORE rebooting (from SSH or TTY):
+
+# Check GPU hang status
+dmesg | grep -E "amdgpu|ring.*timeout|GPU hang"
+
+# Check which processes are using GPU
+lsof /dev/dri/*
+
+# Check GPU memory usage
+cat /sys/kernel/debug/dri/0/amdgpu_vram_mm
+
+# Force GPU reset (as root)
+echo 1 > /sys/class/drm/card0/device/reset
+
+# Kill all GPU users
+fuser -k /dev/dri/*
+
+# Switch to text console (if GUI frozen)
+Ctrl+Alt+F3  (then login and run diagnostics)
+
+================================================================================
+RECOMMENDATIONS FOR TPMOS WORK
+================================================================================
+
+1. **Before running GL-OS**:
+   - Close browser or disable hardware acceleration
+   - Monitor GPU usage: `radeontop` or `htop`
+   - Keep TTY available (Ctrl+Alt+F3) for recovery
+
+2. **During P2P-NET development**:
+   - Network ops won't cause GPU hangs (they're CPU-only)
+   - GUI dashboard (p2p-net.chtpm) is ASCII-only, safe
+   - Only GL-OS poses GPU risk
+
+3. **Safe workflow**:
+   - Work on P2P ops and manager code (no GPU)
+   - Test GUI in text mode first (ASCII layout)
+   - Only launch GL-OS when necessary, with browser closed
+   - Keep watchdog script running
+
+4. **If freeze occurs again**:
+   - Try Ctrl+Alt+F3 to switch to TTY
+   - Run: `sudo systemctl restart gdm3` (restarts GNOME)
+   - Or: `echo 1 | sudo tee /sys/class/drm/card0/device/reset`
+   - Last resort: SysRq+REISUB (safe reboot)
+
+================================================================================
+RELATED FILES
+================================================================================
+
+- p2p-succession-report-a2.txt - P2P-NET project handoff
+- #.tools/pmo_cpu_health.sh - Existing CPU monitoring script
+- #.main/gl-os-postmortem.txt - Previous GL-OS debugging notes
+
+================================================================================
+SUMMARY
+================================================================================
+
+**Cause**: AMD GPU driver hang (amdgpu/radeon) on Mullins APU
+**Trigger**: Browser GPU acceleration (most likely) or GL-OS OpenGL context
+**Impact**: Complete desktop freeze requiring hard reboot
+**Fix**: Disable browser HW acceleration + add amdgpu.gpu_recovery=1 kernel param
+**Long-term**: Update kernel or switch to radeon driver
+
+**Risk to P2P-NET work**: LOW - P2P ops and GUI are CPU-only, ASCII-based.
+Only GL-OS poses GPU risk.
+
+================================================================================
+END OF REPORT
+================================================================================

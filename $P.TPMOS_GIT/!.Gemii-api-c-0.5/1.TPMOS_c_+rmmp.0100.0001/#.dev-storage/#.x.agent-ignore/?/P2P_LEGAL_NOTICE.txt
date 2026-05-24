@@ -1,0 +1,284 @@
+================================================================================
+TPMOS P2P-NET: LEGAL & CONSUMER PROTECTION NOTICE
+================================================================================
+Date: April 2, 2026
+Version: 1.0
+
+THIS DOCUMENT IS FOR:
+- Legal team
+- Marketing team
+- Support team
+- Users
+- Future developers
+
+================================================================================
+SECTION 1: WHAT IS TPMOS P2P-NET?
+================================================================================
+
+TPMOS P2P-NET is a GAME/SIMULATION feature within the TPMOS ecosystem.
+
+It simulates:
+- Cryptocurrency wallets
+- Blockchain mining
+- NFT items
+- P2P trading and auctions
+- Chat and social features
+
+IT IS NOT:
+- A real cryptocurrency
+- A gambling platform
+- A financial service
+- A cryptocurrency exchange
+
+================================================================================
+SECTION 2: COIN REFUND GUARANTEE
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                             │
+│              IF YOU LOSE COINS, WE WILL REFUND THEM.                        │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+**Why?**
+- These are GAME COINS with NO REAL-WORLD VALUE
+- This is for FUN, not real financial transactions
+- User experience is more important than technical purity
+- We want players to have FUN, not stress about lost coins
+
+**What qualifies for a refund:**
+- Software bugs
+- Wallet corruption
+- Server crashes
+- Any technical issue
+- User error (we're nice!)
+- Lost password (we can recover)
+- Anything else - just ask!
+
+**How to get a refund:**
+1. Contact support with:
+   - Your username
+   - Approximate amount lost
+   - What happened (brief description)
+
+2. Support will:
+   - Verify from master_ledger.txt (transaction log)
+   - Create refund transaction
+   - Restore coins to your wallet
+   - Notify you when complete
+
+3. Timeframe:
+   - Usually within 24 hours
+   - Sometimes instant (automated)
+
+**No questions asked.** We trust our players.
+
+================================================================================
+SECTION 3: SECURITY LEVEL
+================================================================================
+
+**Security Level: "Casual Fun"**
+
+This means:
+✓ Passwords are simple (SHA256 hash, not bcrypt/argon2)
+✓ Support can recover/reset passwords
+✓ Not designed for real-money transactions
+✓ OK to lose coins (we'll refund you!)
+✓ Meant for ENTERTAINMENT, not financial security
+
+**DO NOT:**
+- Use real passwords you care about
+- Treat coins as having real value
+- Expect bank-level security
+- Use this for actual gambling
+
+**DO:**
+- Have fun!
+- Experiment freely
+- Ask for help if you lose anything
+- Enjoy the game mechanics
+
+================================================================================
+SECTION 4: MULTIPLE WALLETS
+================================================================================
+
+Users can create UNLIMITED wallets:
+
+**Example:**
+```
+Username: player1
+├── Wallet: "main" (default, mining, general use)
+├── Wallet: "trading" (P2P trades only)
+├── Wallet: "auctions" (bidding only)
+├── Wallet: "mining" (dedicated mining rewards)
+└── Wallet: "alt" (just for fun)
+```
+
+**Why multiple wallets?**
+- Just like real life (checking, savings, investment accounts)
+- Organize your coins by purpose
+- Test different strategies
+- Separate trading from holding
+- Fun and experimentation
+
+**Switching wallets:**
+- Instant, no fees
+- All wallets linked to your profile
+- Support can recover ANY wallet
+
+================================================================================
+SECTION 5: LEGAL DISCLAIMERS
+================================================================================
+
+**For Legal Team:**
+
+```
+TERMS OF SERVICE SUMMARY:
+
+1. TPMOS P2P-NET is a GAME/SIMULATION feature.
+
+2. All coins, items, NFTs, and other virtual goods have NO REAL-WORLD
+   VALUE and cannot be exchanged for real money, goods, or services.
+
+3. This is NOT a cryptocurrency, NOT a gambling platform, and NOT a
+   financial service.
+
+4. Users may lose virtual coins due to software bugs, user error, or
+   other technical issues. In all such cases, coins will be refunded
+   upon request.
+
+5. Passwords and security are at "Casual Fun" level - suitable for
+   entertainment, not for protecting real assets.
+
+6. The developers and operators of TPMOS P2P-NET shall not be liable
+   for any damages, losses, or claims arising from use of this feature.
+
+7. By using TPMOS P2P-NET, users agree that they are participating in
+   a game/simulation for entertainment purposes only.
+```
+
+**For Marketing Team:**
+
+```
+KEY MESSAGING:
+
+✓ "Fun-first cryptocurrency simulation"
+✓ "Lose coins? We'll refund you - no questions asked!"
+✓ "Multiple wallets for every purpose"
+✓ "Casual security - just for fun!"
+✓ "Not real crypto, just real fun!"
+
+AVOID:
+✗ Don't compare to real cryptocurrencies
+✗ Don't imply financial value
+✗ Don't promise investment returns
+✗ Don't market as gambling
+```
+
+**For Support Team:**
+
+```
+REFUND SCRIPT:
+
+User: "I lost 500 coins!"
+Support: "No problem! I've refunded 500 coins to your wallet.
+          They should appear within 5 minutes. Is there anything
+          else I can help you with?"
+
+User: "I forgot my password!"
+Support: "No worries! I've reset your password. Your new
+          temporary password is 'temp123'. Please log in and
+          change it to something you'll remember."
+
+User: "My wallet is corrupted!"
+Support: "I've recovered your wallet from backup. All your
+          coins and items have been restored. Sorry for the
+          inconvenience!"
+
+PRINCIPLE: User experience > Technical purity
+           Always err on the side of generosity
+           When in doubt, refund
+```
+
+================================================================================
+SECTION 6: DEVELOPER NOTES
+================================================================================
+
+**For Future Developers:**
+
+```
+DESIGN PRINCIPLES:
+
+1. Fun-first, always.
+   - If a technical decision makes the game less fun, reconsider.
+   - Refunds are cheap (it's fake coins!).
+   - User frustration is expensive.
+
+2. Multiple wallets are a feature, not a bug.
+   - Users should be able to create unlimited wallets.
+   - Switching should be instant and free.
+   - All wallets are linked to the user profile.
+
+3. Security is "Casual Fun" level.
+   - SHA256(password + salt) is fine.
+   - Support can recover/reset anything.
+   - No need for 2FA, hardware wallets, etc.
+   - This is a GAME, not a bank.
+
+4. Refunds are automatic and generous.
+   - Log everything to master_ledger.txt.
+   - Support tools should make refunds easy.
+   - Never argue with a user about lost coins.
+   - Just refund and move on.
+
+5. Transparency.
+   - All transactions logged.
+   - Users can see their history.
+   - Support can investigate any issue.
+```
+
+**Implementation Checklist:**
+
+[ ] Refund op implemented (p2p::refund_coins)
+[ ] Wallet recovery op (p2p::recover_wallet)
+[ ] Password reset op (user::reset_password)
+[ ] Multiple wallet support (p2p::wallet_create, p2p::switch_wallet)
+[ ] Master ledger logging (all transactions)
+[ ] Support admin panel (view logs, issue refunds)
+[ ] User-facing documentation (this file)
+
+================================================================================
+SECTION 7: USER FAQ
+================================================================================
+
+**Q: Are these real coins?**
+A: No! These are game coins with no real-world value. Think of them like
+   Monopoly money or arcade tokens.
+
+**Q: What if I lose my coins?**
+A: Contact support and we'll refund you. No questions asked. We want you
+   to have fun, not stress about losing coins.
+
+**Q: Can I create multiple wallets?**
+A: Yes! You can have as many wallets as you want. Name them whatever you
+   like (main, trading, mining, etc.) and switch between them instantly.
+
+**Q: Is my password secure?**
+A: It's "casual fun" secure. Don't use a password you care about. We can
+   recover it if you forget, which means support can also reset it.
+
+**Q: Can I gamble with these coins?**
+A: You can play games and place bids, but remember - these are game coins,
+   not real money. It's for entertainment only.
+
+**Q: What if there's a bug?**
+A: Tell us! We'll fix it and refund any coins you lost. Bugs happen - we
+   just want to make it right.
+
+**Q: Is this a cryptocurrency?**
+A: No. It simulates cryptocurrency mechanics (blockchain, mining, wallets)
+   but it's NOT a real cryptocurrency. No real money involved.
+
+================================================================================
+END OF LEGAL & CONSUMER PROTECTION NOTICE
+================================================================================

@@ -1,0 +1,172 @@
+================================================================================
+DOCUMENTATION REORGANIZATION PLAN - PHASE 2C/2D
+================================================================================
+Date: April 2, 2026
+Status: READY FOR APPROVAL
+Confusion Clarified: YES - This plan is SIMPLE and CLEAR
+
+================================================================================
+WHAT WE'VE DONE SO FAR (PHASES 2A & 2B - COMPLETE ✅)
+================================================================================
+
+✅ Created #.docs/ARCHIVE/ directory
+✅ Moved 8 outdated files to archive
+✅ Created #.docs/INDEX.md (master index)
+✅ Updated TPMOS_APP_REFERENCE.txt (fixed topology)
+✅ Updated OPS_DICTIONARY.txt (added Fondu, marked P2P)
+✅ Updated AGENT_ONBOARDING.txt (removed #.ref/ reference)
+✅ Archived duplicate AGENT_ONBOARDING.md
+
+**Current #.docs/ structure is NOW CLEANER** - outdated stuff archived.
+
+================================================================================
+WHAT'S LEFT (PHASES 2C & 2D)
+================================================================================
+
+**SIMPLE ANSWER:**
+We can EITHER:
+  A) Stop here - you have INDEX.md + cleaned up #.docs/ ✅ DONE
+  B) Continue - reorganize into numbered folders (01-START-HERE, etc.)
+
+**IF YOU CHOOSE B**, here's EXACTLY what happens:
+
+---
+
+## OPTION B: FULL REORGANIZATION
+
+### What New Directories Are Created?
+
+ALL inside #.docs/ - NOWHERE ELSE:
+
+#.docs/
+├── 01-START-HERE/          ← NEW folder for onboarding docs
+├── 02-REFERENCE/           ← NEW folder for reference docs
+├── 03-INVESTIGATION-REPORTS/ ← NEW folder for investigation reports
+├── 04-HOW-TO-GUIDES/       ← NEW folder for how-to docs
+├── 05-PITFALLS-AND-FAQ/    ← NEW folder for pitfalls
+├── 06-ARCHIVED/            ← RENAMED from ARCHIVE/
+└── 07-FUTURE-CONCEPTS/     ← NEW folder for future planning
+
+### What Files Move Where?
+
+**01-START-HERE/**
+  ← Move: AGENT_ONBOARDING.txt
+  ← Create: QUICK_START.md (new file, extracted from README)
+
+**02-REFERENCE/**
+  ← Move: OPS_DICTIONARY.txt
+  ← Move: TPMOS_APP_REFERENCE.txt
+  ← Move: COMPILE_SYSTEM.md
+
+**03-INVESTIGATION-REPORTS/**
+  ← Move: fondu-investigation-report.txt
+  ← Move: op-ed-investigation-report.txt
+  ← Create: README.md (index to reports)
+
+**04-HOW-TO-GUIDES/**
+  ← SYMLINK to #.main/#.fondu.2.do/ (Fondu how-tos)
+  ← SYMLINK to #.testing/ (op-ed testing)
+  ← SYMLINK to #.docs/^.pmo.ld-faq+8/ (dev how-tos)
+  (No files moved - just shortcuts)
+
+**05-PITFALLS-AND-FAQ/**
+  ← Move: #.pmo.ld-faq+8/ contents (PITFALLS, INDEX, etc.)
+
+**06-ARCHIVED/**
+  ← Rename: ARCHIVE/ → 06-ARCHIVED/
+  ← Keep: Dev-Sprints/ subfolder
+
+**07-FUTURE-CONCEPTS/**
+  ← Move: future-facing/ contents
+
+### What About Existing Directories?
+
+- #.main/ ← STAYS WHERE IT IS (not moved)
+- #.testing/ ← STAYS WHERE IT IS (not moved)
+- #.plans/ ← STAYS WHERE IT IS (not moved)
+- TPMOSTEXTBOOK_v03.00/ ← STAYS WHERE IT IS (not moved)
+- pieces/ ← NEVER TOUCHED (per your instruction)
+- projects/ ← NEVER TOUCHED (per your instruction)
+
+### Symlinks Explained
+
+Symlinks are like shortcuts. Example:
+
+#.docs/04-HOW-TO-GUIDES/Fondu → #.main/#.fondu.2.do/
+
+When you click the symlink, it opens the real folder.
+Benefits:
+- Files stay in original location
+- INDEX.md can point to organized structure
+- No broken paths
+
+---
+
+## MY RECOMMENDATION
+
+**STOP HERE (Option A)** ✅
+
+Why?
+1. You have INDEX.md - that's the important part
+2. #.docs/ is cleaned up (8 files archived)
+3. Critical docs updated (AGENT_ONBOARDING, TPSMOS_APP_REFERENCE, OPS_DICTIONARY)
+4. Reorganization is cosmetic - doesn't add value
+5. Less risk of breaking paths
+
+**Only do Option B if:**
+- You love numbered folder structures
+- You want visual separation of doc types
+- You're okay with symlinks and path updates
+
+---
+
+## IF YOU WANT TO PROCEED WITH OPTION B
+
+Tell me which you prefer:
+
+**CHOICE 1: "Do it"**
+  → I'll create all 7 numbered folders
+  → Move files as described above
+  → Create symlinks
+  → Update INDEX.md with new paths
+  → Time: ~1-2 hours
+
+**CHOICE 2: "Skip it"**
+  → We're done with documentation cleanup
+  → You have INDEX.md + cleaned #.docs/
+  → Move on to other priorities (op-ed fixes, etc.)
+
+**CHOICE 3: "Modified version"**
+  → Tell me EXACTLY what you want
+  → Example: "Just move investigation reports to their own folder"
+  → I'll do ONLY that, nothing else
+
+---
+
+## QUESTIONS?
+
+If anything is unclear about what directories I mean:
+
+**The new directories are ALL inside #.docs/:**
+- #.docs/01-START-HERE/
+- #.docs/02-REFERENCE/
+- etc.
+
+**NOT in:**
+- pieces/ (never touched)
+- projects/ (never touched)
+- #.main/ (stays put)
+- #.testing/ (stays put)
+- Anywhere outside #.docs/
+
+**Think of it like:**
+You have a messy bookshelf (#.docs/).
+We threw out old books (ARCHIVE/).
+We made a card catalog (INDEX.md).
+Option B is adding labeled sections (01-, 02-, etc.).
+
+The books work either way - sections just make it prettier.
+
+================================================================================
+END OF PLAN - AWAITING YOUR DECISION
+================================================================================

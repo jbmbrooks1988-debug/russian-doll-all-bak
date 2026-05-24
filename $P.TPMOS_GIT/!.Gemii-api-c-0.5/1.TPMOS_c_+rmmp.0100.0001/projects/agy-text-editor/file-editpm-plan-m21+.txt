@@ -1,0 +1,59 @@
+# AGY Text Editor: Phase 1 Completion Plan (File Operations)
+**Date:** 2026-05-21
+**Project:** agy-text-editor
+**Status:** HANDOFF READY (CRITICAL BUG: Load Project Still Broken)
+
+## 1. Objective
+Complete the "Traditional File Explorer" experience, transition the editor to a map-based `INTERACT` system with a mobile camera, and port this robust file system to `op-ed`.
+
+## 2. Phase 1: File Explorer & Save/Load Polish [IN PROGRESS]
+- **Visual Cues:** `[DIR]`/`[FIL]` indicators and file sizes (KB/MB). [DONE]
+- **Auto-Save/Enter:** Enter (13/10) triggers save/load. [DONE]
+- **Sticky Explorer:** Stay in browser after Save/Load. [DONE]
+- **Load Project:** Clicking a filename should auto-load, but is **BROKEN**. [CRITICAL]
+- **Sanity Check:** Added `ACTIVE: ${active_project}` line to browser/menu, but clobbering persists. [BUG]
+
+## 3. Phase 2: Map-Based Editor (INTERACT Mode) [COMPLETED]
+- **UI Transition:** Replaced `cli_io` with an interactive map. [DONE]
+- **Standard Cursor:** Implemented `[X]` xlector-style cursor. [DONE]
+- **State Management:** Manager tracks `cursor_x`, `cursor_y` and handles wasd/arrow input. [DONE]
+- **Camera/View:** Implemented vertical/horizontal scrolling as cursor moves. [DONE]
+- **FIXED:** Render pipeline trigger optimized; every keypress pulses `frame_changed.txt`. [DONE]
+
+## 4. Known Issues & Handoff Mission
+- **THE MISSION: Fix Load Project.** Clicking a file in the browser (LOAD_FILE) fails to load contents into the map or update the sanity var.
+    - **Failed Fix:** Consolidated path resolution and immediate GUI refresh in `load_from_path` did NOT solve the issue.
+    - **Suspected Cause:** A race condition exists between the Manager and the Parser. The Parser's `cli_io` (for the FILE field) automatically syncs to `gui_state.txt` on pulse, likely clobbering the Manager's `active_project` and `editor_map` updates.
+    - **Investigation Needed:** Next agent should check `agy_manager_debug.txt` for "Loading from:" logs. If logs are present, the Manager is working, but the Parser is overwriting the display state.
+- **DELIVERABLE:** Once the Load Project bug is confirmed fixed, the next agent must document the final system functionality in a new file: `projects/agy-text-editor/file-op-dox.txt`.
+user note : i dont think thats the fix. i think its not writing to same buffer then to in memory display like save does. just
+do same thing save is doing but reverse it. save works wonderfully dont deviate from that . lets fix this.
+solution? investigate the pipeline of save-as using custom user input file name, write to agy/text-editor/save-as-pipeline-study.txt 
+and then begin the codefix after. do this now.
+
+## 5. Phase 3: Op-ed Integration [TODO]
+- **Objective:** Port this filesystem logic to `op-ed_manager.c` and replace its slot-based menu.
+
+## 6. Resources for Next Agent
+- **Manager:** `projects/agy-text-editor/manager/agy-text-editor_manager.c`
+- **Reference:** `projects/op-ed/manager/op-ed_manager.c` (Proven sync patterns)
+- **Log:** `agy_manager_debug.txt`
+
+    - It explicitly writes to `pieces/apps/player_app/manager/state.txt` AND `pieces/display/frame_changed.txt` to force a full theater refresh.
+    - Suggestion: Align `agy-text-editor`'s `load_from_path` more closely with `op-ed`'s `load_selected_project()` which calls `load_project_metadata()` and `sync_current_map()` sequentially.
+- **BUG (Clobbered UI):** The Parser's `cli_io` sync to `gui_state.txt` may clobber Manager-written variables like `active_project`.
+- **INTERACT Keys:** Movement and typing are functional but rely on the Manager winning the `gui_state.txt` write race.
+
+## 5. Phase 3: Op-ed Integration [TODO]
+- **Objective:** Completely replace the legacy `op-ed` file menu with this refined browser.
+- **Op-ed Context:** Current `op-ed` uses `projects/user/ops/+x/file_op.+x` for slot-based loading. The new browser should bypass slots and provide direct filesystem access, calling `load_project_metadata()` and `scan_maps()` upon successful selection.
+
+## 6. Resources for Next Agent
+- **Manager:** `projects/agy-text-editor/manager/agy-text-editor_manager.c`
+- **Reference Manager:** `projects/op-ed/manager/op-ed_manager.c` (See `load_selected_project`)
+- **Layouts:** `projects/agy-text-editor/layouts/`
+- **Working Buffer:** `projects/agy-text-editor/pieces/document.txt`
+- **Debug Log:** `agy_manager_debug.txt` (Crucial for tracing the LOAD_FILE fail)
+
+---
+*"Geography is destiny. If it's not in a file, it's a lie."*

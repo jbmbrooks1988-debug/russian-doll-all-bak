@@ -1,0 +1,664 @@
+=== NEW SESSION at 2026-05-24 06:42:24 ===
+
+--- FRAME UPDATE at 2026-05-24 06:42:24 ---
++===========================================================+
+|                                                           |
+|           C H T P M + O S   C L I   v2.0                 |
+|                                                           |
+|  CHTPM+OS Main Menu                                      |
+|                                                           |
+|  [>] 1. [Project Loader]                             |
+|  [ ] 2. [App Store (Fondu)]                          |
+|  [ ] 3. [Status]  [ ] 4. [GL-OS]                                          |
+|  [ ] 5. [Process Monitor]                            |
+|  [ ] 6. [Toggle Frame History (Current: )]                                         |
+|  [ ] 7. [Help]                                            |
+|                                                           |
++===========================================================+
+|  Running Applications: None                               |
+|  System Time: 08:00:00 | Turn: 0 | Key: None |
++===========================================================+
+|                                                           |
+|  $ | [ ] 8. [hi]                                                 |                                                 |
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-24 06:42:25 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [>] 1. [p2p-net]                                       ║
+║  [ ] 2. [aow-2d]                                        ║
+║  [ ] 3. [hangman]                                       ║
+║  [ ] 4. [cyoa-engine]                                   ║
+║  [ ] 5. [blank]                                         ║
+║  [ ] 6. [piececraft-3d]                                 ║
+║  [ ] 7. [bots-sov]                                      ║
+║  [ ] 8. [demo_1]                                        ║
+║  [ ] 9. [template]                                      ║
+║  [ ] 10. [bot-editor]                                    ║
+║  [ ] 11. [chat-op]                                       ║
+║  [ ] 12. [fuzz-op]                                       ║
+║  [ ] 13. [mp3-store]                                     ║
+║  [ ] 14. [ai-labs]                                       ║
+║  [ ] 15. [+-demo]                                        ║
+║  [ ] 16. [man-add]                                       ║
+║  [ ] 17. [man-ops]                                       ║
+║  [ ] 18. [lsr]                                           ║
+║  [ ] 19. [op-ed-gl]                                      ║
+║  [ ] 20. [yahoo]                                         ║
+║  [ ] 21. [404-test]                                      ║
+║  [ ] 22. [checkers]                                      ║
+║  [ ] 23. [aow]                                           ║
+║  [ ] 24. [man-pal]                                       ║
+║  [ ] 25. [quiz-engine]                                   ║
+║  [ ] 26. [fuzz-op-gl]                                    ║
+║  [ ] 27. [groq-ollama]                                   ║
+║  [ ] 28. [user]                                          ║
+║  [ ] 29. [gitlet]                                        ║
+║  [ ] 30. [xsr]                                           ║
+║  [ ] 31. [gltpm-demo]                                    ║
+║  [ ] 32. [op-ed]                                         ║
+║  [ ] 33. [agy-text-editor]                               ║
+║  [ ] 34. [trunk]                                         ║
+║  [ ] 35. [test_fondu]                                    ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 36. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-24 06:42:28 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [ ] 1. [p2p-net]                                       ║
+║  [ ] 2. [aow-2d]                                        ║
+║  [>] 3. [hangman]                                       ║
+║  [ ] 4. [cyoa-engine]                                   ║
+║  [ ] 5. [blank]                                         ║
+║  [ ] 6. [piececraft-3d]                                 ║
+║  [ ] 7. [bots-sov]                                      ║
+║  [ ] 8. [demo_1]                                        ║
+║  [ ] 9. [template]                                      ║
+║  [ ] 10. [bot-editor]                                    ║
+║  [ ] 11. [chat-op]                                       ║
+║  [ ] 12. [fuzz-op]                                       ║
+║  [ ] 13. [mp3-store]                                     ║
+║  [ ] 14. [ai-labs]                                       ║
+║  [ ] 15. [+-demo]                                        ║
+║  [ ] 16. [man-add]                                       ║
+║  [ ] 17. [man-ops]                                       ║
+║  [ ] 18. [lsr]                                           ║
+║  [ ] 19. [op-ed-gl]                                      ║
+║  [ ] 20. [yahoo]                                         ║
+║  [ ] 21. [404-test]                                      ║
+║  [ ] 22. [checkers]                                      ║
+║  [ ] 23. [aow]                                           ║
+║  [ ] 24. [man-pal]                                       ║
+║  [ ] 25. [quiz-engine]                                   ║
+║  [ ] 26. [fuzz-op-gl]                                    ║
+║  [ ] 27. [groq-ollama]                                   ║
+║  [ ] 28. [user]                                          ║
+║  [ ] 29. [gitlet]                                        ║
+║  [ ] 30. [xsr]                                           ║
+║  [ ] 31. [gltpm-demo]                                    ║
+║  [ ] 32. [op-ed]                                         ║
+║  [ ] 33. [agy-text-editor]                               ║
+║  [ ] 34. [trunk]                                         ║
+║  [ ] 35. [test_fondu]                                    ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 36. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > 3_
+
+
+--- FRAME UPDATE at 2026-05-24 06:42:29 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [ ] 1. [p2p-net]                                       ║
+║  [ ] 2. [aow-2d]                                        ║
+║  [ ] 3. [hangman]                                       ║
+║  [ ] 4. [cyoa-engine]                                   ║
+║  [ ] 5. [blank]                                         ║
+║  [ ] 6. [piececraft-3d]                                 ║
+║  [ ] 7. [bots-sov]                                      ║
+║  [ ] 8. [demo_1]                                        ║
+║  [ ] 9. [template]                                      ║
+║  [ ] 10. [bot-editor]                                    ║
+║  [ ] 11. [chat-op]                                       ║
+║  [ ] 12. [fuzz-op]                                       ║
+║  [ ] 13. [mp3-store]                                     ║
+║  [ ] 14. [ai-labs]                                       ║
+║  [ ] 15. [+-demo]                                        ║
+║  [ ] 16. [man-add]                                       ║
+║  [ ] 17. [man-ops]                                       ║
+║  [ ] 18. [lsr]                                           ║
+║  [ ] 19. [op-ed-gl]                                      ║
+║  [ ] 20. [yahoo]                                         ║
+║  [ ] 21. [404-test]                                      ║
+║  [ ] 22. [checkers]                                      ║
+║  [ ] 23. [aow]                                           ║
+║  [ ] 24. [man-pal]                                       ║
+║  [ ] 25. [quiz-engine]                                   ║
+║  [ ] 26. [fuzz-op-gl]                                    ║
+║  [ ] 27. [groq-ollama]                                   ║
+║  [ ] 28. [user]                                          ║
+║  [ ] 29. [gitlet]                                        ║
+║  [ ] 30. [xsr]                                           ║
+║  [ ] 31. [gltpm-demo]                                    ║
+║  [ ] 32. [op-ed]                                         ║
+║  [>] 33. [agy-text-editor]                               ║
+║  [ ] 34. [trunk]                                         ║
+║  [ ] 35. [test_fondu]                                    ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 36. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > 33_
+
+
+--- FRAME UPDATE at 2026-05-24 06:42:29 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [>] 1. [p2p-net]                                       ║
+║  [ ] 2. [aow-2d]                                        ║
+║  [ ] 3. [hangman]                                       ║
+║  [ ] 4. [cyoa-engine]                                   ║
+║  [ ] 5. [blank]                                         ║
+║  [ ] 6. [piececraft-3d]                                 ║
+║  [ ] 7. [bots-sov]                                      ║
+║  [ ] 8. [demo_1]                                        ║
+║  [ ] 9. [template]                                      ║
+║  [ ] 10. [bot-editor]                                    ║
+║  [ ] 11. [chat-op]                                       ║
+║  [ ] 12. [fuzz-op]                                       ║
+║  [ ] 13. [mp3-store]                                     ║
+║  [ ] 14. [ai-labs]                                       ║
+║  [ ] 15. [+-demo]                                        ║
+║  [ ] 16. [man-add]                                       ║
+║  [ ] 17. [man-ops]                                       ║
+║  [ ] 18. [lsr]                                           ║
+║  [ ] 19. [op-ed-gl]                                      ║
+║  [ ] 20. [yahoo]                                         ║
+║  [ ] 21. [404-test]                                      ║
+║  [ ] 22. [checkers]                                      ║
+║  [ ] 23. [aow]                                           ║
+║  [ ] 24. [man-pal]                                       ║
+║  [ ] 25. [quiz-engine]                                   ║
+║  [ ] 26. [fuzz-op-gl]                                    ║
+║  [ ] 27. [groq-ollama]                                   ║
+║  [ ] 28. [user]                                          ║
+║  [ ] 29. [gitlet]                                        ║
+║  [ ] 30. [xsr]                                           ║
+║  [ ] 31. [gltpm-demo]                                    ║
+║  [ ] 32. [op-ed]                                         ║
+║  [ ] 33. [agy-text-editor]                               ║
+║  [ ] 34. [trunk]                                         ║
+║  [ ] 35. [test_fondu]                                    ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 36. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-24 06:42:29 ---
+╔════════════ A G Y   E D I T O R ════════════╗
+║  [>] 1. [EDIT TEXT (INTERACT)]             ║
+╠═════════════════════════════════════════════╣
+║  [X]# AGY Text Editor: Phase 1 Completion ║
+║  **Date:** 2026-05-21                     ║
+║  **Project:** agy-text-editor             ║
+║  **Status:** HANDOFF READY (CRITICAL BUG: ║
+║                                           ║
+║  ## 1. Objective                          ║
+║  Complete the 
+║                                           ║
+╠═════════════════════════════════════════════╣
+║  [ ] 2. [NEW FILE]                                      ║
+║  [ ] 3. [CLEAR FILE]                                    ║
+║  [ ] 4. [FILE MENU]                                     ║
+║  [ ] 5. [EXIT TO OS]                                    ║
+╚═════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-24 06:42:32 ---
+╔════════════ A G Y   E D I T O R ════════════╗
+║  [ ] 1. [EDIT TEXT (INTERACT)]             ║
+╠═════════════════════════════════════════════╣
+║  [X]# AGY Text Editor: Phase 1 Completion ║
+║  **Date:** 2026-05-21                     ║
+║  **Project:** agy-text-editor             ║
+║  **Status:** HANDOFF READY (CRITICAL BUG: ║
+║                                           ║
+║  ## 1. Objective                          ║
+║  Complete the 
+║                                           ║
+╠═════════════════════════════════════════════╣
+║  [ ] 2. [NEW FILE]                                      ║
+║  [ ] 3. [CLEAR FILE]                                    ║
+║  [>] 4. [FILE MENU]                                     ║
+║  [ ] 5. [EXIT TO OS]                                    ║
+╚═════════════════════════════════════════════╝
+
++=========================================================+
+Nav > 4_
+
+
+--- FRAME UPDATE at 2026-05-24 06:42:32 ---
+╔══════════════ F I L E   M E N U ════════════╗
+║                                             ║
+║ ACTIVE: projects/agy-text-editor/pieces/document.txt
+║                                             ║
+║  FILE: projects/agy-text-editor/pieces/do ║
+║                                             ║
+║  [>] 1. [NEW FILE]                       ║
+║  [ ] 2. [SAVE FILE]                      ║
+║  [ ] 3. [SAVE AS...]                     ║
+║  [ ] 4. [LOAD FILE...]                   ║
+║  [ ] 5. [BACK TO EDITOR]                 ║
+║                                             ║
+╠═════════════════════════════════════════════╣
+| ║  Ready.                                   ║         |
+
+╚═════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-24 06:42:34 ---
+╔══════════════ F I L E   M E N U ════════════╗
+║                                             ║
+║ ACTIVE: projects/agy-text-editor/pieces/document.txt
+║                                             ║
+║  FILE: projects/agy-text-editor/pieces/do ║
+║                                             ║
+║  [ ] 1. [NEW FILE]                       ║
+║  [ ] 2. [SAVE FILE]                      ║
+║  [ ] 3. [SAVE AS...]                     ║
+║  [>] 4. [LOAD FILE...]                   ║
+║  [ ] 5. [BACK TO EDITOR]                 ║
+║                                             ║
+╠═════════════════════════════════════════════╣
+| ║  Ready.                                   ║         |
+
+╚═════════════════════════════════════════════╝
+
++=========================================================+
+Nav > 4_
+
+
+--- FRAME UPDATE at 2026-05-24 06:42:34 ---
+╔══════════════ F I L E   M E N U ════════════╗
+║                                             ║
+║ ACTIVE: projects/agy-text-editor/pieces/document.txt
+║                                             ║
+║  FILE: projects/agy-text-editor/pieces/do ║
+║                                             ║
+║  [>] 1. [NEW FILE]                       ║
+║  [ ] 2. [SAVE FILE]                      ║
+║  [ ] 3. [SAVE AS...]                     ║
+║  [ ] 4. [LOAD FILE...]                   ║
+║  [ ] 5. [BACK TO EDITOR]                 ║
+║                                             ║
+╠═════════════════════════════════════════════╣
+| ║  Ready.                                   ║         |
+
+╚═════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-24 06:42:34 ---
+╔══════════════ FILE BROWSER ════════════════╗
+║  MODE: LOAD FILE                            ║
+║  DIR: projects/agy-text-editor            ║
+║ SEARCH: | [>] 1. [hi]                                                 |
+║ FILE:   | [ ] 2. [hi]                                                 |
+║                                             ║
+║ ACTIVE: projects/agy-text-editor/pieces/document.txt
+║                                             ║
+║  SUGGESTIONS:                               ║
+║  [ ] 3. [...file-editpm-plan-m21+.txt]    ║
+║                                             ║
+╠════════════ DIRECTORY CONTENTS ═════════════╣
+║  [ ] 4. [<- BACK]                         ║
+║  [ ] 5. [[DIR] layouts/]                  ║
+║  [ ] 6. [[DIR] manager/]                  ║
+║  [ ] 7. [[DIR] pieces/]                   ║
+║  [ ] 8. [...ditpm-plan-m21+.txt (4KB)]    ║
+║  [ ] 9. [[FIL] file-op-dox.txt (2KB)]     ║
+║  [ ] 10. [[FIL] hi.txt (32B)]             ║
+║  [ ] 11. [[FIL] load-bug-m24.txt (2KB)]   ║
+║  [ ] 12. [[FIL] project.pdl (575B)]       ║
+║  ... and 2 more items ...                 ║
+║                                             ║
+╠═════════════════════════════════════════════╣
+║  [ ] 13. [LOAD FILE]                      ║
+║  [ ] 14. [CANCEL]                         ║
+║                                             ║
+╠═════════════════════════════════════════════╣
+| ║  Select file to load.                     ║         |
+
+╚═════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-24 06:42:38 ---
+╔══════════════ FILE BROWSER ════════════════╗
+║  MODE: LOAD FILE                            ║
+║  DIR: projects/agy-text-editor            ║
+║ SEARCH: | [>] 1. [hi]                                                 |
+║ FILE:   | [ ] 2. [hi]                                                 |
+║                                             ║
+║ ACTIVE: projects/agy-text-editor/pieces/document.txt
+║                                             ║
+║  SUGGESTIONS:                               ║
+║  [ ] 3. [...file-editpm-plan-m21+.txt]    ║
+║                                             ║
+╠════════════ DIRECTORY CONTENTS ═════════════╣
+║  [ ] 4. [<- BACK]                         ║
+║  [ ] 5. [[DIR] layouts/]                  ║
+║  [ ] 6. [[DIR] manager/]                  ║
+║  [ ] 7. [[DIR] pieces/]                   ║
+║  [ ] 8. [...ditpm-plan-m21+.txt (4KB)]    ║
+║  [ ] 9. [[FIL] file-op-dox.txt (2KB)]     ║
+║  [ ] 10. [[FIL] hi.txt (32B)]             ║
+║  [ ] 11. [[FIL] load-bug-m24.txt (2KB)]   ║
+║  [ ] 12. [[FIL] project.pdl (575B)]       ║
+║  ... and 2 more items ...                 ║
+║                                             ║
+╠═════════════════════════════════════════════╣
+║  [ ] 13. [LOAD FILE]                      ║
+║  [ ] 14. [CANCEL]                         ║
+║                                             ║
+╠═════════════════════════════════════════════╣
+| ║  Select file to load.                     ║         |
+
+╚═════════════════════════════════════════════╝
+
++=========================================================+
+Nav > 1_
+
+
+--- FRAME UPDATE at 2026-05-24 06:42:38 ---
+╔══════════════ FILE BROWSER ════════════════╗
+║  MODE: LOAD FILE                            ║
+║  DIR: projects/agy-text-editor            ║
+║ SEARCH: | [ ] 1. [hi]                                                 |
+║ FILE:   | [ ] 2. [hi]                                                 |
+║                                             ║
+║ ACTIVE: projects/agy-text-editor/pieces/document.txt
+║                                             ║
+║  SUGGESTIONS:                               ║
+║  [ ] 3. [...file-editpm-plan-m21+.txt]    ║
+║                                             ║
+╠════════════ DIRECTORY CONTENTS ═════════════╣
+║  [ ] 4. [<- BACK]                         ║
+║  [ ] 5. [[DIR] layouts/]                  ║
+║  [ ] 6. [[DIR] manager/]                  ║
+║  [ ] 7. [[DIR] pieces/]                   ║
+║  [ ] 8. [...ditpm-plan-m21+.txt (4KB)]    ║
+║  [ ] 9. [[FIL] file-op-dox.txt (2KB)]     ║
+║  [ ] 10. [[FIL] hi.txt (32B)]             ║
+║  [>] 11. [[FIL] load-bug-m24.txt (2KB)]   ║
+║  [ ] 12. [[FIL] project.pdl (575B)]       ║
+║  ... and 2 more items ...                 ║
+║                                             ║
+╠═════════════════════════════════════════════╣
+║  [ ] 13. [LOAD FILE]                      ║
+║  [ ] 14. [CANCEL]                         ║
+║                                             ║
+╠═════════════════════════════════════════════╣
+| ║  Select file to load.                     ║         |
+
+╚═════════════════════════════════════════════╝
+
++=========================================================+
+Nav > 11_
+
+
+--- FRAME UPDATE at 2026-05-24 06:42:39 ---
+╔══════════════ FILE BROWSER ════════════════╗
+║  MODE: LOAD FILE                            ║
+║  DIR: projects/agy-text-editor            ║
+║ SEARCH: | [>] 1. [hi]                                                 |
+║ FILE:   | [ ] 2. [hi]                                                 |
+║                                             ║
+║ ACTIVE: projects/agy-text-editor/pieces/document.txt
+║                                             ║
+║  SUGGESTIONS:                               ║
+║  [ ] 3. [...file-editpm-plan-m21+.txt]    ║
+║                                             ║
+╠════════════ DIRECTORY CONTENTS ═════════════╣
+║  [ ] 4. [<- BACK]                         ║
+║  [ ] 5. [[DIR] layouts/]                  ║
+║  [ ] 6. [[DIR] manager/]                  ║
+║  [ ] 7. [[DIR] pieces/]                   ║
+║  [ ] 8. [...ditpm-plan-m21+.txt (4KB)]    ║
+║  [ ] 9. [[FIL] file-op-dox.txt (2KB)]     ║
+║  [ ] 10. [[FIL] hi.txt (32B)]             ║
+║  [ ] 11. [[FIL] load-bug-m24.txt (2KB)]   ║
+║  [ ] 12. [[FIL] project.pdl (575B)]       ║
+║  ... and 2 more items ...                 ║
+║                                             ║
+╠═════════════════════════════════════════════╣
+║  [ ] 13. [LOAD FILE]                      ║
+║  [ ] 14. [CANCEL]                         ║
+║                                             ║
+╠═════════════════════════════════════════════╣
+| ║  Select file to load.                     ║         |
+
+╚═════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-24 06:42:39 ---
+╔══════════════ FILE BROWSER ════════════════╗
+║  MODE: LOAD FILE                            ║
+║  DIR: projects/agy-text-editor            ║
+║ SEARCH: | [>] 1. [hi]                                                 |
+║ FILE:   | [ ] 2. [hi]                                                 |
+║                                             ║
+║ ACTIVE: projects/agy-text-editor/load-bug-m24.txt
+║                                             ║
+║  SUGGESTIONS:                               ║
+║  [ ] 3. [...t-editor/load-bug-m24.txt]    ║
+║                                             ║
+╠════════════ DIRECTORY CONTENTS ═════════════╣
+║  [ ] 4. [<- BACK]                         ║
+║  [ ] 5. [[DIR] layouts/]                  ║
+║  [ ] 6. [[DIR] manager/]                  ║
+║  [ ] 7. [[DIR] pieces/]                   ║
+║  [ ] 8. [...ditpm-plan-m21+.txt (4KB)]    ║
+║  [ ] 9. [[FIL] file-op-dox.txt (2KB)]     ║
+║  [ ] 10. [[FIL] hi.txt (32B)]             ║
+║  [ ] 11. [[FIL] load-bug-m24.txt (2KB)]   ║
+║  [ ] 12. [[FIL] project.pdl (575B)]       ║
+║  ... and 2 more items ...                 ║
+║                                             ║
+╠═════════════════════════════════════════════╣
+║  [ ] 13. [LOAD FILE]                      ║
+║  [ ] 14. [CANCEL]                         ║
+║                                             ║
+╠═════════════════════════════════════════════╣
+| ║  Loaded projects/agy-text-editor/load-bug ║         |
+
+╚═════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-24 06:42:41 ---
+╔══════════════ FILE BROWSER ════════════════╗
+║  MODE: LOAD FILE                            ║
+║  DIR: projects/agy-text-editor            ║
+║ SEARCH: | [>] 1. [hi]                                                 |
+║ FILE:   | [ ] 2. [hi]                                                 |
+║                                             ║
+║ ACTIVE: projects/agy-text-editor/load-bug-m24.txt
+║                                             ║
+║  SUGGESTIONS:                               ║
+║  [ ] 3. [...t-editor/load-bug-m24.txt]    ║
+║                                             ║
+╠════════════ DIRECTORY CONTENTS ═════════════╣
+║  [ ] 4. [<- BACK]                         ║
+║  [ ] 5. [[DIR] layouts/]                  ║
+║  [ ] 6. [[DIR] manager/]                  ║
+║  [ ] 7. [[DIR] pieces/]                   ║
+║  [ ] 8. [...ditpm-plan-m21+.txt (4KB)]    ║
+║  [ ] 9. [[FIL] file-op-dox.txt (2KB)]     ║
+║  [ ] 10. [[FIL] hi.txt (32B)]             ║
+║  [ ] 11. [[FIL] load-bug-m24.txt (2KB)]   ║
+║  [ ] 12. [[FIL] project.pdl (575B)]       ║
+║  ... and 2 more items ...                 ║
+║                                             ║
+╠═════════════════════════════════════════════╣
+║  [ ] 13. [LOAD FILE]                      ║
+║  [ ] 14. [CANCEL]                         ║
+║                                             ║
+╠═════════════════════════════════════════════╣
+| ║  Loaded projects/agy-text-editor/load-bug ║         |
+
+╚═════════════════════════════════════════════╝
+
++=========================================================+
+Nav > 1_
+
+
+--- FRAME UPDATE at 2026-05-24 06:42:41 ---
+╔══════════════ FILE BROWSER ════════════════╗
+║  MODE: LOAD FILE                            ║
+║  DIR: projects/agy-text-editor            ║
+║ SEARCH: | [ ] 1. [hi]                                                 |
+║ FILE:   | [ ] 2. [hi]                                                 |
+║                                             ║
+║ ACTIVE: projects/agy-text-editor/load-bug-m24.txt
+║                                             ║
+║  SUGGESTIONS:                               ║
+║  [ ] 3. [...t-editor/load-bug-m24.txt]    ║
+║                                             ║
+╠════════════ DIRECTORY CONTENTS ═════════════╣
+║  [ ] 4. [<- BACK]                         ║
+║  [ ] 5. [[DIR] layouts/]                  ║
+║  [ ] 6. [[DIR] manager/]                  ║
+║  [ ] 7. [[DIR] pieces/]                   ║
+║  [ ] 8. [...ditpm-plan-m21+.txt (4KB)]    ║
+║  [ ] 9. [[FIL] file-op-dox.txt (2KB)]     ║
+║  [ ] 10. [[FIL] hi.txt (32B)]             ║
+║  [ ] 11. [[FIL] load-bug-m24.txt (2KB)]   ║
+║  [ ] 12. [[FIL] project.pdl (575B)]       ║
+║  ... and 2 more items ...                 ║
+║                                             ║
+╠═════════════════════════════════════════════╣
+║  [ ] 13. [LOAD FILE]                      ║
+║  [>] 14. [CANCEL]                         ║
+║                                             ║
+╠═════════════════════════════════════════════╣
+| ║  Loaded projects/agy-text-editor/load-bug ║         |
+
+╚═════════════════════════════════════════════╝
+
++=========================================================+
+Nav > 14_
+
+
+--- FRAME UPDATE at 2026-05-24 06:42:42 ---
+╔══════════════ F I L E   M E N U ════════════╗
+║                                             ║
+║ ACTIVE: projects/agy-text-editor/pieces/document.txt
+║                                             ║
+║  FILE: projects/agy-text-editor/load-bug- ║
+║                                             ║
+║  [>] 1. [NEW FILE]                       ║
+║  [ ] 2. [SAVE FILE]                      ║
+║  [ ] 3. [SAVE AS...]                     ║
+║  [ ] 4. [LOAD FILE...]                   ║
+║  [ ] 5. [BACK TO EDITOR]                 ║
+║                                             ║
+╠═════════════════════════════════════════════╣
+| ║  Ready.                                   ║         |
+
+╚═════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-24 06:42:43 ---
+╔══════════════ F I L E   M E N U ════════════╗
+║                                             ║
+║ ACTIVE: projects/agy-text-editor/pieces/document.txt
+║                                             ║
+║  FILE: projects/agy-text-editor/load-bug- ║
+║                                             ║
+║  [ ] 1. [NEW FILE]                       ║
+║  [ ] 2. [SAVE FILE]                      ║
+║  [ ] 3. [SAVE AS...]                     ║
+║  [ ] 4. [LOAD FILE...]                   ║
+║  [>] 5. [BACK TO EDITOR]                 ║
+║                                             ║
+╠═════════════════════════════════════════════╣
+| ║  Ready.                                   ║         |
+
+╚═════════════════════════════════════════════╝
+
++=========================================================+
+Nav > 5_
+
+
+--- FRAME UPDATE at 2026-05-24 06:42:44 ---
+╔════════════ A G Y   E D I T O R ════════════╗
+║  [>] 1. [EDIT TEXT (INTERACT)]             ║
+╠═════════════════════════════════════════════╣
+║  [X]# Investigation: Load Project Bug (m2 ║
+║                                           ║
+║  ## 1. Symptom                            ║
+║  Selecting a file in the browser (e.g., ` ║
+║                                           ║
+║  ## 2. Root Cause Discovery: The Stale Pa ║
+║  The `agy-text-editor_manager.c` strictly ║
+║  Current value in `location_kvp`:         ║
+╠═════════════════════════════════════════════╣
+║  [ ] 2. [NEW FILE]                                      ║
+║  [ ] 3. [CLEAR FILE]                                    ║
+║  [ ] 4. [FILE MENU]                                     ║
+║  [ ] 5. [EXIT TO OS]                                    ║
+╚═════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+

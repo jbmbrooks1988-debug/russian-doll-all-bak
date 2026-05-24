@@ -1,0 +1,5 @@
+project_id=mp3-store
+app_title=MP3 STORE PLAYER
+active_target_id=mp3_player
+current_mp3=rb&u.book1.page76-v1.0.mp3
+player_status=Playing

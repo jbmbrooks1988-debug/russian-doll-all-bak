@@ -1,0 +1,235 @@
+# XLECTOR Phase 2 — Bug Triage
+**Date:** 2026-04-05
+**Discovered during:** fuzz-op runtime test after Phase 2 (selector → xlector rename)
+
+---
+
+## BUG 1: XLECTOR renders as "?" on map, does not move
+**Severity:** BLOCKER — directly caused by our Phase 2 refactoring
+**Status:** FIXED (2026-04-05)
+
+### Symptom
+The xlector piece renders as `?` instead of `X` on the game map. Movement commands fire (move_entity.+x) but the icon never updates.
+
+### Root Cause
+Two C source files map `type=` strings to icon characters. Both still check `type=selector` but not `type=xlector`:
+
+1. **`pieces/apps/playrm/ops/src/render_map.c` line 237** — `infer_icon_from_type()`:
+   ```c
+   else if (strcmp(type, "selector") == 0) snprintf(out_icon, out_sz, "X");
+   ```
+   Since xlector state.txt now has `type=xlector`, this comparison fails → falls through to `else` → `"?"`.
+
+2. **`pieces/apps/playrm/ops/src/create_piece.c` lines 69 and 79** — type-to-piece-ID and type-to-icon helpers:
+   ```c
+   if (strcmp(type, "X") == 0 || strcmp(type, "selector") == 0) return "selector";
+   // ...
+   if (strcmp(type, "X") == 0 || strcmp(type, "selector") == 0) return "X";
+   ```
+
+### Fix Applied (2026-04-05)
+Clean cut — changed `"selector"` → `"xlector"` in:
+- `render_map.c` — type→icon mapping, piece_id comparisons, xlector_idx variable, render ordering
+- `move_entity.c` — collision bypass check
+- `scan_op.c` — piece state reads, directory skip
+- `inspect_tile.c` — directory skip
+- `move_player.c` — collision bypass
+- `playrm_module.c` — hotkey guard, '9' return-to-xlector
+
+All recompiled. No backward compatibility.
+
+---
+
+## BUG 4: "No Methods" shown when xlector is active (used to show selector methods)
+**Severity:** BLOCKER — caused by Phase 2 refactoring
+**Status:** OPEN
+
+### Symptom
+When active target is xlector, the UI shows `[No Methods]` instead of xlector's methods (scan, collect, place, inventory, etc.). The methods ARE in the PDL (`xlector.pdl`) but playrm_module isn't finding them.
+
+### Root Cause
+playrm_module reads methods from the PDL by piece_id. The piece_id changed from `selector` to `xlector` (both directory name and PDL `piece_id` field). The hotkey guard in `playrm_module.c` now checks `strcmp(active_target_id, "xlector") != 0` — this correctly EXCLUDES xlector from method hotkeys (keys 2-8), which is the OLD behavior where selector was excluded because it's a cursor, not an entity with methods.
+
+But the UI method list ("scan", "collect", etc.) is generated separately — likely from the PDL or a hardcoded layout. The layout/chtpm may have method names that reference `selector` explicitly, or the method-fetching code reads PDL using `selector` as the piece_id.
+
+### Files to Check
+- `pieces/apps/playrm/layouts/game.chtpm` — method buttons may reference `selector`
+- `pieces/apps/playrm/plugins/playrm_module.c` — `get_method_name()` or similar PDL reading
+- `pieces/apps/playrm/ops/src/interact.c` or similar — method dispatch for xlector
+
+---
+
+## BUG 5: Zombie no longer follows xlector
+**Severity:** BLOCKER — caused by Phase 2 refactoring
+**Status:** OPEN
+
+### Symptom
+The zombie_ai.+x no longer chases the xlector after renaming. It used to chase the selector cursor.
+
+### Root Cause
+fuzz-op_manager.c calls `zombie_ai.+x` with `active_target_id` as the target argument. After Phase 2, `active_target_id` defaults to `"xlector"`. The `zombie_ai` binary reads the target's position via state.txt. The state file path changed from `projects/fuzz-op/pieces/selector/state.txt` to `projects/fuzz-op/pieces/xlector/state.txt`.
+
+The zombie AI (`pieces/apps/fuzzpet_app/traits/zombie_ai.c`) reads target position via `get_state()` which constructs the path `pieces/<piece_id>/state.txt` or `projects/<project>/pieces/<piece_id>/state.txt`. Since the piece_id is now `xlector`, it should find the xlector state — but there might be a path resolution issue, or the zombie is checking `type=selector` somewhere.
+
+### Files to Check
+- `pieces/apps/fuzzpet_app/traits/zombie_ai.c` — how it resolves target position
+- `projects/fuzz-op/manager/fuzz-op_manager.c` — how it calls zombie_ai (line ~560)
+
+---
+
+## BUG 6: Key "1" does not jump back to first menu option in fuzz-op
+**Severity:** ANNOYANCE — may be pre-existing
+**Status:** OPEN
+
+### Symptom
+In fuzz-op UI, pressing "1" should jump to the first menu option. All other number keys jump correctly, but "1" does nothing.
+
+### Root Cause
+The key accumulator or focus system may treat "1" as a special case (first option, or method key). playrm_module has a hotkey system for keys 2-8 (method dispatch), which explicitly excludes xlector. Key "1" may be caught by the same guard, or there may be a separate "first option" accumulator that's broken.
+
+### Files to Check
+- `pieces/apps/playrm/plugins/playrm_module.c` — key 1 handling, focus jumping
+- `pieces/chtpm/plugins/chtpm_parser.c` — key accumulator / focus jumping logic
+
+---
+
+## BUG 7: Kill script regex broken — old processes not killed
+**Severity:** BLOCKER — causes double-move, stale state, method inconsistency
+**Status:** FIXED (2026-04-05)
+
+### Root Cause
+The ERE regex `pieces/.*/\+x/.*\.+x` in `run_orchestrator.sh` and `kill_all.sh` was broken:
+- In ERE, `\.+x` means "one or more dots followed by x" (NOT "literal dot, literal plus, x")
+- `/\+x/` was being interpreted as "one or more `/` then x/" (NOT "literal `/+x/`")
+- **No binary paths matched the regex** — old processes were never killed
+- Result: multiple instances running simultaneously → double-move, stale keys, method inconsistency
+
+### Fix Applied (2026-04-05)
+Changed regex to use character classes (avoids backslash escaping hell):
+- `pieces/.*/[+]x/.*[.][+]x` — correctly matches `pieces/*/+x/*.+x`
+- `projects/.*/[+]x/.*[.][+]x` — correctly matches `projects/*/+x/*.+x`
+- Fixed in: `pieces/buttons/shared/run_orchestrator.sh` and `pieces/os/kill_all.sh`
+- Added `zombie_ai` to `kill_all.sh` surgical kill list
+
+---
+
+## BUG 8: Methods show "No Methods" intermittently in fuzz-op
+**Severity:** BLOCKER — caused by Phase 2 refactoring
+**Status:** FIXED (2026-04-05)
+
+### Root Cause
+`projects/fuzz-op/project.pdl` said `player_piece = fuzzpet`. The loader wrote `active_target_id=fuzzpet` to the manager state. The parser's first frame read `active_target_id=fuzzpet` and tried to load methods from `projects/fuzz-op/pieces/fuzzpet/piece.pdl` → doesn't exist → "No Methods". The manager then corrected to `xlector`, and subsequent frames showed methods correctly.
+
+### Fix Applied (2026-04-05)
+- Changed `player_piece` in `projects/fuzz-op/project.pdl` from `fuzzpet` to `xlector`
+- Parser now reads correct `active_target_id=xlector` from frame 1
+- Methods load correctly from `projects/fuzz-op/pieces/xlector/piece.pdl`
+
+---
+
+## BUG 2: Double/triple frame rendering
+**Severity:** ANNOYANCE — pre-existing, not caused by xlector refactor
+**Status:** FIXED (2026-04-05 — partial)
+
+### Fix Applied (2026-04-05)
+- `render_map.c` now writes the `frame_changed.txt` tick directly after deduped view write
+- Removed redundant `hit_frame_marker()` call from `playrm_module.c`
+- Parser's `view_ch` watcher path corrected from `fuzzpet_app/fuzzpet/view_changed.txt` to `player_app/view_changed.txt`
+- One trigger path instead of two
+
+### Remaining
+`compose_frame()` still has no content dedup — if multiple different triggers fire in the same poll cycle, it may still render twice. But the redundant per-keypress double-write is eliminated.
+
+---
+
+## BUG 3: gl-os 404 "Project Not Found"
+**Severity:** MINOR — pre-existing, not caused by xlector refactor
+**Status:** OPEN (fix: remove from project loader)
+
+### Symptom
+Selecting "gl-os" in the project loader shows a 404 error page.
+
+### Root Cause
+`projects/gl-os/` directory does not exist. The project loader (`loader_module.c`) scans `projects/` for directories with `project.pdl` files. However, the stale `loader.pdl` (at `pieces/apps/playrm/loader/loader.pdl`) contains a hardcoded METHOD entry for `gl-os` from a previous scan — likely from when `projects/gl-os/` existed. At startup, `update_loader_pdl()` should regenerate the file, but it only lists projects that have a `project.pdl` file.
+
+Wait — gl-os IS in the loader list because `update_loader_pdl()` generates it dynamically. That means there IS a `project.pdl` somewhere for gl-os, OR the loader isn't being regenerated. The stale `loader.pdl` shows: `METHOD | gl-os | LOAD_PROJECT:gl-os`.
+
+### Fix (separate ticket)
+- Remove gl-os from the project loader — it's an app, accessed from main menu
+- OR: Ensure `update_loader_pdl()` excludes gl-os (add a skip condition)
+- OR: Create `projects/gl-os/project.pdl` that routes to `pieces/apps/gl_os/layouts/desktop.chtpm`
+
+### User Note
+gl-os IS accessible from the main CHTPM menu (option 6). Only the project loader shows a broken entry.
+
+---
+
+## BUG 9: op-ed no longer has a selector/xlector cursor
+**Severity:** BLOCKER — caused by Phase 2 clean cut on shared C ops
+**Status:** FIXED (2026-04-05)
+
+### Symptom
+op-ed launches but no X cursor renders on the map. The map displays but you can't see or move the editing cursor.
+
+### Root Cause
+Phase 2 changed shared C ops (`render_map.c`, `move_player.c`, etc.) from `"selector"` → `"xlector"`. But op-ed was NOT updated:
+- Directory still at `projects/op-ed/pieces/selector/` (should be `xlector/`)
+- `projects/op-ed/manager/op-ed_manager.c` still references `"selector"` in all string comparisons
+- `projects/op-ed/pieces/selector/state.txt` still has `type=selector`
+- `render_map.c` looks for `type=xlector` and piece_id `xlector` → finds nothing → no cursor rendered
+
+### Fix Applied (2026-04-05)
+- Renamed `projects/op-ed/pieces/selector/` → `projects/op-ed/pieces/xlector/`
+- Created `projects/op-ed/pieces/xlector/state.txt` with `type=xlector`, `name=Xlector`
+- Updated `op-ed_manager.c`: 23 occurrences of `"selector"` → `"xlector"` (path strings, type comparisons, function names, comments, piece_manager args)
+- Zero remaining `selector` references in op-ed_manager.c
+- Recompiled op-ed_manager
+
+---
+
+## BUG 10: op-ed shows double X cursor
+**Severity:** FIXED
+**Status:** FIXED (2026-04-05)
+
+### Symptom
+op-ed map shows TWO `X` characters at different positions. Only one is the actual xlector cursor (the one that moves). The other is a static `X` character in the map file.
+
+### Root Cause
+`projects/op-ed/maps/map_0001_z0.txt` contained a literal `X` character at position (4,5).
+The xlector piece renders as `X` at its cursor position (5,4 initially).
+Result: two X's on screen.
+
+### Fix Applied (2026-04-05)
+Replaced literal `X` in map file with `.` (floor tile):
+- `projects/op-ed/maps/map_0001_z0.txt` line 6: `#    X#    R       #` → `#    .#    R       #`
+
+---
+
+## BUG 11: op-ed methods (place glyph, delete glyph) not working
+**Severity:** FIXED
+**Status:** FIXED (2026-04-05)
+
+### Symptom
+In op-ed, movement keys (WASD/arrows) work and move the xlector cursor. But ENTER (place glyph) and Backspace (delete glyph) do nothing. The glyph palette and map palette keys also don't work.
+
+### Root Cause
+op-ed_manager.c referenced `pieces/apps/editor/ops/+x/place_tile.+x` — but the `pieces/apps/editor/` directory no longer exists. The ops were consolidated under `pieces/apps/playrm/ops/`. The binary path was completely wrong → silent failure (stderr redirected to /dev/null).
+
+Two locations:
+1. **Line 661** — Backspace (tile clear): `pieces/apps/editor/ops/+x/place_tile.+x`
+2. **Line 822** — ENTER (tile place): `pieces/apps/editor/ops/+x/place_tile.+x`
+
+### Fix Applied (2026-04-05)
+Changed both paths from `pieces/apps/editor/ops/+x/` → `pieces/apps/playrm/ops/+x/`.
+Recompiled op-ed_manager.
+
+---
+
+## Resolution Order
+
+1. **BUG 4 + BUG 5** — Blockers caused by xlector rename (fuzz-op methods + zombie chase).
+2. **BUG 6** — Key "1" accumulator issue. Quick fix likely.
+3. **BUG 3** — gl-os in loader. Pre-existing, minor.
+4. **BUG 2** — Frame render dedup. Improved but not perfect.
+
+Note to future agents: All BUGs except 2 and 3 are direct consequences of the selector→xlector rename. The shared C code changes were a clean cut (no backward compatibility), so any project still using `selector` as a piece_id will also break until renamed.

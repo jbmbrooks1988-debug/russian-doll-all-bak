@@ -1,0 +1,363 @@
+================================================================================
+TPMOS DOCUMENTATION ORGANIZATION SCHEME
+================================================================================
+Date: April 2, 2026
+Status: PROPOSED (For Discussion)
+
+================================================================================
+CURRENT STATE (What We Have)
+================================================================================
+
+#.plans/          - Future planning documents
+#.main/           - System specifications, architecture, migration status
+#.docs/           - Active documentation, references, guides
+#.tools/          - Build and maintenance scripts
+#.testing/        - Test plans and verification procedures
+#.ref/            - Reference code (currently EMPTY)
+
+pieces/buttons/   - Shell scripts (compile, run, kill)
+pieces/system/    - System utilities (fondu, prisc)
+
+================================================================================
+THE CONFUSION: #.main vs #.docs
+================================================================================
+
+**#.main/ (System Specifications)**
+Purpose: Technical specifications for SYSTEM COMPONENTS
+Contains:
+  - fondu-how2.txt, fondu-kpis.txt ← Fondu system specs
+  - migration-status.txt ← System migration tracking
+  - tpm-functional-principles.txt ← Architecture principles
+  - gl-os-architecture.txt ← GL-OS system spec
+  - gl-os-layout-fix.txt ← Technical fix documentation
+  - p2p-ops.txt ← P2P system specification (1491 lines)
+  - op-ed-ops-section.txt ← Op-ed ops spec
+
+**Rule:** If it's a TECHNICAL SPEC for a system component → #.main/
+
+**#.docs/ (User Documentation)**
+Purpose: Documentation for HUMANS using the system
+Contains:
+  - AGENT_ONBOARDING.txt ← "How to start as a developer"
+  - TPMOS_APP_REFERENCE.txt ← "What each app does"
+  - OPS_DICTIONARY.txt ← "What ops are available"
+  - COMPILE_SYSTEM.md ← "How to compile"
+  - INDEX.md ← "Documentation hub"
+  - PITFALLS_ACTIVE_*.txt ← "What not to do"
+  - investigation-report.txt ← "What we found"
+
+**Rule:** If it's for PEOPLE learning/using the system → #.docs/
+
+================================================================================
+PROPOSED ORGANIZATION (Clean & Logical)
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ #.plans/ - FUTURE & STRATEGY                                                │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│ Purpose: Planning documents, roadmaps, strategic direction                 │
+│                                                                             │
+│ Structure:                                                                  │
+│ #.plans/                                                                    │
+│ ├── README.md              ← "What's in here"                               │
+│ ├── P2P-PHASE-1-*.md       ← P2P implementation plan                        │
+│ ├── P2P-MULTI-NETWORK-*.md ← P2P architecture decision                      │
+│ ├── p2p_plan.txt           ← P2P strategic overview (keep)                  │
+│ ├── ai_plan.txt            ← AI strategy (keep)                             │
+│ └── lsr_plan+2.txt         ← LSR strategy (keep)                            │
+│                                                                             │
+│ Future:                                                                     │
+│ └── AI-LABS/               ← AI planning docs                               │
+│     ├── ai-labs-roadmap.md                                                 │
+│     └── ai-integration-plan.md                                             │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ #.main/ - SYSTEM SPECIFICATIONS (Technical)                                 │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│ Purpose: Technical specifications for system components                     │
+│                                                                             │
+│ Structure:                                                                  │
+│ #.main/                                                                     │
+│ ├── README.md              ← "What's in here"                               │
+│ │                                                                         │
+│ ├── SYSTEM-SPECS/          ← Organized by system component                 │
+│ │   ├── FONDU/                                                              │
+│ │   │   ├── fondu-spec.md          ← What Fondu does (technical)           │
+│ │   │   ├── ops-registry-spec.md   ← Ops registry format                   │
+│ │   │   └── lifecycle-states.md    ← State machine diagram                 │
+│ │   ├── P2P-NET/                                                            │
+│ │   │   ├── p2p-ops.txt            ← Full op specs (1491 lines)            │
+│ │   │   ├── network-protocol.md    ← TCP/UDP protocol spec                 │
+│ │   │   └── blockchain-format.md   ← Chain.txt format                      │
+│ │   ├── GL-OS/                                                              │
+│ │   │   ├── gl-os-architecture.txt ← Keep as-is                            │
+│ │   │   └── opengl-integration.md  ← How OpenGL integrates                 │
+│ │   └── op-ed-ops-section.txt  ← Op-ed ops spec (keep at root)             │
+│ │                                                                         │
+│ ├── MIGRATION/             ← System migration tracking                     │
+│ │   └── migration-status.txt ← Keep as-is                                  │
+│ │                                                                         │
+│ └── PRINCIPLES/            ← Architecture principles                       │
+│     └── tpm-functional-principles.txt ← Keep as-is                         │
+│                                                                             │
+│ Rule: Technical spec for a SYSTEM → #.main/SYSTEM-SPECS/<name>/            │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ #.docs/ - USER DOCUMENTATION (For Humans)                                   │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│ Purpose: Documentation for PEOPLE using/developing on TPMOS                 │
+│                                                                             │
+│ Structure:                                                                  │
+│ #.docs/                                                                     │
+│ ├── README.md or INDEX.md  ← Documentation hub (START HERE)                │
+│ │                                                                         │
+│ ├── 01-ONBOARDING/         ← New developer guides                          │
+│ │   ├── AGENT_ONBOARDING.txt ← Keep as-is                                  │
+│ │   ├── quick-start.md       ← 5-minute intro                              │
+│ │   └── first-project.md     ← Create your first project                   │
+│ │                                                                         │
+│ ├── 02-REFERENCE/          ← Reference documentation                       │
+│ │   ├── TPMOS_APP_REFERENCE.txt ← Keep as-is                               │
+│ │   ├── OPS_DICTIONARY.txt   ← Keep as-is                                  │
+│ │   └── architecture-overview.md ← Big picture                             │
+│ │                                                                         │
+│ ├── 03-HOW-TO/             ← Task-based guides                             │
+│ │   ├── compile-system.md    ← How to compile                              │
+│ │   ├── use-fondu.md         ← How to use Fondu                            │
+│ │   ├── create-project.md    ← How to create a project                     │
+│ │   └── create-op.md         ← How to create an op                         │
+│ │                                                                         │
+│ ├── 04-INVESTIGATIONS/     ← Investigation reports                         │
+│ │   ├── fondu-investigation-report.txt ← Keep as-is                       │
+│ │   ├── op-ed-investigation-report.txt ← Keep as-is                       │
+│ │   └── p2p-consolidation-analysis.txt ← Keep as-is                       │
+│ │                                                                         │
+│ ├── 05-PITFALLS/           ← Common mistakes                               │
+│ │   └── ^.pmo.ld-faq+8/      ← Keep entire directory                       │
+│ │       └── PITFALLS_ACTIVE_*.txt                                          │
+│ │                                                                         │
+│ └── 06-ARCHIVED/           ← Outdated docs (from cleanup)                  │
+│     └── Dev-Sprints/         ← Keep as-is                                  │
+│                                                                             │
+│ Rule: For PEOPLE learning/using → #.docs/<category>/                       │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ #.tools/ - BUILD & MAINTENANCE                                              │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│ Purpose: Scripts for building, testing, maintaining                         │
+│                                                                             │
+│ Structure:                                                                  │
+│ #.tools/                                                                    │
+│ ├── README.md              ← "What's in here"                               │
+│ ├── BUILD/                 ← Build scripts                                  │
+│ │   ├── compile_all.sh     ← Keep as-is                                     │
+│ │   └── compile_project.sh ← Compile single project                        │
+│ │                                                                         │
+│ ├── DIAGNOSTICS/           ← Diagnostic scripts                            │
+│ │   ├── check_binaries.sh  ← Keep as-is                                     │
+│ │   ├── check_pmo_procs.sh ← Keep as-is                                     │
+│ │   ├── check_size.sh      ← Keep as-is                                     │
+│ │   └── pmo_cpu_health.sh  ← Keep as-is                                     │
+│ │                                                                         │
+│ ├── FIXES/                 ← Fix scripts                                    │
+│ │   ├── fix_terminal.sh    ← Keep as-is                                     │
+│ │   └── fix_old_pieces.sh  ← Keep as-is                                     │
+│ │                                                                         │
+│ └── TESTING/               ← Test automation                                │
+│     └── run_tests.sh       ← Run all tests                                  │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ #.testing/ - TEST PLANS & RESULTS                                           │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│ Purpose: Test plans, test results, verification procedures                  │
+│                                                                             │
+│ Structure:                                                                  │
+│ #.testing/                                                                  │
+│ ├── README.md              ← "What's in here"                               │
+│ ├── PLANS/                 ← Test plans                                     │
+│ │   ├── op-ed-testing-guide.txt ← Keep as-is                               │
+│ │   ├── fondu-kpis.txt     ← Move from #.main/                             │
+│ │   └── p2p-phase1-tests.md ← Future P2P tests                             │
+│ │                                                                         │
+│ └── RESULTS/               ← Test results (dated)                          │
+│     ├── op-ed-test-results-2026-04-02.txt                                  │
+│     └── fondu-test-results-2026-04-02.txt                                  │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ pieces/system/ - SYSTEM UTILITIES                                           │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│ Purpose: System-level utilities (not apps, not projects)                    │
+│                                                                             │
+│ Structure:                                                                  │
+│ pieces/system/                                                              │
+│ ├── fondu/                 ← Fondu lifecycle manager                        │
+│ │   ├── fondu.c            ← Source                                         │
+│ │   ├── fondu.+x           ← Binary                                         │
+│ │   └── README.md          ← How to use                                     │
+│ │                                                                         │
+│ └── prisc/                 ← PAL script interpreter                         │
+│     ├── prisc.c            ← Source                                         │
+│     ├── prisc+x            ← Binary                                         │
+│     └── README.md          ← How to use                                     │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+================================================================================
+DOCUMENTATION TYPE DECISION TREE
+================================================================================
+
+"Where does this doc go?"
+
+1. Is it a TECHNICAL SPEC for a system component?
+   → YES: #.main/SYSTEM-SPECS/<component>/
+   → NO: Continue
+
+2. Is it for PEOPLE learning/using the system?
+   → YES: #.docs/<category>/
+   → NO: Continue
+
+3. Is it about FUTURE plans/roadmap?
+   → YES: #.plans/
+   → NO: Continue
+
+4. Is it a SCRIPT for building/testing?
+   → YES: #.tools/
+   → NO: Continue
+
+5. Is it a TEST plan or result?
+   → YES: #.testing/
+   → NO: Continue
+
+6. Is it REFERENCE CODE?
+   → YES: #.ref/ (once populated)
+   → NO: Where did this come from?!
+
+================================================================================
+EXAMPLES (Where Things Go)
+================================================================================
+
+**Fondu Documentation:**
+- #.main/SYSTEM-SPECS/FONDU/fondu-spec.md (technical spec)
+- #.main/SYSTEM-SPECS/FONDU/ops-registry-spec.md (registry format)
+- #.docs/03-HOW-TO/use-fondu.md (how to use)
+- #.docs/04-INVESTIGATIONS/fondu-investigation-report.txt (what we found)
+- #.testing/PLANS/fondu-kpis.txt (test plan)
+
+**P2P Documentation:**
+- #.plans/P2P-PHASE-1-NETWORK-AND-CHAT.md (implementation plan)
+- #.plans/P2P-MULTI-NETWORK-ARCHITECTURE.md (architecture decision)
+- #.main/SYSTEM-SPECS/P2P-NET/p2p-ops.txt (full op specs)
+- #.main/SYSTEM-SPECS/P2P-NET/network-protocol.md (protocol spec)
+- #.docs/04-INVESTIGATIONS/p2p-consolidation-analysis.txt (analysis)
+
+**op-ed Documentation:**
+- #.main/op-ed-ops-section.txt (ops spec - keep at root for now)
+- #.docs/04-INVESTIGATIONS/op-ed-investigation-report.txt (what we found)
+- #.testing/PLANS/op-ed-testing-guide.txt (test plan)
+
+**GL-OS Documentation:**
+- #.main/SYSTEM-SPECS/GL-OS/gl-os-architecture.txt (keep as-is)
+- #.docs/05-PITFALLS/^.pmo.ld-faq+8/PITFALLS_*.txt (pitfalls)
+
+================================================================================
+WHERE TO DOCUMENT THIS SCHEME
+================================================================================
+
+**Option 1: CODEBASE_MAP.txt (Recommended)**
+Add a new section at the top:
+
+```
+================================================================================
+SECTION 0: DOCUMENTATION ORGANIZATION
+================================================================================
+
+#.plans/          - Future planning & roadmaps
+#.main/           - System specifications (technical)
+#.docs/           - User documentation (for humans)
+#.tools/          - Build & maintenance scripts
+#.testing/        - Test plans & results
+
+See: #.docs/INDEX.md for complete documentation guide
+```
+
+**Option 2: #.docs/INDEX.md**
+Add organization scheme to existing index
+
+**Option 3: #.docs/ORGANIZATION.md**
+New file dedicated to organization scheme
+
+**My Recommendation:** Option 1 + Option 2
+- Add brief mention to CODEBASE_MAP.txt
+- Full details in #.docs/INDEX.md
+- Cross-reference between them
+
+================================================================================
+NEXT STEPS (If You Approve This Scheme)
+================================================================================
+
+Phase 1: Create Structure (30 min)
+  [ ] Create #.main/SYSTEM-SPECS/ subdirectories
+  [ ] Create #.docs/01-ONBOARDING/, 02-REFERENCE/, etc.
+  [ ] Create #.tools/BUILD/, DIAGNOSTICS/, etc.
+  [ ] Create #.testing/PLANS/, RESULTS/
+  [ ] Create README.md in each directory
+
+Phase 2: Move Files (1 hour)
+  [ ] Move Fondu docs to proper locations
+  [ ] Move P2P docs to proper locations
+  [ ] Move op-ed docs to proper locations
+  [ ] Update internal cross-references
+
+Phase 3: Update CODEBASE_MAP.txt (30 min)
+  [ ] Add documentation organization section
+  [ ] Update examples to match new structure
+  [ ] Add decision tree
+
+Phase 4: Update #.docs/INDEX.md (30 min)
+  [ ] Reflect new organization
+  [ ] Add navigation links
+  [ ] Add decision tree
+
+Total Time: ~2.5 hours
+
+================================================================================
+YOUR CALL
+================================================================================
+
+**Option A: "Do it"**
+→ I'll reorganize everything per this scheme
+→ Update CODEBASE_MAP.txt and INDEX.md
+→ Time: ~2.5 hours
+
+**Option B: "Simplified version"**
+→ Just add organization section to CODEBASE_MAP.txt
+→ Don't move files yet
+→ Time: ~30 min
+
+**Option C: "Modified"**
+→ Tell me what to change in the scheme
+→ Then proceed
+
+**Option D: "Not now"**
+→ Focus on P2P implementation first
+→ Reorganize later
+
+================================================================================
+END OF PROPOSAL
+================================================================================

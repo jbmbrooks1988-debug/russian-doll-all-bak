@@ -1,0 +1,231 @@
+================================================================================
+HYBRID REORGANIZATION - PROPOSED MOVES
+================================================================================
+Date: April 2, 2026
+Status: AWAITING APPROVAL
+
+================================================================================
+WHAT WE'RE DOING (Hybrid Approach)
+================================================================================
+
+Move the BIG/IMPORTANT stuff that benefits most from organization.
+Leave detailed specs and stable docs where they are.
+
+Focus: Investigation reports, how-to guides, Fondu docs
+
+================================================================================
+MOVES FOR APPROVAL
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ MOVE 1: Fondu How-To & KPIs → #.testing/PLANS/                             │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│ FROM: #.main/#.fondu.2.do/                                                  │
+│   - ^.fondu-how2.txt                                                        │
+│   - #.fondu-kpis.txt                                                        │
+│                                                                             │
+│ TO: #.testing/PLANS/                                                        │
+│   - fondu-howto.txt (rename from ^.fondu-how2.txt)                         │
+│   - fondu-test-plan.txt (rename from #.fondu-kpis.txt)                     │
+│                                                                             │
+│ WHY: These are test plans & how-to guides, not system specs                │
+│                                                                             │
+│ KEEP IN #.main/:                                                            │
+│   - #.fondu-clarified-ap1.txt (architecture spec)                          │
+│   - x/#.fondu-ap1.txt (original spec)                                      │
+│                                                                             │
+│ APPROVE? [ ] YES  [ ] NO  [ ] MODIFY: ________________                      │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ MOVE 2: Investigation Reports → #.docs/04-INVESTIGATIONS/                  │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│ FROM: #.docs/ (root)                                                        │
+│   - fondu-investigation-report.txt                                          │
+│   - op-ed-investigation-report.txt                                          │
+│   - p2p-consolidation-analysis.txt                                          │
+│                                                                             │
+│ TO: #.docs/04-INVESTIGATIONS/                                               │
+│   - fondu-investigation-report.txt (no rename)                             │
+│   - op-ed-investigation-report.txt (no rename)                             │
+│   - p2p-consolidation-analysis.txt (no rename)                             │
+│                                                                             │
+│ WHY: These are investigation reports - they deserve their own category     │
+│                                                                             │
+│ APPROVE? [ ] YES  [ ] NO  [ ] MODIFY: ________________                      │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ MOVE 3: Documentation Scheme → #.docs/00-INDEX/                            │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│ FROM: #.docs/ (root)                                                        │
+│   - DOCUMENTATION-ORGANIZATION-SCHEME.txt                                   │
+│   - documentation-cleanup-summary.txt                                       │
+│   - reorganization-plan-simple.txt                                          │
+│                                                                             │
+│ TO: #.docs/00-INDEX/                                                        │
+│   - organization-scheme.txt (rename)                                       │
+│   - cleanup-summary-apr-2026.txt (rename)                                  │
+│   - reorg-plan.txt (rename)                                                │
+│   - INDEX.md (keep, this is the hub)                                       │
+│                                                                             │
+│ WHY: Meta-docs about documentation itself belong in 00-INDEX               │
+│                                                                             │
+│ APPROVE? [ ] YES  [ ] NO  [ ] MODIFY: ________________                      │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ MOVE 4: Create #.docs/03-HOW-TO/ (No Moves Yet)                            │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│ CREATE: #.docs/03-HOW-TO/                                                   │
+│                                                                             │
+│ FUTURE CONTENT:                                                             │
+│   - use-fondu.md (new - how to use Fondu)                                  │
+│   - create-project.md (new - how to create a project)                      │
+│   - create-op.md (new - how to create an op)                               │
+│                                                                             │
+│ WHY: Prepare for future how-to guides                                      │
+│                                                                             │
+│ APPROVE? [ ] YES  [ ] NO  [ ] MODIFY: ________________                      │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ MOVE 5: Consolidate P2P Analysis                                           │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│ FROM: #.docs/ (root)                                                        │
+│   - p2p-consolidation-analysis.txt                                          │
+│   - P2P-CONSOLIDATION-COMPLETE.txt                                          │
+│                                                                             │
+│ TO: #.plans/#.p2p/                                                          │
+│   - p2p-consolidation-analysis.txt (no rename)                             │
+│   - p2p-consolidation-summary.txt (rename from COMPLETE)                   │
+│                                                                             │
+│ WHY: P2P docs belong with P2P plans                                        │
+│                                                                             │
+│ APPROVE? [ ] YES  [ ] NO  [ ] MODIFY: ________________                      │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ MOVE 6: Archive Cleanup Docs                                                │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│ FROM: #.docs/ (root)                                                        │
+│   - documentation-consolidation-plan.txt                                    │
+│                                                                             │
+│ TO: #.docs/06-ARCHIVED/Dev-Sprints/                                         │
+│   - consolidation-plan-apr-2026.txt (rename)                               │
+│                                                                             │
+│ WHY: Planning doc for completed reorg - now historical                     │
+│                                                                             │
+│ APPROVE? [ ] YES  [ ] NO  [ ] MODIFY: ________________                      │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+================================================================================
+WHAT STAYS PUT (Not Moving)
+================================================================================
+
+#.main/ (Keep as-is):
+  - fondu-how2.txt, fondu-kpis.txt (will move to #.testing/)
+  - migration-status.txt
+  - tpm-functional-principles.txt
+  - gl-os-architecture.txt
+  - gl-os-layout-fix.txt
+  - gl-os-postmortem.txt
+  - p2p-ops.txt (1491 lines - too big to move)
+  - op-ed-ops-section.txt
+
+#.docs/ (Keep as-is):
+  - AGENT_ONBOARDING.txt
+  - TPMOS_APP_REFERENCE.txt
+  - OPS_DICTIONARY.txt
+  - COMPILE_SYSTEM.md
+  - INDEX.md
+  - ^.pmo.ld-faq+8/ (entire directory)
+
+#.tools/ (Keep as-is):
+  - All scripts stay in root
+
+================================================================================
+SUMMARY OF MOVES
+================================================================================
+
+Total Moves: 6 groups
+Files Moving: ~12 files
+Files Staying: ~20+ files
+New Directories: 3 (#.testing/PLANS/, #.docs/04-INVESTIGATIONS/, #.docs/00-INDEX/)
+
+Time Estimate: ~1 hour
+
+================================================================================
+AFTER MOVES: NEW STRUCTURE
+================================================================================
+
+#.docs/
+├── INDEX.md ← Hub
+├── 00-INDEX/
+│   ├── organization-scheme.txt
+│   ├── cleanup-summary-apr-2026.txt
+│   └── reorg-plan.txt
+├── 01-ONBOARDING/
+│   └── AGENT_ONBOARDING.txt (move later)
+├── 02-REFERENCE/
+│   ├── TPMOS_APP_REFERENCE.txt (move later)
+│   └── OPS_DICTIONARY.txt (move later)
+├── 03-HOW-TO/ ← Created empty
+├── 04-INVESTIGATIONS/
+│   ├── fondu-investigation-report.txt
+│   ├── op-ed-investigation-report.txt
+│   └── p2p-consolidation-analysis.txt (will move to #.plans/#.p2p/)
+├── 05-PITFALLS/
+│   └── ^.pmo.ld-faq+8/ (stays)
+└── 06-ARCHIVED/
+    └── Dev-Sprints/ (already exists)
+
+#.testing/
+├── PLANS/
+│   ├── fondu-howto.txt
+│   ├── fondu-test-plan.txt
+│   └── op-ed-testing-guide.txt (already there)
+└── RESULTS/ ← Created empty
+
+#.plans/#.p2p/
+├── README.md (already there)
+├── P2P-PHASE-1-NETWORK-AND-CHAT.md (already there)
+├── P2P-MULTI-NETWORK-ARCHITECTURE.md (already there)
+├── p2p-consolidation-analysis.txt (moving from #.docs/)
+└── p2p-consolidation-summary.txt (moving from #.docs/)
+
+================================================================================
+YOUR CALL
+================================================================================
+
+**Option A: "Approve All"**
+→ I'll execute all 6 moves as described
+→ Time: ~1 hour
+
+**Option B: "Approve Subset"**
+→ Tell me which moves to skip
+→ Example: "Skip Move 3 and 6"
+
+**Option C: "Modify First"**
+→ Tell me what to change
+→ Example: "Don't rename files, just move"
+
+**Option D: "Not Now"**
+→ Focus on P2P Phase 1 implementation
+→ Reorg after P2P works
+
+================================================================================
+END OF PROPOSAL
+================================================================================

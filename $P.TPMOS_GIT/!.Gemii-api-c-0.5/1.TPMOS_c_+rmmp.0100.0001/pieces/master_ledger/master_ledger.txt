@@ -1,0 +1,32 @@
+[2026-05-24 06:42:24] FrameRendered: at 2026-05-24 06:42:24 | Source: renderer
+[2026-05-24 06:42:25] FrameRendered: at 2026-05-24 06:42:25 | Source: renderer
+[2026-05-24 06:42:28] FrameRendered: at 2026-05-24 06:42:28 | Source: renderer
+[2026-05-24 06:42:29] FrameRendered: at 2026-05-24 06:42:29 | Source: renderer
+[2026-05-24 06:42:29] FrameRendered: at 2026-05-24 06:42:29 | Source: renderer
+[2026-05-24 06:42:29] FrameRendered: at 2026-05-24 06:42:29 | Source: renderer
+[2026-05-24 06:42:32] InputReceived: key_code=52 | Source: keyboard_linux
+[2026-05-24 06:42:32] FrameRendered: at 2026-05-24 06:42:32 | Source: renderer
+[2026-05-24 06:42:32] InputReceived: key_code=13 | Source: keyboard_linux
+[2026-05-24 06:42:32] FrameRendered: at 2026-05-24 06:42:32 | Source: renderer
+[2026-05-24 06:42:34] InputReceived: key_code=52 | Source: keyboard_linux
+[2026-05-24 06:42:34] FrameRendered: at 2026-05-24 06:42:34 | Source: renderer
+[2026-05-24 06:42:34] InputReceived: key_code=13 | Source: keyboard_linux
+[2026-05-24 06:42:34] FrameRendered: at 2026-05-24 06:42:34 | Source: renderer
+[2026-05-24 06:42:34] FrameRendered: at 2026-05-24 06:42:34 | Source: renderer
+[2026-05-24 06:42:38] InputReceived: key_code=49 | Source: keyboard_linux
+[2026-05-24 06:42:38] FrameRendered: at 2026-05-24 06:42:38 | Source: renderer
+[2026-05-24 06:42:38] InputReceived: key_code=49 | Source: keyboard_linux
+[2026-05-24 06:42:38] FrameRendered: at 2026-05-24 06:42:38 | Source: renderer
+[2026-05-24 06:42:39] InputReceived: key_code=13 | Source: keyboard_linux
+[2026-05-24 06:42:39] FrameRendered: at 2026-05-24 06:42:39 | Source: renderer
+[2026-05-24 06:42:39] FrameRendered: at 2026-05-24 06:42:39 | Source: renderer
+[2026-05-24 06:42:41] InputReceived: key_code=49 | Source: keyboard_linux
+[2026-05-24 06:42:41] FrameRendered: at 2026-05-24 06:42:41 | Source: renderer
+[2026-05-24 06:42:41] InputReceived: key_code=52 | Source: keyboard_linux
+[2026-05-24 06:42:41] FrameRendered: at 2026-05-24 06:42:41 | Source: renderer
+[2026-05-24 06:42:42] InputReceived: key_code=13 | Source: keyboard_linux
+[2026-05-24 06:42:42] FrameRendered: at 2026-05-24 06:42:42 | Source: renderer
+[2026-05-24 06:42:43] InputReceived: key_code=53 | Source: keyboard_linux
+[2026-05-24 06:42:43] FrameRendered: at 2026-05-24 06:42:43 | Source: renderer
+[2026-05-24 06:42:44] InputReceived: key_code=13 | Source: keyboard_linux
+[2026-05-24 06:42:44] FrameRendered: at 2026-05-24 06:42:44 | Source: renderer

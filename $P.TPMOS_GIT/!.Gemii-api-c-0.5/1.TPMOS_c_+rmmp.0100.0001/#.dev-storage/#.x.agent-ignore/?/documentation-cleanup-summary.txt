@@ -1,0 +1,168 @@
+================================================================================
+DOCUMENTATION CLEANUP SUMMARY
+================================================================================
+Date: April 2, 2026
+Status: PHASE 1 COMPLETE
+
+================================================================================
+COMPLETED TASKS
+================================================================================
+
+1. WINDOWS DOCUMENTATION UPDATED ✓
+   File: pieces/buttons/WINDOWS-RUN-GUIDE.md
+   
+   Changes:
+   - Added "Known Limitations on Windows" section
+   - Documented LIMITATION 1: Arrow Keys in MSYS2/mintty (NOT WORKING)
+   - Documented LIMITATION 2: XInput Controller Support (UNTESTED)
+   - Documented LIMITATION 3: Process Spawning Differences
+   - Updated status to "WORKING with Known Limitations"
+   
+   Reference: PITFALLS_ACTIVE_2026-03-18.txt #44, #45
+
+--------------------------------------------------------------------------------
+
+2. FONDU INVESTIGATION COMPLETE ✓
+   Report: #.docs/fondu-investigation-report.txt
+   
+   Findings:
+   - Fondu IS FULLY IMPLEMENTED (Phase 1: Lifecycle + Ops Registry)
+   - Location: pieces/system/fondu/fondu.c (600+ lines)
+   - Commands: --install, --uninstall, --archive, --restore, --list, --list-ops
+   - Documentation: Comprehensive (how-to, KPIs, architecture spec)
+   - Ops Registry: Working (test_fondu.txt verified)
+   
+   The doc_diff.txt report was outdated:
+   - #.fondu-how2.txt EXISTS (comprehensive guide)
+   - All KPIs documented and implemented
+   - 7 KPIs verified in code
+
+--------------------------------------------------------------------------------
+
+3. OP-ED INVESTIGATION COMPLETE ✓
+   Report: #.docs/op-ed-investigation-report.txt
+   
+   Findings:
+   - op-ed is 81% COMPLETE (13/16 features working)
+   - Location: projects/op-ed/, pieces/apps/op-ed/
+   - Manager: op-ed_manager.c (933 lines)
+   
+   IMPLEMENTED (contrary to doc_diff.txt claims):
+   ✓ Piece selection (SPACE key)
+   ✓ Undo (Ctrl+Z)
+   ✓ Clear tile (Backspace)
+   ✓ Create new map (ADD functionality)
+   ✓ Focus sync
+   ✓ PDL integration
+   
+   PARTIALLY IMPLEMENTED:
+   ⚠ Context menu (hotkeys work, no context-specific menu)
+   
+   MISSING:
+   ❌ Delete piece functionality
+   ❌ Mirror sync
+
+--------------------------------------------------------------------------------
+
+4. DUPLICATED/OUTDATED INFORMATION REMOVED ✓
+   
+   Files Updated:
+   
+   a) pieces/os/compiled_projects.txt
+      - Removed 8 duplicate header blocks
+      - Now clean: test_fondu, user
+   
+   b) doc_diff.txt
+      - Updated executive summary with investigation results
+      - Marked [CRITICAL-001] Fondu as RESOLVED
+      - Marked [HIGH-001] compiled_projects.txt as RESOLVED
+      - Updated [HIGH-004] op-ed with 81% completion status
+      - Updated summary by category
+      - Updated recommended actions (marked completed items)
+
+================================================================================
+NEW DOCUMENTATION CREATED
+================================================================================
+
+1. #.docs/fondu-investigation-report.txt
+   - Comprehensive Fondu status report
+   - Verified locations and features
+   - KPI verification status
+   - Command reference
+   - Documentation quality assessment
+
+2. #.docs/op-ed-investigation-report.txt
+   - Comprehensive op-ed feature analysis
+   - Line-by-line code verification
+   - Feature comparison (claimed vs reality)
+   - Testing recommendations
+   - Code quality assessment
+
+================================================================================
+REMAINING ISSUES (Not Addressed - Per User Request)
+================================================================================
+
+Per user instruction: "dont touch any code or path docs till i say u can"
+
+The following were NOT modified (code/path documentation):
+- #.ref/ directory status (still empty)
+- project_routes.kvp entries (APP vs PROJECT topology)
+- GL-OS location in project_routes.kvp
+- TPMOS_APP_REFERENCE.txt
+- AGENT_ONBOARDING.txt
+- CODEBASE_MAP.txt
+- 15.oped-vs-edleg.txt (marked for update but not modified)
+
+================================================================================
+RECOMMENDED NEXT ACTIONS
+================================================================================
+
+When ready to proceed with code/path documentation updates:
+
+1. [CRITICAL] Populate #.ref/ OR update AGENT_ONBOARDING.txt
+   - Either restore reference code
+   - Or emphasize manual backups in no-git mode
+
+2. [CRITICAL] Fix project_routes.kvp
+   - Remove APP entries (man-ops, man-pal, man-add, user)
+   - Keep only actual projects
+
+3. [HIGH] Remove gl-os from project_routes.kvp
+   - Entry is vestigial
+
+4. [MEDIUM] Update 15.oped-vs-edleg.txt
+   - Reflect 81% completion status
+   - Mark implemented features
+
+5. [MEDIUM] Establish version tracking
+   - Clear version in README.md
+
+6. [MEDIUM] Mark P2P-NET docs as conceptual
+   - p2p-ops.txt, P2P_LEGAL_NOTICE.txt
+
+================================================================================
+FILES MODIFIED
+================================================================================
+
+1. pieces/buttons/WINDOWS-RUN-GUIDE.md
+   - Added limitations section
+   - Updated date and status
+
+2. pieces/os/compiled_projects.txt
+   - Removed duplicate headers
+
+3. doc_diff.txt
+   - Updated status and findings
+   - Marked resolved issues
+   - Updated recommendations
+
+================================================================================
+FILES CREATED
+================================================================================
+
+1. #.docs/fondu-investigation-report.txt
+2. #.docs/op-ed-investigation-report.txt
+
+================================================================================
+END OF SUMMARY
+================================================================================

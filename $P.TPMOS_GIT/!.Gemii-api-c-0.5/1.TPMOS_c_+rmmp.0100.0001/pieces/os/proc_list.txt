@@ -1,0 +1,13 @@
+122396 orchestrator
+122414 keyboard_input
+122415 joystick_input
+122418 response_handler
+122419 chtpm_parser
+122428 renderer
+122430 gl_renderer
+122431 clock_daemon
+loader_module=122437
+agy-text-editor_agy-text-editor_manager=122448
+agy-text-editor_agy-text-editor_manager=122450
+agy-text-editor_agy-text-editor_manager=122452
+agy-text-editor_agy-text-editor_manager=122454
