@@ -1,2 +1,0 @@
-57
-COMMAND: SET_LOAD_FILE:projects/agy-text-editor/load-bug-m24.txt
