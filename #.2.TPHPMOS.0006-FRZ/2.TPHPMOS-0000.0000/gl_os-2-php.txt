@@ -1,0 +1,31 @@
+# GL_OS to PHP Architectural Guide
+
+## Goal
+To evolve the TPHPMOS desktop environment into a movable, collapsible, and resizable window system that supports multiple GL applications within virtual windows, adhering to the TPMOS sovereign piece principles.
+
+## Architecture
+
+### 1. The PHP Backend (Sovereign Manager)
+The PHP backend will handle all file I/O for `projects/` state, `history.txt`, and marker-based triggering of refreshes.
+- Each virtual window in the browser maps to a project's backend manager.
+- PHP scripts like `game_turn.php` or `get_gamestate.php` will process commands, update state, and trigger updates.
+
+### 2. The Browser Frontend (Dumb Theater)
+- **Window Management:** The desktop is a DOM container. Windows are `div` elements that are draggable, resizable (CSS), and collapsible (JS event handling).
+- **GL/Canvas Rendering:** Each window contains a `<canvas>` element for OpenGL-like rendering of tiles/sprites, managed by a JS engine (or a light WebGL wrapper).
+- **Communication:**
+    - **Host Input:** JS captures mouse/keyboard/joystick -> `POST` command to `projects/<project>/manager/history.txt`.
+    - **Host Update:** JS polls `projects/<project>/session/frame_changed.txt`. On change, JS fetches `state.txt` and rebuilds the canvas.
+
+## Migration Strategy
+1. **Window Scaffolding:** Implement draggable/resizable `div` classes in `shared-window.css` and `main-cli.js`.
+2. **PHP Backend Integration:** Ensure the existing `fuzz-op-gl` manager can communicate via HTTP/JSON instead of binary pipes.
+3. **Canvas Rendering:** Replace the current static terminal DOM with a `<canvas>` context in each window that consumes `state.txt` and renders the GLTPM scene.
+4. **Desktop Toolbar:** Implement a system toolbar to list/minimize/restore windows.
+
+## Next Steps
+- Implement `shared-window.css` for window manipulation.
+- Refactor `main-cli.js` to manage multiple window DOM elements and their lifecycle (open, close, minimize).
+- Standardize the JSON communication between frontend and backend.
+---
+*Documented by Gemini CLI - 2026-05-24*

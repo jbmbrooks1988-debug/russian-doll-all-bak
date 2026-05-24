@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TPMOS Desktop</title>
+    <link rel="stylesheet" href="shared-window.css">
+    <style>
+        body { background: #1a1a1a; color: #00ff00; font-family: monospace; }
+        #desktop { width: 100vw; height: 100vh; position: relative; }
+        .window { border: 1px solid #333; position: absolute; }
+    </style>
+</head>
+<body>
+    <div id="desktop">
+        <!-- Windows will be spawned here -->
+    </div>
+    <div id="toolbar">
+        <div class="launcher-menu">
+            <button onclick="createWindow('Terminal', 'terminal')">New Terminal</button>
+            <button onclick="createWindow('GL App', 'gltpm')">New GL App</button>
+        </div>
+    </div>
+    <script src="main-cli.js"></script>
+</body>
+</html>

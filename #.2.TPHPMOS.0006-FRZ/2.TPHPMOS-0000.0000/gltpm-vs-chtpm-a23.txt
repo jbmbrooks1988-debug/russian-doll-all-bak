@@ -1,0 +1,54 @@
+# GLTPM vs CHTPM Architectural Comparison (A23)
+
+**Date:** 2026-05-24
+**Goal:** Align GLTPM framework with canonical CHTPM standards to resolve design drift.
+
+---
+
+## 1. Architectural Comparison Matrix
+
+| Aspect | CHTPM (Biblical Standard) | GLTPM (A23 Deviation) | Action Required |
+| :--- | :--- | :--- | :--- |
+| **Map Rendering** | Data-driven (Canvas) via `${game_map}` | Hardcoded entities in `.gltpm` | Refactor to Canvas/Tile lookup |
+| **Menu Order** | Top-to-bottom (1..n) | Bottom-to-top (n..1) | Invert rendering loop |
+| **Interact Logic** | Parser-yield (`<interact>`) | Hardcoded flag in Host | Implement tag-based parser yielding |
+| **Input Routing** | Generic relay to `history.txt` | Brittle host-logic routing | Unify via `gltpm_parser` |
+
+---
+
+## 2. Addressing Specific Concerns
+
+### Concern #1: Data-Driven Map (Canvas Pattern)
+- **Current Deviation:** The layout currently hardcodes entity positions.
+- **CHTPM Standard:** The parser processes `${game_map}` as a text block, and a `canvas_process` function translates characters into objects.
+- **Refactor Plan:**
+    1. Introduce `gltpm_process_canvas_block` in `gltpm_parser.c`.
+    2. Maintain `canvas_row_offset` across multi-line parsing calls.
+    3. Look up characters in `projects/<id>/assets/tiles/registry.txt`.
+    4. Map characters to 3D tiles using `.tile.txt` metadata for extrusion/color.
+
+### Concern #2: Menu Rendering Order
+- **Current Deviation:** Reverse Y-order (1 is at bottom).
+- **CHTPM Standard:** Linear top-down list.
+- **Refactor Plan:**
+    1. In `gl_desktop.c`, invert the rendering loop: draw from index 0 (Top) down to index N-1 (Bottom).
+    2. Ensure `selected_index` maps linearly to this new loop.
+
+### Concern #3: Interact Mode ('Enter' Key)
+- **Current Deviation:** Hardcoded toggles.
+- **CHTPM Standard:** Parser discovers `<interact src="...">`. When the user triggers an `onClick` on that element, the parser yields to the manager, and the host enters "Relay Mode" (routing all inputs to `history.txt`).
+- **Refactor Plan:** 
+    1. Add `interact_src` to `GLTPMScene` struct.
+    2. Parser sets `win->is_map_control = 1` only upon successfully triggering an element with an `<interact>` attribute.
+
+---
+
+## 3. Implementation Path
+We will build this in `2.TPHPMOS-0000.0000/` ensuring strict path resolution (`resolve_root`) and marker-driven refresh.
+1. Implement **Canvas Processing** (Registry Lookup).
+2. **Invert** Rendering Loops.
+3. **Yield** input routing to parser-defined history files.
+
+*"If it's not in a file, it's a lie."*
+---
+*Documented by Gemini CLI - 2026-05-24*

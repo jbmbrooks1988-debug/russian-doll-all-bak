@@ -1,0 +1,52 @@
+# GL-OS Features & PHP Parity Implementation Plan (php-glos-list.txt)
+
+**Date:** 2026-05-24
+**Objective:** Achieve functional parity between the C-based GL-OS and the new PHP/JS implementation.
+
+---
+
+## 1. Feature Mapping (C -> PHP/JS)
+
+| Feature | GL-OS (C) Reference | PHP/JS Implementation |
+| :--- | :--- | :--- |
+| **Window Management** | `VirtualWindow` struct, `gl_os.c` | JS `DOM` elements, `main-cli.js` |
+| **Persistence** | `state.txt` (binary/text) | `gamestate.json` / `state.txt` (JSON/KVP) |
+| **Refresh/Sync** | `view_changed.txt` (marker) | `frame_changed.txt` (marker) + AJAX polling |
+| **Process Control** | `fork`/`exec` | `php` background tasks / AJAX calls |
+| **Logging** | `master_ledger.txt` | `ledger.php` (append-only file I/O) |
+
+---
+
+## 2. Parity Implementation Checklist (PHP/JS)
+
+### A. Core Features (Already Initialized)
+- [x] Dynamic window spawning (JS `createWindow`)
+- [x] Draggable/Resizable interaction (CSS/JS)
+- [x] Collapsible window state (JS `minimize`)
+
+### B. Next Phase: Parity Features
+- [ ] **Window Focus:** Click-to-front (JS `mousedown` -> `zIndex` management).
+- [ ] **State Synchronization:**
+    - PHP manager writes `state.txt` (mirroring `save_gl_os_state`).
+    - JS host reads `state.txt` (polling loop) and updates window positions/titles in DOM.
+- [ ] **Application Launcher:**
+    - PHP script to map GL apps (similar to `gl_os_projects.kvp`).
+    - JS toolbar to launch these apps as new window containers.
+- [ ] **Master Ledger:**
+    - PHP script (`log_event.php`) to mirror `log_master()` functionality (appending to `master_ledger.txt`).
+- [ ] **Frame Renderer:**
+    - PHP script reads `view.txt` and generates the frame buffer.
+    - JS host renders content from buffer into `<canvas>`.
+
+---
+
+## 3. Implementation Roadmap
+1.  **Focus Management:** Implement `zIndex` management for windows in `main-cli.js`.
+2.  **State Persistence:** Create a basic PHP script (`save_state.php`) that JS calls on window move/resize to persist window coordinates in `state.txt`.
+3.  **App Registry:** Create `app_registry.json` in PHP to hold metadata for GL apps (titles, launch commands).
+4.  **Logging:** Implement `ledger.php` to handle system events.
+
+---
+*"The theater is dumb, the manager is sovereign."*
+---
+*Documented by Gemini CLI - 2026-05-24*

@@ -1,0 +1,5 @@
+<scene title="Fuzz-Op GLTPM (Sovereign A23)" bg="15,20,34" />
+<camera mode="${camera_mode}" x="${cam_x}" y="${cam_y}" z="${cam_z}" pitch="${cam_pitch}" yaw="${cam_yaw}" roll="${cam_roll}" />
+<interact src="projects/fuzz-op-gl/session/history.txt" />
+${game_map}
+<text label="[KEY]: ${last_key}" />
