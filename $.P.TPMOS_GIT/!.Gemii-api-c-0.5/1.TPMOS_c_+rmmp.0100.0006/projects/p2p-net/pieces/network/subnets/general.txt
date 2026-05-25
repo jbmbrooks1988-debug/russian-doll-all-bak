@@ -1,8 +1,0 @@
-subnet_name=general
-network_mode=broadcast
-connection_mode=continuous
-port=8000
-max_peers=50
-ping_interval=30
-timeout=90
-active=1

@@ -1,9 +1,0 @@
-# P2P Message
-msg_id=msg_012
-from=dbg_1dac
-to=abc123def456
-subnet=chat
-timestamp=2026-05-11 15:38:57
-subject=Peer Heartbeat
-read=0
-body=Heartbeat #10 from dbg_1dac at Mon May 11 15:38:57 2026

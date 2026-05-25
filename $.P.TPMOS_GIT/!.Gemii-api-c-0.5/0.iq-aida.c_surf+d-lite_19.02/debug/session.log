@@ -1,8 +1,0 @@
-[USER]
-make hi-py.py say hi
-
-[AIDA]
-I've created `hi-py.py` to print "hi".
-
-========================================
-

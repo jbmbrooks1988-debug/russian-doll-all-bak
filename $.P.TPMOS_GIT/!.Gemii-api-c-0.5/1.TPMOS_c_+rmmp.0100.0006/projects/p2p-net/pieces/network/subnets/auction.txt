@@ -1,8 +1,0 @@
-subnet_name=auction
-network_mode=hybrid
-connection_mode=on_demand
-port=8002
-max_peers=50
-ping_interval=30
-timeout=90
-active=1

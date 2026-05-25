@@ -1,9 +1,0 @@
-# P2P Message
-msg_id=msg_001
-from=dbg_1dac
-to=abc123def456
-subnet=chat
-timestamp=2026-05-11 15:37:17
-subject=Peer Connected
-read=0
-body=Debug peer dbg_1dac connected on port 8005.

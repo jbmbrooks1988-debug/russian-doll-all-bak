@@ -1,2 +1,0 @@
-stone=10
-wood=5

@@ -1,4 +1,0 @@
-hash=6a006b0593b37
-port=8000
-subnet=CHAT
-last_seen=1778412378

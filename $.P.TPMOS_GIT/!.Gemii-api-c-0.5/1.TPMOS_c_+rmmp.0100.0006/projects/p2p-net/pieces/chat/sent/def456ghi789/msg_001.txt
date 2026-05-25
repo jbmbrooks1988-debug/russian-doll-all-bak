@@ -1,9 +1,0 @@
-# P2P Message
-msg_id=msg_001
-from=def456ghi789
-to=abc123def456
-subnet=chat
-timestamp=2026-04-02 17:49:23
-subject=Re: Hello!
-read=0
-body=Hi back! Message received. P2P email protocol works!

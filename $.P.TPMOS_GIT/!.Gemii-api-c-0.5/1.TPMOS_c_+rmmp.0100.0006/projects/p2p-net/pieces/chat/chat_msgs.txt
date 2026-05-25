@@ -1,7 +1,0 @@
-[2026-04-02 12:34:56] abc123def456... → def456ghi789... (chat): Hello! Testing P2P chat.
-[2026-04-02 12:35:12] def456ghi789... → abc123def456... (chat): Hi there! Message received!
-[2026-04-02 12:36:01] abc123def456... → def456ghi789... (chat): How's it going?
-[2026-04-02 12:36:45] ghi789jkl012... → abc123def456... (chat): Hey everyone! I just joined from 192.168.1.100
-[2026-04-02 12:37:20] def456ghi789... → ghi789jkl012... (chat): Welcome! Multi-network is working great.
-[2026-04-02 12:38:05] abc123def456... → def456ghi789... (chat): Can you see this message?
-[2026-04-02 12:38:30] def456ghi789... → abc123def456... (chat): Yes! Crystal clear.

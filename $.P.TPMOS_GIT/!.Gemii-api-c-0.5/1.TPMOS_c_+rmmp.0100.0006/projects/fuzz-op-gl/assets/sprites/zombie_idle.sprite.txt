@@ -1,7 +1,0 @@
-sprite_id=zombie_idle
-ascii=Z
-unicode=🧟
-label=Zombie
-rgb=255,50,50
-asset_type=cube_sprite
-anchor=center

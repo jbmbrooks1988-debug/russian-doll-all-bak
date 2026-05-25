@@ -1,2 +1,0 @@
-[2026-04-02 12:40:00] jkl012mno345... → mno345pqr678... (general): General channel test
-[2026-04-02 12:40:15] mno345pqr678... → jkl012mno345... (general): Received on general subnet

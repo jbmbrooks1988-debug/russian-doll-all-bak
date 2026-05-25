@@ -1,1 +1,0 @@
-data_xl=../^.CYOA_DATA_XL_69/books
