@@ -1,0 +1,6 @@
+name=Xlector
+type=xlector
+pos_x=4
+pos_y=7
+pos_z=0
+on_map=1

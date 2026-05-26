@@ -1,0 +1,7 @@
+project_id=slop-ed-dev
+te
+app_title=PIECEMARK PLAYER
+active_target_id=mp3_player
+current_mp3=rb&u.book1.page76-v1.0.mp3
+player_status=Playing
+emoji_mode=OFF

@@ -1,7 +1,0 @@
-project_id=fuzz-op
-te
-app_title=FUZZ-OP PET SIM
-active_target_id=mp3_player
-current_mp3=rb&u.book1.page76-v1.0.mp3
-player_status=Playing
-emoji_mode=OFF

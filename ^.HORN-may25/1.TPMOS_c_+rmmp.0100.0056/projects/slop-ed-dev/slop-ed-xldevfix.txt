@@ -1,0 +1,34 @@
+# MISSION: FIX SLOP-ED-DEV MOVEMENT & STATE DRIFT
+
+## 1. THE PROBLEM
+The `slop-ed-dev` project (a dev copy of `op-ed`) has two main issues:
+1.  **Xelector Control**: Arrow keys are not moving the cursor/selector in the grid.
+2.  **State Drift**: The UI still shows "PROJECT: op-ed" in the header and variable values in `gui_state.txt` keep reverting to `op-ed` paths, despite a full project duplication and rename.
+
+## 2. WHAT WAS DONE
+- Duplicated `projects/op-ed` to `projects/slop-ed-dev`.
+- Renamed `op-ed_manager.c` to `slop-ed-dev_manager.c`.
+- Renamed `op-ed.chtpm` to `slop-ed-dev.chtpm`.
+- Updated `project.pdl` metadata to point to the new project ID and layout.
+- Performed a surgical `sed` replacement of `op-ed` -> `slop-ed-dev` across all files.
+- Fixed a "double-rename" bug where paths became `slslop-ed-dev-dev`.
+- Updated `location_kvp` and `kill_all.sh` to include the new project.
+
+## 3. CURRENT DIAGNOSIS
+- **gui_state.txt Overwrite**: The file `projects/slop-ed-dev/manager/gui_state.txt` is being overwritten with values belonging to the original `op-ed` project (e.g., `module_path=projects/op-ed/...`).
+- **Suspect**: Either a stale process is still running, or there is logic in the system (like `player_manager` or a global daemon) that doesn't recognize the new project folder and is defaulting to the original one.
+- **Paths**: `resolve_piece_dir` was upgraded to be more robust with `project_root`, but the manager might still be failing to find the `xlector` piece if the world/map IDs aren't initialized correctly from the PDL.
+- **Xlector State**: The piece `projects/slop-ed-dev/pieces/xlector/state.txt` was manually fixed to ensure it has all required fields (`pos_x`, `pos_y`, `active`, etc.).
+
+## 4. YOUR TASKS
+1.  **Find the Overwriter**: Track down why `gui_state.txt` reverts to `op-ed`. Check if `slop-ed-dev_manager.c` has any hidden hardcoded paths or if the system `orchestrator` is launching the wrong binary.
+2.  **Verify Movement Loop**: Ensure `process_key()` in the manager is correctly receiving the arrow key codes (1000-1003) and calling `save_xlector_state()`.
+3.  **Fix Header Info**: The UI header still says "PROJECT: op-ed". This variable comes from `project_id` in `gui_state.txt`. Fix the manager logic so it correctly publishes `slop-ed-dev`.
+4.  **Audit Render Map**: Check if `render_map.+x` needs project-specific arguments to find the `xlector` in its new home.
+
+## 5. MANDATE
+- **HANDS OFF OP-ED**: NEVER modify anything in `projects/op-ed/`. It is the stable reference.
+- Use `projects/slop-ed-dev/manager/gui_state.txt` as your primary debugging mirror.
+- Recompile with `./button.sh compile` after every change to the manager.
+
+**"Geography is destiny. If it's not in a file, it's a lie."**
