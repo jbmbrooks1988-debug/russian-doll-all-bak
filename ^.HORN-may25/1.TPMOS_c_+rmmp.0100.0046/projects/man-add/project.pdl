@@ -1,0 +1,7 @@
+SECTION      | KEY                | VALUE
+----------------------------------------
+META         | project_id         | man-add
+META         | title              | Man Add Project
+META         | starting_map       | map_0001
+
+STATE        | active             | 1

@@ -1,0 +1,450 @@
+=== NEW SESSION at 2026-05-26 07:47:54 ===
+
+--- FRAME UPDATE at 2026-05-26 07:47:54 ---
++===========================================================+
+|                                                           |
+|           C H T P M + O S   C L I   v2.0                 |
+|                                                           |
+|  CHTPM+OS Main Menu                                      |
+|                                                           |
+|  [>] 1. [Project Loader]                             |
+|  [ ] 2. [App Store (Fondu)]                          |
+|  [ ] 3. [Status]  [ ] 4. [GL-OS]                                          |
+|  [ ] 5. [Process Monitor]                            |
+|  [ ] 6. [Toggle Frame History (Current: )]                                         |
+|  [ ] 7. [Help]                                            |
+|                                                           |
++===========================================================+
+|  Running Applications: None                               |
+|  System Time: 08:00:00 | Turn: 0 | Key: None |
++===========================================================+
+|                                                           |
+|  $ | [ ] 8. [hi]                                                 |                                                 |
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-26 07:47:54 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [>] 1. [xsr]                                           ║
+║  [ ] 2. [user]                                          ║
+║  [ ] 3. [checkers]                                      ║
+║  [ ] 4. [cyoa-engine]                                   ║
+║  [ ] 5. [man-ops]                                       ║
+║  [ ] 6. [tsots-online]                                  ║
+║  [ ] 7. [gltpm-demo]                                    ║
+║  [ ] 8. [chat-op]                                       ║
+║  [ ] 9. [test_fondu]                                    ║
+║  [ ] 10. [p2p-net]                                       ║
+║  [ ] 11. [trunk]                                         ║
+║  [ ] 12. [bots-sov]                                      ║
+║  [ ] 13. [piececraft-3d]                                 ║
+║  [ ] 14. [fuzz-op]                                       ║
+║  [ ] 15. [404-test]                                      ║
+║  [ ] 16. [op-ed]                                         ║
+║  [ ] 17. [lsr]                                           ║
+║  [ ] 18. [demo_1]                                        ║
+║  [ ] 19. [gem-dev]                                       ║
+║  [ ] 20. [man-pal]                                       ║
+║  [ ] 21. [hangman]                                       ║
+║  [ ] 22. [yahoo]                                         ║
+║  [ ] 23. [man-add]                                       ║
+║  [ ] 24. [bot-editor]                                    ║
+║  [ ] 25. [#]                                             ║
+║  [ ] 26. [cpp-llm]                                       ║
+║  [ ] 27. [aow-2d]                                        ║
+║  [ ] 28. [gl-os]                                         ║
+║  [ ] 29. [mp3-store]                                     ║
+║  [ ] 30. [gitlet]                                        ║
+║  [ ] 31. [groq-ollama]                                   ║
+║  [ ] 32. [+-demo]                                        ║
+║  [ ] 33. [template]                                      ║
+║  [ ] 34. [ai-labs]                                       ║
+║  [ ] 35. [agy-text-editor]                               ║
+║  [ ] 36. [blank]                                         ║
+║  [ ] 37. [aow]                                           ║
+║  [ ] 38. [gem-api]                                       ║
+║  [ ] 39. [fuzz-op-gl]                                    ║
+║  [ ] 40. [quiz-engine]                                   ║
+║  [ ] 41. [op-ed-gl]                                      ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 42. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-26 07:47:54 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [>] 1. [xsr]                                           ║
+║  [ ] 2. [user]                                          ║
+║  [ ] 3. [checkers]                                      ║
+║  [ ] 4. [cyoa-engine]                                   ║
+║  [ ] 5. [man-ops]                                       ║
+║  [ ] 6. [tsots-online]                                  ║
+║  [ ] 7. [gltpm-demo]                                    ║
+║  [ ] 8. [chat-op]                                       ║
+║  [ ] 9. [test_fondu]                                    ║
+║  [ ] 10. [p2p-net]                                       ║
+║  [ ] 11. [trunk]                                         ║
+║  [ ] 12. [bots-sov]                                      ║
+║  [ ] 13. [piececraft-3d]                                 ║
+║  [ ] 14. [fuzz-op]                                       ║
+║  [ ] 15. [404-test]                                      ║
+║  [ ] 16. [op-ed]                                         ║
+║  [ ] 17. [lsr]                                           ║
+║  [ ] 18. [demo_1]                                        ║
+║  [ ] 19. [gem-dev]                                       ║
+║  [ ] 20. [man-pal]                                       ║
+║  [ ] 21. [hangman]                                       ║
+║  [ ] 22. [yahoo]                                         ║
+║  [ ] 23. [man-add]                                       ║
+║  [ ] 24. [bot-editor]                                    ║
+║  [ ] 25. [#]                                             ║
+║  [ ] 26. [cpp-llm]                                       ║
+║  [ ] 27. [aow-2d]                                        ║
+║  [ ] 28. [gl-os]                                         ║
+║  [ ] 29. [mp3-store]                                     ║
+║  [ ] 30. [gitlet]                                        ║
+║  [ ] 31. [groq-ollama]                                   ║
+║  [ ] 32. [+-demo]                                        ║
+║  [ ] 33. [template]                                      ║
+║  [ ] 34. [ai-labs]                                       ║
+║  [ ] 35. [agy-text-editor]                               ║
+║  [ ] 36. [blank]                                         ║
+║  [ ] 37. [aow]                                           ║
+║  [ ] 38. [gem-api]                                       ║
+║  [ ] 39. [fuzz-op-gl]                                    ║
+║  [ ] 40. [quiz-engine]                                   ║
+║  [ ] 41. [op-ed-gl]                                      ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 42. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-26 07:47:58 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [ ] 1. [xsr]                                           ║
+║  [ ] 2. [user]                                          ║
+║  [>] 3. [checkers]                                      ║
+║  [ ] 4. [cyoa-engine]                                   ║
+║  [ ] 5. [man-ops]                                       ║
+║  [ ] 6. [tsots-online]                                  ║
+║  [ ] 7. [gltpm-demo]                                    ║
+║  [ ] 8. [chat-op]                                       ║
+║  [ ] 9. [test_fondu]                                    ║
+║  [ ] 10. [p2p-net]                                       ║
+║  [ ] 11. [trunk]                                         ║
+║  [ ] 12. [bots-sov]                                      ║
+║  [ ] 13. [piececraft-3d]                                 ║
+║  [ ] 14. [fuzz-op]                                       ║
+║  [ ] 15. [404-test]                                      ║
+║  [ ] 16. [op-ed]                                         ║
+║  [ ] 17. [lsr]                                           ║
+║  [ ] 18. [demo_1]                                        ║
+║  [ ] 19. [gem-dev]                                       ║
+║  [ ] 20. [man-pal]                                       ║
+║  [ ] 21. [hangman]                                       ║
+║  [ ] 22. [yahoo]                                         ║
+║  [ ] 23. [man-add]                                       ║
+║  [ ] 24. [bot-editor]                                    ║
+║  [ ] 25. [#]                                             ║
+║  [ ] 26. [cpp-llm]                                       ║
+║  [ ] 27. [aow-2d]                                        ║
+║  [ ] 28. [gl-os]                                         ║
+║  [ ] 29. [mp3-store]                                     ║
+║  [ ] 30. [gitlet]                                        ║
+║  [ ] 31. [groq-ollama]                                   ║
+║  [ ] 32. [+-demo]                                        ║
+║  [ ] 33. [template]                                      ║
+║  [ ] 34. [ai-labs]                                       ║
+║  [ ] 35. [agy-text-editor]                               ║
+║  [ ] 36. [blank]                                         ║
+║  [ ] 37. [aow]                                           ║
+║  [ ] 38. [gem-api]                                       ║
+║  [ ] 39. [fuzz-op-gl]                                    ║
+║  [ ] 40. [quiz-engine]                                   ║
+║  [ ] 41. [op-ed-gl]                                      ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 42. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > 3_
+
+
+--- FRAME UPDATE at 2026-05-26 07:47:58 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [ ] 1. [xsr]                                           ║
+║  [ ] 2. [user]                                          ║
+║  [ ] 3. [checkers]                                      ║
+║  [ ] 4. [cyoa-engine]                                   ║
+║  [ ] 5. [man-ops]                                       ║
+║  [ ] 6. [tsots-online]                                  ║
+║  [ ] 7. [gltpm-demo]                                    ║
+║  [ ] 8. [chat-op]                                       ║
+║  [ ] 9. [test_fondu]                                    ║
+║  [ ] 10. [p2p-net]                                       ║
+║  [ ] 11. [trunk]                                         ║
+║  [ ] 12. [bots-sov]                                      ║
+║  [ ] 13. [piececraft-3d]                                 ║
+║  [ ] 14. [fuzz-op]                                       ║
+║  [ ] 15. [404-test]                                      ║
+║  [ ] 16. [op-ed]                                         ║
+║  [ ] 17. [lsr]                                           ║
+║  [ ] 18. [demo_1]                                        ║
+║  [ ] 19. [gem-dev]                                       ║
+║  [ ] 20. [man-pal]                                       ║
+║  [ ] 21. [hangman]                                       ║
+║  [ ] 22. [yahoo]                                         ║
+║  [ ] 23. [man-add]                                       ║
+║  [ ] 24. [bot-editor]                                    ║
+║  [ ] 25. [#]                                             ║
+║  [ ] 26. [cpp-llm]                                       ║
+║  [ ] 27. [aow-2d]                                        ║
+║  [ ] 28. [gl-os]                                         ║
+║  [ ] 29. [mp3-store]                                     ║
+║  [ ] 30. [gitlet]                                        ║
+║  [ ] 31. [groq-ollama]                                   ║
+║  [ ] 32. [+-demo]                                        ║
+║  [ ] 33. [template]                                      ║
+║  [ ] 34. [ai-labs]                                       ║
+║  [ ] 35. [agy-text-editor]                               ║
+║  [ ] 36. [blank]                                         ║
+║  [ ] 37. [aow]                                           ║
+║  [>] 38. [gem-api]                                       ║
+║  [ ] 39. [fuzz-op-gl]                                    ║
+║  [ ] 40. [quiz-engine]                                   ║
+║  [ ] 41. [op-ed-gl]                                      ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 42. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > 38_
+
+
+--- FRAME UPDATE at 2026-05-26 07:47:58 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [>] 1. [xsr]                                           ║
+║  [ ] 2. [user]                                          ║
+║  [ ] 3. [checkers]                                      ║
+║  [ ] 4. [cyoa-engine]                                   ║
+║  [ ] 5. [man-ops]                                       ║
+║  [ ] 6. [tsots-online]                                  ║
+║  [ ] 7. [gltpm-demo]                                    ║
+║  [ ] 8. [chat-op]                                       ║
+║  [ ] 9. [test_fondu]                                    ║
+║  [ ] 10. [p2p-net]                                       ║
+║  [ ] 11. [trunk]                                         ║
+║  [ ] 12. [bots-sov]                                      ║
+║  [ ] 13. [piececraft-3d]                                 ║
+║  [ ] 14. [fuzz-op]                                       ║
+║  [ ] 15. [404-test]                                      ║
+║  [ ] 16. [op-ed]                                         ║
+║  [ ] 17. [lsr]                                           ║
+║  [ ] 18. [demo_1]                                        ║
+║  [ ] 19. [gem-dev]                                       ║
+║  [ ] 20. [man-pal]                                       ║
+║  [ ] 21. [hangman]                                       ║
+║  [ ] 22. [yahoo]                                         ║
+║  [ ] 23. [man-add]                                       ║
+║  [ ] 24. [bot-editor]                                    ║
+║  [ ] 25. [#]                                             ║
+║  [ ] 26. [cpp-llm]                                       ║
+║  [ ] 27. [aow-2d]                                        ║
+║  [ ] 28. [gl-os]                                         ║
+║  [ ] 29. [mp3-store]                                     ║
+║  [ ] 30. [gitlet]                                        ║
+║  [ ] 31. [groq-ollama]                                   ║
+║  [ ] 32. [+-demo]                                        ║
+║  [ ] 33. [template]                                      ║
+║  [ ] 34. [ai-labs]                                       ║
+║  [ ] 35. [agy-text-editor]                               ║
+║  [ ] 36. [blank]                                         ║
+║  [ ] 37. [aow]                                           ║
+║  [ ] 38. [gem-api]                                       ║
+║  [ ] 39. [fuzz-op-gl]                                    ║
+║  [ ] 40. [quiz-engine]                                   ║
+║  [ ] 41. [op-ed-gl]                                      ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 42. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-26 07:47:58 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                G E M - A P I   L O C A L   A G E N T                         ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 21% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ You exceeded your current quota, please check your plan and billing detail ║
+║ s. For more information on this error, head to: https://ai.google.dev/gemi ║
+║ ni-api/docs/rate-limits. To monitor your current usage, head to: https://a ║
+║ i.dev/rate-limit.                                                          ║
+║ * Quota exceeded for metric: generativelanguage.googleapis.com/generate_co ║
+║ ntent_free_tier_requests, limit: 20, model: gemini-2.5-flash               ║
+║ Please retry in 34.31287009s.                                              ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [>] 1. [hi]                                                 |  ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-26 07:47:59 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                G E M - A P I   L O C A L   A G E N T                         ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 21% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Ready for input...                                                         ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [hi_]                                              |  ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Loaded 6 APIs.                                     |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-05-26 07:48:00 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                G E M - A P I   L O C A L   A G E N T                         ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 21% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Ready for input...                                                         ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [_]                                              |  ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Loaded 6 APIs.                                     |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-05-26 07:48:00 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                G E M - A P I   L O C A L   A G E N T                         ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: THINKING (0s) | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 21% | [FSM]: THINKING                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Ready for input...                                                         ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [_]                                              |  ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Querying AI...                                     |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-05-26 07:48:00 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                G E M - A P I   L O C A L   A G E N T                         ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: THINKING (0s) | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 21% | [FSM]: THINKING                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Ready for input...                                                         ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [_]                                              |  ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Querying AI...                                     |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-05-26 07:48:00 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                G E M - A P I   L O C A L   A G E N T                         ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 21% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ You exceeded your current quota, please check your plan and billing detail ║
+║ s. For more information on this error, head to: https://ai.google.dev/gemi ║
+║ ni-api/docs/rate-limits. To monitor your current usage, head to: https://a ║
+║ i.dev/rate-limit.                                                          ║
+║ * Quota exceeded for metric: generativelanguage.googleapis.com/generate_co ║
+║ ntent_free_tier_requests, limit: 20, model: gemini-2.5-flash               ║
+║ Please retry in 59.318165427s.                                             ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [_]                                              |  ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+

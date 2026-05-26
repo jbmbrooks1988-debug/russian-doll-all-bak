@@ -1,0 +1,1 @@
+{"path": "tools/complete_path.c", "search": "if (strncmp(entry-u003ed_name, prefix, strlen(prefix)) == 0) {", "replace": "if (fnmatch(prefix, entry-u003ed_name, 0) == 0) {"}}

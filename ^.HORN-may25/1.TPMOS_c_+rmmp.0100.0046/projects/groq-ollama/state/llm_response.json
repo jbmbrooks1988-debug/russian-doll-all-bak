@@ -1,0 +1,1 @@
+{"model":"llama3-groq-tool-use:latest","created_at":"2026-05-26T06:53:30.695121Z","message":{"role":"assistant","content":"{\"response\": \"Hello there! How can I assist you?\"}"},"done":true,"done_reason":"stop","total_duration":5232446858,"load_duration":127078901,"prompt_eval_count":186,"prompt_eval_duration":2038494067,"eval_count":15,"eval_duration":2394670780}
