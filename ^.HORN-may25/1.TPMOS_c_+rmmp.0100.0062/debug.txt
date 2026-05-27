@@ -1,0 +1,94 @@
+[02:21:43] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[02:21:44] PARSER: forked module pid=3265819
+[02:21:44] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=3265819
+[02:21:44] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=3265819
+[02:21:44] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=3265819
+[02:21:44] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=3265819
+[02:21:44] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=3265819
+[02:21:46] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=3265819
+[02:21:46] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=3265819
+[02:21:46] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=3265819
+[02:21:46] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=3265819
+[02:21:46] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3265819
+[02:21:46] PARSER: forked module pid=3265873
+[02:21:46] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3265873
+[02:21:46] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3265873
+[02:21:46] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3265873
+[02:21:47] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=0
+[02:21:47] PARSER: forked module pid=3265917
+[02:21:47] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3265917
+[02:21:50] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3265917
+[02:21:50] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3265917
+[02:21:50] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3265917
+[02:21:50] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3265917
+MANAGER: handle_command received: 'SET_AUTOCOMPLETE:projects/slop-ed-dev/games/fuzz-op-mirror/' (len: 59)
+MANAGER: handle_command received: 'SET_AUTOCOMPLETE:projects/slop-ed-dev/games/fuzz-op-mirror/' (len: 59)
+[02:21:51] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3265917
+[02:21:51] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3265917
+[02:22:05] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=0
+[02:22:05] PARSER: forked module pid=3266338
+[02:22:05] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3266338
+[02:22:07] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3266338
+[02:22:07] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3266338
+[02:22:07] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3266338
+[02:22:07] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3266338
+[02:22:10] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3266338
+[02:22:10] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3266338
+MANAGER: handle_command received: 'SET_AUTOCOMPLETE:projects/slop-ed-dev/games/x11pppzzz/' (len: 54)
+MANAGER: handle_command received: 'SET_AUTOCOMPLETE:projects/slop-ed-dev/games/x11pppzzz/' (len: 54)
+MANAGER: handle_command received: 'SET_AUTOCOMPLETE:projects/slop-ed-dev/games/x11pppzzz/' (len: 54)
+[02:22:13] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3266338
+[02:22:13] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3266338
+MANAGER: handle_command received: 'SET_AUTOCOMPLETE:projects/slop-ed-dev/games/test-game-01/' (len: 57)
+MANAGER: handle_command received: 'SET_AUTOCOMPLETE:projects/slop-ed-dev/games/test-game-01/' (len: 57)
+MANAGER: handle_command received: 'SET_AUTOCOMPLETE:projects/slop-ed-dev/games/test-game-01/' (len: 57)
+MANAGER: handle_command received: 'SET_AUTOCOMPLETE:projects/slop-ed-dev/games/x11pppzzz/maps/' (len: 59)
+[02:22:20] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3266338
+[02:22:20] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3266338
+MANAGER: handle_command received: 'SET_AUTOCOMPLETE:projects/slop-ed-dev/games/x11pppzzz/maps/' (len: 59)
+MANAGER: handle_command received: 'SET_AUTOCOMPLETE:projects/slop-ed-dev/games/x11pppzzz/maps/' (len: 59)
+[02:22:25] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3266338
+[02:22:25] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3266338
+MANAGER: handle_command received: 'SET_DIR:projects/slop-ed-dev/games/x11pppzzz' (len: 44)
+MANAGER: handle_command received: 'SET_DIR:projects/slop-ed-dev/games/x11pppzzz' (len: 44)
+MANAGER: handle_command received: 'SET_DIR:projects/slop-ed-dev/games/x11pppzzz' (len: 44)
+[02:22:31] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3266338
+[02:22:31] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3266338
+MANAGER: handle_command received: 'SET_DIR:projects/slop-ed-dev/games/x11pppzzz' (len: 44)
+MANAGER: handle_command received: 'SET_DIR:projects/slop-ed-dev/games/x11pppzzz' (len: 44)
+MANAGER: handle_command received: 'SET_DIR:projects/slop-ed-dev/games/x11pppzzz' (len: 44)
+[02:22:34] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3266338
+[02:22:34] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=3266338
+MANAGER: handle_command received: 'SET_DIR:projects/slop-ed-dev/games' (len: 34)
+MANAGER: handle_command received: 'SET_DIR:projects/slop-ed-dev/games' (len: 34)
+MANAGER: handle_command received: 'SET_DIR:projects/slop-ed-dev/games' (len: 34)
+[06:52:06] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=0
+[06:52:06] PARSER: forked module pid=204171
+[06:52:06] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=204171
+[06:52:06] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=204171
+[06:52:06] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=204171
+[06:52:06] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=204171
+[06:52:06] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=204171
+[06:52:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=204171
+[06:52:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=204171
+[06:52:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=204171
+[06:52:08] PARSER: launch_module(pieces/apps/playrm/loader/plugins/+x/loader_module.+x) pid=204171
+[06:52:08] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=204171
+[06:52:08] PARSER: forked module pid=204181
+[06:52:08] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=204181
+[06:52:08] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=204181
+[06:52:08] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=204181
+[06:52:09] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=0
+[06:52:09] PARSER: forked module pid=204187
+[06:52:09] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=204187
+[06:52:12] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=204187
+[06:52:12] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=204187
+[06:52:12] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=204187
+[06:52:12] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=204187
+MANAGER: handle_command received: 'SET_SAVE_ACTION' (len: 15)
+MANAGER: handle_command received: 'SET_LOAD_ACTION' (len: 15)
+LOADER: Failed to access '/home/debilu/Downloads/1.TPMOS_c_+rmmp.0100.0061/projects/slop-ed-dev/games/hi-debili4' (root: /home/debilu/Downloads/1.TPMOS_c_+rmmp.0100.0061, rel: hi-debili4)
+[06:52:17] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=204187
+[06:52:17] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=204187
+[06:52:17] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=204187
+[06:52:17] PARSER: launch_module(projects/slop-ed-dev/manager/+x/slop-ed-dev_manager.+x) pid=204187

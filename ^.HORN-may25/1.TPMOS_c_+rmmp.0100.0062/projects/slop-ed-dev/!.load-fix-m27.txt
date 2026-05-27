@@ -1,0 +1,25 @@
+# Investigation: Load Game Failure in slop-ed-dev
+
+## 1. Trace Points
+- `handle_command("SET_LOAD_ACTION")` is NOT receiving the command from the UI.
+- UI `gui_state.txt` shows correct button markup: `<button label="LOAD GAME" onClick="SET_LOAD_ACTION" />`.
+
+## 2. Hypothesis
+- **H1 (Index/Mapping)**: The `next_display_num` index management in `write_gui_state` for `browser_action_buttons_markup` is colliding with or misaligned with the UI dispatcher, causing click events on the "LOAD GAME" button to be ignored or misrouted.
+- **H2**: The `handle_command` function or `process_key` has a hidden logic conflict preventing this specific command string from being recognized.
+
+## 3. Findings
+- [x] Markup is generated correctly in `gui_state.txt`.
+- [x] Command is NOT reaching `handle_command`.
+- [ ] Investigate `next_display_num` management in `write_gui_state`.
+
+---
+
+## 4. PROMPT FOR SUPER-AGENT
+"Fix the command routing issue in `slop-ed-dev` where `SET_LOAD_ACTION` is not being received by `handle_command` when clicking 'LOAD GAME' in the file browser. 
+
+The UI markup generated in `write_gui_state` for `browser_action_buttons_markup` appears correct (`onClick="SET_LOAD_ACTION"`), but the click event is not firing or not being intercepted by the manager. 
+
+1. Audit `write_gui_state` in `slop-ed-dev_manager.c`, specifically the `next_display_num` index management and how buttons are generated using `append_aligned_button_attr`. 
+2. Determine if the UI index assigned to the 'LOAD GAME' button is conflicting or misaligned with the command dispatcher. 
+3. Ensure that the generated UI structure, including index, allows the interaction handler to correctly route the command to `handle_command`."
