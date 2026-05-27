@@ -1,4 +1,0 @@
-emoji_mode=OFF
-project_id=slop-ed-dev
-app_title=PIECEMARK PLAYER
-active_target_id=loader

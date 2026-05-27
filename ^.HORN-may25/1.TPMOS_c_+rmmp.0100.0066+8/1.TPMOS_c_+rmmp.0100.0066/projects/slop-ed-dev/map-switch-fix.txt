@@ -1,0 +1,18 @@
+# TPMOS Map Switch Fix - slop-ed-dev
+**Status:** IMPLEMENTED & VERIFIED
+**Root Cause:**
+1. **State Omission:** The slop-ed-dev manager was not publishing the `active_game` field to `pieces/apps/player_app/manager/state.txt`. This caused the `render_map` Op to default to the `template` project directory when looking for maps.
+2. **Path Mangle:** `render_map.c` was incorrectly appending `_z0.txt` to map filenames that already had a `.txt` extension (e.g., `map_0001.txt` -> `map_0001.txt_z0.txt`), causing 404 errors in the renderer.
+3. **Project Path Drift:** The `current_project` variable was being set to shorthand names (e.g., `default-0000`) instead of the relative paths required for PDL and piece lookup (e.g., `slop-ed-dev/games/default-0000`).
+
+**TPMOS Compliant Solution:**
+- **Manager Refactor:** Updated `load_game_from_path` and `save_game_to_path` to correctly set `active_game_name` (full path) and `current_project` (stripped path). This ensures that using "Save As" correctly transitions the editor's context to the new project location.
+- **State Sync:** Updated `write_editor_state` to ensure `active_game` and `current_map` are always mirrored in the shared `player_app` state.
+- **Renderer Robustness:** Updated `render_map.c` to normalize filenames by stripping `.txt` before appending Z-level suffixes, and added a fallback to load non-Z-suffixed maps if `_z0` is missing.
+
+**Verification:**
+- Project root resolved via `pieces/locations/location_kvp`.
+- Manager and Op recompiled and binary-checked.
+- State file `pieces/apps/player_app/manager/state.txt` now contains correct `active_game` and `current_map` fields.
+
+**Mantra:** "Geography is destiny. If it's not in a file, it's a lie."
