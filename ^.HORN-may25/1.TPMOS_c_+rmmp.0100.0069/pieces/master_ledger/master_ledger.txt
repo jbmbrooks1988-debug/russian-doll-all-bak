@@ -1,0 +1,53 @@
+[2026-05-27 06:37:42] FrameRendered: at 2026-05-27 06:37:42 | Source: renderer
+[2026-05-27 06:37:43] InputReceived: key_code=13 | Source: keyboard_linux
+[2026-05-27 06:37:43] FrameRendered: at 2026-05-27 06:37:43 | Source: renderer
+[2026-05-27 06:37:43] FrameRendered: at 2026-05-27 06:37:43 | Source: renderer
+[2026-05-27 06:37:45] InputReceived: key_code=52 | Source: keyboard_linux
+[2026-05-27 06:37:45] FrameRendered: at 2026-05-27 06:37:45 | Source: renderer
+[2026-05-27 06:37:46] InputReceived: key_code=54 | Source: keyboard_linux
+[2026-05-27 06:37:46] FrameRendered: at 2026-05-27 06:37:46 | Source: renderer
+[2026-05-27 06:37:46] InputReceived: key_code=51 | Source: keyboard_linux
+[2026-05-27 06:37:47] FrameRendered: at 2026-05-27 06:37:47 | Source: renderer
+[2026-05-27 06:37:47] InputReceived: key_code=54 | Source: keyboard_linux
+[2026-05-27 06:37:47] FrameRendered: at 2026-05-27 06:37:47 | Source: renderer
+[2026-05-27 06:37:47] InputReceived: key_code=13 | Source: keyboard_linux
+[2026-05-27 06:37:47] FrameRendered: at 2026-05-27 06:37:47 | Source: renderer
+[2026-05-27 06:37:47] FrameRendered: at 2026-05-27 06:37:47 | Source: renderer
+[2026-05-27 06:37:47] FrameRendered: at 2026-05-27 06:37:47 | Source: renderer
+[2026-05-27 06:37:48] InputReceived: key_code=13 | Source: keyboard_linux
+[2026-05-27 06:37:48] FrameRendered: at 2026-05-27 06:37:48 | Source: renderer
+[2026-05-27 06:37:49] InputReceived: key_code=1001 | Source: keyboard_linux
+[2026-05-27 06:37:49] FrameRendered: at 2026-05-27 06:37:49 | Source: renderer
+[1779889069] EntityMoved: hero | from (7,7) to (8,7)
+[2026-05-27 06:37:49] FrameRendered: at 2026-05-27 06:37:49 | Source: renderer
+[2026-05-27 06:37:49] InputReceived: key_code=1001 | Source: keyboard_linux
+[2026-05-27 06:37:49] FrameRendered: at 2026-05-27 06:37:49 | Source: renderer
+[1779889069] EntityMoved: hero | from (8,7) to (9,7)
+[2026-05-27 06:37:49] FrameRendered: at 2026-05-27 06:37:49 | Source: renderer
+[2026-05-27 06:37:49] FrameRendered: at 2026-05-27 06:37:49 | Source: renderer
+[2026-05-27 06:37:52] InputReceived: key_code=27 | Source: keyboard_linux
+[2026-05-27 06:37:52] FrameRendered: at 2026-05-27 06:37:52 | Source: renderer
+[2026-05-27 06:37:52] InputReceived: key_code=1003 | Source: keyboard_linux
+[2026-05-27 06:37:52] FrameRendered: at 2026-05-27 06:37:52 | Source: renderer
+[2026-05-27 06:37:52] InputReceived: key_code=1003 | Source: keyboard_linux
+[2026-05-27 06:37:53] FrameRendered: at 2026-05-27 06:37:53 | Source: renderer
+[2026-05-27 06:37:53] InputReceived: key_code=1003 | Source: keyboard_linux
+[2026-05-27 06:37:53] FrameRendered: at 2026-05-27 06:37:53 | Source: renderer
+[2026-05-27 06:37:53] InputReceived: key_code=1003 | Source: keyboard_linux
+[2026-05-27 06:37:53] FrameRendered: at 2026-05-27 06:37:53 | Source: renderer
+[2026-05-27 06:37:54] InputReceived: key_code=1003 | Source: keyboard_linux
+[2026-05-27 06:37:54] FrameRendered: at 2026-05-27 06:37:54 | Source: renderer
+[2026-05-27 06:37:54] InputReceived: key_code=1003 | Source: keyboard_linux
+[2026-05-27 06:37:55] FrameRendered: at 2026-05-27 06:37:55 | Source: renderer
+[2026-05-27 06:37:55] InputReceived: key_code=1003 | Source: keyboard_linux
+[2026-05-27 06:37:55] FrameRendered: at 2026-05-27 06:37:55 | Source: renderer
+[2026-05-27 06:37:55] InputReceived: key_code=13 | Source: keyboard_linux
+[2026-05-27 06:37:55] FrameRendered: at 2026-05-27 06:37:55 | Source: renderer
+[2026-05-27 06:37:55] FrameRendered: at 2026-05-27 06:37:55 | Source: renderer
+[2026-05-27 06:37:56] InputReceived: key_code=1003 | Source: keyboard_linux
+[2026-05-27 06:37:56] FrameRendered: at 2026-05-27 06:37:56 | Source: renderer
+[2026-05-27 06:37:57] InputReceived: key_code=1003 | Source: keyboard_linux
+[2026-05-27 06:37:57] FrameRendered: at 2026-05-27 06:37:57 | Source: renderer
+[2026-05-27 06:37:57] InputReceived: key_code=13 | Source: keyboard_linux
+[2026-05-27 06:37:57] FrameRendered: at 2026-05-27 06:37:57 | Source: renderer
+[2026-05-27 06:37:57] FrameRendered: at 2026-05-27 06:37:57 | Source: renderer

@@ -1,7 +1,0 @@
-project_id=slop-ed-dev/games/hi-m3
-current_map=map_0002.txt
-active_target_id=hero
-current_z=0
-last_key=8
-active_game=projects/slop-ed-dev/games/hi-m3
-gui_focus=2
