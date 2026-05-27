@@ -1,0 +1,53 @@
+[2026-05-27 01:54:03] FrameRendered: at 2026-05-27 01:54:03 | Source: renderer
+[2026-05-27 01:54:04] FrameRendered: at 2026-05-27 01:54:04 | Source: renderer
+[2026-05-27 01:54:06] InputReceived: key_code=51 | Source: keyboard_linux
+[2026-05-27 01:54:06] FrameRendered: at 2026-05-27 01:54:06 | Source: renderer
+[2026-05-27 01:54:06] InputReceived: key_code=54 | Source: keyboard_linux
+[2026-05-27 01:54:06] FrameRendered: at 2026-05-27 01:54:06 | Source: renderer
+[2026-05-27 01:54:06] InputReceived: key_code=13 | Source: keyboard_linux
+[2026-05-27 01:54:06] FrameRendered: at 2026-05-27 01:54:06 | Source: renderer
+[2026-05-27 01:54:06] FrameRendered: at 2026-05-27 01:54:06 | Source: renderer
+[2026-05-27 01:54:06] FrameRendered: at 2026-05-27 01:54:06 | Source: renderer
+[2026-05-27 01:54:08] InputReceived: key_code=1002 | Source: keyboard_linux
+[2026-05-27 01:54:08] FrameRendered: at 2026-05-27 01:54:08 | Source: renderer
+[2026-05-27 01:54:09] InputReceived: key_code=1002 | Source: keyboard_linux
+[2026-05-27 01:54:09] FrameRendered: at 2026-05-27 01:54:09 | Source: renderer
+[2026-05-27 01:54:09] InputReceived: key_code=1002 | Source: keyboard_linux
+[2026-05-27 01:54:09] FrameRendered: at 2026-05-27 01:54:09 | Source: renderer
+[2026-05-27 01:54:10] InputReceived: key_code=13 | Source: keyboard_linux
+[2026-05-27 01:54:10] FrameRendered: at 2026-05-27 01:54:10 | Source: renderer
+[2026-05-27 01:54:13] InputReceived: key_code=1003 | Source: keyboard_linux
+[2026-05-27 01:54:13] FrameRendered: at 2026-05-27 01:54:13 | Source: renderer
+[2026-05-27 01:54:14] InputReceived: key_code=13 | Source: keyboard_linux
+[2026-05-27 01:54:14] FrameRendered: at 2026-05-27 01:54:14 | Source: renderer
+[2026-05-27 01:54:14] FrameRendered: at 2026-05-27 01:54:14 | Source: renderer
+[2026-05-27 01:54:14] FrameRendered: at 2026-05-27 01:54:14 | Source: renderer
+[2026-05-27 01:54:15] InputReceived: key_code=1003 | Source: keyboard_linux
+[2026-05-27 01:54:15] FrameRendered: at 2026-05-27 01:54:15 | Source: renderer
+[2026-05-27 01:54:16] InputReceived: key_code=13 | Source: keyboard_linux
+[2026-05-27 01:54:16] FrameRendered: at 2026-05-27 01:54:16 | Source: renderer
+[2026-05-27 01:54:17] InputReceived: key_code=127 | Source: keyboard_linux
+[2026-05-27 01:54:17] FrameRendered: at 2026-05-27 01:54:17 | Source: renderer
+[2026-05-27 01:54:17] InputReceived: key_code=127 | Source: keyboard_linux
+[2026-05-27 01:54:17] FrameRendered: at 2026-05-27 01:54:17 | Source: renderer
+[2026-05-27 01:54:19] InputReceived: key_code=120 | Source: keyboard_linux
+[2026-05-27 01:54:19] FrameRendered: at 2026-05-27 01:54:19 | Source: renderer
+[2026-05-27 01:54:20] InputReceived: key_code=49 | Source: keyboard_linux
+[2026-05-27 01:54:20] FrameRendered: at 2026-05-27 01:54:20 | Source: renderer
+[2026-05-27 01:54:20] InputReceived: key_code=49 | Source: keyboard_linux
+[2026-05-27 01:54:20] FrameRendered: at 2026-05-27 01:54:20 | Source: renderer
+[2026-05-27 01:54:22] InputReceived: key_code=112 | Source: keyboard_linux
+[2026-05-27 01:54:22] FrameRendered: at 2026-05-27 01:54:22 | Source: renderer
+[2026-05-27 01:54:22] InputReceived: key_code=112 | Source: keyboard_linux
+[2026-05-27 01:54:22] FrameRendered: at 2026-05-27 01:54:22 | Source: renderer
+[2026-05-27 01:54:23] InputReceived: key_code=112 | Source: keyboard_linux
+[2026-05-27 01:54:23] FrameRendered: at 2026-05-27 01:54:23 | Source: renderer
+[2026-05-27 01:54:23] InputReceived: key_code=122 | Source: keyboard_linux
+[2026-05-27 01:54:23] FrameRendered: at 2026-05-27 01:54:23 | Source: renderer
+[2026-05-27 01:54:24] InputReceived: key_code=122 | Source: keyboard_linux
+[2026-05-27 01:54:24] FrameRendered: at 2026-05-27 01:54:24 | Source: renderer
+[2026-05-27 01:54:24] InputReceived: key_code=122 | Source: keyboard_linux
+[2026-05-27 01:54:24] FrameRendered: at 2026-05-27 01:54:24 | Source: renderer
+[2026-05-27 01:54:24] InputReceived: key_code=13 | Source: keyboard_linux
+[2026-05-27 01:54:24] FrameRendered: at 2026-05-27 01:54:24 | Source: renderer
+[2026-05-27 01:54:24] FrameRendered: at 2026-05-27 01:54:24 | Source: renderer

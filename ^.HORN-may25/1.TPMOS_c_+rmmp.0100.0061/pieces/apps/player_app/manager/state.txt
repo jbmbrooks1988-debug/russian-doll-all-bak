@@ -1,0 +1,12 @@
+project_id=slop-ed-dev
+current_map=map_0001
+
+
+
+
+
+
+active_target_id=xlector
+current_z=0
+last_key=8
+gui_focus=2
