@@ -1,0 +1,44 @@
+<panel>
+    <module>projects/man-ops/manager/+x/man-ops_module.+x</module>
+    
+    <text label="╔══════════════ M A N - O P S   D E M O ════════════╗" /><br/>
+    <row label="DEMO: ${project_id} | LAYOUT: man-ops.chtpm" /><br/>
+    <row label=" " /><br/>
+    
+    <row label=" GAME MAP:" /><br/>
+    <button label="Control Map" onClick="INTERACT" /><br/>
+    <text label="${game_map}" /><br/>
+    
+    <text label="╠═══════════════════════════════════════════════════════════╣" /><br/>
+    
+    <row label="${editor_response}" /><br/>
+    <row label="[POS]: ${selector_pos} | [ARMED]: [ ${armed_glyph} ] | [KEY]: ${last_key}" /><br/>
+    
+    <text label="╠═══════════════════════════════════════════════════════════╣" /><br/>
+    
+    <scroller id="MAPS" label="${map_palette_view}" onClick="INTERACT" /><br/>
+    <scroller id="GLYPHS" label="${glyph_palette_view}" onClick="INTERACT" /><br/>
+    
+    <text label="╠═══════════════════════════════════════════════════════════╣" /><br/>
+    
+    <text label="║ " />
+    <button label="TOGGLE EMOJI" onClick="KEY:4" /> 
+    <text label=" " />
+    <button label="DB" onClick="KEY:5" />
+    <text label=" " />
+    <button label="PROJECT" onClick="KEY:6" />
+    <text label="                             ║" /><br/>
+    
+    <text label="║ " />
+    <button label="SAVE" onClick="SAVE" />
+    <text label=" " />
+    <button label="PLAY" href="pieces/apps/playrm/layouts/game.chtpm" />
+    <text label=" " />
+    <button label="EXIT" href="pieces/chtpm/layouts/os.chtpm" />
+    <text label="                                 ║" /><br/>
+    
+    <text label="╚═══════════════════════════════════════════════════════════╝" /><br/>
+    <text label=" [1]: Grid | [2/3]: Palettes | [4]: Emoji Toggle | [ESC]: Nav" /><br/>
+    <!-- Interact: Inject keys to player_app/history.txt -->
+    <interact src="pieces/apps/player_app/history.txt" />
+</panel>

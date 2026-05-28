@@ -1,0 +1,20 @@
+<panel time_reactive="true">
+    <module>projects/man-add/manager/+x/man-add_module.+x</module>
+    <interact src="pieces/apps/player_app/history.txt" />
+
+    <text label="╔═══════════════════════════════════════════════════════════╗" /><br/>
+    <text label="║         M A N - A D D   P R O J E C T                   ║" /><br/>
+    <text label="║                                                           ║" /><br/>
+    <text label="║  GAME MAP:                                                ║" /><br/>
+    <text label="║  " /><button label="Control Map" onClick="INTERACT" /><text label="                                     ║" /><br/>
+    <text label="${game_map}" /><br/>
+    <text label="║                                                           ║" /><br/>
+    <text label="╠═══════════════════════════════════════════════════════════╣" /><br/>
+    <text label="║ [PROJECT]: ${project_id} | [H-BEAT]: ${module_heartbeat}                 ║" /><br/>
+    <text label="║ [KEY]: ${last_key} (${last_raw_key}) | [UPDATES]: ${state_updates}             ║" /><br/>
+    <text label="║ [POS]: ${selector_x},${selector_y}                                        ║" /><br/>
+    <text label="╠═══════════════════════════════════════════════════════════╣" /><br/>
+    <text label="║  " /><button label="Back to Selector (9)" onClick="KEY:9" /><text label="                         ║" /><br/>
+    <text label="║  " /><button label="Exit to Menu" href="pieces/chtpm/layouts/os.chtpm" /><text label="                          ║" /><br/>
+    <text label="╚═══════════════════════════════════════════════════════════╝" /><br/>
+</panel>

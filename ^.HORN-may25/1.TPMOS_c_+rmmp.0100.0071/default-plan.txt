@@ -1,0 +1,13 @@
+Plan to auto-load default-0000 and implement Load Op:
+1. Create 'projects/slop-ed-dev/manager/+x/load_project.+x':
+   - This standalone Op will accept a target_path as an argument.
+   - It will perform the inverse of the 'save_game_to_path' logic:
+     - Clear the current active project directories (`projects/slop-ed-dev/maps`, `pieces`, `project.pdl`).
+     - Copy the contents from the specified target game directory to the active project directories.
+   - Ensure the script is made executable.
+2. Update 'projects/slop-ed-dev/manager/slop-ed-dev_manager.c':
+   - Refactor 'load_game_from_path' to call 'load_project.+x' using 'run_command'.
+   - Update 'main()' to check if a project is loaded; if not, trigger 'load_project.+x projects/slop-ed-dev/games/default-0000'.
+3. Validation:
+   - Verify independently: ./projects/slop-ed-dev/manager/+x/load_project.+x projects/slop-ed-dev/games/default-0000
+   - Verify integration: Start the manager and ensure default-0000 is loaded.

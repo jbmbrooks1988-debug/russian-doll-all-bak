@@ -1,0 +1,390 @@
+=== NEW SESSION at 2026-05-27 15:23:06 ===
+
+--- FRAME UPDATE at 2026-05-27 15:23:06 ---
++===========================================================+
+|                                                           |
+|           C H T P M + O S   C L I   v2.0                 |
+|                                                           |
+|  CHTPM+OS Main Menu                                      |
+|                                                           |
+|  [>] 1. [Project Loader]                             |
+|  [ ] 2. [App Store (Fondu)]                          |
+|  [ ] 3. [Status]  [ ] 4. [GL-OS]                                          |
+|  [ ] 5. [Process Monitor]                            |
+|  [ ] 6. [Toggle Frame History (Current: )]                                         |
+|  [ ] 7. [Help]                                            |
+|                                                           |
++===========================================================+
+|  Running Applications: None                               |
+|  System Time: 08:00:00 | Turn: 0 | Key: None |
++===========================================================+
+|                                                           |
+|  $ | [ ] 8. [hi]                                                 |                                                 |
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-27 15:23:07 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [>] 1. [xsr]                                           ║
+║  [ ] 2. [user]                                          ║
+║  [ ] 3. [tsots-irc]                                     ║
+║  [ ] 4. [checkers]                                      ║
+║  [ ] 5. [cyoa-engine]                                   ║
+║  [ ] 6. [man-ops]                                       ║
+║  [ ] 7. [tsots-online]                                  ║
+║  [ ] 8. [gltpm-demo]                                    ║
+║  [ ] 9. [chat-op]                                       ║
+║  [ ] 10. [test_fondu]                                    ║
+║  [ ] 11. [p2p-net]                                       ║
+║  [ ] 12. [trunk]                                         ║
+║  [ ] 13. [bots-sov]                                      ║
+║  [ ] 14. [piececraft-3d]                                 ║
+║  [ ] 15. [fuzz-op]                                       ║
+║  [ ] 16. [404-test]                                      ║
+║  [ ] 17. [op-ed]                                         ║
+║  [ ] 18. [lsr]                                           ║
+║  [ ] 19. [demo_1]                                        ║
+║  [ ] 20. [gem-dev]                                       ║
+║  [ ] 21. [man-pal]                                       ║
+║  [ ] 22. [hangman]                                       ║
+║  [ ] 23. [yahoo]                                         ║
+║  [ ] 24. [man-add]                                       ║
+║  [ ] 25. [bot-editor]                                    ║
+║  [ ] 26. [#]                                             ║
+║  [ ] 27. [cpp-llm]                                       ║
+║  [ ] 28. [aow-2d]                                        ║
+║  [ ] 29. [gl-os]                                         ║
+║  [ ] 30. [mp3-store]                                     ║
+║  [ ] 31. [gitlet]                                        ║
+║  [ ] 32. [groq-ollama]                                   ║
+║  [ ] 33. [+-demo]                                        ║
+║  [ ] 34. [template]                                      ║
+║  [ ] 35. [ai-labs]                                       ║
+║  [ ] 36. [slop-ed-dev]                                   ║
+║  [ ] 37. [agy-text-editor]                               ║
+║  [ ] 38. [blank]                                         ║
+║  [ ] 39. [aow]                                           ║
+║  [ ] 40. [gem-api]                                       ║
+║  [ ] 41. [fuzz-op-gl]                                    ║
+║  [ ] 42. [quiz-engine]                                   ║
+║  [ ] 43. [op-ed-gl]                                      ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 44. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-27 15:23:07 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [>] 1. [xsr]                                           ║
+║  [ ] 2. [user]                                          ║
+║  [ ] 3. [tsots-irc]                                     ║
+║  [ ] 4. [checkers]                                      ║
+║  [ ] 5. [cyoa-engine]                                   ║
+║  [ ] 6. [man-ops]                                       ║
+║  [ ] 7. [tsots-online]                                  ║
+║  [ ] 8. [gltpm-demo]                                    ║
+║  [ ] 9. [chat-op]                                       ║
+║  [ ] 10. [test_fondu]                                    ║
+║  [ ] 11. [p2p-net]                                       ║
+║  [ ] 12. [trunk]                                         ║
+║  [ ] 13. [bots-sov]                                      ║
+║  [ ] 14. [piececraft-3d]                                 ║
+║  [ ] 15. [fuzz-op]                                       ║
+║  [ ] 16. [404-test]                                      ║
+║  [ ] 17. [op-ed]                                         ║
+║  [ ] 18. [lsr]                                           ║
+║  [ ] 19. [demo_1]                                        ║
+║  [ ] 20. [gem-dev]                                       ║
+║  [ ] 21. [man-pal]                                       ║
+║  [ ] 22. [hangman]                                       ║
+║  [ ] 23. [yahoo]                                         ║
+║  [ ] 24. [man-add]                                       ║
+║  [ ] 25. [bot-editor]                                    ║
+║  [ ] 26. [#]                                             ║
+║  [ ] 27. [cpp-llm]                                       ║
+║  [ ] 28. [aow-2d]                                        ║
+║  [ ] 29. [gl-os]                                         ║
+║  [ ] 30. [mp3-store]                                     ║
+║  [ ] 31. [gitlet]                                        ║
+║  [ ] 32. [groq-ollama]                                   ║
+║  [ ] 33. [+-demo]                                        ║
+║  [ ] 34. [template]                                      ║
+║  [ ] 35. [ai-labs]                                       ║
+║  [ ] 36. [slop-ed-dev]                                   ║
+║  [ ] 37. [agy-text-editor]                               ║
+║  [ ] 38. [blank]                                         ║
+║  [ ] 39. [aow]                                           ║
+║  [ ] 40. [gem-api]                                       ║
+║  [ ] 41. [fuzz-op-gl]                                    ║
+║  [ ] 42. [quiz-engine]                                   ║
+║  [ ] 43. [op-ed-gl]                                      ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 44. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-27 15:23:09 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [ ] 1. [xsr]                                           ║
+║  [ ] 2. [user]                                          ║
+║  [>] 3. [tsots-irc]                                     ║
+║  [ ] 4. [checkers]                                      ║
+║  [ ] 5. [cyoa-engine]                                   ║
+║  [ ] 6. [man-ops]                                       ║
+║  [ ] 7. [tsots-online]                                  ║
+║  [ ] 8. [gltpm-demo]                                    ║
+║  [ ] 9. [chat-op]                                       ║
+║  [ ] 10. [test_fondu]                                    ║
+║  [ ] 11. [p2p-net]                                       ║
+║  [ ] 12. [trunk]                                         ║
+║  [ ] 13. [bots-sov]                                      ║
+║  [ ] 14. [piececraft-3d]                                 ║
+║  [ ] 15. [fuzz-op]                                       ║
+║  [ ] 16. [404-test]                                      ║
+║  [ ] 17. [op-ed]                                         ║
+║  [ ] 18. [lsr]                                           ║
+║  [ ] 19. [demo_1]                                        ║
+║  [ ] 20. [gem-dev]                                       ║
+║  [ ] 21. [man-pal]                                       ║
+║  [ ] 22. [hangman]                                       ║
+║  [ ] 23. [yahoo]                                         ║
+║  [ ] 24. [man-add]                                       ║
+║  [ ] 25. [bot-editor]                                    ║
+║  [ ] 26. [#]                                             ║
+║  [ ] 27. [cpp-llm]                                       ║
+║  [ ] 28. [aow-2d]                                        ║
+║  [ ] 29. [gl-os]                                         ║
+║  [ ] 30. [mp3-store]                                     ║
+║  [ ] 31. [gitlet]                                        ║
+║  [ ] 32. [groq-ollama]                                   ║
+║  [ ] 33. [+-demo]                                        ║
+║  [ ] 34. [template]                                      ║
+║  [ ] 35. [ai-labs]                                       ║
+║  [ ] 36. [slop-ed-dev]                                   ║
+║  [ ] 37. [agy-text-editor]                               ║
+║  [ ] 38. [blank]                                         ║
+║  [ ] 39. [aow]                                           ║
+║  [ ] 40. [gem-api]                                       ║
+║  [ ] 41. [fuzz-op-gl]                                    ║
+║  [ ] 42. [quiz-engine]                                   ║
+║  [ ] 43. [op-ed-gl]                                      ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 44. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > 3_
+
+
+--- FRAME UPDATE at 2026-05-27 15:23:09 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [ ] 1. [xsr]                                           ║
+║  [ ] 2. [user]                                          ║
+║  [ ] 3. [tsots-irc]                                     ║
+║  [ ] 4. [checkers]                                      ║
+║  [ ] 5. [cyoa-engine]                                   ║
+║  [ ] 6. [man-ops]                                       ║
+║  [ ] 7. [tsots-online]                                  ║
+║  [ ] 8. [gltpm-demo]                                    ║
+║  [ ] 9. [chat-op]                                       ║
+║  [ ] 10. [test_fondu]                                    ║
+║  [ ] 11. [p2p-net]                                       ║
+║  [ ] 12. [trunk]                                         ║
+║  [ ] 13. [bots-sov]                                      ║
+║  [ ] 14. [piececraft-3d]                                 ║
+║  [ ] 15. [fuzz-op]                                       ║
+║  [ ] 16. [404-test]                                      ║
+║  [ ] 17. [op-ed]                                         ║
+║  [ ] 18. [lsr]                                           ║
+║  [ ] 19. [demo_1]                                        ║
+║  [ ] 20. [gem-dev]                                       ║
+║  [ ] 21. [man-pal]                                       ║
+║  [ ] 22. [hangman]                                       ║
+║  [ ] 23. [yahoo]                                         ║
+║  [ ] 24. [man-add]                                       ║
+║  [ ] 25. [bot-editor]                                    ║
+║  [ ] 26. [#]                                             ║
+║  [ ] 27. [cpp-llm]                                       ║
+║  [ ] 28. [aow-2d]                                        ║
+║  [ ] 29. [gl-os]                                         ║
+║  [ ] 30. [mp3-store]                                     ║
+║  [ ] 31. [gitlet]                                        ║
+║  [ ] 32. [groq-ollama]                                   ║
+║  [ ] 33. [+-demo]                                        ║
+║  [ ] 34. [template]                                      ║
+║  [ ] 35. [ai-labs]                                       ║
+║  [>] 36. [slop-ed-dev]                                   ║
+║  [ ] 37. [agy-text-editor]                               ║
+║  [ ] 38. [blank]                                         ║
+║  [ ] 39. [aow]                                           ║
+║  [ ] 40. [gem-api]                                       ║
+║  [ ] 41. [fuzz-op-gl]                                    ║
+║  [ ] 42. [quiz-engine]                                   ║
+║  [ ] 43. [op-ed-gl]                                      ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 44. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > 36_
+
+
+--- FRAME UPDATE at 2026-05-27 15:23:09 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [>] 1. [xsr]                                           ║
+║  [ ] 2. [user]                                          ║
+║  [ ] 3. [tsots-irc]                                     ║
+║  [ ] 4. [checkers]                                      ║
+║  [ ] 5. [cyoa-engine]                                   ║
+║  [ ] 6. [man-ops]                                       ║
+║  [ ] 7. [tsots-online]                                  ║
+║  [ ] 8. [gltpm-demo]                                    ║
+║  [ ] 9. [chat-op]                                       ║
+║  [ ] 10. [test_fondu]                                    ║
+║  [ ] 11. [p2p-net]                                       ║
+║  [ ] 12. [trunk]                                         ║
+║  [ ] 13. [bots-sov]                                      ║
+║  [ ] 14. [piececraft-3d]                                 ║
+║  [ ] 15. [fuzz-op]                                       ║
+║  [ ] 16. [404-test]                                      ║
+║  [ ] 17. [op-ed]                                         ║
+║  [ ] 18. [lsr]                                           ║
+║  [ ] 19. [demo_1]                                        ║
+║  [ ] 20. [gem-dev]                                       ║
+║  [ ] 21. [man-pal]                                       ║
+║  [ ] 22. [hangman]                                       ║
+║  [ ] 23. [yahoo]                                         ║
+║  [ ] 24. [man-add]                                       ║
+║  [ ] 25. [bot-editor]                                    ║
+║  [ ] 26. [#]                                             ║
+║  [ ] 27. [cpp-llm]                                       ║
+║  [ ] 28. [aow-2d]                                        ║
+║  [ ] 29. [gl-os]                                         ║
+║  [ ] 30. [mp3-store]                                     ║
+║  [ ] 31. [gitlet]                                        ║
+║  [ ] 32. [groq-ollama]                                   ║
+║  [ ] 33. [+-demo]                                        ║
+║  [ ] 34. [template]                                      ║
+║  [ ] 35. [ai-labs]                                       ║
+║  [ ] 36. [slop-ed-dev]                                   ║
+║  [ ] 37. [agy-text-editor]                               ║
+║  [ ] 38. [blank]                                         ║
+║  [ ] 39. [aow]                                           ║
+║  [ ] 40. [gem-api]                                       ║
+║  [ ] 41. [fuzz-op-gl]                                    ║
+║  [ ] 42. [quiz-engine]                                   ║
+║  [ ] 43. [op-ed-gl]                                      ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 44. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-27 15:23:10 ---
+╔════════════ SLO P - E D   A D V A N C E D ════════════╗
+| PROJECT: slop-ed-dev/games/default-0000 | GAME: projects/slop-ed-dev/games/default-0000 |
+| LAYOUT: slop-ed-dev.chtpm                                 |
+|                                                           |
+|  GAME MAP:                                                |
+[>] 1. [Control Map]
++=========================================================+
+| [Z-LEVEL]: 0                                               |
++=========================================================+
+|  ####################                                     |
+|  #                  #                                     |
+|  #                  #                                     |
+|  #    .             #                                     |
+|  #                  #                                     |
+|  #   ###    R       #                                     |
+|  #        .         #                                     |
+|  #  #     @         #                                     |
+|  #                  #                                     |
+|  ####################                                     |
+
+╠═══════════════════════════════════════════════════════════╣
+| [RESP]: Loaded game: projects/slop-ed-dev/games/default-0000 |
+| [POS]: (5,5,0) | [ARMED]: [ # ] | [KEY]: None             |
+╠═══════════════════════════════════════════════════════════╣
+| [ ] 2. MAPS      : ADD map_0002.txt [map_0001.txt]   |
+| [ ] 3. GLYPHS    : [#] . R T @ & Z X ? !             |
+╠═══════════════════════════════════════════════════════════╣
+║ [ ] 4. [TOGGLE EMOJI] [ ] 5. [DB]║ [ ] 6. [PROJECT] [ ] 7. [EVENT]                             ║
+║ [ ] 8. [FILE] [ ] 9. [LOADER] [ ] 10. [EXIT]                                 ║
+╚═══════════════════════════════════════════════════════════╝
+ [1]: Grid | [2/3]: Palettes | [4]: Emoji Toggle | [ESC]: Nav
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-05-27 15:23:10 ---
+╔════════════ SLO P - E D   A D V A N C E D ════════════╗
+| PROJECT: slop-ed-dev/games/default-0000 | GAME: projects/slop-ed-dev/games/default-0000 |
+| LAYOUT: slop-ed-dev.chtpm                                 |
+|                                                           |
+|  GAME MAP:                                                |
+[>] 1. [Control Map]
++=========================================================+
+| [Z-LEVEL]: 0                                               |
++=========================================================+
+|  ####################                                     |
+|  #                  #                                     |
+|  #                  #                                     |
+|  #    .             #                                     |
+|  #                  #                                     |
+|  #   ###    R       #                                     |
+|  #        .         #                                     |
+|  #  #     @         #                                     |
+|  #                  #                                     |
+|  ####################                                     |
+
+╠═══════════════════════════════════════════════════════════╣
+| [RESP]: Loaded game: projects/slop-ed-dev/games/default-0000 |
+| [POS]: (5,5,0) | [ARMED]: [ # ] | [KEY]: None             |
+╠═══════════════════════════════════════════════════════════╣
+| [ ] 2. MAPS      : ADD map_0002.txt [map_0001.txt]   |
+| [ ] 3. GLYPHS    : [#] . R T @ & Z X ? !             |
+╠═══════════════════════════════════════════════════════════╣
+║ [ ] 4. [TOGGLE EMOJI] [ ] 5. [DB]║ [ ] 6. [PROJECT] [ ] 7. [EVENT]                             ║
+║ [ ] 8. [FILE] [ ] 9. [LOADER] [ ] 10. [EXIT]                                 ║
+╚═══════════════════════════════════════════════════════════╝
+ [1]: Grid | [2/3]: Palettes | [4]: Emoji Toggle | [ESC]: Nav
+
++=========================================================+
+Nav > _
+
