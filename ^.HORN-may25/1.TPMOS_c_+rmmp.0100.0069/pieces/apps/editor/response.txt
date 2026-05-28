@@ -1,1 +1,0 @@
-Select game folder to load.                              

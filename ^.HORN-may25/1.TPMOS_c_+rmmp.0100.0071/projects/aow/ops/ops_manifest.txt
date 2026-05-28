@@ -1,2 +1,0 @@
-# Ops Manifest for aow project
-# Format: op_name|description|args_format

@@ -1,4 +1,0 @@
-fold_dir1=folded
-fold_subdir4=folded
-fold_dir2=open
-fold_menu_a=open

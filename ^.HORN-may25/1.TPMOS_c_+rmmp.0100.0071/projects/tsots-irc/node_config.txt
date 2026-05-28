@@ -1,2 +1,0 @@
-node_name=nodeA
-my_port=9001

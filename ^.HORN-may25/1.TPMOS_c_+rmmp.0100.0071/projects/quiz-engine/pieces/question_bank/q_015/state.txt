@@ -1,5 +1,0 @@
-name=Glucose
-formula=C6H12O6
-type=Aldose Sugar
-groups=-OH
-relevance= Aldehyde (open chain)

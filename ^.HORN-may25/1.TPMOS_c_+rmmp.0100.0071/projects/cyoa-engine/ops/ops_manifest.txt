@@ -1,2 +1,0 @@
-play_audio|Plays an MP3 file using mpg123|audio_path:string
-get_choices|Parses a CYOA page file for choice links|page_path:string

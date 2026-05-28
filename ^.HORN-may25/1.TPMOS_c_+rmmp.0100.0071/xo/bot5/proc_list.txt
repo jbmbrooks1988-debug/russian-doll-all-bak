@@ -1,2 +1,0 @@
-346315 TPMOS_CLI
-346316 Keyboard_Hand
