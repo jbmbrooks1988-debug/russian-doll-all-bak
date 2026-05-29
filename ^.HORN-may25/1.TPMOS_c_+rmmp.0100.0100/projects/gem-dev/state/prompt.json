@@ -1,0 +1,713 @@
+{
+  "contents": [
+    {
+      "role": "user",
+      "parts": [{
+        "text": "list dir"
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "hi"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": "Hello! How can I assist you today?"
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "hi"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": "Welcome! What do you need help with?"
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "how are u today?"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": "I'm doing well, thank you!"
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "hi how are u ?"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": "I'm doing well, thank you!"
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "hi gemini . testing"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": ""
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "hi test"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": "Hello!"
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "hi"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": ""
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "hi"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": ""
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "hi"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": "{\n        \"parts\": [\n          {\n            \"text\": \"Hello! How can I help you today?\"\n          }\n        ],\n        \"role\": \"model\"\n      }"
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "hi"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": ""
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "hi"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": ""
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "hi"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": "{\n        \"parts\": [\n          {\n            \"text\": \"Hello! How can I help you today?\"\n          }\n        ],\n        \"role\": \"model\"\n      }"
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "hi"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": ""
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "hi"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": "{\n        \"parts\": [\n          {\n            \"text\": \"Hello! How can I assist you today?\"\n          }\n        ],\n        \"role\": \"model\"\n      }"
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "create test file testi.txt and tell me what dir you made it in "
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "functionCall": {
+          "name": "write_file",
+          "args": {
+                "content": "This is a test file.",
+                "path": "testi.txt"
+              }
+        }
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "hi, how do u do?"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": ""
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "hi"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": ""
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "hola como esta"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": "{\n        \"parts\": [\n          {\n            \"text\": \"I'm doing well, thank you for asking! How can I help you today?\",\n            \"thoughtSignature\": \"CrUBAQw51scWRHliatDRuIcrzT3l6FiANbcOy531i79il6v5wFCzfCvPRAKXqFM6q4aWeThHKMyqkj+eeTHtXpubJeGgydeFzOacR+trwJvhUdTlQVajDKrVRxT4QTvsECqMKU1Tj3Bt+8sbjrXbhmBEv5X1NIoOyOuMXiybjxFT6ajIBrtBFlEQ7/5GRJu+kJU4C4hr5HgD6lr0JwXWlnjXy575LTwRNetfYKxl400OVTRze+DBSg==\"\n          }\n        ],\n        \"role\": \"model\"\n      }"
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "hi , testing"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": "{\n        \"parts\": [\n          {\n            \"text\": \"{\\n        \\\"parts\\\": [\\n          {\\n            \\\"text\\\": \\\"Hello! How can I help you with your testing today?\\\"\\n          }\\n        ],\\n        \\\"role\\\": \\\"model\\\"\\n      }\"\n          }\n        ],\n        \"role\": \"model\"\n      }"
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "can u list dir contents?"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": ""
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 14.214625566s."
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "list dir"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": ""
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 12.394745438s."
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "list dir"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": "Method doesn't allow unregistered callers (callers without established identity). Please use API Key or other form of API consumer identity to call this API."
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "list dir"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "functionCall": {
+          "name": "list_dir",
+          "args": {}
+        }
+      }]
+    },
+    {
+      "role": "function",
+      "parts": [{
+        "functionResponse": {
+          "name": "list_dir",
+          "response": {
+            "result": ""
+          }
+        }
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": "The directory appears to be empty."
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "create a test file in it then list dir. were testing ur tool execution ability"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "functionCall": {
+          "name": "write_file",
+          "args": {
+                "path": "test_file.txt",
+                "content": "This is a test file."
+              }
+        }
+      }]
+    },
+    {
+      "role": "function",
+      "parts": [{
+        "functionResponse": {
+          "name": "write_file",
+          "response": {
+            "result": "Written 20 bytes to test_file.txt"
+          }
+        }
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "functionCall": {
+          "name": "list_dir",
+          "args": {}
+        }
+      }]
+    },
+    {
+      "role": "function",
+      "parts": [{
+        "functionResponse": {
+          "name": "list_dir",
+          "response": {
+            "result": ""
+          }
+        }
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": "I've created `test_file.txt`. However, it seems the `list_dir` command is not showing the newly created file. This might indicate an issue with how the `list_dir` tool is configured or its interaction with the environment."
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "create file and list dir"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "functionCall": {
+          "name": "write_file",
+          "args": {
+                "path": "another_test_file.txt",
+                "content": "This is another test file."
+              }
+        }
+      }]
+    },
+    {
+      "role": "function",
+      "parts": [{
+        "functionResponse": {
+          "name": "write_file",
+          "response": {
+            "result": "Written 26 bytes to another_test_file.txt"
+          }
+        }
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "functionCall": {
+          "name": "list_dir",
+          "args": {}
+        }
+      }]
+    },
+    {
+      "role": "function",
+      "parts": [{
+        "functionResponse": {
+          "name": "list_dir",
+          "response": {
+            "result": "test_file.txt\ndir.txt\nanother_test_file.txt"
+          }
+        }
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": "I've created `another_test_file.txt` and then listed the directory contents. It now shows `test_file.txt`, `dir.txt`, and `another_test_file.txt`. It seems the `list_dir` command is working correctly now!"
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "test makefile.txt to see if we can make a file yet"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": "API key expired. Please renew the API key."
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "hi"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": "Hello! How can I help you today?"
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "test file creation 'file-new.txt' make"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "functionCall": {
+          "name": "write_file",
+          "args": {
+                "path": "file-new.txt",
+                "content": "This is a test file created using the `write_file` tool."
+              }
+        }
+      }]
+    },
+    {
+      "role": "function",
+      "parts": [{
+        "functionResponse": {
+          "name": "write_file",
+          "response": {
+            "result": "Written 56 bytes to file-new.txt"
+          }
+        }
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": "I've created a file named `file-new.txt` with the content \"This is a test file created using the `write_file` tool.\"."
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "list dir"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": "API key expired. Please renew the API key."
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "list dir"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "functionCall": {
+          "name": "list_dir",
+          "args": {}
+        }
+      }]
+    },
+    {
+      "role": "function",
+      "parts": [{
+        "functionResponse": {
+          "name": "list_dir",
+          "response": {
+            "result": "dir.txt\nfile-new.txt\ntest_file.txt\nanother_test_file.txt"
+          }
+        }
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": "Here are the contents of the directory:\n* `dir.txt`\n* `file-new.txt`\n* `test_file.txt`\n* `another_test_file.txt`"
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": " @"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "hi list dir pls"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": "API key expired. Please renew the API key."
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "hi list dir"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "functionCall": {
+          "name": "list_dir",
+          "args": {}
+        }
+      }]
+    },
+    {
+      "role": "function",
+      "parts": [{
+        "functionResponse": {
+          "name": "list_dir",
+          "response": {
+            "result": "dir.txt\nfile-new.txt\ntest_file.txt\nanother_test_file.txt"
+          }
+        }
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": "Here are the contents of the current directory:\n\n* `dir.txt`\n* `file-new.txt`\n* `test_file.txt`\n* `another_test_file.txt`"
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "hi"
+      }]
+    }
+  ],
+  "tools": [{
+    "functionDeclarations": [
+      {
+        "name": "exec_cmd",
+        "description": "Run a shell command on the host system",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "The shell command line string to execute"
+            }
+          },
+          "required": ["cmd"]
+        }
+      },
+      {
+        "name": "read_file",
+        "description": "Read the contents of a file from the local filesystem",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "The absolute or relative path to the file to read"
+            }
+          },
+          "required": ["path"]
+        }
+      },
+      {
+        "name": "write_file",
+        "description": "Create a new file or overwrite an existing file with content",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "The path to write the file to"
+            },
+            "content": {
+              "type": "string",
+              "description": "The full string content to write to the file"
+            }
+          },
+          "required": ["path", "content"]
+        }
+      },
+      {
+        "name": "list_dir",
+        "description": "List all files and subdirectories in a directory",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "The directory path to list (defaults to . if empty)"
+            }
+          }
+        }
+      },
+      {
+        "name": "search_in_files",
+        "description": "Search local files recursively for a specific text query/pattern",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "The text query to search for"
+            }
+          },
+          "required": ["query"]
+        }
+      },
+      {
+        "name": "edit_file",
+        "description": "Surgically search and replace a block of text in an existing file",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "The file path to edit"
+            },
+            "search": {
+              "type": "string",
+              "description": "The exact contiguous block of code/text to match"
+            },
+            "replace": {
+              "type": "string",
+              "description": "The new replacement text block"
+            }
+          },
+          "required": ["path", "search", "replace"]
+        }
+      },
+      {
+        "name": "web_search",
+        "description": "Search the internet using DuckDuckGo for up-to-date information",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "The search query"
+            }
+          },
+          "required": ["query"]
+        }
+      }
+    ]
+  }]
+
+}

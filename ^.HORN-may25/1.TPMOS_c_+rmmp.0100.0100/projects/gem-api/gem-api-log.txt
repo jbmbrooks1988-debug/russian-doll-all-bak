@@ -1,0 +1,25 @@
+# GEM-DEV Development Log
+
+## 2026-05-26 - Initial Setup
+- Created `projects/gem-api` as a copy of `projects/gem-api`.
+- Updated all internal paths and references to `gem-api`.
+- Added `gem_dev_dir` to `pieces/locations/location_kvp`.
+- Added `gem-api_manager` to `pieces/os/kill_all.sh`.
+- Fixed path drift in `location_kvp` (was pointing to .0039 instead of .0046).
+
+## Goals
+1. Parse Gemini response from JSON to plain text for cleaner display and audit.
+   - Status: Implementing. Using `projects/gem-api/state/last_response.txt`.
+2. Fix "tools" integration for Gemini function calls.
+   - Status: Implementing. Parsing `functionCall` from Gemini's nested response.
+3. Remove redundant Ollama/llama.cpp logic.
+
+## 2026-05-26 - Robust Parsing & UI Fix
+- Observation: User was still seeing "GEM-API" and raw JSON.
+- Diagnosis:
+  1. Active layout was `gem-api.chtpm`, not `gem-api.chtpm`.
+  2. `json_parser.c` could not handle Gemini's nested `candidates[0].content.parts[0].text` path.
+- Fix: Rewrote `json_parser.c` to support dot-notation (e.g., `candidates[0].content.parts[0].text`).
+- Fix: Updated `gem-api_manager.c` to use explicit nested paths for text and function calls.
+- Fix: Implemented `projects/gem-api/state/last_response.txt` as a plain-text intermediate for audit and UI display.
+- Note: To see these changes, ensure you load `projects/gem-api/layouts/gem-api.chtpm` in the CHTPM player.

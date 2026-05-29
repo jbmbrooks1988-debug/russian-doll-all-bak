@@ -1,6 +1,0 @@
-Here are the contents of the current directory:
-
-* `dir.txt`
-* `file-new.txt`
-* `test_file.txt`
-* `another_test_file.txt`

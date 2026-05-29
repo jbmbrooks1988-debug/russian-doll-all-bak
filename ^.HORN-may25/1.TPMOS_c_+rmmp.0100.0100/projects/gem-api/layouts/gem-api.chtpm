@@ -1,0 +1,30 @@
+<panel time_reactive="true">
+    <module>projects/gem-api/manager/+x/gem-api_manager.+x</module>
+    <interact src="pieces/apps/player_app/history.txt" />
+
+    <text label="╔══════════════════════════════════════════════════════════════════════════════╗" /><br/>
+    <text label="║                G E M - A P I    L O C A L   A G E N T                         ║" /><br/>
+    <text label="╠══════════════════════════════════════════════════════════════════════════════╣" /><br/>
+    <text label="║ ${ai_status_line} ║" /><br/>
+    <text label="║ [PIECE]: iqabel | [CTX]: ${ctx_pct} | [FSM]: ${iqabel_fsm}                   ║" /><br/>
+    <text label="╠══════════════════════════════════════════════════════════════════════════════╣" /><br/>
+    <text label="${gem-api_response_area}" /><br/>
+    <text label="╠══════════════════════════════════════════════════════════════════════════════╣" /><br/>
+    <text label="║ Debug: ${completion_debug} ║" /><br/>
+    <text label="║ Suggestions: " /><br/>
+    ${completion_area}
+    <text label="╠══════════════════════════════════════════════════════════════════════════════╣" /><br/>
+    <text label="║  " /><cli_io id="input_text" label="Ask Agent: " /><text label="  ║" /><br/>
+
+
+    <text label="╚══════════════════════════════════════════════════════════════════════════════╝" /><br/>
+    <button label="[2] Clear Context" onClick="KEY:1" /><br/>
+    <button label="[3] Switch API" onClick="ACTIVATE">
+        <br/>
+        <button label="Back" onClick="BACK" /><br/>
+        ${gem-api_api_menu}
+    </button><br/>
+    <button label="[4] Summarize" onClick="KEY:3" /><br/>
+    <button label="[ESC] Exit" href="LAUNCH:LOADER" /><br/>
+    <row label="[SYS]: ${sys_msg}" /><br/>
+</panel>
