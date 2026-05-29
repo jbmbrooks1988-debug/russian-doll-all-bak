@@ -1,0 +1,23 @@
+# HANDOFF: Completion System Refinement (CRITICAL FIX REQUEST)
+
+## 1. Executive Summary
+The path completion logic is partially implemented but failing on UI synchronization. While the backend (`gem-dev_manager.c`) correctly calculates completions and attempts to signal updates, the frontend (`chtpm_parser.c`) and the interaction between the two are failing to provide a seamless "autofill" experience.
+
+## 2. Outstanding Bugs (Actual vs. Desired)
+
+### Bug A: Autofill (Path Injection)
+*   **Actual Behavior**: When a completion is selected, `handle_choose_path` updates `g_last_buf_input` and `cli_buffers.txt`, but the `cli_io` UI component (`input_text` in `gui_state.txt`) does not reflect this change to the user.
+*   **Root Cause**: Race condition/Synchronization gap. The Parser reads `gui_state.txt` but likely has cached state or is not observing the `trigger_render()` pulse quickly enough to update the `el->input_buffer` before the next render frame.
+
+### Bug B: Dynamic Menu Persistence
+*   **Actual Behavior**: The suggestion menu (dynamic menu) does not disappear after a file selection or when the `*` trigger character is backspaced.
+*   **Root Cause**: `g_completion_mode` is set to `false`, but a subsequent frame update likely re-detects the trigger due to a latency in the history log clearing or the Parser's state polling mechanism.
+
+## 3. Recommended Path for Next Agent
+1.  **Parser/Manager Sync**: Investigate `load_state_file` in `chtpm_parser.c`. The `cli_io` element must explicitly re-initialize its `input_buffer` from `cli_buffers.txt` *immediately* after a `trigger_render()` call if a path selection just occurred.
+2.  **State Management**: Consider elevating the "completion mode" to a formal TPMOS state variable (e.g., `completion_state`) that is shared via `gui_state.txt`, rather than relying on the Manager's `g_completion_mode` and the Parser's internal state separately.
+3.  **UI Atomicity**: Ensure that `handle_choose_path` performs an *atomic update* to both the `cli_buffers.txt` AND the `input_text` variable in `gui_state.txt` before triggering the render.
+4.  **Debugging**: Use a dedicated log file to trace the lifecycle of a single selection: 
+    - `KEY:N` pressed -> `handle_choose_path` triggered -> `cli_buffers.txt` updated -> `gui_state.txt` updated -> `trigger_render()` -> Parser reads `gui_state.txt` -> UI refreshed.
+
+*This handoff concludes my involvement in this specific bug investigation.*
