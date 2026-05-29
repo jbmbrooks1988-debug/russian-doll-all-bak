@@ -1,0 +1,103 @@
+*   Trying 2607:f8b0:400a:802::200a:443...
+* Connected to generativelanguage.googleapis.com (2607:f8b0:400a:802::200a) port 443 (#0)
+* ALPN, offering h2
+* ALPN, offering http/1.1
+*  CAfile: /etc/ssl/certs/ca-certificates.crt
+*  CApath: /etc/ssl/certs
+* TLSv1.0 (OUT), TLS header, Certificate Status (22):
+} [5 bytes data]
+* TLSv1.3 (OUT), TLS handshake, Client hello (1):
+} [512 bytes data]
+* TLSv1.2 (IN), TLS header, Certificate Status (22):
+{ [5 bytes data]
+* TLSv1.3 (IN), TLS handshake, Server hello (2):
+{ [122 bytes data]
+* TLSv1.2 (IN), TLS header, Finished (20):
+{ [5 bytes data]
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+{ [5 bytes data]
+* TLSv1.3 (IN), TLS handshake, Encrypted Extensions (8):
+{ [15 bytes data]
+* TLSv1.3 (IN), TLS handshake, Certificate (11):
+{ [4209 bytes data]
+* TLSv1.3 (IN), TLS handshake, CERT verify (15):
+{ [78 bytes data]
+* TLSv1.3 (IN), TLS handshake, Finished (20):
+{ [52 bytes data]
+* TLSv1.2 (OUT), TLS header, Finished (20):
+} [5 bytes data]
+* TLSv1.3 (OUT), TLS change cipher, Change cipher spec (1):
+} [1 bytes data]
+* TLSv1.2 (OUT), TLS header, Supplemental data (23):
+} [5 bytes data]
+* TLSv1.3 (OUT), TLS handshake, Finished (20):
+} [52 bytes data]
+* SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384
+* ALPN, server accepted to use h2
+* Server certificate:
+*  subject: CN=upload.video.google.com
+*  start date: May  7 15:53:08 2026 GMT
+*  expire date: Jul 30 15:53:07 2026 GMT
+*  subjectAltName: host "generativelanguage.googleapis.com" matched cert's "*.googleapis.com"
+*  issuer: C=US; O=Google Trust Services; CN=WR2
+*  SSL certificate verify ok.
+* Using HTTP2, server supports multiplexing
+* Connection state changed (HTTP/2 confirmed)
+* Copying HTTP/2 data in stream buffer to connection buffer after upgrade: len=0
+* TLSv1.2 (OUT), TLS header, Supplemental data (23):
+} [5 bytes data]
+* TLSv1.2 (OUT), TLS header, Supplemental data (23):
+} [5 bytes data]
+* TLSv1.2 (OUT), TLS header, Supplemental data (23):
+} [5 bytes data]
+* Using Stream ID: 1 (easy handle 0x5a64f92e5a10)
+* TLSv1.2 (OUT), TLS header, Supplemental data (23):
+} [5 bytes data]
+> POST /v1beta/models/gemini-2.5-flash:generateContent HTTP/2
+> Host: generativelanguage.googleapis.com
+> user-agent: curl/7.81.0
+> accept: */*
+> content-type: application/json
+> x-goog-api-key: AIzaSyCVxb3Ay-vwoDRpw-UEQDRSTqk1zdj-qlY
+> content-length: 15548
+> 
+* TLSv1.2 (OUT), TLS header, Supplemental data (23):
+} [5 bytes data]
+* We are completely uploaded and fine
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+{ [5 bytes data]
+* TLSv1.3 (IN), TLS handshake, Newsession Ticket (4):
+{ [282 bytes data]
+* TLSv1.3 (IN), TLS handshake, Newsession Ticket (4):
+{ [282 bytes data]
+* old SSL session ID is stale, removing
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+{ [5 bytes data]
+* TLSv1.2 (OUT), TLS header, Supplemental data (23):
+} [5 bytes data]
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+{ [5 bytes data]
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+{ [5 bytes data]
+< HTTP/2 200 
+< x-gemini-service-tier: standard
+< content-type: application/json; charset=UTF-8
+< vary: X-Origin
+< vary: Referer
+< vary: Origin,Accept-Encoding
+< date: Fri, 29 May 2026 05:20:58 GMT
+< server: scaffolding on HTTPServer2
+< x-xss-protection: 0
+< x-frame-options: SAMEORIGIN
+< x-content-type-options: nosniff
+< server-timing: gfet4t7; dur=1001
+< alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+< accept-ranges: none
+< 
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+{ [5 bytes data]
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+{ [5 bytes data]
+* TLSv1.2 (OUT), TLS header, Supplemental data (23):
+} [5 bytes data]
+* Connection #0 to host generativelanguage.googleapis.com left intact
