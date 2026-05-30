@@ -1,0 +1,17 @@
+╔═══════════════ G L - O S   D E S K T O P ═══════════════╗
+║  BG: #000044                                      ║
+║  Windows: 4                               ║
+╠═══════════════════════════════════════════════════════════╣
+DESKTOP_VIEW|BG: #000044|WINDOW_COUNT: 4|WINDOW | 1 | 70 | 70 | 400 | 300 | Terminal 1 | terminal | 0|WINDOW | 4 | 180 | 170 | 420 | 360 | PIECECRAFT-3D (Sovereign) | gltpm_app | 0|
+╠═══════════════════════════════════════════════════════════╣
+║  [t] New Terminal  [f] New Folder  [n] New File         ║
+║  [c] Close Window  [ESC] Deselect  [q] Exit to Main     ║
+╠═══════════════════════════════════════════════════════════╣
+║  [>] 1. [Back to TPMOS Main Menu]                   ║
+╠═══════════════════════════════════════════════════════════╣
+║  Response:                                ║
+╚═══════════════════════════════════════════════════════════╝
+ Right-click for context menu (future: mouse support)
+
++=========================================================+
+Nav > _

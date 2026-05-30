@@ -1,0 +1,4 @@
+app_title=PIECEMARK PLAYER
+emoji_mode=OFF
+active_target_id=loader
+project_id=piececraft-3d
