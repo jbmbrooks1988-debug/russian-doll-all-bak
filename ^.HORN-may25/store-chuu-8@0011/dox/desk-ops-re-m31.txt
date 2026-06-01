@@ -1,0 +1,57 @@
+# GL-OS Desktop Refactor Strategy: Monolith Decomposition
+**Date:** May 31, 2026
+**Version:** 1.0 (De-Monolith Initiative)
+
+---
+
+## 1. Goal: Context Efficiency
+The current `gl_desktop.c` is exceeding 4,000 LOC. To ensure low-power AI models can reliably parse and modify the codebase, we must decompose functional logic into standalone **Ops** and **Plugins**, keeping individual files under 1-2k LOC.
+
+## 2. Proposed "Ops" (Independent Executables)
+
+### 2.1 op-gl-discovery (Project Loader)
+- **Target:** `load_gl_projects()`, `get_pdl_value()`.
+- **Logic:**
+    1. Scan `projects/` and `pieces/apps/gl_os/gl_os_projects.kvp`.
+    2. Extract metadata (titles, entry layouts) from `project.pdl`.
+    3. Write a flat `projects_list.txt` or `view.txt`.
+- **Communication:** Triggered by Host; outputs to flat text.
+
+### 2.2 op-metadata (PDL/Asset Extraction)
+- **Target:** Recursive PDL lookup logic and Emoji atlas metadata initialization.
+- **Logic:**
+    1. Parse complex PDL structures into simple KVP state files.
+    2. Handle asset path resolution (`asprintf` heavy logic).
+- **Communication:** Command line args -> KVP file output.
+
+### 2.3 op-terminal (Terminal Logic)
+- **Target:** `process_terminal_command()` and history buffer management.
+- **Logic:** 
+    1. Decouple shell-like logic from the OpenGL loop.
+    2. Manage session history rotation.
+- **Communication:** Monitor `history.txt` or receive via Pipes.
+
+---
+
+## 3. Proposed "Plugins" (Modular C Files)
+
+### 3.1 gl_scene_plugin.c (CHTMGL Renderer)
+- **Target:** The massive `draw_window` switch case for `gltpm_app`.
+- **Strategy:** Move all Tile, Sprite, HUD, and Node drawing logic to a separate file.
+- **Implementation:** Include via `#include "gl_scene_plugin.c"` (TPMOS "Island" pattern).
+- **Benefit:** Reduces `gl_desktop.c` by ~1,000+ LOC.
+
+### 3.2 gl_input_router.c (Input Decoupling)
+- **Target:** `keyboard()`, `special_keyboard()`, and `mouse()` callback implementations.
+- **Strategy:** Keep callback *registrations* in `main()`, but move the heavy implementation logic (like coordinate mapping) to this plugin.
+
+---
+
+## 4. TPMOS Communication Standards
+All new Ops must adhere to:
+- **Marker-File Discipline:** Write to `marker.txt` to trigger re-reads.
+- **Pipe/SHM Toggle:** Support high-speed IPC for interactive `<canvas>` elements.
+- **"If it's not in a file, it's a lie":** All state changes must be mirrored to `gui_state.txt`.
+
+---
+*"One File, One Responsibility. Decomposition is the path to stability."*

@@ -1,0 +1,51 @@
+# CHTMGL Progress Report (m31)
+**Status:** Alpha Integration STABLE (Navigation & Windowing Polished)
+**Date:** May 31, 2026
+**Location:** /dox/progress-report-chtmgl-m31.txt
+
+---
+
+## 1. Executive Summary
+We have successfully implemented and polished the structural foundation for **UI Sovereignty** in GL-OS. Projects can now define nested layouts and custom coordinate systems with a clean, project-driven viewport. Navigation is fully synchronized across mouse and keyboard.
+
+## 2. Completed Milestones
+
+### 2.1 Structural Parsing (Alpha Foundation)
+- **Nesting Support:** Elements now correctly inherit relative positions from `<panel>` and `<div>` containers.
+- **Visual Sovereignty:** Implemented `ui_mode="SOVEREIGN"`. Host-side helpers are hidden to respect project identity.
+- **Joystick-First UX:** Implemented scoped indexing and robust "Infinite" Number Jump logic.
+
+### 2.2 Window Management & Polishing
+- **Bounds Enforcement:** Sub-windows are strictly confined within the master window area.
+- **Scoped Minimize:** The minimize button on sub-windows correctly toggles their state without affecting the global OS.
+- **UI Streamlining:** Removed redundant top bar; master controls (X, F, -) centralized in the bottom toolbar.
+
+---
+
+## 3. Navigation Audit (RESOLVED)
+The "Joystick-First" and "Number Jump" navigation logic is now 100% consistent:
+
+1. **Mandatory Indices:** Every navigable `<button>` and `<li>` displays a unique numerical prefix.
+2. **Logical Mapping:** "Number + Enter" jumps to and activates buttons based on their displayed index.
+3. **Scoped Focus:** Navigation automatically resets to 1 inside "Activated" containers.
+4. **Hit Detection:** Mouse and Keyboard share the same coordinate logic for selection.
+
+---
+
+## 4. The Hypertext Vision: Minimap & Xelector
+Host-side helpers have been removed in favor of project-owned sovereign components.
+
+**The Future Path:**
+- **Context Menus:** Port dynamic on/off context menus from legacy prototypes.
+- **Canvas Support:** Implement `<canvas>` tag for high-speed game rendering.
+- **Emoji Studio:** Migration to the new hypertext paradigm.
+
+---
+
+## 5. Immediate TODOs
+- [ ] **Port Context Menus:** Enable right-click indexed menus for file dropdowns.
+- [ ] **Canvas Implementation:** Add `<canvas>` support to `gltpm_parser.c`.
+- [ ] **Beta Promotion:** Promote these features to the Beta tier for production usage.
+
+---
+*"The UI is a document. The document is the UI."*

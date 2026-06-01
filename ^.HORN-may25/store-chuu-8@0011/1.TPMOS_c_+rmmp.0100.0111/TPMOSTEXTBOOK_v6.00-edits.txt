@@ -1,0 +1,84 @@
+TPMOS Textbook v6.00 - Super Academically Comprehensive Plan (FINAL)
+========================================================================
+Version: 6.00 (Standardized Ops Edition)
+Status: Implementation Ready
+
+OBJECTIVE:
+To deliver a definitive, academically rigorous, and developer-centric guide that 
+walks a human developer through every layer of the TPMOS ecosystem, including 
+its advanced P2P, AI, and Financial expansion layers, as well as its 
+multi-faceted marketing strategy.
+
+---
+
+1. NEW CORE CHAPTERS & SECTIONS
+-------------------------------
+
+CH19: THE THEATER (CHTPM MARKUP & PARSER)
+*   **The Syntax of Reality**: In-depth look at `pieces/chtpm/plugins/chtpm_parser.c`.
+    - Tag Specs: 
+      * `<layout>`: Root container defining the app's scope.
+      * `<row>` / `<cell>`: The grid system for ASCII layout organization.
+      * `<text label="..." />`: Static or variable text display.
+      * `<button label="..." onClick="..." href="..." />`: The primary interaction node.
+      * `<cli_io id="..." label="..." />`: User text entry (History Injection).
+*   **The Variable Engine**: 
+    - The `${var}` pattern: Real-time substitution from `state.txt` or `gui_state.txt`.
+    - Scope resolution: How the parser searches project-local variables before global fallbacks.
+*   **Optimization**: 
+    - State-First Polling: Rendering ONLY on `frame_changed.txt` or `history.txt` size change.
+    - Zero-Waste Pulse: How the parser keeps CPU at 0% when the user is idle.
+
+CH20: THE OPENGL SHELL (CHTMGL & GLTPM)
+*   **Sovereign Rendering**: `pieces/apps/gl_os/plugins/gltpm_parser.c`.
+*   **Visual Evolution**: Moving from ASCII characters to 3D OBJ/FTL artifacts.
+*   **Markup Expansion**: `<window>`, `<scene>`, `<panel>`, `<slider>`, `<canvas>`.
+*   **Procedural Artifacts**: Using 8x8x8 voxel bitmasks to reconstruct 3D shapes from 2D data.
+
+CH21: P2P-NET & TSOTS-ONLINE (ELEGANT DECENTRALIZATION)
+*   **The Mesh Topology**: How `projects/p2p-net` creates a sovereign network.
+    - `known_hosts.pdl`: The decentralized directory of nodes.
+    - Leader Election: The IP-based consensus algorithm for ring stability.
+*   **The IRC Layer**: `chat_ledger.txt` as a file-backed distributed ledger.
+*   **The Evolution**: Transitioning from raw P2P-NET to `tsots-online` (The Sovereign Online).
+    - Unified Auth: `tsots-online_login.chtpm` and the project-wide profile system.
+
+CH22: THE AI BRAIN (LLM & API INTERFACES)
+*   **Cognitive Integration**: `projects/gem-api` and its role in bridging LLMs to the Piece model.
+*   **Payload Engineering**: `gemini_payload_builder.c` - constructing the "Contextual Truth" for the model.
+*   **Tool-Use Capabilities**: Giving AI the "Hands" to call `exec_cmd`, `read_file`, and `list_dir`.
+
+CH23: THE FINANCIAL FORGE (YAHOO PROJECT)
+*   **Real-Time Economics**: `projects/yahoo/` as a live data-driven simulation.
+*   **Market Mechanics**: `fetch_stock.c` (web integration) and `options_pricing.c` (Black-Scholes simulation).
+*   **Orchestration**: `1.yfin💴️._orch]h13.c` - managing complex financial states.
+
+2. DIRECTORY-DOWNWARDS COMPREHENSIVE GUIDE
+------------------------------------------
+A 1-2 paragraph academic summary for EVERY folder in the main directory:
+*   `pieces/os/`: The Process Manager and App Registry.
+*   `pieces/system/`: Fondu (lifecycle), Prisc (VM), PDL (DNA).
+*   `pieces/display/`: The rendering pipeline (Renderer, Pulse).
+*   `projects/`: Detailed entries for all 40+ active projects (Checkers, Hangman, Yahoo, etc.).
+
+3. MARKETING & COMMUNITY STRATEGY (NEW CHAPTER)
+-----------------------------------------------
+*   **Multi-Vibe Branding**:
+    - "The Architect" (Men): Technical depth, strategy, and system architecture.
+    - "The Dreamer" (Girls): Aesthetics, lore-driven AI art, and the Soul Pen's magic.
+    - "The Bot" (Robots): Raw code, automation efficiency, and speed.
+*   **The Platform Ecosystem**: 
+    - GitHub (Code transparency), YouTube (Devlogs/Tutorials), X.com (Viral snippets), Discord (Community).
+*   **Engagement Loops**: 
+    - Posting AI-generated lore art.
+    - Recording gameplay and dev breakdowns.
+    - Active community participation (Commenting/Retweeting relevant industry trends).
+
+---
+
+IMPLEMENTATION SEQUENCE:
+1.  **Consolidate**: Merge all 18 existing chapters into v6.00 standards.
+2.  **Draft**: Add CH19-CH24.
+3.  **Audit**: Complete the "Project Catalog" by reading `project.pdl` from every subfolder.
+4.  **Polish**: Update Glossary, Quiz, and Answer Key.
+5.  **Artifact**: Run `make_tpmos_pdf.py` to generate the final v6.00 document.

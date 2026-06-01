@@ -1,0 +1,130 @@
+# CHTMGL Stealing Guide (m31)
+**Status:** REFERENCE FOR TPMOS INTEGRATION
+**Date:** May 31, 2026
+
+---
+
+## 1. Structural UI Parsing (Nesting)
+**Source:** `3.view_v0.05]textiles.c`
+Instead of a flat list, use a `parent_stack` during CHTML parsing to handle nesting (e.g., `<window>` -> `<panel>` -> `<button>`).
+
+```c
+int parent_stack[MAX_ELEMENTS];
+int stack_top = -1;
+
+// Inside parse loop
+if (strcmp(tag_name, "panel") == 0) {
+    stack_top++;
+    parent_stack[stack_top] = num_elements;
+} else if (trimmed_line[0] == '<' && trimmed_line[1] == '/') {
+    if (stack_top > -1) stack_top--;
+}
+
+elements[num_elements].parent = (stack_top > -1) ? parent_stack[stack_top] : -1;
+```
+
+---
+
+## 2. Relative Coordinate Calculation
+**Source:** `4.controller_v0.01.c`
+To detect clicks on nested elements, traverse the parent tree to calculate the absolute position.
+
+```c
+int parent_x = 0;
+int parent_y = 0;
+int current_parent = elements[i].parent;
+while (current_parent != -1) {
+    parent_x += elements[current_parent].x;
+    parent_y += elements[current_parent].y;
+    current_parent = elements[current_parent].parent;
+}
+int abs_x = parent_x + elements[i].calculated_x;
+int abs_y = window_height - (parent_y + elements[i].calculated_y + elements[i].calculated_height);
+```
+
+---
+
+## 3. Z-Level Depth Ordering
+**Source:** `3.view_v0.05]textiles.c`
+Allow elements to specify a `z_level` (0-99) for rendering priority. Use `qsort` before rendering.
+
+```c
+int compare_elements_by_z_level(const void* a, const void* b) {
+    UIElement* elem_a = (UIElement*)a;
+    UIElement* elem_b = (UIElement*)b;
+    return elem_a->z_level - elem_b->z_level;
+}
+
+// In draw loop
+qsort(elements, num_elements, sizeof(UIElement), compare_elements_by_z_level);
+for (int i = 0; i < num_elements; i++) {
+    draw_element(&elements[i]);
+}
+```
+
+---
+
+## 4. Flex Sizing (Percentages)
+**Source:** `3.view_v0.05]textiles.c`
+Support `width="50%"` by defining a `FlexSize` struct that stores either pixels or percentages.
+
+```c
+typedef enum { FLEX_UNIT_PIXEL, FLEX_UNIT_PERCENT } FlexUnit;
+typedef struct { float value; FlexUnit unit; } FlexSize;
+
+// Parsing logic
+if (strchr(attr_value, '%') != NULL) {
+    elements[num_elements].width.value = atof(attr_value);
+    elements[num_elements].width.unit = FLEX_UNIT_PERCENT;
+}
+```
+
+---
+
+## 5. Enhanced IPC Protocol (SHAPE)
+**Source:** `2.model_v0.01.c`
+Modules can inject complex 3D objects using a semicolon-delimited protocol.
+
+```
+SHAPE;type;label;x;y;z;width;height;depth;r;g;b;a;rot_x;rot_y;rot_z;scale_x;scale_y;scale_z
+```
+-   **Example:** `SHAPE;RECT;player_box;0;0;0;10;10;10;1.0;0.0;0.0;1.0;0;45;0;1;1;1`
+-   **Features:** Supports rotation, scaling, and labels for state synchronization.
+
+---
+
+## 6. Canvas Rendering Hook
+**Source:** `3.view_v0.05]textiles.c`
+The `<canvas>` tag allows a module to "own" a specific viewport region.
+
+```c
+if (strcmp(tag_name, "canvas") == 0) {
+    elements[num_elements].canvas_render_func = draw_voxel_editor; // Example hook
+}
+```
+In the main loop, if an element is a canvas, invoke its specific render function within a `glScissor` box.
+
+---
+
+## 7. Interaction Feedback (Sliders/Buttons)
+**Source:** `4.controller_v0.01.c`
+Sliders support vertical and horizontal dragging with "step" snapping.
+
+```c
+// Vertical slider logic
+float normalized_y = (float)(ry - abs_y) / elements[i].calculated_height;
+elements[i].slider_value = elements[i].slider_min + normalized_y * (elements[i].slider_max - elements[i].slider_min);
+// Snap to step
+elements[i].slider_value = (elements[i].slider_value / elements[i].slider_step) * elements[i].slider_step;
+```
+
+---
+
+## 8. Media Integration (Video/Audio/Images)
+**Source:** `3.view_v0.05]textiles.c`
+-   **Images:** `stb_image.h` integration with a texture cache.
+-   **Video:** `V4L2` / ffmpeg hooks for `<video>` tag playback.
+-   **Audio:** External module playback triggered via `play_audio(path)`.
+
+---
+*"Don't reinvent the wheel; just re-align the axis."*

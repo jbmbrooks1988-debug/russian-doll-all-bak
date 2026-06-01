@@ -1,0 +1,26 @@
+<window width="800" height="600" color="#113311">
+    <header y="0" width="800" height="50" color="#225522">
+        <text x="10" y="10" value="Navigation Target Page" color="#FFFFFF"/>
+    </header>
+    
+    <panel x="10" y="60" width="780" height="530" color="#336633">
+        <text x="20" y="20" value="You have successfully navigated to the target page!" color="#FFFFFF" />
+        <text x="20" y="50" value="This page also includes a test module with dynamic counter" color="#FFFF00" />
+        
+        <link x="20" y="100" width="200" height="30" href="test_href_simple.chtml.txt" label="Go Back to Main Demo" />
+        
+        <text x="20" y="150" value="Features Demonstrated:" color="#FFFFFF" />
+        <text x="40" y="180" value="- Successful navigation between pages" color="#FFFFFF" />
+        <text x="40" y="210" value="- Links properly displayed and clickable" color="#FFFFFF" />
+        <text x="40" y="240" value="- Working href functionality" color="#FFFFFF" />
+        
+        <!-- Module section -->
+        <text x="20" y="280" value="Test Module (Page 2):" color="#FFFF00" />
+        <module>module/page_test</module>
+        <text x="20" y="310" value="Counter:" color="#FFFFFF" />
+        <text id="page_counter" x="80" y="310" value="0" color="#00FF00" />
+        <text id="page_status" x="20" y="340" value="Module not yet initialized" color="#FFFFFF" />
+        <button x="20" y="370" width="100" height="30" label="Increment" onClick="button_increment_handler" />
+        <button x="130" y="370" width="100" height="30" label="Reset" onClick="button_reset_handler" />
+    </panel>
+</window>

@@ -1,0 +1,82 @@
+❣️👩🏻‍🏭️👩‍🚀️
+
+🌐️
+U CAN ALSO JUST BUILD IN HTML [4 FUN] HORN❗️ 
+AND SEE ABOUT INTEGRATING AI FASTER, <-   🤖️
+MAKE SURE IT RUNS ONLINE,(GODADDY/GH?/SUPABASE?) 
+BUT IF UR DOING IT RIGHT IT MAY BECOME A CHORE ASWELL
+🤡️ITS ALL GOOD THO DONT TAKE IT 2 SRS(THEM EGO)
+(EINJOI THIS; GO 2 CHEM OBV STAY INSIDE IN LAB LOVE IT)MARKET
+IS VICIOUS BUFFET SAID BEST INVESTMENT IS IN CAREER/SKILLED KNOWLEDGE , AIM FOR JD/MD )🤡️
+🌐️
+🏣️🏤️
+NO MORE FEATUERS FOR CHTML . 
+JUST MAKE PROJECT (RMMVC / DAW 
+
+CAV
+/CLIOS-OPENER <- SHOULD BE DONE FIRST IF UR REALY SRS)
+WHICH MEANS CLI FEATURES?
+
+
+MAKE UR PROJECT, (ITS NOT THROW AWAY)!HOWEVER CAN BE REF...)  
+
+MAKE THE PROJECT AND FIX ISSUES AS THEY ARIZE
+
+U DID IT U MADE CHTML AS FAR AS WE CAN TELL
+
+(ANYTHING COMPLEX ISN'T CURRENTLY TESTABLE ;) 
+
+🎮️
+its gonna self heal/harden as u make game w/o introducing
+complexity cuz its a frame work, not the gamecode...
+ (it may take some xtra time butits worth it) 
+ 🎮️
+🏣️🏤️
+❣️
+>shared memory movement was erratic. 
+>never tested if it moves "purely" by moding master.chtml.c
+👩🏻‍🏭️👩‍🚀️
+so(l)... try it in production. if it doesn't do what u like, fix it 👩🏻‍🏭️
+OTHERWISE, HOW DO WE TEST IF IT WORKS OR NOT? 
+(AT LEAST THE INFRA IS IN PLACE W/O BREAKING BAK)
+🧹️WE COULD ALWAYS CLEAR IT OUT. BUT THIS IS WHERE WE ARE 
+🧹️🥳️
+👩‍🚀️
+❣️
+it says it implimented transforms but its untestable
+at least its backwards compatible
+👩🏻‍🏭️👩‍🚀️
+so(l)... try it in production. if it doesn't do what u like, fix it 👩🏻‍🏭️
+OTHERWISE, HOW DO WE TEST IF IT WORKS OR NOT? 
+(AT LEAST THE INFRA IS IN PLACE W/O BREAKING BAK)
+🧹️WE COULD ALWAYS CLEAR IT OUT. BUT THIS IS WHERE WE ARE 
+🥳️
+👩‍🚀️
+
+
+
+THE ONLY PROBLEMS HAVE ARE IN CANVAS? GREAT
+THERE MAYBE OTHER COSTMETIC THINGS
+BUT I MAY NOT SEPERATE. CUZ IT BUGGED OUT LAST TIME
+
+I DO THINK U SHOULD FORK , THO IM NOT SURE WHY LOL. 
+
+
+----------------------------------------------------------------
+maybe we shoudl we seperate canvas stuff out of into 3.canvas.c before going forward?. its all were doing "NOW"
+and shouldn't be confused with other stuff
+(still haven't done. it spazzed out lastime. maybe dont?
+-----------------------------------------------------
+
+🧿️OBV WE DONT MARRY CHTML REGARDLESS IT TOOK A MONTH
+BUT SO DID RMMV.C AND LOL THATS COMPLETE TRASH 2 US NOW...
+AND THERES ALWAYS HALO AND REG HTML... 
+
+ALSO U CAN ALWAYS ASK ABOUT EVENT/MULTITHREADED CHTML
+AFTER IS FIRING CLEAN🧿️
+
+👩🏻‍💻️
+theres nothing 2 complain about tho . (THERS NO ALT)
+u did it.its PEAK STATE OF THE ART COMPUTE' if u dont like it 
+make rmmvc w/o it 4 w/e reason or just use html👩🏻‍💻️
+

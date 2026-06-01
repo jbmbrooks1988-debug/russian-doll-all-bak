@@ -1,0 +1,34 @@
+
+
+currently i have a problem. i create projects in gl/glut (in mvc) but as they start to get bigger they get to hard for ai-code tools to reason about
+therefore i wish i could seperate alot of the boiler plate, and even 'unique logic' into external text files.
+the format can also write and read data to .csv files , to share info between seperate modules without needing to share context
+in gcc c , and open gl/ glut, i want to create a format for making menu's, menu periferals, and canvas elements, simliar to htlm5/canvas
+
+
+i want to create a framework that can read markup (and some basic logic) as .html and render 
+
+i want to use this for 2d/3d games, and their  menus
+
+context : accepts keyboard and mouse input
+we want to create reactive elements (buttons/ thumbs etc) and structural elements (header bars , right click popup menus etc)
+and periferals : file explorer , etc
+as well as the "canvas" which can render 2d and 3d games  , with the added benifit of also being able to use the menu elements. all using coords
+both relative and absolute
+
+i want to beable to put most of the information in the markup , so that i can even use in other languages
+provided i use the same "interpreter" get it? got any advice? 
+
+lets make a blueprint.md exploring the best ways we may do this , and maybe a working example i can critique as main_prototype_0.c
+(include as many elements as you can , including logic .
+if u want you can use main_prototype_0.c as gl context manager and also link model.c , view.c and controller.c linked into 1 binary at compile. 
+
+any other logic that doesn't have to do with opengl context should be run as a seperate binary executable using system() or fork() and pipes 
+
+that way we keep the mvc as slim as possible, and start using modules asap. get it? 
+
+architecture : mvc + modules , event drive, lut, fsm <- use when relevant 
+rules : no new .h header files (we code in vim so lets not create to many extra files)
+
+
+when done ,lets make a demo project using as many features as possible, to test functionality

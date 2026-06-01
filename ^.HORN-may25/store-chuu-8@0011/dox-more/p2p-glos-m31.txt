@@ -1,0 +1,42 @@
+# Project Prompt: GL-OS P2P Multi-Media Chat Forum
+
+## 1. Executive Summary
+Develop a sovereign GL-OS application that implements a real-time, P2P multi-media chat forum. This project requires tight integration between the `p2p-net` transport layer, the `CHTMGL` UI framework, and the GL-OS manager/rendering pipeline.
+
+## 2. Core Objectives
+- **P2P Communication:** Real-time chat messaging using `p2p-net` transport.
+- **Media Sovereignty:** Ability to render images, video, and audio directly within chat streams using CHTMGL markup.
+- **UI Architecture:** Implement a responsive, media-rich CHTMGL layout using the sovereign project loader structure.
+
+## 3. Technical Requirements
+
+### A. Network & IPC Integration
+- **Transport:** Integrate `p2p-net` into the application's `manager/` module.
+- **Message Protocol:** Define the message structure (JSON/Binary) for P2P messages, covering:
+    - Text content.
+    - Media metadata (type, reference, hash for verification).
+    - System signals (connection/disconnection, media fetch requests).
+
+### B. CHTMGL UI/Rendering
+- **New Markup:**
+    - `<chat-stream id="messages" />`: Dynamic container for message history.
+    - `<media-embed type="image|video|audio" src="..." />`: Unified renderer for embedded media.
+- **Rendering Pipeline:**
+    - `gltpm_parser.c`: Update to support the new tags.
+    - `gl_renderer.c`: Implement asset-caching and loading pipeline (using `stb_image` and existing FFmpeg tasks).
+
+### C. Manager & Interaction
+- **IPC Handlers:** Implement handlers to route P2P incoming events (`P2P_MSG_RECEIVED`) to UI state updates.
+- **User Interaction:**
+    - Input handling for text messages.
+    - Logic for attaching local assets and broadcasting P2P media availability.
+
+## 4. Security & Validation
+- **Asset Sanitization:** Enforce strict validation on all incoming media (size limits, signature verification) before rendering.
+- **Sovereignty:** Ensure the chat application remains within its `SOVEREIGN | true` bounds, preventing cross-project pollution or unauthorized system access.
+
+## 5. Deliverables for Initial Phase
+- [ ] Updated `project.pdl` for the chat application.
+- [ ] Initial CHTMGL layout (`layouts/main.chtmgl`) with mock `chat-stream` and `media-embed` elements.
+- [ ] Manager stub (`manager/chat_manager.c`) demonstrating `p2p-net` hook and IPC event reception.
+- [ ] Proof-of-concept renderer capability for static images via CHTMGL.

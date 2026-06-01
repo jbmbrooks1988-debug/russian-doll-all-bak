@@ -1,0 +1,30 @@
+# TODO: Emoji Studio Migration to CHTML/Canvas Architecture
+
+## Phase 1: Structural Setup
+- [ ] Ensure `projects/emoji-studio/` follows the sovereign project structure (pdl, layouts, manager).
+- [ ] Clear out hardcoded UI logic from `emoji-studio_host.c` (to be replaced by parser).
+- [ ] Create `projects/emoji-studio/layouts/main.chtml`.
+
+## Phase 2: CHTML Markup Implementation
+- [ ] Define `<div class="thumbnail-viewport">` structure in `main.chtml`.
+- [ ] Define `<ul class="thumbnail-list">` structure in `main.chtml`.
+- [ ] Define `<canvas id="editor_viewport">` in `main.chtml`.
+
+## Phase 3: Parser/Renderer Refactoring
+- [ ] Update `emoji-studio_host.c` (or add a parser module) to ingest and parse the `main.chtml` file.
+- [ ] Implement CHTML tag handlers:
+    - [ ] `<div>` -> GL Clipping/Viewport setup.
+    - [ ] `<ul>`/`<li>` -> Horizontal layout calculation + Texture rendering.
+    - [ ] `<canvas>` -> 3D Voxel/Emoji preview viewport rendering.
+- [ ] Implement interaction mapping for scroll events (for `thumbnail-viewport`).
+
+## Phase 4: Integration & IPC
+- [ ] Ensure `emoji-studio_manager.c` handles IPC for canvas-based interactions (selecting voxel/editing).
+- [ ] Connect IPC signals to the CHTML/GL rendering updates.
+- [ ] Validate IPC message format against the sovereign project loader requirements.
+
+## Phase 5: Testing & Verification
+- [ ] Launch via GL-OS sovereign loader.
+- [ ] Verify horizontal scrolling functionality in the picker.
+- [ ] Verify voxel rendering in the `<canvas>` viewport.
+- [ ] Confirm no hardcoded UI leakage.

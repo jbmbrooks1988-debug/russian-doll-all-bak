@@ -1,0 +1,11 @@
+<window width="800" height="1600" color="#808080">
+
+    
+    <!-- Generic context menu that will appear on right-click -->
+    <menu id="context_menu" x="-1000" y="-1000" width="150" height="25" label="Right-Click Menu (context_menu)" color="#444444" onClick="context_menu_handler">
+        <menuitem x="0" y="0" width="150" height="20" label="Copy" color="#CCCCCC" onClick="copy_handler" />
+        <menuitem x="0" y="0" width="150" height="20" label="Paste" color="#CCCCCC" onClick="paste_handler" />
+        <menuitem x="0" y="0" width="150" height="20" label="Settings" color="#CCCCCC" onClick="settings_handler" />
+        <menuitem x="0" y="0" width="150" height="20" label="About" color="#CCCCCC" onClick="about_handler" />
+    </menu>
+</window>

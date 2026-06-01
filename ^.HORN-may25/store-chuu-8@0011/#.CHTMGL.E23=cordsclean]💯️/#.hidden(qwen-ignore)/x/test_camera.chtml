@@ -1,0 +1,5 @@
+<window x="100" y="100" width="800" height="600">
+    <header label="Camera Test" x="10" y="10" width="200" height="30" color="#333333"></header>
+    <canvas x="50" y="50" width="640" height="480" id="cam-canvas" ar="1"></canvas>
+    <text label="Camera feed should appear in the canvas above" x="50" y="550" width="400" height="20"></text>
+</window>

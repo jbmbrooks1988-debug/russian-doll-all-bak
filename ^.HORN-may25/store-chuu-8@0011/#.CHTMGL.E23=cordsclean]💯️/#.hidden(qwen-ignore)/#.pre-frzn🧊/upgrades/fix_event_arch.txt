@@ -1,0 +1,41 @@
+To fix the canvas click functionality in the event-driven architecture (1.event-arch-alt]a1/4.controller.c):
+
+1. Find the canvas handling section around lines 242-247:
+```c
+                    } else if (strcmp(elements[i].type, "canvas") == 0) {
+                        if (strlen(elements[i].onClick) > 0) {
+                            handle_element_event(elements[i].onClick);
+                        } else {
+                            printf("Canvas '%s' clicked at (%d, %d)\n", elements[i].label, x, ry);
+                        }
+                    } else if (strcmp(elements[i].type, "dirlist") == 0) {
+```
+
+2. Replace it with:
+```c
+                    } else if (strcmp(elements[i].type, "canvas") == 0) {
+                        if (strlen(elements[i].onClick) > 0) {
+                            handle_element_event(elements[i].onClick);
+                        } else {
+                            printf("Canvas '%s' clicked at (%d, %d)\n", elements[i].label, x, ry);
+                        }
+                        
+                        // Calculate relative coordinates within the canvas for the module
+                        int canvas_abs_x = parent_x + elements[i].x;
+                        int canvas_abs_y = window_height - (parent_y + elements[i].y + elements[i].height); // Convert to OpenGL coords
+                        
+                        // Calculate relative coordinates within canvas
+                        int rel_x = x - canvas_abs_x;
+                        int rel_y = ry - canvas_abs_y;
+                        
+                        // Make sure the click is within canvas bounds before sending
+                        if (rel_x >= 0 && rel_x <= elements[i].width && rel_y >= 0 && rel_y <= elements[i].height) {
+                            printf("Canvas '%s' clicked at relative (%d, %d)\n", elements[i].label, rel_x, rel_y);
+                            
+                            // Send canvas click information to the module using relative coordinates
+                            char canvas_input[100];
+                            snprintf(canvas_input, sizeof(canvas_input), "CANVAS:%d,%d", rel_x, rel_y);
+                            model_send_input(canvas_input);
+                        }
+                    } else if (strcmp(elements[i].type, "dirlist") == 0) {
+```

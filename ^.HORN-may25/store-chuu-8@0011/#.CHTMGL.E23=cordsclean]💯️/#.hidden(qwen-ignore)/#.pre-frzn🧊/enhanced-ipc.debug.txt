@@ -1,0 +1,66 @@
+./chtmlc]23d©️™️]aaq.41]IPC++.+x test_enhanced.chtml module/+x/enhanced_game_ipc.+x 
+Initializing model... Spawning game module with PID: 35394
+Emoji font loaded, size: 109, scale: 0.293578
+Processing 7 active variables
+Processing variable 'position_text' of type 3: Blue Square: X=55.00, Y=50.00, Z=0.00
+Updating element 9 (type: text, id: position_text, label: Blue Square: X=0.00, Y=0.00, Z=0.00) with value
+Updated text element label to: 'Blue Square: X=55.00, Y=50.00, Z=0.00'
+Processing variable 'score' of type 1: 10
+Processing variable 'health' of type 1: 100
+Processing variable 'status' of type 3: Game in progress
+Processing variable 'player_x' of type 2: 55.00
+Processing variable 'player_y' of type 2: 50.00
+Processing variable 'player_z' of type 2: 0.00
+Processing 7 active variables
+Processing variable 'position_text' of type 3: Blue Square: X=60.00, Y=50.00, Z=0.00
+Updating element 9 (type: text, id: position_text, label: Blue Square: X=55.00, Y=50.00, Z=0.00) with value
+Updated text element label to: 'Blue Square: X=60.00, Y=50.00, Z=0.00'
+Processing variable 'score' of type 1: 20
+Processing variable 'health' of type 1: 100
+Processing variable 'status' of type 3: Game in progress
+Processing variable 'player_x' of type 2: 60.00
+Processing variable 'player_y' of type 2: 50.00
+Processing variable 'player_z' of type 2: 0.00
+Processing 7 active variables
+Processing variable 'position_text' of type 3: Blue Square: X=65.00, Y=50.00, Z=0.00
+Updating element 9 (type: text, id: position_text, label: Blue Square: X=60.00, Y=50.00, Z=0.00) with value
+Updated text element label to: 'Blue Square: X=65.00, Y=50.00, Z=0.00'
+Processing variable 'score' of type 1: 30
+Processing variable 'health' of type 1: 100
+Processing variable 'status' of type 3: Game in progress
+Processing variable 'player_x' of type 2: 65.00
+Processing variable 'player_y' of type 2: 50.00
+Processing variable 'player_z' of type 2: 0.00
+Processing 7 active variables
+Processing variable 'position_text' of type 3: Blue Square: X=65.00, Y=45.00, Z=0.00
+Updating element 9 (type: text, id: position_text, label: Blue Square: X=65.00, Y=50.00, Z=0.00) with value
+Updated text element label to: 'Blue Square: X=65.00, Y=45.00, Z=0.00'
+Processing variable 'score' of type 1: 35
+Processing variable 'health' of type 1: 100
+Processing variable 'status' of type 3: Game in progress
+Processing variable 'player_x' of type 2: 65.00
+Processing variable 'player_y' of type 2: 45.00
+Processing variable 'player_z' of type 2: 0.00
+Processing 7 active variables
+Processing variable 'position_text' of type 3: Blue Square: X=65.00, Y=40.00, Z=0.00
+Updating element 9 (type: text, id: position_text, label: Blue Square: X=65.00, Y=45.00, Z=0.00) with value
+Updated text element label to: 'Blue Square: X=65.00, Y=40.00, Z=0.00'
+Processing variable 'score' of type 1: 40
+Processing variable 'health' of type 1: 100
+Processing variable 'status' of type 3: Game in progress
+Processing variable 'player_x' of type 2: 65.00
+Processing variable 'player_y' of type 2: 40.00
+Processing variable 'player_z' of type 2: 0.00
+Processing 7 active variables
+Processing variable 'position_text' of type 3: Blue Square: X=65.00, Y=45.00, Z=0.00
+Updating element 9 (type: text, id: position_text, label: Blue Square: X=65.00, Y=40.00, Z=0.00) with value
+Updated text element label to: 'Blue Square: X=65.00, Y=45.00, Z=0.00'
+Processing variable 'score' of type 1: 50
+Processing variable 'health' of type 1: 100
+Processing variable 'status' of type 3: Game in progress
+Processing variable 'player_x' of type 2: 65.00
+Processing variable 'player_y' of type 2: 45.00
+Processing variable 'player_z' of type 2: 0.00
+Processing 7 active variables
+Processing variable 'position_text' of type 3: Blue Square: X=65.00, Y=50.00, Z=0.00
+

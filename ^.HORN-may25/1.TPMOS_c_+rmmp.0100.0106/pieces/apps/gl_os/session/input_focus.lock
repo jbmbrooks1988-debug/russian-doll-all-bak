@@ -1,4 +1,0 @@
-# GL-OS Input Focus Lock
-# CHTPM daemons: DO NOT write to input files while this file exists
-owner=gl_desktop
-session=gl-os

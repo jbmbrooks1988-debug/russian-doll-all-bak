@@ -1,0 +1,25 @@
+📍️📍️📍️
+
+📅️
+
+this is our framework : chtml
+  we made it from scratch to render chtml gui in open gl.we use it to hold gui 
+  seperately so we can prompt smaller contexts 
+  and get more focused code outputs from llms.
+  its an "mvc" architecture :
+  
+  we recently added a video feature. 
+  investigate why its showing "with a color overlay when running but normal colors when stopped"
+📍️📍️📍️
+📅️
+1.old 2 do. wheel of fortune. 2 gemini 2 mr.wu
+
+
+2. integrate chtrm and chtmgl somehow? 
+
+3. networking + html 
+
+4. html / php parallels? 
+
+5. halo d-flip 2 rv-i 2 compiler.2 unix-like 2 browser. 2 dcroma
+📅️

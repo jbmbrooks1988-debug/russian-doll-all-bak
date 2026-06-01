@@ -1,0 +1,9 @@
+▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+ > wait. make sure we have things like z levels. mouse click ability and other things as well ; look at     
+   @\#.CHTMGL.E23=cordsclean\]💯️/1.main_prototype_v0.01.c first, and document all the code features u can   
+   steal in chtmgl-stealing-m31.txt ; this should be a comprehensive standalone document with real code     
+   examples of features where we dont have to reinvent the wheel on so investigate chtmgl very throughly    
+   even tho they will be in tpmos format, they're maybe some crossover                                      
+▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+
+

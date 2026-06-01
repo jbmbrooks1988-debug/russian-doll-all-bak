@@ -1,0 +1,23 @@
+# EMOJI PARITY PROMPT: Integrated GL-OS Migration Strategy
+
+## 1. Overview
+The goal is to synchronize the current GL-OS `projects/emoji-studio` implementation with the "perfect" standalone version, but **crucially**, this must be an **integrated GL-OS application**, NOT a standalone one. 
+
+We are adopting a new UI paradigm: **CHTML (CHtml)**. All future GL-OS projects must use this for rendering UI (buttons, windows, scrollable elements) instead of hardcoding.
+
+## 2. The New UI Paradigm (CHTML)
+This application will be the pilot for the CHTML standard.
+- **Scrollable Containers:** Use a `<div>` (viewport) + `<ul>`/`<li>` structure. This will be implemented in C/TPMOS as a native, hardware-accelerated horizontal carousel for the emoji picker.
+- **Game Map/Editor:** Use a `<canvas>` element for hardware-accelerated 2D/3D rendering (voxel map/emoji editor). This replaces manual OpenGL viewport hardcoding.
+
+## 3. Migration Roadmap for Agent
+1. **Sync Core Logic:** Port the improved compilation and runtime management logic from the standalone version to the GL-OS structure.
+2. **Implement CHTML Layouts:**
+    - Create `projects/emoji-studio/layouts/main.chtml`.
+    - Use `<div class="thumbnail-viewport">` and `<ul class="thumbnail-list">` for the emoji picker.
+    - Use `<canvas id="editor_viewport">` for the voxel/emoji editor.
+3. **Refactor Parser/Renderer:**
+    - The host code must now act as a CHTML parser/renderer. It must map the CHTML tags (`div`, `ul`, `li`, `canvas`) to GL rendering routines.
+    - Remove hardcoded UI drawing logic from `emoji-studio_host.c` and replace it with the CHTML parsing/rendering loop.
+4. **Integration:** Ensure the manager (`manager/emoji-studio_manager.c`) interacts via standard IPC, compliant with the sovereign loader.
+5. **Verification:** Verify that the emoji studio renders within the GL-OS desktop, using the new CHTML layout, with functional scrolling and canvas-based rendering.
