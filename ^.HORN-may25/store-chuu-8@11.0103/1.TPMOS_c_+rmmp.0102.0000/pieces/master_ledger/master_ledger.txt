@@ -1,0 +1,3 @@
+[2026-06-01 22:00:23] FrameRendered: at 2026-06-01 22:00:23 | Source: renderer
+[2026-06-01 22:00:24] FrameRendered: at 2026-06-01 22:00:24 | Source: renderer
+[2026-06-01 22:00:25] FrameRendered: at 2026-06-01 22:00:25 | Source: renderer

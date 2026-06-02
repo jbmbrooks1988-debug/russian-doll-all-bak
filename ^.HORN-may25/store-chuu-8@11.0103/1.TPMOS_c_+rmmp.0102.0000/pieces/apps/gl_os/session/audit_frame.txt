@@ -1,0 +1,14 @@
+GL_OS_AUDIT_FRAME
+timestamp=2026-06-01 22:05:27
+project_id=gl-os
+active_layout=pieces/apps/gl_os/layouts/desktop.chtpm
+window_count=2
+active_window_id=2
+selected_index=0
+active_menu_options=
+║    [>] 1. [Test Button         ]           ║
+║    [ ] 2. [Enable Feature      ]           ║
+║    [ ] 3. [Volume              ]           ║
+║    [ ] 4. [Vertical            ]           ║
+source=session/state.txt
+source=session/view.txt

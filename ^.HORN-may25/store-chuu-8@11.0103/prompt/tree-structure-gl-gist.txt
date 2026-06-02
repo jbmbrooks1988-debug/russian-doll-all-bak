@@ -1,0 +1,5 @@
+
+1.  **Hierarchical Transforms:** Instead of manual coordinate math, utilize OpenGL's matrix transformation stack (`glPushMatrix`/`glPopMatrix`) during node traversal to handle relative positioning.
+2.  **Clipping:** Implement scissor-based clipping at the container level within the tree traversal.
+3.  **Benefits:** This ensures that coordinate errors are isolated to a node's local branch and that clipping logic is correctly propagated through the hierarchy.
+

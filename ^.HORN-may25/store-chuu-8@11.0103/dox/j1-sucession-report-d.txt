@@ -1,0 +1,55 @@
+# CHTMGL Refactor J1: Succession Report & Future Roadmap
+**Date:** May 31, 2026
+**Status:** ARCHITECTURE STABLE / REFINEMENT REQUIRED
+
+---
+
+## 1. Current State: The Tree Hierarchy
+We have successfully transitioned CHTMGL from a flat, manual-offset model to a true **Tree-Based Hierarchical Scene Graph**.
+
+### Core Achievements:
+- **Hierarchical Rendering:** Implemented `draw_gltpm_node` using `glPushMatrix`/`glPopMatrix`. Components now render relative to their parent containers (`<panel>`, `<div>`, `<window>`, etc.).
+- **Scoped Clipping:** Integrated a `ScissorStack` that enforces container boundaries. Child elements are strictly contained within their parent's bounding box.
+- **Tree-Aware Parser:** `gltpm_parser.c` now utilizes a `parent_stack` to establish relationships during the markup pass.
+- **Sovereign Mode:** Added `ui_mode="SOVEREIGN"` to hide Host-side HUD/Xelector, granting projects full visual control.
+- **Hex Color Support:** Parser now supports `#RRGGBB` format for modern CHTMGL aesthetics.
+
+---
+
+## 2. Identified Bugs (To Be Fixed)
+
+### 2.1 Text Overlap in Containers
+- **Issue:** Text elements (like "Buttons" or "Controls") are overlapping the top area of their parent panels.
+- **Specific Case:** In `index.chtmgl`, the `<menu>` at `y="20"` overlaps the `<header>` at `y="0"` (which has `height="50"`).
+- **Technical Cause:** The `glRasterPos2f` offset in `draw_gltpm_node` (currently `-txt->y - 20`) needs refinement to align with the panel's internal margin and the "top-down" coordinate expectation of the markup.
+- **Recommendation:** Move overlapping elements in the layout and standardize the "Line Height" for local container text.
+
+### 2.2 Unconstrained Nav Accumulator
+- **Issue:** Typing digits for "Number Jump" allows the `nav_buffer` to grow indefinitely, even if the resulting index doesn't exist. [FIXED in gl_desktop.c]
+
+### 2.3 Audit Frame Incompleteness
+- **Concern:** `audit_frame.txt` does not perfectly represent the `index.chtmgl` tree.
+- **Explanation:** `audit_frame.txt` was designed for session-level state monitoring and ASCII-OS compatibility. It reflects the **flat** menu options used for joystick navigation, not the full recursive scene graph. To achieve a "perfect representation", a recursive tree serializer must be implemented for the `GLTPMScene` structure.
+
+### 2.4 Loss of Sub-window Clipping (Rollback Regression)
+- **Concern:** Sub-windows are rendering outside the macro meta window (desktop bounds).
+- **Explanation:** The recent code rollback reverted the `clamp_window_bounds` logic and taskbar fixes. This allows virtual windows to be initialized or moved below the bottom toolbar, breaking the "forbidden behavior" rule. Re-implementation of window-level coordinate clamping is required.
+
+---
+
+## 3. Phase 4: Media & Interactivity (Roadmap)
+
+### 3.1 Media Integration
+- **<img> Support:** Link the `<img>` tag to `stb_image` textures. The `GLTPMNode` for the image should be updated to store a `texture_id`.
+- **<audio>/<video> Support:** Create a 2nd/3rd media space. Audio should trigger the `5.audio_v0.01.c` system, and video should bind to a texture quad updated by the ffmpeg-based video controller.
+
+### 3.2 3D Scene Interactivity (Piececraft-3D Style)
+- **Interactive <canvas>:** Implement a "Mode 1" interaction for the `<canvas>` tag.
+- **Ray-Casting/Xelector:** When the canvas is focused, mouse/joystick input should be routed to calculate 3D coordinates within that specific node's transform space.
+
+### 3.3 Emoji Picker & Placement
+- **Picker Space:** Implement a specialized `<ul>` or `<panel>` that renders a grid of emoji textures (from the `emoji_atlas`).
+- **Placement Logic:** Clicking an emoji in the picker sets the "Active Voxel/Sprite." Clicking in the 3D `<canvas>` then sends a `PLACE <id> <x,y,z>` command to the project's `history.txt`, allowing dynamic building at the Xelector's position.
+
+---
+*"One Traversal, Total Control. The UI is the document; the document is the world."*

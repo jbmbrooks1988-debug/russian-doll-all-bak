@@ -1,0 +1,15 @@
+active_target_id=xlector
+is_map_control=0
+last_response=Initialized.
+inv_stone=0
+inv_wood=0
+xelector_pos_x=-2
+xelector_pos_y=0
+current_z=0
+camera_mode=4
+cam_x=0.00
+cam_y=0.00
+cam_z=0.00
+cam_pitch=15.00
+cam_yaw=0.00
+cam_roll=0.00

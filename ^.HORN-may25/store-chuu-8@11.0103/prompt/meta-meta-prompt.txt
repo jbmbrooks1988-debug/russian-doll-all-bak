@@ -1,0 +1,24 @@
+# WELCOME: GL-OS TPMOS Refactor Project
+
+This is the primary onboarding document for the new agent. Read this first.
+
+## 1. Project Context
+We are refactoring the GL-OS Desktop environment (`gl_desktop.c`) into a native, Op-based TPMOS architecture. The goal is to move from a 4k LOC monolith to independent, IPC-communicating processes (Ops) while implementing a robust Scene Graph for UI rendering.
+
+## 2. Your Workspace
+- **Working Root:** `./`
+- **Clean Base Code:** `./1.TPMOS_c_+rmmp.0100.0107-+/pieces/apps/gl_os/plugins/gl_desktop.c`
+
+## 3. Documentation (In `./prompt/`)
+Read these files in this order:
+1. `prompt/meta-prompt.txt`: High-level directives for the overall refactor.
+2. `prompt/phase2.txt`: The immediate action plan for Op extraction and auditable frame implementation.
+3. `prompt/explainer.txt`: Rationale for the architectural decisions (Scene Graph vs. Plugins).
+4. `prompt/codex-progress-j1.txt`: The historical context of what has been tried and why it failed.
+
+## 4. Key Rules
+- **No Monoliths:** Do not make the file larger. Decompose it into independent Ops (`op-wm`, `op-render`, etc.).
+- **Audit-First:** Every render pass MUST output an ASCII "Audit Frame" that serves as the logical specification for what is drawn. Use this for testing.
+- **Scene Graph:** Use the OpenGL matrix stack (`glPushMatrix/PopMatrix`) for relative positioning of UI nodes; never use absolute coordinate math for UI flow.
+- **Preserve Fixes:** Port the "Hard-Won Fixes" from the baseline cleanly into the new Window Manager Op.
+- **Maintain Current Behavior:** The existing standard desktop functionality (ASCII-mirror, terminals, window control) MUST work throughout the refactor process.

@@ -1,0 +1,35 @@
+PHASE 3 TO-DO
+
+Goal:
+- Build markup/layout on top of the stable GL audit pipeline from phase 2.
+- Keep the logical frame as the source of truth.
+- Move toward tree-based layout and clipping instead of ad hoc absolute placement.
+
+To-do:
+1. Define markup node contract
+- Decide the minimum markup nodes needed for GL-OS layout.
+- Keep the node format file-backed and inspectable.
+- Make the logical frame the input to markup rendering.
+
+2. Add scene/tree traversal
+- Render nodes in parent/child order.
+- Use local positioning relative to parent nodes.
+- Preserve clipping and nested layout semantics.
+
+3. Introduce markup-backed desktop layouts
+- Replace hardcoded GL layout fragments with markup files where practical.
+- Keep the old path available until the new path is stable.
+- Do not break current launcher behavior while migrating.
+
+4. Align GL projects to markup
+- Convert old GL projects one by one after the desktop pipeline is stable.
+- Keep project sovereignty and file-backed state intact.
+- Avoid broad rewrites; migrate only the necessary layout pieces.
+
+5. Validate parity
+- Compare audit frame output against rendered behavior.
+- Verify window selection, menu behavior, and project launches still work.
+- Stop if markup changes disturb existing phase-2 behavior.
+
+Stop rule:
+- Do not begin broad markup conversion until the audit frame and phase-2 Op boundaries are stable.

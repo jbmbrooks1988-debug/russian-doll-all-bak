@@ -1,0 +1,56 @@
+# J1 Technical Handoff & Roadmap (June 1, 2026)
+
+## 1. Overview
+This document serves as the comprehensive technical handoff for the "J1" Refactor, transitioning the CHTMGL rendering engine from a flat coordinate model to a Tree-Based Hierarchical Scene Graph.
+
+### Status: Architectural Stabilization
+- **Hierarchical Rendering:** Successfully integrated `glPushMatrix`/`glPopMatrix` and `ScissorStack` for scoped clipping.
+- **`<img>` Integration:** Fully operational with `stb_image` texture loading and `GLTPMNode` metadata. Orientation issue resolved by flipped texture coordinate mapping.
+- **Stability:** Virtual window initialization is now constrained by `clamp_window_bounds` to prevent offscreen rendering.
+
+---
+
+## 2. Technical Debt & Critical Architectural Revisions
+
+### 2.1 Project Decoupling (URGENT)
+- **Issue:** Currently, `chtmgl-alpha` and `chtmgl-beta` erroneously share code modules in `pieces/` and are not using project-specific layouts.
+- **Correction Required:** 
+    1.  **Module Isolation:** Duplicate `pieces/apps/gl_os/plugins/` code into `projects/chtmgl-alpha/plugins/` and `projects/chtmgl-beta/plugins/`.
+    2.  **Compilation Update:** Refactor `compile_all.sh` to compile project-specific binaries instead of shared ones.
+    3.  **Layout Mapping:** Update the Host-side loader (`gl_desktop.c`) to map `chtmgl-alpha` to `alpha.gltpm` and `chtmgl-beta` to `beta.gltpm` respectively, moving away from a shared layout path.
+
+### 2.2 Hierarchical Menu Navigation
+- **Issue:** The attempt to implement selectable indices for menus and canvases resulted in build instability.
+- **Cause:** Complex coupling between terminal menu indices and scene graph nodes. Requires a robust `NavigationStack` state machine.
+
+### 2.3 <audio> / <video> Placeholder Logic
+- **Status:** Structural `GLTPMNode` fields `media_src` and `is_playing` are present, but the renderer provides only rudimentary color-coded placeholders.
+
+---
+
+## 3. Implementation Roadmap
+
+### 3.1 Emoji Picker (List-Style)
+*   **Grid Layout:** Implement a 2x2 grid layout (16x16 pixels per cell).
+*   **Renderer Strategy:** Utilize `GLTPMNode` rendering logic; iterate atlas indices.
+*   **Thumb Scroll:** Integrate with `scroll_offset` logic in `draw_scroll_thumb`.
+
+### 3.2 Canvas Xelector & Control Delegation
+*   **Visual Logic:** Overlay a glowing wireframe (`xelector`) on a `<canvas>` node and delegate input control.
+*   **Coordinate Sync:** Host must maintain `xelector_pos[3]` and sync to `session/state.txt` ONLY when `is_map_control == 1`.
+*   **Input Router:** Implement `WriteLock` mechanism (~500ms block) on local interaction to prevent stale manager state from overriding the Host input.
+
+---
+
+## 4. Technical Recommendations (Guidance for Fixes)
+
+1. **Refine Hierarchical Parser:** Transition from line-based parsing to a **token-based visitor pattern**. Line-based logic is fragile for nested XML. Tokenizer yielding `TAG_START`, `TAG_END`, and `ATTR` tokens will eliminate tag identification bugs.
+
+2. **Decouple Menu Navigation:** Implement a formal `NavigationStack` state machine (`PUSH_NODE`, `POP_NODE`). The renderer should be a read-only observer of this stack, while the input layer executes commands.
+
+3. **Media Proxy/Daemon Pattern:** Playback logic must be externalized to background processes. Host/Renderer should act as a proxy, querying state via shared memory or named pipes (FIFOs). 
+
+4. **Input Router & Write-Locks:** Implement an input router in `special_keyboard` to intercept inputs before they reach the manager sync logic. The `WriteLock` prevents stale file-backed state from overriding responsive Host input.
+
+---
+*"One Traversal, Total Control. The UI is the document; the document is the world."*

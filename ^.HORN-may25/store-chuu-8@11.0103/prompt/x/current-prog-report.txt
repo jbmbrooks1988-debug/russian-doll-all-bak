@@ -1,0 +1,29 @@
+GL-OS current progress report
+Date: 2026-06-01
+
+Completed so far:
+- Added a phase-2 cleanup plan to `prompt/phase2.txt`.
+- Extracted GL-OS project discovery into `pieces/apps/gl_os/plugins/gl_os_project_scan.c`.
+- Kept `gl_desktop.c` compatible by preserving the live project scan fallback.
+- Removed the redundant top "GL-OS MASTER CONSOLE | TPM-COMPLIANT" chrome and its duplicate top-right buttons.
+- Fixed `op-ed-gl` routing by exempting it from the shared global project sync path.
+
+Verified behavior:
+- `gl_desktop.c` compiles after each change.
+- The new project-scan Op compiles and writes `pieces/apps/gl_os/manager/projects_cache.txt`.
+- The GL project menu entries for the other layouts stayed stable.
+
+Known current issue:
+- `op-ed-gl` now opens the correct project, but the map is not rendering yet.
+- The `projects/op-ed-gl/layouts/main.gltpm` file does contain `${game_map}`, so the remaining issue is likely in the manager/state pipeline or map data, not the layout text itself.
+- I did not spend more time on that because the requested priority is handoff speed and the next refactor phase will move these projects toward CHTML-style layouts anyway.
+
+Recommended next phase-2 step:
+- Add a file-backed GL audit frame that records the rendered desktop state in plain ASCII before or alongside the current render frame.
+- Keep `gl_desktop.c` behavior unchanged and treat the audit frame as an inspectable contract, not a replacement renderer.
+- This is the right next slice because it gives phase 2 a real auditable artifact without risking launcher behavior.
+
+Notes for handoff:
+- The current refactor direction is still phase 2 first, then phase 3, then CHTML-style layout cleanup.
+- The most recent safe stopping point is the current `gl_desktop.c` state plus the new project scan Op.
+- If continuing later, verify `op-ed-gl` map state before touching unrelated launcher routing again.
