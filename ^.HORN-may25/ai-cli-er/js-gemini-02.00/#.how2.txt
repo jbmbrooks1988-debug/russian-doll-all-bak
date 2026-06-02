@@ -1,0 +1,51 @@
+Yes, here's the exact step-by-step guide to install and run the Node.js version of Aida.1. PrerequisitesMake sure you have Node.js installed (version 18 or higher recommended).Download from: https://nodejs.org
+Or check with:bash
+
+node --version
+
+2. Setup InstructionsRun these commands one by one in your terminal:bash
+
+# 1. Create a new folder for Aida
+mkdir aida-agent && cd aida-agent
+
+# 2. Initialize a Node.js project
+npm init -y
+
+# 3. Install required packages
+npm install @google/generative-ai chalk
+
+# 4. Create the main file
+
+Now create the file aida.js and paste the full code I gave you earlier.5. Add your Gemini API KeyCreate a .env file in the same folder:bash
+
+# On macOS / Linux
+touch .env
+
+# On Windows
+echo. > .env
+
+Then open .env and add your key:env
+
+GEMINI_API_KEY=AIzaSyYourActualKeyHere...
+
+You can get a free Gemini API key from: https://aistudio.google.com/app/apikey
+6. Run Aidabash
+
+node aida.js
+
+Optional: Make it easier to runYou can create a shortcut script:run.sh (macOS/Linux):bash
+
+#!/bin/bash
+node aida.js
+
+run.bat (Windows):bat
+
+node aida.js
+
+Then make it executable:bash
+
+chmod +x run.sh
+
+And just run ./run.sh instead of node aida.js.Would you like me to also give you a package.json with useful scripts, or a one-command setup script?
+
+
