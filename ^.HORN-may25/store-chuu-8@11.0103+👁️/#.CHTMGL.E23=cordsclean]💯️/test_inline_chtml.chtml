@@ -1,8 +1,0 @@
-<window x="100" y="100" width="600" height="400" label="Inline CHTML Demo" color="#333333">
-  <text x="20" y="20" label="Inline CHTML Demo - Dynamic Content Loading"/>
-  <module path="./module/+x/example_file_loader.+x" protocol="shared">./module/+x/example_file_loader.+x</module>
-  <button x="20" y="60" width="120" height="30" label="Load External CHTML" onClick="createWindow('External Window', 'example.chtml', 400, 300)" color="#4CAF50"/>
-  <panel x="20" y="100" width="560" height="250" color="#222222" alpha="0.8">
-    <text x="10" y="10" label="This demo shows both external file loading and module-based dynamic content"/>
-  </panel>
-</window>

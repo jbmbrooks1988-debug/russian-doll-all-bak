@@ -1,0 +1,26 @@
+[2026-06-03 09:39:21] FrameRendered: at 2026-06-03 09:39:21 | Source: renderer
+[2026-06-03 09:39:22] FrameRendered: at 2026-06-03 09:39:22 | Source: renderer
+[2026-06-03 09:39:22] FrameRendered: at 2026-06-03 09:39:22 | Source: renderer
+[2026-06-03 09:39:23] InputReceived: key_code=49 | Source: keyboard_linux
+[2026-06-03 09:39:23] FrameRendered: at 2026-06-03 09:39:23 | Source: renderer
+[2026-06-03 09:39:23] InputReceived: key_code=55 | Source: keyboard_linux
+[2026-06-03 09:39:24] FrameRendered: at 2026-06-03 09:39:24 | Source: renderer
+[2026-06-03 09:39:25] InputReceived: key_code=1003 | Source: keyboard_linux
+[2026-06-03 09:39:25] FrameRendered: at 2026-06-03 09:39:25 | Source: renderer
+[2026-06-03 09:39:25] InputReceived: key_code=13 | Source: keyboard_linux
+[2026-06-03 09:39:25] FrameRendered: at 2026-06-03 09:39:25 | Source: renderer
+[2026-06-03 09:39:25] FrameRendered: at 2026-06-03 09:39:25 | Source: renderer
+[2026-06-03 09:39:26] InputReceived: key_code=13 | Source: keyboard_linux
+[2026-06-03 09:39:26] FrameRendered: at 2026-06-03 09:39:26 | Source: renderer
+[2026-06-03 09:39:26] InputReceived: key_code=104 | Source: keyboard_linux
+[2026-06-03 09:39:26] FrameRendered: at 2026-06-03 09:39:26 | Source: renderer
+[2026-06-03 09:39:26] InputReceived: key_code=105 | Source: keyboard_linux
+[2026-06-03 09:39:26] FrameRendered: at 2026-06-03 09:39:26 | Source: renderer
+[2026-06-03 09:39:26] InputReceived: key_code=13 | Source: keyboard_linux
+[2026-06-03 09:39:26] FrameRendered: at 2026-06-03 09:39:26 | Source: renderer
+[2026-06-03 09:39:26] FrameRendered: at 2026-06-03 09:39:26 | Source: renderer
+[2026-06-03 09:39:26] FrameRendered: at 2026-06-03 09:39:26 | Source: renderer
+[2026-06-03 09:39:27] FrameRendered: at 2026-06-03 09:39:27 | Source: renderer
+[2026-06-03 09:39:28] FrameRendered: at 2026-06-03 09:39:28 | Source: renderer
+[2026-06-03 09:39:33] InputReceived: key_code=99 | Source: keyboard_linux
+[2026-06-03 09:39:33] FrameRendered: at 2026-06-03 09:39:33 | Source: renderer

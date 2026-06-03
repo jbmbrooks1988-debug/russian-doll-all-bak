@@ -1,0 +1,40 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 6% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool web_search completed, but the Gemini follow-up hit quota.             ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ DuckDuckGo result for 'stress':                                            ║
+║ Heading: Stress                                                            ║
+║ Related Topics:                                                            ║
+║ 1. Stress (mechanics) A physical quantity that describes forces present du ║
+║ ring deformation. - https://duckduckgo.com/Stress_(mechanics)              ║
+║ 2. Stress (linguistics) The relative emphasis or prominence given to a cer ║
+║ tain syllable in a word or to a certain word in... - https://duckduckgo.co ║
+║ m/Stress_(linguistics)                                                     ║
+║ 3. Oxidative stress Oxidative stress reflects an imbalance between the sys ║
+║ temic manifestation of reactive oxygen... - https://duckduckgo.com/Oxidati ║
+║ ve_stress                                                                  ║
+║ 4. Stress (biology) An organism's response to a stressor, such as an envir ║
+║ onmental condition or change in life... - https://duckduckgo.com/Stress_(b ║
+║ iology)                                                                    ║
+║ 5. Psychological stress A feeling of emotional strain and pressure. Stress ║
+║  is a form of psychological and mental discomfort. - https://duckduckgo.co ║
+║ m/Psychological_stress                                                     ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)

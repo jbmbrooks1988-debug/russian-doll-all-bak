@@ -1,0 +1,197 @@
+{
+  "systemInstruction": {
+    "parts": [{
+      "text": "You are Aida, a technical agent. Respond in JSON with 'response' or 'tool' keys."
+    }]
+  },
+  "contents": [
+    {
+      "role": "user",
+      "parts": [{
+        "text": "what is shpongilili"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "functionCall": {
+          "name": "web_search",
+          "args": {
+                "query": "what is shpongilili"
+              }
+        }
+      }]
+    },
+    {
+      "role": "function",
+      "parts": [{
+        "functionResponse": {
+          "name": "web_search",
+          "response": {
+            "result": "DuckDuckGo had no instant answer or related topics for 'what is shpongilili'."
+          }
+        }
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": "Tool web_search completed, but the Gemini follow-up hit quota.\nShowing raw tool output instead:\n\nDuckDuckGo had no instant answer or related topics for 'what is shpongilili'."
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "hi"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "text": "Hello! How can I help you today?"
+      }]
+    },
+    {
+      "role": "user",
+      "parts": [{
+        "text": "search 'stress'"
+      }]
+    },
+    {
+      "role": "model",
+      "parts": [{
+        "functionCall": {
+          "name": "web_search",
+          "args": {
+                "query": "stress"
+              }
+        }
+      }]
+    },
+    {
+      "role": "function",
+      "parts": [{
+        "functionResponse": {
+          "name": "web_search",
+          "response": {
+            "result": "DuckDuckGo result for 'stress':\nHeading: Stress\nRelated Topics:\n1. Stress (mechanics) A physical quantity that describes forces present during deformation. - https://duckduckgo.com/Stress_(mechanics)\n2. Stress (linguistics) The relative emphasis or prominence given to a certain syllable in a word or to a certain word in... - https://duckduckgo.com/Stress_(linguistics)\n3. Oxidative stress Oxidative stress reflects an imbalance between the systemic manifestation of reactive oxygen... - https://duckduckgo.com/Oxidative_stress\n4. Stress (biology) An organism's response to a stressor, such as an environmental condition or change in life... - https://duckduckgo.com/Stress_(biology)\n5. Psychological stress A feeling of emotional strain and pressure. Stress is a form of psychological and mental discomfort. - https://duckduckgo.com/Psychological_stress"
+          }
+        }
+      }]
+    }
+  ],
+  "tools": [{
+    "functionDeclarations": [
+      {
+        "name": "exec_cmd",
+        "description": "Run a shell command on the host system",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "The shell command line string to execute"
+            }
+          },
+          "required": ["cmd"]
+        }
+      },
+      {
+        "name": "read_file",
+        "description": "Read the contents of a file from the local filesystem",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "The absolute or relative path to the file to read"
+            }
+          },
+          "required": ["path"]
+        }
+      },
+      {
+        "name": "write_file",
+        "description": "Create a new file or overwrite an existing file with content",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "The path to write the file to"
+            },
+            "content": {
+              "type": "string",
+              "description": "The full string content to write to the file"
+            }
+          },
+          "required": ["path", "content"]
+        }
+      },
+      {
+        "name": "list_dir",
+        "description": "List all files and subdirectories in a directory",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "The directory path to list (defaults to . if empty)"
+            }
+          }
+        }
+      },
+      {
+        "name": "search_in_files",
+        "description": "Search local files recursively for a specific text query/pattern",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "The text query to search for"
+            }
+          },
+          "required": ["query"]
+        }
+      },
+      {
+        "name": "edit_file",
+        "description": "Surgically search and replace a block of text in an existing file",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "The file path to edit"
+            },
+            "search": {
+              "type": "string",
+              "description": "The exact contiguous block of code/text to match"
+            },
+            "replace": {
+              "type": "string",
+              "description": "The new replacement text block"
+            }
+          },
+          "required": ["path", "search", "replace"]
+        }
+      },
+      {
+        "name": "web_search",
+        "description": "Search the internet using DuckDuckGo for up-to-date information",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "The search query"
+            }
+          },
+          "required": ["query"]
+        }
+      }
+    ]
+  }]
+
+}

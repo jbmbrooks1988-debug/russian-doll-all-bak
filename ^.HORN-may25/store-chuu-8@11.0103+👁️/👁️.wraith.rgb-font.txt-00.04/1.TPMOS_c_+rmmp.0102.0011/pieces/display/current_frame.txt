@@ -1,3 +1,0 @@
-Frame Pipeline[ ] 1. [Render Frame][ ] 2. [RGB Daemon Later]Frames and metadata are the product.ASCII Desktop Preview[ ] 3. []CHTMGL parsed by Wraith before GL.[ ] 4. [Inspect Metadata][>] 5. [Mouse Hit Map]
-+=========================================================+
-Nav > _

@@ -1,0 +1,32 @@
+# Windows-specific Issues Investigation Report (ju-1)
+
+## 1. Ctrl+C Signal Failure
+**Status:** Root cause identified.
+**Cause:** The Windows-specific keyboard muscle (`pieces/keyboard/src/keyboard_input_win.c`) disables system processing of control characters.
+- It sets `SetConsoleMode` without the `ENABLE_PROCESSED_INPUT` flag.
+- This prevents the Windows console from generating `CTRL_C_EVENT`, which means the `orchestrator`'s `SetConsoleCtrlHandler` is never triggered.
+- `keyboard_input_win.c` captures `Ctrl+C` as a raw character (ASCII 3) but does not exit or forward it as a signal, causing the application to "swallow" the exit command.
+
+## 2. Project Loader Failure (ASCII Mode)
+**Status:** Root cause identified.
+**Cause:** `chtpm_parser.c` (the core ASCII engine) lacks proper Windows process management.
+- **Module Launching:** The `launch_module` function in `chtpm_parser.c` is currently a stub for Windows (`current_module_pid = -1; /* No fork support */`). Since the Project Loader is implemented as a `<module>`, it never starts in ASCII mode.
+- **Variable Population:** Because the loader module never runs, it never populates the `project_list` variable used by the UI.
+- **Command Execution:** The `LOAD_PROJECT` command handler in `chtpm_parser.c` uses Unix-style `system()` calls (e.g., `'op' 'args' &`) which are incompatible with Windows `cmd.exe` (requires `start /B` and double quotes).
+- **Why GL works:** GL mode often bypasses the ASCII parser for its own menus (e.g., `gl_desktop.c`), which has a more complete Windows implementation using `_spawnl` and `start /B`.
+
+## 3. Second Launch & State Persistence Issues
+**Status:** Root cause identified.
+**Cause:** 
+- **Process Cleanup Failure:** `orchestrator.c` and `proc_manager.c` use conflicting formats for `pieces/os/proc_list.txt`.
+    - `orchestrator.c` uses `%d %s` (PID NAME) and expects this format to kill processes.
+    - `proc_manager.c` uses `%s=%d` (NAME=PID).
+    - Consequently, `sscanf` in the orchestrator fails to read any processes registered by the parser, leaving them orphaned (running in the background) after exit.
+- **Missing Startup Cleanup:** `orchestrator.c` has `#ifndef _WIN32` around the code that clears `proc_list.txt` at startup. On Windows, the file is never cleared, leading to an ever-growing list of stale PIDs.
+- **Stale State Files:** `pieces/apps/player_app/manager/state.txt` and `pieces/display/current_layout.txt` are not reset on launch. If the previous session ended in a project (e.g., `agy-text-editor`), the new session starts with those variables still set, which can confuse the UI and modules.
+
+## Recommended Fixes (Updated)
+1. **Unified Tracking:** Standardize `proc_list.txt` format to `%d %s` across all components and ensure it is cleared on startup regardless of OS.
+2. **State Reset:** Ensure the orchestrator or parser resets `state.txt` to `project_id=playrm` and `active_target_id=loader` on a fresh launch.
+3. **Handle Management:** Ensure Windows process handles are correctly closed in the orchestrator after tracking.
+4. **Interact Mode Fix:** Investigate and fix why interactivity is failing in `interact` mode on Windows (likely related to path slashes or input buffering).

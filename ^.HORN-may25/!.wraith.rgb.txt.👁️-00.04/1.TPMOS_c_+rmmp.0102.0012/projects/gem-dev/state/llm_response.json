@@ -1,0 +1,32 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "```json\n{\n  \"response\": \"Hello! I'm Aida, a technical agent. How can I help you today?\"\n}\n```",
+            "thoughtSignature": "Cl8BDDnWx0EqMPUIp7QoXIXqQxiJIeeStQWnUtjFqQiCBnJzWOcSU0z5KnPN1h9ToLEor8JyShRcjelgsIqGRntUD49KbYy7zQrZCfDIqMAnirH8hDBwFoW95yhgQhr33w=="
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 428,
+    "candidatesTokenCount": 33,
+    "totalTokenCount": 475,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 428
+      }
+    ],
+    "thoughtsTokenCount": 14,
+    "serviceTier": "standard"
+  },
+  "modelVersion": "gemini-2.5-flash",
+  "responseId": "v1ggav_mDbOd_uMP3ouw4Qk"
+}

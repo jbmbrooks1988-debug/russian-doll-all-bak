@@ -1,0 +1,7 @@
+process_input_trigger: state=IDLE raw_input=search hangul last_buf=search hangul
+process_input_trigger: state=IDLE raw_input=search hangul last_buf=search hangul
+process_input_trigger: state=IDLE raw_input=search godly last_buf=search godly
+process_input_trigger: state=IDLE raw_input=search human last_buf=search human
+process_input_trigger: state=IDLE raw_input=how are u ? last_buf=how are u ?
+process_input_trigger: state=IDLE raw_input=hi last_buf=hi
+process_input_trigger: state=IDLE raw_input=hi last_buf=hi
