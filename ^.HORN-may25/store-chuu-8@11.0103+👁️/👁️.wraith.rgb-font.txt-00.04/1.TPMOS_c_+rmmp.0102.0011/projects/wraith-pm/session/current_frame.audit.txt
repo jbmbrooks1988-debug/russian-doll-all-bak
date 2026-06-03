@@ -1,0 +1,12 @@
+WRAITH FRAME AUDIT
+frame_id=000005
+project_id=wraith-pm
+source_layout=projects/wraith-pm/layouts/desktop.chtmgl
+generated_at_epoch=1780467986
+cols=96
+rows=30
+cell_width_px=10
+cell_height_px=18
+object_count=18
+outputs=current_frame.txt,current_frame.ansi.txt,current_frame.cells.pdl,current_frame.meta.pdl,current_frame.objects.pdl,current_frame.hitmap.pdl
+warnings=none

@@ -1,0 +1,16 @@
+Archive batch: 2026-06-03/1780467743
+Purpose: Add separate synchronous Wraith image/video decode ops and wire parser media merge.
+
+Edited files:
+- 1.TPMOS_c_+rmmp.0102.0010/projects/wraith-pm/ops/wraith_parser.c
+- 1.TPMOS_c_+rmmp.0102.0010/projects/wraith-pm/layouts/desktop.chtmgl
+
+New files:
+- 1.TPMOS_c_+rmmp.0102.0010/projects/wraith-pm/ops/wraith_image_decode.c
+- 1.TPMOS_c_+rmmp.0102.0010/projects/wraith-pm/ops/wraith_video_decode.c
+- 1.TPMOS_c_+rmmp.0102.0010/projects/wraith-pm/assets/sample.ppm
+- 1.TPMOS_c_+rmmp.0102.0010/projects/wraith-pm/assets/sample-video.frames
+
+Archived originals:
+- 1.TPMOS_c_+rmmp.0102.0010/projects/wraith-pm/ops/wraith_parser.c
+- 1.TPMOS_c_+rmmp.0102.0010/projects/wraith-pm/layouts/desktop.chtmgl

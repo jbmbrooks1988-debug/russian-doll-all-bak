@@ -1,0 +1,20 @@
+Archive batch: 2026-06-03/1780465873
+Purpose: Preserve active Codex notes before moving them into _codex_dox.
+
+Moved active notes:
+- FRAME_FIRST_RENDER_REPORT.md -> _codex_dox/FRAME_FIRST_RENDER_REPORT.md
+- pre-planning-codex-j2.txt -> _codex_dox/pre-planning-codex-j2.txt
+- wraith-pm-frame-rgb-bridge-codex-j2.txt -> _codex_dox/wraith-pm-frame-rgb-bridge-codex-j2.txt
+- wrath-pm-codex-j2.txt -> _codex_dox/wrath-pm-codex-j2.txt
+- 1.TPMOS_c_+rmmp.0102.0010/codex-tpmos-onbord.txt -> _codex_dox/codex-tpmos-onbord.txt
+
+New active notes:
+- _codex_dox/NOTES_POLICY.txt
+- _codex_dox/INVENTORY.txt
+
+Archived originals:
+- FRAME_FIRST_RENDER_REPORT.md
+- pre-planning-codex-j2.txt
+- wraith-pm-frame-rgb-bridge-codex-j2.txt
+- wrath-pm-codex-j2.txt
+- 1.TPMOS_c_+rmmp.0102.0010/codex-tpmos-onbord.txt

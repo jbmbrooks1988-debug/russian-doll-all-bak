@@ -1,0 +1,80 @@
+SECTION | KEY | VALUE
+MEDIA | kind | image
+MEDIA | source | projects/wraith-pm/assets/sample.ppm
+MEDIA | cols | 18
+MEDIA | rows | 4
+MEDIA | object_id | 14
+MEDIA | decoded_width | 8
+MEDIA | decoded_height | 6
+CELL | x=0,y=0 | ch=2E fg=#101820 bg=#101820 object=14 style=image
+CELL | x=1,y=0 | ch=2E fg=#101820 bg=#101820 object=14 style=image
+CELL | x=2,y=0 | ch=2E fg=#101820 bg=#101820 object=14 style=image
+CELL | x=3,y=0 | ch=27 fg=#283C5A bg=#283C5A object=14 style=image
+CELL | x=4,y=0 | ch=27 fg=#283C5A bg=#283C5A object=14 style=image
+CELL | x=5,y=0 | ch=2B fg=#5078A0 bg=#5078A0 object=14 style=image
+CELL | x=6,y=0 | ch=2B fg=#5078A0 bg=#5078A0 object=14 style=image
+CELL | x=7,y=0 | ch=78 fg=#78B4DC bg=#78B4DC object=14 style=image
+CELL | x=8,y=0 | ch=78 fg=#78B4DC bg=#78B4DC object=14 style=image
+CELL | x=9,y=0 | ch=26 fg=#B4DCF0 bg=#B4DCF0 object=14 style=image
+CELL | x=10,y=0 | ch=26 fg=#B4DCF0 bg=#B4DCF0 object=14 style=image
+CELL | x=11,y=0 | ch=26 fg=#B4DCF0 bg=#B4DCF0 object=14 style=image
+CELL | x=12,y=0 | ch=78 fg=#DCB478 bg=#DCB478 object=14 style=image
+CELL | x=13,y=0 | ch=78 fg=#DCB478 bg=#DCB478 object=14 style=image
+CELL | x=14,y=0 | ch=2B fg=#B46450 bg=#B46450 object=14 style=image
+CELL | x=15,y=0 | ch=2B fg=#B46450 bg=#B46450 object=14 style=image
+CELL | x=16,y=0 | ch=2D fg=#783C5A bg=#783C5A object=14 style=image
+CELL | x=17,y=0 | ch=2D fg=#783C5A bg=#783C5A object=14 style=image
+CELL | x=0,y=1 | ch=60 fg=#1E283C bg=#1E283C object=14 style=image
+CELL | x=1,y=1 | ch=60 fg=#1E283C bg=#1E283C object=14 style=image
+CELL | x=2,y=1 | ch=60 fg=#1E283C bg=#1E283C object=14 style=image
+CELL | x=3,y=1 | ch=3B fg=#466E96 bg=#466E96 object=14 style=image
+CELL | x=4,y=1 | ch=3B fg=#466E96 bg=#466E96 object=14 style=image
+CELL | x=5,y=1 | ch=78 fg=#6EAAD2 bg=#6EAAD2 object=14 style=image
+CELL | x=6,y=1 | ch=78 fg=#6EAAD2 bg=#6EAAD2 object=14 style=image
+CELL | x=7,y=1 | ch=26 fg=#96D2F0 bg=#96D2F0 object=14 style=image
+CELL | x=8,y=1 | ch=26 fg=#96D2F0 bg=#96D2F0 object=14 style=image
+CELL | x=9,y=1 | ch=23 fg=#E6D282 bg=#E6D282 object=14 style=image
+CELL | x=10,y=1 | ch=23 fg=#E6D282 bg=#E6D282 object=14 style=image
+CELL | x=11,y=1 | ch=23 fg=#E6D282 bg=#E6D282 object=14 style=image
+CELL | x=12,y=1 | ch=78 fg=#F5A05A bg=#F5A05A object=14 style=image
+CELL | x=13,y=1 | ch=78 fg=#F5A05A bg=#F5A05A object=14 style=image
+CELL | x=14,y=1 | ch=3D fg=#C85A64 bg=#C85A64 object=14 style=image
+CELL | x=15,y=1 | ch=3D fg=#C85A64 bg=#C85A64 object=14 style=image
+CELL | x=16,y=1 | ch=3B fg=#824678 bg=#824678 object=14 style=image
+CELL | x=17,y=1 | ch=3B fg=#824678 bg=#824678 object=14 style=image
+CELL | x=0,y=2 | ch=3B fg=#465A82 bg=#465A82 object=14 style=image
+CELL | x=1,y=2 | ch=3B fg=#465A82 bg=#465A82 object=14 style=image
+CELL | x=2,y=2 | ch=3B fg=#465A82 bg=#465A82 object=14 style=image
+CELL | x=3,y=2 | ch=78 fg=#6EAAD2 bg=#6EAAD2 object=14 style=image
+CELL | x=4,y=2 | ch=78 fg=#6EAAD2 bg=#6EAAD2 object=14 style=image
+CELL | x=5,y=2 | ch=26 fg=#A0DCE6 bg=#A0DCE6 object=14 style=image
+CELL | x=6,y=2 | ch=26 fg=#A0DCE6 bg=#A0DCE6 object=14 style=image
+CELL | x=7,y=2 | ch=26 fg=#D2F5C8 bg=#D2F5C8 object=14 style=image
+CELL | x=8,y=2 | ch=26 fg=#D2F5C8 bg=#D2F5C8 object=14 style=image
+CELL | x=9,y=2 | ch=23 fg=#F5D264 bg=#F5D264 object=14 style=image
+CELL | x=10,y=2 | ch=23 fg=#F5D264 bg=#F5D264 object=14 style=image
+CELL | x=11,y=2 | ch=23 fg=#F5D264 bg=#F5D264 object=14 style=image
+CELL | x=12,y=2 | ch=78 fg=#F0785A bg=#F0785A object=14 style=image
+CELL | x=13,y=2 | ch=78 fg=#F0785A bg=#F0785A object=14 style=image
+CELL | x=14,y=2 | ch=3D fg=#D24696 bg=#D24696 object=14 style=image
+CELL | x=15,y=2 | ch=3D fg=#D24696 bg=#D24696 object=14 style=image
+CELL | x=16,y=2 | ch=3D fg=#AA5AB4 bg=#AA5AB4 object=14 style=image
+CELL | x=17,y=2 | ch=3D fg=#AA5AB4 bg=#AA5AB4 object=14 style=image
+CELL | x=0,y=3 | ch=2B fg=#5A6E96 bg=#5A6E96 object=14 style=image
+CELL | x=1,y=3 | ch=2B fg=#5A6E96 bg=#5A6E96 object=14 style=image
+CELL | x=2,y=3 | ch=2B fg=#5A6E96 bg=#5A6E96 object=14 style=image
+CELL | x=3,y=3 | ch=23 fg=#82BEDC bg=#82BEDC object=14 style=image
+CELL | x=4,y=3 | ch=23 fg=#82BEDC bg=#82BEDC object=14 style=image
+CELL | x=5,y=3 | ch=26 fg=#BEE6DC bg=#BEE6DC object=14 style=image
+CELL | x=6,y=3 | ch=26 fg=#BEE6DC bg=#BEE6DC object=14 style=image
+CELL | x=7,y=3 | ch=26 fg=#E6F5B4 bg=#E6F5B4 object=14 style=image
+CELL | x=8,y=3 | ch=26 fg=#E6F5B4 bg=#E6F5B4 object=14 style=image
+CELL | x=9,y=3 | ch=23 fg=#EBBE5A bg=#EBBE5A object=14 style=image
+CELL | x=10,y=3 | ch=23 fg=#EBBE5A bg=#EBBE5A object=14 style=image
+CELL | x=11,y=3 | ch=23 fg=#EBBE5A bg=#EBBE5A object=14 style=image
+CELL | x=12,y=3 | ch=3D fg=#DC646E bg=#DC646E object=14 style=image
+CELL | x=13,y=3 | ch=3D fg=#DC646E bg=#DC646E object=14 style=image
+CELL | x=14,y=3 | ch=3D fg=#BE50AA bg=#BE50AA object=14 style=image
+CELL | x=15,y=3 | ch=3D fg=#BE50AA bg=#BE50AA object=14 style=image
+CELL | x=16,y=3 | ch=3D fg=#9650AA bg=#9650AA object=14 style=image
+CELL | x=17,y=3 | ch=3D fg=#9650AA bg=#9650AA object=14 style=image

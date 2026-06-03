@@ -1,0 +1,85 @@
+🅰️
+› ill want to start the gl rendering soon also. do u know how u will pass fonts
+  and render them in gl (gl is rendering rgb only right not fonts, those are
+  meant to convert to rgb or is that not part of the plan?)
+
+
+• Yes: in this plan, GL should render RGB frames, not own font rendering.
+
+  The font path should be:
+
+  CHTMGL text / ASCII cells
+    -> colored cell frame
+    -> glyph rasterizer converts characters to pixels
+    -> RGB/RGBA framebuffer
+    -> GL presenter uploads framebuffer as texture
+
+  So GL does not need to know about fonts, buttons, text layout, CHTMGL tags, or
+  UI semantics. It just gets a finished RGB/RGBA frame and displays it.
+
+  For fonts specifically, we have two reasonable stages:
+
+  1. Early stage: use a built-in bitmap font atlas, like 8x8, 8x13, or 8x16.
+     Each ASCII cell has char, fg_rgb, bg_rgb, style, and object_id. The
+     rasterizer paints the background, then paints glyph pixels in foreground
+     color into current_frame.rgb.txt or rgba.bin.
+
+  2. Later stage: use FreeType or a packed font atlas.
+     Still the same contract: text becomes pixels before GL. GL only uploads the
+     resulting framebuffer texture.
+
+  So the GL presenter is basically:
+
+  read rgba.bin / rgb.txt
+  glTexSubImage2D(...)
+  draw one full-screen quad
+
+  If we ever let GL render fonts directly, that should be a separate debug/
+  experimental renderer, not the main wraith-pm contract. The main contract is:
+  fonts convert to RGB before GL.
+
+🆎️
+Key takeaway: Wraith should not be “CHTMGL directly to GL.” It should be
+  CHTMGL + state -> wraith_parser.c element tree -> colored ASCII frame
+  artifacts -> optional RGB/GL/HDMI output.
+
+─ Worked for 1m 46s ────────────────────────────────────────────────────────────
+
+
+› the ascii frames + metadata as .pdl or something else will be created. the
+  converter will optionally run as a daemon and feed to pure rgb from frames +
+  meta data 2 the wraith-gl.c . were u not clear? on that ? lets create that
+  soon as well , so i can tell u if it matches intention (u will need my eyes
+  for this at first, till we confirm bootstrap)
+
+
+• You’re clarifying an important boundary: Wraith creates ASCII frames plus
+  metadata first, and the RGB converter is a separate optional stage that can
+  run as a daemon. I’m going to capture that as an explicit bridge spec and
+  update the onboarding note so future agents don’t collapse parser, converter,
+  and GL presenter into one thing.
+  
+🆎️
+👐🏻️
+  ; this is my current experience. is it loading the desktop ? its supposed to load a
+  desktop like gl-os with an ascii terminal and text in it (movable by mouse drag) and
+  and have focus, z levels, etc, get it? it should mirror gl-desktop first (using wraith
+  layout and parse chtmgl layouts same as gl-os later) do u get this? . i think this was
+  misunderstood about my intentions. since were getting low on quota for today , lets
+  explain this as next stages in wraith-handoff-j2.txt
+
+
+• Yes, duckling, I get it now 🌿 What you’re seeing is not the intended Wraith desktop.
+  TPMOS is loading the CHTMGL through the existing CHTPM text parser path, so it flattens
+  tags into a one-line menu-ish frame instead of handing control to a Wraith desktop
+  renderer with windows, focus, z-levels, terminal, and mouse drag. I’ll write that
+  clearly as the handoff for next stages.
+👐🏻️👐🏻️👐🏻️👐🏻️👐🏻️👐🏻️👐🏻️👐🏻️👐🏻️👐🏻️👐🏻️👐🏻️👐🏻️👐🏻️👐🏻️👐🏻️
+✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️j2
+its gonna need to go mouse 2 engine back 2 render itself
+(if u wanna control mouse and kbd in wraith-gl ) 
+🧸️
+<also u can always just do straight 2 gl or w/e later but thats not
+the point right now. we scaffold like this 4 good foundation discipline
+same as always its just faster so its confusing y were doing same thing 'twice'> 
+✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️✍🏾️

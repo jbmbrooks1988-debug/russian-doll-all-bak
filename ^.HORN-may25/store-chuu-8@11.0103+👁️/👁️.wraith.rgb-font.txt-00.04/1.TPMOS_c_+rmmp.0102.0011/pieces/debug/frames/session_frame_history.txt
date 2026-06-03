@@ -1,0 +1,227 @@
+=== NEW SESSION at 2026-06-02 23:29:02 ===
+
+--- FRAME UPDATE at 2026-06-02 23:29:02 ---
++===========================================================+
+|                                                           |
+|           C H T P M + O S   C L I   v2.0                 |
+|                                                           |
+|  CHTPM+OS Main Menu                                      |
+|                                                           |
+|  [>] 1. [Project Loader]                             |
+|  [ ] 2. [App Store (Fondu)]                          |
+|  [ ] 3. [Status]  [ ] 4. [GL-OS]                                          |
+|  [ ] 5. [Process Monitor]                            |
+|  [ ] 6. [Toggle Frame History (Current: )]                                         |
+|  [ ] 7. [Help]                                            |
+|                                                           |
++===========================================================+
+|  Running Applications: None                               |
+|  System Time: 08:00:00 | Turn: 0 | Key: None |
++===========================================================+
+|                                                           |
+|  $ | [ ] 8. []                                                 |                                                 |
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-02 23:29:03 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [>] 1. [+-demo]                                        ║
+║  [ ] 2. [404-test]                                      ║
+║  [ ] 3. [agy-text-editor]                               ║
+║  [ ] 4. [ai-labs]                                       ║
+║  [ ] 5. [aow]                                           ║
+║  [ ] 6. [aow-2d]                                        ║
+║  [ ] 7. [bot-editor]                                    ║
+║  [ ] 8. [bots-sov]                                      ║
+║  [ ] 9. [chat-op]                                       ║
+║  [ ] 10. [checkers]                                      ║
+║  [ ] 11. [chtmgl-alpha]                                  ║
+║  [ ] 12. [chtmgl-beta]                                   ║
+║  [ ] 13. [cpp-llm]                                       ║
+║  [ ] 14. [cyoa-engine]                                   ║
+║  [ ] 15. [demo_1]                                        ║
+║  [ ] 16. [fuzz-op]                                       ║
+║  [ ] 17. [gem-api]                                       ║
+║  [ ] 18. [gem-dev]                                       ║
+║  [ ] 19. [gitlet]                                        ║
+║  [ ] 20. [gltpm-demo]                                    ║
+║  [ ] 21. [groq-ollama]                                   ║
+║  [ ] 22. [hangman]                                       ║
+║  [ ] 23. [lsr]                                           ║
+║  [ ] 24. [man-add]                                       ║
+║  [ ] 25. [man-ops]                                       ║
+║  [ ] 26. [man-pal]                                       ║
+║  [ ] 27. [media-editor]                                  ║
+║  [ ] 28. [mp3-store]                                     ║
+║  [ ] 29. [op-ed]                                         ║
+║  [ ] 30. [op-ed-gl]                                      ║
+║  [ ] 31. [p2p-net]                                       ║
+║  [ ] 32. [piececraft-3d]                                 ║
+║  [ ] 33. [quiz-engine]                                   ║
+║  [ ] 34. [slop-ed-dev]                                   ║
+║  [ ] 35. [template]                                      ║
+║  [ ] 36. [test_fondu]                                    ║
+║  [ ] 37. [tsots-irc]                                     ║
+║  [ ] 38. [tsots-online]                                  ║
+║  [ ] 39. [user]                                          ║
+║  [ ] 40. [wraith-pm]                                     ║
+║  [ ] 41. [xsr]                                           ║
+║  [ ] 42. [yahoo]                                         ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 43. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-02 23:29:05 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [ ] 1. [+-demo]                                        ║
+║  [ ] 2. [404-test]                                      ║
+║  [ ] 3. [agy-text-editor]                               ║
+║  [>] 4. [ai-labs]                                       ║
+║  [ ] 5. [aow]                                           ║
+║  [ ] 6. [aow-2d]                                        ║
+║  [ ] 7. [bot-editor]                                    ║
+║  [ ] 8. [bots-sov]                                      ║
+║  [ ] 9. [chat-op]                                       ║
+║  [ ] 10. [checkers]                                      ║
+║  [ ] 11. [chtmgl-alpha]                                  ║
+║  [ ] 12. [chtmgl-beta]                                   ║
+║  [ ] 13. [cpp-llm]                                       ║
+║  [ ] 14. [cyoa-engine]                                   ║
+║  [ ] 15. [demo_1]                                        ║
+║  [ ] 16. [fuzz-op]                                       ║
+║  [ ] 17. [gem-api]                                       ║
+║  [ ] 18. [gem-dev]                                       ║
+║  [ ] 19. [gitlet]                                        ║
+║  [ ] 20. [gltpm-demo]                                    ║
+║  [ ] 21. [groq-ollama]                                   ║
+║  [ ] 22. [hangman]                                       ║
+║  [ ] 23. [lsr]                                           ║
+║  [ ] 24. [man-add]                                       ║
+║  [ ] 25. [man-ops]                                       ║
+║  [ ] 26. [man-pal]                                       ║
+║  [ ] 27. [media-editor]                                  ║
+║  [ ] 28. [mp3-store]                                     ║
+║  [ ] 29. [op-ed]                                         ║
+║  [ ] 30. [op-ed-gl]                                      ║
+║  [ ] 31. [p2p-net]                                       ║
+║  [ ] 32. [piececraft-3d]                                 ║
+║  [ ] 33. [quiz-engine]                                   ║
+║  [ ] 34. [slop-ed-dev]                                   ║
+║  [ ] 35. [template]                                      ║
+║  [ ] 36. [test_fondu]                                    ║
+║  [ ] 37. [tsots-irc]                                     ║
+║  [ ] 38. [tsots-online]                                  ║
+║  [ ] 39. [user]                                          ║
+║  [ ] 40. [wraith-pm]                                     ║
+║  [ ] 41. [xsr]                                           ║
+║  [ ] 42. [yahoo]                                         ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 43. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > 4_
+
+
+--- FRAME UPDATE at 2026-06-02 23:29:06 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [ ] 1. [+-demo]                                        ║
+║  [ ] 2. [404-test]                                      ║
+║  [ ] 3. [agy-text-editor]                               ║
+║  [ ] 4. [ai-labs]                                       ║
+║  [ ] 5. [aow]                                           ║
+║  [ ] 6. [aow-2d]                                        ║
+║  [ ] 7. [bot-editor]                                    ║
+║  [ ] 8. [bots-sov]                                      ║
+║  [ ] 9. [chat-op]                                       ║
+║  [ ] 10. [checkers]                                      ║
+║  [ ] 11. [chtmgl-alpha]                                  ║
+║  [ ] 12. [chtmgl-beta]                                   ║
+║  [ ] 13. [cpp-llm]                                       ║
+║  [ ] 14. [cyoa-engine]                                   ║
+║  [ ] 15. [demo_1]                                        ║
+║  [ ] 16. [fuzz-op]                                       ║
+║  [ ] 17. [gem-api]                                       ║
+║  [ ] 18. [gem-dev]                                       ║
+║  [ ] 19. [gitlet]                                        ║
+║  [ ] 20. [gltpm-demo]                                    ║
+║  [ ] 21. [groq-ollama]                                   ║
+║  [ ] 22. [hangman]                                       ║
+║  [ ] 23. [lsr]                                           ║
+║  [ ] 24. [man-add]                                       ║
+║  [ ] 25. [man-ops]                                       ║
+║  [ ] 26. [man-pal]                                       ║
+║  [ ] 27. [media-editor]                                  ║
+║  [ ] 28. [mp3-store]                                     ║
+║  [ ] 29. [op-ed]                                         ║
+║  [ ] 30. [op-ed-gl]                                      ║
+║  [ ] 31. [p2p-net]                                       ║
+║  [ ] 32. [piececraft-3d]                                 ║
+║  [ ] 33. [quiz-engine]                                   ║
+║  [ ] 34. [slop-ed-dev]                                   ║
+║  [ ] 35. [template]                                      ║
+║  [ ] 36. [test_fondu]                                    ║
+║  [ ] 37. [tsots-irc]                                     ║
+║  [ ] 38. [tsots-online]                                  ║
+║  [ ] 39. [user]                                          ║
+║  [>] 40. [wraith-pm]                                     ║
+║  [ ] 41. [xsr]                                           ║
+║  [ ] 42. [yahoo]                                         ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 43. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > 40_
+
+
+--- FRAME UPDATE at 2026-06-02 23:29:06 ---
+Frame Pipeline[>] 1. [Render Frame][ ] 2. [RGB Daemon Later]Frames and metadata are the product.ASCII Desktop Preview[ ] 3. []CHTMGL parsed by Wraith before GL.[ ] 4. [Inspect Metadata][ ] 5. [Mouse Hit Map]
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-02 23:29:09 ---
+Frame Pipeline[ ] 1. [Render Frame][>] 2. [RGB Daemon Later]Frames and metadata are the product.ASCII Desktop Preview[ ] 3. []CHTMGL parsed by Wraith before GL.[ ] 4. [Inspect Metadata][ ] 5. [Mouse Hit Map]
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-02 23:29:10 ---
+Frame Pipeline[ ] 1. [Render Frame][ ] 2. [RGB Daemon Later]Frames and metadata are the product.ASCII Desktop Preview[>] 3. []CHTMGL parsed by Wraith before GL.[ ] 4. [Inspect Metadata][ ] 5. [Mouse Hit Map]
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-02 23:29:11 ---
+Frame Pipeline[ ] 1. [Render Frame][ ] 2. [RGB Daemon Later]Frames and metadata are the product.ASCII Desktop Preview[ ] 3. []CHTMGL parsed by Wraith before GL.[>] 4. [Inspect Metadata][ ] 5. [Mouse Hit Map]
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-02 23:29:12 ---
+Frame Pipeline[ ] 1. [Render Frame][ ] 2. [RGB Daemon Later]Frames and metadata are the product.ASCII Desktop Preview[ ] 3. []CHTMGL parsed by Wraith before GL.[ ] 4. [Inspect Metadata][>] 5. [Mouse Hit Map]
++=========================================================+
+Nav > _
+

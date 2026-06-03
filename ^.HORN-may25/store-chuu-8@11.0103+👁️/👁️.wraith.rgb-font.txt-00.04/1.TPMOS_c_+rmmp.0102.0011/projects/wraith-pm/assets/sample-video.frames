@@ -1,0 +1,6 @@
+SECTION | KEY | VALUE
+VIDEO | kind | synthetic_ascii_frames
+VIDEO | note | First bootstrap source for wraith_video_decode.c.
+FRAME | 0 | glyph=wave fg=#DDE7F0 bg=#3D2C54
+FRAME | 1 | glyph=scan fg=#FFD166 bg=#2D1B3D
+FRAME | 2 | glyph=pulse fg=#6FFFE9 bg=#172A3A

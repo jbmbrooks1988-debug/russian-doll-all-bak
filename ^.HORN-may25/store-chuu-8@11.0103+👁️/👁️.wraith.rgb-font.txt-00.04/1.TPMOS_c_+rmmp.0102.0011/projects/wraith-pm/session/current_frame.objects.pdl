@@ -1,0 +1,20 @@
+SECTION | KEY | VALUE
+FRAME | frame_id | 000005
+OBJECT | 0001 | tag=window id=wraith_root role=window x=0 y=0 w=96 h=30 fg=#E8F1F2 bg=#101820 border=#7EDFF2 label=Wraith PM action= src=
+OBJECT | 0002 | tag=header id=topbar role=banner x=0 y=0 w=96 h=3 fg=#F7FAFC bg=#243B53 border=#7EDFF2 label=Wraith PM - CHTMGL to Colored ASCII Frames action= src=
+OBJECT | 0003 | tag=panel id=dock role=panel x=1 y=4 w=22 h=24 fg=#DDE7F0 bg=#1B263B border=#4ECDC4 label= action= src=
+OBJECT | 0004 | tag=text id=dock_title role=text x=2 y=4 w=20 h=2 fg=#F7FAFC bg=#1B263B border=#F7FAFC label=Frame Pipeline action= src=
+OBJECT | 0005 | tag=button id=render_now role=button x=2 y=7 w=19 h=2 fg=#FFFFFF bg=#2D6A4F border=#FFFFFF label=Render Frame action=COMMAND:OP wraith-pm::render src=
+OBJECT | 0006 | tag=button id=toggle_rgb role=button x=2 y=9 w=19 h=2 fg=#FFFFFF bg=#5A4FCF border=#FFFFFF label=RGB Daemon Later action=COMMAND:OP wraith-pm::rgb_daemon src=
+OBJECT | 0007 | tag=checkbox id=ansi_color role=checkbox x=2 y=12 w=18 h=2 fg=#F7FAFC bg=#4ECDC4 border=#F7FAFC label=ANSI color on action= src=
+OBJECT | 0008 | tag=slider id=audit_depth role=slider x=2 y=15 w=19 h=2 fg=#111111 bg=#FFD166 border=#111111 label=Audit depth action= src=
+OBJECT | 0009 | tag=text id=dock_note role=text x=2 y=19 w=20 h=2 fg=#B8C5D6 bg=#1B263B border=#B8C5D6 label=Frames and metadata are the product. action= src=
+OBJECT | 0010 | tag=panel id=desktop role=panel x=25 y=4 w=70 h=24 fg=#E8F1F2 bg=#172A3A border=#7BDFF2 label= action= src=
+OBJECT | 0011 | tag=text id=desktop_title role=text x=26 y=4 w=68 h=2 fg=#F7FAFC bg=#172A3A border=#F7FAFC label=ASCII Desktop Preview action= src=
+OBJECT | 0012 | tag=canvas id=main_canvas role=canvas x=26 y=6 w=42 h=14 fg=#DDE7F0 bg=#0B1320 border=#6FFFE9 label= action= src=
+OBJECT | 0013 | tag=text id=canvas_text role=text x=27 y=7 w=40 h=2 fg=#B8F7D4 bg=#0B1320 border=#B8F7D4 label=CHTMGL parsed by Wraith before GL. action= src=
+OBJECT | 0014 | tag=img id=sample_image role=image x=71 y=6 w=20 h=6 fg=#F7FAFC bg=#334155 border=#F7FAFC label= action= src=projects/wraith-pm/assets/sample.ppm
+OBJECT | 0015 | tag=video id=sample_video role=video x=71 y=13 w=20 h=7 fg=#F7FAFC bg=#3D2C54 border=#F7FAFC label= action= src=projects/wraith-pm/assets/sample-video.frames
+OBJECT | 0016 | tag=text id=status role=text x=26 y=21 w=68 h=2 fg=#FFD166 bg=#172A3A border=#FFD166 label=Ready: CHTMGL -> colored ASCII frame -> PDL metadata action= src=
+OBJECT | 0017 | tag=button id=inspect role=button x=26 y=23 w=18 h=2 fg=#FFFFFF bg=#885A89 border=#FFFFFF label=Inspect Metadata action=COMMAND:OP wraith-pm::inspect src=
+OBJECT | 0018 | tag=button id=mouse_test role=button x=46 y=23 w=18 h=2 fg=#FFFFFF bg=#006D77 border=#FFFFFF label=Mouse Hit Map action=COMMAND:OP wraith-pm::hitmap src=

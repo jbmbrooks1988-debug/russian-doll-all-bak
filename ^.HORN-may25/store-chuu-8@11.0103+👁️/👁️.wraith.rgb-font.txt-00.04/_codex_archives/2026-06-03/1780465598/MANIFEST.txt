@@ -1,0 +1,11 @@
+Archive batch: 2026-06-03/1780465598
+Purpose: Preserve onboarding doc before adding explicit Wraith frame/meta -> RGB daemon -> GL presenter notes.
+
+Edited files:
+- 1.TPMOS_c_+rmmp.0102.0010/codex-tpmos-onbord.txt
+
+New files:
+- wraith-pm-frame-rgb-bridge-codex-j2.txt
+
+Archived originals:
+- 1.TPMOS_c_+rmmp.0102.0010/codex-tpmos-onbord.txt

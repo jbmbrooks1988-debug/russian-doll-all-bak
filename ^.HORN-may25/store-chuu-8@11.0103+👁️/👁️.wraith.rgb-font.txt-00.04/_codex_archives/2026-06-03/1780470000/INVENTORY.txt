@@ -1,0 +1,99 @@
+CODEX DOX INVENTORY
+
+Active notes folder:
+_codex_dox/
+
+Codex TPMOS reports folder:
+_codex-tpmos/reports/
+
+Policy:
+- _codex_dox/NOTES_POLICY.txt
+
+Current active notes:
+
+- _codex_dox/codex-tpmos-onbord.txt
+  Practical Codex/API onboarding for TPMOS and wraith-pm work.
+  Old path archived from:
+  1.TPMOS_c_+rmmp.0102.0010/codex-tpmos-onbord.txt
+
+- _codex_dox/FRAME_FIRST_RENDER_REPORT.md
+  Report on the existing frame-first RGB project and its relevance to Wraith.
+  Old path archived from:
+  FRAME_FIRST_RENDER_REPORT.md
+
+- _codex_dox/wrath-pm-codex-j2.txt
+  Large planning document for wraith/wrath-pm direction.
+  Old path archived from:
+  wrath-pm-codex-j2.txt
+
+- _codex_dox/pre-planning-codex-j2.txt
+  Pre-code alignment agenda for colored ASCII, images, videos, metadata, and GL.
+  Old path archived from:
+  pre-planning-codex-j2.txt
+
+- _codex_dox/wraith-pm-frame-rgb-bridge-codex-j2.txt
+  Explicit parser -> separate media decode ops -> frame/meta -> RGB daemon ->
+  wraith-gl.c bridge plan.
+  Old path archived from:
+  wraith-pm-frame-rgb-bridge-codex-j2.txt
+
+- _codex_dox/wraith-handoff-j2.txt
+  Intent-correction handoff: Wraith must become an ASCII-first GL-OS-style
+  desktop/window manager, not a CHTMGL layout flattened by the old CHTPM parser.
+  Includes next stages for launcher bridge, desktop state, terminal window,
+  focus, z-levels, hit maps, mouse drag, and later RGB/GL.
+
+- _codex_dox/tomojizu-soul-synthesis-codex-j2.txt
+  Condensed project-local Tomojizu synthesis of &.TOMOKAZU-SOUL&0.txt for
+  persona/product context, with canonical name, emoji chat style, TPMOS
+  HR/culture interaction-layer guidance, safety boundary, and Codex integration
+  boundary.
+  Source remains:
+  &.TOMOKAZU-SOUL&0.txt
+
+Important archive batches:
+
+- _codex_archives/2026-06-03/1780468325/
+  Inventory archive before adding Wraith handoff note that corrects the current
+  CHTPM-flattened launcher experience.
+
+- _codex_archives/2026-06-03/1780467609/
+  Moved Codex-generated TPMOS frame reports into _codex-tpmos/reports and
+  updated the Wraith bridge plan for separate synchronous image/video decode
+  ops.
+
+- _codex_archives/2026-06-03/1780466504/
+  Notes archive before adding Tomojizu as the preferred TPMOS HR/culture
+  interaction layer.
+
+- _codex_archives/2026-06-03/1780466342/
+  Tomojizu profile archive before correcting canonical name and emoji chat
+  guidance. Active note renamed from tomokazu-soul-synthesis-codex-j2.txt to
+  tomojizu-soul-synthesis-codex-j2.txt.
+
+- _codex_archives/2026-06-03/1780466230/
+  Inventory archive before adding the Tomokazu soul synthesis note.
+
+- _codex_archives/2026-06-03/1780465873/
+  Move of active Codex notes into _codex_dox and creation of this policy and
+  inventory.
+
+- _codex_archives/2026-06-03/1780465598/
+  Pre-edit onboarding copy before adding the frame/meta -> RGB daemon -> GL
+  presenter bridge note.
+
+- _codex_archives/2026-06-03/1780465407/
+  Pre-edit onboarding copy before adding the wraith_parser.c parser rule.
+
+- _codex_archives/2026-06-03/1780465084/
+  Batch for the original codex-tpmos-onbord.txt creation.
+
+- _codex_archives/2026-06-03/1780464960/
+  Testing document rename batch from m26 to j2.
+
+- _codex_archives/2026-06-03/1780464887/
+  Testing guide update batch before adding Codex/API testing nuances.
+
+Notes:
+The inventory can keep references to deleted notes when they matter for safety
+or rollback. The active folder should stay useful, not permanent by default.

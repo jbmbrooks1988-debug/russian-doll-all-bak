@@ -1,0 +1,15 @@
+Archive batch: 2026-06-03/1780466630
+Purpose: Add first wraith-pm project skeleton, CHTMGL layout, parser op, and thin manager.
+
+New files:
+- 1.TPMOS_c_+rmmp.0102.0010/projects/wraith-pm/project.pdl
+- 1.TPMOS_c_+rmmp.0102.0010/projects/wraith-pm/layouts/desktop.chtmgl
+- 1.TPMOS_c_+rmmp.0102.0010/projects/wraith-pm/session/state.txt
+- 1.TPMOS_c_+rmmp.0102.0010/projects/wraith-pm/session/history.txt
+- 1.TPMOS_c_+rmmp.0102.0010/projects/wraith-pm/session/frame_changed.txt
+- 1.TPMOS_c_+rmmp.0102.0010/projects/wraith-pm/session/rgb_frame_changed.txt
+- 1.TPMOS_c_+rmmp.0102.0010/projects/wraith-pm/ops/wraith_parser.c
+- 1.TPMOS_c_+rmmp.0102.0010/projects/wraith-pm/manager/wraith-pm_manager.c
+
+Archived originals:
+- None. This batch only adds new files.

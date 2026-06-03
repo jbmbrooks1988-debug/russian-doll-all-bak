@@ -1,0 +1,4 @@
+Archive batch: _codex_archives/2026-06-03/1780464989
+Request: update old testing guide filename reference from m26 to j2.
+Archived files:
+- 1.TPMOS_c_+rmmp.0102.0010/!.gem-flashlite--yolo/#.testing/_.1.agent_learnings.md

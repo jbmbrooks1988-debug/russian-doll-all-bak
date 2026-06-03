@@ -1,0 +1,10 @@
+Archive batch: 2026-06-03/1780466342
+Purpose: Preserve Tomojizu synthesis and inventory before correcting canonical name and emoji chat guidance.
+
+Edited/moved files:
+- _codex_dox/tomokazu-soul-synthesis-codex-j2.txt -> _codex_dox/tomojizu-soul-synthesis-codex-j2.txt
+- _codex_dox/INVENTORY.txt
+
+Archived originals:
+- _codex_dox/tomokazu-soul-synthesis-codex-j2.txt
+- _codex_dox/INVENTORY.txt
