@@ -1,0 +1,24 @@
+
+--- FRAME UPDATE at 2026-06-03 16:36:15 ---
+╔═══════════════════════════════════════════╗
+║  G L - O S   D E S K T O P                ║
+╠═══════════════════════════════════════════╣
+║  MENU (Joystick UP/DOWN to navigate)     ║
+║    [>] 1. [Project Explorer    ]           ║
+║    [ ] 2. [Debug Layouts (Dev Only)]           ║
+║    [ ] 3. [Terminal Apps       ]           ║
+║    [ ] 4. [Settings            ]           ║
+
+╚═══════════════════════════════════════════╝
+
+--- FRAME UPDATE at 2026-06-03 16:36:15 ---
+╔═══════════════════════════════════════════╗
+║  G L - O S   D E S K T O P                ║
+╠═══════════════════════════════════════════╣
+║  MENU (Joystick UP/DOWN to navigate)     ║
+║    [>] 1. [Project Explorer    ]           ║
+║    [ ] 2. [Debug Layouts (Dev Only)]           ║
+║    [ ] 3. [Terminal Apps       ]           ║
+║    [ ] 4. [Settings            ]           ║
+
+╚═══════════════════════════════════════════╝

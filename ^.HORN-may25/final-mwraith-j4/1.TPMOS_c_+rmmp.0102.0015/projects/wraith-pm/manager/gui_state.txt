@@ -1,0 +1,3 @@
+module_path=projects/wraith-pm/manager/+x/wraith-pm_manager.+x
+app_title=Wraith PM
+project_id=wraith-pm

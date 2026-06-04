@@ -1,8 +1,0 @@
-app_title=Wraith PM
-status=Ready: CHTMGL -> colored ASCII frame -> PDL metadata
-audit_depth=60
-frame_width_px=960
-frame_height_px=540
-cell_width_px=10
-cell_height_px=18
-active_layout=projects/wraith-pm/layouts/desktop.chtmgl

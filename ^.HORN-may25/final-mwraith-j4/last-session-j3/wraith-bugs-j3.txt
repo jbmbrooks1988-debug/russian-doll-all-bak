@@ -1,0 +1,38 @@
+WRAITH BUGS J3 - DISCREPANCY REPORT
+Date: 2026-06-03
+
+IDENTIFIED DISCREPANCIES (Wraith vs Fuzz-Op Standard):
+
+1. RENDER PIPELINE: PULSE AND SYNC
+   - Standard: `fuzz-op` manager calls `render_map.+x`, then hits TWO pulses:
+     - `pieces/display/frame_changed.txt` (Global)
+     - `projects/fuzz-op/session/frame_changed.txt` (Local)
+   - Wraith: Only hits display/renderer_pulse.txt (incorrect name) and doesn't hit the project-local pulse correctly.
+   - Root Cause: Display engine isn't seeing the "WRAITH" pulse because it's looking for the standard `M` or `G` markers in `frame_changed.txt`.
+
+2. INPUT PIPELINE: THREADED VS BLOCKING
+   - Standard: `fuzz-op` uses `pthread` to poll history.txt at 60fps (16ms).
+   - Wraith: Uses a `while` loop with `usleep(100000)` (10fps).
+   - Result: Extremely laggy mouse movement and missed clicks.
+
+3. PROJECTION: INPUT VS OUTPUT
+   - Standard: `view.txt` is the OUTPUT of a render op.
+   - Wraith: `view.txt` is currently an INPUT to the parser.
+   - Discrepancy: If the manager writes `view.txt` but doesn't wait for a filesystem flush, the parser sees an empty file.
+   - Root Cause: Parser path resolution for `src` is relative and fails when executed from the manager's context.
+
+4. PDL OVERRIDE FAILURE
+   - Discrepancy: `add_object` in `wraith_parser.c` is not searching the `g_pdl_windows` array during its attribute extraction phase. It only uses PDL for geometry (`compute_box`), but ignores it for `src` and `focused`.
+
+PROPOSED SOLUTION (Strict Fuzz-Op Alignment):
+
+1. MANAGER REFACTOR:
+   - Adopt the `pthread` input loop from `fuzz-op`.
+   - Adopt the `trigger_render()` pattern: Fork/Exec Parser -> Wait -> Pulse Global -> Pulse Local.
+
+2. PARSER REFACTOR:
+   - Fix `resolve_root` to be bulletproof (copy `fuzz-op` pattern).
+   - Fix `add_object` to be "PDL-First": If ID exists in PDL, PDL values for `src`, `z`, and `focus` MUST override layout values.
+
+3. AUDITABLE PROOF:
+   - Every `trigger_render` must increment a frame ID that is visible in the taskbar.

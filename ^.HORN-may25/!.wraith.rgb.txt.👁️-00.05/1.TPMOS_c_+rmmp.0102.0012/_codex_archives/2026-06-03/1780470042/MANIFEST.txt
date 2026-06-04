@@ -1,2 +1,0 @@
-created: 1.TPMOS_c_+rmmp.0102.0010/xo/0.iqaida.g+FSM=022.0000/iq-g-fsm-plan-j2.txt
-archive: 1.TPMOS_c_+rmmp.0102.0010/_codex_archives/2026-06-03/1780470042/iq-g-fsm-plan-j2.txt

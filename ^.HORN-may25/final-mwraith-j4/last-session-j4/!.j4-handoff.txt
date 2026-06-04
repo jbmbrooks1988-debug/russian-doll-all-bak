@@ -1,0 +1,68 @@
+
+▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+✦ This is the final macro-handoff report designed to provide the next agent with
+  immediate operational context, a roadmap for the mouse-test project, and a guide
+  to trace the architectural evolution of this project.
+
+  1. Immediate Action: Complete mouse-test
+  The mouse-test project is initialized in projects/mouse-test/. It serves as the
+  definitive sanity check for host-level mouse capture.
+
+  Task Roadmap:
+   1. Input Routing: Ensure pieces/keyboard/plugins/keyboard_input.c is correctly
+      sending MOUSE_EVENT sequences to projects/mouse-test/session/history.txt
+      when the mouse-test project is active.
+   2. Manager Orchestration: Implement a minimal mouse-test_manager that reads
+      history.txt, parses the wraith-pm::mouse command, and updates the state.
+   3. Verification: Implement a wraith_composer-compatible renderer for this
+      project that displays the raw mouse_x/y coordinates in the desktop grid.
+   4. Success Condition: The next agent should see the mouse cursor coordinates
+      dynamically updating in the terminal when they move their mouse over the
+      desktop grid.
+
+  ---
+
+  2. Tracing the Evolution of Intentions
+  The project has shifted from a "virtualized renderer" to a "sovereign
+  map-composer." To understand this evolution, read the following documents in
+  this specific order:
+
+   1. _codex_dox/wraith-handoff-j2.txt (The Origin): Defines the initial bridge
+      contract. Note the assumption that Wraith was a CHTMGL parser/renderer.
+   2. _codex_dox/wrath-pm-codex-j2.txt (The Planning Phase): Contains the original
+      super-plan. Note the lingering assumption that Wraith should be an
+      "ASCII-first desktop/window manager" that replaces the CHTPML parser.
+   3. _codex_dox/wraith-progress-j3.txt (The Realization): Recognizes the
+      limitations of the "bridge" and the "parser" approach.
+   4. wraith-recast-j4.txt (The Correction): CRITICAL. This is where the
+      "Systemically False Assumption" (that Wraith is a rendering engine) is
+      corrected. It redefines Wraith as a Sovereign Map-Composer adhering to the
+      fuzz-op standard.
+   5. post-op-feedback-j4.txt (The Refinement): Final refinement, documenting the
+      shift from hardcoded windows to dynamic, transient map entities spawned on
+      demand.
+
+  Guidance for Reading: You are observing the project moving from historical
+  unclarity (the attempt to reinvent the wheel via a new parser) to iterative
+  clarity (the adoption of the standard TPMOS Map-Composer model). If a document
+  contradicts wraith-recast-j4.txt, treat recast and post-op as the authoritative
+  truth.
+
+  ---
+
+  3. Final Handoff Summary
+   * The Architecture: Wraith is a Sovereign Map. Everything (window chrome,
+     terminal text, project-local content) is composed into a single ASCII grid
+     via wraith_composer.c and projected into the theater via ${game_map}.
+   * The Contract: Windows are pieces; they are not hardcoded. They are entities
+     with geometry (pos_x, pos_y, pos_z) in windows_state.pdl.
+   * The Foundation: Use fuzz-op as the technical template for cause-and-effect
+     pipeline orchestration (Trigger → Pulse → Render).
+   * The Next Steps: Focus on dynamic window lifecycle (spawn/delete/Z-raise) and
+     sovereign project-local orchestration within the wraith-projects/ registry.
+
+  Everything is compiled, standardized, and ready for you to build the "Will" of
+  the desktop.
+
+
+

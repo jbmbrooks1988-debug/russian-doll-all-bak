@@ -1,0 +1,29 @@
+WRAITH HANDOFF 18:24 - THE BREAKTHROUGH
+Date: 2026-06-03
+
+URGENT ARCHITECTURAL CORRECTION:
+The previous agent (me) and earlier docs were wrong about the render pipeline. Wraith was "flickering" because it was fighting with the host `chtpm_parser`. 
+
+THE "DEAD FRAME" DISCOVERY:
+1. Wraith was writing its good frame directly to `pieces/display/current_frame.txt`.
+2. Simultaneously, `pieces/display/current_layout.txt` was pointing to `wraith-shell.chtpm`.
+3. The host `chtpm_parser` saw the pulse, read its layout, substituted an empty `${game_map}` (because it couldn't find Wraith's `view.txt`), and OVERWROTE Wraith's frame with a hollow one.
+
+THE FUZZ-OP STANDARD (THE FIX):
+- **Magic Variable**: `chtpm_parser.c` automatically loads the content of `projects/<id>/manager/view.txt` into a variable called `${game_map}`.
+- **The Rule**: Wraith MUST NOT write to `pieces/display/`. It must only write its rendered frame markup to `projects/wraith-pm/manager/view.txt`.
+- **The Sync**: The Wraith Manager runs the `wraith_parser` (which updates `view.txt`), waits, and then appends 'W' to `pieces/display/frame_changed.txt`.
+- **The Result**: The host parser wakes up, finds the new `view.txt`, populates `${game_map}`, and is the SOLE writer to the screen. Flicker is eliminated.
+
+CURRENT STATUS:
+- `wraith_parser.c`: Refactored for PDL-First geometry. It now correctly reads window positions from `windows_state.pdl`.
+- `wraith-pm_manager.c`: Refactored to 60fps high-frequency `pthread` input polling. Mouse movement is now fluid.
+user note : prove by showing mouse xy as debug var on screen pls. 
+- `wraith-shell.chtpm`: Needs to be updated to use `<text label="${game_map}" />`.
+
+NEXT STEPS FOR NEW AGENT:
+1. Update `projects/wraith-pm/layouts/wraith-shell.chtpm` to use the `${game_map}` tag.
+2. Update `wraith_parser.c` to write its output ONLY to `projects/wraith-pm/manager/view.txt`.
+3. Verify the "Mirror Test": Manually edit `game_map_window.view.txt` and see it appear flicker-free in the host terminal.
+
+I have updated the `_codex_dox/` library to reflect this new "Fuzz-Op Standard." Do not revert to direct-write or manual variable injection patterns.

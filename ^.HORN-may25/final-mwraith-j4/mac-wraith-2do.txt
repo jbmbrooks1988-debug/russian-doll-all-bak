@@ -1,0 +1,68 @@
+# WRAITH ARCHITECTURAL BLUEPRINT (PHASE J5)
+
+## 1. THE VISION: Sovereign Map Desktop
+Wraith is a **Map-Composer** project that orchestrates an ASCII desktop shell. 
+It mirrors the window management of `gl_desktop.c` but implements it using the `fuzz-op` sovereign map standard.
+
+- **Theater:** Standard CHTPM (Host).
+- **Project:** Wraith PM (The "Map").
+- **Entities:** Windows (Pieces) with $x, y, z, focused$ in `windows_state.pdl`.
+- **Cursor:** The "Mousehand" (+) tracking mouse coordinates on the map.
+
+## 2. COMPONENT ARCHITECTURE
+
+### A. The Orchestrator (`wraith-pm_manager.c`)
+- **Pipeline:** Trigger -> Wait -> Pulse.
+- **Input Loop:** Polls `session/history.txt` at 60fps.
+- **Commands:**
+  - `MOUSE_MOVE x y`: Updates `mouse_x/y` in `state.txt`.
+  - `wraith-pm::down`: Hit tests via `hitmap.pdl`. If titlebar, `SET drag_active true`.
+  - `wraith-pm::up`: `SET drag_active false`.
+  - `wraith-pm::nav N`: Moves `>` selector and SNAPS `mouse_x/y` to target.
+- **Logic:**
+  - `spawn_window(project_id)`: Adds entry to `windows_state.pdl`.
+  - `close_window(id)`: Removes entry from `windows_state.pdl`.
+  - `raise_z(id)`: Moves ID to the bottom of `windows_state.pdl` (Last drawn = Top).
+
+### B. The Composer (`wraith_composer.c`)
+- **Responsibility:** Deterministic frame generation from PDL state.
+- **Logic:**
+  1. Clear 96x30 grid.
+  2. Draw Terrain (Desktop background, Taskbar).
+  3. Draw Windows: Iterate `windows_state.pdl`.
+     - Draw chrome (Titlebar with `[x]` and `[-]`, Borders).
+     - Clip and draw content from `window_id.view.txt`.
+  4. Draw "Mousehand" (+) at `mouse_x/y`.
+- **Artifacts:** Writes `manager/view.txt` (Composed Frame) and `hitmap.pdl`.
+
+### C. The Bridge (`desktop.chtpm`)
+- **Wrapper:** `<panel><module>${module_path}</module><text label="${game_map}" /></panel>`
+- **Sync:** Uses `${game_map}` magic variable to pull `manager/view.txt` without flattening.
+
+## 3. IMMEDIATE 2DO (KPI 1)
+
+### [ ] Task 1: Initialize Project Registry
+- Create `wraith-projects/projects.kvp` listing:
+  1. `blank-proj=projects/wraith-pm/wraith-projects/blank/`
+  2. `game-map=projects/wraith-pm/wraith-projects/game-map/`
+
+### [x] Task 2: Implement "Mousehand" Cursor
+- Update `wraith_composer.c` to draw a yellow `+` at `mouse_x/y`.
+- **FIXED:** Added `MOUSE: X, Y` readout to top banner for coordinate debugging.
+- Ensure manager updates `mouse_x/y` in `state.txt` on every `MOUSE_MOVE`.
+
+### [ ] Task 3: Navigable Terminal Menu
+- Update `terminal_window.view.txt` to list the 2 projects.
+- Manager must toggle `[>]` indicator on `wraith-pm::nav N` or Arrow Up/Down.
+- **CORRECTION:** Initial state now only contains the Terminal window. Sub-projects (Blank, Game Map) are only spawned when selected.
+
+### [ ] Task 4: Window Lifecycle (Minimize/Close)
+- Add `minimized` and `closed` flags to `windows_state.pdl`.
+- Manager: Clicking `[x]` in `hitmap.pdl` triggers `close_window`.
+- Manager: Clicking `[-]` in `hitmap.pdl` triggers `SET minimized true`.
+
+### [ ] Task 5: The "Raise to Top" Pulse
+- Manager: Clicking any part of a window brings it to the top of `windows_state.pdl` and pulses `W`.
+
+---
+**Status:** Blueprint Approved. Ready for Implementation.

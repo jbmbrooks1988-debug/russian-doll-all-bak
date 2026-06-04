@@ -1,4 +1,0 @@
-Archive batch: _codex_archives/2026-06-03/1780465084
-Request: create Codex-specific TPMOS onboarding notes for future agents.
-New files planned:
-- 1.TPMOS_c_+rmmp.0102.0010/codex-tpmos-onbord.txt

@@ -1,0 +1,4 @@
+<panel>
+    <module>${module_path}</module>
+    ${game_map}
+</panel>

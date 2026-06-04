@@ -1,0 +1,73 @@
+WRAITH-SYNTH-J4: TECHNICAL CODE PIPELINE SYNTHESIS
+Date: 2026-06-04
+Target: Project Wraith-PM & Future Agents
+
+1. THE CANONICAL PULSE (Cause & Effect)
+Analysis of `fuzz-op_manager.c` and `op-ed_manager.c` reveals the mandatory "Trigger -> Wait -> Pulse" cycle.
+
+Logic:
+1. Manager detects change (Input or Logic).
+2. Manager calls Render Op (e.g., `wraith_parser.+x`).
+3. Manager MUST wait for Op to finish (fork/exec/waitpid).
+4. Manager appends to `pieces/display/frame_changed.txt`.
+   - Marker 'W' is reserved for Wraith.
+   - Marker 'M' is for Map updates.
+   - Marker 'Z' is for Z-level/Depth changes.
+
+Effect:
+The Host Orchestrator/Parser watches these markers. A missing pulse = Zero visual update. A direct write to `current_frame.txt` without a pulse = Flicker/Overwrite by Host.
+
+2. THE "PROJECTED SURFACE" PATTERN (${game_map})
+`chtpm_parser.c` (Lines 800-840) has a hardcoded magic variable: `${game_map}`.
+
+Source Priority:
+1. `projects/<project_id>/manager/view.txt`
+2. `pieces/apps/<project_id>/manager/view.txt`
+3. `pieces/apps/player_app/view.txt` (Global fallback)
+
+Synthesis for Wraith:
+Wraith should NOT publish its frame as a raw variable in `gui_state.txt`. It should write its final composed ASCII frame to `projects/wraith-pm/manager/view.txt`. 
+The host layout `wraith-shell.chtpm` should only contain:
+`<panel><module>${module_path}</module><text label="${game_map}" /></panel>`
+
+This prevents the host parser from "flattening" the Wraith frame because it treats `${game_map}` as a single block of map data.
+
+3. THE INPUT PIPELINE (Logical vs. Raw)
+Standard: `keyboard_input` -> `history.txt` -> `chtpm_parser` -> `project/history.txt`.
+
+Pipeline Rules:
+- High-Frequency Polling: Managers must poll their history at 60fps (16.6ms) using `usleep(16667)`.
+- Event Types: 
+  - `KEY_PRESSED: <code>` (Raw ASCII or TPM-specific code like 1000-1003 for arrows).
+  - `COMMAND: <str>` (Logical actions like `SET_DIR`).
+
+Wraith Implementation:
+Wraith manager must adopt the `fuzz-op` `pthread` input loop. It should handle `1000-1003` for arrows and `1-9` for numeric jumps, immediately updating `mouse_x/y` to center on the target.
+
+4. MOUSEHAND & CURSOR SOVEREIGNTY
+Analysis of `op-ed`'s `xlector` vs `nino`'s TUI mouse:
+
+Standard:
+- `xlector` is a piece with `pos_x/y/z` in `state.txt`.
+- `nino` uses `\x1b[?1000h` for ANSI mouse reporting.
+
+Wraith Synthesis:
+The `mousehand` is the "Ghost in the Machine."
+- It is rendered by the parser during the final pass (after Z-sorting).
+- It is controlled by the manager reading both ANSI sequences and `history.txt`.
+- Sovereignty Rule: `mouse_x/y` in `session/state.txt` is the ONLY source of truth.
+
+5. WINDOW GEOMETRY & PDL OVERRIDE
+The `wraith_parser.c` must implement "PDL-First" attribute extraction.
+
+Code Pattern:
+```c
+if (extract_attr(line, "id", id, sizeof(id))) {
+    // Search windows_state.pdl for this ID
+    // If found, overwrite x, y, w, h, z, focused from PDL
+}
+```
+This allows the manager to move windows by simply writing to the PDL file, without needing to rewrite the entire `.chtmgl` layout.
+
+6. NEXT AGENT MANDATE:
+Do not refactor the parser's drawing logic. Focus on the BRIDGE. Use `${game_map}` and the `view.txt` path to ensure the Wraith desktop fills the host theater correctly.

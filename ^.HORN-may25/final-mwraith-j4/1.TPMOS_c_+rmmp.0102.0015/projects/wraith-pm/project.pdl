@@ -1,0 +1,13 @@
+SECTION      | KEY                | VALUE
+----------------------------------------
+META         | project_id         | wraith-pm
+META         | version            | 0.1.0
+META         | entry_layout       | projects/wraith-pm/layouts/wraith-shell.chtpm
+META         | parser             | projects/wraith-pm/ops/+x/wraith_parser.+x
+META         | manager            | projects/wraith-pm/manager/+x/wraith-pm_manager.+x
+
+STATE        | app_title          | Wraith PM
+STATE        | status             | ASCII frame bootstrap
+STATE        | SOVEREIGN          | true
+
+RESPONSE     | default            | Wraith PM renders CHTMGL to colored ASCII frames plus PDL metadata before RGB or GL.

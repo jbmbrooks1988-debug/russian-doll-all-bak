@@ -1,0 +1,165 @@
+                                                                                   
+                                                                                   
+                                                                                   
+   --- FRAME UPDATE at 2026-06-04 01:02:06 ---                                     
+   +-WRAITH DESKTOP                                                                
+   GUI---------------------------------------------------------------------------+ 
+   +------------------------------------------------------------------------------ 
+   ----------------+                                                               
+   | +-[ Wraith Terminal v1.0                                                      
+   ]-----------------------------------------[o][-][x]-+               |           
+   | |[ ] 1. [Project Loader]                                                      
+   |               |                                                               
+   | |[ ] 2. [App Store (Fondu)]                                                   
+   |               |                                                               
+   | |[ ] 3. [Status]                                                              
+   |               |                                                               
+   | |[ ] 4. [GL-OS]                                                               
+   |               |                                                               
+   | |[ ] 5. [Process Monitor]                                                     
+   |               |                                                               
+   | |[ ] 6. [Toggle Frame History]  +=[ GAME MAP: ]================[o][-][x]=+    
+   |               |                                                               
+   | |[ ] 7. [Help]                  |[ ]|1. [Control Map]                    |    
+   |               |                                                               
+   | |                               |##-+-###############                    |    
+   |               |                                                               
+   | |                               |#  |..............T#                    |    
+   |               |                                                               
+   | |                               |#  ..@.........Z..T#                    |    
+   |               |                                                               
+   | |                               |#  ....R..........T#                    |    
+   |               |                                                               
+   | |                               |#  ....R..........T#                    |    
+   |               |                                                               
+   | |                               |#  ..X.R..?.......T#                    |    
+   |               |                                                               
+   | |                               |#  ....R..........T#                    |    
+   |               |                                                               
+   | |                               |#  ................#                    |    
+   |               |                                                               
+   | +-------------------------------|#                  #                         
+   |---+               |                                                           
+   |                                 |####################                    |    
+   |                                                                               
+   |                                 |                                        |    
+   |                                                                               
+   |                                 |                                        |    
+   |                                                                               
+   |                                 +----------------------------------------+    
+   |                                                                               
+   |                                                                               
+   |                                                                               
+   |                                                                               
+   |                                                                               
+   |                                                                               
+   |                                                                               
+   |                                                                               
+   |                                                                               
+   |                                                                               
+   |                                                                               
+   +-[Start]------| [Wraith Term]  [Game Map* 1] |---------------------------01:01 
+   06-04-2026-----+                                                                
+   +------------------------------------------------------------------------------ 
+   ----------------+                                                               
+   +=========================================================+                     
+   Nav > _                                                                         
+   ; i see the layout now and it looks great. explain how its working to me . is   
+   it loading both those "virtual windows"(inside the desktop gui , thru game map? 
+   why doesn't my mouse click give z level draw focus to the window clicked yet?   
+   why are there "selectors" in the nav brackets of 'in focus' window yet? why     
+   isn't enter entering active mode of map in "game map" window control map. also  
+   in the future game map is an app that will open later. it dosn;t have an        
+   associated project right now. for now in wraith terminal , we should just be    
+   showing a list of "wraith projects" for selection and we should create one or   
+   two. that will allow me to select "game map" which will open its own subwindow  
+   the way it is done in gl_desktop with chtmgl ...; in a report, explain to me my 
+   implied intentions vs your assumptions,  investigation solutions to my implied  
+   intentions, and explain the steps the next agent should take to align with      
+   standards and intentions,lets explain this in post-op-feedback-j4.txt   
+   
+   
+                                              │
+kpi feeback:  2 things. a default ">" selector should always appear │
+│ in first index in focus window. also i requested we write changed mouse     │
+│ position without 10 units to debug output (dont need to spam cli , just     │
+│ want to validate functionality)    
+
+
+                  
+                                                                                   
+   ; i dont see the default nav yet. also lets change the wraith terminal to have  
+   real projects (project 1 = blank window opening, project 2 game map, later) .   
+   we will use the nav terminal to open game map window from now on, understood?   
+   but lets prove we can open a blank window thru terminal first                   
+▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+
+
+
+▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+ > do you see how projects open using kvp in regular tpmos? we should use the same 
+   model, projects can go inside wraith-projects/ directory . they should have     
+   layouts and managers just like the projects in tpmos or glos desktop and        
+   chtpmgl                                                                         
+▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+
+  Standardizing Wraith Project Architecture: 
+
+           
+   ; both those panel-id's in "desktop.chtmgl" (also it should be desktop.chtpm still ,
+   using a classic ascii standard, you are getting ahead of yourselfs, trying to render chtmgl, which will be virtualized , before we have established a chtpm foundation)  are superfulous , the entire wraith desktop is supposed 
+   to be functioning like a ${game-map} (such as in fuzz op, drawing the dynamic   
+   map inside the view)  , then they're maybe sub gamemaps in sub layouts.     
+   this may require a deeper architectural re scaffolding and re factoring. 
+   pls refer to existing projects like fuzz-op to reimagine the necessary architecture
+   while adhearing to standard patterns    
+▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+ > no we have a fundamental misunderstanding about the intentions of wraith , pls  
+   listen closely to my clarification :                                            
+     Standardizing Wraith Project Architecture:                                    
+                                                                                   
+                                                                                   
+      ; both those panel-id's in "desktop.chtmgl" (also it should be desktop.chtpm 
+   still ,                                                                         
+      using a classic ascii standard, you are getting ahead of yourselfs, trying   
+   to render chtmgl, which will be virtualized , before we have established a      
+   chtpm foundation)  are superfulous , the entire wraith desktop is supposed      
+      to be functioning like a ${game-map} (such as in fuzz op, drawing the        
+   dynamic                                                                         
+      map inside the view)  , then they're maybe sub gamemaps in sub layouts.      
+      this may require a deeper architectural re scaffolding and re factoring.     
+      pls refer to existing projects like fuzz-op to reimagine the necessary       
+   architecture                                                                    
+      while adhearing to standard patterns    ; please address these assumptions   
+   in the document wraith-recast-j4.txt explaining how we will correct these       
+   systemically false assumptions about the intentions of this architectur
+   
+   
+   we may have gotten ahead of ourselfs. 
+   perhaps we should have started with a more standard
+   chtpm layout , and built slowly from there
+
+▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+ also im not getting any mouse feedback. did u investigate                      
+   @\#.tui.xplor.my.nino.🥷🏽️📟️\]b2\]ON\!+/ for how we should integrate mouse       
+   capture input into chtpm_parser.c by writing its output to history.txt files   
+   like key and joystick injection (mouse should be operating much like joystick) 
+   pls communicate that and fix it. 
+   
+   
+   
+   
+▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+this has been fraught with confusion and over engineering of unclear assumptions 
+
+it could have probably started simpler , using just a basic chtpm project "mouse", 
+validating mouse functionality first, and maybe even retro adding mouse effect to "slop-ed"
+/ agy-text editor, to see how it takes. (u may wanna check state of slop-ed vs op-ed parity
+to merge them first [slop-ed is alpha stage of op-ed , beta]) 
+
+then begining by designing the desktop with just mouse and context menu? + default term? 
+and going from there? 
+<its editing chtpm_parser.c for mouse and trying to integrate wraith so this is kinda
+already where we are, but u may like a beta...
+

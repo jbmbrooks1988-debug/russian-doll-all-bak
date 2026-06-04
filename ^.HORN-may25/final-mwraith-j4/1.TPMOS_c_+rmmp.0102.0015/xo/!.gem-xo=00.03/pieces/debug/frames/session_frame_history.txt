@@ -1,0 +1,2448 @@
+=== NEW SESSION at 2026-06-03 13:23:45 ===
+
+--- FRAME UPDATE at 2026-06-03 13:23:45 ---
++===========================================================+
+|                                                           |
+|           C H T P M + O S   C L I   v2.0                 |
+|                                                           |
+|  CHTPM+OS Main Menu                                      |
+|                                                           |
+|  [>] 1. [Project Loader]                             |
+|  [ ] 2. [App Store (Fondu)]                          |
+|  [ ] 3. [Status]  [ ] 4. [GL-OS]                                          |
+|  [ ] 5. [Process Monitor]                            |
+|  [ ] 6. [Toggle Frame History (Current: )]                                         |
+|  [ ] 7. [Help]                                            |
+|                                                           |
++===========================================================+
+|  Running Applications: None                               |
+|  System Time: 08:00:00 | Turn: 0 | Key: None |
++===========================================================+
+|                                                           |
+|  $ | [ ] 8. []                                                 |                                                 |
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-03 13:23:46 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [>] 1. [gem-xo]                                        ║
+║  [ ] 2. [template]                                      ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 3. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-03 13:23:48 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ You exceeded your current quota, please check your plan and billing detail ║
+║ s. For more information on this error, head to: https://ai.google.dev/gemi ║
+║ ni-api/docs/rate-limits. To monitor your current usage, head to: https://a ║
+║ i.dev/rate-limit.                                                          ║
+║ * Quota exceeded for metric: generativelanguage.googleapis.com/generate_co ║
+║ ntent_free_tier_requests, limit: 20, model: gemini-2.5-flash               ║
+║ Please retry in 37.094488076s.                                             ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [>] 1. [Ask Agent: ]                                                 |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-03 13:23:49 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 0% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Ready for input...                                                         ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [>] 1. [Ask Agent: ]                                                 |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Initialized.                                       |
+
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-03 13:23:49 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 0% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Ready for input...                                                         ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [>] 1. [Ask Agent: ]                                                 |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Initialized.                                       |
+
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-03 13:23:49 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 0% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Ready for input...                                                         ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [>] 1. [Ask Agent: ]                                                 |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Initialized.                                       |
+
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-03 13:23:50 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 0% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Ready for input...                                                         ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Initialized.                                       |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:23:51 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 0% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Ready for input...                                                         ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [h_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Initialized.                                       |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:23:51 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 0% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Ready for input...                                                         ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [hi_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Initialized.                                       |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:23:51 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 0% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Ready for input...                                                         ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [hii_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Initialized.                                       |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:23:52 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 0% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Ready for input...                                                         ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Initialized.                                       |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:23:52 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: THINKING (0s) | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 0% | [FSM]: THINKING                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Ready for input...                                                         ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Querying AI...                                     |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:23:53 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: THINKING (1s) | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 0% | [FSM]: THINKING                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Ready for input...                                                         ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Querying AI...                                     |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:23:53 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 0% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Hello! I'm Aida, a technical agent. I can help you with a variety of tasks ║
+║  like running shell commands, reading/writing files, searching for informa ║
+║ tion, and more. How can I assist you today?                                ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:00 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 1% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Hello! I'm Aida, a technical agent. I can help you with a variety of tasks ║
+║  like running shell commands, reading/writing files, searching for informa ║
+║ tion, and more. How can I assist you today?                                ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [r_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:00 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 1% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Hello! I'm Aida, a technical agent. I can help you with a variety of tasks ║
+║  like running shell commands, reading/writing files, searching for informa ║
+║ tion, and more. How can I assist you today?                                ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [re_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:00 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 1% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Hello! I'm Aida, a technical agent. I can help you with a variety of tasks ║
+║  like running shell commands, reading/writing files, searching for informa ║
+║ tion, and more. How can I assist you today?                                ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [rea_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:01 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 1% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Hello! I'm Aida, a technical agent. I can help you with a variety of tasks ║
+║  like running shell commands, reading/writing files, searching for informa ║
+║ tion, and more. How can I assist you today?                                ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [read_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:01 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 1% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Hello! I'm Aida, a technical agent. I can help you with a variety of tasks ║
+║  like running shell commands, reading/writing files, searching for informa ║
+║ tion, and more. How can I assist you today?                                ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [read _]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:01 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 1% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Hello! I'm Aida, a technical agent. I can help you with a variety of tasks ║
+║  like running shell commands, reading/writing files, searching for informa ║
+║ tion, and more. How can I assist you today?                                ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [read d_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:01 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 1% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Hello! I'm Aida, a technical agent. I can help you with a variety of tasks ║
+║  like running shell commands, reading/writing files, searching for informa ║
+║ tion, and more. How can I assist you today?                                ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [read di_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:01 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 1% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Hello! I'm Aida, a technical agent. I can help you with a variety of tasks ║
+║  like running shell commands, reading/writing files, searching for informa ║
+║ tion, and more. How can I assist you today?                                ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [read dir_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:01 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 1% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Hello! I'm Aida, a technical agent. I can help you with a variety of tasks ║
+║  like running shell commands, reading/writing files, searching for informa ║
+║ tion, and more. How can I assist you today?                                ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [read dir _]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:01 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 1% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Hello! I'm Aida, a technical agent. I can help you with a variety of tasks ║
+║  like running shell commands, reading/writing files, searching for informa ║
+║ tion, and more. How can I assist you today?                                ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [read dir c_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:01 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 1% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Hello! I'm Aida, a technical agent. I can help you with a variety of tasks ║
+║  like running shell commands, reading/writing files, searching for informa ║
+║ tion, and more. How can I assist you today?                                ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [read dir co_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:02 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 1% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Hello! I'm Aida, a technical agent. I can help you with a variety of tasks ║
+║  like running shell commands, reading/writing files, searching for informa ║
+║ tion, and more. How can I assist you today?                                ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [read dir con_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:02 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 1% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Hello! I'm Aida, a technical agent. I can help you with a variety of tasks ║
+║  like running shell commands, reading/writing files, searching for informa ║
+║ tion, and more. How can I assist you today?                                ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [read dir cont_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:02 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 1% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Hello! I'm Aida, a technical agent. I can help you with a variety of tasks ║
+║  like running shell commands, reading/writing files, searching for informa ║
+║ tion, and more. How can I assist you today?                                ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [read dir conte_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:02 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 1% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Hello! I'm Aida, a technical agent. I can help you with a variety of tasks ║
+║  like running shell commands, reading/writing files, searching for informa ║
+║ tion, and more. How can I assist you today?                                ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [read dir conten_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:02 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 1% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Hello! I'm Aida, a technical agent. I can help you with a variety of tasks ║
+║  like running shell commands, reading/writing files, searching for informa ║
+║ tion, and more. How can I assist you today?                                ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [read dir content_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:02 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 1% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Hello! I'm Aida, a technical agent. I can help you with a variety of tasks ║
+║  like running shell commands, reading/writing files, searching for informa ║
+║ tion, and more. How can I assist you today?                                ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [read dir contents_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:02 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 1% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Hello! I'm Aida, a technical agent. I can help you with a variety of tasks ║
+║  like running shell commands, reading/writing files, searching for informa ║
+║ tion, and more. How can I assist you today?                                ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:02 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: THINKING (0s) | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 1% | [FSM]: THINKING                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Hello! I'm Aida, a technical agent. I can help you with a variety of tasks ║
+║  like running shell commands, reading/writing files, searching for informa ║
+║ tion, and more. How can I assist you today?                                ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Querying AI...                                     |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:03 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: THINKING (1s) | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 1% | [FSM]: THINKING                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Hello! I'm Aida, a technical agent. I can help you with a variety of tasks ║
+║  like running shell commands, reading/writing files, searching for informa ║
+║ tion, and more. How can I assist you today?                                ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Querying AI...                                     |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:04 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: PENDING_PERM | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 1% | [FSM]: WAIT_PERM                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool Execution Request                                                     ║
+║ Tool: list_dir                                                             ║
+║ Args: {}                                                                   ║
+║                                                                            ║
+║ Type 'y' to allow or 'n' to deny.                                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Execute list_dir? (y/n)                            |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:04 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: PENDING_PERM | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 1% | [FSM]: WAIT_PERM                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool Execution Request                                                     ║
+║ Tool: list_dir                                                             ║
+║ Args: {}                                                                   ║
+║                                                                            ║
+║ Type 'y' to allow or 'n' to deny.                                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [y_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Execute list_dir? (y/n)                            |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:04 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: PENDING_PERM | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 1% | [FSM]: WAIT_PERM                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool Execution Request                                                     ║
+║ Tool: list_dir                                                             ║
+║ Args: {}                                                                   ║
+║                                                                            ║
+║ Type 'y' to allow or 'n' to deny.                                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Execute list_dir? (y/n)                            |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:05 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: PENDING_PERM | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 1% | [FSM]: WAIT_PERM                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool Execution Request                                                     ║
+║ Tool: list_dir                                                             ║
+║ Args: {}                                                                   ║
+║                                                                            ║
+║ Type 'y' to allow or 'n' to deny.                                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Execute list_dir? (y/n)                            |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:05 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: THINKING (0s) | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 1% | [FSM]: THINKING                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool Execution Request                                                     ║
+║ Tool: list_dir                                                             ║
+║ Args: {}                                                                   ║
+║                                                                            ║
+║ Type 'y' to allow or 'n' to deny.                                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Querying AI...                                     |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:05 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:21 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:22 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [ _]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:23 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:26 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [d_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:26 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [di_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:26 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:26 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir _]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:27 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:27 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir._]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:27 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.t_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:27 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.tx_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:27 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:28 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt _]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:28 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt i_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:28 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:28 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is _]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:28 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is a_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:28 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is a _]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:28 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is a f_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:28 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is a fu_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:29 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is a fun_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:29 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is a funn_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:29 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  ║
+║ [PIECE]: iqabel | [CTX]:  | [FSM]:                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is a funny_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]:                                                    |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:29 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is a funny _]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:29 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is a funny n_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:30 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is a funny na_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:30 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is a funny nam_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:30 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is a funny name_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:30 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is a funny name._]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:30 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is a funny name. _]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:30 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is a funny name. w_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:30 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is a funny name. wh_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:30 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is a funny name. wha_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:31 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is a funny name. what_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:31 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is a funny name. whats_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:31 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is a funny name. whats _]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:31 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is a funny name. whats i_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:31 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is a funny name. whats in_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:31 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is a funny name. whats in _]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:31 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is a funny name. whats in i_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:31 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is a funny name. whats in it_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:32 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [dir.txt is a funny name. whats in it?_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:32 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:32 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: THINKING (0s) | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: THINKING                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Querying AI...                                     |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:33 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: THINKING (1s) | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: THINKING                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ Tool list_dir completed, but the Gemini follow-up hit quota.               ║
+║ Showing raw tool output instead:                                           ║
+║                                                                            ║
+║ dir.txt                                                                    ║
+║ file-new.txt                                                               ║
+║ test_file.txt                                                              ║
+║ another_test_file.txt                                                      ║
+║ config/                                                                    ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Querying AI...                                     |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME UPDATE at 2026-06-03 13:24:33 ---
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                 G E M - X O   L O C A L   A G E N T                          ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ [AI STATE]: IDLE | [API]: https://generativelanguage.googleapis.com ║
+║ [PIECE]: iqabel | [CTX]: 2% | [FSM]: IDLE                   ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║ You exceeded your current quota, please check your plan and billing detail ║
+║ s. For more information on this error, head to: https://ai.google.dev/gemi ║
+║ ni-api/docs/rate-limits. To monitor your current usage, head to: https://a ║
+║ i.dev/rate-limit.                                                          ║
+║ * Quota exceeded for metric: generativelanguage.googleapis.com/generate_co ║
+║ ntent_free_tier_requests, limit: 20, model: gemini-2.5-flash               ║
+║ Please retry in 27.116395322s.                                             ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  | [^] 1. [_]                                              |  ║
+
+[ ] 2. [[2] Clear Context]
+[ ] 3. [[3] Switch API]
+[ ] 4. [[4] Summarize]
+[ ] 5. [[ESC] Exit]
+| [SYS]: Response received.                                 |
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+

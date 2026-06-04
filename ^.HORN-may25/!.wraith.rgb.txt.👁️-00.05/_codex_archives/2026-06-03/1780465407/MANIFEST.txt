@@ -1,8 +1,0 @@
-Archive batch: 2026-06-03/1780465407
-Purpose: Preserve codex-tpmos-onbord.txt before adding Wraith parser notes.
-
-Edited files:
-- 1.TPMOS_c_+rmmp.0102.0010/codex-tpmos-onbord.txt
-
-Archived originals:
-- 1.TPMOS_c_+rmmp.0102.0010/codex-tpmos-onbord.txt

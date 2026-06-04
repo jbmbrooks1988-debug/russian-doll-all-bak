@@ -1,4 +1,0 @@
-Archive batch: _codex_archives/2026-06-03/1780464960
-Request: rename testing guide marker from m26 to j2 / June 2.
-Archived files:
-- 1.TPMOS_c_+rmmp.0102.0010/!.gem-flashlite--yolo/#.testing/_.0.aigent-testing-m26.txt

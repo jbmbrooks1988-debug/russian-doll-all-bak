@@ -1,0 +1,14 @@
+GL_OS_AUDIT_FRAME
+timestamp=2026-06-03 16:36:15
+project_id=gl-os
+active_layout=pieces/apps/gl_os/layouts/desktop.chtpm
+window_count=1
+active_window_id=1
+selected_index=0
+active_menu_options=
+║    [>] 1. [Project Explorer    ]           ║
+║    [ ] 2. [Debug Layouts (Dev Only)]           ║
+║    [ ] 3. [Terminal Apps       ]           ║
+║    [ ] 4. [Settings            ]           ║
+source=session/state.txt
+source=session/view.txt

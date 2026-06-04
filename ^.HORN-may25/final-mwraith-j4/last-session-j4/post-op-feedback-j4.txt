@@ -1,0 +1,37 @@
+POST-OP-FEEDBACK-J4: WRAITH PM REFINEMENT & ALIGNMENT
+Date: 2026-06-04
+Status: FEEDBACK SUMMARY & NEXT AGENT GUIDANCE
+
+1. INTENTIONS VS. ASSUMPTIONS
+
+Intention: A dynamic, multi-window ASCII desktop where mouse clicks raise windows and the terminal acts as a project launcher.
+Assumption: I assumed a static window layout was sufficient for the initial 'mousehand' proof of concept. This was incorrect; windows are dynamic map entities (pieces) that should be spawned or deleted on demand.
+
+Intention: Minimal, project-driven startup.
+Assumption: I incorrectly hardcoded the "Game Map" window into the session PDL as a "static mandate." It should only appear if explicitly launched from the terminal's project list.
+
+2. INVESTIGATION & SOLUTIONS
+
+Problem: Mouse clicks don't give Z-focus.
+Solution: The manager's `sync_focus_from_mouse` identifies the window, but it must then update `windows_state.pdl` to raise the Z-index of the focused entity.
+
+Problem: "Game Map" window is open by default.
+Solution: Correct the manager logic to only populate `terminal_window` by default. Implement a dynamic `active_windows` registry in the session state to track spawned pieces.
+
+3. STEPS FOR NEXT AGENT (PHASE J5)
+
+A. Dynamic Window Lifecycle:
+- Update `wraith-pm_manager.c`: Implement `spawn_window` and `close_window` functions that add/remove entries from `windows_state.pdl`.
+- Remove all hardcoded references to `game_map_window` from the initial session files.
+
+B. Sovereign Sub-Project Orchestration:
+- When a project is selected (LOAD_PROJECT), read its `project.pdl` and trigger `spawn_window`.
+
+C. Dynamic Z-Orchestration:
+- Implement "Raise to Top" logic on mouse click/focus change by incrementing the entity's Z-index in PDL.
+
+D. Clean Navigation Markers:
+- Refine `wraith_parser.c`: Ensure the first element of a focused window gets the `[>]` marker automatically if no control focus is set.
+
+Summary:
+The foundation is now established: the desktop is a sovereign map, and windows are its pieces. The next agent must focus on the dynamic lifecycle of these pieces—moving from static example windows to a truly project-driven desktop environment.

@@ -1,0 +1,3 @@
+nav_scope=terminal_menu
+selected_index=3
+drag_window_id=none

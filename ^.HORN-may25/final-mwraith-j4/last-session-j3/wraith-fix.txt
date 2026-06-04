@@ -1,0 +1,42 @@
+WRAITH FIX J3 - THE FUZZ-OP PIPELINE (DEEP DIVE)
+Date: 2026-06-03
+
+DEEP RESEARCH FINDINGS:
+
+1. THE "MAGIC" VARIABLE (${game_map})
+   - Discrepancy: Wraith was trying to manually inject `frame_markup` into `gui_state.txt`.
+   - Standard: `chtpm_parser.c` has a built-in "Projected Surface" logic. It automatically scans several project-relative paths for `view.txt` and loads the entire content into a variable named `${game_map}`.
+   - Flicker Cause: Because Wraith wasn't writing to the expected `view.txt` location, the host parser was loading an empty or stale `${game_map}` and overwriting Wraith's direct writes to `pieces/display/current_frame.txt`.
+
+2. PULSE ALIGNMENT
+   - Standard: `fuzz-op` manager updates its local `view.txt`, then pulses `pieces/display/frame_changed.txt`. This signals the host parser to wake up, find the `view.txt`, and render the final frame.
+
+REVISED SOLUTION:
+
+1. WRAITH PARSER REFACTOR (The Mirror):
+   - Parser will write its frame markup ONLY to `projects/wraith-pm/manager/view.txt`.
+   - Parser will NO LONGER write to `pieces/display/`.
+
+2. WRAITH SHELL REFACTOR (The Window):
+   - Update `projects/wraith-pm/layouts/wraith-shell.chtpm` to:
+     ```xml
+     <panel>
+         <module>${module_path}</module>
+         <text label="${game_map}" />
+     </panel>
+     ```
+
+3. WRAITH MANAGER REFACTOR (The Sync):
+   - On every input/drag event:
+     - Run `wraith_parser` (updates local `view.txt`).
+     - Wait for completion.
+     - Append 'W' to `pieces/display/frame_changed.txt`.
+   - Result: This triggers the host `chtpm_parser` to perform the "Shell Injection" automatically and atomically.
+
+BENEFITS:
+- Zero Flicker: Only the host parser writes to the display engine.
+- 100% Standard: This is the exact same pipeline used by Fuzz-Op, Op-Ed, and all modern TPMOS apps.
+- Auditable: `projects/wraith-pm/manager/view.txt` is a persistent "receipt" of Wraith's last intent.
+
+Does this revised plan align with your vision for the "Marriage"?
+Waiting for approval...

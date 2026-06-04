@@ -1,0 +1,62 @@
+WUSSDOWN-GEM-J4: WRAITH STRATEGIC ALIGNMENT & RESEARCH REPORT
+Date: 2026-06-04
+Status: PROPOSED STRATEGY
+
+1. THE STANDARD OF PERFECTION: THEORETICAL FOUNDATIONS
+
+CHTPML (PieceMark Markup Language):
+The "Soul" of TPMOS. Perfection is defined by absolute auditability and file-backed sovereignty. If a variable exists on screen, its source must be discoverable in a state file. Navigation is deterministic (numeric jumps).
+
+CHTMGL (PieceMark Graphics/Grid Language):
+The "Brain" of TPMOS. Perfection is the semantic bridge. It is not just about drawing; it is about describing intent (x, y, z, role, color). A perfect CHTMGL parser treats ASCII and RGB as twin projections of the same underlying scene tree.
+
+GLOS (OpenGL Operating System):
+The "Theater" of TPMOS. Perfection is sovereign orchestration. It manages the lifecycle of windows and processes, routing input at high frequency (60fps) to prevent lag, while maintaining the "One Writer" rule for project state.
+
+2. THE WRAITH INTENTION
+
+Wraith is the synthesis of these three. It seeks to bring GLOS-grade window management and process orchestration into the auditable ASCII frame standard.
+- Goal: A desktop shell that is visible in CLI, convertible to RGB, and navigable by both keyboard (numeric/arrow) and mouse.
+- Perfection: The "Mousehand" cursor acts as the unifying indicator, snapping to navigation focus while tracking mouse coordinates, ensuring the user always knows their point of interaction regardless of input mode.
+
+3. ANALYSIS OF PREVIOUS PHASES
+
+Bootstrap (J1-J2):
+- Successfully created the parser and frame artifacts.
+- Successfully separated media decode ops (IMG/VID).
+- DEVIATION: Failed to integrate as a primary desktop; remained a "flattened" preview inside the legacy CHTPM loader.
+
+Bridge (J3):
+- Successfully created the `.chtpm` wrapper and manager projection.
+- Successfully implemented basic selection state movement.
+- DEVIATION: Stuck on "sketch" labels (hard-coded menu items) instead of treating subwindows as real projected surfaces with mutable geometry.
+- DEVIATION: The host parser (CHTPM) still flattens the output because it sees Wraith's frame as raw text instead of a sovereign display surface.
+
+4. THE "MOUSEHAND" & NAVIGATION STRATEGY
+
+The 'mousehand' is more than a cursor; it is a focus-lock indicator.
+- Mouse Mode: '+' follows `mouse_x/y` exactly. Hit testing against `hitmap.pdl` updates `focused_window` and `focused_control`.
+- Nav Mode: Arrow keys and numeric jumps move the selection. The 'mousehand' SNAPS to the center of the newly focused object/cell, providing visual confirmation of the jump.
+- Implementation: Reference `3.tui_explorer]MOUSE.c` for ANSI mouse reporting (`\x1b[?1000h`) and coordinate extraction. 
+
+5. PROPOSED PATH FORWARD (PHASE J4)
+
+A. Fix the Display Bridge:
+- Stop publishing `frame_markup` as a raw variable in `gui_state.txt` if it confuses the host parser.
+- Use the `${game_map}` magic variable pattern. The host parser `chtpm_parser.c` automatically loads `projects/<id>/manager/view.txt`. 
+- Wraith will write its final frame to `view.txt`. This ensures the host parser treats it as a single block of text/map data, preventing flattening.
+
+B. Real Window Management:
+- Enforce `windows_state.pdl` as the source of truth for x/y/w/h/z.
+- Parser reads geometry from PDL, reads content from subwindow `view.txt` or `.cells.pdl` files, and composes.
+
+C. Mousehand Integration:
+- Implement `draw_mousehand()` in the parser.
+- Update manager to handle both `wraith-pm::mouse` commands (from GL/external) and raw ANSI mouse escape sequences (for CLI).
+- Map keyboard navigation to `mouse_x/y` updates to keep the mousehand in sync.
+
+D. Verifiable Proof:
+- Deliver a frame where the `GAME MAP` window overlaps the `Wraith Terminal` and the `mousehand` is visible over a control, with `audit_frame.txt` confirming the hit.
+
+Conclusion:
+Wraith will move from a "simulated dashboard" to a "real ASCII desktop" by leveraging the `${game_map}` projected surface pattern and the unifying `mousehand` cursor.
