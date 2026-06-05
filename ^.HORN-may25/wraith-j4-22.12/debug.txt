@@ -1,0 +1,3 @@
+[00:26:49] PARSER: launch_module(projects/wraith-pm/manager/+x/wraith-pm_manager.+x) pid=-1
+[00:26:49] PARSER: forked module pid=3
+[00:26:49] PARSER: launch_module(projects/wraith-pm/manager/+x/wraith-pm_manager.+x) pid=3

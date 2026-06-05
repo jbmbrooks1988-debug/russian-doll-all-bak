@@ -1,0 +1,5 @@
+<panel>
+    <interact src="projects/wraith-pm/session/history.txt" />
+    <module>${module_path}</module>
+    ${game_map}
+</panel>

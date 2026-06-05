@@ -1,0 +1,208 @@
+WRAITH HANDOFF
+Date: 2026-06-04
+
+Purpose:
+This handoff tells the next agent which documents to trust, what Wraith is
+supposed to be, what was already fixed, and what code work should happen next.
+
+
+1. Documents to trust
+
+Use these documents as the current truth:
+
+- CURRENT_STATE.md
+- wraith-blueprint.txt
+- answers.txt
+- re-wraith-clean-plan-j4.txt
+
+What each one is for:
+
+- CURRENT_STATE.md
+  - repo/session history collapsed into one durable file
+  - broad architectural direction and past corrections
+
+- wraith-blueprint.txt
+  - product behavior truth
+  - what Wraith is supposed to do
+  - wins over stale code assumptions
+
+- answers.txt
+  - clarifies current mismatch between implemented behavior and intended
+    behavior
+  - especially startup state, focus ownership, nav ownership, and parser choice
+
+- re-wraith-clean-plan-j4.txt
+  - clean-room plan written before reading Wraith code
+  - useful as an anti-drift rubric
+
+
+2. Core understanding to preserve
+
+Wraith is:
+
+- a new desktop/window-manager environment
+- rendered in ASCII
+- behaviorally inspired by GL-OS
+- file-backed and inspectable like TPMOS
+
+Wraith is NOT:
+
+- a replacement app standard
+- a fake demo desktop with pre-opened windows
+- a one-off special loader that ignores TPMOS project structure
+
+Important distinction:
+
+- Wraith can contain its own subprojects under
+  `projects/wraith-pm/wraith-projects/`
+- that part is new
+- but those subprojects should still use the same TPMOS-style `.pdl` loading
+  model and the same core standards/data structures
+- the difference is the GUI/runtime shell, not a new project standard
+
+
+3. Current intended behavior
+
+Startup:
+
+- Wraith should start in shell/desktop mode
+- for now, open one default terminal window for convenience/dev
+- do not auto-open `game-map`
+- do not treat presence of a content file as proof that a window is open
+
+Opening projects:
+
+- the game menu is itself a project
+- additional Wraith projects may exist as subdirs in
+  `projects/wraith-pm/wraith-projects/`
+- selection from the launcher/menu should open a new window for that project
+- project loading should resolve from the subproject's `.pdl`, not from a
+  hardcoded special case
+
+Focus and nav:
+
+- the focused window must own the active selector/nav
+- if terminal is focused, terminal menu/nav is active
+- if game-map is focused, game-map selector/nav is active
+- no split-brain state where desktop focus says one thing and nav state says
+  another
+
+
+4. What was already fixed
+
+- Composer no longer renders a hardcoded `96x30` fake full desktop.
+- Frame sizing now follows actual visible windows/taskbar bounds.
+- The header no longer forces the huge `MOUSE:` debug row width.
+- The taskbar no longer collides with the clock in the shrunken frame.
+- Wraith is confirmed to use `wraith_parser`, not `chtpm_parser`.
+- The manager and composer were moved toward a canonical
+  `session/windows_state.pdl` registry.
+
+
+5. Known current mismatch
+
+Right now the code is still inconsistent in one important way:
+
+- saved window state can say `game_map_window` is focused/open
+- nav state can still say terminal owns the selector
+
+Observed current persisted state:
+
+- `open_game_map_window=true`
+- `focused_window=game_map_window`
+- `nav_scope=terminal_menu`
+
+That is wrong according to the blueprint.
+
+
+6. Files most relevant for next coding pass
+
+Primary code files:
+
+- 1.TPMOS_c_+rmmp.0102.0018/projects/wraith-pm/project.pdl
+- 1.TPMOS_c_+rmmp.0102.0018/projects/wraith-pm/manager/wraith-pm_manager.c
+- 1.TPMOS_c_+rmmp.0102.0018/projects/wraith-pm/ops/wraith_composer.c
+- 1.TPMOS_c_+rmmp.0102.0018/projects/wraith-pm/ops/wraith_parser.c
+
+Primary state files:
+
+- 1.TPMOS_c_+rmmp.0102.0018/projects/wraith-pm/session/state.txt
+- 1.TPMOS_c_+rmmp.0102.0018/projects/wraith-pm/session/nav_state.txt
+- 1.TPMOS_c_+rmmp.0102.0018/projects/wraith-pm/session/windows_state.pdl
+
+Project discovery area:
+
+- 1.TPMOS_c_+rmmp.0102.0018/projects/wraith-pm/wraith-projects/
+
+
+7. Exact next coding steps
+
+Step 1:
+Reset startup/session baseline to intended behavior.
+
+Meaning:
+
+- `open_game_map_window=false`
+- `focused_window=terminal_window`
+- terminal owns nav at boot
+- no auto-restored project windows unless explicit session restore is later
+  designed
+
+Step 2:
+Stop hardcoding project-open logic around only `blank-proj` and `game-map`.
+
+Meaning:
+
+- discover/load Wraith subprojects from `wraith-projects/`
+- resolve each target through its `.pdl`
+- treat game-map as one project among the Wraith subprojects, not as a special
+  always-known exception
+
+Step 3:
+Unify focus ownership and nav ownership.
+
+Meaning:
+
+- one source of truth for active window
+- one source of truth for active nav owner
+- those must move together
+- if focus changes, active selector scope changes with it
+
+Step 4:
+Make project window opening real.
+
+Meaning:
+
+- selecting a project from the terminal/launcher should create a new window
+  entry in canonical state
+- taskbar should update from that state
+- composer should render from that same state only
+
+Step 5:
+After startup/open/focus/nav are coherent, then revisit mouse.
+
+Meaning:
+
+- keep raw mouse behavior constrained/off until the non-mouse state machine is
+  trustworthy
+
+
+8. Things the next agent should not do
+
+- Do not assume `game-map` should be open at startup.
+- Do not treat content-file existence as open-window existence.
+- Do not invent a new Wraith-only project standard if existing TPMOS standards
+  already cover the need.
+- Do not let focus and selector ownership drift apart.
+- Do not re-enable noisy mouse behavior before startup/open/focus/nav are
+  coherent.
+
+
+9. Working rule
+
+If code disagrees with:
+
+- wraith-blueprint.txt
+- answers.txt
+
+then code is wrong unless the user explicitly changes the product direction.

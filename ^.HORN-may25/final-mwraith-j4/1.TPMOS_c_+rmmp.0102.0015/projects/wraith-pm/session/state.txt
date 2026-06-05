@@ -1,7 +1,0 @@
-mouse_x=470
-mouse_y=288
-drag_active=false
-drag_window_id=
-focused_window=terminal_window
-taskbar_windows_label=| [Wraith Term*] |
-taskbar_clock=07:01 06-04-2026

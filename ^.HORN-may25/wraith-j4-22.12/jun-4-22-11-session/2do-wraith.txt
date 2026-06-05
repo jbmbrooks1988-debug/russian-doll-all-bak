@@ -1,0 +1,288 @@
+WRAITH 2DO
+Date: 2026-06-05
+
+Purpose:
+This file turns the Wraith blueprint into build phases, implementation steps,
+and human-testable checkpoints.
+
+Working rule:
+- A phase is not complete because code was written.
+- A phase is complete only when the listed human checks pass.
+
+
+PHASE 0: BASELINE CONTROL
+
+Goal:
+- Stop mixed/stale behavior from polluting future work.
+
+Steps:
+- Make startup deterministic.
+- Remove accidental auto-open behavior for `game-map`.
+- Make one canonical startup state for Wraith dev boot.
+- Keep mouse behavior constrained/off while baseline is being fixed.
+
+Target startup state:
+- desktop shell visible
+- one default terminal window open
+- no `game-map` window open
+- terminal owns active nav
+
+Human-testable checkpoints:
+- Launch Wraith from a clean state.
+- You see the shell and one terminal window.
+- You do not see `game-map`.
+- Taskbar only lists the terminal window.
+- Press up/down in the terminal menu and only the terminal selector moves.
+
+KPIs:
+- `open_game_map_window=false` at boot
+- `focused_window=terminal_window` at boot
+- `nav_scope=terminal_menu` at boot
+- no unexpected second window appears during idle
+
+
+PHASE 1: CANONICAL WINDOW TRUTH
+
+Goal:
+- Make the visible desktop, taskbar, focus, and metadata all agree.
+
+Steps:
+- Keep one canonical window registry.
+- Ensure open/closed window state comes only from canonical state.
+- Ensure composer renders only from canonical state.
+- Ensure taskbar reflects only actual open windows.
+
+Human-testable checkpoints:
+- Open a project window.
+- The new window appears once.
+- The taskbar adds exactly one new item for that window.
+- Closing or hiding a window removes it from both the screen and taskbar.
+- No metadata claims a window is open when it is not visible.
+
+KPIs:
+- one source of truth for window open state
+- one source of truth for focused window
+- visible frame matches session metadata
+- no split-brain frame/taskbar/focus reports
+
+Current sub-checkpoint:
+- PASS: boot is now terminal-only and canonical state agrees with visible frame
+- NEXT: prove live nav movement and deliberate project opening without
+  reintroducing split state
+
+Immediate proof target:
+- up/down moves the visible terminal selector
+- Enter on `game-map` opens exactly one `game-map` window
+- taskbar, focus, registry, and frame all update together
+
+
+PHASE 2: SUBPROJECT DISCOVERY AND LOADING
+
+Goal:
+- Make Wraith open its own subprojects using TPMOS project standards.
+
+Steps:
+- Discover Wraith projects from `projects/wraith-pm/wraith-projects/`.
+- Resolve project identity from each subproject's `.pdl`.
+- Remove hardcoded opening logic for only `blank-proj` and `game-map`.
+- Open selected subprojects as real windows.
+
+Human-testable checkpoints:
+- Add a new valid Wraith subproject directory.
+- Relaunch or refresh Wraith.
+- The new project appears in the launcher/menu.
+- Select it.
+- A new window opens for that project.
+- That project did not require a special-case code branch to appear.
+
+KPIs:
+- launcher contents come from discovered subprojects
+- project opening path is `.pdl` driven
+- no per-project hardcoded window logic required for normal loading
+
+
+PHASE 3: FOCUS OWNS NAV
+
+Goal:
+- Make active window and active selector always agree.
+
+Steps:
+- Define one active window owner.
+- Define one active nav owner.
+- Make focus changes update nav ownership immediately.
+- Remove the current split where terminal nav can stay active while another
+  window is focused.
+
+Human-testable checkpoints:
+- Focus terminal window.
+- Terminal selector is active.
+- Open `game-map` and focus it.
+- Terminal selector stops being the active selector.
+- `game-map` selector becomes active.
+- Refocus terminal.
+- Terminal selector becomes active again.
+
+KPIs:
+- focused window always equals active nav owner
+- no case where a hidden or unfocused window owns active selector state
+- no case where taskbar focus and selector focus disagree
+
+
+PHASE 4: NATIVE WRAITH PARSER MODES
+
+Goal:
+- Make `wraith_parser` the native owner of live input semantics.
+
+Steps:
+- Define first-class Wraith modes:
+  - `desktop`
+  - `launcher`
+  - `window_nav`
+  - `window_interact`
+- Move live input routing into `wraith_parser`.
+- Reduce manager to state/lifecycle duties.
+- Stop manager from acting like a second parser.
+
+Human-testable checkpoints:
+- Trigger each mode intentionally.
+- The system behaves differently in each mode in a predictable way.
+- Desktop commands do not get mistaken for launcher commands.
+- Launcher nav does not get mistaken for in-window nav.
+- Switching mode changes behavior without desyncing state.
+
+KPIs:
+- one live input owner: `wraith_parser`
+- manager no longer owns nav semantics
+- mode transitions are explicit and inspectable
+- input behavior is explainable without recursion
+
+
+PHASE 5: INTERACT MODE PROOF
+
+Goal:
+- Prove true interact behavior as a native Wraith capability, not a mouse
+  overlay hack.
+
+Steps:
+- Prove `window_interact` mode with no mouse first if needed.
+- Prove nav inside interact mode.
+- Prove auto-entered interact mode where appropriate.
+- Only then add real mouse-driven behavior inside that mode.
+
+Human-testable checkpoints:
+- Enter interact mode on a focused window.
+- A user can tell they are no longer in ordinary launcher/nav behavior.
+- Local controls inside the window respond consistently.
+- Interact mode can be entered without fake selector dependencies if designed.
+- Mouse interaction works inside interact mode without flooding frames.
+
+KPIs:
+- interact mode is real, not implied
+- nav works inside interact mode
+- mouse works inside interact mode without spam
+- interact ownership is native to Wraith parser state
+
+
+PHASE 6: WINDOW LIFECYCLE
+
+Goal:
+- Make Wraith behave like a real desktop with open, focus, close, and reopen.
+
+Steps:
+- Support open/new window behavior for subprojects.
+- Support close behavior for shell and project windows.
+- Support reopening shell and terminal later.
+- Preserve sane z-order and focus after close/open actions.
+
+Human-testable checkpoints:
+- Open multiple project windows.
+- Bring different windows to focus.
+- Close one.
+- The remaining windows stay sane.
+- Close shell.
+- Reopen shell later.
+- Desktop remains usable after each action.
+
+KPIs:
+- windows can open and close without corrupting state
+- shell is closable and reopenable
+- focus fallback after close is predictable
+- taskbar always matches actual open windows
+
+
+PHASE 7: MOUSE REINTRODUCTION
+
+Goal:
+- Reintroduce mouse only after state and mode ownership are stable.
+
+Steps:
+- Add constrained click-to-focus first.
+- Add constrained titlebar targeting second.
+- Add drag only after click/focus is stable.
+- Add right-click context menu backed by `.pdl`-coded methods after
+  click-to-focus is proven.
+
+Human-testable checkpoints:
+- Clicking a window focuses it.
+- Clicking a different window moves focus cleanly.
+- Clicking titlebar selects correct window.
+- Drag moves the intended window only.
+- No frame spam occurs during idle or ordinary movement.
+
+KPIs:
+- no uncontrolled frame flood
+- click-to-focus is reliable
+- drag targets correct window
+- mouse does not break keyboard nav ownership
+
+
+PHASE 8: DESKTOP ACTIONS
+
+Goal:
+- Add desktop-native convenience behavior after the window model is solid.
+
+Steps:
+- Add right-click desktop context menu.
+- Add open terminal action.
+- Add create file action.
+- Add create directory action.
+- Keep these as desktop actions, not terminal hacks.
+
+Human-testable checkpoints:
+- Right-click desktop opens context menu.
+- Selecting "open terminal" creates a new terminal window.
+- Selecting "create file" creates a file in the intended place.
+- Selecting "create directory" creates a directory in the intended place.
+
+KPIs:
+- desktop actions are discoverable
+- context menu does not break focus/nav model
+- filesystem actions are explicit and predictable
+
+
+CROSS-PHASE RULES
+
+Rules for all phases:
+- Do not count internal logs as proof.
+- Do not count metadata alone as proof.
+- Visible behavior and canonical state must agree.
+- Do not reintroduce recursive parser behavior in manager.
+- Do not let mouse work become the proof of core architecture.
+
+Required truth sources:
+- wraith-blueprint.txt
+- answers.txt
+- handoff-jun-4.txt
+- CURRENT_STATE.md
+
+
+MINIMUM SUCCESS DEFINITION
+
+Wraith is minimally successful when:
+- it boots into a sane terminal-first desktop state
+- it discovers Wraith subprojects from `wraith-projects/`
+- it opens selected projects as new windows
+- focused window and active nav always agree
+- `wraith_parser` clearly owns live input semantics
+- interact mode is native and proven
+- mouse works without spam and without breaking nav ownership

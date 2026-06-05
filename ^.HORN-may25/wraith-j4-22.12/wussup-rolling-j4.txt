@@ -1,0 +1,109 @@
+───────────────────────────────────────────────────
+
+• I’ve isolated the two real blockers: there is no sane window registry writer, and the
+  parser currently prevents live mouse input from ever reaching Wraith. I’m opening just
+  the handle_mouse and keyboard dispatch sections now, because the first concrete fix is
+  to re-enable a Wraith-owned event stream instead of leaving the manager blind.
+
+• Explored
+  └ Read wraith_parser.c, history.txt
+
+■ Conversation interrupted - tell the model what to do differently. Something went wrong?
+Hit `/feedback` to report the issue.
+
+
+› wait the reason the mouse was blocked was because it wasn't showing signs of activity
+  other than spamming new frames and preventing anything else from being tested, so i
+  would wait on that or get it under control first
+
+
+  What I found from the first Wraith read is that the bigger immediate problem is not
+  “missing mouse” but split ownership:
+
+  - The manager is still basically a menu selector and explicitly ignores mouse.
+
+  - windows_state.pdl is corrupted, so there is no trustworthy canonical window registry.
+
+  So the right order is:
+
+  1. Fix canonical window state first.
+  2. Make the visible frame and emitted artifacts agree.
+  3. Keep mouse disabled until state mutation and render guards are sane.
+  4. Then reintroduce constrained mouse paths one event type at a time.
+
+  The first concrete fix I would make next is to replace the broken windows_state.pdl
+  path with a clean canonical registry for terminal_window and game_map_window, and
+  update composition to read that registry instead of stale/scattered sources. That gets
+  Wraith under control before any live drag input comes back. If you want, I’ll start
+  there.
+
+
+› explain to me how this aligns with our intentions without jargon im not technical just
+  the ceo but i want to make sure we are on teh same page and u will fix this according
+  to what im looking for behavior wise
+
+
+• Right now Wraith is half pretending and half real.
+
+  What you want, as I understand it, is a real little desktop world. That means there
+  should be actual windows with real positions, real focus, real front/back order, and
+  real movement. If a window is “active,” that should not just be text written somewhere
+  to make it look active. The system should genuinely know which window is active, where
+  it is, and what content belongs inside it.
+
+  What I found is that Wraith already has some good bones for that. It has a thin shell
+  on top, which is good. It has real content files for the terminal window and the game
+  map window, which is also good. But the part in the middle, the part that is supposed
+  to be the truth of the desktop, is confused. One part says only one window is visible.
+  Another part says there are more windows and a different one is focused. So Wraith is
+  not yet acting like one honest desktop. It is acting like multiple stories about a
+  desktop at the same time.
+
+  That is why I do not want to turn mouse movement back on yet. If we do that now, the
+  mouse will just shake all the broken parts at once and cause spam again. It would be
+  like testing steering on a car whose wheels are not attached to the same axle.
+
+  The behavior-first fix is:
+
+  - First, make one single truth for the desktop.
+  - That truth should say:
+      - what windows exist
+      - where they are
+      - which one is active
+      - which one is in front
+      - what content each one shows
+
+  - Then make the visible screen obey that truth exactly.
+  - Then make the extra reports and metadata obey that same truth too.
+  - Only after that, let the mouse change that truth in controlled ways.
+
+  That aligns with your intention because it pushes Wraith toward being a real OS-like
+  desktop instead of a fake UI sketch. The goal is not “display window-looking text.” The
+  goal is “have actual windows the system understands.”
+
+  Behavior-wise, this means the finished path should feel like this:
+
+  - You see a Wraith desktop shell.
+  - You see a terminal-style window and a game-map window as real separate windows.
+  - Clicking or selecting a window actually brings it forward.
+  - Moving a window actually changes where it lives.
+  - The taskbar, focus, and visible frame all agree about what is happening.
+  - The mouse stops being noise and starts being a real tool.
+
+  So yes, we are on the same page: I am not aiming to polish the illusion. I am aiming to
+  make the desktop behavior real first, then turn input back on once it can act on
+  something trustworthy. If you want, I’ll start by building that one honest desktop
+  truth now.
+
+______________________________
+› nav isn't movable yet. i feel that it maybe that this format is different from
+  fuzz-op... we dont really have a project that is dynamic with nav (like inside a
+  game-map interact enviornment; can our current stds handle this? are u using
+  chtpm_parser.c or wraith_parser.c 
+  
+  
+  < we never proved a nav inside of interact mode... maybe we should do that first seperate
+  and even prove 'auto interact mode' with no selection , then come back to wraith again
+  <and even mouse inside this interact mode. at that time that would become wraith... 
+ 
+

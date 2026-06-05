@@ -1,0 +1,11 @@
+name=Wraith Terminal
+pos_x=2
+pos_y=2
+pos_z=10
+status=active
+type=window
+width=60
+height=15
+src=terminal_window.view.txt
+focused=true
+minimized=false

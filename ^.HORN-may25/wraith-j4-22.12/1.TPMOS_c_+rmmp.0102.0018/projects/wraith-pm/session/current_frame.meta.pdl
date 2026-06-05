@@ -1,0 +1,7 @@
+SECTION | KEY | VALUE
+FRAME | frame_id | 000008
+FRAME | project_id | wraith-pm
+FRAME | cols | 49
+FRAME | rows | 13
+FRAME | object_count | 7
+FRAME | focused_object_dom_id | terminal_window

@@ -1,0 +1,6 @@
+blank-proj
+
+This is a blank project window.
+
+Later this can become a file browser,
+scratchpad, or empty workspace surface.

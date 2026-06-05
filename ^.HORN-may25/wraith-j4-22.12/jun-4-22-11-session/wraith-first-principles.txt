@@ -1,0 +1,109 @@
+
+______________________________
+› nav isn't movable yet. i feel that it maybe that this format is different from
+  fuzz-op... we dont really have a project that is dynamic with nav (like inside a
+  game-map interact enviornment; can our current stds handle this? are u using
+  chtpm_parser.c or wraith_parser.c 
+  
+  
+  < we never proved a nav inside of interact mode... maybe we should do that first seperate
+  and even prove 'auto interact mode' with no selection , then come back to wraith again
+  <and even mouse inside this interact mode. at that time that would become wraith... 
+ 
+-----------------------------------
+› the proof would  be in chtpm_parser tho and relying on manager if interact mode which
+  would ostensibly be recreating a recursive chtpm_parser but inside of the manager. this is
+  getting confusing . do u see a way to do wrait parser on its own avoiding this weird
+  recursion by making this kind of behavior native to wraith?
+
+
+------------
+
+• Yes.
+
+  The clean way out is: stop treating Wraith as “chtpm_parser plus manager plus a second
+  mini-parser hiding inside the manager.”
+
+  That is the recursion trap.
+
+  If Wraith keeps doing that, you get:
+
+  - one system deciding layout/nav
+  - another system deciding window/focus
+  - a fake interact layer wedged between them
+  - unclear ownership of input
+
+  The better path is to make wraith_parser native, not supervisory glue.
+
+  What that means:
+
+  - wraith_parser should own Wraith interaction directly
+  - the manager should stop behaving like a shadow parser
+  - the manager should become a state/service layer, not the place where nav logic lives
+  - Wraith windows should expose simple interactive state, and wraith_parser should route
+    input to the focused window
+
+  So the model becomes:
+
+  1. wraith_parser
+
+  - owns input mode
+  - owns focus target
+  - owns nav target
+  - decides whether input goes to desktop, launcher, or focused window
+  - enters/leaves interact mode natively
+
+  2. manager
+
+  - persists canonical state
+  - opens/closes windows
+  - updates registry/session files
+  - maybe triggers compose/render
+  - does not act like a second parser
+
+  3. composer
+
+  - only renders current truth
+  - no behavior decisions
+
+  That avoids recursive chtpm_parser behavior because Wraith is no longer pretending to be a
+  parser host for another parser-shaped thing. It becomes its own runtime.
+
+  The key design shift is:
+
+  - not “can manager simulate interact mode?”
+  - but “can wraith_parser have interact mode as a first-class native state?”
+
+  I think yes.
+
+  Clean native Wraith model:
+
+  - mode=desktop
+  - mode=launcher
+  - mode=window_nav
+  - mode=window_interact
+
+  Then:
+
+  - desktop mode handles global focus/window selection
+  - launcher mode handles project picking
+  - window_nav mode handles structured nav inside focused window
+  - window_interact mode handles free interaction inside focused window
+
+  That is much cleaner than recursive parser logic.
+
+  Practical rule:
+
+  - only one component should interpret live input semantics
+  - that should be wraith_parser
+
+  So yes, I do see a path:
+
+  - make Wraith behavior native to wraith_parser
+  - demote manager to canonical state persistence and window lifecycle
+  - treat interact mode as a real Wraith parser mode, not a manager-side imitation of
+    chtpm_parser
+
+  If you want, next I can write this down as a concrete architecture note in answers.txt or
+  wraith-blueprint.txt before any more code changes.
+
