@@ -1,9 +1,0 @@
-BUGS
-
-Read:
-- `wraith-docs/history-archive/wrai-bugs-j5.txt`
-
-Why it matters:
-- This explains the latest investigation into why Wraith nav/debug behavior was
-  still wrong.
-- It is the concrete bug record for the current failure mode.

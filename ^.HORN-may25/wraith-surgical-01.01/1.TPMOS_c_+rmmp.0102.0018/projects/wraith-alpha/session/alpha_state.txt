@@ -1,0 +1,25 @@
+project_id=wraith-alpha
+desktop_mode=desktop
+desktop_window_count=1
+desktop_default_window_id=terminal
+desktop_default_window_title=Terminal
+desktop_focused_window_id=terminal
+desktop_focused_window_title=Terminal #1
+desktop_launcher_count=1
+desktop_launcher_1_id=terminal
+desktop_launcher_1_title=Terminal
+desktop_launcher_1_kind=launcher
+desktop_toolbar_markup=<button compact="true" label="Terminal" onClick="WRAITH_TOOLBAR:launch:terminal" /><button compact="true" label="Terminal #1" onClick="WRAITH_TOOLBAR:restore:terminal:1" />
+desktop_window_1_id=terminal
+desktop_window_1_title=Terminal #1
+desktop_window_1_kind=terminal
+desktop_window_1_open=false
+desktop_window_1_collapsed=true
+desktop_window_1_minimized=true
+desktop_window_1_minimized_visible=true
+desktop_window_1_restore_title=Terminal #1
+desktop_window_1_body_visible=false
+desktop_window_1_hidden=true
+active_gui_index=2
+current_key_label=ENTER
+current_key_raw=13

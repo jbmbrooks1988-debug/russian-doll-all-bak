@@ -1,9 +1,0 @@
-FUTURE FEATURES
-
-Read:
-- `wraith-docs/history-archive/wraith-future-features.txt`
-
-Why it matters:
-- This is where deferred ideas live.
-- It includes the welcome-window-before-loader idea, but explicitly below the
-  current keyboard/nav baseline.

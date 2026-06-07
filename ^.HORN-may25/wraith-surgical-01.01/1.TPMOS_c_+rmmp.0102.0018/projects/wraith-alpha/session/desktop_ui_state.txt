@@ -1,0 +1,15 @@
+desktop_window_count=1
+desktop_window_1_open=false
+desktop_window_1_collapsed=true
+desktop_window_1_minimized=true
+desktop_window_1_minimized_visible=true
+desktop_window_1_restore_title=Terminal #1
+desktop_toolbar_markup=<button compact="true" label="Terminal" onClick="WRAITH_TOOLBAR:launch:terminal" /><button compact="true" label="Terminal #1" onClick="WRAITH_TOOLBAR:restore:terminal:1" />
+desktop_window_1_body_visible=false
+desktop_window_1_collapse_glyph=-
+desktop_window_1_fullscreen=false
+desktop_window_1_mode=half
+desktop_window_1_halfscreen_visible=true
+desktop_window_1_hidden=true
+desktop_window_1_title=Terminal #1
+desktop_focused_window_title=Terminal #1
