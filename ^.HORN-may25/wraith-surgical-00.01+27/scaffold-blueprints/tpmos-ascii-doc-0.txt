@@ -1,0 +1,26 @@
+# TPMOS ASCII I/O & Navigation Pipeline Reference (tpmos-ascii-doc-0.txt)
+**Date:** 2026-06-05
+
+## 1. The Core Pipeline
+The TPMOS ASCII I/O pipeline is built on the principle of strict, unidirectional agent communication through file system markers.
+
+### Input Flow
+1. **User Action:** Key press recorded by the platform.
+2. **Injection:** The `Parser` (or platform wrapper) appends the event: `[YYYY-MM-DD HH:MM:SS] KEY_PRESSED: <code>` to `pieces/keyboard/history.txt` (or app-specific `history.txt`).
+3. **Consumption:** The `Manager` polls this file continuously.
+4. **Processing (`route_input`):** The `Manager` parses the key code, mutates internal state (`g_variable`), and performs logical checks (e.g., bounds checking for navigation).
+
+### State/Render Flow
+1. **Mutation:** `Manager` writes new state (e.g., `active_gui_index=2`) to a state file (`nav_state.txt`) using an **Atomic Write** (write to `.tmp` then `rename()` to final path).
+2. **The Marker Pulse:** Immediately following the atomic file write, the `Manager` appends a single character/byte to `frame_changed.txt` (e.g., `write(marker_fd, "M\n", 2);`).
+3. **Reactivity:** The `Parser` (main loop) uses `fstat()` on `frame_changed.txt`. When size increases, it triggers `compose_frame()`.
+4. **Rendering:** `Parser` reads updated state files, performs layout substitution, and writes the full final frame to `current_frame.txt`.
+5. **Display:** The `Renderer` (often a daemon) monitors `current_frame.txt` and pushes the content to the terminal.
+
+## 2. Navigation & Jumping Logic
+- **Selector/Navigation:** Controlled by the `Manager`. It owns the `active_gui_index`.
+- **Jumping/Activation:** `onClick` buttons (e.g., `KEY:1`) inside a `.chtpm` layout trigger `ACTIVATE` signals. The `Manager` receives the raw key, resolves the target via `piece_methods` in the PDL, and updates the `active_target`.
+- **Rendering Nav:** The `Parser` substitutes `${piece_methods}` into the layout at render-time. The `Manager` must publish this string, ensuring the `Parser` acts only as a passive substitution engine.
+
+---
+*If it's not in a file, it's a lie. The marker is the clock.*

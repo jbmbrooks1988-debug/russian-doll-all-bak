@@ -1,0 +1,34 @@
+# WRAITH-ALPHA HANDOFF: THE STALL & THE SOLUTION (handoff-alpha-j5.txt)
+Date: 2026-06-05
+
+## 1. Macro Overview
+We set out to build a stable ASCII desktop by stripping away the broken "Wraith-PM" legacy and starting with a clean-slate "Wraith-Alpha" baseline. 
+
+**What Works:**
+- The TPMOS Pipeline is now proven.
+- **Input:** `history.txt` is populated by the keyboard module.
+- **Manager:** `wraith_manager_alpha` polls history, archives it, and writes atomic state to `alpha_state.txt`.
+- **Pulse:** The Manager hits `frame_changed.txt` successfully.
+- **Parser:** `wraith_parser_alpha` wakes up on the pulse and composes a frame.
+
+## 2. The Micro-Stall: "Logical Blindness"
+We have stalled at the final yard: **Variable Rendering**. 
+The state file `alpha_state.txt` contains the correct values (e.g., `active_gui_index=3`), but the Parser is blanking them in the UI.
+
+**Why?**
+- **Premature Substitution:** I discovered the Parser was substituting `${var}` tags during the initial layout parse. This "baked" blank values into memory before the Manager had a chance to update them.
+- **Logical Gap:** Even though the plumbing (the files) is honest, the Parser's "eyes" (the substitution logic) are currently cataracts-blind to live updates.
+
+## 3. The Classic TPMOS Solution
+In classic TPMOS, this is a non-issue because:
+1.  **Passive Substitution:** Variables are never substituted at parse-time; they remain as tokens until the final frame-render.
+2.  **State Supremacy:** `load_vars()` is the very first thing called in every composition cycle.
+3.  **One Owner:** The Manager computes the index; the Parser merely formats it.
+
+## 4. Immediate Mouse Fix (Gesture Conflict)
+The user reported that mouse tracking is interfering with system "swipe" gestures. 
+**Status:** `pieces/keyboard/plugins/keyboard_input.c` currently forces mouse-reporting mode (`\x1b[?1003h`) globally.
+**Fix:** We must refactor `keyboard_input.c` to only enable mouse reporting if a specific project lock or variable (e.g., `use_mouse=true`) is present. This restores the terminal to a "Touch-Safe" state by default.
+
+---
+*Functional code can be hardened tomorrow. Broken code is a lie.*

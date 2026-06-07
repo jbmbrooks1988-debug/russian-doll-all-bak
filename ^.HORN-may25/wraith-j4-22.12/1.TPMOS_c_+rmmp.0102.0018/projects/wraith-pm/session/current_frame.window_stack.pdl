@@ -1,9 +1,0 @@
-SECTION | KEY | VALUE
-FRAME | frame_id | 000008
-STACK | 00 | object=1 title=Wraith Terminal v1.0 role=panel z=40 focused=true
-STACK | 01 | object=7 title=--:-- --- -- ---- role=text z=8 focused=false
-STACK | 02 | object=6 title=| [Wraith Term*] | role=text z=7 focused=false
-STACK | 03 | object=5 title=[Start] role=text z=6 focused=false
-STACK | 04 | object=4 title=taskbar role=banner z=5 focused=false
-STACK | 05 | object=3 title=WRAITH role=banner z=2 focused=false
-STACK | 06 | object=2 title=Wraith Desktop role=window z=1 focused=false

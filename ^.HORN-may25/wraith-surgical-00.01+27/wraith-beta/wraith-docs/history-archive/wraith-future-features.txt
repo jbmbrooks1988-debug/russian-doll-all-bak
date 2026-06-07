@@ -1,0 +1,64 @@
+WRAITH FUTURE FEATURES
+Date: 2026-06-05
+
+This file is for Wraith behavior that we still want, but should not build
+until the current keyboard/nav baseline is proven.
+
+
+1. Welcome window before loader
+
+Desired behavior:
+- Wraith should eventually be able to show a welcome window before the loader
+- this should feel like the TPMOS-style "welcome first" flow the user asked for
+- the welcome step should be part of the Wraith startup experience, not a
+  random overlay
+
+Important constraint:
+- do not implement this before the keyboard visibility and nav movement are
+  working correctly
+- do not let this become a reason to drift away from the current baseline
+- do not let the welcome step replace the loader or hide nav failures
+
+Reason for deferral:
+- the current problem is still basic keyboard signal visibility
+- the next required proof is that the current key is visible in the live frame
+- after that, arrow nav must move selection correctly
+- only then should the welcome flow be introduced
+
+
+2. Mouse input later
+
+Desired behavior:
+- visible mouse click-to-focus
+- visible right-click context menu
+- context menu actions backed by `.pdl`-coded methods
+
+Important constraint:
+- mouse work comes later
+- mouse should not be used to mask broken keyboard/nav ownership
+- mouse should not be added until keyboard and nav are stable
+
+
+3. UX ordering rule
+
+The intended order is:
+
+1. make the pressed key visible
+2. prove arrow navigation moves correctly
+3. prove project selection works
+4. then add the welcome window if still desired
+5. then add mouse focus and context menu behavior
+
+This order matters because the last agent drifted into final-vision work before
+the first proof steps were stable.
+
+
+4. How to treat this file
+
+This is not a blueprint.
+This is not a pitfall log.
+This is a deferred-features note.
+
+Use it to remember the user's intent without letting it distract from the
+current build order.
+

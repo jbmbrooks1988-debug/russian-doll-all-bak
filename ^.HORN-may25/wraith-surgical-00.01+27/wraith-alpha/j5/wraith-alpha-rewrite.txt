@@ -1,0 +1,44 @@
+# WRAITH-ALPHA REWRITE PLAN (wraith-alpha-rewrite.txt)
+Date: 2026-06-05
+
+## 1. Philosophy: Provable Functionality First
+The current Wraith implementation is burdened by "systemic debt"—layers of complex windowing and synchronization logic that have obscured the basic TPMOS pipeline. 
+
+The Alpha Rewrite will ignore all current Wraith assumptions and rebuild from a "Gold Standard" baseline. We will not add a feature until the previous one is proven to work in the terminal.
+
+## 2. Baseline Architecture (The "Alpha" Stack)
+- **Parser:** `wraith_parser_alpha.c` (Copy of canonical `pieces/chtpm/plugins/chtpm_parser.c`)
+- **Manager:** `wraith_manager_alpha.c` (Minimalist poll-mutate-pulse loop)
+- **State:** `alpha_state.txt` (One file for all truth)
+
+## 3. Incremental Milestones
+
+### Phase 0: The "Hello World" of Nav (Local Integrity)
+- **Goal:** Boot a standard `.chtpm` layout.
+- **Test:** Use arrows to move the `[>]` selector.
+- **Proof:** If the selector moves visually, the Parser's internal nav logic is intact.
+
+### Phase 1: Canonical State (The Bridge)
+- **Goal:** Move `active_gui_index` into `alpha_state.txt`.
+- **Test:** Manually edit the file; the Parser should update the selector on the next pulse.
+- **Proof:** Verification that the Parser is reading from the disk correctly.
+
+### Phase 2: Atomic Pulse (The Manager)
+- **Goal:** Implement the Manager polling `history.txt` and writing to `alpha_state.txt` using `.tmp` + `rename()`.
+- **Test:** Press arrow; check if `alpha_state.txt` updates.
+- **Proof:** Verification of the "Brain" and the "Atomic Pipe."
+
+### Phase 3: The Marker Contract (The Pulse)
+- **Goal:** Parser becomes 100% passive, reacting ONLY to `frame_changed.txt`.
+- **Test:** Visual selector moves in sync with arrow presses with zero lag/ghosting.
+- **Proof:** Verification of the TPMOS Render Pipeline.
+
+### Phase 4: Wraith Identity (The Shell)
+- **Goal:** Incremental addition of:
+    1.  Window Registry (as a published variable string)
+    2.  Taskbar (as a layout element)
+    3.  `.wrai` layout support.
+- **Gate:** If any feature breaks nav, it is reverted immediately.
+
+---
+*Functional code can be hardened tomorrow. Broken code is a lie.*

@@ -1,0 +1,26 @@
+# USER KPI CHECKLIST: WRAITH-ALPHA PHASE 0
+Date: 2026-06-05
+
+We are in the **"Provable Functionality"** phase. We are strictly testing the pipeline (Input -> Manager Logic -> State File -> Parser Render) and NOT YET testing desktop graphics or terminal windows.
+
+## 1. What to Look For (KPIs)
+- [ ] **Selector Movement:** Using the `ARROW_UP`/`ARROW_DOWN` keys, does the `[>]` selector on the screen move between the "Project Alpha/Beta/Gamma" buttons?
+- [ ] **Variable Synchronization:** Does the text `Current State: ${active_gui_index}` update to reflect the selector position? (e.g., if selector is on "Project Alpha", state should be 1; Project Beta, state 2).
+
+## 2. Debugging Tools (How to verify if it fails)
+If the above KPIs are not met, do not guess. Check the log file:
+- **File:** `projects/wraith-alpha/manager/alpha_manager.log`
+- **What to check:**
+    - Is `Input received: <key_code>` appearing when you press arrows? (If NO: The pipeline is broken at the input capture stage).
+    - Is `State updated: active_gui_index=<val>` appearing? (If NO: The Manager logic is not processing the key).
+
+## 3. Why no Desktop Graphics yet?
+We are intentionally keeping the interface minimalist ASCII for now. 
+*   **The Plan:** 
+    1. Prove keyboard navigation works in this minimalist layout (Currently in progress).
+    2. Then, build the desktop/terminal components (the "Registry") on top of this stable base.
+    3. Finally, implement the visual rendering of the 3D maps and GL-layouts.
+
+If this test passes, we have proven the core TPMOS pipeline. If it fails, we have a clear, logged path to find the exact point of failure.
+---
+*If it's not in a file, it's a lie. The marker is the clock.*

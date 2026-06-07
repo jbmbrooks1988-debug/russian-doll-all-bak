@@ -1,0 +1,382 @@
+WRAITH HANDOFF 2DO J5
+Date: 2026-06-05
+
+Purpose:
+This handoff is for the next agent taking over the Wraith keyboard/nav fix.
+The immediate task is not to chase the final desktop vision. The immediate task
+is to make the live Wraith runtime honest:
+
+1. boot into a clean terminal-only shell
+2. show live current key state
+3. move nav live with arrow keys
+4. only then open `game-map` deliberately from nav
+
+
+Truth precedence
+
+If files disagree, use this order:
+
+1. `pieces/display/current_frame.txt`
+- this is the user-visible truth
+
+2. `projects/wraith-pm/session/state.txt`
+- this is the canonical Wraith session state
+
+3. `projects/wraith-pm/session/nav_state.txt`
+- this is the canonical shell/nav state
+
+4. `projects/wraith-pm/manager/view.txt`
+5. `projects/wraith-pm/session/current_frame.txt`
+- these are audit/projection files
+- they are useful, but they do not override the visible frame
+
+If `K:*` or `game-map` appears in an audit/projection file but not in
+`pieces/display/current_frame.txt`, treat the visible frame as stale until
+proven otherwise.
+
+
+What is currently proven
+
+1. Wraith should boot terminal-only.
+- canonical state currently says:
+  - `open_game_map_window=false`
+  - `open_blank_proj_window=false`
+  - `focused_window=terminal_window`
+  - `selected_index=1`
+
+2. The displayed `game-map` window seen in the user screenshot was almost
+   certainly stale visible frame output, not current canonical Wraith state.
+- current canonical files disagree with that frame:
+  - `projects/wraith-pm/session/state.txt`
+  - `projects/wraith-pm/session/nav_state.txt`
+  - `projects/wraith-pm/session/windows_state.pdl`
+
+3. The stale `K:i` label is at least partly boot residue.
+- `current_key` is persisted in:
+  - `projects/wraith-pm/session/state.txt`
+- Wraith manager currently does not reset `current_key` on boot
+
+4. The visible frame can still lag behind current session state.
+- the user just showed a frame with:
+  - `K:ENTER`
+  - `09:13`
+- even after the boot reset work, that kind of output should be treated as a
+  stale visible snapshot until the live runtime chain is proven.
+
+5. Wraith manager is already using the standard "start at EOF" history rule.
+- it reads:
+  - `pieces/apps/player_app/history.txt`
+- it initializes `last_pos = st.st_size`
+- so old history replay through the manager loop is not the main cause of the
+  stale boot key label
+
+6. The deeper bug is stale visible frame ownership / runtime sync.
+- parser owns:
+  - `pieces/display/current_frame.txt`
+- but Wraith also produces:
+  - `projects/wraith-pm/manager/view.txt`
+  - `projects/wraith-pm/session/current_frame.txt`
+- those Wraith files can be newer than the actual displayed frame
+- user can therefore see an old projected desktop snapshot even while canonical
+  Wraith state has already been normalized
+
+
+Immediate required fixes
+
+1. Reset `current_key` on Wraith boot.
+- file:
+  - `projects/wraith-pm/manager/wraith-pm_manager.c`
+- desired result:
+  - every clean boot should set:
+    - `current_key=None`
+- reason:
+  - removes false stale-key signal from the taskbar
+
+2. Keep `game-map` forced closed on boot.
+- verify the existing boot normalization still enforces:
+  - `open_game_map_window=false`
+  - `selected_index=1`
+  - `focused_window=terminal_window`
+- reason:
+  - a fresh boot must never present an already-open project window unless that
+    is a deliberate future session-restore feature, which it is not right now
+
+3. Prove the live runtime chain.
+- do not guess
+- verify whether a real Wraith launch actually yields:
+  - live `wraith_parser`
+  - live `wraith-pm_manager`
+  - visible parser writes to `pieces/display/current_frame.txt`
+  - renderer reacting to `pieces/display/renderer_pulse.txt`
+- if this chain is not alive, key/nav fixes higher up will keep appearing dead
+
+4. Prove the visible frame is fresh before trusting any key label.
+- check whether the frame the user is looking at is actually the current
+  `pieces/display/current_frame.txt`
+- if the frame still shows `K:ENTER` or old window state while session files
+  say terminal-only, treat it as a stale display problem first
+- do not use `projects/wraith-pm/manager/view.txt` or
+  `projects/wraith-pm/session/current_frame.txt` as proof that the screen is
+  current
+
+Live proof order:
+
+1. confirm the parser process is alive
+2. confirm the manager process is alive
+3. confirm `pieces/display/current_frame.txt` updates after input
+4. confirm `pieces/display/renderer_pulse.txt` grows after compose
+5. confirm the terminal the user sees matches that current frame
+6. only then trust `K:DOWN`, `K:UP`, `K:ENTER`, or project-open behavior
+
+5. Preserve one visible frame writer.
+- parser must remain the owner of:
+  - `pieces/display/current_frame.txt`
+- manager and composer may:
+  - mutate state
+  - build audit/projection artifacts
+  - append marker files
+- manager and composer must not become an alternate visible frame authority
+
+6. Treat Wraith session frame files as audit, not user truth.
+- do not treat:
+  - `projects/wraith-pm/session/current_frame.txt`
+  - `projects/wraith-pm/manager/view.txt`
+  as proof of what the user is seeing
+- user-visible truth is:
+  - `pieces/display/current_frame.txt`
+
+
+Architectural standards to follow
+
+Ground rule:
+For every Wraith task, find the closest working TPMOS reference and adapt its
+pattern. Do not guess. Do not freehand a new behavior model if the repo already
+contains a standard.
+
+Relevant standards for this task:
+
+1. `fuzz-op`
+- use as the pattern for:
+  - canonical interact history
+  - manager consuming one history source
+  - state mutation followed by render marker
+- key files:
+  - `projects/fuzz-op/layouts/fuzz-op.chtpm`
+  - `projects/fuzz-op/manager/fuzz-op_manager.c`
+
+2. `op-ed`
+- use as the pattern for:
+  - one visible frame writer rule
+  - manager polling `pieces/apps/player_app/history.txt`
+  - parser owning `pieces/display/current_frame.txt`
+- key files:
+  - `projects/op-ed/layouts/op-ed.chtpm`
+  - `projects/op-ed/manager/op-ed_manager.c`
+  - `projects/op-ed/README.md`
+
+3. core display renderer
+- use as the pattern for:
+  - parser writes `pieces/display/current_frame.txt`
+  - parser appends `pieces/display/renderer_pulse.txt`
+  - renderer only paints when pulse grows
+- key file:
+  - `pieces/display/renderer.c`
+
+4. marker-file standard
+- use as the pattern for:
+  - redraw request via marker growth, not direct repaint assumptions
+- key files:
+  - `pieces/display/frame_changed.txt`
+  - `pieces/master_ledger/frame_changed.txt`
+
+Concrete render-chain references for the next agent:
+
+1. `projects/fuzz-op/manager/fuzz-op_manager.c`
+- `trigger_render()` is the example to copy for "state changed, request redraw"
+- look at the path where it appends to `pieces/display/frame_changed.txt`
+- also note it uses the session/project frame marker path alongside the global
+  display marker
+- the key idea is: manager mutates state first, then hits the marker, not the
+  other way around
+
+2. `projects/op-ed/manager/op-ed_manager.c`
+- `write_editor_state(); trigger_render(); hit_frame_marker();` is the compact
+  pattern to mirror
+- this shows the intended order:
+  - state write
+  - render request
+  - marker hit
+
+3. `pieces/display/renderer.c`
+- this is the authoritative visible-frame sink
+- it reads `pieces/display/current_frame.txt`
+- it only re-renders when `pieces/display/renderer_pulse.txt` grows
+- the comment in that file spells out the pipeline:
+  - input -> frame_changed.txt -> parser compose -> current_frame.txt +
+    renderer_pulse.txt -> renderer display
+
+4. `projects/op-ed/README.md`
+- use the "One Writer Rule" note as the short policy statement
+- `current_frame.txt` belongs to the parser
+- daemons request redraws through marker files
+
+
+Current Wraith alignment already done
+
+These changes are already in place and should not be accidentally undone:
+
+1. Wraith top-level interact path now uses:
+- `pieces/apps/player_app/history.txt`
+
+2. Wraith manager now reads that same canonical history.
+
+3. Manager-side raw polling of `pieces/keyboard/history.txt` was removed for
+   top-level shell nav.
+
+4. Manager trigger_render now fingerprints both:
+- `projects/wraith-pm/manager/view.txt`
+- `projects/wraith-pm/session/state.txt`
+
+5. Manager appends redraw markers to both:
+- `pieces/display/frame_changed.txt`
+- `pieces/master_ledger/frame_changed.txt`
+
+6. Parser reacts to both marker files and reloads live layout state before
+   recomposing.
+
+
+Behavioral intent to preserve
+
+1. Wraith is an ASCII desktop environment modeled after desktop GL-OS behavior.
+
+2. Startup right now should be:
+- shell window visible
+- one default terminal window for convenience/dev
+- no auto-opened `game-map` window
+
+3. Projects under:
+- `projects/wraith-pm/wraith-projects/`
+should use the same TPMOS-style `.pdl` standards and loading model, even though
+Wraith itself is a new GUI/runtime shell.
+
+4. Wraith-native layouts use:
+- `.wrai`
+
+5. Wraith should not be implemented as recursive hidden `chtpm_parser`
+behavior inside the manager.
+- live input semantics belong in `wraith_parser`
+- canonical state and lifecycle belong in manager
+- composer renders canonical truth
+
+6. Mouse is later.
+- do not try to fix mouse before:
+  - live key visibility works
+  - live arrow nav works
+  - deliberate project opening from nav works
+
+
+Desired immediate outcomes
+
+Before any more feature work, the next agent should get these human-visible
+outcomes:
+
+Checkpoint A:
+- fresh Wraith launch shows:
+  - terminal only
+  - `K:None`
+  - selector on `1. blank-proj`
+
+Checkpoint B:
+- pressing arrow down live shows:
+  - `K:DOWN`
+  - selector moves to `2. game-map`
+
+Checkpoint C:
+- pressing arrow up live shows:
+  - `K:UP`
+  - selector moves back to `1. blank-proj`
+
+Checkpoint D:
+- pressing Enter on `game-map` shows:
+  - `K:ENTER`
+  - `game_map_window` opens
+  - focus/taskbar/windows registry all agree
+
+If Checkpoint A fails:
+- the problem is still boot residue or stale frame authority
+
+If Checkpoint B/C fail but canonical files change:
+- the problem is still parser/display/runtime visibility, not nav logic
+
+If Checkpoint D fails after A/B/C work:
+- then project opening logic is still wrong
+
+
+Files the next agent should read first
+
+Read in this order:
+
+1.
+- `wraith-docs/00-README.txt`
+2.
+- `wraith-docs/03-BLUEPRINT.txt`
+3.
+- `wraith-docs/05-PITFALLS.txt`
+4.
+- `wraith-docs/10-STANDARDS-REFERENCE.txt`
+5.
+- `key-fix-walkthru.txt`
+6.
+- `wraith-docs/wraith-pitfalls/wraith-pitfall.txt`
+
+
+Files most relevant for code changes
+
+1.
+- `projects/wraith-pm/manager/wraith-pm_manager.c`
+2.
+- `projects/wraith-pm/ops/wraith_parser.c`
+3.
+- `projects/wraith-pm/ops/wraith_composer.c`
+4.
+- `projects/wraith-pm/layouts/wraith-shell.wrai`
+5.
+- `pieces/display/renderer.c`
+6.
+- `projects/op-ed/manager/op-ed_manager.c`
+7.
+- `projects/fuzz-op/manager/fuzz-op_manager.c`
+
+
+Things not to do
+
+1. Do not chase welcome-window or final desktop polish yet.
+2. Do not reintroduce manager-side raw keyboard ownership for top-level shell
+   nav.
+3. Do not invent new Wraith-only input routes if a TPMOS standard path already
+   exists.
+4. Do not trust Wraith audit/session frame files over
+   `pieces/display/current_frame.txt`.
+5. Do not assume a visible frame equals current truth without checking the live
+   runtime chain.
+
+
+Summary for the next agent
+
+The current problem is no longer "decode arrow key better."
+
+The current problem is:
+- stale boot residue
+- stale visible frame authority
+- incomplete proof that the live parser-manager-renderer chain is what the user
+  is actually seeing
+- possible stale process chain or stale launch path if the visible frame does
+  not change after launch
+
+Fix order:
+1. reset `current_key=None` on boot
+2. confirm fresh boot is terminal-only
+3. prove the live runtime/render chain
+4. prove the frame the user sees is current, not an older snapshot
+5. then validate live arrow nav
+6. then validate deliberate Enter-to-open `game-map`

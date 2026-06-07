@@ -1,0 +1,29 @@
+# Wraith Scaffold & Remediation Plan (wraith-scaffold-0.txt)
+**Date:** 2026-06-05
+
+## 1. Architectural Intent
+Wraith is a desktop-oriented ASCII shell. It MUST follow the TPMOS ASCII I/O pipeline (`tpmos-ascii-doc-0.txt`) for input, state, and rendering reactivity.
+
+## 2. Comparative Audit: Current State vs. TPMOS Standard
+We have successfully implemented the structural requirements:
+- **Phase A (Marker Contract):** Parser is strictly marker-driven (eager `compose_frame` removed).
+- **Phase B (Atomic Updates):** Manager uses `.tmp` + `rename()` for state files.
+- **Phase C (Robust Polling):** Manager uses `fuzz-op` truncation-safe polling.
+
+**THE REMAINING GAP:**
+While the *file system transport* is now compliant, the *logical propagation* is failing. The Parser is receiving the pulse, but when it executes `load_vars()` and `reload_live_layout_state()`, it is either failing to correctly re-read the updated `nav_state.txt` or is ignoring the new `active_gui_index` due to stale internal variable caching.
+
+## 3. Revised Implementation Path
+To achieve final runtime honesty, the following sequence is mandatory:
+
+### A. Verify Read Integrity (Immediate)
+- Instrument `wraith_parser.c` (`load_vars` and `reload_live_layout_state`) with `fprintf(stderr, ...)` to log exactly what it reads from `nav_state.txt` and `gui_state.txt` *immediately before* composition.
+
+### B. Force Cache Invalidation (If A shows stale data)
+- Ensure `vars[]` is fully purged or re-initialized on *every* marker pulse, not just during startup.
+
+### C. Validate Chain (Final)
+- Confirm that `Manager` state mutation -> `frame_changed.txt` marker growth -> `Parser` reads *new* data -> `Parser` composition -> `current_frame.txt` update occurs as a single, deterministic sequence.
+
+---
+*If it's not in a file, it's a lie. The marker is the clock.*

@@ -1,0 +1,11 @@
+desktop_window_count=1
+desktop_window_1_open=true
+desktop_window_1_collapsed=false
+desktop_window_1_body_visible=true
+desktop_window_1_collapse_glyph=-
+desktop_window_1_fullscreen=false
+desktop_window_1_mode=half
+desktop_window_1_halfscreen_visible=true
+desktop_window_1_hidden=false
+desktop_window_1_title=Terminal #1
+desktop_focused_window_title=Terminal #1

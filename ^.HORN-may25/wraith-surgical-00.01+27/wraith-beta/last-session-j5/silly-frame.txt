@@ -1,0 +1,40 @@
+WRAITH SILLY FRAME FIX
+Date: 2026-06-05
+
+Purpose:
+To eliminate redundant "--- FRAME UPDATE ---" pulses in the renderer when
+the visual content of the frame has not actually changed.
+
+
+Finding:
+In Wraith, the parser (wraith_parser.c) was appending to renderer_pulse.txt
+unconditionally every time it was triggered by a marker file growth. Since
+multiple markers (display_frame_changed.txt, master_ledger/frame_changed.txt)
+are often hit sequentially by the manager, the parser was frequently
+composing and pulsing the renderer twice for the same logical update.
+
+
+Standard TPMOS Pattern:
+Working TPMOS projects expect the display layer to be throttled by content,
+not just by markers. A "marker" is a request to check for changes; it is
+not a command to force a redraw if nothing changed.
+
+
+Fix implemented in wraith_parser.c:
+
+1. Fingerprint Check:
+   - Added a static `last_frame_sum` in `compose_frame()`.
+   - Before pulsing the renderer, the parser now calculates a simple byte-sum
+     checksum of the final rendered frame string.
+   - It only appends "P\n" to `pieces/display/renderer_pulse.txt` if the
+     `current_sum` differs from `last_frame_sum`.
+
+2. Result:
+   - If the clock hasn't ticked and no new key has been processed, the
+     renderer remains silent even if markers are hit multiple times.
+   - This prevents the "silly" duplicate frame headers at the same timestamp.
+
+
+Verification:
+Simulating sequential marker hits (e.g., hitting display then master) now
+only results in ONE renderer pulse if the content is identical.

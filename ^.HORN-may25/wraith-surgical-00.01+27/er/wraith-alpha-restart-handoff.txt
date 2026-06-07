@@ -1,0 +1,109 @@
+# WRAITH-ALPHA RESTART HANDOFF
+Date: 2026-06-06
+
+Purpose:
+Fast recovery note for resuming Wraith Alpha after a crash, reboot, or session
+loss.
+
+Current project state:
+- Wraith Alpha has a working keyboard/nav proof.
+- The desktop surface is now ASCII-first and window-chrome oriented.
+- The frame boots empty and exposes a launcher surface that can open `Terminal`.
+- Keyboard debug remains visible by design during hardening.
+- The ASCII frame is the canonical presentation contract for now.
+- Terminal collapse is now wired through the `-` chrome control in code,
+  but it still needs a live restart and user verification.
+- Desktop collapse state now lives in `projects/wraith-alpha/session/desktop_ui_state.txt`.
+- The title chrome stays on `desktop_window_1_open`; the body rows must use
+  `desktop_window_1_body_visible`.
+- Desktop chrome controls are now handled directly in the key path, then persisted.
+- After parser reloads, Wraith Alpha manager state is re-synced from `projects/wraith-alpha/session/alpha_state.txt` so the visible index stays aligned with the manager.
+- If the frame still stays open after Enter on `-`, `o`, or `x`, inspect `parser.out` for `DESKTOP ACTION:` lines first.
+- If `parser.out` is empty and the frame is still open, the running session is almost certainly stale relative to the latest rebuild.
+
+What is currently proven in running code:
+- arrows move the selector
+- the manager updates `active_gui_index`
+- the parser renders live manager state
+- inline chrome targets are indexable
+- the visible frame is state-driven, not a hardcoded static mock
+
+Current desktop intent:
+- window chrome must expose keyboard-jumpable indices
+- the title area and window controls are separate interactive targets
+- launcher entries must also be indexable
+- `Terminal` is the first visible launcher target
+- environment debug is intentionally omitted from the visible frame
+- project identity is separate from boot convenience
+- the desktop boots empty by default; `Terminal` launches from the dock when selected
+- built-in Wraith launcher UI is a command surface, not a separate app runtime
+- any context window or launcher panel should still resolve through standard TPMOS project-launch semantics
+- `Terminal` is a normal launchable project target in the toolbar
+- launching `Terminal` again is allowed if the runtime supports multiple instances
+- do not treat terminal launch as a privileged mode; it should use the same launch path as other projects
+- there is no separate `wraith-projects` category in the final model
+- the launcher/toolbar enumerates projects directly
+- `Terminal` is one project among many and may itself launch other projects using the same launch path
+- each click on `Terminal` should open a new proc-numbered terminal instance
+- recursive launching is allowed if the runtime supports it, so `Terminal` can open `Terminal` just like any other project can open any other project
+- the lower toolbar is the shared indexed strip for projects
+- `Terminal` appears there as a normal selectable project target with no proc number
+- minimized projects use the same strip and the same index model for restore, and they should carry proc numbers in the visible label
+- restore labels must preserve proc numbers so the exact minimized instance can be reopened
+- the dock launcher label is plain `Terminal`; only minimized restore targets show `Terminal #N`
+- the strip is distinct from the desktop chrome but not a separate project category
+- debug/proof output should live below the desktop frame, not inside the desktop chrome
+- keep the debug visible while hardening, but separate it visually from the desktop surface
+- once stable, the debug block can be reduced or silenced without changing the desktop contract
+- any overflowed content region should expose nav-bracketed thumb-scroll controls
+  so `^` / `v` scrolling remains keyboard-indexable like the rest of the desktop
+- the taskbar / instance strip belongs to the desktop surface itself
+- Option A is the intended model: desktop chrome/window body on top, dock beneath, debug below the full desktop surface
+- the dock is the shared strip for launch targets and minimized instances
+- there is no unindexed `Start` filler in the dock; only real targets belong there
+- `Terminal` is a real project with its own layout, not a permanent auto-open special case
+- auto-open terminal behavior is not part of the steady-state contract
+- fullscreen hides the desktop surface and shows only the active window
+- mouse support later may be used for manual resizing of half-screen windows, but fullscreen stays a single-window presentation mode
+
+Important docs:
+- [wraith-alpha-blueprint.txt](../wraith-alpha-blueprint.txt)
+- [wraith-alpha-presentation-stack.txt](../wraith-alpha-presentation-stack.txt)
+- [2do-j5-19.txt](../2do-j5-19.txt)
+
+Current source files to check first:
+- `1.TPMOS_c_+rmmp.0102.0018/projects/wraith-alpha/layouts/alpha-shell.chtpm`
+- `1.TPMOS_c_+rmmp.0102.0018/projects/wraith-alpha/manager/wraith_manager_alpha.c`
+- `1.TPMOS_c_+rmmp.0102.0018/projects/wraith-alpha/ops/wraith_parser_alpha.c`
+
+Built binaries:
+- `1.TPMOS_c_+rmmp.0102.0018/projects/wraith-alpha/manager/+x/wraith_manager_alpha.+x`
+- `1.TPMOS_c_+rmmp.0102.0018/projects/wraith-alpha/ops/+x/wraith_parser_alpha.+x`
+
+Known limitations:
+- collapse is implemented in the parser/state path, but it still needs live
+  proof in the running frame
+- the title chrome must stay visible while only the body region collapses
+- maximize/restore and quit are still the next window-control steps
+- if the desktop action log is missing, the running parser is still stale or the control path is not being reached
+- if the session is stale, restart the live Wraith Alpha process before testing the chrome controls again
+- the launcher surface is now an indexed target, but the full project list
+  behavior is still a later step
+- RGB/GL presentation is intentionally deferred
+
+Fast restart checklist:
+1. Restart the live Wraith Alpha process so it picks up the rebuilt binaries.
+2. Confirm the desktop shows the compact chrome row and launcher surface.
+3. Press `-` and verify the terminal body collapses while the title chrome stays visible.
+4. Confirm arrow keys still move selection.
+5. Confirm the debug block is still visible enough to prove parser state.
+6. Verify the next target action in running code before treating it as final.
+
+Milestone rule:
+- If the code path is not verified in the live frame, it is still provisional.
+- If the user has not approved the behavior, do not freeze it as final intent.
+
+Next likely step:
+- wire the remaining indexed window controls into real maximize/restore and
+  quit behavior
+- keep the ASCII desktop visible while doing it

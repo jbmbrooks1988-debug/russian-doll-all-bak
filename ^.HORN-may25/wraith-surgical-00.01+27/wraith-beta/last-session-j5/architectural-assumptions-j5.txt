@@ -1,0 +1,299 @@
+WRAITH ARCHITECTURAL ASSUMPTIONS J5
+Date: 2026-06-05
+
+Purpose
+
+This document records the current architectural assumptions for Wraith before
+the next fix pass. It is meant to keep future work aligned with existing TPMOS
+standards while preserving Wraith's desktop-specific goals.
+
+Current working direction:
+- `new-2do-c&g-j5.txt`
+- This is the next operational path after the J5 session learnings.
+- It focuses on runtime honesty, single visible frame ownership, and process
+  hygiene before more keyboard/nav or mouse work.
+
+The immediate runtime problem is not "make the final desktop pretty." The
+immediate runtime problem is:
+
+1. boot into a clean terminal-only shell
+2. show live key state, not stale session residue
+3. keep the visible frame in sync with live runtime state
+4. only then allow deliberate nav-driven project opening
+
+
+Current behavioral truth
+
+What is now known:
+
+1. Wraith should boot terminal-only.
+- `game-map` should not appear on boot.
+- `focused_window` should start on `terminal_window`.
+- `selected_index` should start on `1`.
+
+2. `current_key` is persisted in Wraith session state.
+- stale key text can survive a restart if it is not reset on boot.
+- this is why `K:i` can appear even when the user did not just press `i`.
+
+3. Wraith top-level shell input now uses the working TPMOS-style canonical
+   history path:
+- `pieces/apps/player_app/history.txt`
+
+4. Wraith manager follows the standard "start at EOF" rule for history.
+- it should not replay old keys that were already present at startup.
+
+5. The visible desktop frame is still not fully trustworthy unless the live
+   parser-manager-renderer chain is active.
+- Wraith has audit/projection files that can look newer than the visible frame.
+- those files are not the same thing as what the renderer is actually showing.
+
+Truth precedence:
+
+1. `pieces/display/current_frame.txt`
+- user-visible truth
+
+2. `projects/wraith-pm/session/state.txt`
+- canonical Wraith session state
+
+3. `projects/wraith-pm/session/nav_state.txt`
+- canonical shell/nav state
+
+4. `projects/wraith-pm/manager/view.txt`
+5. `projects/wraith-pm/session/current_frame.txt`
+- audit/projection truth only
+- useful for debugging
+- not authoritative over the visible frame
+
+
+Desired outcomes
+
+The first visible milestones for Wraith are:
+
+1. A fresh launch shows:
+- terminal only
+- `K:None`
+- selector on `1. blank-proj`
+
+2. Pressing arrow down live shows:
+- `K:DOWN`
+- selector moves to `2. game-map`
+
+3. Pressing arrow up live shows:
+- `K:UP`
+- selector moves back to `1. blank-proj`
+
+4. Pressing Enter on `game-map` opens `game-map` deliberately and updates:
+- focus
+- taskbar
+- windows registry
+- visible frame
+
+5. Mouse and context menu work come later, after keyboard/nav are proven.
+
+
+Standards to follow
+
+Rule:
+When Wraith needs behavior, find the closest working TPMOS project and adapt
+that pattern. Do not invent a new rule if the repo already contains one.
+
+Relevant standards:
+
+1. `fuzz-op`
+- use it as the pattern for:
+  - one canonical interact history
+  - one manager consuming that history
+  - state mutation followed by a render marker
+
+2. `op-ed`
+- use it as the pattern for:
+  - one visible frame writer
+  - manager polling `pieces/apps/player_app/history.txt`
+  - parser owning `pieces/display/current_frame.txt`
+  - daemons only requesting redraws via marker files
+
+3. `pieces/display/renderer.c`
+- use it as the pattern for:
+  - renderer only painting when `renderer_pulse.txt` grows
+  - the parser being the owner of the visible frame
+
+4. marker-file standard
+- use it as the pattern for:
+  - `pieces/display/frame_changed.txt`
+  - `pieces/master_ledger/frame_changed.txt`
+- redraws should be requested through marker growth, not ad hoc repaint logic
+
+
+Wraith-specific architectural assumptions
+
+1. Wraith is a desktop-oriented ASCII shell, not a recursive parser host.
+- it should not be built by hiding a second `chtpm_parser` behavior inside the
+  manager
+
+2. Live input semantics belong in `wraith_parser`.
+- the parser decides how input is interpreted at the top level
+- the manager should not become a second competing input parser
+
+3. Canonical state and lifecycle belong in the manager.
+- the manager owns:
+  - open/close state
+  - focus state
+  - nav state
+  - session normalization
+
+4. Composer renders canonical truth.
+- composer can assemble frame artifacts and audit files
+- it should not be a competing visible frame authority
+
+5. Parser owns the visible frame.
+- `pieces/display/current_frame.txt` is the frame the renderer actually shows
+
+6. Wraith session files are not the same thing as user-visible truth.
+- they are useful for audit and projection
+- they are not proof that the user is seeing the current state
+
+
+Live frame runtime sync assumptions
+
+This is the part that most needs to stay disciplined.
+
+Assumption A:
+- if the user sees old key text or an already-open `game-map` window on boot,
+  the first question is whether the visible frame is stale, not whether the key
+  decoder is broken.
+
+Assumption B:
+- a change in `projects/wraith-pm/session/state.txt` does not automatically mean
+  the user-visible frame updated.
+
+Assumption C:
+- a change in `projects/wraith-pm/manager/view.txt` does not automatically mean
+  the renderer is currently showing that state.
+
+Assumption D:
+- the live runtime chain must exist for keyboard/nav proof to be meaningful.
+- that chain is:
+  - parser
+  - manager
+  - parser-owned current frame
+  - renderer pulse
+  - renderer display
+
+Assumption D1:
+- the chain is only valid if the user-facing screen matches
+  `pieces/display/current_frame.txt`
+- if audit files disagree, the user-facing frame wins
+
+Assumption E:
+- if the runtime chain is not live, more keyboard logic changes will keep
+  producing stale-looking results.
+
+Assumption F:
+- a stale visible frame can come from a stale detached process, not just from
+  the wrong key handler.
+- process hygiene is therefore part of the runtime proof, not a separate
+  cleanup task.
+
+
+What has already been aligned
+
+These should be preserved:
+
+1. Wraith top-level input now points at:
+- `pieces/apps/player_app/history.txt`
+
+2. Wraith manager now reads that same canonical history.
+
+3. Manager-side raw polling of `pieces/keyboard/history.txt` for top-level shell
+   nav was removed.
+
+4. Boot normalization now resets:
+- `open_game_map_window=false`
+- `open_blank_proj_window=false`
+- `focused_window=terminal_window`
+- `selected_index=1`
+- `current_key=None`
+
+5. The manager appends redraw markers to both:
+- `pieces/display/frame_changed.txt`
+- `pieces/master_ledger/frame_changed.txt`
+
+6. The parser reacts to both marker files and reloads live state before
+   recomposing.
+
+
+What still needs proof
+
+These are not yet proven well enough to build on blindly:
+
+1. That the user is seeing the current visible frame and not an older snapshot.
+2. That the live parser-manager-renderer chain is always active on a fresh
+   Wraith launch.
+3. That arrow-key presses are always reflected in the visible frame immediately.
+4. That Enter on `game-map` opens only when nav genuinely selects it.
+
+Current phase order:
+
+1. process hygiene and launch truth
+2. single visible frame authority
+3. render pulse discipline
+4. live key/nav proof on a fresh frame
+5. later desktop work
+
+Live proof order:
+
+1. confirm parser process alive
+2. confirm manager process alive
+3. confirm `pieces/display/current_frame.txt` changes after input
+4. confirm `pieces/display/renderer_pulse.txt` grows after compose
+5. confirm the user's screen matches `pieces/display/current_frame.txt`
+6. only then trust key labels or open behavior
+
+
+How Wraith should evolve without losing its uniqueness
+
+Wraith should not become a copy of desktop GL-OS or TPMOS.
+It should borrow their structural rules and keep its own desktop intent.
+
+Use these principles:
+
+1. Keep TPMOS's one-history, one-owner, one-renderer shape.
+2. Keep Wraith's desktop-specific window registry and taskbar behavior.
+3. Keep `.wrai` as the Wraith-native layout suffix.
+4. Keep project loading `.pdl`-based and subproject-driven under
+   `projects/wraith-pm/wraith-projects/`.
+5. Keep mouse/context-menu work deferred until keyboard/nav are proven.
+6. Keep welcome-window and other polish features out of the core proof path.
+
+
+Implementation order
+
+1. Boot reset
+- make sure `current_key=None` and terminal-only state are always written on
+  fresh launch
+
+2. Runtime proof
+- verify the actual running parser-manager-renderer chain after launch
+
+3. Live key proof
+- confirm `K:DOWN`, `K:UP`, and `K:ENTER` update in the visible frame
+
+4. Nav proof
+- confirm the selector moves correctly and the right project opens only on
+  deliberate selection
+
+5. Mouse later
+- only after the keyboard/nav path is honest
+
+
+Bottom line
+
+Wraith should stay standards-based at the core and Wraith-specific at the
+desktop layer.
+
+That means:
+- borrow the working input/render ownership model from TPMOS
+- keep Wraith's ASCII desktop and window system goals
+- do not guess when a standard already exists
+- do not trust stale audit files over the visible frame
+- do not move to mouse-driven polish until the live keyboard/nav path is real

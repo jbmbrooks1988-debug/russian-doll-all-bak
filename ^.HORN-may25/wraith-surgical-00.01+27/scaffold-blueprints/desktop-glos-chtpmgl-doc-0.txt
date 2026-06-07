@@ -1,0 +1,29 @@
+# Desktop GL-OS & CHTPMGL System Architecture (desktop-glos-chtpmgl-doc-0.txt)
+**Date:** 2026-06-05
+
+## 1. Desktop & Window Management
+GL-OS extends the ASCII theater with persistent window registries.
+- **Window Registry:** `pieces/system/window_registry.txt` tracks active window IDs, focus, and Z-index.
+- **Taskbar:** A system-owned element rendered by the compositor using variables published by the `Manager`.
+- **Context Menu:** Triggered by right-click (platform-specific event injection). The `Manager` treats this as a special `ACTIVATE` event, opening a scoped menu `+x` project.
+
+## 2. Rendering 3D Maps & Selectors
+- **Rendering 3D:** The `Parser` receives a `3D_MAP:render` command (or equivalent) in the projection file. It invokes the 3D-GL-Renderer, which reads `world_<w>/map_<m>/` data. The `Parser` *does not* handle GL primitives; it manages the *frame* containing the GL-viewport.
+- **The 3D Selector:**
+    - The selector is defined in the `CHTPMGL` layout (a `.chtpm` layout designed for GL).
+    - The selector movement is handled by `nav_state.txt` indices managed by the `Manager`.
+    - When the `Manager` updates the `active_gui_index`, the `Parser` reads this, updates the CHTPMGL layout context, and signals the 3D-GL-Renderer to re-highlight the selected item.
+
+## 3. CHTPMGL Layout Structure
+CHTPMGL layouts are declarative:
+```xml
+<layout id="world_view">
+    <window id="main_map" type="3d" />
+    <window id="taskbar" type="2d" />
+    <selector id="map_nav" items="${piece_methods}" />
+</layout>
+```
+The `Parser` interprets these tags, delegates GL rendering for `type="3d"` windows, and handles 2D layout composition for `type="2d"` elements, all using variable substitution from `gui_state.txt` provided by the `Manager`.
+
+---
+*If it's not in a file, it's a lie. The marker is the clock.*

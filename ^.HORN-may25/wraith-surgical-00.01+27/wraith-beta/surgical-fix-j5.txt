@@ -1,0 +1,18 @@
+# WRAITH SURGICAL INPUT FIX PLAN (mac-fix-j5.txt)
+Date: 2026-06-05
+
+## Problem Diagnosis
+The `wraith-pm_manager.c` correctly receives and parses keys (`manager.log` confirms `DEBUG: route_input parsed key 1003`). However, the updated state (`g_active_gui_index`) is failing to persist to `nav_state.txt`.
+
+Root Causes:
+1. **Race Condition/Atomicity:** `route_input` updates memory `g_active_gui_index`, but the `history_thread` only calls `sync_nav_state()` *after* `route_input` returns, and there may be a delay or file-locking issue preventing the update from propagating to `nav_state.txt` before the Parser reads it.
+2. **Standard Non-Compliance:** The current implementation does not strictly follow the "Marker-Driven Only" rule for all state updates.
+
+## Proposed Fix
+1. **Refactor `route_input`**: Ensure it strictly returns a `changed` flag that is reliably used to trigger the synchronization block in `history_thread`.
+2. **Atomic Synchronization**: Move the `sync_nav_state()` and `trigger_render()` calls to be guaranteed immediately following any state change within `history_thread`.
+3. **Robust Polling**: Implement the robust history file truncation handling pattern observed in `fuzz-op` (checking `st.st_size < last_pos`).
+4. **Diagnostic Verification**: Keep debug logging active for one cycle to ensure `nav_state.txt` is updated *before* the render marker is pulsed.
+
+## TPMOS Alignment
+- This fix adheres to the "one-history, one-owner, one-renderer" shape by forcing the Manager to be the sole, reliable owner of the input->state update cycle, followed by an explicit, marker-based render trigger, identical to `fuzz-op` patterns.

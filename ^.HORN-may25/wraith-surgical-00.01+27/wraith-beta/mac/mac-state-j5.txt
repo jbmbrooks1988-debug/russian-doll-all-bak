@@ -1,0 +1,35 @@
+MAC-STATE-J5 WRAITH REPORT (RIGOROUS AUDIT)
+Date: 2026-06-05
+
+Deep Investigation Results:
+
+1. THE "TWO IDENTICAL PULSES" PARADOX:
+   Confirmed cause: `wraith_parser.c` triggers an immediate `compose_frame()` in its main loop whenever a key is processed (`clear_nav_on_next = true`). 
+   Simultaneously, it injects that key into `player_app/history.txt`. The `wraith-pm_manager` sees this, processes it, and hits the `frame_changed.txt` marker.
+   The Parser then sees this marker and triggers a SECOND `compose_frame()`.
+   Even with fingerprinting, if any invisible byte (like a forked Composer's slightly different view write) changes, Pulse 2 goes through.
+
+2. THE "STALE CLOCK" PHENOMENON:
+   Confirmed cause: In `wraith-pm_manager.c`, `sync_clock_state` is only called inside `sync_windows_registry`, which is only triggered within the `history_thread` upon successful input (`batch_changed`).
+   If the user doesn't press a key, the taskbar clock in `state.txt` never updates. The Parser's `load_vars()` merely reloads this stale value.
+
+3. SPLIT-BRAIN INPUT & BRIDGE:
+   The Parser acts as a bridge between raw global history (`pieces/keyboard/history.txt`) and app-specific history (`pieces/apps/player_app/history.txt`).
+   This violates the TPMOS Gold Standard where the Manager should poll the primary source directly.
+
+4. COMPOSER OVERHEAD:
+   The Manager forks `wraith_composer.+x` on every input batch. This introduces process-switching latency and a race condition where the Parser might render Pulse 2 before the Composer has finished writing `view.txt`.
+
+Intent (The Path to Runtime Honesty):
+
+1. CLOCK REACTIVITY: Add a timer-driven loop or separate thread to `wraith-pm_manager.c` to ensure `sync_clock_state` (and thus `state.txt`) stays fresh regardless of input.
+
+2. RENDER CONSOLIDATION: Remove the eager `compose_frame()` trigger from `wraith_parser.c:process_key()`. Enforce a "Marker-Only" render policy. Pulse 1 must die; only the Manager-driven Pulse 2 should update the display.
+
+3. PROCESS HYGIENE & LAUNCH:
+   - Ensure `run_chtpm.sh` and `kill_all.sh` are perfectly aligned.
+   - Run a "Virgin Launch" to prove the terminal-only, clean-state boot.
+
+4. COMPOSER BYPASS (Architectural Goal):
+   - Propose moving the taskbar and window grid logic into variables or the Parser itself.
+   - Goal: Manager writes variables -> Parser renders. Eliminate the `wraith_composer` executable from the real-time path.

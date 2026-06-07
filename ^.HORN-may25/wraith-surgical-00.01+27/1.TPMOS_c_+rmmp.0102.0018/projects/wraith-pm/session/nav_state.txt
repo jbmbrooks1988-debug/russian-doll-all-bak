@@ -1,0 +1,6 @@
+active_gui_index=2
+l_menu
+active_gui_index=2
+drag_active=false
+drag_window_id=none
+nav_scope=terminal_menu

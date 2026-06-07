@@ -1,0 +1,29 @@
+› nevermind the context window. it seems to be confusing u right now. heres what we
+  can do . we can add "terminal" to the toolbar, as a selectable index. that can
+  open the terminal with projects to be launched in it. that makes most sense to
+  me . i feel like i have confused you but does that make sense? terminal should
+  also be a selectable project. that will open more (infinite terminals) just like a
+  regular desktop. does that make sense?
+
+
+
+
+
+
+
+
+--- FRAME UPDATE at 2026-06-06 16:30:28 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ Terminal #1 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  Wraith Projects                                                                             |
+| |  [ ]5. [Terminal]                                                                            |
+| |  							                                         |
+| |                                                                                              |
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ] [ ] 6. [Terminal #1]                                                      |
++----------------------------------------------------------------------------------------------+
+
+

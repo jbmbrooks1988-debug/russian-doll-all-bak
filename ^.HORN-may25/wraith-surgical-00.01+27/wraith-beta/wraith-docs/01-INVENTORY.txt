@@ -1,0 +1,61 @@
+WRAITH ONBOARDING INVENTORY
+Date: 2026-06-05
+
+This is the shortest map of what matters.
+
+Global onboarding rule:
+- Every Wraith task should begin by finding the closest existing standard in
+  TPMOS, GL-OS, playrm, or fuzz-op/fuzz-op-gl.
+- That standard is an inspiration and pattern source, not something to paste
+  directly.
+- Future agents should not guess behavior or architecture when a nearby
+  standard already exists.
+
+Priority 1: current truth
+- `wraith-docs/history-archive/CURRENT_STATE.md`
+- Trust this first for the live direction of the workspace.
+
+Priority 2: behavioral contract
+- `wraith-docs/history-archive/wraith-blueprint.txt`
+- Defines what Wraith is supposed to be.
+
+Priority 3: current build order
+- `new-2do-c&g-j5.txt`
+- This is the current Wraith direction after the J5 learnings.
+- It focuses on runtime honesty, single visible frame ownership, and process
+  hygiene before more keyboard/nav or mouse work.
+
+Priority 4: archived build order
+- `wraith-docs/history-archive/2do-wraith.txt`
+- Historical phase order, checkpoints, and KPIs.
+
+Priority 5: first principles
+- `wraith-docs/history-archive/wraith-first-principles.txt`
+- Explains the native Wraith parser/manager/composer model.
+
+Priority 6: pitfalls
+- `wraith-docs/wraith-pitfalls/wraith-pitfall.txt`
+- `wraith-docs/wraith-pitfalls/desk-j5-start.txt`
+- These explain what not to repeat.
+
+Priority 7: recent bug notes and handoffs
+- `last-session-j5/session-history.txt`
+- `last-session-j5/remaining-issues-j5.txt`
+- `last-session-j5/pipeline-compare-j5.txt`
+- `last-session-j5/key-fix-walkthru.txt`
+- `wraith-docs/history-archive/wrai-bugs-j5.txt`
+- `wraith-docs/history-archive/key-fix-handoff-j5.txt`
+- `wraith-docs/history-archive/handoff-jun-5.txt`
+- `wraith-docs/history-archive/handoff-jun-4.txt`
+
+Priority 8: future-deferred ideas
+- `wraith-docs/history-archive/wraith-future-features.txt`
+- Keep this separate from current implementation work.
+
+Priority 9: session explanation notes
+- `wraith-docs/history-archive/answers.txt`
+- Useful for historical intent and terminology.
+
+Priority 10: standards reference
+- `wraith-docs/10-STANDARDS-REFERENCE.txt`
+- Read this before implementing a new Wraith behavior.

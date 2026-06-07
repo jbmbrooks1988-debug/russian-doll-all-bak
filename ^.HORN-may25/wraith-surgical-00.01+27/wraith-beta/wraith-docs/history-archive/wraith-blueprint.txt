@@ -1,0 +1,390 @@
+WRAITH BLUEPRINT
+
+Purpose:
+This file clarifies the intended behavior of Wraith as understood from:
+
+- the original TPMOS Project Loader behavior
+- the GL-OS desktop behavior
+- the user's direction for Wraith
+
+This is the behavioral blueprint. Future code changes should follow this file
+instead of drifting back toward fake pre-opened windows or static demo panels.
+
+1. Core identity
+
+Wraith is meant to be:
+
+- a desktop-like shell
+- in ASCII
+- with layout-first purity
+- borrowing the behavior spirit of GL-OS
+- while staying file-backed and inspectable like TPMOS
+
+Wraith is new as a desktop environment and project container, but not new in
+its standards model.
+
+That means:
+
+- Wraith can have its own project set under `wraith-projects/`
+- those projects are real Wraith subprojects/apps
+- but they should still load through the same TPMOS-style `.pdl` project model
+- they should still use the same core functions and data structures unless a
+  later intentional standard change is made
+- the main difference is the GUI/runtime shell, not a replacement of the app
+  standard
+
+Wraith-native layout files should use the `.wrai` suffix.
+
+That suffix is for Wraith-specific layout/runtime files and is intentionally
+different from:
+
+- `.chtpm`
+- `.chtmgl`
+
+Use `.wrai` when the file is meant to describe Wraith-native layout behavior
+instead of TPMOS or GL-OS layout conventions.
+
+This means Wraith should feel like a real desktop runtime, not a dashboard and
+not a pre-filled scene of fake windows.
+
+2. What the original Project Loader proves
+
+The original TPMOS Project Loader does not open every project window up front.
+It does this instead:
+
+- show a navigable list of projects
+- let the user move selection
+- when the user selects one, load that project intentionally
+
+The project list is the chooser. It is not the same thing as already having
+every project open on the desktop.
+
+That matters for Wraith:
+
+- `game_map_window` should not be visible by default just because the desktop
+  started
+- a project or app window should appear only after it is selected/opened
+- the loader window and the opened project window are different roles
+
+For Wraith specifically:
+
+- the game menu is itself a project
+- other projects may be added as more subdirectories inside
+  `projects/wraith-pm/wraith-projects/`
+- those should be discovered and loaded the same `.pdl` way current ASCII
+  projects are loaded
+
+3. What GL-OS proves
+
+GL-OS behaves like a desktop with real window ownership:
+
+- windows exist because they were opened
+- one window is active at a time
+- active/focused windows can change
+- windows can be brought forward
+- windows can be moved
+- windows are peer objects on a desktop, not just text sections
+
+That matters for Wraith:
+
+- Wraith should emulate the desktop behavior of GL-OS
+- but render it in ASCII
+- and keep the state file-backed and auditable
+
+4. Wraith startup behavior
+
+At startup, Wraith should show a desktop shell, not a fully populated world.
+
+The expected initial state is:
+
+- desktop background/shell exists
+- one main Wraith shell window exists
+- that shell contains a loader or menu-like surface
+- no project content window is open yet unless explicitly restored from a
+  future session-restore feature
+
+In other words:
+
+- the menu is visible at startup
+- the chosen project window is not visible until selected
+
+Current practical startup rule:
+
+- Wraith should start with the shell window
+- for convenience and development, Wraith should also open one default terminal
+  window
+- that terminal is a dynamic project window, not a permanent hardcoded part of
+  the desktop
+- later, the desktop may start blank with no default terminal already open
+
+5. Wraith interaction model
+
+The shell window should behave like a project loader / desktop launcher.
+
+Expected flow:
+
+1. User sees the Wraith shell window.
+2. User moves selection in the shell menu.
+3. User chooses a project or app.
+4. Wraith opens a new content window for that target.
+5. That new content window becomes the active window.
+6. The taskbar/window list updates to reflect the open window.
+
+This means the loader window is the launcher, not the already-open project.
+
+Clarified open rule:
+
+- selected projects/apps should open as new windows, same spirit as GL-OS
+- Wraith should not reuse one fixed content slot for every project unless a
+  future project explicitly wants that behavior
+- selecting a Wraith subproject should resolve and launch that subproject from
+  its own project directory and `.pdl`, not from a hardcoded special case
+
+6. Window rules
+
+Wraith should treat windows as real desktop objects.
+
+Each open window should have:
+
+- an id
+- a title
+- a position
+- a size
+- a z-order
+- a focused/active state
+- a content source
+- a visible/open state
+
+Important rule:
+
+- "available in the menu" is not the same thing as "open on the desktop"
+- "exists as a subproject under `wraith-projects/`" is not the same thing as
+  "already running in a window"
+
+Shell rule:
+
+- the shell window itself is closable, same as GL-OS
+- if closed, a new shell window should be reopenable later
+- the shell is the default launcher window, not an immortal background object
+
+7. Specific correction about the current mistaken behavior
+
+Current wrong behavior:
+
+- `game_map_window` can appear as if it already exists before the user selects
+  it from nav
+
+Desired behavior:
+
+- `game_map_window` should open only after the user selects the matching item
+  from the Wraith shell/menu
+- before that, it should not be rendered as an open peer window
+- its content file may exist, but existence of content must not imply the
+  window is already open
+
+8. Layout-first purity
+
+"Layout-first purity" here should mean:
+
+- the visible shell composition is intentional and understandable
+- the desktop shape is expressed clearly in the layout/composition layer
+- but layout does not fake behavior that the runtime does not truly own
+
+So:
+
+- layout may define the shell look
+- layout may define the loader window look
+- layout may define chrome and framing conventions
+- Wraith-native layouts should live in `.wrai` files so the parser/runtime
+  contract is obvious from the extension alone
+- but open/closed window state, focus, z-order, and launch behavior must still
+  be owned by real runtime state
+
+Also:
+
+- the GUI can be different from older TPMOS surfaces
+- but the underlying project/app loading standard should remain coherent with
+  TPMOS instead of becoming a one-off Wraith-only special system
+
+9. Native Wraith interaction model
+
+Wraith should avoid recursive parser behavior.
+
+Meaning:
+
+- Wraith should not become `chtpm_parser` plus manager plus a second hidden
+  parser living inside the manager
+- the manager should not behave like a shadow parser
+- Wraith should not solve interact mode by recreating a mini-parser inside
+  manager state logic
+
+That recursion trap causes:
+
+- split ownership of input
+- split ownership of focus/nav
+- unclear interact-mode boundaries
+- confusion about whether mouse is real interaction or just overlay telemetry
+
+The cleaner architecture is:
+
+- `wraith_parser` owns live input semantics
+- manager owns canonical desktop/window state and lifecycle
+- composer renders canonical truth only
+
+So Wraith should be native in its own parser/runtime model, not an imitation
+of nested `chtpm_parser` behavior.
+
+Native `wraith_parser` modes should be first-class, for example:
+
+- `desktop`
+- `launcher`
+- `window_nav`
+- `window_interact`
+
+Mode meaning:
+
+- `desktop`
+  - global desktop/window targeting
+  - choosing active window
+  - top-level desktop commands
+
+- `launcher`
+  - loader/menu behavior
+  - project selection from the launcher surface
+
+- `window_nav`
+  - structured nav inside the focused window/project
+
+- `window_interact`
+  - free interaction inside the focused window/project
+  - later home for real mouse-driven local interaction
+
+Critical rule:
+
+- only one component should interpret live input semantics
+- for Wraith, that component should be `wraith_parser`
+
+Supporting rule:
+
+- manager may persist and mutate canonical state on request
+- manager may open/close/focus windows and trigger projection/render work
+- but manager should not become a second parser that owns nav semantics
+
+This lets Wraith avoid the confusing recursion of "interact mode inside manager
+pretending to be parser logic."
+
+10. Existing TPMOS standards and code patterns to preserve
+
+Future agents should not guess at standards here. The existing contract is
+already visible in the repo and should be preserved unless the user explicitly
+changes it.
+
+Project wiring standard:
+
+- `project.pdl` declares:
+  - `entry_layout`
+  - `parser`
+  - `manager`
+- confirmed in:
+  - `1.TPMOS_c_+rmmp.0102.0018/projects/wraith-pm/project.pdl`
+
+Current Wraith wiring:
+
+- `entry_layout=projects/wraith-pm/layouts/wraith-shell.chtpm`
+- `parser=projects/wraith-pm/ops/+x/wraith_parser.+x`
+- `manager=projects/wraith-pm/manager/+x/wraith-pm_manager.+x`
+
+Future Wraith wiring should prefer:
+
+- `entry_layout=projects/wraith-pm/layouts/wraith-shell.wrai`
+
+until the user explicitly chooses otherwise.
+
+State/render contract:
+
+- file-backed state remains valid TPMOS practice
+- visible frame should be derived from explicit canonical state
+- frame artifacts and metadata should be consequences of state, not alternate
+  competing truths
+- this matches the direction recorded in:
+  - `CURRENT_STATE.md`
+  - `re-wraith-clean-plan-j4.txt`
+
+Ownership contract for Wraith:
+
+- parser owns live input interpretation
+- manager owns desktop/window state persistence and lifecycle mutation
+- composer owns deterministic projection/render from canonical state
+
+Behavior contract:
+
+- nav/focus ownership should not be split across parser, manager, and stale
+  session files
+- interact mode should become a native Wraith parser mode, not manager-side
+  parser recursion
+- mouse should be introduced only after this ownership model is coherent
+
+Subproject loading contract:
+
+- Wraith subprojects may live under:
+  - `projects/wraith-pm/wraith-projects/`
+- they should still load through TPMOS-style `.pdl` project structure
+- they should not require a separate one-off Wraith project standard
+
+11. Behavioral target for Wraith
+
+The intended Wraith feel is:
+
+- GL-OS style desktop behavior
+- TPMOS style file-backed inspectability
+- ASCII rendering
+- intentional opening of windows from a launcher/menu
+
+Not this:
+
+- all windows pre-opened
+- project content visible before selection
+- fake focus claims
+- text pretending a window is active when no real window lifecycle exists
+
+12. Immediate implementation implications
+
+The next Wraith fixes should follow this order:
+
+- startup should open the shell window
+- current development exception: startup should also open one default terminal
+  window
+- startup should not auto-restore `game-map` unless a future explicit session
+  restore feature is enabled by design
+- project selection should create/open a new project window
+- project selection should resolve Wraith subprojects from
+  `projects/wraith-pm/wraith-projects/` using their `.pdl`
+- taskbar/window list should reflect only actually open windows
+- focus should move between actually open windows only
+- the focused window should own active nav/selector state
+- terminal focus should activate terminal nav
+- project window focus should activate that project's nav
+- `wraith_parser` should become the single owner of live mode/input semantics
+- manager should stop acting like a recursive parser host
+- mouse and drag should wait until the open/close/focus model is stable
+- later, add desktop right-click context behavior for:
+- opening a terminal
+- creating files
+- creating directories
+- other desktop actions
+
+13. Later direction
+
+Longer-term desired direction:
+
+- the desktop may eventually start blank
+- terminal windows should be openable from desktop controls instead of assumed
+  at boot
+- a right-click context menu should later allow opening terminal windows
+- that context menu should also support convenience filesystem actions such as
+  creating files and directories
+
+14. Working rule
+
+If code behavior disagrees with this file, this file wins unless the user
+explicitly changes the blueprint.

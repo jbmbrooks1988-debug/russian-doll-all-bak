@@ -1,4 +1,0 @@
-focused_window=terminal_window
-taskbar_windows_label=| [Wraith Term*] |
-open_game_map_window=false
-open_blank_proj_window=false

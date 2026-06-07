@@ -1,0 +1,511 @@
+WRAITH KEY FIX WALKTHROUGH
+Date: 2026-06-05
+
+Purpose:
+This file records the keyboard/nav fix as it is done. It is not a theory doc.
+Each step should name the working TPMOS reference code, the Wraith code checked,
+the evidence found, and the change made.
+
+Ground rule:
+Discard assumptions that have not survived live testing. Use existing working
+TPMOS projects as references, then adapt the pattern to Wraith.
+
+
+Step 0: current live failure
+
+Observed by user:
+- Wraith frame shows `K:UP` or stale key state.
+- Pressing new arrow keys does not visibly update `K:<key>`.
+- Pressing arrow keys does not reliably move the Wraith terminal selector.
+
+Known evidence:
+- `pieces/keyboard/history.txt` receives live `KEY_PRESSED:` lines.
+- Wraith visible frame can still lag behind current state files.
+
+Immediate task:
+- prove the exact working TPMOS keyboard pattern from code.
+- find where Wraith diverges.
+- patch only that divergence.
+
+
+Step 1: reference code checked
+
+Reference parser:
+- `1.TPMOS_c_+rmmp.0102.0018/pieces/chtpm/plugins/chtpm_parser.c`
+
+Relevant standard behavior:
+- `compose_frame()` calls `load_vars()` before drawing.
+- keyboard handling appends `K` to `pieces/display/frame_changed.txt`.
+- the parser polls marker file growth and composes only when a marker grows.
+- after composing, it appends to `pieces/display/renderer_pulse.txt`.
+
+Reference manager:
+- `1.TPMOS_c_+rmmp.0102.0018/projects/fuzz-op/manager/fuzz-op_manager.c`
+
+Relevant standard behavior:
+- manager reads one history source.
+- manager mutates state such as `last_key`.
+- manager writes state/view.
+- manager appends a frame marker after state changes.
+
+Reference marker mentioned by user:
+- `1.TPMOS_c_+rmmp.0102.0018/pieces/master_ledger/frame_changed.txt`
+
+Relevant standard behavior:
+- this checkout contains a higher-level frame marker in `pieces/master_ledger`.
+- renderer/parser variants in the repo reference marker files as the trigger,
+  not direct repaint calls.
+
+
+Step 2: Wraith divergence found
+
+Wraith manager:
+- `1.TPMOS_c_+rmmp.0102.0018/projects/wraith-pm/manager/wraith-pm_manager.c`
+
+Before this fix:
+- Wraith manager ran the composer.
+- Wraith manager only appended `W` to `pieces/display/frame_changed.txt`.
+- It did not append to `pieces/master_ledger/frame_changed.txt`.
+
+Wraith parser:
+- `1.TPMOS_c_+rmmp.0102.0018/projects/wraith-pm/ops/wraith_parser.c`
+
+Before this fix:
+- Wraith parser allocated `pieces/master_ledger/frame_changed.txt`.
+- It initialized `last_master_pulse_size`.
+- It did not react when that marker grew.
+- It only reacted to `pieces/display/frame_changed.txt`.
+
+Conclusion:
+- Wraith was not consistently aligned to the marker-file standard.
+- It knew about the master marker but ignored it.
+- Depending on launcher/renderer path, a Wraith update could be invisible even
+  if the manager state and Wraith manager view were current.
+
+
+Step 3: marker alignment patch
+
+Changed Wraith manager:
+- after composer finishes and the view changes, append `W` to:
+  - `pieces/display/frame_changed.txt`
+  - `pieces/master_ledger/frame_changed.txt`
+
+Changed Wraith parser:
+- when `pieces/master_ledger/frame_changed.txt` grows:
+  - reload live Wraith layout state
+  - mark frame dirty
+- when `pieces/display/frame_changed.txt` grows:
+  - reload live Wraith layout state
+  - mark frame dirty
+
+Reason:
+- this preserves the existing display marker path
+- it also honors the master-ledger marker standard
+- both paths still funnel through parser `compose_frame()`, which then emits
+  `pieces/display/renderer_pulse.txt`
+
+
+Step 4: deeper cause found after live 08:59 run
+
+User-visible frame at boot:
+- Wraith shows `K:ENTER` from launch.
+- Selector still shows item 1 on the visible frame.
+
+Live file evidence checked immediately after:
+- `projects/wraith-pm/session/state.txt` had `current_key=i`
+- `projects/wraith-pm/session/nav_state.txt` had `selected_index=2`
+- `pieces/keyboard/history.txt` contained later live keys:
+  - `KEY_PRESSED: 115`
+  - `KEY_PRESSED: 102`
+  - `KEY_PRESSED: 105`
+
+What that proves:
+- post-boot keys were reaching the global keyboard history
+- Wraith manager thread was alive long enough to update:
+  - `current_key`
+  - `selected_index`
+- the visible frame still lagged behind those updates
+
+Deeper cause in Wraith manager:
+- `trigger_render()` computes a dedupe checksum using only:
+  - `projects/wraith-pm/manager/view.txt`
+- key-debug visibility depends on:
+  - `projects/wraith-pm/session/state.txt`
+  - specifically `current_key=...`
+
+Why this matters:
+- if a key changes `current_key` but does not change `manager/view.txt`,
+  Wraith can suppress the frame pulse even though the visible taskbar key
+  should change
+- this explains stale `K:<...>` behavior for ordinary keys and any update path
+  where key state changes without enough text change in `view.txt`
+
+Refined conclusion:
+- the earlier marker mismatch was real
+- but it was not the only cause
+- render dedupe is also too narrow for Wraith’s current visible state contract
+
+
+Step 5: render dedupe fix
+
+Changed file:
+- `1.TPMOS_c_+rmmp.0102.0018/projects/wraith-pm/manager/wraith-pm_manager.c`
+
+Before:
+- `trigger_render()` only hashed:
+  - `projects/wraith-pm/manager/view.txt`
+- if `current_key` changed in session state but the visible window text did not
+  change enough in `view.txt`, the frame pulse could be suppressed
+
+After:
+- `trigger_render()` now fingerprints:
+  - `projects/wraith-pm/manager/view.txt`
+  - `projects/wraith-pm/session/state.txt`
+
+Why this aligns with the standard:
+- Wraith’s visible taskbar key is part of the actual visible state
+- marker dedupe should reflect the real visible state contract, not just one
+  file that happens to hold most of the frame text
+
+Expected effect:
+- changing `current_key` should now be able to trigger a visible Wraith redraw
+  even when the window body text remains unchanged
+
+
+Step 6: compare Wraith structure to working projects
+
+Reference 1:
+- `1.TPMOS_c_+rmmp.0102.0018/projects/fuzz-op/layouts/fuzz-op.chtpm`
+- `1.TPMOS_c_+rmmp.0102.0018/projects/fuzz-op/manager/fuzz-op_manager.c`
+
+Observed fuzz-op pattern:
+- layout interact target:
+  - `pieces/apps/player_app/history.txt`
+- manager input thread reads that same canonical history
+- manager mutates state and triggers render
+- parser remains the one writer of `pieces/display/current_frame.txt`
+
+Reference 2:
+- `1.TPMOS_c_+rmmp.0102.0018/projects/op-ed/layouts/op-ed.chtpm`
+- `1.TPMOS_c_+rmmp.0102.0018/projects/op-ed/manager/op-ed_manager.c`
+- `1.TPMOS_c_+rmmp.0102.0018/projects/op-ed/README.md`
+
+Observed op-ed pattern:
+- layout interact target:
+  - `pieces/apps/player_app/history.txt`
+- manager polls that same canonical history
+- manager writes editor state
+- manager hits frame marker
+- README states the one-writer rule explicitly:
+  - parser owns `current_frame.txt`
+  - daemons only trigger renders via marker files
+
+Wraith current structure:
+- layout interact target:
+  - `projects/wraith-pm/session/history.txt`
+- parser also polls:
+  - `pieces/keyboard/history.txt`
+- manager also polls:
+  - `pieces/keyboard/history.txt`
+- manager also polls:
+  - `projects/wraith-pm/session/history.txt`
+- composer writes:
+  - `projects/wraith-pm/manager/view.txt`
+  - `projects/wraith-pm/session/current_frame.txt`
+- parser writes:
+  - `pieces/display/current_frame.txt`
+
+Main dissonances:
+
+1. Wraith does not use the same canonical interact path as working TPMOS
+   projects.
+- working projects use `pieces/apps/player_app/history.txt`
+- Wraith invented `projects/wraith-pm/session/history.txt` for top-level shell
+  interaction
+
+2. Wraith has split live keyboard ownership.
+- parser reads global keyboard history
+- manager reads global keyboard history
+- manager also reads Wraith session history
+
+3. Wraith has split frame ownership.
+- composer produces a full Wraith frame in session files and manager view
+- parser separately produces `pieces/display/current_frame.txt`
+- the user sees the parser-owned display frame
+- this can lag behind the composer-owned Wraith frame
+
+4. Wraith’s stale-live symptom matches this split structure.
+- at `09:06`, file timestamps showed:
+  - `projects/wraith-pm/manager/view.txt` updated
+  - `projects/wraith-pm/session/state.txt` updated
+  - `pieces/display/current_frame.txt` stayed on an older visible frame
+- this is not how fuzz-op or op-ed are structured
+
+Conclusion from the comparison:
+- Wraith is currently violating the input and render shape used by the working
+  references
+- the deepest dissonance is not just a bad key handler
+- it is that Wraith does not yet have:
+  - one canonical live input stream
+  - one clear input owner
+  - one clear frame writer
+
+Most likely next architectural fix:
+- choose one canonical top-level Wraith input history, likely
+  `pieces/apps/player_app/history.txt` if we want to align to working TPMOS
+  projects
+- choose one owner for top-level shell nav
+- stop treating composer and parser as competing visible frame writers
+
+
+Step 7: canonical input path alignment
+
+Changed files:
+- `1.TPMOS_c_+rmmp.0102.0018/projects/wraith-pm/layouts/wraith-shell.wrai`
+- `1.TPMOS_c_+rmmp.0102.0018/projects/wraith-pm/layouts/wraith-shell.chtpm`
+- `1.TPMOS_c_+rmmp.0102.0018/projects/wraith-pm/ops/wraith_parser.c`
+- `1.TPMOS_c_+rmmp.0102.0018/projects/wraith-pm/manager/wraith-pm_manager.c`
+
+Change made:
+- Wraith top-level shell input was moved onto:
+  - `pieces/apps/player_app/history.txt`
+- Wraith manager now reads that one canonical history.
+- Manager-side raw polling of `pieces/keyboard/history.txt` was removed.
+- Wraith parser already injects top-level keys into the interact history path
+  from the layout, so this matches the working TPMOS app pattern.
+
+Why this was necessary:
+- `fuzz-op` and `op-ed` do not split top-level app input across multiple files.
+- Wraith had been splitting top-level input across:
+  - `pieces/keyboard/history.txt`
+  - `projects/wraith-pm/session/history.txt`
+  - parser-side fallback paths
+- that made it impossible to reason clearly about whether a missing visible key
+  was:
+  - a capture failure
+  - a routing failure
+  - or a stale frame failure
+
+What this step did not prove:
+- it aligned Wraith with the standard history path
+- it did not, by itself, prove that the user-visible frame was live
+
+
+Step 8: rule out false replay through the manager
+
+Reference checked:
+- `1.TPMOS_c_+rmmp.0102.0018/projects/op-ed/manager/op-ed_manager.c`
+- `1.TPMOS_c_+rmmp.0102.0018/projects/wraith-pm/manager/wraith-pm_manager.c`
+
+Observed standard in `op-ed`:
+- manager opens `pieces/apps/player_app/history.txt`
+- at startup it sets `last_pos = st.st_size`
+- this means old history is ignored and only newly appended lines are processed
+
+Observed current Wraith manager code:
+- `history_thread()` does the same thing
+- on startup:
+  - `if (stat(path, &st) == 0) last_pos = st.st_size;`
+- then it only reads lines appended after that byte position
+
+Conclusion:
+- Wraith manager is already following the standard "start at end of history"
+  rule
+- therefore the stale `K:i` shown on boot is not explained by old lines being
+  replayed through the manager history loop
+
+Why this matters:
+- it eliminates one tempting but wrong diagnosis
+- we should not keep trying to fix the live-input bug by only changing
+  `last_pos` handling in the manager
+
+
+Step 9: separate stale boot residue from live-input failure
+
+Observed live run at `09:13`:
+- visible frame showed:
+  - `K:i`
+  - `Game Map` already open and focused
+- user did not press `i`
+- user did not intentionally reopen `game-map` in that fresh relaunch
+
+Relevant Wraith code checked:
+- `1.TPMOS_c_+rmmp.0102.0018/projects/wraith-pm/manager/wraith-pm_manager.c`
+
+Observed boot normalization:
+- `normalize_boot_state()` resets:
+  - `open_game_map_window=false`
+  - `open_blank_proj_window=false`
+  - `selected_index=1`
+  - focus back to terminal
+- but it does not reset:
+  - `current_key`
+
+What that proves:
+- stale `K:i` on boot can survive simply because it is persisted in:
+  - `projects/wraith-pm/session/state.txt`
+- even if the manager is no longer replaying old history lines
+
+But that is only half the problem:
+- stale `current_key` explains an old key label
+- it does not explain why live new keys fail to replace it
+- it also does not explain why a visible `game_map_window` can survive a boot
+  where manager state was normalized back to terminal-only
+
+Refined conclusion:
+- there are at least two separate stale-state layers:
+
+1. Boot residue in Wraith session state
+- example:
+  - `current_key=i` persists because Wraith does not reset it on boot
+
+2. Stale user-visible frame ownership
+- visible `pieces/display/current_frame.txt` can still show an older projected
+  desktop than current Wraith manager/session files
+- this is the deeper reason the UI can look "non-live"
+
+
+Step 10: deeper dissonance with the working display chain
+
+Reference checked:
+- `1.TPMOS_c_+rmmp.0102.0018/pieces/display/renderer.c`
+- `1.TPMOS_c_+rmmp.0102.0018/projects/op-ed/README.md`
+
+Working TPMOS display chain:
+- manager mutates state
+- manager appends a frame marker
+- parser composes `pieces/display/current_frame.txt`
+- parser appends `pieces/display/renderer_pulse.txt`
+- renderer prints `pieces/display/current_frame.txt` only when
+  `renderer_pulse.txt` grows
+
+Important standard from `op-ed` README:
+- parser owns `current_frame.txt`
+- daemons only request redraws via marker files
+
+Wraith's current deeper problem:
+- Wraith still has a second frame-like surface produced outside the parser:
+  - `projects/wraith-pm/manager/view.txt`
+  - `projects/wraith-pm/session/current_frame.txt`
+- when those look newer than `pieces/display/current_frame.txt`, the user can
+  be staring at an older parser-owned display even though Wraith session files
+  already changed
+
+This matches the user's symptom:
+- "it seems to only update from previous session stale keys"
+
+The visible frame can be stale in two ways at once:
+- stale boot residue in session state
+- stale parser-owned display frame not matching newer Wraith session files
+
+
+Step 11: standards-aligned next fix
+
+The next fix should follow the working TPMOS chain, not invent another Wraith-
+specific debug path.
+
+Priority order:
+
+1. Reset visible boot residue explicitly
+- on Wraith boot, reset:
+  - `current_key=None`
+- this removes one false signal from the UI immediately
+
+2. Prove one live runtime chain exists after launch
+- verify a live Wraith session has:
+  - parser running
+  - manager running
+  - renderer responding to `renderer_pulse.txt`
+- if this chain is not alive, no keyboard debug patch will fix the user-visible
+  frame
+
+3. Keep one visible frame writer
+- parser must remain the owner of:
+  - `pieces/display/current_frame.txt`
+- manager/composer may prepare state and request redraws
+- they should not become an alternate visible frame authority
+
+4. Treat `projects/wraith-pm/session/current_frame.txt` as audit only
+- do not trust it as proof of what the user is actually seeing
+- the renderer only cares about:
+  - `pieces/display/current_frame.txt`
+
+5. Only after that, continue live key debugging
+- once boot residue is cleared and the runtime chain is proven alive,
+  a stale `K:<...>` can be investigated as a real live-input bug instead of a
+  snapshot illusion
+
+
+Step 7: canonical input path alignment
+
+Changed Wraith layout:
+- `1.TPMOS_c_+rmmp.0102.0018/projects/wraith-pm/layouts/wraith-shell.wrai`
+- `1.TPMOS_c_+rmmp.0102.0018/projects/wraith-pm/layouts/wraith-shell.chtpm`
+
+Before:
+- Wraith top-level interact target was:
+  - `projects/wraith-pm/session/history.txt`
+
+After:
+- Wraith top-level interact target is now:
+  - `pieces/apps/player_app/history.txt`
+
+Changed Wraith parser:
+- `wraith_shell_owns_top_level_nav()` now recognizes the standard app history
+  path as the Wraith shell top-level nav target
+
+Changed Wraith manager:
+- `history_thread()` now polls:
+  - `pieces/apps/player_app/history.txt`
+- `route_input()` now updates `current_key` from the same canonical history
+  lines that drive nav
+- removed manager-side raw keyboard polling thread as a second competing owner
+
+Why this matches working TPMOS references:
+- `fuzz-op` and `op-ed` both use `pieces/apps/player_app/history.txt`
+- their managers consume that same file
+- live raw keyboard stays upstream in the parser / TPMOS keyboard capture path
+- manager only owns project-level semantics, not raw terminal capture
+
+Expected effect:
+- new key input should no longer depend on stale projects/wraith-pm/session/history.txt
+- top-level Wraith nav should now follow the same parser-to-history-to-manager
+  path as the working reference projects
+
+
+Step 12: Bottom line
+
+The TPMOS and fuzz-op standard does not support the current Wraith split-brain
+keyboard path.
+
+The standard points toward:
+
+- one source
+- one owner
+- one state mutation path
+- one pulse
+
+That is the simple logic fix to derive from existing TPMOS behavior.
+
+
+Step 13: Current State of Affairs, Tasks, and KPIs
+
+Date: 2026-06-05
+
+Current State of Affairs:
+- Input Alignment: Top-level Wraith shell input moved to pieces/apps/player_app/history.txt.
+- Boot Residue: wraith-pm_manager.c resets current_key=None, but the parser may not be loading it.
+- Stale Frame: wraith_parser.c reloads variables on pulse, but load_vars() misses the projects/wraith-pm/session/state.txt path.
+- Marker Standard: Wraith aligned to display and master marker files.
+
+Tasks:
+1. Fix Parser Variable Loading: Update load_vars() in wraith_parser.c to load Wraith session state files.
+2. Verify Boot Normalization: Ensure normalize_boot_state() in wraith-pm_manager.c is effective and the parser reflects it.
+3. Prove Runtime Chain: Confirm Parser-Manager-Renderer chain is live and responsive.
+
+KPIs (Key Performance Indicators):
+- Checkpoint A: Boot terminal-only, K:None, selector at 1.
+- Checkpoint B: Pressing DOWN updates K:DOWN and moves selector.
+- Checkpoint C: Pressing UP updates K:UP and moves selector.
+- Checkpoint D: Pressing ENTER on game-map opens the project window.
+

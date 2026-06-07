@@ -1,0 +1,27 @@
+# FINAL HANDOFF: WRAITH-ALPHA STALL (final-handoff-j5.txt)
+Date: 2026-06-05
+
+## Mission Status: Structurally Sound, Visually Blind
+We have successfully re-architected Wraith-Alpha to follow a strict TPMOS pipeline. The mechanical plumbing is honest, verified, and operational:
+- **Input:** `history.txt` is captured.
+- **Brain:** The Manager processes input and updates `alpha_state.txt` atomically.
+- **Pulse:** The marker-file trigger correctly wakes the Parser.
+
+**THE STALL:** Despite these mechanical successes, the UI variables (e.g., `${active_gui_index}`) remain blank. The Parser is waking up, but it is failing to substitute the variables from state files into the layout.
+
+## Diagnostic Summary
+My attempts to fix this have stalled because I failed to correctly diagnose the substitution breakdown in the Parser.
+1.  **Likely Mismatch:** The tokenization of `alpha-shell.chtpm` may be splitting `${active_gui_index}` into multiple tokens, or the `substitute_vars` function is failing to match the token due to hidden characters or buffer limits.
+2.  **Caching:** Even with variable purging, the token tree itself (created in `parse_chtm`) might be "baking in" blank values if the initial `load_vars()` call is insufficient or if `substitute_vars` is not being re-invoked on the existing tokens during `compose_frame()`.
+3.  **Path Mismatch:** Despite the "Aggressive Search-Up" fix, there remains a possibility that the Parser's file-load context is still misaligned with the filesystem, making the state variables "invisible" during `load_state_file()`.
+
+## Guidance for Successor
+**DO NOT ATTEMPT MORE MECHANICAL PLUMBING.** The pipeline is fine. You must now focus entirely on the **Parser's Token Tree and Variable Substitution logic.**
+
+### Immediate Action Plan:
+1.  **Token Integrity Check:** Trace `tokenize()` in `wraith_parser_alpha.c` to see if `${active_gui_index}` is preserved as a single token.
+2.  **Substitution Audit:** Debug `substitute_vars` by forcing it to print the raw input and the resolved output to `parser.out` for *every* tag.
+3.  **Token-Time Substitution:** Ensure that variables are *never* substituted during `parse_chtm`. They must remain as tokens until the `render_element` loop, where substitution happens on *every frame pulse*.
+
+---
+*If it's not in a file, it's a lie. The marker is the clock.*

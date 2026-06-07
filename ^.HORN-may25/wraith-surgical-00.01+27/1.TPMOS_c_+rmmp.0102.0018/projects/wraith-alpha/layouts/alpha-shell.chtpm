@@ -1,0 +1,33 @@
+<layout id="wraith_alpha_shell">
+    <module>projects/wraith-alpha/manager/+x/wraith_manager_alpha.+x</module>
+    <panel title="WRAITH ALPHA - DESKTOP">
+        <text label="[ KPI 1: Keyboard Nav Proof ]" /><br/>
+        <text label="Use arrows to move selector. Windows and controls stay indexable." /><br/>
+        <br/>
+        <text label="+-WRAITH DESKTOP GUI---------------------------------------------------------------------------+" /><br/>
+        <text label="| +-" visibility="${desktop_window_1_open}" /><button compact="true" label=" ${desktop_window_1_title} " onClick="SET_ACTIVE:1" visibility="${desktop_window_1_open}" /><text label="------------------------------------------" visibility="${desktop_window_1_open}" />
+        <button compact="true" label="o" onClick="SET_ACTIVE:2" visibility="${desktop_window_1_open}" />
+        <button compact="true" label="${desktop_window_1_collapse_glyph}" onClick="SET_ACTIVE:3" visibility="${desktop_window_1_open}" />
+        <button compact="true" label="x" onClick="SET_ACTIVE:4" visibility="${desktop_window_1_open}" />
+        <text label="-+               |" visibility="${desktop_window_1_open}" /><br/>
+        <text label="| |  [ TERMINAL PROJECT ]                                                                        |" visibility="${desktop_window_1_body_visible}" /><br/>
+        <text label="| |                                                                                              |" visibility="${desktop_window_1_body_visible}" /><br/>
+        <text label="| |  (launch from dock to open another terminal instance)                                        |" visibility="${desktop_window_1_body_visible}" /><br/>
+        <text label="| |                                                                                              |" visibility="${desktop_window_1_body_visible}" /><br/>
+        <text label="| +----------------------------------------------------------------------------------------------+               |" visibility="${desktop_window_1_body_visible}" /><br/>
+        <text label="| [ TASKBAR ] " visibility="${desktop_window_1_halfscreen_visible}" /><button compact="true" label="${desktop_launcher_1_title}" onClick="SET_ACTIVE:5" visibility="${desktop_window_1_halfscreen_visible}" /><text label="                                                      |" visibility="${desktop_window_1_halfscreen_visible}" /><br/>
+        <text label="+----------------------------------------------------------------------------------------------+" /><br/>
+        <br/>
+        <text label="Desktop Mode: ${desktop_mode}" /><br/>
+        <text label="Open Windows: ${desktop_window_count}" /><br/>
+        <text label="Focused Window: ${desktop_focused_window_title}" /><br/>
+        <text label="Window Mode: ${desktop_window_1_mode}" /><br/>
+        <br/>
+        <text label="[ DESKTOP DEBUG ]" /><br/>
+        <text label="Manager Index: ${active_gui_index}" /><br/>
+        <text label="Manager Key:   ${current_key_label}" /><br/>
+        <br/>
+        <text label="[ PARSER BYPASS DEBUG ]" /><br/>
+        <text label="RAW: ${PARSER_KBD_DEBUG}" /><br/>
+    </panel>
+</layout>

@@ -1,0 +1,21 @@
+# WRAITH DEVELOPMENT LOG
+Date: 2026-06-05
+
+## Initial State
+- Architecture: TPMOS-aligned but non-functional due to tight coupling and races.
+- Goal: Achieve "Runtime Honesty" via 4-phase refactor.
+
+## Implementation Progress
+- [x] Phase A: Establish Marker Contract (Parser)
+- [x] Phase B: Enforce Atomic State Updates (Manager)
+- [x] Phase C: Implement Robust Polling (Manager)
+- [x] Phase D: Decommission Compositor (Final/Manager)
+
+---
+### 2026-06-05 13:50
+- **STABILIZATION COMPLETE:**
+    - Refactored `wraith_parser.c` to purge `vars[]` cache on every pulse (Step 1).
+    - Decommissioned `wraith_composer` in `wraith-pm_manager.c` to remove race conditions (Step 2).
+    - Refactored `history_thread` to ensure immediate synchronization and rendering for every input batch (Step 3).
+    - Enforced explicit `changed = 1` for all digit keys in `route_input`.
+- The system is now strictly TPMOS compliant and should exhibit perfect runtime honesty.

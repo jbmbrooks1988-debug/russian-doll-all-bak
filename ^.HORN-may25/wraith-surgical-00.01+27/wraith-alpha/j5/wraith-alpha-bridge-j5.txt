@@ -1,0 +1,47 @@
+# WRAITH ALPHA: THE ASCII DESKTOP BRIDGE (wraith-alpha-bridge-j5.txt)
+Date: 2026-06-05
+
+## Victory: KPI 1 Achieved
+The `wraith-alpha` project has proven that the TPMOS pipeline (Manager polling -> Atomic State Write -> Marker Pulse -> Passive Parser) works perfectly when stripped of legacy debt. The selector moves, the frame updates, and the chain is "Honest."
+
+## The Roadmap to the Desktop
+We will now incrementally transform this "list" into a "desktop" using the following step-by-step bridge.
+
+### Step 1: Fix Variable Transparency
+*   **Status:** Currently, `${active_gui_index}` is blank in the frame.
+*   **Goal:** Ensure the Parser can "see" all state variables published by the Alpha Manager.
+*   **Action:** Audit `load_vars` and `load_state_file` to ensure `alpha_state.txt` is being parsed into memory on every pulse.
+
+### Step 2: The "Window Registry" String
+*   **Concept:** Instead of hardcoding windows in `.chtpm` layout tags, the Manager will construct an ASCII string representing all open windows.
+*   **Manager Task:** Construct a multi-line string variable `${desktop_view}`.
+*   **Logic:** 
+    1.  Start with a background pattern (the dots `. . .`).
+    2.  "Overlay" window frames into the string based on their X/Y/Z coordinates.
+    3.  Publish this single massive string to `alpha_state.txt`.
+
+### Step 3: The Universal Desktop Layout
+*   **Layout Change:** `alpha-shell.chtpm` will be simplified to a "Desktop Theater":
+    ```xml
+    <layout>
+        <text label="${desktop_view}" />
+        <br/>
+        <text label="${taskbar}" />
+    </layout>
+    ```
+*   **Result:** The Parser becomes a pure viewer. The Manager handles the "Composition" of the desktop grid in memory.
+
+### Step 4: Implementing the "Open" Action
+*   **Goal:** Pressing ENTER on a project name "opens" it.
+*   **Action:**
+    1.  Update `wraith_manager_alpha.c:route_input` to handle `key == 10` (ENTER).
+    2.  When ENTER is pressed, add the selected project ID to an internal `open_windows[]` array.
+    3.  Re-generate the `${desktop_view}` string (Step 2).
+    4.  Pulse the marker.
+
+### Step 5: Focus Swapping (The Window System)
+*   **Goal:** Clicking/Navigating between windows.
+*   **Action:** The Manager manages a `focused_window_id`. It draws the `[o][-][x]` header for that specific window with a "focused" visual style in the `${desktop_view}` string.
+
+---
+*By building the desktop INSIDE the Manager's variables, we guarantee the Parser never has to guess. Truth remains in the file.*

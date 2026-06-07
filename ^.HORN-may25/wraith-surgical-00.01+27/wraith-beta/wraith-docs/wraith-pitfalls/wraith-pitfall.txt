@@ -1,0 +1,79 @@
+WRAITH PITFALLS & ARCHITECTURAL FAILURES - JUN 5
+=================================================
+
+This document records the mistakes made by the previous agent to ensure future agents (and the current one) do not repeat them.
+
+1. DEVIATION FROM THE "DESKTOP EMULATOR" STANDARD
+------------------------------------------------
+The most fundamental mistake was breaking the visual and behavioral illusion of the ASCII desktop.
+- THE ERROR: I added a <button> directly to 'wraith-shell.wraith' that sat outside the composed desktop frame (${game_map}). 
+- THE CONSEQUENCE: This created a "split-brain" UI where some elements were managed by the top-level parser and others were part of the composed surface. This destroyed the coordinate system integrity and the "emulator" feel.
+- THE STANDARD: The top-level layout should be a pure container for the composed surface. All UI interaction should happen WITHIN windows or on the desktop surface itself.
+
+2. IGNORING THE "WELCOME" FLOW (TPMOS STANDARDS)
+------------------------------------------------
+I prematurely optimized for "Project Loading" functionality without respecting the established user experience of the project.
+- THE ERROR: I skipped the "Main Menu" step and went straight to a raw project list. 
+- THE CONSEQUENCE: I removed the "Welcome" terminal (CHTPM+OS CLI v2.0 style) which is a core behavioral requirement for the project.
+- THE LESSON: Research the behavioral reference (GL-OS) and the original OS (TPMOS) Main Menu first. Don't invent new flows when a standard exists.
+
+3. PRIORITIZING LOGIC OVER KPIs
+-------------------------------
+I spent time building a directory-scanning project list before proving that a user could even move a cursor or activate a button inside a window.
+- THE ERROR: I focused on the "Technical Model" (how to list files) instead of the "Behavioral Model" (can I press '1' to jump to a button in the terminal window?).
+- THE CONSEQUENCE: I "corrupted" the codebase into a state where navigation was broken due to path mismatches, yet I was trying to build "features" on top of that broken foundation.
+- THE KPI: The first priority is always NAV CONTROL and JUMPING. If you can't navigate the menu, the features don't matter.
+
+4. "IF IT'S NOT IN A FILE, IT'S A LIE" (TPM VIOLATIONS)
+------------------------------------------------------
+I introduced complex string-building logic in the manager instead of using the standard Projection Contract.
+- THE ERROR: My manager was synthesizing the final button text manually.
+- THE STANDARD: The Manager should publish simple variables to 'gui_state.txt'. The Layout (.wraith) should define the structure. The Parser handles the rendering of buttons [>] and [ ].
+- WHY IT MATTERS: Monolithic manager logic is untestable and brittle. Standard PDL/KVP variables in 'gui_state.txt' are auditable and follow the TPMOS Onboarding Bible.
+
+5. COMMUNICATION PATH MISMATCH
+------------------------------
+I allowed the parser to write to 'projects/wraith-pm/history.txt' while the manager watched 'projects/wraith-pm/session/history.txt'.
+- THE ERROR: Failure to verify the "Mirror" (history source) before building the "Brain" (manager logic).
+- THE RESULT: Total system silence. The manager never saw the commands, making the desktop look "dead."
+
+6. STALE FRAME RELAUNCH ILLUSION
+--------------------------------
+The most recent failure mode is not "keys are missing" but "the user is seeing an old projected desktop as if it were live."
+- THE ERROR: Wraith can relaunch and still show an older parser-owned display frame, including stale taskbar key/time and stale open-window state.
+- THE EVIDENCE:
+  - loader launched Wraith at `09:13`
+  - visible frame still showed `K:i    09:06`
+  - visible frame also showed `game-map` already open and focused
+- THE CONSEQUENCE: It looks like live input is dead, but the deeper problem is that live runtime state and the user-visible frame are out of sync.
+- THE LESSON: When the visible clock/key do not advance on relaunch, treat that as a stale-frame ownership problem first, not just a key decoding problem.
+
+7. SPLIT FRAME OWNERSHIP
+------------------------
+Wraith currently lets multiple surfaces behave like "the current desktop":
+- parser writes `pieces/display/current_frame.txt`
+- composer writes `projects/wraith-pm/manager/view.txt`
+- composer also writes `projects/wraith-pm/session/current_frame.txt`
+- THE ERROR: Future agents may read one of these as proof while the user sees another.
+- THE CONSEQUENCE: Files can look "fixed" while the live terminal still shows an older desktop snapshot.
+- THE STANDARD: One writer rule. The user-visible frame must have one authoritative writer, and all other files must be clearly secondary artifacts.
+
+8. SESSION RESTORE CONTAMINATION
+--------------------------------
+Wraith can appear to "ignore" startup normalization because an older desktop projection leaks forward.
+- THE ERROR: assuming startup state is clean just because manager/session files were rewritten.
+- THE EVIDENCE:
+  - visible frame showed `game-map` open at `09:13`
+  - even though intended Wraith startup baseline is terminal-first
+- THE LESSON: A visible old project window at boot is proof of unresolved stale projection or stale frame ownership, not proof that the latest boot logic is wrong.
+
+9. STANDARD INPUT PATH MUST MATCH STANDARD MANAGER PATH
+-------------------------------------------------------
+Working TPMOS references (`fuzz-op`, `op-ed`) use one interact path:
+- `pieces/apps/player_app/history.txt`
+- THE ERROR: Wraith invented `projects/wraith-pm/session/history.txt` for top-level shell routing and then mixed it with raw keyboard polling.
+- THE CONSEQUENCE: split ownership, delayed updates, and misleading stale state.
+- THE RULE: If Wraith uses the TPMOS standard app history path, the manager must consume that same path and raw keyboard should stay upstream, not become a second competing project-level owner.
+
+SUMMARY FOR FUTURE AGENTS:
+Stick to the behavioral standards of GL-OS and the technical standards of TPMOS (Onboarding Bible). Prioritize the "Pulse" (render trigger) and "Nav" (input bridge) over any application-specific features. If the desktop illusion is broken or navigation is unresponsive, you have failed the most basic requirements.

@@ -1,0 +1,24 @@
+# WRAITH-ALPHA ROADMAP (alpha-2do.txt)
+Date: 2026-06-05
+
+## 1. Top Priorities (KPIs)
+- [ ] **KPI 1: Provable Input.** Keyboard arrows must visually move the selector in `wraith-alpha`.
+- [ ] **KPI 2: Clean Boot.** System must boot to a terminal-only layout by default.
+- [ ] **KPI 3: Modular Desktop.** Add taskbar and windows only after nav is solid.
+
+## 2. Immediate 2DO (Phase 0)
+- [x] Create project directory structure.
+- [x] Register `wraith-alpha` in `pieces/os/project_routes.kvp`.
+- [x] Copy canonical `chtpm_parser.c` to `projects/wraith-alpha/ops/wraith_parser_alpha.c`.
+- [x] Create `wraith_manager_alpha.c` (TPMOS minimalist loop).
+- [x] Create `alpha-shell.chtpm` layout for testing.
+- [x] Compile `wraith_parser_alpha.+x` and `wraith_manager_alpha.+x`.
+- [ ] Notify User for Keyboard Debug Test.
+
+## 3. Subsequent Design Tasks
+- [ ] Design "Wraith Alpha" Desktop variable set.
+- [ ] Design Default Terminal window behavior.
+- [ ] Implement Window Registry (variable-driven).
+
+---
+*If it's not in a file, it's a lie. The marker is the clock.*

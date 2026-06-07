@@ -1,0 +1,22 @@
+# CODE REVIEW: WRAITH NAVIGATION STALL (code-rev-j5.txt)
+Date: 2026-06-05
+
+## Overview
+Comparative audit of current implementation vs. `tpmos-ascii-doc-0.txt`.
+
+## Identified Bottlenecks (The "Stall" Reasons)
+
+### 1. Parser Variable Caching (`load_vars` / `vars[]`)
+*   **Observation:** `wraith_parser.c:load_vars()` iterates through `vars[]` but does not seem to reliably clear or force-refresh the file reads from the disk *on every marker pulse*. 
+*   **Comparison with TPMOS:** The standard requires a passive renderer that *always* reads canonical truth on composition. Wraith appears to maintain a local `vars[]` cache that may become stale if `reload_live_layout_state` does not properly re-trigger `load_vars` with disk-read priority.
+
+### 2. Redundant Compositor Interference
+*   **Observation:** Even though `trigger_render` has been refactored, the Manager still forks `wraith_composer.+x`. 
+*   **Comparison with TPMOS:** TPMOS strictly dictates a "one-history, one-owner, one-renderer" shape. The existence of `wraith_composer` suggests it might be writing to `view.txt` or similar audit files *concurrently* with the Manager's `gui_state.txt` updates, creating a classic Race Condition where the Parser loads the *wrong* "truth" file.
+
+### 3. State Propagation Logic in `route_input`
+*   **Observation:** In `wraith-pm_manager.c`, while we fixed the atomic write (`rename()`), the function `route_input` mutates the *Manager's memory* (`g_active_gui_index`), but the `history_thread` *only* synchronizes this to the filesystem (via `sync_nav_state`) if a `batch_changed` flag is set. 
+*   **Comparison with TPMOS:** The standard dictates that state mutation MUST be followed immediately by atomic filesystem persistence. If `batch_changed` logic has a logical branch that fails to trigger `sync_nav_state` under specific edge cases (e.g., rapid key presses), the Manager's *memory* will be out of sync with the *filesystem* the Parser reads.
+
+## Conclusion
+The navigation is stalling because the Parser is not reliably consuming the updated `nav_state.txt`. It is either relying on a stale cache, being overwritten by a racing Compositor, or the Manager is failing to write to the filesystem consistently.

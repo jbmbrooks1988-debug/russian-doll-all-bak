@@ -1,0 +1,8 @@
+2DO
+
+Read:
+- `new-2do-c&g-j5.txt`
+
+Why it matters:
+- This is the current phased build plan with human-checkable checkpoints.
+- It is the operational order of work after the J5 learnings.

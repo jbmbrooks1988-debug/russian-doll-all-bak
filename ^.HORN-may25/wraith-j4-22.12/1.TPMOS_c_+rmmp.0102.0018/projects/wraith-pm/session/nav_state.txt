@@ -1,4 +1,0 @@
-nav_scope=terminal_menu
-selected_index=1
-drag_active=false
-drag_window_id=none

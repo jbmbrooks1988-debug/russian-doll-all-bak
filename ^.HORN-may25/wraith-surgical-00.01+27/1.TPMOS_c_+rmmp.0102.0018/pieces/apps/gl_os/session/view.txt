@@ -1,0 +1,6 @@
+DESKTOP_VIEW
+BG: #000044
+WINDOW_COUNT: 3
+WINDOW | 2 | 495 | 291 | 800 | 625 | CHTMGL Test | gltpm_app | 0
+WINDOW | 1 | 70 | 70 | 400 | 300 | Terminal 1 | terminal | 0
+WINDOW | 3 | 160 | 150 | 1024 | 768 | PIECECRAFT-3D (Sovereign) | gltpm_app | 0

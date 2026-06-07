@@ -1,0 +1,12 @@
+BLUEPRINT
+
+Read:
+- `wraith-docs/history-archive/wraith-blueprint.txt`
+- `new-2do-c&g-j5.txt`
+
+Why it matters:
+- This is the behavioral contract.
+- It defines Wraith's intended desktop and parser ownership model.
+- The current engineering direction is to keep that contract but first prove
+  runtime honesty: one live chain, one visible frame owner, no stale detached
+  processes, and no pre-compose race before more feature work.

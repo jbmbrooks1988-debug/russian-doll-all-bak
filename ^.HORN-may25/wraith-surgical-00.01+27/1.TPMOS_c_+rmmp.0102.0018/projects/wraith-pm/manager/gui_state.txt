@@ -1,0 +1,5 @@
+app_title=Wraith PM
+mouse_x=36
+mouse_y=16
+project_id=wraith-pm
+active_gui_index=2

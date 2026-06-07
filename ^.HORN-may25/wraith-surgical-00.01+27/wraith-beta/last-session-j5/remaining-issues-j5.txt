@@ -1,0 +1,45 @@
+WRAITH VS TPMOS: IMPLEMENTATION DISCREPANCIES J5
+Date: 2026-06-05
+
+Purpose:
+To document the remaining architectural gaps between Wraith's implementation
+and the established TPMOS "Gold Standard" (e.g., fuzz-op, op-ed).
+
+1. Pipeline Ownership
+   - Ideal (TPMOS): The Parser owns the scene graph, input event handling, 
+     and variable-to-string composition atomically.
+   - Broken (Wraith): Ownership is fragmented. Manager processes input, 
+     but a separate Composer (forked process) tries to pre-render the taskbar,
+     creating a race condition where the Parser renders a snapshot of state 
+     that may be older than the Manager's current truth.
+
+2. State Atomicity
+   - Ideal (TPMOS): When the Manager updates state, the Parser reloads 
+     variables (atomic load) and renders a single, fully-synchronized frame.
+   - Broken (Wraith): Manager writes to state.txt; Composer reads state.txt 
+     (sometime later) and writes view.txt; Parser reads state.txt AND view.txt.
+     This creates a multi-step, non-atomic update cycle prone to "stale frame" 
+     lag where the Parser renders half-old, half-new state.
+
+3. Trigger Discipline
+   - Ideal (TPMOS): Manager writes state change -> Marker hit -> Parser 
+     reloads -> Pulse renderer.
+   - Broken (Wraith): Wraith still has residual trigger paths (e.g., layout 
+     switches that call compose_frame() directly). This bypasses the marker 
+     deduplication and causes the "silly renders" (multiple render pulses 
+     for a single user action).
+
+4. Input Flow
+   - Ideal (TPMOS): Single, unified interaction history path. Parser reacts 
+     to input; Manager polls that same source.
+   - Broken (Wraith): While we have unified the top-level nav history, the 
+     overall system still lacks a unified "input focus" lock, leading to 
+     competing interpretations of keypresses if multiple modules (e.g., a 
+     pet daemon vs. the shell) are active.
+
+Summary for Next Agent:
+Wraith's "broken state" is essentially a result of trying to layer a 
+desktop-like UI on top of an atomic parser-renderer architecture without 
+removing the pre-composition layers (Composer). The fix is to continue 
+eliminating these layers until Wraith behaves like a standard, 
+variable-driven TPMOS layout.

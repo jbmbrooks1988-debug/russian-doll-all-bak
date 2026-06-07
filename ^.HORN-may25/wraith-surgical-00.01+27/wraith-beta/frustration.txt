@@ -1,0 +1,37 @@
+# WHY WRAITH IS STILL BROKEN (frustration.txt)
+Date: 2026-06-05
+
+We did the work. We applied the TPMOS standards:
+1. We enforced the Marker Contract (no more eager rendering).
+2. We enforced Atomic State Updates (no more partial writes).
+3. We implemented Robust Polling (`fuzz-op` pattern).
+4. We fixed the Parser's focus preservation bug.
+
+And yet, the selector is still stuck. Why?
+
+## The Frustrating Truth: The Chain is Severed
+We fixed the *mechanics* of the pipeline, but we haven't verified the *data flow* across the bridge.
+
+### 1. The Manager is still not publishing the *Right* thing
+Even if the `g_active_gui_index` is being updated in memory and written atomically to `nav_state.txt` (which it is!), is the `wraith_parser` actually reloading that specific file on the *next* pulse?
+The `wraith_parser` (in `reload_live_layout_state`) might not be re-reading the files correctly. If the Parser's internal state variable `active_index` is not getting synced to the new index from `nav_state.txt`, the visual selector will *never* move.
+
+### 2. The "Ghost" Frame
+The Renderer might be looking at a cached `current_frame.txt` that isn't actually being overwritten. If the file permissions or file handles are stuck (a "sticky file" issue), we could be writing to one file descriptor while the Renderer reads from another.
+
+### 3. The Synchronization Gap
+We moved the `trigger_render(root)` call inside `history_thread` after the atomic update. This is correct.
+However, if the `trigger_render` call executes *before* the filesystem has finished the `rename()` operation, the Parser will see the old `nav_state.txt` (or a truncated version) when it wakes up to compose.
+
+### 4. The Last Remaining Culprit: The Compositor
+The `trigger_render` function still forks `wraith_composer.+x`. This is a heavyweight, asynchronous process that *also* reads state files to produce `view.txt`. 
+If `wraith_composer` is still running or if it's producing a *competing* `view.txt` that the Parser consumes instead of the atomic `nav_state.txt` we just fixed, then we are just replacing one race condition with another.
+
+### 5. Persistence of Stale Parser Focus
+Despite our focus preservation fix in `wraith_parser.c`, the Parser may still be relying on *cached* variable data (`vars[]` array) that is not being cleared or re-populated correctly *before* `compose_frame` runs.
+
+## Conclusion
+We fixed the *write*, but we haven't fixed the *read*. The Parser is the weak link. It is likely still using old audit/projection files or cached variables, ignoring the canonical truth we've so carefully prepared.
+
+## Proposed Next Step
+We need to force the Parser to log exactly what it reads from `nav_state.txt` and `gui_state.txt` *immediately before* it composes. We need to verify that `vars[]` actually contains the *new* index value before it gets rendered.

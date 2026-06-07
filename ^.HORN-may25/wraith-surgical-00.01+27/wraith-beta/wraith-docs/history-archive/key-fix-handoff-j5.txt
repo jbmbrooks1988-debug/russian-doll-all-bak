@@ -1,0 +1,202 @@
+WRAITH KEY-FIX HANDOFF - J5
+Date: 2026-06-05
+
+This is a handoff for the next agent.
+
+The immediate task is not "finish Wraith."
+The immediate task is:
+
+1. make the pressed key visible in the live Wraith frame
+2. prove keyboard input is landing in the Wraith runtime
+3. then fix nav movement
+4. only after that, add mouse click-to-focus and mouse-driven context menu work
+
+Do not jump ahead to the final desktop vision before key visibility and nav are proven.
+
+
+CURRENT USER GOAL
+
+The user wants Wraith to behave like a real ASCII desktop runtime, but with
+TPMOS-style project standards and GL-OS-style behavior:
+
+- one honest desktop truth
+- keyboard nav that visibly moves selection
+- project windows that open only when selected
+- mouse later, after keyboard/nav are stable
+
+The latest observed failure is simple and concrete:
+
+- the live frame shows a keyboard debug area
+- but it still shows `K:None`
+- even while `pieces/keyboard/history.txt` contains `KEY_PRESSED: 1003` and
+  `KEY_PRESSED: 1002`
+
+So the immediate bug is not project opening.
+The immediate bug is: the runtime is not surfacing the current key correctly.
+
+
+WHAT WAS OBSERVED LIVE
+
+On the live frame:
+
+- the terminal menu selector is visible
+- nav is still not moving the way TPMOS / GL-OS navigation does
+- the taskbar debug slot exists
+- but it shows `K:None`
+
+The live state files showed:
+
+- `projects/wraith-pm/session/state.txt` still had no `current_key=...`
+- `projects/wraith-pm/session/current_frame.objects.pdl` showed `taskbar_key`
+  as `K:None`
+- `pieces/keyboard/history.txt` did contain live arrow keys and Enter
+
+That means:
+
+- keyboard input exists
+- frame composition exists
+- but the key debug is not being carried through reliably in the live path
+
+
+WHAT HAS ALREADY BEEN CHANGED
+
+These files were already edited in this workspace:
+
+- `1.TPMOS_c_+rmmp.0102.0018/projects/wraith-pm/ops/wraith_parser.c`
+- `1.TPMOS_c_+rmmp.0102.0018/projects/wraith-pm/ops/wraith_composer.c`
+- `1.TPMOS_c_+rmmp.0102.0018/projects/wraith-pm/manager/wraith-pm_manager.c`
+
+Current key-related changes:
+
+- parser writes `current_key` into Wraith session state when it sees a key
+- composer reads `current_key` and draws `K:<value>` in the taskbar
+- manager now also watches `pieces/keyboard/history.txt` and writes raw key
+  labels to `current_key`
+
+That said, the live run still shows `K:None`, so the next agent should not
+assume the pipeline is finished.
+
+
+THE CORRECT ORDER OF WORK
+
+Phase A: Key Visibility
+
+Goal:
+- show the exact last key pressed in the live frame
+- include arrows, Enter, and ordinary keys
+- make the visible key label update immediately and reliably
+
+What to verify:
+- pressing down arrow changes the frame label to `K:DOWN`
+- pressing up arrow changes the frame label to `K:UP`
+- pressing Enter changes the frame label to `K:ENTER`
+- ordinary keys also show up
+
+Do not move on until this is true.
+
+Why this is first:
+- if we cannot see the key reliably, we cannot trust nav debugging
+- if we cannot trust nav debugging, we will keep guessing and breaking things
+
+
+Phase B: Nav Movement
+
+Goal:
+- prove arrow keys move the visible selector
+- prove the terminal menu behaves like the basic TPMOS / GL-OS nav model
+
+What to verify:
+- down arrow moves selection
+- up arrow moves selection
+- Enter activates the selected item
+- the visible selector and session state agree
+
+Do not add mouse work yet.
+
+
+Phase C: Mouse Later
+
+Goal:
+- after keyboard and nav are correct, add visible mouse click-to-focus
+- then add mouse-driven context menu actions
+
+What to verify later:
+- click-to-focus works
+- right-click opens a context menu
+- context menu uses `.pdl`-coded methods
+- mouse does not spam frames or steal ownership from keyboard/nav
+
+Mouse is explicitly later.
+Do not use mouse bugs to hide keyboard/nav failures.
+
+
+DOCS THE NEXT AGENT MUST READ FIRST
+
+Read these before touching code:
+
+1. `wraith-docs/history-archive/wraith-blueprint.txt`
+2. `wraith-docs/history-archive/2do-wraith.txt`
+3. `wraith-docs/history-archive/wraith-first-principles.txt`
+4. `wraith-docs/wraith-pitfalls/wraith-pitfall.txt`
+5. `wraith-docs/wraith-pitfalls/desk-j5-start.txt`
+6. `wraith-docs/history-archive/CURRENT_STATE.md`
+
+The pitfall notes matter more than clever ideas.
+They explain exactly how the last agent drifted:
+
+- split-brain UI
+- fixing the final vision before proving the first step
+- frame spam
+- path mismatches
+- recursive parser confusion
+
+
+HARD ASSUMPTIONS TO KEEP
+
+These are the assumptions the next agent should not break:
+
+- Wraith is a desktop emulator, not a loose app demo
+- Wraith should stay ASCII and layout-first
+- Wraith should keep TPMOS-style project standards
+- `.wrai` is the Wraith-native layout suffix
+- `wraith_parser` should own live input semantics
+- manager should own canonical state and lifecycle
+- composer should only render the current truth
+- do not recreate recursive parser behavior inside the manager
+- do not use mouse as the proof of correctness
+
+
+WHAT NOT TO DO
+
+Do not:
+
+- chase project loading or fancy launcher behavior before key visibility works
+- add more special cases for `game-map` or `blank-proj` while the key label is
+  still broken
+- change the whole final desktop design before proving the first step
+- treat internal logs as proof
+- treat metadata alone as proof
+- assume the live runtime is correct just because the files look correct
+- ignore the existing pitfall notes
+
+
+SUGGESTED NEXT DEBUG SEQUENCE
+
+1. Confirm the live runtime is reading the right checkout root.
+2. Confirm `pieces/keyboard/history.txt` is being tailed by the active runtime.
+3. Confirm `current_key` is actually written to `projects/wraith-pm/session/state.txt`.
+4. Confirm the composer reads that field and places it in the visible frame.
+5. If `K:None` remains, trace where that value is getting clobbered.
+6. Only after key visibility works, test whether nav movement starts working.
+
+
+EXTRA NOTES
+
+- The user already rejected attempts to "fix the final vision" first.
+- The user wants the first concrete proof to be keyboard visibility, then nav.
+- The next agent should keep the work tight and measurable.
+
+If you have to choose between a broad refactor and a narrow proof, choose the
+narrow proof.
+
+END HANDOFF
