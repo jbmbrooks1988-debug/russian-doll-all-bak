@@ -1,0 +1,235 @@
+WRAITH J8 RESTORE FAILURE - FIRST PRINCIPLES CORRECTION
+Date: 2026-06-08
+
+Context
+- User reran the visible Wraith UX path after the semantic-command patch.
+- Flow still failed:
+  1. Launch Wraith from loader.
+  2. Enter opens Terminal #1.
+  3. `3` + Enter minimizes Terminal #1.
+  4. `2` focuses the visible taskbar restore button.
+  5. Enter does not restore.
+
+What the new evidence proves
+- The manager-side semantic command handler works in an isolated manager test.
+- The live UX path did not send a restore command to the manager.
+- At 03:20, manager log shows:
+  - `Input received: 50`
+  - `State updated: idx=2, key=2`
+  - `Input received: 13`
+  - no `Command received: SET_ACTIVE:6`
+  - no `Command received: DESKTOP_ACTION:restore_terminal`
+- `projects/wraith-alpha/history.txt` shows only one new delegated command from the UX run:
+  - `COMMAND: SET_ACTIVE:3`
+- It does not show a restore command after the visible taskbar `2` + Enter attempt.
+
+Corrected diagnosis
+- The real first-principles problem is not simply "manager command inbox missing".
+- The real first-principles problem is split ownership of one user action:
+  1. The parser owns visible navigation and button activation.
+  2. The manager also consumes the same raw keyboard stream and mutates `active_gui_index`.
+  3. The manager projects `active_gui_index` back into state.
+  4. The parser reloads that state and may reinitialize focus from manager-owned index data.
+  5. The parser is the only component that can turn a focused button's `onClick` into a delegated `COMMAND:`.
+- Therefore, if parser activation does not fire, the manager can still see raw `2` and raw Enter, but it has no semantic knowledge that visible item `2` meant "restore Terminal #1".
+
+Most likely immediate reason the 03:20 UX test still failed
+- The manager process was restarted when Wraith launched, so it picked up the rebuilt manager binary.
+- The parser process is part of the already-running stack and may not have been restarted after `wraith_parser_alpha.+x` was rebuilt.
+- If the running parser is stale:
+  - it still delegates old `SET_ACTIVE:` commands, explaining `COMMAND: SET_ACTIVE:3` for minimize
+  - it does not recognize the new `DESKTOP_ACTION:` prefix in `handle_desktop_action_command()`
+  - it falls through to `send_command()`
+  - `send_command()` also has no `DESKTOP_ACTION:` handling in the stale process
+  - result: visible restore Enter sends no command at all
+- This exactly matches the manager log and project history.
+
+Secondary design problem still present
+- Even with a fresh parser, raw keyboard forwarding remains dangerous:
+  - pressing visible `2` updates manager `g_active_gui_index` to 2
+  - raw Enter then executes manager action 2, which is no-op
+  - if parser activation and manager raw handling race, the wrong path can still produce confusing frames
+- Working implementations avoid this by making parser-visible dynamic items emit semantic commands and by keeping raw numeric keys as a fallback, not as the main contract for dynamic UI actions.
+
+What my previous patch got right
+- Manager now can consume project history commands.
+- Manager now understands semantic launch/minimize/restore commands.
+- Manager-level simulation proved:
+  - `DESKTOP_ACTION:launch_terminal`
+  - `DESKTOP_ACTION:minimize_terminal`
+  - `DESKTOP_ACTION:restore_terminal`
+  are processed correctly when they reach the manager.
+
+What my previous patch missed
+- I treated recompiling the parser binary as sufficient.
+- In this stack, recompiling `wraith_parser_alpha.+x` does not update an already-running parser process.
+- UX validation must include a stack/parser restart or must prove the live parser process contains the new dispatch logic.
+
+Working-standard comparison
+- `gem-dev` dynamic menu standard:
+  - parser owns visible menu activation
+  - dynamic options emit semantic commands
+  - manager watches the same command stream
+  - process freshness matters because parser dispatch is code, not data
+- `fuzz-op` standard:
+  - explicit interact history path and manager reader agree
+  - dynamic command generation is not useful unless the live dispatcher and live manager both understand it
+- `+-demo` standard:
+  - parser-native visible numbering is not stable external API
+  - visible index 2 should never need to equal manager action 2
+
+Correct next test before another code edit
+1. Restart the full runtime stack so the parser process definitely uses the rebuilt parser binary.
+2. Launch Wraith again.
+3. Repeat:
+   - Enter
+   - `3`
+   - Enter
+   - `2`
+   - Enter
+4. Inspect:
+   - `projects/wraith-alpha/history.txt`
+   - `projects/wraith-alpha/manager/alpha_manager.log`
+   - `projects/wraith-alpha/session/alpha_state.txt`
+5. Expected if process freshness was the blocker:
+   - project history includes `COMMAND: DESKTOP_ACTION:restore_terminal`
+   - manager log includes `Command received: DESKTOP_ACTION:restore_terminal`
+   - state flips open/minimized/body_visible to true/false/true respectively
+
+Correct next code idea if restart still fails
+- Remove dynamic toolbar reliance on parser code freshness by adding a compatibility command path:
+  1. Keep semantic `DESKTOP_ACTION:` support.
+  2. Keep `SET_ACTIVE:6` compatibility for old parser/taskbar markup.
+  3. Fix raw keyboard fallback in the manager:
+     - if window is minimized and `g_active_gui_index == 2` on Enter, restore
+     - if window is minimized and `g_active_gui_index == 1` on Enter, launcher behavior
+- This fallback maps the minimized desktop's visible topology explicitly instead of pretending visible indices are globally stable.
+
+Applied follow-up after this note
+- Changed generated taskbar markup back to parser-compatible `SET_ACTIVE:5` and `SET_ACTIVE:6`.
+- Kept semantic `DESKTOP_ACTION:` support in parser/manager for future full-stack restarts and standardization.
+- Added manager fallback: when minimized, `execute_action(2)` restores via `execute_action(6)`.
+- Reason:
+  - the live parser already knows `SET_ACTIVE:`
+  - the manager now tails `projects/wraith-alpha/history.txt`
+  - raw keyboard fallback now matches the minimized visible topology
+
+New runtime evidence: 03:26 sequence
+- First restore attempt in the new run succeeded.
+- Evidence from manager log:
+  - `03:26:11` minimize happened
+  - `03:26:12` raw `50` set manager index to `2`
+  - `03:26:12` raw `13` triggered restore
+  - `03:26:12` manager logged `Restore requested: reopening Terminal #1 from toolbar`
+- After that, parser also emitted `COMMAND: SET_ACTIVE:6`, but the restore had already succeeded from the raw-key fallback.
+
+Why the second attempt failed
+- The second attempt did not fail because restore logic was broken.
+- It failed because the second restore action was never actually executed.
+- Evidence:
+  - after the second minimize at `03:26:14`, manager log shows only:
+    - `Input received: 50`
+    - `State updated: idx=2, key=2`
+  - there is no later `Input received: 13`
+  - there is no `Command received: SET_ACTIVE:6`
+- Final projected state confirms the session ended still minimized:
+  - `desktop_window_1_open=false`
+  - `desktop_window_1_minimized=true`
+  - `active_gui_index=2`
+
+What this means
+- The second restore did not "break again"; the action was not delivered.
+- The frame paste itself is consistent with this:
+  - the second cycle shows key `50`
+  - but no later frame shows key `13` for the restore attempt
+
+Deeper consistency problem still active
+- Desktop chrome actions are still being processed twice on minimize:
+  - once from raw keyboard handling
+  - once from parser-delegated `SET_ACTIVE:3`
+- This is visible in the log:
+  - raw Enter minimizes
+  - then `Command received: SET_ACTIVE:3` minimizes again immediately after
+- That duplicate ownership is the real durability problem.
+- Even when it does not break correctness, it creates racey frame sequences and makes testing unreliable.
+
+Stronger next principle
+- One user action should have one execution path.
+- For Wraith desktop chrome, that path should be either:
+  - parser activation -> delegated command -> manager semantic action
+  or
+  - raw keyboard -> manager action
+- Not both.
+
+Practical next fix for true consistency
+- Suppress duplicate raw-manager execution for desktop chrome when the parser is already delegating the same action.
+- Or, more directly:
+  - keep raw digits updating manager focus state
+  - but stop using raw Enter to execute desktop chrome actions when parser-visible buttons are in control
+  - let parser Enter activation be the only action trigger for titlebar/taskbar buttons
+- That is the clean way to make repeated minimize/restore cycles stable.
+
+Applied consistency fix
+- Manager still consumes raw digits/arrows to keep `active_gui_index` projected into Wraith state.
+- Manager no longer executes desktop chrome actions on raw Enter.
+- Enter for titlebar/taskbar buttons is now parser-owned only:
+  - parser focus -> parser button activation -> delegated `COMMAND:` -> manager action
+- This removes the duplicate minimize/restore path that previously came from:
+  - raw keyboard Enter in manager
+  - followed by parser-delegated `SET_ACTIVE:*`
+
+New root cause from 03:31 evidence
+- At `03:31:28`, manager log shows minimize succeeded:
+  - `Command received: SET_ACTIVE:3`
+  - `Minimize requested: moving Terminal #1 to toolbar`
+- But the very next rendered frame showed only `[Terminal]` in the taskbar, not `[Terminal][Terminal #1]`.
+- Current state files prove manager projection is actually correct:
+  - `alpha_state.txt` contains `desktop_toolbar_markup=<button ... SET_ACTIVE:5 /><button ... SET_ACTIVE:6 />`
+  - `desktop_ui_state.txt` contains the same two-button toolbar markup
+- Therefore the missing restore button is a parser refresh bug, not a manager state bug.
+
+Specific parser bug
+- The parser main loop does not watch `projects/wraith-alpha/session/alpha_state.txt`.
+- It reparses state-driven UI only when `pieces/apps/player_app/state_changed.txt` grows.
+- Wraith manager updates:
+  - `projects/wraith-alpha/session/alpha_state.txt`
+  - `projects/wraith-alpha/session/desktop_ui_state.txt`
+  - and the frame marker
+- But it does not update `pieces/apps/player_app/state_changed.txt`.
+- Result:
+  - parser can render a fresh frame pulse using stale parsed elements
+  - variables may reload, but `${desktop_toolbar_markup}` does not become a new button tree unless a full reparse happens
+  - that is why the taskbar can visually omit `Terminal #1` even though the state files already contain it
+
+Correct TPMOS-standard fix
+- Keep `pieces/display/frame_changed.txt` as the only runtime render trigger.
+- Do not introduce a Wraith-specific side marker.
+- Instead, during `compose_frame()`, the parser must detect that Wraith desktop state changed and re-run `parse_chtm()` before rendering.
+- The state signature must include the values that affect visible chrome, especially:
+  - `active_gui_index`
+  - `desktop_window_count`
+  - `desktop_window_1_open`
+  - `desktop_window_1_minimized`
+  - `desktop_window_1_title`
+  - `desktop_focused_window_title`
+  - `desktop_toolbar_markup`
+- This preserves the TPMOS marker discipline while ensuring toolbar/titlebar markup updates are not lost when only Wraith desktop state changes.
+
+Current Wraith standard for toolbar membership
+- Open window:
+  - titlebar visible
+  - restore target NOT present in toolbar
+- Minimized window:
+  - titlebar hidden
+  - restore target present in toolbar
+- For the current single-window Wraith build, this is simplest and most reliable when encoded directly in the layout:
+  - launcher button always present
+  - restore button visibility driven by `${desktop_window_1_minimized_visible}`
+  - restore label driven by `${desktop_window_1_restore_title}`
+- That is more stable than injecting a dynamic toolbar button tree from manager state for a one-window desktop.
+
+Principle to preserve
+- There must be exactly one stable API for a desktop action.
+- Parser-visible numbers are presentation state.
+- Manager actions need semantic identifiers or an explicit mode-aware visible-index mapper.
+- Rebuilding binaries is not a runtime update unless the owning process is restarted.
