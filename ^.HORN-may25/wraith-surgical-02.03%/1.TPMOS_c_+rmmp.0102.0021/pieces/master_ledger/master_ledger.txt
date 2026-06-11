@@ -1,0 +1,84 @@
+[2026-06-11 01:30:30] FrameRendered: at 2026-06-11 01:30:30 | Source: renderer
+[2026-06-11 01:30:30] FrameRendered: at 2026-06-11 01:30:30 | Source: renderer
+[2026-06-11 01:30:31] FrameRendered: at 2026-06-11 01:30:31 | Source: renderer
+[2026-06-11 01:30:31] FrameRendered: at 2026-06-11 01:30:31 | Source: renderer
+[2026-06-11 01:30:31] FrameRendered: at 2026-06-11 01:30:31 | Source: renderer
+[2026-06-11 01:30:32] FrameRendered: at 2026-06-11 01:30:32 | Source: renderer
+[2026-06-11 01:30:32] FrameRendered: at 2026-06-11 01:30:32 | Source: renderer
+[2026-06-11 01:30:32] FrameRendered: at 2026-06-11 01:30:32 | Source: renderer
+[2026-06-11 01:30:36] FrameRendered: at 2026-06-11 01:30:36 | Source: renderer
+[2026-06-11 01:30:37] FrameRendered: at 2026-06-11 01:30:37 | Source: renderer
+[2026-06-11 01:30:37] FrameRendered: at 2026-06-11 01:30:37 | Source: renderer
+[2026-06-11 01:30:37] FrameRendered: at 2026-06-11 01:30:37 | Source: renderer
+[2026-06-11 01:30:38] FrameRendered: at 2026-06-11 01:30:38 | Source: renderer
+[2026-06-11 01:30:39] FrameRendered: at 2026-06-11 01:30:39 | Source: renderer
+[1781166639] EventFire: Scan (6,8,0): Wall (Impassable) | Source: scan_op
+[2026-06-11 01:30:39] FrameRendered: at 2026-06-11 01:30:39 | Source: renderer
+[2026-06-11 01:30:39] FrameRendered: at 2026-06-11 01:30:39 | Source: renderer
+[2026-06-11 01:30:39] FrameRendered: at 2026-06-11 01:30:39 | Source: renderer
+[2026-06-11 01:30:39] FrameRendered: at 2026-06-11 01:30:39 | Source: renderer
+[2026-06-11 01:30:40] FrameRendered: at 2026-06-11 01:30:40 | Source: renderer
+[2026-06-11 01:30:40] FrameRendered: at 2026-06-11 01:30:40 | Source: renderer
+[2026-06-11 01:30:41] FrameRendered: at 2026-06-11 01:30:41 | Source: renderer
+[2026-06-11 01:30:41] FrameRendered: at 2026-06-11 01:30:41 | Source: renderer
+[2026-06-11 01:30:41] FrameRendered: at 2026-06-11 01:30:41 | Source: renderer
+[2026-06-11 01:30:41] FrameRendered: at 2026-06-11 01:30:41 | Source: renderer
+[2026-06-11 01:30:42] FrameRendered: at 2026-06-11 01:30:42 | Source: renderer
+[2026-06-11 01:30:42] FrameRendered: at 2026-06-11 01:30:42 | Source: renderer
+[2026-06-11 01:30:42] FrameRendered: at 2026-06-11 01:30:42 | Source: renderer
+[2026-06-11 01:30:44] FrameRendered: at 2026-06-11 01:30:44 | Source: renderer
+[2026-06-11 01:30:44] FrameRendered: at 2026-06-11 01:30:44 | Source: renderer
+[1781166644] EntityMoved: xlector | from (6,8) to (5,8)
+[2026-06-11 01:30:44] FrameRendered: at 2026-06-11 01:30:44 | Source: renderer
+[2026-06-11 01:30:44] FrameRendered: at 2026-06-11 01:30:44 | Source: renderer
+[2026-06-11 01:30:44] FrameRendered: at 2026-06-11 01:30:44 | Source: renderer
+[2026-06-11 01:30:45] FrameRendered: at 2026-06-11 01:30:45 | Source: renderer
+[1781166645] EntityMoved: xlector | from (5,8) to (4,8)
+[2026-06-11 01:30:45] FrameRendered: at 2026-06-11 01:30:45 | Source: renderer
+[2026-06-11 01:30:45] FrameRendered: at 2026-06-11 01:30:45 | Source: renderer
+[2026-06-11 01:30:48] FrameRendered: at 2026-06-11 01:30:48 | Source: renderer
+[2026-06-11 01:30:48] FrameRendered: at 2026-06-11 01:30:48 | Source: renderer
+[2026-06-11 01:30:48] FrameRendered: at 2026-06-11 01:30:48 | Source: renderer
+[2026-06-11 01:30:49] FrameRendered: at 2026-06-11 01:30:49 | Source: renderer
+[1781166649] EntityMoved: xlector | from (4,8) to (5,8)
+[2026-06-11 01:30:49] FrameRendered: at 2026-06-11 01:30:49 | Source: renderer
+[2026-06-11 01:30:49] FrameRendered: at 2026-06-11 01:30:49 | Source: renderer
+[1781166650] EntityMoved: xlector | from (5,8) to (6,8)
+[2026-06-11 01:30:50] FrameRendered: at 2026-06-11 01:30:50 | Source: renderer
+[2026-06-11 01:30:50] FrameRendered: at 2026-06-11 01:30:50 | Source: renderer
+[2026-06-11 01:30:50] FrameRendered: at 2026-06-11 01:30:50 | Source: renderer
+[2026-06-11 01:30:50] FrameRendered: at 2026-06-11 01:30:50 | Source: renderer
+[1781166650] EntityMoved: xlector | from (6,8) to (7,8)
+[2026-06-11 01:30:50] FrameRendered: at 2026-06-11 01:30:50 | Source: renderer
+[2026-06-11 01:30:50] FrameRendered: at 2026-06-11 01:30:50 | Source: renderer
+[1781166651] EntityMoved: xlector | from (7,8) to (7,7)
+[2026-06-11 01:30:51] FrameRendered: at 2026-06-11 01:30:51 | Source: renderer
+[2026-06-11 01:30:51] FrameRendered: at 2026-06-11 01:30:51 | Source: renderer
+[2026-06-11 01:30:51] FrameRendered: at 2026-06-11 01:30:51 | Source: renderer
+[1781166652] EntityMoved: xlector | from (7,7) to (8,7)
+[2026-06-11 01:30:52] FrameRendered: at 2026-06-11 01:30:52 | Source: renderer
+[2026-06-11 01:30:52] FrameRendered: at 2026-06-11 01:30:52 | Source: renderer
+[2026-06-11 01:30:52] FrameRendered: at 2026-06-11 01:30:52 | Source: renderer
+[2026-06-11 01:30:52] FrameRendered: at 2026-06-11 01:30:52 | Source: renderer
+[2026-06-11 01:30:52] FrameRendered: at 2026-06-11 01:30:52 | Source: renderer
+[1781166652] EntityMoved: xlector | from (8,7) to (9,7)
+[2026-06-11 01:30:52] FrameRendered: at 2026-06-11 01:30:52 | Source: renderer
+[2026-06-11 01:30:52] FrameRendered: at 2026-06-11 01:30:52 | Source: renderer
+[2026-06-11 01:30:52] FrameRendered: at 2026-06-11 01:30:52 | Source: renderer
+[2026-06-11 01:30:53] FrameRendered: at 2026-06-11 01:30:53 | Source: renderer
+[1781166653] EntityMoved: xlector | from (9,7) to (9,6)
+[2026-06-11 01:30:53] FrameRendered: at 2026-06-11 01:30:53 | Source: renderer
+[2026-06-11 01:30:53] FrameRendered: at 2026-06-11 01:30:53 | Source: renderer
+[2026-06-11 01:30:54] FrameRendered: at 2026-06-11 01:30:54 | Source: renderer
+[1781166654] EntityMoved: xlector | from (9,6) to (9,5)
+[2026-06-11 01:30:54] FrameRendered: at 2026-06-11 01:30:54 | Source: renderer
+[2026-06-11 01:30:55] FrameRendered: at 2026-06-11 01:30:55 | Source: renderer
+[2026-06-11 01:30:55] FrameRendered: at 2026-06-11 01:30:55 | Source: renderer
+[1781166655] EntityMoved: xlector | from (9,5) to (9,4)
+[2026-06-11 01:30:55] FrameRendered: at 2026-06-11 01:30:55 | Source: renderer
+[2026-06-11 01:30:55] FrameRendered: at 2026-06-11 01:30:55 | Source: renderer
+[2026-06-11 01:30:56] FrameRendered: at 2026-06-11 01:30:56 | Source: renderer
+[2026-06-11 01:30:56] FrameRendered: at 2026-06-11 01:30:56 | Source: renderer
+[2026-06-11 01:30:57] FrameRendered: at 2026-06-11 01:30:57 | Source: renderer
+[2026-06-11 01:30:57] FrameRendered: at 2026-06-11 01:30:57 | Source: renderer
+[2026-06-11 01:30:57] FrameRendered: at 2026-06-11 01:30:57 | Source: renderer
