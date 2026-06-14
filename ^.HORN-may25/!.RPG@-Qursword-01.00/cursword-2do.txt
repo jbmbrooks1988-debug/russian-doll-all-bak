@@ -1,0 +1,50 @@
+# ⚔️ RPGAtlas: CURSWORD Master Cursor Roadmap
+
+This document outlines the creation of the powerful CURSWORD entity for debugging and advanced editing.
+
+---
+
+## 🛠️ Phases of Implementation
+
+### Phase 1: The CURSWORD Entity
+*   **Goal**: Create a special singleton event that can exist on any map.
+*   **Tasks**:
+    *   [ ] Define `Game_Cursword` class (extending `Game_Character`).
+    *   [ ] Implement "Ghost Move" (ignore passability, high speed).
+    *   [ ] Add a unique visual sprite (the legendary Sword Cursor).
+    *   [ ] Map a hotkey (e.g., F10) to summon/dismiss CURSWORD at the mouse position.
+
+### Phase 2: Character Possession
+*   **Goal**: Allow the developer to take control of any entity.
+*   **Tasks**:
+    *   [ ] Implement `possess(target)` method.
+    *   [ ] Re-route input handlers in `Scene_Map` from the player to the possessed target.
+    *   [ ] Add visual indicator (glow) on the currently possessed character.
+    *   [ ] Implement "Unpossess" to return control to CURSWORD.
+
+### Phase 3: Visual Editor Mode
+*   **Goal**: Use CURSWORD as a physical tool in the Editor.
+*   **Tasks**:
+    *   [ ] Implement "Pick Up" logic: Store an event's data in CURSWORD's internal buffer.
+    *   [ ] Implement "Place" logic: Create a new `Game_Event` from the stored buffer at CURSWORD's position.
+    *   [ ] Add "Multi-Select" marquee controlled by CURSWORD movement.
+
+### Phase 4: Combat Debugging
+*   **Goal**: Force battles or modify battle state on the fly.
+*   **Tasks**:
+    *   [ ] Add ability to "Smite" (delete) events via CURSWORD in play mode.
+    *   [ ] Implement "Force Battle" command when CURSWORD overlaps an NPC.
+    *   [ ] Add a quick-stat overlay that shows when CURSWORD hovers over an Actor/Enemy.
+
+---
+
+## 📈 Key Performance Indicators (KPIs)
+
+1.  **Zero Leakage**: CURSWORD must be completely inaccessible/invisible in standard "Published" builds.
+2.  **Input Stability**: Switching control between Player, CURSWORD, and Possessed targets must never cause stuck keys or dead inputs.
+3.  **Visual Clarity**: The cursor position must align perfectly with the map grid across all zoom levels and perspective modes.
+4.  **Editor Fluidity**: Selecting and moving events via CURSWORD must feel as fast or faster than the standard mouse-drag interface.
+
+---
+
+*“The CURSWORD cuts through complexity.”* ⚔️

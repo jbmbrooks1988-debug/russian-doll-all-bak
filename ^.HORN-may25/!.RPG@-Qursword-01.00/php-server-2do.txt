@@ -1,0 +1,40 @@
+# 🐘 RPGAtlas: PHP Server Backend Roadmap
+
+This document outlines the implementation of an optional PHP backend for robust project data persistence.
+
+---
+
+## 🛠️ Phases of Implementation
+
+### Phase 1: The PHP API (`api.php`)
+*   **Goal**: Create a lightweight script to handle JSON read/write operations.
+*   **Tasks**:
+    *   [ ] Implement `POST` handler for saving project JSON to the server disk.
+    *   [ ] Implement `GET` handler for listing available projects and loading them.
+    *   [ ] Add security checks (e.g., restricted file extensions, directory traversal prevention).
+    *   [ ] Implement basic backup logic (rename `project.json` to `project.json.bak` before overwrite).
+
+### Phase 2: Editor Integration
+*   **Goal**: Allow the Editor to talk to the PHP backend.
+*   **Tasks**:
+    *   [ ] Add "Storage Mode" setting in the Database ▸ System tab (Local vs. Server).
+    *   [ ] Update `js/editor.js` to use `fetch()` calls to `api.php` when in Server Mode.
+    *   [ ] Implement an "Auto-Save to Server" toggle.
+
+### Phase 3: Project Browser
+*   **Goal**: A visual way to manage multiple projects on one server.
+*   **Tasks**:
+    *   [ ] Create a modal in the Editor for "Open from Server" with a list of filenames.
+    *   [ ] Implement "Delete from Server" and "Rename on Server" actions.
+
+---
+
+## 📈 Key Performance Indicators (KPIs)
+
+1.  **Zero-Configuration Fallback**: The engine must still work perfectly via `localStorage` if no PHP server is detected.
+2.  **Atomic Writes**: Project files must never be corrupted during a save (must verify `write` success before confirming to UI).
+3.  **Cross-Origin Safety**: Ensure proper CORS headers are set if the editor and API are hosted on different subdomains.
+
+---
+
+*“Data on disk is data you keep.”* 🐘

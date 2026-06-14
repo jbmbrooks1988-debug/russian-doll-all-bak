@@ -1,0 +1,58 @@
+# 🧊 RPGAtlas: 3D Z-Levels & Advanced Viewing Roadmap
+
+This document outlines the implementation of verticality, 3D perspective, and dynamic camera controls.
+
+---
+
+## 🛠️ Phases of Implementation
+
+### Phase 1: Visual Z (Depth Sorting)
+*   **Goal**: Allow tiles and events to have a `z` property that affects drawing order.
+*   **Tasks**:
+    *   [ ] Add `z` property (default 0) to Map layer schema and Event objects.
+    *   [ ] Update `Game_Map.prototype.tileAt` to handle Z-aware lookups.
+    *   [ ] Modify renderer to sort all drawables by `y + (z * TILE_HEIGHT)`.
+    *   [ ] Implement basic "Visual Bridge" where player walks "over" tiles on lower Z.
+
+### Phase 2: Functional Z (Collision & Movement)
+*   **Goal**: Enable actual multi-level traversal and jumping.
+*   **Tasks**:
+    *   [ ] Implement `Game_Character.prototype.z` and `jump(z)` method.
+    *   [ ] Update `isPassable` to check if `character.z === tile.z`.
+    *   [ ] Add "Z-Stairs" or ramps that transition characters between Z-levels.
+    *   [ ] Implement fall logic (if walking off a higher Z onto an empty cell).
+
+### Phase 3: 3D Perspective & Toggles
+*   **Goal**: Switch between 2D overhead and a projected 3D view.
+*   **Tasks**:
+    *   [ ] Implement a Mode Toggle (2D/3D) in the Editor and Player.
+    *   [ ] Create a 3D Projection renderer (Mode 7 style or basic Raycasting/CSS3D).
+    *   [ ] Ensure `js/assets.js` can generate skewed/perspective versions of tiles.
+
+### Phase 4: Dynamic Camera & POV
+*   **Goal**: Add First-Person, Third-Person, and Free-Cam modes.
+*   **Tasks**:
+    *   [ ] Implement `CameraManager` to track `rotation`, `pitch`, and `fov`.
+    *   [ ] Add keybinds for camera rotation (e.g., Q/E).
+    *   [ ] Implement "First-Person" view: camera at `player.x, player.y, player.z + headHeight`.
+    *   [ ] Implement "Third-Person" view: camera follows player with a spring-arm.
+
+### Phase 5: Mini-Map System
+*   **Goal**: A UI overlay for navigation.
+*   **Tasks**:
+    *   [ ] Create a `Game_Minimap` class.
+    *   [ ] Render a simplified version of the current map layers to a small top-right canvas.
+    *   [ ] Draw "Blips" for the player and active events.
+
+---
+
+## 📈 Key Performance Indicators (KPIs)
+
+1.  **Occlusion Correctness**: Characters must never appear "behind" a tile that is visually below them.
+2.  **Passability Parity**: Z-axis collision must be as reliable as standard 2D grid collision.
+3.  **Perspective Smoothness**: Toggling between 2D and 3D must happen in < 100ms without state loss.
+4.  **Low-End Performance**: Mini-map and 3D projection must not drop the frame rate below 30FPS on target hardware.
+
+---
+
+*“Depth adds dimension to the story.”* 🧊
