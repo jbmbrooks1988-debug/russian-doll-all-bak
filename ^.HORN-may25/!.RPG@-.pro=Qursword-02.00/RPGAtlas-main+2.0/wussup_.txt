@@ -1,7 +1,0 @@
-
-
-1. reado prototypes (from original rpg-maker-mv-og-mt)
-
-2. php not w/e .js node  (only to read / write data to .json and as server) leave all normal functional js in browser ofc. 
-
-3. 3d z levels

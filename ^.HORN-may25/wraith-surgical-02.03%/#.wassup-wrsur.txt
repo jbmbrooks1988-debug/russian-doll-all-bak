@@ -1,6 +1,0 @@
-
-
-gl-2-rgb reads any frame from debug/wraith? + metadata? and converts it using primatives .
-
-
-gl reads the primatives 

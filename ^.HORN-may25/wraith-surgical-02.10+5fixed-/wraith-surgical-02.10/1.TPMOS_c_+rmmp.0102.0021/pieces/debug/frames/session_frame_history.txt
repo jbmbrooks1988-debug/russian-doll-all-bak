@@ -1,0 +1,680 @@
+=== NEW SESSION at 2026-06-15 04:33:35 ===
+
+--- FRAME UPDATE at 2026-06-15 04:33:35 ---
+
+--- FRAME UPDATE at 2026-06-15 04:33:35 ---
++===========================================================+
+|                                                           |
+|           C H T P M + O S   C L I   v2.0                 |
+|                                                           |
+|  CHTPM+OS Main Menu                                      |
+|                                                           |
+|  [>] 1. [Project Loader]                             |
+|  [ ] 2. [App Store (Fondu)]                          |
+|  [ ] 3. [Status]  [ ] 4. [GL-OS]                                          |
+|  [ ] 5. [Process Monitor]                            |
+|  [ ] 6. [Toggle Frame History (Current: )]                                         |
+|  [ ] 7. [Help]                                            |
+|                                                           |
++===========================================================+
+|  Running Applications: None                               |
+|  System Time: 08:00:00 | Turn: 0 | Key: None |
++===========================================================+
+|                                                           |
+|  $ | [ ] 8. []                                                 |                                                 |
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-15 04:33:38 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [>] 1. [+-demo]                                        ║
+║  [ ] 2. [404-test]                                      ║
+║  [ ] 3. [agy-text-editor]                               ║
+║  [ ] 4. [ai-labs]                                       ║
+║  [ ] 5. [aow]                                           ║
+║  [ ] 6. [aow-2d]                                        ║
+║  [ ] 7. [bot-editor]                                    ║
+║  [ ] 8. [bots-sov]                                      ║
+║  [ ] 9. [chat-op]                                       ║
+║  [ ] 10. [checkers]                                      ║
+║  [ ] 11. [chtmgl-alpha]                                  ║
+║  [ ] 12. [chtmgl-beta]                                   ║
+║  [ ] 13. [cpp-llm]                                       ║
+║  [ ] 14. [cyoa-engine]                                   ║
+║  [ ] 15. [demo_1]                                        ║
+║  [ ] 16. [fuzz-op]                                       ║
+║  [ ] 17. [gem-api]                                       ║
+║  [ ] 18. [gem-dev]                                       ║
+║  [ ] 19. [gitlet]                                        ║
+║  [ ] 20. [gltpm-demo]                                    ║
+║  [ ] 21. [groq-ollama]                                   ║
+║  [ ] 22. [hangman]                                       ║
+║  [ ] 23. [lsr]                                           ║
+║  [ ] 24. [man-add]                                       ║
+║  [ ] 25. [man-ops]                                       ║
+║  [ ] 26. [man-pal]                                       ║
+║  [ ] 27. [media-editor]                                  ║
+║  [ ] 28. [mouse-test]                                    ║
+║  [ ] 29. [mp3-store]                                     ║
+║  [ ] 30. [op-ed]                                         ║
+║  [ ] 31. [op-ed-gl]                                      ║
+║  [ ] 32. [p2p-net]                                       ║
+║  [ ] 33. [piececraft-3d]                                 ║
+║  [ ] 34. [quiz-engine]                                   ║
+║  [ ] 35. [slop-ed-dev]                                   ║
+║  [ ] 36. [template]                                      ║
+║  [ ] 37. [test_fondu]                                    ║
+║  [ ] 38. [tsots-irc]                                     ║
+║  [ ] 39. [tsots-online]                                  ║
+║  [ ] 40. [user]                                          ║
+║  [ ] 41. [wraith-alpha]                                  ║
+║  [ ] 42. [wraith-pm]                                     ║
+║  [ ] 43. [xsr]                                           ║
+║  [ ] 44. [yahoo]                                         ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 45. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-15 04:33:38 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [>] 1. [+-demo]                                        ║
+║  [ ] 2. [404-test]                                      ║
+║  [ ] 3. [agy-text-editor]                               ║
+║  [ ] 4. [ai-labs]                                       ║
+║  [ ] 5. [aow]                                           ║
+║  [ ] 6. [aow-2d]                                        ║
+║  [ ] 7. [bot-editor]                                    ║
+║  [ ] 8. [bots-sov]                                      ║
+║  [ ] 9. [chat-op]                                       ║
+║  [ ] 10. [checkers]                                      ║
+║  [ ] 11. [chtmgl-alpha]                                  ║
+║  [ ] 12. [chtmgl-beta]                                   ║
+║  [ ] 13. [cpp-llm]                                       ║
+║  [ ] 14. [cyoa-engine]                                   ║
+║  [ ] 15. [demo_1]                                        ║
+║  [ ] 16. [fuzz-op]                                       ║
+║  [ ] 17. [gem-api]                                       ║
+║  [ ] 18. [gem-dev]                                       ║
+║  [ ] 19. [gitlet]                                        ║
+║  [ ] 20. [gltpm-demo]                                    ║
+║  [ ] 21. [groq-ollama]                                   ║
+║  [ ] 22. [hangman]                                       ║
+║  [ ] 23. [lsr]                                           ║
+║  [ ] 24. [man-add]                                       ║
+║  [ ] 25. [man-ops]                                       ║
+║  [ ] 26. [man-pal]                                       ║
+║  [ ] 27. [media-editor]                                  ║
+║  [ ] 28. [mouse-test]                                    ║
+║  [ ] 29. [mp3-store]                                     ║
+║  [ ] 30. [op-ed]                                         ║
+║  [ ] 31. [op-ed-gl]                                      ║
+║  [ ] 32. [p2p-net]                                       ║
+║  [ ] 33. [piececraft-3d]                                 ║
+║  [ ] 34. [quiz-engine]                                   ║
+║  [ ] 35. [slop-ed-dev]                                   ║
+║  [ ] 36. [template]                                      ║
+║  [ ] 37. [test_fondu]                                    ║
+║  [ ] 38. [tsots-irc]                                     ║
+║  [ ] 39. [tsots-online]                                  ║
+║  [ ] 40. [user]                                          ║
+║  [ ] 41. [wraith-alpha]                                  ║
+║  [ ] 42. [wraith-pm]                                     ║
+║  [ ] 43. [xsr]                                           ║
+║  [ ] 44. [yahoo]                                         ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 45. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-15 04:33:40 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [ ] 1. [+-demo]                                        ║
+║  [ ] 2. [404-test]                                      ║
+║  [ ] 3. [agy-text-editor]                               ║
+║  [>] 4. [ai-labs]                                       ║
+║  [ ] 5. [aow]                                           ║
+║  [ ] 6. [aow-2d]                                        ║
+║  [ ] 7. [bot-editor]                                    ║
+║  [ ] 8. [bots-sov]                                      ║
+║  [ ] 9. [chat-op]                                       ║
+║  [ ] 10. [checkers]                                      ║
+║  [ ] 11. [chtmgl-alpha]                                  ║
+║  [ ] 12. [chtmgl-beta]                                   ║
+║  [ ] 13. [cpp-llm]                                       ║
+║  [ ] 14. [cyoa-engine]                                   ║
+║  [ ] 15. [demo_1]                                        ║
+║  [ ] 16. [fuzz-op]                                       ║
+║  [ ] 17. [gem-api]                                       ║
+║  [ ] 18. [gem-dev]                                       ║
+║  [ ] 19. [gitlet]                                        ║
+║  [ ] 20. [gltpm-demo]                                    ║
+║  [ ] 21. [groq-ollama]                                   ║
+║  [ ] 22. [hangman]                                       ║
+║  [ ] 23. [lsr]                                           ║
+║  [ ] 24. [man-add]                                       ║
+║  [ ] 25. [man-ops]                                       ║
+║  [ ] 26. [man-pal]                                       ║
+║  [ ] 27. [media-editor]                                  ║
+║  [ ] 28. [mouse-test]                                    ║
+║  [ ] 29. [mp3-store]                                     ║
+║  [ ] 30. [op-ed]                                         ║
+║  [ ] 31. [op-ed-gl]                                      ║
+║  [ ] 32. [p2p-net]                                       ║
+║  [ ] 33. [piececraft-3d]                                 ║
+║  [ ] 34. [quiz-engine]                                   ║
+║  [ ] 35. [slop-ed-dev]                                   ║
+║  [ ] 36. [template]                                      ║
+║  [ ] 37. [test_fondu]                                    ║
+║  [ ] 38. [tsots-irc]                                     ║
+║  [ ] 39. [tsots-online]                                  ║
+║  [ ] 40. [user]                                          ║
+║  [ ] 41. [wraith-alpha]                                  ║
+║  [ ] 42. [wraith-pm]                                     ║
+║  [ ] 43. [xsr]                                           ║
+║  [ ] 44. [yahoo]                                         ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 45. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > 4_
+
+
+--- FRAME UPDATE at 2026-06-15 04:33:40 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [ ] 1. [+-demo]                                        ║
+║  [ ] 2. [404-test]                                      ║
+║  [ ] 3. [agy-text-editor]                               ║
+║  [ ] 4. [ai-labs]                                       ║
+║  [ ] 5. [aow]                                           ║
+║  [ ] 6. [aow-2d]                                        ║
+║  [ ] 7. [bot-editor]                                    ║
+║  [ ] 8. [bots-sov]                                      ║
+║  [ ] 9. [chat-op]                                       ║
+║  [ ] 10. [checkers]                                      ║
+║  [ ] 11. [chtmgl-alpha]                                  ║
+║  [ ] 12. [chtmgl-beta]                                   ║
+║  [ ] 13. [cpp-llm]                                       ║
+║  [ ] 14. [cyoa-engine]                                   ║
+║  [ ] 15. [demo_1]                                        ║
+║  [ ] 16. [fuzz-op]                                       ║
+║  [ ] 17. [gem-api]                                       ║
+║  [ ] 18. [gem-dev]                                       ║
+║  [ ] 19. [gitlet]                                        ║
+║  [ ] 20. [gltpm-demo]                                    ║
+║  [ ] 21. [groq-ollama]                                   ║
+║  [ ] 22. [hangman]                                       ║
+║  [ ] 23. [lsr]                                           ║
+║  [ ] 24. [man-add]                                       ║
+║  [ ] 25. [man-ops]                                       ║
+║  [ ] 26. [man-pal]                                       ║
+║  [ ] 27. [media-editor]                                  ║
+║  [ ] 28. [mouse-test]                                    ║
+║  [ ] 29. [mp3-store]                                     ║
+║  [ ] 30. [op-ed]                                         ║
+║  [ ] 31. [op-ed-gl]                                      ║
+║  [ ] 32. [p2p-net]                                       ║
+║  [ ] 33. [piececraft-3d]                                 ║
+║  [ ] 34. [quiz-engine]                                   ║
+║  [ ] 35. [slop-ed-dev]                                   ║
+║  [ ] 36. [template]                                      ║
+║  [ ] 37. [test_fondu]                                    ║
+║  [ ] 38. [tsots-irc]                                     ║
+║  [ ] 39. [tsots-online]                                  ║
+║  [ ] 40. [user]                                          ║
+║  [>] 41. [wraith-alpha]                                  ║
+║  [ ] 42. [wraith-pm]                                     ║
+║  [ ] 43. [xsr]                                           ║
+║  [ ] 44. [yahoo]                                         ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 45. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > 41_
+
+
+--- FRAME UPDATE at 2026-06-15 04:33:40 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+
+
+
+
+
+
+| [ TASKBAR ] [>] 1. [Terminal] |
++----------------------------------------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 18
+Focused Window: Desktop
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 1
+Manager Key:   0
+Manager Mouse: X:0 Y:0 B:-1
+Last Click:    X:-1 Y:-1
+
+[ PARSER BYPASS DEBUG ]
+RAW: [2026-06-15 04:33:40] KEY_PRESSED: 13
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-15 04:33:40 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+
+
+
+
+
+
+| [ TASKBAR ] [>] 1. [Terminal] |
++----------------------------------------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 18
+Focused Window: Desktop
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 1
+Manager Key:   0
+Manager Mouse: X:0 Y:0 B:-1
+Last Click:    X:-1 Y:-1
+
+[ PARSER BYPASS DEBUG ]
+RAW: [2026-06-15 04:33:40] KEY_PRESSED: 13
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-15 04:33:42 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+
+
+
+
+
+
+| [ TASKBAR ] [>] 1. [Terminal] |
++----------------------------------------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 18
+Focused Window: Desktop
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 1
+Manager Key:   0
+Manager Mouse: X:20 Y:13 B:35
+Last Click:    X:-1 Y:-1
+
+[ PARSER BYPASS DEBUG ]
+RAW: [2026-06-15 04:33:42] KEY_PRESSED: 13
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-15 04:33:42 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ Terminal #19 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  [ TERMINAL PROJECT ]                                                                        |
+| |                                                                                              |
+| |  (launch from dock to open another terminal instance)                                        |
+| |                                                                                              |
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ] [>] 5. [Terminal] |
++----------------------------------------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 19
+Focused Window: Terminal #19
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 1
+Manager Key:   0
+Manager Mouse: X:20 Y:13 B:35
+Last Click:    X:-1 Y:-1
+
+[ PARSER BYPASS DEBUG ]
+RAW: [2026-06-15 04:33:42] KEY_PRESSED: 13
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-15 04:33:44 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ Terminal #19 ]------------------------------------------[ ] 2. [o][>] 3. [-][ ] 4. [x]-+               |
+| |  [ TERMINAL PROJECT ]                                                                        |
+| |                                                                                              |
+| |  (launch from dock to open another terminal instance)                                        |
+| |                                                                                              |
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ] [ ] 5. [Terminal] |
++----------------------------------------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 19
+Focused Window: Terminal #19
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 1
+Manager Key:   0
+Manager Mouse: X:81 Y:12 B:35
+Last Click:    X:-1 Y:-1
+
+[ PARSER BYPASS DEBUG ]
+RAW: None
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-15 04:33:44 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ Terminal #19 ]------------------------------------------[ ] 2. [o][<] 3. [-][ ] 4. [x]-+               |
+| |  [ TERMINAL PROJECT ]                                                                        |
+| |                                                                                              |
+| |  (launch from dock to open another terminal instance)                                        |
+| |                                                                                              |
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ] [ ] 5. [Terminal] |
++----------------------------------------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 19
+Focused Window: Terminal #19
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 1
+Manager Key:   0
+Manager Mouse: X:81 Y:12 B:0
+Last Click:    X:81 Y:12
+
+[ PARSER BYPASS DEBUG ]
+RAW: None
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-15 04:33:45 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ Terminal #19 ]------------------------------------------[ ] 2. [o][<] 3. [-][ ] 4. [x]-+               |
+| |  [ TERMINAL PROJECT ]                                                                        |
+| |                                                                                              |
+| |  (launch from dock to open another terminal instance)                                        |
+| |                                                                                              |
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ] [ ] 5. [Terminal] |
++----------------------------------------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 19
+Focused Window: Terminal #19
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 1
+Manager Key:   0
+Manager Mouse: X:81 Y:12 B:0
+Last Click:    X:81 Y:12
+
+[ PARSER BYPASS DEBUG ]
+RAW: [2026-06-15 04:33:45] KEY_PRESSED: 13
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-15 04:33:45 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+                                                                                <
+
+
+
+
+
+| [ TASKBAR ] [ ] 1. [Terminal][ ] 2. [Terminal #19] |
++----------------------------------------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 19
+Focused Window: Desktop
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 1
+Manager Key:   0
+Manager Mouse: X:81 Y:12 B:0
+Last Click:    X:81 Y:12
+
+[ PARSER BYPASS DEBUG ]
+RAW: [2026-06-15 04:33:45] KEY_PRESSED: 13
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-15 04:33:48 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+
+
+
+
+
+
+| [ TASKBAR ] [ ] 1. [Terminal][ ] 2. [Terminal #19] |
++-------------------------------<--------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 19
+Focused Window: Desktop
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 1
+Manager Key:   0
+Manager Mouse: X:33 Y:19 B:0
+Last Click:    X:33 Y:19
+
+[ PARSER BYPASS DEBUG ]
+RAW: None
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-15 04:33:50 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+
+
+
+
+
+
+| [ TASKBAR ] [ ] 1. [Terminal][>] 2. [Terminal #19] |
++-------------------------------<--------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 19
+Focused Window: Desktop
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 1
+Manager Key:   0
+Manager Mouse: X:33 Y:18 B:35
+Last Click:    X:33 Y:19
+
+[ PARSER BYPASS DEBUG ]
+RAW: None
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-15 04:33:50 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+
+
+
+
+
+
+| [ TASKBAR ] [ ] 1. [Terminal][<] 2. [Terminal #19] |
++----------------------------------------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 19
+Focused Window: Desktop
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 1
+Manager Key:   0
+Manager Mouse: X:33 Y:18 B:0
+Last Click:    X:33 Y:18
+
+[ PARSER BYPASS DEBUG ]
+RAW: None
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-15 04:33:50 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ Terminal #19 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  [ TERMINAL PROJECT ]                                                                        |
+| |                                                                                              |
+| |  (launch from dock to open another terminal instance)                                        |
+| |                                                                                              |
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ] [ ] 5. [Terminal] <
++----------------------------------------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 19
+Focused Window: Terminal #19
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 1
+Manager Key:   0
+Manager Mouse: X:33 Y:18 B:0
+Last Click:    X:33 Y:18
+
+[ PARSER BYPASS DEBUG ]
+RAW: [2026-06-15 04:33:50] KEY_PRESSED: 13
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-15 04:33:50 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ Terminal #19 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  [ TERMINAL PROJECT ]                                                                        |
+| |                                                                                              |
+| |  (launch from dock to open another terminal instance)                                        |
+| |                                                                                              |
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ] [ ] 5. [Terminal] <
++----------------------------------------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 19
+Focused Window: Terminal #19
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 1
+Manager Key:   0
+Manager Mouse: X:33 Y:18 B:0
+Last Click:    X:33 Y:18
+
+[ PARSER BYPASS DEBUG ]
+RAW: [2026-06-15 04:33:50] KEY_PRESSED: 13
+
++=========================================================+
+Nav > _
+

@@ -1,0 +1,29 @@
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ Terminal #19 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  [ TERMINAL PROJECT ]                                                                        |
+| |                                                                                              |
+| |  (launch from dock to open another terminal instance)                                        |
+| |                                                                                              |
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ] [ ] 5. [Terminal] <
++----------------------------------------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 19
+Focused Window: Terminal #19
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 1
+Manager Key:   0
+Manager Mouse: X:33 Y:18 B:0
+Last Click:    X:33 Y:18
+
+[ PARSER BYPASS DEBUG ]
+RAW: [2026-06-15 04:33:50] KEY_PRESSED: 13
+
++=========================================================+
+Nav > _
