@@ -1,0 +1,36 @@
+# 🐞 Bug Report: Playtest Blank Screen & No Audio
+
+**Symptoms**:
+- The game launches to a blank screen.
+- Audio (music/sfx) is silent.
+- Likely stuck before reaching the Title scene.
+
+**Likely Root Cause**:
+The prototype refactor introduced a race condition or dependency issue in the engine's initialization sequence (`js/engine.js` -> `js/rpg_managers.js`).
+
+1. **Initialization Order**: The engine (`engine.js`) likely attempts to access `window.DATABASE` or `window.SESSION` before `DataManager.loadProject()` or `DataManager.setupNewGame()` has fully populated them.
+2. **Variable Hoisting/Scope**: The refactor involved moving state into `window` globals and local aliasing. If `window.DATABASE` or `window.SESSION` are undefined when referenced in the engine's scope, the `DOMContentLoaded` listener will crash before calling `loop()`.
+
+---
+
+## 🛠️ Debugging & Fix Instructions for Next Agent
+
+### 1. Verify Global Initialization
+Check `js/engine.js` within `window.addEventListener("DOMContentLoaded", ...)`:
+- Ensure `DataManager.loadProject()` is called **before** assigning `DATABASE = window.DATABASE`.
+- Add `console.log("DATABASE:", window.DATABASE);` right after assignment to verify it is populated.
+
+### 2. Check Module Dependencies
+Ensure `rpg_managers.js` (which creates `window.DATABASE` and `window.SESSION`) is loaded in both `index.html` and `play.html` **before** `engine.js`.
+
+### 3. Debug Loop Start
+- Verify if `loop()` is ever reached. Add a `console.log("Loop starting");` at the top of the `loop` function in `engine.js`.
+- If "Loop starting" is not in the console, the error is happening during the `loadProject` or `setupNewGame` calls.
+
+### 4. Audio Initialization
+- The `unlock` audio listener (at the end of `DOMContentLoaded`) depends on `Sfx` being ready.
+- If `Sfx` is not defined or `actx` (AudioContext) fails to initialize due to the crash, audio will not play. Fix the crash first; audio should follow.
+
+---
+
+*“The code is a bridge; we just need to ensure the spans are connected.”* 🐞

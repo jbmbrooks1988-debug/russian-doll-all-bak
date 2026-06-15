@@ -17,22 +17,17 @@ The core of RPGAtlas has just undergone a major **Prototype Refactor**.
 
 ---
 
-## 🚀 Immediate Priorities (Choose Your Adventure)
+## 🚀 Immediate Priorities
 
-### Path A: 3D Verticality (High Complexity)
-Start with `z-level-2do.txt`.
-*   **First Step**: Update the Map JSON schema to allow a `z` property on layers.
-*   **Momentum Tip**: The renderer in `js/engine.js` already supports multiple layers; you just need to factor `z` into the sort order.
+### 🚨 1. FIX CRITICAL PLAYTEST BUG
+- **Issue**: Blank screen and silent audio.
+- **Reference**: See `bug-fix.txt` for the debugging roadmap.
+- **Status**: **BLOCKER**. Do not start new features until engine rendering and audio are restored.
 
-### Path B: The PHP Backend (Medium Complexity)
-Start with `php-server-2do.txt`.
-*   **First Step**: Create `api.php` and test it with a simple `fetch()` from the browser console.
-*   **Momentum Tip**: This is a great "win" for users who want to move away from the fragility of `localStorage`.
-
-### Path C: CURSWORD (High Utility)
-Start with `cursword-2do.txt`.
-*   **First Step**: Implement the `Game_Cursword` class in `js/rpg_objects.js`.
-*   **Momentum Tip**: This will immediately make testing other features (like 3D) much easier by allowing free-flight inspection.
+### 2. Choose Your Adventure (Post-Fix)
+- **Path A: 3D Verticality** — Start with `z-level-2do.txt`.
+- **Path B: The PHP Backend** — Start with `php-server-2do.txt`.
+- **Path C: CURSWORD** — Start with `cursword-2do.txt`.
 
 ---
 

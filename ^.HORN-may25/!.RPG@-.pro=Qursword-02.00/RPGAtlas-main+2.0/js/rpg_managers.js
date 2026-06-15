@@ -39,24 +39,24 @@ DataManager.setupNewGame = function() {
         switches: {},
         vars: {},
         selfSw: {},
-        gold: window.DATABASE.system.startGold || 0,
+        gold: DATABASE.system.startGold || 0,
         inv: { item: {}, weapon: {}, armor: {} },
         party: [],
         steps: 0,
-        mapId: window.DATABASE.system.startMapId,
+        mapId: DATABASE.system.startMapId,
         player: {
-            x: window.DATABASE.system.startX,
-            y: window.DATABASE.system.startY,
-            dir: window.DATABASE.system.startDir,
-            transparent: !!window.DATABASE.system.startTransparent
+            x: DATABASE.system.startX,
+            y: DATABASE.system.startY,
+            dir: DATABASE.system.startDir,
+            transparent: !!DATABASE.system.startTransparent
         }
     };
     // Initialize party with Game_Actor objects
-    const startParty = (window.DATABASE.system.party || []).slice(0, 4);
-    if (startParty.length === 0 && window.DATABASE.actors.length > 0) {
-        startParty.push(window.DATABASE.actors[0].id);
+    const startParty = (DATABASE.system.party || []).slice(0, 4);
+    if (startParty.length === 0 && DATABASE.actors.length > 0) {
+        startParty.push(DATABASE.actors[0].id);
     }
-    window.SESSION.party = startParty.map(id => new Game_Actor(id));
+    SESSION.party = startParty.map(id => new Game_Actor(id));
 };
 
 //-----------------------------------------------------------------------------

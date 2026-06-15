@@ -8,11 +8,122 @@
   // defaults (overridden at boot from system.screenWidth/Height)
   let SCREEN_W = 17 * TILE, SCREEN_H = 13 * TILE;
 
-  let DATABASE = window.DATABASE;
+  let DATABASE = window.DATABASE, SESSION = window.SESSION;
   let stage, canvas, ctx, uiLayer, fader;
   let scene = "boot"; // boot | title | map | battle | gameover
   let menuOpen = false;
-  let SESSION = window.SESSION;
+
+  const rnd = (n) => Math.floor(Math.random() * n);
+  const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
+  const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
+  const el = (tag, cls, html) => {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (html !== undefined) e.innerHTML = html;
+    return e;
+  };
+  const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const sysSe = (name) => Sfx.play(DATABASE.system.sounds[name] || name);
+  const sysBgm = (name) => DATABASE.system.music[name] || "none";
+
+  const UIStack = [];
+  function pushUI(ui) { UIStack.push(ui); }
+  function removeUI(ui) {
+    const i = UIStack.indexOf(ui);
+    if (i >= 0) UIStack.splice(i, 1);
+    if (ui.el) ui.el.remove();
+  }
+
+  async function fadeTo(v, ms) {
+    fader.style.transition = `opacity ${ms}ms`;
+    fader.style.opacity = v;
+    await sleep(ms);
+  }
+
+  function richText(s) {
+    return esc(s).replace(/\\v\[(\d+)\]/g, (_, id) => SESSION.vars[id] || 0);
+  }
+
+  async function showMessage(name, text) {
+    const win = el("div", "win msgwin");
+    if (name) win.appendChild(el("div", "msgname", esc(name)));
+    const body = el("div", "win msgbody", richText(text));
+    win.appendChild(body);
+    uiLayer.appendChild(win);
+    await new Promise((res) => {
+      const ui = { el: win, onKey(k) { if (k === "ok" || k === "cancel") { removeUI(ui); res(); } } };
+      win.addEventListener("click", () => { removeUI(ui); res(); });
+      pushUI(ui);
+    });
+  }
+
+  async function showList(opts, settings) {
+    settings = settings || {};
+    const win = el("div", "win " + (settings.className || ""));
+    if (settings.title) win.appendChild(el("div", "listtitle", settings.title));
+    const list = el("div", "listbody");
+    win.appendChild(list);
+    uiLayer.appendChild(win);
+    let selected = settings.start || 0;
+    let ui;
+    const items = opts.map((o, i) => {
+      const item = el("div", "listitem" + (o.disabled ? " disabled" : ""), o.html || esc(o.label));
+      item.onclick = () => { if (!o.disabled) { selected = i; ui.onKey("ok"); } };
+      list.appendChild(item);
+      return item;
+    });
+    const refresh = () => items.forEach((item, i) => item.classList.toggle("selected", i === selected));
+    refresh();
+    return new Promise((res) => {
+      ui = {
+        el: win,
+        onKey(k) {
+          if (k === "up") { selected = (selected - 1 + opts.length) % opts.length; refresh(); sysSe("cursor"); }
+          else if (k === "down") { selected = (selected + 1) % opts.length; refresh(); sysSe("cursor"); }
+          else if (k === "ok") {
+            if (!opts[selected].disabled) { removeUI(ui); sysSe("ok"); res(selected); }
+            else sysSe("buzzer");
+          }
+          else if (k === "cancel" && settings.cancellable !== false) {
+            removeUI(ui); sysSe("cancel"); res(-1);
+          }
+        }
+      };
+      pushUI(ui);
+    });
+  }
+
+  const held = { up: false, down: false, left: false, right: false, dash: false };
+  let okTriggered = false, cancelTriggered = false;
+  window.addEventListener("keydown", (e) => {
+    const k = e.key.toLowerCase();
+    if (k === "arrowup" || k === "w") held.up = true;
+    if (k === "arrowdown" || k === "s") held.down = true;
+    if (k === "arrowleft" || k === "a") held.left = true;
+    if (k === "arrowright" || k === "d") held.right = true;
+    if (k === "shift") held.dash = true;
+    let mapped = "";
+    if (k === "z" || k === "enter") mapped = "ok";
+    if (k === "x" || k === "escape") mapped = "cancel";
+    if (k === "arrowup" || k === "w") mapped = "up";
+    if (k === "arrowdown" || k === "s") mapped = "down";
+    if (mapped) {
+      if (UIStack.length) UIStack[UIStack.length - 1].onKey(mapped);
+      else {
+        if (mapped === "ok") okTriggered = true;
+        if (mapped === "cancel") cancelTriggered = true;
+      }
+    }
+  });
+  window.addEventListener("keyup", (e) => {
+    const k = e.key.toLowerCase();
+    if (k === "arrowup" || k === "w") held.up = false;
+    if (k === "arrowdown" || k === "s") held.down = false;
+    if (k === "arrowleft" || k === "a") held.left = false;
+    if (k === "arrowright" || k === "d") held.right = false;
+    if (k === "shift") held.dash = false;
+  });
+
 
   function expForLevel(lv) {
     let t = 0;
@@ -825,7 +936,12 @@
   }
   function applySave(d) {
     SESSION.switches = d.switches || {}; SESSION.vars = d.vars || {}; SESSION.selfSw = d.selfSw || {};
-    SESSION.party = d.party || []; SESSION.inv = d.inv || { item: {}, weapon: {}, armor: {} };
+    SESSION.inv = d.inv || { item: {}, weapon: {}, armor: {} };
+    SESSION.party = (d.party || []).map((saved) => {
+      const a = new Game_Actor(saved._actorId);
+      Object.assign(a, saved);
+      return a;
+    });
     SESSION.party.forEach((a) => {
       sanitizeEquipment(a);
       a.hp = Math.min(a.hp, a.mhp);
@@ -1676,7 +1792,8 @@
     });
 
     DataManager.loadProject();
-    DATABASE = window.DATABASE;
+    DATABASE = window.DATABASE; SESSION = window.SESSION;
+    console.log("DATABASE:", DATABASE);
     applyScreenSettings();
     window.addEventListener("resize", fitStage);
     fitStage();

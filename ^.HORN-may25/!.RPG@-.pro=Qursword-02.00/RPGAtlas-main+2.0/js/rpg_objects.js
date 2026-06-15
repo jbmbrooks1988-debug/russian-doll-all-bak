@@ -17,8 +17,8 @@ Game_Actor.prototype.initialize = function(actorId) {
 };
 
 Game_Actor.prototype.setup = function(actorId) {
-    // Note: 'window.DATABASE' must be accessible
-    const d = RA.byId(window.DATABASE.actors, actorId);
+    // Note: 'DATABASE' must be accessible
+    const d = RA.byId(DATABASE.actors, actorId);
     if (!d) return;
     this._name = d.name;
     this._classId = d.classId;
@@ -53,14 +53,14 @@ Game_Actor.prototype.expForLevel = function(lv) {
 };
 
 Game_Actor.prototype.actorClass = function() {
-    return RA.byId(window.DATABASE.classes, this._classId) || window.DATABASE.classes[0];
+    return RA.byId(DATABASE.classes, this._classId) || DATABASE.classes[0];
 };
 
 Game_Actor.prototype.param = function(stat) {
     const c = this.actorClass();
     let v = Math.floor((c.base[stat] || 0) + (c.growth[stat] || 0) * (this._level - 1));
-    const w = RA.byId(window.DATABASE.weapons, this._weaponId);
-    const ar = RA.byId(window.DATABASE.armors, this._armorId);
+    const w = RA.byId(DATABASE.weapons, this._weaponId);
+    const ar = RA.byId(DATABASE.armors, this._armorId);
     if (w && w.params) v += w.params[stat] || 0;
     if (ar && ar.params) v += ar.params[stat] || 0;
     v = Math.floor(v * RA.traitRate(c, "param", stat, 1));
@@ -76,7 +76,7 @@ Game_Actor.prototype.learnedSkills = function() {
     const c = this.actorClass();
     return (c.learnings || [])
       .filter((l) => l.level <= this._level)
-      .map((l) => RA.byId(window.DATABASE.skills, l.skillId))
+      .map((l) => RA.byId(DATABASE.skills, l.skillId))
       .filter(Boolean);
 };
 
@@ -110,7 +110,7 @@ Game_Enemy.prototype.initialize = function(enemyId, index) {
 };
 
 Game_Enemy.prototype.setup = function(enemyId) {
-    const d = RA.byId(window.DATABASE.enemies, enemyId);
+    const d = RA.byId(DATABASE.enemies, enemyId);
     this._data = d;
     this._hp = d ? d.stats.mhp : 1;
     this._alive = true;
@@ -145,7 +145,7 @@ Game_Map.prototype.initialize = function() {
 
 Game_Map.prototype.setup = function(mapId) {
     this._mapId = mapId;
-    this._data = RA.byId(window.DATABASE.maps, mapId);
+    this._data = RA.byId(DATABASE.maps, mapId);
     this._events = (this._data.events || []).map(ev => new Game_Event(ev));
 };
 
