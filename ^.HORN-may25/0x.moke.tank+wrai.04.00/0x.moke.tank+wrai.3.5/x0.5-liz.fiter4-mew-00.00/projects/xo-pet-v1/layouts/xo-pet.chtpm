@@ -1,0 +1,16 @@
+<box title="${app_title}" width="60" height="20">
+    <text label=" [ SIM STATUS: " />${sim_status}<text label=" ]" /><br/>
+    <text label=" [ ACTIVE:     " />${active_target}<text label=" ]" /><br/>
+    <hr/>
+    <if condition="${active_target} != xelector">
+        <text label="  HP:     " />${pet_hp}<br/>
+        <text label="  HUNGER: " />${pet_hunger}<br/>
+        <hr/>
+    </if>
+    <text label=" COMMANDS:" /><br/>
+    ${piece_methods}<br/>
+    <hr/>
+    <text label=" LOG: " />${last_response}<br/>
+    <hr/>
+    <button label="[ END TURN (9) ]" onClick="KEY:9" />
+</box>

@@ -1,0 +1,74 @@
+process_input_trigger: state=IDLE raw_input=whats 7 * 7 / 32 ^ 99 last_buf=whats 7 * 7 / 32 ^ 99
+process_input_trigger: state=PENDING_PERM raw_input=y last_buf=y
+pending_perm trimmed=y
+permission decision=allow
+process_input_trigger: state=IDLE raw_input=(null) last_buf=               }
+process_input_trigger: state=IDLE raw_input=               }  last_buf=               }
+process_input_trigger: state=THINKING raw_input=  last_buf=
+process_input_trigger: state=THINKING raw_input= last_buf=
+process_input_trigger: state=THINKING raw_input= last_buf=
+process_input_trigger: state=THINKING raw_input=(null) last_buf=
+process_input_trigger: state=THINKING raw_input=    last_buf=
+process_input_trigger: state=THINKING raw_input= last_buf=
+process_input_trigger: state=THINKING raw_input=(null) last_buf=
+process_input_trigger: state=THINKING raw_input=Active [^]:  (ESC to exit) last_buf=Active [^]:  (ESC to exit)
+process_input_trigger: state=THINKING raw_input= last_buf=
+process_input_trigger: state=THINKING raw_input= last_buf=
+process_input_trigger: state=THINKING raw_input= last_buf=
+process_input_trigger: state=THINKING raw_input= last_buf=
+process_input_trigger: state=THINKING raw_input= last_buf=
+process_input_trigger: state=THINKING raw_input= last_buf=
+process_input_trigger: state=THINKING raw_input= last_buf=
+process_input_trigger: state=THINKING raw_input= last_buf=
+process_input_trigger: state=THINKING raw_input= last_buf=
+process_input_trigger: state=IDLE raw_input=whats 7 * 7 / 32 ^ 99 last_buf=whats 7 * 7 / 32 ^ 99
+process_input_trigger: state=IDLE raw_input=list dir last_buf=list dir
+process_input_trigger: state=IDLE raw_input=whats 7 * 7 / 32 ^ 999 last_buf=whats 7 * 7 / 32 ^ 999
+process_input_trigger: state=PENDING_PERM raw_input=y last_buf=y
+pending_perm trimmed=y
+permission decision=allow
+process_input_trigger: state=PENDING_PERM raw_input=y last_buf=y
+pending_perm trimmed=y
+permission decision=allow
+process_input_trigger: state=IDLE raw_input=whats 7 * 7 / 32 ^ 999 last_buf=whats 7 * 7 / 32 ^ 999
+process_input_trigger: state=PENDING_PERM raw_input=y last_buf=y
+pending_perm trimmed=y
+permission decision=allow
+process_input_trigger: state=PENDING_PERM raw_input=y last_buf=y
+pending_perm trimmed=y
+permission decision=allow
+process_input_trigger: state=IDLE raw_input=7*7 ? last_buf=7*7 ?
+process_input_trigger: state=PENDING_PERM raw_input=y last_buf=y
+pending_perm trimmed=y
+permission decision=allow
+process_input_trigger: state=IDLE raw_input=what do you think about ai? last_buf=what do you think about ai?
+process_input_trigger: state=IDLE raw_input=what do you think about exo robots? last_buf=what do you think about exo robots?
+process_input_trigger: state=PENDING_PERM raw_input=y last_buf=y
+pending_perm trimmed=y
+permission decision=allow
+process_input_trigger: state=IDLE raw_input=whos kim zimbalim? last_buf=whos kim zimbalim?
+process_input_trigger: state=PENDING_PERM raw_input=y last_buf=y
+pending_perm trimmed=y
+permission decision=allow
+process_input_trigger: state=IDLE raw_input=hi last_buf=hi
+process_input_trigger: state=IDLE raw_input=internet search sponges last_buf=internet search sponges
+process_input_trigger: state=PENDING_PERM raw_input=y last_buf=y
+pending_perm trimmed=y
+permission decision=allow
+process_input_trigger: state=IDLE raw_input=what is shpongilili last_buf=what is shpongilili
+process_input_trigger: state=PENDING_PERM raw_input=y last_buf=y
+pending_perm trimmed=y
+permission decision=allow
+process_input_trigger: state=IDLE raw_input=hi last_buf=hi
+process_input_trigger: state=IDLE raw_input=search 'stress' last_buf=search 'stress'
+process_input_trigger: state=PENDING_PERM raw_input=y last_buf=y
+pending_perm trimmed=y
+permission decision=allow
+process_input_trigger: state=IDLE raw_input=which cheese do u like most last_buf=which cheese do u like most
+process_input_trigger: state=IDLE raw_input=which sounds most appealing to you? last_buf=which sounds most appealing to you?
+process_input_trigger: state=IDLE raw_input=hii last_buf=hii
+process_input_trigger: state=IDLE raw_input=read dir contents last_buf=read dir contents
+process_input_trigger: state=PENDING_PERM raw_input=y last_buf=y
+pending_perm trimmed=y
+permission decision=allow
+process_input_trigger: state=IDLE raw_input=dir.txt is a funny name. whats in it? last_buf=dir.txt is a funny name. whats in it?
