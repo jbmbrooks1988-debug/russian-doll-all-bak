@@ -1,0 +1,9 @@
+Up_quark
+Down_quark
+Electron
+Electron
+Down_quark
+Pair_down_quarks
+Up_quark
+Neutron
+Neutron

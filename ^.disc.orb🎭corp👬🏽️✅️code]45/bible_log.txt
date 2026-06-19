@@ -1,0 +1,7 @@
+[1756442790] Starting bible.+x
+[1756442790] Loaded 0 hashes from bible_processed_hashes.txt
+[1756442790] Opened events.txt successfully
+[1756442796] Read line: 1408214608187228291|1756442796|635272|!search search
+[1756442796] Parsed: channel=1408214608187228291, timestamp=1756442796, hash=635272, content=!search search
+[1756442802] Read line: 1408214608187228291|1756442802|198806|Search result for 'search': [1] google.com <dns> (60 mentions, Inbound links: 1, Links: <link>google.com</link>) Instance 1:  arial,sans-serif;padding:0 5px;text-decoration:none;flex:auto;align-self:flex-end;margi...
+[1756442802] Parsed: channel=1408214608187228291, timestamp=1756442802, hash=198806, content=Search result for 'search': [1] google.com <dns> (60 mentions, Inbound links: 1, Links: <link>google.com</link>) Instance 1:  arial,sans-serif;padding:0 5px;text-decoration:none;flex:auto;align-self:flex-end;margi...

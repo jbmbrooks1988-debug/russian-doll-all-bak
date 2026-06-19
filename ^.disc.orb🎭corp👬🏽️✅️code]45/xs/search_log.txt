@@ -1,0 +1,185 @@
+[1756432428] Starting search.+x
+[1756432428] Loaded 4 hashes from processed_hashes.txt
+[1756432428] Opened events.txt successfully
+[1756432428] Read line: 1408214608187228291|1756431766|149393|!search dog
+[1756432428] Parsed: channel=1408214608187228291, timestamp=1756431766, hash=149393, content=!search dog
+[1756432428] Hash 149393 already processed, skipping
+[1756432428] Read line: 1408214608187228291|1756431906|282396|!search luck
+[1756432428] Parsed: channel=1408214608187228291, timestamp=1756431906, hash=282396, content=!search luck
+[1756432428] Hash 282396 already processed, skipping
+[1756432428] Read line: 1408214608187228291|1756431934|934535|!search luck txt
+[1756432428] Parsed: channel=1408214608187228291, timestamp=1756431934, hash=934535, content=!search luck txt
+[1756432428] Hash 934535 already processed, skipping
+[1756432428] Read line: 1408214608187228291|1756432228|106932|!search fun
+[1756432428] Parsed: channel=1408214608187228291, timestamp=1756432228, hash=106932, content=!search fun
+[1756432428] Hash 106932 already processed, skipping
+[1756432438] Read line: 1408214608187228291|1756432438|019352|!search play
+[1756432438] Parsed: channel=1408214608187228291, timestamp=1756432438, hash=019352, content=!search play
+[1756432438] Saved hash: 019352
+[1756432438] No user ID prefix, using raw command: !search play
+[1756432438] Executing search for keyword: play
+[1756432438] Executing: ./+x/13.hybrid.+pagerank.+x "play" txt
+[1756432603] 13.hybrid.+pagerank.+x failed with return code 2: Success
+[1756432603] Wrote error to send_queue.txt: 1408214608187228291|Search failed
+[1756432603] Executing: ./+x/send.+x
+[1756432604] send.+x executed successfully
+[1756432604] Read line: 1287692228302475330|1756432454|304216|1
+[1756432604] Parsed: channel=1287692228302475330, timestamp=1756432454, hash=304216, content=1
+[1756432604] Saved hash: 304216
+[1756432604] No user ID prefix, using raw command: 1
+[1756432784] Starting search.+x
+[1756432784] Loaded 8 hashes from processed_hashes.txt
+[1756432784] Opened events.txt successfully
+[1756432784] Read line: 1408214608187228291|1756431766|149393|!search dog
+[1756432784] Parsed: channel=1408214608187228291, timestamp=1756431766, hash=149393, content=!search dog
+[1756432784] Hash 149393 already processed, skipping
+[1756432784] Read line: 1408214608187228291|1756431906|282396|!search luck
+[1756432784] Parsed: channel=1408214608187228291, timestamp=1756431906, hash=282396, content=!search luck
+[1756432784] Hash 282396 already processed, skipping
+[1756432784] Read line: 1408214608187228291|1756431934|934535|!search luck txt
+[1756432784] Parsed: channel=1408214608187228291, timestamp=1756431934, hash=934535, content=!search luck txt
+[1756432784] Hash 934535 already processed, skipping
+[1756432784] Read line: 1408214608187228291|1756432228|106932|!search fun
+[1756432784] Parsed: channel=1408214608187228291, timestamp=1756432228, hash=106932, content=!search fun
+[1756432784] Hash 106932 already processed, skipping
+[1756432784] Read line: 1408214608187228291|1756432438|019352|!search play
+[1756432784] Parsed: channel=1408214608187228291, timestamp=1756432438, hash=019352, content=!search play
+[1756432784] Hash 019352 already processed, skipping
+[1756432784] Read line: 1287692228302475330|1756432454|304216|1
+[1756432784] Parsed: channel=1287692228302475330, timestamp=1756432454, hash=304216, content=1
+[1756432784] Hash 304216 already processed, skipping
+[1756432794] Read line: 1408214608187228291|1756432793|948125|!search help
+[1756432794] Parsed: channel=1408214608187228291, timestamp=1756432793, hash=948125, content=!search help
+[1756432794] Saved hash: 948125
+[1756432794] No user ID prefix, using raw command: !search help
+[1756432794] Executing search for keyword: help
+[1756432794] Executing: ./+x/13.hybrid.+pagerank.+x "help" txt
+[1756432805] 13.hybrid.+pagerank.+x failed with return code 2: Success
+[1756432805] Wrote error to send_queue.txt: 1408214608187228291|Search failed
+[1756432805] Executing: ./+x/send.+x
+[1756432805] send.+x executed successfully
+[1756433106] Starting search.+x
+[1756433106] Loaded 10 hashes from processed_hashes.txt
+[1756433106] Opened events.txt successfully
+[1756433106] Read line: 1408214608187228291|1756431766|149393|!search dog
+[1756433106] Parsed: channel=1408214608187228291, timestamp=1756431766, hash=149393, content=!search dog
+[1756433106] Hash 149393 already processed, skipping
+[1756433106] Read line: 1408214608187228291|1756431906|282396|!search luck
+[1756433106] Parsed: channel=1408214608187228291, timestamp=1756431906, hash=282396, content=!search luck
+[1756433106] Hash 282396 already processed, skipping
+[1756433106] Read line: 1408214608187228291|1756431934|934535|!search luck txt
+[1756433106] Parsed: channel=1408214608187228291, timestamp=1756431934, hash=934535, content=!search luck txt
+[1756433106] Hash 934535 already processed, skipping
+[1756433106] Read line: 1408214608187228291|1756432228|106932|!search fun
+[1756433106] Parsed: channel=1408214608187228291, timestamp=1756432228, hash=106932, content=!search fun
+[1756433106] Hash 106932 already processed, skipping
+[1756433106] Read line: 1408214608187228291|1756432438|019352|!search play
+[1756433106] Parsed: channel=1408214608187228291, timestamp=1756432438, hash=019352, content=!search play
+[1756433106] Hash 019352 already processed, skipping
+[1756433106] Read line: 1287692228302475330|1756432454|304216|1
+[1756433106] Parsed: channel=1287692228302475330, timestamp=1756432454, hash=304216, content=1
+[1756433106] Hash 304216 already processed, skipping
+[1756433106] Read line: 1408214608187228291|1756432793|948125|!search help
+[1756433106] Parsed: channel=1408214608187228291, timestamp=1756432793, hash=948125, content=!search help
+[1756433106] Hash 948125 already processed, skipping
+[1756433115] Read line: 1408214608187228291|1756433115|336143|!search toy
+[1756433115] Parsed: channel=1408214608187228291, timestamp=1756433115, hash=336143, content=!search toy
+[1756433115] Saved hash: 336143
+[1756433115] No user ID prefix, using raw command: !search toy
+[1756433115] Executing search for keyword: toy
+[1756433115] Executing: ./+x/13.hybrid.+pagerank.+x "toy" txt
+[1756433116] Read line: 1408214608187228291|1756433115|336143|!search toy
+[1756433116] Parsed: channel=1408214608187228291, timestamp=1756433115, hash=336143, content=!search toy
+[1756433116] Saved hash: 336143
+[1756433116] No user ID prefix, using raw command: !search toy
+[1756433116] Executing search for keyword: toy
+[1756433116] Executing: ./+x/13.hybrid.+pagerank.+x "toy" txt
+[1756433121] 13.hybrid.+pagerank.+x failed with return code 34304: Success
+[1756433121] Wrote error to send_queue.txt: 1408214608187228291|Search failed
+[1756433121] Executing: ./+x/send.+x
+[1756433121] 13.hybrid.+pagerank.+x failed with return code 34304: Success
+[1756433121] Wrote error to send_queue.txt: 1408214608187228291|Search failed
+[1756433121] Executing: ./+x/send.+x
+[1756433123] send.+x executed successfully
+[1756433123] Read line: 1408214608187228291|1756433123|283948|Search failed for 'toy', please try again.
+[1756433123] Parsed: channel=1408214608187228291, timestamp=1756433123, hash=283948, content=Search failed for 'toy', please try again.
+[1756433123] Saved hash: 283948
+[1756433123] No user ID prefix, using raw command: Search failed for 'toy', please try again.
+[1756433123] Read line: 1408214608187228291|1756433123|283948|Search failed for 'toy', please try again.
+[1756433123] Parsed: channel=1408214608187228291, timestamp=1756433123, hash=283948, content=Search failed for 'toy', please try again.
+[1756433123] Hash 283948 already processed, skipping
+[1756433123] send.+x executed successfully
+[1756433123] Read line: 1408214608187228291|1756433123|283948|Search failed for 'toy', please try again.
+[1756433123] Parsed: channel=1408214608187228291, timestamp=1756433123, hash=283948, content=Search failed for 'toy', please try again.
+[1756433123] Saved hash: 283948
+[1756433123] No user ID prefix, using raw command: Search failed for 'toy', please try again.
+[1756433123] Read line: 1408214608187228291|1756433123|283948|Search failed for 'toy', please try again.
+[1756433123] Parsed: channel=1408214608187228291, timestamp=1756433123, hash=283948, content=Search failed for 'toy', please try again.
+[1756433123] Hash 283948 already processed, skipping
+[1756433167] Starting search.+x
+[1756433167] Loaded 16 hashes from processed_hashes.txt
+[1756433167] Opened events.txt successfully
+[1756433167] Read line: 1408214608187228291|1756431766|149393|!search dog
+[1756433167] Parsed: channel=1408214608187228291, timestamp=1756431766, hash=149393, content=!search dog
+[1756433167] Hash 149393 already processed, skipping
+[1756433167] Read line: 1408214608187228291|1756431906|282396|!search luck
+[1756433167] Parsed: channel=1408214608187228291, timestamp=1756431906, hash=282396, content=!search luck
+[1756433167] Hash 282396 already processed, skipping
+[1756433167] Read line: 1408214608187228291|1756431934|934535|!search luck txt
+[1756433167] Parsed: channel=1408214608187228291, timestamp=1756431934, hash=934535, content=!search luck txt
+[1756433167] Hash 934535 already processed, skipping
+[1756433167] Read line: 1408214608187228291|1756432228|106932|!search fun
+[1756433167] Parsed: channel=1408214608187228291, timestamp=1756432228, hash=106932, content=!search fun
+[1756433167] Hash 106932 already processed, skipping
+[1756433167] Read line: 1408214608187228291|1756432438|019352|!search play
+[1756433167] Parsed: channel=1408214608187228291, timestamp=1756432438, hash=019352, content=!search play
+[1756433167] Hash 019352 already processed, skipping
+[1756433167] Read line: 1287692228302475330|1756432454|304216|1
+[1756433167] Parsed: channel=1287692228302475330, timestamp=1756432454, hash=304216, content=1
+[1756433167] Hash 304216 already processed, skipping
+[1756433167] Read line: 1408214608187228291|1756432793|948125|!search help
+[1756433167] Parsed: channel=1408214608187228291, timestamp=1756432793, hash=948125, content=!search help
+[1756433167] Hash 948125 already processed, skipping
+[1756433167] Read line: 1408214608187228291|1756433115|336143|!search toy
+[1756433167] Parsed: channel=1408214608187228291, timestamp=1756433115, hash=336143, content=!search toy
+[1756433167] Hash 336143 already processed, skipping
+[1756433167] Read line: 1408214608187228291|1756433123|283948|Search failed for 'toy', please try again.
+[1756433167] Parsed: channel=1408214608187228291, timestamp=1756433123, hash=283948, content=Search failed for 'toy', please try again.
+[1756433167] Hash 283948 already processed, skipping
+[1756433167] Read line: 1408214608187228291|1756433123|283948|Search failed for 'toy', please try again.
+[1756433167] Parsed: channel=1408214608187228291, timestamp=1756433123, hash=283948, content=Search failed for 'toy', please try again.
+[1756433167] Hash 283948 already processed, skipping
+[1756433178] Read line: 1408214608187228291|1756433177|972092|!search help
+[1756433178] Parsed: channel=1408214608187228291, timestamp=1756433177, hash=972092, content=!search help
+[1756433178] Saved hash: 972092
+[1756433178] No user ID prefix, using raw command: !search help
+[1756433178] Executing search for keyword: help
+[1756433178] Executing: ./+x/13.hybrid.+pagerank.+x "help" txt
+[1756433178] Read line: 1408214608187228291|1756433177|972092|!search help
+[1756433178] Parsed: channel=1408214608187228291, timestamp=1756433177, hash=972092, content=!search help
+[1756433178] Saved hash: 972092
+[1756433178] No user ID prefix, using raw command: !search help
+[1756433178] Executing search for keyword: help
+[1756433178] Executing: ./+x/13.hybrid.+pagerank.+x "help" txt
+[1756433182] 13.hybrid.+pagerank.+x failed with return code 35584: Success
+[1756433182] Wrote error to send_queue.txt: 1408214608187228291|Search failed
+[1756433182] Executing: ./+x/send.+x
+[1756433182] 13.hybrid.+pagerank.+x failed with return code 35584: Success
+[1756433182] Wrote error to send_queue.txt: 1408214608187228291|Search failed
+[1756433182] Executing: ./+x/send.+x
+[1756433182] send.+x executed successfully
+[1756433182] Read line: 1408214608187228291|1756433182|604402|Search failed for 'help', please try again.
+[1756433182] Parsed: channel=1408214608187228291, timestamp=1756433182, hash=604402, content=Search failed for 'help', please try again.
+[1756433182] Saved hash: 604402
+[1756433182] No user ID prefix, using raw command: Search failed for 'help', please try again.
+[1756433182] send.+x executed successfully
+[1756433182] Read line: 1408214608187228291|1756433182|604402|Search failed for 'help', please try again.
+[1756433182] Parsed: channel=1408214608187228291, timestamp=1756433182, hash=604402, content=Search failed for 'help', please try again.
+[1756433182] Saved hash: 604402
+[1756433182] No user ID prefix, using raw command: Search failed for 'help', please try again.
+[1756433182] Read line: 1408214608187228291|1756433182|604402|Search failed for 'help', please try again.
+[1756433182] Parsed: channel=1408214608187228291, timestamp=1756433182, hash=604402, content=Search failed for 'help', please try again.
+[1756433182] Hash 604402 already processed, skipping
+[1756433183] Read line: 1408214608187228291|1756433182|604402|Search failed for 'help', please try again.
+[1756433183] Parsed: channel=1408214608187228291, timestamp=1756433182, hash=604402, content=Search failed for 'help', please try again.
+[1756433183] Hash 604402 already processed, skipping

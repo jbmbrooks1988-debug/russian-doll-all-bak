@@ -1,0 +1,27 @@
+Battle begins! 1056721507394523216's team (size 1) vs 1 enemies
+Round 1: 1056721507394523216 misses Slime 🦠
+Round 1: Slime 🦠 misses 1056721507394523216
+Round 2: 1056721507394523216 hits Slime 🦠 for 5 damage (Magic)
+Round 2: Slime 🦠 hits 1056721507394523216 for 3 damage (Magic)
+Round 3: 1056721507394523216 misses Slime 🦠
+Round 3: Slime 🦠 hits 1056721507394523216 for 3 damage (Physical)
+Round 4: 1056721507394523216 hits Slime 🦠 for 5 damage (Physical)
+Round 4: Slime 🦠 misses 1056721507394523216
+Round 5: 1056721507394523216 misses Slime 🦠
+Round 5: Slime 🦠 misses 1056721507394523216
+Round 6: 1056721507394523216 hits Slime 🦠 for 5 damage (Magic)
+Round 6: Slime 🦠 hits 1056721507394523216 for 3 damage (Physical)
+Round 7: 1056721507394523216 hits Slime 🦠 for 5 damage (Magic)
+Round 7: Slime 🦠 misses 1056721507394523216
+Round 8: 1056721507394523216 hits Slime 🦠 for 5 damage (Magic)
+Round 8: Slime 🦠 misses 1056721507394523216
+Round 9: 1056721507394523216 misses Slime 🦠
+Round 9: Slime 🦠 misses 1056721507394523216
+Round 10: 1056721507394523216 hits Slime 🦠 for 5 damage (Magic)
+Round 10: Slime 🦠 hits 1056721507394523216 for 3 damage (Magic)
+Round 11: 1056721507394523216 hits Slime 🦠 for 5 damage (Magic)
+Round 11: Slime 🦠 misses 1056721507394523216
+Round 12: 1056721507394523216 misses Slime 🦠
+Round 12: Slime 🦠 hits 1056721507394523216 for 3 damage (Physical)
+Round 13: 1056721507394523216 hits Slime 🦠 for 5 damage (Physical)
+1056721507394523216's team wins! Gained 23 XP

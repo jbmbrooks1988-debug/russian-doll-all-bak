@@ -1,0 +1,19 @@
+Battle begins! 685285851059847178's team (size 1) vs 1 enemies
+Round 1: 685285851059847178 hits Beast 🐻 for 11 damage (Magic)
+Round 1: Beast 🐻 misses 685285851059847178
+Round 2: 685285851059847178 hits Beast 🐻 for 21 damage (Physical)
+Round 2: Beast 🐻 hits 685285851059847178 for 27 damage (Physical)
+Round 3: 685285851059847178 misses Beast 🐻
+Round 3: Beast 🐻 hits 685285851059847178 for 27 damage (Physical)
+Round 4: 685285851059847178 hits Beast 🐻 for 21 damage (Physical)
+Round 4: Beast 🐻 misses 685285851059847178
+Round 5: 685285851059847178 hits Beast 🐻 for 21 damage (Physical)
+Round 5: Beast 🐻 misses 685285851059847178
+Round 6: 685285851059847178 hits Beast 🐻 for 21 damage (Physical)
+Round 6: Beast 🐻 hits 685285851059847178 for 27 damage (Physical)
+Round 7: 685285851059847178 misses Beast 🐻
+Round 7: Beast 🐻 hits 685285851059847178 for 14 damage (Magic)
+Round 8: 685285851059847178 hits Beast 🐻 for 21 damage (Physical)
+Round 8: Beast 🐻 misses 685285851059847178
+Round 9: 685285851059847178 hits Beast 🐻 for 21 damage (Physical)
+685285851059847178's team wins! Gained 122 XP

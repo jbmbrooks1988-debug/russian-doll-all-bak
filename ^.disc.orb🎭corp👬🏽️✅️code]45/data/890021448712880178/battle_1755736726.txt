@@ -1,0 +1,13 @@
+Battle begins! 890021448712880178's team (size 1) vs 1 enemies
+Round 1: 890021448712880178 hits Undead 🧟 for 13 damage (Magic)
+Round 1: Undead 🧟 misses 890021448712880178
+Round 2: 890021448712880178 hits Undead 🧟 for 13 damage (Magic)
+Round 2: Undead 🧟 hits 890021448712880178 for 7 damage (Magic)
+Round 3: 890021448712880178 hits Undead 🧟 for 13 damage (Magic)
+Round 3: Undead 🧟 misses 890021448712880178
+Round 4: 890021448712880178 hits Undead 🧟 for 13 damage (Magic)
+Round 4: Undead 🧟 misses 890021448712880178
+Round 5: 890021448712880178 hits Undead 🧟 for 13 damage (Magic)
+Round 5: Undead 🧟 misses 890021448712880178
+Round 6: 890021448712880178 hits Undead 🧟 for 13 damage (Magic)
+890021448712880178's team wins! Gained 68 XP

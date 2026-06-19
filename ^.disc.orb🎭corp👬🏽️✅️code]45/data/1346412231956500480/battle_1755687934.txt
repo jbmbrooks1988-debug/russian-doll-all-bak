@@ -1,0 +1,32 @@
+Battle begins! 1346412231956500480's team (size 1) vs 1 enemies
+Round 1: 1346412231956500480 misses Slime 🦠
+Round 1: Slime 🦠 hits 1346412231956500480 for 14 damage (Physical)
+Round 2: 1346412231956500480 hits Slime 🦠 for 14 damage (Physical)
+Round 2: Slime 🦠 misses 1346412231956500480
+Round 3: 1346412231956500480 hits Slime 🦠 for 8 damage (Magic)
+Round 3: Slime 🦠 hits 1346412231956500480 for 14 damage (Physical)
+Round 4: 1346412231956500480 misses Slime 🦠
+Round 4: Slime 🦠 hits 1346412231956500480 for 7 damage (Magic)
+Round 5: 1346412231956500480 hits Slime 🦠 for 8 damage (Magic)
+Round 5: Slime 🦠 misses 1346412231956500480
+Round 6: 1346412231956500480 misses Slime 🦠
+Round 6: Slime 🦠 misses 1346412231956500480
+Round 7: 1346412231956500480 misses Slime 🦠
+Round 7: Slime 🦠 misses 1346412231956500480
+Round 8: 1346412231956500480 hits Slime 🦠 for 14 damage (Physical)
+Round 8: Slime 🦠 misses 1346412231956500480
+Round 9: 1346412231956500480 misses Slime 🦠
+Round 9: Slime 🦠 misses 1346412231956500480
+Round 10: 1346412231956500480 misses Slime 🦠
+Round 10: Slime 🦠 hits 1346412231956500480 for 14 damage (Physical)
+Round 11: 1346412231956500480 misses Slime 🦠
+Round 11: Slime 🦠 hits 1346412231956500480 for 14 damage (Physical)
+Round 12: 1346412231956500480 misses Slime 🦠
+Round 12: Slime 🦠 hits 1346412231956500480 for 7 damage (Magic)
+Round 13: 1346412231956500480 hits Slime 🦠 for 14 damage (Physical)
+Round 13: Slime 🦠 misses 1346412231956500480
+Round 14: 1346412231956500480 misses Slime 🦠
+Round 14: Slime 🦠 hits 1346412231956500480 for 7 damage (Magic)
+Round 15: 1346412231956500480 misses Slime 🦠
+Round 15: Slime 🦠 hits 1346412231956500480 for 14 damage (Physical)
+1346412231956500480's team defeated!

@@ -1,0 +1,26 @@
+Battle begins! 147385409188397058's team (size 1) vs 1 enemies
+Round 1: 147385409188397058 hits Plant 🌿 for 7 damage (Magic)
+Round 1: Plant 🌿 misses 147385409188397058
+Round 2: 147385409188397058 misses Plant 🌿
+Round 2: Plant 🌿 misses 147385409188397058
+Round 3: 147385409188397058 misses Plant 🌿
+Round 3: Plant 🌿 hits 147385409188397058 for 9 damage (Physical)
+Round 4: 147385409188397058 hits Plant 🌿 for 11 damage (Physical)
+Round 4: Plant 🌿 misses 147385409188397058
+Round 5: 147385409188397058 hits Plant 🌿 for 7 damage (Magic)
+Round 5: Plant 🌿 hits 147385409188397058 for 7 damage (Magic)
+Round 6: 147385409188397058 misses Plant 🌿
+Round 6: Plant 🌿 hits 147385409188397058 for 9 damage (Physical)
+Round 7: 147385409188397058 hits Plant 🌿 for 7 damage (Magic)
+Round 7: Plant 🌿 misses 147385409188397058
+Round 8: 147385409188397058 misses Plant 🌿
+Round 8: Plant 🌿 hits 147385409188397058 for 7 damage (Magic)
+Round 9: 147385409188397058 hits Plant 🌿 for 7 damage (Magic)
+Round 9: Plant 🌿 hits 147385409188397058 for 7 damage (Magic)
+Round 10: 147385409188397058 hits Plant 🌿 for 11 damage (Physical)
+Round 10: Plant 🌿 hits 147385409188397058 for 9 damage (Physical)
+Round 11: 147385409188397058 misses Plant 🌿
+Round 11: Plant 🌿 hits 147385409188397058 for 7 damage (Magic)
+Round 12: 147385409188397058 misses Plant 🌿
+Round 12: Plant 🌿 hits 147385409188397058 for 9 damage (Physical)
+147385409188397058's team defeated!

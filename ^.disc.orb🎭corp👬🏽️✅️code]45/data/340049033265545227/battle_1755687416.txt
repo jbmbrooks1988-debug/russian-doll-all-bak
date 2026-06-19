@@ -1,0 +1,19 @@
+Battle begins! 340049033265545227's team (size 1) vs 1 enemies
+Round 1: 340049033265545227 misses Slime 🦠
+Round 1: Slime 🦠 misses 340049033265545227
+Round 2: 340049033265545227 hits Slime 🦠 for 13 damage (Magic)
+Round 2: Slime 🦠 misses 340049033265545227
+Round 3: 340049033265545227 misses Slime 🦠
+Round 3: Slime 🦠 hits 340049033265545227 for 13 damage (Physical)
+Round 4: 340049033265545227 hits Slime 🦠 for 13 damage (Magic)
+Round 4: Slime 🦠 misses 340049033265545227
+Round 5: 340049033265545227 hits Slime 🦠 for 18 damage (Physical)
+Round 5: Slime 🦠 misses 340049033265545227
+Round 6: 340049033265545227 misses Slime 🦠
+Round 6: Slime 🦠 misses 340049033265545227
+Round 7: 340049033265545227 hits Slime 🦠 for 18 damage (Physical)
+Round 7: Slime 🦠 misses 340049033265545227
+Round 8: 340049033265545227 misses Slime 🦠
+Round 8: Slime 🦠 misses 340049033265545227
+Round 9: 340049033265545227 hits Slime 🦠 for 18 damage (Physical)
+340049033265545227's team wins! Gained 67 XP

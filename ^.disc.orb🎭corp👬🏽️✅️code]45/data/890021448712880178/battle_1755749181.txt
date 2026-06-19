@@ -1,0 +1,8 @@
+Battle begins! 90021448712880178's team (size 1) vs 1 enemies
+Round 1: 90021448712880178 misses Undead 🧟
+Round 1: Undead 🧟 hits 90021448712880178 for 41 damage (Physical)
+Round 2: 90021448712880178 hits Undead 🧟 for 9 damage (Physical)
+Round 2: Undead 🧟 hits 90021448712880178 for 41 damage (Physical)
+Round 3: 90021448712880178 misses Undead 🧟
+Round 3: Undead 🧟 hits 90021448712880178 for 25 damage (Magic)
+90021448712880178's team defeated!

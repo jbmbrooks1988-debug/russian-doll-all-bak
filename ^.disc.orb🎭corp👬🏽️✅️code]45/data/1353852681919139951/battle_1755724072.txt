@@ -1,0 +1,11 @@
+Battle begins! 1353852681919139951's team (size 1) vs 1 enemies
+Round 1: 1353852681919139951 hits Goblin 👺 for 16 damage (Physical)
+Round 1: Goblin 👺 hits 1353852681919139951 for 14 damage (Physical)
+Round 2: 1353852681919139951 hits Goblin 👺 for 16 damage (Physical)
+Round 2: Goblin 👺 misses 1353852681919139951
+Round 3: 1353852681919139951 hits Goblin 👺 for 16 damage (Physical)
+Round 3: Goblin 👺 misses 1353852681919139951
+Round 4: 1353852681919139951 hits Goblin 👺 for 11 damage (Magic)
+Round 4: Goblin 👺 misses 1353852681919139951
+Round 5: 1353852681919139951 hits Goblin 👺 for 16 damage (Physical)
+1353852681919139951's team wins! Gained 64 XP

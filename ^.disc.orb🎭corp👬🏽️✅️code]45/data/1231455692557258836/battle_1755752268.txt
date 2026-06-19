@@ -1,0 +1,18 @@
+Battle begins! 1231455692557258836's team (size 1) vs 1 enemies
+Round 1: 1231455692557258836 hits Plant 🌿 for 3 damage (Magic)
+Round 1: Plant 🌿 hits 1231455692557258836 for 6 damage (Physical)
+Round 2: 1231455692557258836 hits Plant 🌿 for 3 damage (Magic)
+Round 2: Plant 🌿 misses 1231455692557258836
+Round 3: 1231455692557258836 misses Plant 🌿
+Round 3: Plant 🌿 hits 1231455692557258836 for 6 damage (Physical)
+Round 4: 1231455692557258836 misses Plant 🌿
+Round 4: Plant 🌿 misses 1231455692557258836
+Round 5: 1231455692557258836 misses Plant 🌿
+Round 5: Plant 🌿 hits 1231455692557258836 for 6 damage (Physical)
+Round 6: 1231455692557258836 hits Plant 🌿 for 4 damage (Physical)
+Round 6: Plant 🌿 hits 1231455692557258836 for 6 damage (Magic)
+Round 7: 1231455692557258836 misses Plant 🌿
+Round 7: Plant 🌿 misses 1231455692557258836
+Round 8: 1231455692557258836 hits Plant 🌿 for 4 damage (Physical)
+Round 8: Plant 🌿 hits 1231455692557258836 for 6 damage (Physical)
+1231455692557258836's team defeated!

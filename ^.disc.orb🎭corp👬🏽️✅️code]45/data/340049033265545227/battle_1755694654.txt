@@ -1,0 +1,25 @@
+Battle begins! 0049033265545227's team (size 1) vs 1 enemies
+Round 1: 0049033265545227 hits Soldier 💂‍♂️ for 12 damage (Magic)
+Round 1: Soldier 💂‍♂️ hits 0049033265545227 for 15 damage (Physical)
+Round 2: 0049033265545227 hits Soldier 💂‍♂️ for 19 damage (Physical)
+Round 2: Soldier 💂‍♂️ hits 0049033265545227 for 7 damage (Magic)
+Round 3: 0049033265545227 misses Soldier 💂‍♂️
+Round 3: Soldier 💂‍♂️ misses 0049033265545227
+Round 4: 0049033265545227 hits Soldier 💂‍♂️ for 19 damage (Physical)
+Round 4: Soldier 💂‍♂️ hits 0049033265545227 for 15 damage (Physical)
+Round 5: 0049033265545227 misses Soldier 💂‍♂️
+Round 5: Soldier 💂‍♂️ misses 0049033265545227
+Round 6: 0049033265545227 misses Soldier 💂‍♂️
+Round 6: Soldier 💂‍♂️ hits 0049033265545227 for 7 damage (Magic)
+Round 7: 0049033265545227 misses Soldier 💂‍♂️
+Round 7: Soldier 💂‍♂️ hits 0049033265545227 for 15 damage (Physical)
+Round 8: 0049033265545227 hits Soldier 💂‍♂️ for 12 damage (Magic)
+Round 8: Soldier 💂‍♂️ misses 0049033265545227
+Round 9: 0049033265545227 misses Soldier 💂‍♂️
+Round 9: Soldier 💂‍♂️ misses 0049033265545227
+Round 10: 0049033265545227 hits Soldier 💂‍♂️ for 12 damage (Magic)
+Round 10: Soldier 💂‍♂️ misses 0049033265545227
+Round 11: 0049033265545227 hits Soldier 💂‍♂️ for 12 damage (Magic)
+Round 11: Soldier 💂‍♂️ misses 0049033265545227
+Round 12: 0049033265545227 hits Soldier 💂‍♂️ for 19 damage (Physical)
+0049033265545227's team wins! Gained 76 XP

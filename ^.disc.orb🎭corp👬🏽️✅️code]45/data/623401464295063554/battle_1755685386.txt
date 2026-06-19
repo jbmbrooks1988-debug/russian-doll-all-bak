@@ -1,0 +1,9 @@
+Battle begins! 623401464295063554's team (size 1) vs 1 enemies
+Round 1: 623401464295063554 misses Beast 🐻
+Round 1: Beast 🐻 hits 623401464295063554 for 0 damage (Magic)
+Round 2: 623401464295063554 misses Beast 🐻
+Round 2: Beast 🐻 hits 623401464295063554 for 0 damage (Magic)
+Round 3: 623401464295063554 hits Beast 🐻 for 7 damage (Physical)
+Round 3: Beast 🐻 hits 623401464295063554 for 0 damage (Magic)
+Round 4: 623401464295063554 hits Beast 🐻 for 7 damage (Physical)
+623401464295063554's team wins! Gained 17 XP

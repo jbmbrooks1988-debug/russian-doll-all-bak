@@ -1,0 +1,7 @@
+https://grok.com/chat/cef2bf9a-9130-44a6-a5f1-8ce23f807631
+
+
+echo "Text to append" >> filename.txt
+
+can this work in cli? 
+🆘️

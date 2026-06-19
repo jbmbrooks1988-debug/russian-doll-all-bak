@@ -1,0 +1,27 @@
+Battle begins! 1169188763025551381's team (size 1) vs 1 enemies
+Round 1: 1169188763025551381 misses Undead 🧟
+Round 1: Undead 🧟 misses 1169188763025551381
+Round 2: 1169188763025551381 misses Undead 🧟
+Round 2: Undead 🧟 hits 1169188763025551381 for 17 damage (Physical)
+Round 3: 1169188763025551381 hits Undead 🧟 for 20 damage (Physical)
+Round 3: Undead 🧟 misses 1169188763025551381
+Round 4: 1169188763025551381 misses Undead 🧟
+Round 4: Undead 🧟 hits 1169188763025551381 for 9 damage (Magic)
+Round 5: 1169188763025551381 misses Undead 🧟
+Round 5: Undead 🧟 misses 1169188763025551381
+Round 6: 1169188763025551381 misses Undead 🧟
+Round 6: Undead 🧟 misses 1169188763025551381
+Round 7: 1169188763025551381 hits Undead 🧟 for 11 damage (Magic)
+Round 7: Undead 🧟 misses 1169188763025551381
+Round 8: 1169188763025551381 misses Undead 🧟
+Round 8: Undead 🧟 misses 1169188763025551381
+Round 9: 1169188763025551381 hits Undead 🧟 for 20 damage (Physical)
+Round 9: Undead 🧟 hits 1169188763025551381 for 9 damage (Magic)
+Round 10: 1169188763025551381 hits Undead 🧟 for 20 damage (Physical)
+Round 10: Undead 🧟 misses 1169188763025551381
+Round 11: 1169188763025551381 misses Undead 🧟
+Round 11: Undead 🧟 misses 1169188763025551381
+Round 12: 1169188763025551381 hits Undead 🧟 for 20 damage (Physical)
+Round 12: Undead 🧟 misses 1169188763025551381
+Round 13: 1169188763025551381 hits Undead 🧟 for 20 damage (Physical)
+1169188763025551381's team wins! Gained 81 XP

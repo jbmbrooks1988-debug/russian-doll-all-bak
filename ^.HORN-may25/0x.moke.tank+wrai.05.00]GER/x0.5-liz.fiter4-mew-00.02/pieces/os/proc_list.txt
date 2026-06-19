@@ -1,0 +1,10 @@
+96045 orchestrator
+96063 keyboard_input
+96066 response_handler
+96065 joystick_input
+96068 chtpm_parser
+96076 renderer
+96078 gl_renderer
+96080 clock_daemon
+96086 loader_module
+96108 xo-pet-v1_xo-pet-v1_manager

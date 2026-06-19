@@ -1,0 +1,13 @@
+user:1339628421176627220
+LVL:10
+XP:0
+HP:120
+MaxHP:120
+MP:60
+Attack:35
+Defense:25
+Magic Attack:25
+Magic Defense:25
+Agility:25
+Luck:15
+NextHuntTime:1755811588

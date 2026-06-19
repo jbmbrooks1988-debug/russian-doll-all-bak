@@ -1,0 +1,8 @@
+Battle begins! 85285851059847178's team (size 1) vs 1 enemies
+Round 1: 85285851059847178 misses Goblin 👺
+Round 1: Goblin 👺 hits 85285851059847178 for 8 damage (Magic)
+Round 2: 85285851059847178 hits Goblin 👺 for 16 damage (Magic)
+Round 2: Goblin 👺 hits 85285851059847178 for 8 damage (Magic)
+Round 3: 85285851059847178 misses Goblin 👺
+Round 3: Goblin 👺 hits 85285851059847178 for 16 damage (Physical)
+85285851059847178's team defeated!

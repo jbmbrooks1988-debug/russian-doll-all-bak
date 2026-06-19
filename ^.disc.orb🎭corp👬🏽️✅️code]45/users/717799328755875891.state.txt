@@ -1,0 +1,7 @@
+user_command_count=-30
+last_login=1755723454
+Sword_count=1
+Shield_count=0
+Potion_count=0
+Armor_count=0
+Gem_count=0

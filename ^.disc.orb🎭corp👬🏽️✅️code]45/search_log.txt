@@ -1,0 +1,914 @@
+[1756438336] Starting search.+x
+[1756438336] Loaded 22 hashes from processed_hashes.txt
+[1756438336] Opened events.txt successfully
+[1756438336] Read line: 1408214608187228291|1756431766|149393|!search dog
+[1756438336] Parsed: channel=1408214608187228291, timestamp=1756431766, hash=149393, content=!search dog
+[1756438336] Hash 149393 already processed, skipping
+[1756438336] Read line: 1408214608187228291|1756431906|282396|!search luck
+[1756438336] Parsed: channel=1408214608187228291, timestamp=1756431906, hash=282396, content=!search luck
+[1756438336] Hash 282396 already processed, skipping
+[1756438336] Read line: 1408214608187228291|1756431934|934535|!search luck txt
+[1756438336] Parsed: channel=1408214608187228291, timestamp=1756431934, hash=934535, content=!search luck txt
+[1756438336] Hash 934535 already processed, skipping
+[1756438336] Read line: 1408214608187228291|1756432228|106932|!search fun
+[1756438336] Parsed: channel=1408214608187228291, timestamp=1756432228, hash=106932, content=!search fun
+[1756438336] Hash 106932 already processed, skipping
+[1756438336] Read line: 1408214608187228291|1756432438|019352|!search play
+[1756438336] Parsed: channel=1408214608187228291, timestamp=1756432438, hash=019352, content=!search play
+[1756438336] Hash 019352 already processed, skipping
+[1756438336] Read line: 1287692228302475330|1756432454|304216|1
+[1756438336] Parsed: channel=1287692228302475330, timestamp=1756432454, hash=304216, content=1
+[1756438336] Hash 304216 already processed, skipping
+[1756438336] Read line: 1408214608187228291|1756432793|948125|!search help
+[1756438336] Parsed: channel=1408214608187228291, timestamp=1756432793, hash=948125, content=!search help
+[1756438336] Hash 948125 already processed, skipping
+[1756438336] Read line: 1408214608187228291|1756433115|336143|!search toy
+[1756438336] Parsed: channel=1408214608187228291, timestamp=1756433115, hash=336143, content=!search toy
+[1756438336] Hash 336143 already processed, skipping
+[1756438336] Read line: 1408214608187228291|1756433123|283948|Search failed for 'toy', please try again.
+[1756438336] Parsed: channel=1408214608187228291, timestamp=1756433123, hash=283948, content=Search failed for 'toy', please try again.
+[1756438336] Hash 283948 already processed, skipping
+[1756438336] Read line: 1408214608187228291|1756433123|283948|Search failed for 'toy', please try again.
+[1756438336] Parsed: channel=1408214608187228291, timestamp=1756433123, hash=283948, content=Search failed for 'toy', please try again.
+[1756438336] Hash 283948 already processed, skipping
+[1756438336] Read line: 1408214608187228291|1756433177|972092|!search help
+[1756438336] Parsed: channel=1408214608187228291, timestamp=1756433177, hash=972092, content=!search help
+[1756438336] Hash 972092 already processed, skipping
+[1756438336] Read line: 1408214608187228291|1756433182|604402|Search failed for 'help', please try again.
+[1756438336] Parsed: channel=1408214608187228291, timestamp=1756433182, hash=604402, content=Search failed for 'help', please try again.
+[1756438336] Hash 604402 already processed, skipping
+[1756438336] Read line: 1408214608187228291|1756433182|604402|Search failed for 'help', please try again.
+[1756438336] Parsed: channel=1408214608187228291, timestamp=1756433182, hash=604402, content=Search failed for 'help', please try again.
+[1756438336] Hash 604402 already processed, skipping
+[1756438354] Read line: 1408214608187228291|1756438354|691495|!search sunday
+[1756438354] Parsed: channel=1408214608187228291, timestamp=1756438354, hash=691495, content=!search sunday
+[1756438354] Saved hash: 691495
+[1756438354] No user ID prefix, using raw command: !search sunday
+[1756438354] Executing search for keyword: sunday
+[1756438354] Executing: ./+x/13.hybrid.+pagerank.+x "sunday" txt
+[1756438355] Read line: 1408214608187228291|1756438354|691495|!search sunday
+[1756438355] Parsed: channel=1408214608187228291, timestamp=1756438354, hash=691495, content=!search sunday
+[1756438355] Saved hash: 691495
+[1756438355] No user ID prefix, using raw command: !search sunday
+[1756438355] Executing search for keyword: sunday
+[1756438355] Executing: ./+x/14.hybrid.pagerank.+x "sunday" txt 1
+[1756438355] 14.hybrid.pagerank.+x failed with return code 32512: Success
+[1756438355] Wrote error to send_queue.txt: 1408214608187228291|Search failed
+[1756438355] Executing: ./+x/send.+x
+[1756438355] send.+x executed successfully
+[1756438355] Read line: 1408214608187228291|1756438355|037956|Search failed for 'sunday', please try again.
+[1756438355] Parsed: channel=1408214608187228291, timestamp=1756438355, hash=037956, content=Search failed for 'sunday', please try again.
+[1756438355] Saved hash: 037956
+[1756438355] No user ID prefix, using raw command: Search failed for 'sunday', please try again.
+[1756438360] 13.hybrid.+pagerank.+x failed with return code 35584: Input/output error
+[1756438360] Wrote error to send_queue.txt: 1408214608187228291|Search failed
+[1756438360] Executing: ./+x/send.+x
+[1756438361] send.+x executed successfully
+[1756438361] Read line: 1408214608187228291|1756438355|037956|Search failed for 'sunday', please try again.
+[1756438361] Parsed: channel=1408214608187228291, timestamp=1756438355, hash=037956, content=Search failed for 'sunday', please try again.
+[1756438361] Saved hash: 037956
+[1756438361] No user ID prefix, using raw command: Search failed for 'sunday', please try again.
+[1756438361] Read line: 1408214608187228291|1756438361|037983|Search failed for 'sunday', please try again.
+[1756438361] Parsed: channel=1408214608187228291, timestamp=1756438361, hash=037983, content=Search failed for 'sunday', please try again.
+[1756438361] Saved hash: 037983
+[1756438361] No user ID prefix, using raw command: Search failed for 'sunday', please try again.
+[1756438361] Read line: 1408214608187228291|1756438361|037983|Search failed for 'sunday', please try again.
+[1756438361] Parsed: channel=1408214608187228291, timestamp=1756438361, hash=037983, content=Search failed for 'sunday', please try again.
+[1756438361] Saved hash: 037983
+[1756438361] No user ID prefix, using raw command: Search failed for 'sunday', please try again.
+[1756438588] Starting search.+x
+[1756438588] Loaded 31 hashes from processed_hashes.txt
+[1756438588] Opened events.txt successfully
+[1756438588] Read line: 1408214608187228291|1756431766|149393|!search dog
+[1756438588] Parsed: channel=1408214608187228291, timestamp=1756431766, hash=149393, content=!search dog
+[1756438588] Hash 149393 already processed, skipping
+[1756438588] Read line: 1408214608187228291|1756431906|282396|!search luck
+[1756438588] Parsed: channel=1408214608187228291, timestamp=1756431906, hash=282396, content=!search luck
+[1756438588] Hash 282396 already processed, skipping
+[1756438588] Read line: 1408214608187228291|1756431934|934535|!search luck txt
+[1756438588] Parsed: channel=1408214608187228291, timestamp=1756431934, hash=934535, content=!search luck txt
+[1756438588] Hash 934535 already processed, skipping
+[1756438588] Read line: 1408214608187228291|1756432228|106932|!search fun
+[1756438588] Parsed: channel=1408214608187228291, timestamp=1756432228, hash=106932, content=!search fun
+[1756438588] Hash 106932 already processed, skipping
+[1756438588] Read line: 1408214608187228291|1756432438|019352|!search play
+[1756438588] Parsed: channel=1408214608187228291, timestamp=1756432438, hash=019352, content=!search play
+[1756438588] Hash 019352 already processed, skipping
+[1756438588] Read line: 1287692228302475330|1756432454|304216|1
+[1756438588] Parsed: channel=1287692228302475330, timestamp=1756432454, hash=304216, content=1
+[1756438588] Hash 304216 already processed, skipping
+[1756438588] Read line: 1408214608187228291|1756432793|948125|!search help
+[1756438588] Parsed: channel=1408214608187228291, timestamp=1756432793, hash=948125, content=!search help
+[1756438588] Hash 948125 already processed, skipping
+[1756438588] Read line: 1408214608187228291|1756433115|336143|!search toy
+[1756438588] Parsed: channel=1408214608187228291, timestamp=1756433115, hash=336143, content=!search toy
+[1756438588] Hash 336143 already processed, skipping
+[1756438588] Read line: 1408214608187228291|1756433123|283948|Search failed for 'toy', please try again.
+[1756438588] Parsed: channel=1408214608187228291, timestamp=1756433123, hash=283948, content=Search failed for 'toy', please try again.
+[1756438588] Hash 283948 already processed, skipping
+[1756438588] Read line: 1408214608187228291|1756433123|283948|Search failed for 'toy', please try again.
+[1756438588] Parsed: channel=1408214608187228291, timestamp=1756433123, hash=283948, content=Search failed for 'toy', please try again.
+[1756438588] Hash 283948 already processed, skipping
+[1756438588] Read line: 1408214608187228291|1756433177|972092|!search help
+[1756438588] Parsed: channel=1408214608187228291, timestamp=1756433177, hash=972092, content=!search help
+[1756438588] Hash 972092 already processed, skipping
+[1756438588] Read line: 1408214608187228291|1756433182|604402|Search failed for 'help', please try again.
+[1756438588] Parsed: channel=1408214608187228291, timestamp=1756433182, hash=604402, content=Search failed for 'help', please try again.
+[1756438588] Hash 604402 already processed, skipping
+[1756438588] Read line: 1408214608187228291|1756433182|604402|Search failed for 'help', please try again.
+[1756438588] Parsed: channel=1408214608187228291, timestamp=1756433182, hash=604402, content=Search failed for 'help', please try again.
+[1756438588] Hash 604402 already processed, skipping
+[1756438588] Read line: 1408214608187228291|1756438354|691495|!search sunday
+[1756438588] Parsed: channel=1408214608187228291, timestamp=1756438354, hash=691495, content=!search sunday
+[1756438588] Hash 691495 already processed, skipping
+[1756438588] Read line: 1408214608187228291|1756438355|037956|Search failed for 'sunday', please try again.
+[1756438588] Parsed: channel=1408214608187228291, timestamp=1756438355, hash=037956, content=Search failed for 'sunday', please try again.
+[1756438588] Hash 037956 already processed, skipping
+[1756438588] Read line: 1408214608187228291|1756438361|037983|Search failed for 'sunday', please try again.
+[1756438588] Parsed: channel=1408214608187228291, timestamp=1756438361, hash=037983, content=Search failed for 'sunday', please try again.
+[1756438588] Hash 037983 already processed, skipping
+[1756438596] Read line: 1408214608187228291|1756438596|811941|!search day
+[1756438596] Parsed: channel=1408214608187228291, timestamp=1756438596, hash=811941, content=!search day
+[1756438596] Saved hash: 811941
+[1756438596] No user ID prefix, using raw command: !search day
+[1756438596] Executing search for keyword: day
+[1756438596] Executing: ./+x/14.hybrid.pagerank.+x "day" txt 1
+[1756438596] 14.hybrid.pagerank.+x failed with return code 32512: Success
+[1756438596] Wrote error to send_queue.txt: 1408214608187228291|Search failed
+[1756438596] Executing: ./+x/send.+x
+[1756438597] send.+x executed successfully
+[1756438597] Read line: 1408214608187228291|1756438597|212134|Search failed for 'day', please try again.
+[1756438597] Parsed: channel=1408214608187228291, timestamp=1756438597, hash=212134, content=Search failed for 'day', please try again.
+[1756438597] Saved hash: 212134
+[1756438597] No user ID prefix, using raw command: Search failed for 'day', please try again.
+[1756438597] Read line: 1408214608187228291|1756438596|811941|!search day
+[1756438597] Parsed: channel=1408214608187228291, timestamp=1756438596, hash=811941, content=!search day
+[1756438597] Saved hash: 811941
+[1756438597] No user ID prefix, using raw command: !search day
+[1756438597] Executing search for keyword: day
+[1756438597] Executing: ./+x/13.hybrid.+pagerank.+x "day" txt
+[1756438597] 13.hybrid.+pagerank.+x failed with return code 32512: Input/output error
+[1756438597] Wrote error to send_queue.txt: 1408214608187228291|Search failed
+[1756438597] Executing: ./+x/send.+x
+[1756438597] send.+x executed successfully
+[1756438597] Read line: 1408214608187228291|1756438597|212134|Search failed for 'day', please try again.
+[1756438597] Parsed: channel=1408214608187228291, timestamp=1756438597, hash=212134, content=Search failed for 'day', please try again.
+[1756438597] Saved hash: 212134
+[1756438597] No user ID prefix, using raw command: Search failed for 'day', please try again.
+[1756438597] Read line: 1408214608187228291|1756438597|212134|Search failed for 'day', please try again.
+[1756438597] Parsed: channel=1408214608187228291, timestamp=1756438597, hash=212134, content=Search failed for 'day', please try again.
+[1756438597] Hash 212134 already processed, skipping
+[1756438598] Read line: 1408214608187228291|1756438597|212134|Search failed for 'day', please try again.
+[1756438598] Parsed: channel=1408214608187228291, timestamp=1756438597, hash=212134, content=Search failed for 'day', please try again.
+[1756438598] Hash 212134 already processed, skipping
+[1756438893] Starting search.+x
+[1756438893] Loaded 37 hashes from processed_hashes.txt
+[1756438893] Opened events.txt successfully
+[1756438893] Read line: 1408214608187228291|1756431766|149393|!search dog
+[1756438893] Parsed: channel=1408214608187228291, timestamp=1756431766, hash=149393, content=!search dog
+[1756438893] Hash 149393 already processed, skipping
+[1756438893] Read line: 1408214608187228291|1756431906|282396|!search luck
+[1756438893] Parsed: channel=1408214608187228291, timestamp=1756431906, hash=282396, content=!search luck
+[1756438893] Hash 282396 already processed, skipping
+[1756438893] Read line: 1408214608187228291|1756431934|934535|!search luck txt
+[1756438893] Parsed: channel=1408214608187228291, timestamp=1756431934, hash=934535, content=!search luck txt
+[1756438893] Hash 934535 already processed, skipping
+[1756438893] Read line: 1408214608187228291|1756432228|106932|!search fun
+[1756438893] Parsed: channel=1408214608187228291, timestamp=1756432228, hash=106932, content=!search fun
+[1756438893] Hash 106932 already processed, skipping
+[1756438893] Read line: 1408214608187228291|1756432438|019352|!search play
+[1756438893] Parsed: channel=1408214608187228291, timestamp=1756432438, hash=019352, content=!search play
+[1756438893] Hash 019352 already processed, skipping
+[1756438893] Read line: 1287692228302475330|1756432454|304216|1
+[1756438893] Parsed: channel=1287692228302475330, timestamp=1756432454, hash=304216, content=1
+[1756438893] Hash 304216 already processed, skipping
+[1756438893] Read line: 1408214608187228291|1756432793|948125|!search help
+[1756438893] Parsed: channel=1408214608187228291, timestamp=1756432793, hash=948125, content=!search help
+[1756438893] Hash 948125 already processed, skipping
+[1756438893] Read line: 1408214608187228291|1756433115|336143|!search toy
+[1756438893] Parsed: channel=1408214608187228291, timestamp=1756433115, hash=336143, content=!search toy
+[1756438893] Hash 336143 already processed, skipping
+[1756438893] Read line: 1408214608187228291|1756433123|283948|Search failed for 'toy', please try again.
+[1756438893] Parsed: channel=1408214608187228291, timestamp=1756433123, hash=283948, content=Search failed for 'toy', please try again.
+[1756438893] Hash 283948 already processed, skipping
+[1756438893] Read line: 1408214608187228291|1756433123|283948|Search failed for 'toy', please try again.
+[1756438893] Parsed: channel=1408214608187228291, timestamp=1756433123, hash=283948, content=Search failed for 'toy', please try again.
+[1756438893] Hash 283948 already processed, skipping
+[1756438893] Read line: 1408214608187228291|1756433177|972092|!search help
+[1756438893] Parsed: channel=1408214608187228291, timestamp=1756433177, hash=972092, content=!search help
+[1756438893] Hash 972092 already processed, skipping
+[1756438893] Read line: 1408214608187228291|1756433182|604402|Search failed for 'help', please try again.
+[1756438893] Parsed: channel=1408214608187228291, timestamp=1756433182, hash=604402, content=Search failed for 'help', please try again.
+[1756438893] Hash 604402 already processed, skipping
+[1756438893] Read line: 1408214608187228291|1756433182|604402|Search failed for 'help', please try again.
+[1756438893] Parsed: channel=1408214608187228291, timestamp=1756433182, hash=604402, content=Search failed for 'help', please try again.
+[1756438893] Hash 604402 already processed, skipping
+[1756438893] Read line: 1408214608187228291|1756438354|691495|!search sunday
+[1756438893] Parsed: channel=1408214608187228291, timestamp=1756438354, hash=691495, content=!search sunday
+[1756438893] Hash 691495 already processed, skipping
+[1756438893] Read line: 1408214608187228291|1756438355|037956|Search failed for 'sunday', please try again.
+[1756438893] Parsed: channel=1408214608187228291, timestamp=1756438355, hash=037956, content=Search failed for 'sunday', please try again.
+[1756438893] Hash 037956 already processed, skipping
+[1756438893] Read line: 1408214608187228291|1756438361|037983|Search failed for 'sunday', please try again.
+[1756438893] Parsed: channel=1408214608187228291, timestamp=1756438361, hash=037983, content=Search failed for 'sunday', please try again.
+[1756438893] Hash 037983 already processed, skipping
+[1756438893] Read line: 1408214608187228291|1756438596|811941|!search day
+[1756438893] Parsed: channel=1408214608187228291, timestamp=1756438596, hash=811941, content=!search day
+[1756438893] Hash 811941 already processed, skipping
+[1756438893] Read line: 1408214608187228291|1756438597|212134|Search failed for 'day', please try again.
+[1756438893] Parsed: channel=1408214608187228291, timestamp=1756438597, hash=212134, content=Search failed for 'day', please try again.
+[1756438893] Hash 212134 already processed, skipping
+[1756438893] Read line: 1408214608187228291|1756438597|212134|Search failed for 'day', please try again.
+[1756438893] Parsed: channel=1408214608187228291, timestamp=1756438597, hash=212134, content=Search failed for 'day', please try again.
+[1756438893] Hash 212134 already processed, skipping
+[1756438899] Read line: 1408214608187228291|1756438899|814827|!search day
+[1756438899] Parsed: channel=1408214608187228291, timestamp=1756438899, hash=814827, content=!search day
+[1756438899] Saved hash: 814827
+[1756438899] No user ID prefix, using raw command: !search day
+[1756438899] Executing search for keyword: day
+[1756438899] Executing: ./+x/13.hybrid.+pagerank.+x "day" txt
+[1756438899] 13.hybrid.+pagerank.+x failed with return code 32512: Input/output error
+[1756438899] Wrote error to send_queue.txt: 1408214608187228291|Search failed
+[1756438899] Executing: ./+x/send.+x
+[1756438900] Read line: 1408214608187228291|1756438899|814827|!search day
+[1756438900] Parsed: channel=1408214608187228291, timestamp=1756438899, hash=814827, content=!search day
+[1756438900] Saved hash: 814827
+[1756438900] No user ID prefix, using raw command: !search day
+[1756438900] Executing search for keyword: day
+[1756438900] Executable ./+x/14.hybrid.pagerank.+x not found: No such file or directory
+[1756438900] Wrote error to send_queue.txt: 1408214608187228291|Search failed
+[1756438900] send.+x executed successfully
+[1756438900] Read line: 1408214608187228291|1756438900|215692|Search failed for 'day', please try again.
+[1756438900] Parsed: channel=1408214608187228291, timestamp=1756438900, hash=215692, content=Search failed for 'day', please try again.
+[1756438900] Saved hash: 215692
+[1756438900] No user ID prefix, using raw command: Search failed for 'day', please try again.
+[1756438901] Read line: 1408214608187228291|1756438900|215692|Search failed for 'day', please try again.
+[1756438901] Parsed: channel=1408214608187228291, timestamp=1756438900, hash=215692, content=Search failed for 'day', please try again.
+[1756438901] Saved hash: 215692
+[1756438901] No user ID prefix, using raw command: Search failed for 'day', please try again.
+[1756441520] Starting search.+x
+[1756441520] Loaded 43 hashes from processed_hashes.txt
+[1756441520] Opened events.txt successfully
+[1756441520] Read line: 1408214608187228291|1756431766|149393|!search dog
+[1756441520] Parsed: channel=1408214608187228291, timestamp=1756431766, hash=149393, content=!search dog
+[1756441520] Hash 149393 already processed, skipping
+[1756441520] Read line: 1408214608187228291|1756431906|282396|!search luck
+[1756441520] Parsed: channel=1408214608187228291, timestamp=1756431906, hash=282396, content=!search luck
+[1756441520] Hash 282396 already processed, skipping
+[1756441520] Read line: 1408214608187228291|1756431934|934535|!search luck txt
+[1756441520] Parsed: channel=1408214608187228291, timestamp=1756431934, hash=934535, content=!search luck txt
+[1756441520] Hash 934535 already processed, skipping
+[1756441520] Read line: 1408214608187228291|1756432228|106932|!search fun
+[1756441520] Parsed: channel=1408214608187228291, timestamp=1756432228, hash=106932, content=!search fun
+[1756441520] Hash 106932 already processed, skipping
+[1756441520] Read line: 1408214608187228291|1756432438|019352|!search play
+[1756441520] Parsed: channel=1408214608187228291, timestamp=1756432438, hash=019352, content=!search play
+[1756441520] Hash 019352 already processed, skipping
+[1756441520] Read line: 1287692228302475330|1756432454|304216|1
+[1756441520] Parsed: channel=1287692228302475330, timestamp=1756432454, hash=304216, content=1
+[1756441520] Hash 304216 already processed, skipping
+[1756441520] Read line: 1408214608187228291|1756432793|948125|!search help
+[1756441520] Parsed: channel=1408214608187228291, timestamp=1756432793, hash=948125, content=!search help
+[1756441520] Hash 948125 already processed, skipping
+[1756441520] Read line: 1408214608187228291|1756433115|336143|!search toy
+[1756441520] Parsed: channel=1408214608187228291, timestamp=1756433115, hash=336143, content=!search toy
+[1756441520] Hash 336143 already processed, skipping
+[1756441520] Read line: 1408214608187228291|1756433123|283948|Search failed for 'toy', please try again.
+[1756441520] Parsed: channel=1408214608187228291, timestamp=1756433123, hash=283948, content=Search failed for 'toy', please try again.
+[1756441520] Hash 283948 already processed, skipping
+[1756441520] Read line: 1408214608187228291|1756433123|283948|Search failed for 'toy', please try again.
+[1756441520] Parsed: channel=1408214608187228291, timestamp=1756433123, hash=283948, content=Search failed for 'toy', please try again.
+[1756441520] Hash 283948 already processed, skipping
+[1756441520] Read line: 1408214608187228291|1756433177|972092|!search help
+[1756441520] Parsed: channel=1408214608187228291, timestamp=1756433177, hash=972092, content=!search help
+[1756441520] Hash 972092 already processed, skipping
+[1756441520] Read line: 1408214608187228291|1756433182|604402|Search failed for 'help', please try again.
+[1756441520] Parsed: channel=1408214608187228291, timestamp=1756433182, hash=604402, content=Search failed for 'help', please try again.
+[1756441520] Hash 604402 already processed, skipping
+[1756441520] Read line: 1408214608187228291|1756433182|604402|Search failed for 'help', please try again.
+[1756441520] Parsed: channel=1408214608187228291, timestamp=1756433182, hash=604402, content=Search failed for 'help', please try again.
+[1756441520] Hash 604402 already processed, skipping
+[1756441520] Read line: 1408214608187228291|1756438354|691495|!search sunday
+[1756441520] Parsed: channel=1408214608187228291, timestamp=1756438354, hash=691495, content=!search sunday
+[1756441520] Hash 691495 already processed, skipping
+[1756441520] Read line: 1408214608187228291|1756438355|037956|Search failed for 'sunday', please try again.
+[1756441520] Parsed: channel=1408214608187228291, timestamp=1756438355, hash=037956, content=Search failed for 'sunday', please try again.
+[1756441520] Hash 037956 already processed, skipping
+[1756441520] Read line: 1408214608187228291|1756438361|037983|Search failed for 'sunday', please try again.
+[1756441520] Parsed: channel=1408214608187228291, timestamp=1756438361, hash=037983, content=Search failed for 'sunday', please try again.
+[1756441520] Hash 037983 already processed, skipping
+[1756441520] Read line: 1408214608187228291|1756438596|811941|!search day
+[1756441520] Parsed: channel=1408214608187228291, timestamp=1756438596, hash=811941, content=!search day
+[1756441520] Hash 811941 already processed, skipping
+[1756441520] Read line: 1408214608187228291|1756438597|212134|Search failed for 'day', please try again.
+[1756441520] Parsed: channel=1408214608187228291, timestamp=1756438597, hash=212134, content=Search failed for 'day', please try again.
+[1756441520] Hash 212134 already processed, skipping
+[1756441520] Read line: 1408214608187228291|1756438597|212134|Search failed for 'day', please try again.
+[1756441520] Parsed: channel=1408214608187228291, timestamp=1756438597, hash=212134, content=Search failed for 'day', please try again.
+[1756441520] Hash 212134 already processed, skipping
+[1756441520] Read line: 1408214608187228291|1756438899|814827|!search day
+[1756441520] Parsed: channel=1408214608187228291, timestamp=1756438899, hash=814827, content=!search day
+[1756441520] Hash 814827 already processed, skipping
+[1756441520] Read line: 1408214608187228291|1756438900|215692|Search failed for 'day', please try again.
+[1756441520] Parsed: channel=1408214608187228291, timestamp=1756438900, hash=215692, content=Search failed for 'day', please try again.
+[1756441520] Hash 215692 already processed, skipping
+[1756441540] Read line: 1408214608187228291|1756441540|526764|!search day
+[1756441540] Parsed: channel=1408214608187228291, timestamp=1756441540, hash=526764, content=!search day
+[1756441540] Saved hash: 526764
+[1756441540] No user ID prefix, using raw command: !search day
+[1756441540] Executing search: ./+x/14.hybrid.pagerank.+x "day" txt 1
+[1756441540] 14.hybrid.pagerank.+x failed with return code 32512
+[1756441540] Executing: ./+x/send.+x
+[1756441540] send.+x executed successfully
+[1756441540] Read line: 1408214608187228291|1756441540|769095|Search failed, please try again.
+[1756441540] Parsed: channel=1408214608187228291, timestamp=1756441540, hash=769095, content=Search failed, please try again.
+[1756441540] Saved hash: 769095
+[1756441540] No user ID prefix, using raw command: Search failed, please try again.
+[1756441540] Read line: 1408214608187228291|1756441540|526764|!search day
+[1756441540] Parsed: channel=1408214608187228291, timestamp=1756441540, hash=526764, content=!search day
+[1756441540] Saved hash: 526764
+[1756441540] No user ID prefix, using raw command: !search day
+[1756441540] Executing search for keyword: day
+[1756441540] Executing: ./+x/13.hybrid.+pagerank.+x "day" txt
+[1756441540] 13.hybrid.+pagerank.+x failed with return code 32512: Input/output error
+[1756441540] Wrote error to send_queue.txt: 1408214608187228291|Search failed
+[1756441540] Executing: ./+x/send.+x
+[1756441541] send.+x executed successfully
+[1756441541] Read line: 1408214608187228291|1756441540|769095|Search failed, please try again.
+[1756441541] Parsed: channel=1408214608187228291, timestamp=1756441540, hash=769095, content=Search failed, please try again.
+[1756441541] Saved hash: 769095
+[1756441541] No user ID prefix, using raw command: Search failed, please try again.
+[1756441541] Read line: 1408214608187228291|1756441541|926957|Search failed for 'day', please try again.
+[1756441541] Parsed: channel=1408214608187228291, timestamp=1756441541, hash=926957, content=Search failed for 'day', please try again.
+[1756441541] Saved hash: 926957
+[1756441541] No user ID prefix, using raw command: Search failed for 'day', please try again.
+[1756441542] Read line: 1408214608187228291|1756441541|926957|Search failed for 'day', please try again.
+[1756441542] Parsed: channel=1408214608187228291, timestamp=1756441541, hash=926957, content=Search failed for 'day', please try again.
+[1756441542] Saved hash: 926957
+[1756441542] No user ID prefix, using raw command: Search failed for 'day', please try again.
+[1756441704] Starting search.+x
+[1756441704] Loaded 52 hashes from processed_hashes.txt
+[1756441704] Opened events.txt successfully
+[1756441704] Read line: 1408214608187228291|1756431766|149393|!search dog
+[1756441704] Parsed: channel=1408214608187228291, timestamp=1756431766, hash=149393, content=!search dog
+[1756441704] Hash 149393 already processed, skipping
+[1756441704] Read line: 1408214608187228291|1756431906|282396|!search luck
+[1756441704] Parsed: channel=1408214608187228291, timestamp=1756431906, hash=282396, content=!search luck
+[1756441704] Hash 282396 already processed, skipping
+[1756441704] Read line: 1408214608187228291|1756431934|934535|!search luck txt
+[1756441704] Parsed: channel=1408214608187228291, timestamp=1756431934, hash=934535, content=!search luck txt
+[1756441704] Hash 934535 already processed, skipping
+[1756441704] Read line: 1408214608187228291|1756432228|106932|!search fun
+[1756441704] Parsed: channel=1408214608187228291, timestamp=1756432228, hash=106932, content=!search fun
+[1756441704] Hash 106932 already processed, skipping
+[1756441704] Read line: 1408214608187228291|1756432438|019352|!search play
+[1756441704] Parsed: channel=1408214608187228291, timestamp=1756432438, hash=019352, content=!search play
+[1756441704] Hash 019352 already processed, skipping
+[1756441704] Read line: 1287692228302475330|1756432454|304216|1
+[1756441704] Parsed: channel=1287692228302475330, timestamp=1756432454, hash=304216, content=1
+[1756441704] Hash 304216 already processed, skipping
+[1756441704] Read line: 1408214608187228291|1756432793|948125|!search help
+[1756441704] Parsed: channel=1408214608187228291, timestamp=1756432793, hash=948125, content=!search help
+[1756441704] Hash 948125 already processed, skipping
+[1756441704] Read line: 1408214608187228291|1756433115|336143|!search toy
+[1756441704] Parsed: channel=1408214608187228291, timestamp=1756433115, hash=336143, content=!search toy
+[1756441704] Hash 336143 already processed, skipping
+[1756441704] Read line: 1408214608187228291|1756433123|283948|Search failed for 'toy', please try again.
+[1756441704] Parsed: channel=1408214608187228291, timestamp=1756433123, hash=283948, content=Search failed for 'toy', please try again.
+[1756441704] Hash 283948 already processed, skipping
+[1756441704] Read line: 1408214608187228291|1756433123|283948|Search failed for 'toy', please try again.
+[1756441704] Parsed: channel=1408214608187228291, timestamp=1756433123, hash=283948, content=Search failed for 'toy', please try again.
+[1756441704] Hash 283948 already processed, skipping
+[1756441704] Read line: 1408214608187228291|1756433177|972092|!search help
+[1756441704] Parsed: channel=1408214608187228291, timestamp=1756433177, hash=972092, content=!search help
+[1756441704] Hash 972092 already processed, skipping
+[1756441704] Read line: 1408214608187228291|1756433182|604402|Search failed for 'help', please try again.
+[1756441704] Parsed: channel=1408214608187228291, timestamp=1756433182, hash=604402, content=Search failed for 'help', please try again.
+[1756441704] Hash 604402 already processed, skipping
+[1756441704] Read line: 1408214608187228291|1756433182|604402|Search failed for 'help', please try again.
+[1756441704] Parsed: channel=1408214608187228291, timestamp=1756433182, hash=604402, content=Search failed for 'help', please try again.
+[1756441704] Hash 604402 already processed, skipping
+[1756441704] Read line: 1408214608187228291|1756438354|691495|!search sunday
+[1756441704] Parsed: channel=1408214608187228291, timestamp=1756438354, hash=691495, content=!search sunday
+[1756441704] Hash 691495 already processed, skipping
+[1756441704] Read line: 1408214608187228291|1756438355|037956|Search failed for 'sunday', please try again.
+[1756441704] Parsed: channel=1408214608187228291, timestamp=1756438355, hash=037956, content=Search failed for 'sunday', please try again.
+[1756441704] Hash 037956 already processed, skipping
+[1756441704] Read line: 1408214608187228291|1756438361|037983|Search failed for 'sunday', please try again.
+[1756441704] Parsed: channel=1408214608187228291, timestamp=1756438361, hash=037983, content=Search failed for 'sunday', please try again.
+[1756441704] Hash 037983 already processed, skipping
+[1756441704] Read line: 1408214608187228291|1756438596|811941|!search day
+[1756441704] Parsed: channel=1408214608187228291, timestamp=1756438596, hash=811941, content=!search day
+[1756441704] Hash 811941 already processed, skipping
+[1756441704] Read line: 1408214608187228291|1756438597|212134|Search failed for 'day', please try again.
+[1756441704] Parsed: channel=1408214608187228291, timestamp=1756438597, hash=212134, content=Search failed for 'day', please try again.
+[1756441704] Hash 212134 already processed, skipping
+[1756441704] Read line: 1408214608187228291|1756438597|212134|Search failed for 'day', please try again.
+[1756441704] Parsed: channel=1408214608187228291, timestamp=1756438597, hash=212134, content=Search failed for 'day', please try again.
+[1756441704] Hash 212134 already processed, skipping
+[1756441704] Read line: 1408214608187228291|1756438899|814827|!search day
+[1756441704] Parsed: channel=1408214608187228291, timestamp=1756438899, hash=814827, content=!search day
+[1756441704] Hash 814827 already processed, skipping
+[1756441704] Read line: 1408214608187228291|1756438900|215692|Search failed for 'day', please try again.
+[1756441704] Parsed: channel=1408214608187228291, timestamp=1756438900, hash=215692, content=Search failed for 'day', please try again.
+[1756441704] Hash 215692 already processed, skipping
+[1756441704] Read line: 1408214608187228291|1756441540|526764|!search day
+[1756441704] Parsed: channel=1408214608187228291, timestamp=1756441540, hash=526764, content=!search day
+[1756441704] Hash 526764 already processed, skipping
+[1756441704] Read line: 1408214608187228291|1756441540|769095|Search failed, please try again.
+[1756441704] Parsed: channel=1408214608187228291, timestamp=1756441540, hash=769095, content=Search failed, please try again.
+[1756441704] Hash 769095 already processed, skipping
+[1756441704] Read line: 1408214608187228291|1756441541|926957|Search failed for 'day', please try again.
+[1756441704] Parsed: channel=1408214608187228291, timestamp=1756441541, hash=926957, content=Search failed for 'day', please try again.
+[1756441704] Hash 926957 already processed, skipping
+[1756441717] Read line: 1408214608187228291|1756441717|528600|!search day
+[1756441717] Parsed: channel=1408214608187228291, timestamp=1756441717, hash=528600, content=!search day
+[1756441717] Saved hash: 528600
+[1756441717] No user ID prefix, using raw command: !search day
+[1756441717] Executing search: ./+x/14.hybrid.pagerank.+x "day" txt 1
+[1756441717] Read line: 1408214608187228291|1756441717|528600|!search day
+[1756441717] Parsed: channel=1408214608187228291, timestamp=1756441717, hash=528600, content=!search day
+[1756441717] Saved hash: 528600
+[1756441717] No user ID prefix, using raw command: !search day
+[1756441717] Executing search for keyword: day
+[1756441717] Executing: ./+x/13.hybrid.+pagerank.+x "day" txt
+[1756441717] 13.hybrid.+pagerank.+x failed with return code 32512: Input/output error
+[1756441717] Wrote error to send_queue.txt: 1408214608187228291|Search failed
+[1756441717] Executing: ./+x/send.+x
+[1756441718] send.+x executed successfully
+[1756441718] Read line: 1408214608187228291|1756441718|928793|Search failed for 'day', please try again.
+[1756441718] Parsed: channel=1408214608187228291, timestamp=1756441718, hash=928793, content=Search failed for 'day', please try again.
+[1756441718] Saved hash: 928793
+[1756441718] No user ID prefix, using raw command: Search failed for 'day', please try again.
+[1756441724] Wrote to send_queue.txt: 1408214608187228291|Search result for 'day': [1] google.com <dns> (1 mentions, Inbound links: 1, Links: <link>google.com</link>) 
+[1756441724] Executing: ./+x/send.+x
+[1756441725] send.+x executed successfully
+[1756441725] Read line: 1408214608187228291|1756441718|928793|Search failed for 'day', please try again.
+[1756441725] Parsed: channel=1408214608187228291, timestamp=1756441718, hash=928793, content=Search failed for 'day', please try again.
+[1756441725] Saved hash: 928793
+[1756441725] No user ID prefix, using raw command: Search failed for 'day', please try again.
+[1756441725] Read line: 1408214608187228291|1756441725|301902|Search result for 'day': [1] google.com <dns> (1 mentions, Inbound links: 1, Links: <link>google.com</link>)
+[1756441725] Parsed: channel=1408214608187228291, timestamp=1756441725, hash=301902, content=Search result for 'day': [1] google.com <dns> (1 mentions, Inbound links: 1, Links: <link>google.com</link>)
+[1756441725] Saved hash: 301902
+[1756441725] No user ID prefix, using raw command: (1 mentions, Inbound links: 1, Links: <link>google.com</link>)
+[1756441726] Read line: 1408214608187228291|1756441725|301902|Search result for 'day': [1] google.com <dns> (1 mentions, Inbound links: 1, Links: <link>google.com</link>)
+[1756441726] Parsed: channel=1408214608187228291, timestamp=1756441725, hash=301902, content=Search result for 'day': [1] google.com <dns> (1 mentions, Inbound links: 1, Links: <link>google.com</link>)
+[1756441726] Saved hash: 301902
+[1756441726] No user ID prefix, using raw command: (1 mentions, Inbound links: 1, Links: <link>google.com</link>)
+[1756441758] Read line: 1408214608187228291|1756441757|620065|!search computer
+[1756441758] Parsed: channel=1408214608187228291, timestamp=1756441757, hash=620065, content=!search computer
+[1756441758] Saved hash: 620065
+[1756441758] No user ID prefix, using raw command: !search computer
+[1756441758] Executing search for keyword: computer
+[1756441758] Executing: ./+x/13.hybrid.+pagerank.+x "computer" txt
+[1756441758] 13.hybrid.+pagerank.+x failed with return code 32512: Input/output error
+[1756441758] Wrote error to send_queue.txt: 1408214608187228291|Search failed
+[1756441758] Executing: ./+x/send.+x
+[1756441758] Read line: 1408214608187228291|1756441757|620065|!search computer
+[1756441758] Parsed: channel=1408214608187228291, timestamp=1756441757, hash=620065, content=!search computer
+[1756441758] Saved hash: 620065
+[1756441758] No user ID prefix, using raw command: !search computer
+[1756441758] Executing search: ./+x/14.hybrid.pagerank.+x "computer" txt 1
+[1756441758] send.+x executed successfully
+[1756441758] Read line: 1408214608187228291|1756441758|138878|Search failed for 'computer', please try again.
+[1756441758] Parsed: channel=1408214608187228291, timestamp=1756441758, hash=138878, content=Search failed for 'computer', please try again.
+[1756441758] Saved hash: 138878
+[1756441758] No user ID prefix, using raw command: Search failed for 'computer', please try again.
+[1756441766] Wrote to send_queue.txt: 1408214608187228291|Search result for 'computer': [1] yahoo.com <dns> (4 mentions, Inbound links: 0, Links: None) 
+[1756441766] Executing: ./+x/send.+x
+[1756441766] send.+x executed successfully
+[1756441766] Read line: 1408214608187228291|1756441758|138878|Search failed for 'computer', please try again.
+[1756441766] Parsed: channel=1408214608187228291, timestamp=1756441758, hash=138878, content=Search failed for 'computer', please try again.
+[1756441766] Saved hash: 138878
+[1756441766] No user ID prefix, using raw command: Search failed for 'computer', please try again.
+[1756441766] Read line: 1408214608187228291|1756441766|043034|Search result for 'computer': [1] yahoo.com <dns> (4 mentions, Inbound links: 0, Links: None)
+[1756441766] Parsed: channel=1408214608187228291, timestamp=1756441766, hash=043034, content=Search result for 'computer': [1] yahoo.com <dns> (4 mentions, Inbound links: 0, Links: None)
+[1756441766] Saved hash: 043034
+[1756441766] No user ID prefix, using raw command: (4 mentions, Inbound links: 0, Links: None)
+[1756441767] Read line: 1408214608187228291|1756441766|043034|Search result for 'computer': [1] yahoo.com <dns> (4 mentions, Inbound links: 0, Links: None)
+[1756441767] Parsed: channel=1408214608187228291, timestamp=1756441766, hash=043034, content=Search result for 'computer': [1] yahoo.com <dns> (4 mentions, Inbound links: 0, Links: None)
+[1756441767] Saved hash: 043034
+[1756441767] No user ID prefix, using raw command: (4 mentions, Inbound links: 0, Links: None)
+[1756441999] Starting search.+x
+[1756441999] Loaded 70 hashes from processed_hashes.txt
+[1756441999] Opened events.txt successfully
+[1756441999] Read line: 1408214608187228291|1756431766|149393|!search dog
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756431766, hash=149393, content=!search dog
+[1756441999] Hash 149393 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756431906|282396|!search luck
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756431906, hash=282396, content=!search luck
+[1756441999] Hash 282396 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756431934|934535|!search luck txt
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756431934, hash=934535, content=!search luck txt
+[1756441999] Hash 934535 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756432228|106932|!search fun
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756432228, hash=106932, content=!search fun
+[1756441999] Hash 106932 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756432438|019352|!search play
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756432438, hash=019352, content=!search play
+[1756441999] Hash 019352 already processed, skipping
+[1756441999] Read line: 1287692228302475330|1756432454|304216|1
+[1756441999] Parsed: channel=1287692228302475330, timestamp=1756432454, hash=304216, content=1
+[1756441999] Hash 304216 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756432793|948125|!search help
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756432793, hash=948125, content=!search help
+[1756441999] Hash 948125 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756433115|336143|!search toy
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756433115, hash=336143, content=!search toy
+[1756441999] Hash 336143 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756433123|283948|Search failed for 'toy', please try again.
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756433123, hash=283948, content=Search failed for 'toy', please try again.
+[1756441999] Hash 283948 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756433123|283948|Search failed for 'toy', please try again.
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756433123, hash=283948, content=Search failed for 'toy', please try again.
+[1756441999] Hash 283948 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756433177|972092|!search help
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756433177, hash=972092, content=!search help
+[1756441999] Hash 972092 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756433182|604402|Search failed for 'help', please try again.
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756433182, hash=604402, content=Search failed for 'help', please try again.
+[1756441999] Hash 604402 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756433182|604402|Search failed for 'help', please try again.
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756433182, hash=604402, content=Search failed for 'help', please try again.
+[1756441999] Hash 604402 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756438354|691495|!search sunday
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756438354, hash=691495, content=!search sunday
+[1756441999] Hash 691495 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756438355|037956|Search failed for 'sunday', please try again.
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756438355, hash=037956, content=Search failed for 'sunday', please try again.
+[1756441999] Hash 037956 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756438361|037983|Search failed for 'sunday', please try again.
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756438361, hash=037983, content=Search failed for 'sunday', please try again.
+[1756441999] Hash 037983 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756438596|811941|!search day
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756438596, hash=811941, content=!search day
+[1756441999] Hash 811941 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756438597|212134|Search failed for 'day', please try again.
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756438597, hash=212134, content=Search failed for 'day', please try again.
+[1756441999] Hash 212134 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756438597|212134|Search failed for 'day', please try again.
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756438597, hash=212134, content=Search failed for 'day', please try again.
+[1756441999] Hash 212134 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756438899|814827|!search day
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756438899, hash=814827, content=!search day
+[1756441999] Hash 814827 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756438900|215692|Search failed for 'day', please try again.
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756438900, hash=215692, content=Search failed for 'day', please try again.
+[1756441999] Hash 215692 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756441540|526764|!search day
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756441540, hash=526764, content=!search day
+[1756441999] Hash 526764 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756441540|769095|Search failed, please try again.
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756441540, hash=769095, content=Search failed, please try again.
+[1756441999] Hash 769095 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756441541|926957|Search failed for 'day', please try again.
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756441541, hash=926957, content=Search failed for 'day', please try again.
+[1756441999] Hash 926957 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756441717|528600|!search day
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756441717, hash=528600, content=!search day
+[1756441999] Hash 528600 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756441718|928793|Search failed for 'day', please try again.
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756441718, hash=928793, content=Search failed for 'day', please try again.
+[1756441999] Hash 928793 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756441725|301902|Search result for 'day': [1] google.com <dns> (1 mentions, Inbound links: 1, Links: <link>google.com</link>)
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756441725, hash=301902, content=Search result for 'day': [1] google.com <dns> (1 mentions, Inbound links: 1, Links: <link>google.com</link>)
+[1756441999] Hash 301902 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756441757|620065|!search computer
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756441757, hash=620065, content=!search computer
+[1756441999] Hash 620065 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756441758|138878|Search failed for 'computer', please try again.
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756441758, hash=138878, content=Search failed for 'computer', please try again.
+[1756441999] Hash 138878 already processed, skipping
+[1756441999] Read line: 1408214608187228291|1756441766|043034|Search result for 'computer': [1] yahoo.com <dns> (4 mentions, Inbound links: 0, Links: None)
+[1756441999] Parsed: channel=1408214608187228291, timestamp=1756441766, hash=043034, content=Search result for 'computer': [1] yahoo.com <dns> (4 mentions, Inbound links: 0, Links: None)
+[1756441999] Hash 043034 already processed, skipping
+[1756442009] Read line: 1408214608187228291|1756442008|170358|!search president
+[1756442009] Parsed: channel=1408214608187228291, timestamp=1756442008, hash=170358, content=!search president
+[1756442009] Saved hash: 170358
+[1756442009] No user ID prefix, using raw command: !search president
+[1756442009] Executing search: ./+x/14.hybrid.pagerank.+x "president" txt 1
+[1756442009] Read line: 1408214608187228291|1756442008|170358|!search president
+[1756442009] Parsed: channel=1408214608187228291, timestamp=1756442008, hash=170358, content=!search president
+[1756442009] Saved hash: 170358
+[1756442009] No user ID prefix, using raw command: !search president
+[1756442009] Executing search for keyword: president
+[1756442009] Executing: ./+x/13.hybrid.+pagerank.+x "president" txt
+[1756442009] 13.hybrid.+pagerank.+x failed with return code 32512: Input/output error
+[1756442009] Wrote error to send_queue.txt: 1408214608187228291|Search failed
+[1756442009] Executing: ./+x/send.+x
+[1756442010] send.+x executed successfully
+[1756442010] Read line: 1408214608187228291|1756442010|275533|Search failed for 'president', please try again.
+[1756442010] Parsed: channel=1408214608187228291, timestamp=1756442010, hash=275533, content=Search failed for 'president', please try again.
+[1756442010] Saved hash: 275533
+[1756442010] No user ID prefix, using raw command: Search failed for 'president', please try again.
+[1756442020] Wrote to send_queue.txt: 1408214608187228291|Search result for 'president': [1] yahoo.com <dns> (5 mentions, Inbound links: 0, Links: None) 
+[1756442020] Executing: ./+x/send.+x
+[1756442021] send.+x executed successfully
+[1756442021] Read line: 1408214608187228291|1756442010|275533|Search failed for 'president', please try again.
+[1756442021] Parsed: channel=1408214608187228291, timestamp=1756442010, hash=275533, content=Search failed for 'president', please try again.
+[1756442021] Saved hash: 275533
+[1756442021] No user ID prefix, using raw command: Search failed for 'president', please try again.
+[1756442021] Read line: 1408214608187228291|1756442021|598987|Search result for 'president': [1] yahoo.com <dns> (5 mentions, Inbound links: 0, Links: None)
+[1756442021] Parsed: channel=1408214608187228291, timestamp=1756442021, hash=598987, content=Search result for 'president': [1] yahoo.com <dns> (5 mentions, Inbound links: 0, Links: None)
+[1756442021] Saved hash: 598987
+[1756442021] No user ID prefix, using raw command: (5 mentions, Inbound links: 0, Links: None)
+[1756442021] Read line: 1408214608187228291|1756442021|598987|Search result for 'president': [1] yahoo.com <dns> (5 mentions, Inbound links: 0, Links: None)
+[1756442021] Parsed: channel=1408214608187228291, timestamp=1756442021, hash=598987, content=Search result for 'president': [1] yahoo.com <dns> (5 mentions, Inbound links: 0, Links: None)
+[1756442021] Saved hash: 598987
+[1756442021] No user ID prefix, using raw command: (5 mentions, Inbound links: 0, Links: None)
+[1756442210] Starting search.+x
+[1756442210] Loaded 79 hashes from processed_hashes.txt
+[1756442210] Opened events.txt successfully
+[1756442210] Read line: 1408214608187228291|1756431766|149393|!search dog
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756431766, hash=149393, content=!search dog
+[1756442210] Hash 149393 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756431906|282396|!search luck
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756431906, hash=282396, content=!search luck
+[1756442210] Hash 282396 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756431934|934535|!search luck txt
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756431934, hash=934535, content=!search luck txt
+[1756442210] Hash 934535 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756432228|106932|!search fun
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756432228, hash=106932, content=!search fun
+[1756442210] Hash 106932 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756432438|019352|!search play
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756432438, hash=019352, content=!search play
+[1756442210] Hash 019352 already processed, skipping
+[1756442210] Read line: 1287692228302475330|1756432454|304216|1
+[1756442210] Parsed: channel=1287692228302475330, timestamp=1756432454, hash=304216, content=1
+[1756442210] Hash 304216 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756432793|948125|!search help
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756432793, hash=948125, content=!search help
+[1756442210] Hash 948125 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756433115|336143|!search toy
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756433115, hash=336143, content=!search toy
+[1756442210] Hash 336143 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756433123|283948|Search failed for 'toy', please try again.
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756433123, hash=283948, content=Search failed for 'toy', please try again.
+[1756442210] Hash 283948 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756433123|283948|Search failed for 'toy', please try again.
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756433123, hash=283948, content=Search failed for 'toy', please try again.
+[1756442210] Hash 283948 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756433177|972092|!search help
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756433177, hash=972092, content=!search help
+[1756442210] Hash 972092 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756433182|604402|Search failed for 'help', please try again.
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756433182, hash=604402, content=Search failed for 'help', please try again.
+[1756442210] Hash 604402 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756433182|604402|Search failed for 'help', please try again.
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756433182, hash=604402, content=Search failed for 'help', please try again.
+[1756442210] Hash 604402 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756438354|691495|!search sunday
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756438354, hash=691495, content=!search sunday
+[1756442210] Hash 691495 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756438355|037956|Search failed for 'sunday', please try again.
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756438355, hash=037956, content=Search failed for 'sunday', please try again.
+[1756442210] Hash 037956 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756438361|037983|Search failed for 'sunday', please try again.
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756438361, hash=037983, content=Search failed for 'sunday', please try again.
+[1756442210] Hash 037983 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756438596|811941|!search day
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756438596, hash=811941, content=!search day
+[1756442210] Hash 811941 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756438597|212134|Search failed for 'day', please try again.
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756438597, hash=212134, content=Search failed for 'day', please try again.
+[1756442210] Hash 212134 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756438597|212134|Search failed for 'day', please try again.
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756438597, hash=212134, content=Search failed for 'day', please try again.
+[1756442210] Hash 212134 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756438899|814827|!search day
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756438899, hash=814827, content=!search day
+[1756442210] Hash 814827 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756438900|215692|Search failed for 'day', please try again.
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756438900, hash=215692, content=Search failed for 'day', please try again.
+[1756442210] Hash 215692 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756441540|526764|!search day
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756441540, hash=526764, content=!search day
+[1756442210] Hash 526764 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756441540|769095|Search failed, please try again.
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756441540, hash=769095, content=Search failed, please try again.
+[1756442210] Hash 769095 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756441541|926957|Search failed for 'day', please try again.
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756441541, hash=926957, content=Search failed for 'day', please try again.
+[1756442210] Hash 926957 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756441717|528600|!search day
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756441717, hash=528600, content=!search day
+[1756442210] Hash 528600 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756441718|928793|Search failed for 'day', please try again.
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756441718, hash=928793, content=Search failed for 'day', please try again.
+[1756442210] Hash 928793 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756441725|301902|Search result for 'day': [1] google.com <dns> (1 mentions, Inbound links: 1, Links: <link>google.com</link>)
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756441725, hash=301902, content=Search result for 'day': [1] google.com <dns> (1 mentions, Inbound links: 1, Links: <link>google.com</link>)
+[1756442210] Hash 301902 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756441757|620065|!search computer
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756441757, hash=620065, content=!search computer
+[1756442210] Hash 620065 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756441758|138878|Search failed for 'computer', please try again.
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756441758, hash=138878, content=Search failed for 'computer', please try again.
+[1756442210] Hash 138878 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756441766|043034|Search result for 'computer': [1] yahoo.com <dns> (4 mentions, Inbound links: 0, Links: None)
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756441766, hash=043034, content=Search result for 'computer': [1] yahoo.com <dns> (4 mentions, Inbound links: 0, Links: None)
+[1756442210] Hash 043034 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756442008|170358|!search president
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756442008, hash=170358, content=!search president
+[1756442210] Hash 170358 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756442010|275533|Search failed for 'president', please try again.
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756442010, hash=275533, content=Search failed for 'president', please try again.
+[1756442210] Hash 275533 already processed, skipping
+[1756442210] Read line: 1408214608187228291|1756442021|598987|Search result for 'president': [1] yahoo.com <dns> (5 mentions, Inbound links: 0, Links: None)
+[1756442210] Parsed: channel=1408214608187228291, timestamp=1756442021, hash=598987, content=Search result for 'president': [1] yahoo.com <dns> (5 mentions, Inbound links: 0, Links: None)
+[1756442210] Hash 598987 already processed, skipping
+[1756442224] Read line: 1408214608187228291|1756442224|748466|!search game
+[1756442224] Parsed: channel=1408214608187228291, timestamp=1756442224, hash=748466, content=!search game
+[1756442224] Saved hash: 748466
+[1756442224] No user ID prefix, using raw command: !search game
+[1756442224] Executing search: ./+x/14.hybrid.pagerank.+x "game" txt 1
+[1756442225] Read line: 1408214608187228291|1756442224|748466|!search game
+[1756442225] Parsed: channel=1408214608187228291, timestamp=1756442224, hash=748466, content=!search game
+[1756442225] Saved hash: 748466
+[1756442225] No user ID prefix, using raw command: !search game
+[1756442225] Executing search for keyword: game
+[1756442225] Executing: ./+x/13.hybrid.+pagerank.+x "game" txt
+[1756442225] 13.hybrid.+pagerank.+x failed with return code 32512: Input/output error
+[1756442225] Wrote error to send_queue.txt: 1408214608187228291|Search failed
+[1756442225] Executing: ./+x/send.+x
+[1756442225] send.+x executed successfully
+[1756442225] Read line: 1408214608187228291|1756442225|811471|Search failed for 'game', please try again.
+[1756442225] Parsed: channel=1408214608187228291, timestamp=1756442225, hash=811471, content=Search failed for 'game', please try again.
+[1756442225] Saved hash: 811471
+[1756442225] No user ID prefix, using raw command: Search failed for 'game', please try again.
+[1756442233] Wrote to send_queue.txt: 1408214608187228291|Search result for 'game': [1] youtube.com <dns> (6 mentions, Inbound links: 0, Links: None) 
+[1756442233] Executing: ./+x/send.+x
+[1756442233] send.+x executed successfully
+[1756442233] Read line: 1408214608187228291|1756442225|811471|Search failed for 'game', please try again.
+[1756442233] Parsed: channel=1408214608187228291, timestamp=1756442225, hash=811471, content=Search failed for 'game', please try again.
+[1756442233] Saved hash: 811471
+[1756442233] No user ID prefix, using raw command: Search failed for 'game', please try again.
+[1756442233] Read line: 1408214608187228291|1756442233|844044|Search result for 'game': [1] youtube.com <dns> (6 mentions, Inbound links: 0, Links: None)
+[1756442233] Parsed: channel=1408214608187228291, timestamp=1756442233, hash=844044, content=Search result for 'game': [1] youtube.com <dns> (6 mentions, Inbound links: 0, Links: None)
+[1756442233] Saved hash: 844044
+[1756442233] No user ID prefix, using raw command: (6 mentions, Inbound links: 0, Links: None)
+[1756442234] Read line: 1408214608187228291|1756442233|844044|Search result for 'game': [1] youtube.com <dns> (6 mentions, Inbound links: 0, Links: None)
+[1756442234] Parsed: channel=1408214608187228291, timestamp=1756442233, hash=844044, content=Search result for 'game': [1] youtube.com <dns> (6 mentions, Inbound links: 0, Links: None)
+[1756442234] Saved hash: 844044
+[1756442234] No user ID prefix, using raw command: (6 mentions, Inbound links: 0, Links: None)
+[1756442717] Starting search.+x
+[1756442717] Loaded 88 hashes from processed_hashes.txt
+[1756442717] Opened events.txt successfully
+[1756442717] Read line: 1408214608187228291|1756431766|149393|!search dog
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756431766, hash=149393, content=!search dog
+[1756442717] Hash 149393 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756431906|282396|!search luck
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756431906, hash=282396, content=!search luck
+[1756442717] Hash 282396 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756431934|934535|!search luck txt
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756431934, hash=934535, content=!search luck txt
+[1756442717] Hash 934535 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756432228|106932|!search fun
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756432228, hash=106932, content=!search fun
+[1756442717] Hash 106932 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756432438|019352|!search play
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756432438, hash=019352, content=!search play
+[1756442717] Hash 019352 already processed, skipping
+[1756442717] Read line: 1287692228302475330|1756432454|304216|1
+[1756442717] Parsed: channel=1287692228302475330, timestamp=1756432454, hash=304216, content=1
+[1756442717] Hash 304216 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756432793|948125|!search help
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756432793, hash=948125, content=!search help
+[1756442717] Hash 948125 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756433115|336143|!search toy
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756433115, hash=336143, content=!search toy
+[1756442717] Hash 336143 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756433123|283948|Search failed for 'toy', please try again.
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756433123, hash=283948, content=Search failed for 'toy', please try again.
+[1756442717] Hash 283948 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756433123|283948|Search failed for 'toy', please try again.
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756433123, hash=283948, content=Search failed for 'toy', please try again.
+[1756442717] Hash 283948 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756433177|972092|!search help
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756433177, hash=972092, content=!search help
+[1756442717] Hash 972092 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756433182|604402|Search failed for 'help', please try again.
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756433182, hash=604402, content=Search failed for 'help', please try again.
+[1756442717] Hash 604402 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756433182|604402|Search failed for 'help', please try again.
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756433182, hash=604402, content=Search failed for 'help', please try again.
+[1756442717] Hash 604402 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756438354|691495|!search sunday
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756438354, hash=691495, content=!search sunday
+[1756442717] Hash 691495 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756438355|037956|Search failed for 'sunday', please try again.
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756438355, hash=037956, content=Search failed for 'sunday', please try again.
+[1756442717] Hash 037956 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756438361|037983|Search failed for 'sunday', please try again.
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756438361, hash=037983, content=Search failed for 'sunday', please try again.
+[1756442717] Hash 037983 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756438596|811941|!search day
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756438596, hash=811941, content=!search day
+[1756442717] Hash 811941 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756438597|212134|Search failed for 'day', please try again.
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756438597, hash=212134, content=Search failed for 'day', please try again.
+[1756442717] Hash 212134 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756438597|212134|Search failed for 'day', please try again.
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756438597, hash=212134, content=Search failed for 'day', please try again.
+[1756442717] Hash 212134 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756438899|814827|!search day
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756438899, hash=814827, content=!search day
+[1756442717] Hash 814827 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756438900|215692|Search failed for 'day', please try again.
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756438900, hash=215692, content=Search failed for 'day', please try again.
+[1756442717] Hash 215692 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756441540|526764|!search day
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756441540, hash=526764, content=!search day
+[1756442717] Hash 526764 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756441540|769095|Search failed, please try again.
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756441540, hash=769095, content=Search failed, please try again.
+[1756442717] Hash 769095 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756441541|926957|Search failed for 'day', please try again.
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756441541, hash=926957, content=Search failed for 'day', please try again.
+[1756442717] Hash 926957 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756441717|528600|!search day
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756441717, hash=528600, content=!search day
+[1756442717] Hash 528600 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756441718|928793|Search failed for 'day', please try again.
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756441718, hash=928793, content=Search failed for 'day', please try again.
+[1756442717] Hash 928793 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756441725|301902|Search result for 'day': [1] google.com <dns> (1 mentions, Inbound links: 1, Links: <link>google.com</link>)
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756441725, hash=301902, content=Search result for 'day': [1] google.com <dns> (1 mentions, Inbound links: 1, Links: <link>google.com</link>)
+[1756442717] Hash 301902 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756441757|620065|!search computer
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756441757, hash=620065, content=!search computer
+[1756442717] Hash 620065 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756441758|138878|Search failed for 'computer', please try again.
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756441758, hash=138878, content=Search failed for 'computer', please try again.
+[1756442717] Hash 138878 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756441766|043034|Search result for 'computer': [1] yahoo.com <dns> (4 mentions, Inbound links: 0, Links: None)
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756441766, hash=043034, content=Search result for 'computer': [1] yahoo.com <dns> (4 mentions, Inbound links: 0, Links: None)
+[1756442717] Hash 043034 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756442008|170358|!search president
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756442008, hash=170358, content=!search president
+[1756442717] Hash 170358 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756442010|275533|Search failed for 'president', please try again.
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756442010, hash=275533, content=Search failed for 'president', please try again.
+[1756442717] Hash 275533 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756442021|598987|Search result for 'president': [1] yahoo.com <dns> (5 mentions, Inbound links: 0, Links: None)
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756442021, hash=598987, content=Search result for 'president': [1] yahoo.com <dns> (5 mentions, Inbound links: 0, Links: None)
+[1756442717] Hash 598987 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756442224|748466|!search game
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756442224, hash=748466, content=!search game
+[1756442717] Hash 748466 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756442225|811471|Search failed for 'game', please try again.
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756442225, hash=811471, content=Search failed for 'game', please try again.
+[1756442717] Hash 811471 already processed, skipping
+[1756442717] Read line: 1408214608187228291|1756442233|844044|Search result for 'game': [1] youtube.com <dns> (6 mentions, Inbound links: 0, Links: None)
+[1756442717] Parsed: channel=1408214608187228291, timestamp=1756442233, hash=844044, content=Search result for 'game': [1] youtube.com <dns> (6 mentions, Inbound links: 0, Links: None)
+[1756442717] Hash 844044 already processed, skipping
+[1756442722] Read line: 1408214608187228291|1756442722|970364|!search google
+[1756442722] Parsed: channel=1408214608187228291, timestamp=1756442722, hash=970364, content=!search google
+[1756442722] Saved hash: 970364
+[1756442722] No user ID prefix, using raw command: !search google
+[1756442722] Executing search for keyword: google
+[1756442722] Executing: ./+x/13.hybrid.+pagerank.+x "google" txt
+[1756442722] 13.hybrid.+pagerank.+x failed with return code 32512: Input/output error
+[1756442722] Wrote error to send_queue.txt: 1408214608187228291|Search failed
+[1756442722] Executing: ./+x/send.+x
+[1756442723] send.+x executed successfully
+[1756442723] Read line: 1408214608187228291|1756442722|095000|Search failed for 'google', please try again.
+[1756442723] Parsed: channel=1408214608187228291, timestamp=1756442722, hash=095000, content=Search failed for 'google', please try again.
+[1756442723] Saved hash: 095000
+[1756442723] No user ID prefix, using raw command: Search failed for 'google', please try again.
+[1756442723] Read line: 1408214608187228291|1756442722|970364|!search google
+[1756442723] Parsed: channel=1408214608187228291, timestamp=1756442722, hash=970364, content=!search google
+[1756442723] Saved hash: 970364
+[1756442723] No user ID prefix, using raw command: !search google
+[1756442723] Executing search: ./+x/14.hybrid.pagerank.+x "google" txt 1
+[1756442725] Wrote to send_queue.txt: 1408214608187228291|Search result for 'google': [1] google.com <dns> (342 mentions, Inbound links: 1, Links: <link>google.com</link>) Instance 1:  .RNNXgb:hover,.sbfc.emcav .RNNXgb,.BgPPrc .RNNXgb:hover{background:#fff;box-shadow:
+[1756442725] Executing: ./+x/send.+x
+[1756442725] send.+x executed successfully
+[1756442725] Read line: 1408214608187228291|1756442722|095000|Search failed for 'google', please try again.
+[1756442725] Parsed: channel=1408214608187228291, timestamp=1756442722, hash=095000, content=Search failed for 'google', please try again.
+[1756442725] Saved hash: 095000
+[1756442725] No user ID prefix, using raw command: Search failed for 'google', please try again.
+[1756442725] Read line: 1408214608187228291|1756442725|897502|Search result for 'google': [1] google.com <dns> (342 mentions, Inbound links: 1, Links: <link>google.com</link>) Instance 1:  .RNNXgb:hover,.sbfc.emcav .RNNXgb,.BgPPrc .RNNXgb:hover{background:#fff;box-sha
+[1756442725] Parsed: channel=1408214608187228291, timestamp=1756442725, hash=897502, content=Search result for 'google': [1] google.com <dns> (342 mentions, Inbound links: 1, Links: <link>google.com</link>) Instance 1:  .RNNXgb:hover,.sbfc.emcav .RNNXgb,.BgPPrc .RNNXg
+[1756442725] Saved hash: 897502
+[1756442725] No user ID prefix, using raw command: (342 mentions, Inbound links: 1, Links: <link>google.com</link>) Instance 1:  .RNNXgb:hover,.sbfc.emcav .RNNXgb,.BgPPrc .RNNXgb:hover{background:#fff;box-shadow:0 2p...
+[1756442726] Read line: 1408214608187228291|1756442725|897502|Search result for 'google': [1] google.com <dns> (342 mentions, Inbound links: 1, Links: <link>google.com</link>) Instance 1:  .RNNXgb:hover,.sbfc.emcav .RNNXgb,.BgPPrc .RNNXgb:hover{background:#fff;box-sha
+[1756442726] Parsed: channel=1408214608187228291, timestamp=1756442725, hash=897502, content=Search result for 'google': [1] google.com <dns> (342 mentions, Inbound links: 1, Links: <link>google.com</link>) Instance 1:  .RNNXgb:hover,.sbfc.emcav .RNNXgb,.BgPPrc .RNNXg
+[1756442726] Saved hash: 897502
+[1756442726] No user ID prefix, using raw command: (342 mentions, Inbound links: 1, Links: <link>google.com</link>) Instance 1:  .RNNXgb:hover,.sbfc.emcav .RNNXgb,.BgPPrc .RNNXgb:hover{background:#fff;box-shadow:0 2p...
+[1756442790] Starting search.+x
+[1756442790] Loaded 0 hashes from processed_hashes.txt
+[1756442790] Opened events.txt successfully
+[1756442796] Read line: 1408214608187228291|1756442796|635272|!search search
+[1756442796] Parsed: channel=1408214608187228291, timestamp=1756442796, hash=635272, content=!search search
+[1756442796] Saved hash: 635272
+[1756442796] No user ID prefix, using raw command: !search search
+[1756442796] Executing search: ./+x/14.hybrid.pagerank.+x "search" txt 1
+[1756442802] Wrote to send_queue.txt: 1408214608187228291|Search result for 'search': [1] google.com <dns> (60 mentions, Inbound links: 1, Links: <link>google.com</link>) Instance 1:  arial,sans-serif;padding:0 5px;text-decoration:none;flex:auto;align-self:flex-end;ma
+[1756442802] Executing: ./+x/send.+x
+[1756442802] send.+x executed successfully
+[1756442802] Read line: 1408214608187228291|1756442802|198806|Search result for 'search': [1] google.com <dns> (60 mentions, Inbound links: 1, Links: <link>google.com</link>) Instance 1:  arial,sans-serif;padding:0 5px;text-decoration:none;flex:auto;align-self:flex-en
+[1756442802] Parsed: channel=1408214608187228291, timestamp=1756442802, hash=198806, content=Search result for 'search': [1] google.com <dns> (60 mentions, Inbound links: 1, Links: <link>google.com</link>) Instance 1:  arial,sans-serif;padding:0 5px;text-decoration:no
+[1756442802] Saved hash: 198806
+[1756442802] No user ID prefix, using raw command: (60 mentions, Inbound links: 1, Links: <link>google.com</link>) Instance 1:  arial,sans-serif;padding:0 5px;text-decoration:none;flex:auto;align-self:flex-end;margi...

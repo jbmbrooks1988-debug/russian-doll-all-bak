@@ -1,0 +1,11 @@
+Battle begins! 1172108153199005703's team (size 1) vs 1 enemies
+Round 1: 1172108153199005703 hits Undead 🧟 for 7 damage (Physical)
+Round 1: Undead 🧟 hits 1172108153199005703 for 6 damage (Physical)
+Round 2: 1172108153199005703 misses Undead 🧟
+Round 2: Undead 🧟 misses 1172108153199005703
+Round 3: 1172108153199005703 hits Undead 🧟 for 7 damage (Physical)
+Round 3: Undead 🧟 misses 1172108153199005703
+Round 4: 1172108153199005703 misses Undead 🧟
+Round 4: Undead 🧟 misses 1172108153199005703
+Round 5: 1172108153199005703 hits Undead 🧟 for 7 damage (Physical)
+1172108153199005703's team wins! Gained 20 XP

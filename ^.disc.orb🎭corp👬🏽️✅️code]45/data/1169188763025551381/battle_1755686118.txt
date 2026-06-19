@@ -1,0 +1,14 @@
+Battle begins! 169188763025551381's team (size 1) vs 1 enemies
+Round 1: 169188763025551381 misses Undead 🧟
+Round 1: Undead 🧟 misses 169188763025551381
+Round 2: 169188763025551381 misses Undead 🧟
+Round 2: Undead 🧟 hits 169188763025551381 for 25 damage (Magic)
+Round 3: 169188763025551381 hits Undead 🧟 for 4 damage (Magic)
+Round 3: Undead 🧟 hits 169188763025551381 for 25 damage (Magic)
+Round 4: 169188763025551381 hits Undead 🧟 for 4 damage (Magic)
+Round 4: Undead 🧟 misses 169188763025551381
+Round 5: 169188763025551381 hits Undead 🧟 for 12 damage (Physical)
+Round 5: Undead 🧟 hits 169188763025551381 for 25 damage (Magic)
+Round 6: 169188763025551381 hits Undead 🧟 for 12 damage (Physical)
+Round 6: Undead 🧟 hits 169188763025551381 for 40 damage (Physical)
+169188763025551381's team defeated!

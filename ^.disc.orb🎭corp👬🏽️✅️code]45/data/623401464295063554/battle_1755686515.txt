@@ -1,0 +1,7 @@
+Battle begins! 23401464295063554's team (size 1) vs 1 enemies
+Round 1: 23401464295063554 misses Plant 🌿
+Round 1: Plant 🌿 hits 23401464295063554 for 3 damage (Physical)
+Round 2: 23401464295063554 hits Plant 🌿 for 6 damage (Magic)
+Round 2: Plant 🌿 hits 23401464295063554 for 3 damage (Physical)
+Round 3: 23401464295063554 hits Plant 🌿 for 6 damage (Magic)
+23401464295063554's team wins! Gained 16 XP

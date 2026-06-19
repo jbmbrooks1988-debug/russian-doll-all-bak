@@ -1,0 +1,2 @@
+user_command_count=50
+last_login=1755292478

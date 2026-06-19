@@ -1,0 +1,29 @@
+Battle begins! 049033265545227's team (size 1) vs 1 enemies
+Round 1: 049033265545227 hits Plant 🌿 for 10 damage (Magic)
+Round 1: Plant 🌿 misses 049033265545227
+Round 2: 049033265545227 hits Plant 🌿 for 10 damage (Magic)
+Round 2: Plant 🌿 misses 049033265545227
+Round 3: 049033265545227 hits Plant 🌿 for 18 damage (Physical)
+Round 3: Plant 🌿 misses 049033265545227
+Round 4: 049033265545227 hits Plant 🌿 for 10 damage (Magic)
+Round 4: Plant 🌿 hits 049033265545227 for 16 damage (Physical)
+Round 5: 049033265545227 misses Plant 🌿
+Round 5: Plant 🌿 misses 049033265545227
+Round 6: 049033265545227 misses Plant 🌿
+Round 6: Plant 🌿 hits 049033265545227 for 16 damage (Physical)
+Round 7: 049033265545227 misses Plant 🌿
+Round 7: Plant 🌿 hits 049033265545227 for 16 damage (Physical)
+Round 8: 049033265545227 hits Plant 🌿 for 18 damage (Physical)
+Round 8: Plant 🌿 hits 049033265545227 for 8 damage (Magic)
+Round 9: 049033265545227 hits Plant 🌿 for 10 damage (Magic)
+Round 9: Plant 🌿 hits 049033265545227 for 8 damage (Magic)
+Round 10: 049033265545227 misses Plant 🌿
+Round 10: Plant 🌿 misses 049033265545227
+Round 11: 049033265545227 misses Plant 🌿
+Round 11: Plant 🌿 misses 049033265545227
+Round 12: 049033265545227 misses Plant 🌿
+Round 12: Plant 🌿 misses 049033265545227
+Round 13: 049033265545227 hits Plant 🌿 for 10 damage (Magic)
+Round 13: Plant 🌿 hits 049033265545227 for 8 damage (Magic)
+Round 14: 049033265545227 hits Plant 🌿 for 18 damage (Physical)
+049033265545227's team wins! Gained 86 XP

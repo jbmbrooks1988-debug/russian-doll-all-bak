@@ -1,0 +1,115 @@
+Extracting links for HTML content (length: 174929)
+Found link: https://about.google/?fg=1&amp;utm_source=google-US&amp;utm_medium=referral&amp;utm_campaign=hp-header
+Found link: https://store.google.com/US?utm_source=hp_header&amp;utm_medium=google_ooo&amp;utm_campaign=GS100042&amp;hl=en-US
+Found link: https://mail.google.com/mail/&amp;ogbl
+Found link: https://www.google.com/imghp?hl=en&amp;ogbl
+Found link: https://www.google.com/intl/en/about/products
+Found link: https://accounts.google.com/ServiceLogin?hl=en&amp;passive=true&amp;continue=https://www.google.com/&amp;ec=futura_exp_og_so_72776762_e
+Found link: https://www.google.com/intl/en_us/ads/?subid=ww-ww-et-g-awa-a-g_hpafoot1_1!o2&amp;utm_source=google.com&amp;utm_medium=referral&amp;utm_campaign=google_hpafooter&amp;fg=1
+Found link: https://www.google.com/services/?subid=ww-ww-et-g-awa-a-g_hpbfoot1_1!o2&amp;utm_source=google.com&amp;utm_medium=referral&amp;utm_campaign=google_hpbfooter&amp;fg=1
+Found link: https://google.com/search/howsearchworks/?fg=1
+Found link: https://ai.google/societal-impact/?utm_source=googlehpfooter&amp;utm_medium=housepromos&amp;utm_campaign=bottom-footer
+Found link: https://policies.google.com/privacy?hl=en&amp;fg=1
+Found link: https://policies.google.com/terms?hl=en&amp;fg=1
+Found link: https://www.google.com/preferences?hl=en&amp;fg=1
+Skipping non-HTTP link: /advanced_search?hl=en&amp;fg=1
+Skipping non-HTTP link: /history/privacyadvisor/search/unauth?utm_source=googlemenu&amp;fg=1&amp;cctld=com
+Skipping non-HTTP link: /history/optout?hl=en&amp;fg=1
+Found link: https://support.google.com/websearch/?p=ws_results_help&amp;hl=en&amp;fg=1
+Total links extracted: 14
+Extracting links for HTML content (length: 669547)
+Skipping non-HTTP link: /
+Skipping non-HTTP link: /
+Found link: https://www.youtube.com/about/
+Found link: https://www.youtube.com/about/press/
+Found link: https://www.youtube.com/about/copyright/
+Skipping non-HTTP link: /t/contact_us/
+Found link: https://www.youtube.com/creators/
+Found link: https://www.youtube.com/ads/
+Found link: https://developers.google.com/youtube
+Skipping non-HTTP link: /t/terms
+Skipping non-HTTP link: /t/privacy
+Found link: https://www.youtube.com/about/policies/
+Found link: https://www.youtube.com/howyoutubeworks?utm_campaign=ytgen&amp;utm_source=ythp&amp;utm_medium=LeftNav&amp;utm_content=txt&amp;u=https%3A%2F%2Fwww.youtube.com%2Fhowyoutubeworks%3Futm_source%3Dythp%26utm_medium%3DLeftNav%26utm_campaign%3Dytgen
+Skipping non-HTTP link: /new
+Found link: https://tv.youtube.com/learn/nflsundayticket
+Total links extracted: 9
+Extracting links for HTML content (length: 6446)
+Skipping non-HTTP link: //www.facebook.com/
+Skipping non-HTTP link: //www.facebook.com/
+Skipping non-HTTP link: //www.facebook.com/help/?ref=href052
+Total links extracted: 0
+Extracting links for HTML content (length: 5608)
+Found link: https://www.amazon.com/gp/help/customer/display.html/ref=footer_cou?ie=UTF8&nodeId=508088
+Found link: https://www.amazon.com/gp/help/customer/display.html/ref=footer_privacy?ie=UTF8&nodeId=468496
+Total links extracted: 2
+Extracting links for HTML content (length: 1653)
+Found link: https://www.wikipedia.org/
+Total links extracted: 1
+Extracting links for HTML content (length: 483758)
+Found link: https://www.yahoo.com/
+Skipping non-HTTP link: #convenience-bar
+Skipping non-HTTP link: #stacked-list
+Skipping non-HTTP link: #ntk
+Skipping non-HTTP link: #right-rail
+Found link: https://www.yahoo.com/
+Found link: https://finance.yahoo.com/
+Found link: https://sports.yahoo.com/
+Found link: https://mail.yahoo.com/
+Found link: https://login.yahoo.com/myaccount/overview?lang=en-US&amp;activity=ybar-acctinfo
+Found link: https://mail.yahoo.com/
+Found link: https://help.yahoo.com/kb/account
+Found link: https://login.yahoo.com/account/logout?logout_all=1&amp;src=frontpage
+Skipping non-HTTP link: /news/articles/father-one-children-killed-minneapolis-213000279.html
+Skipping non-HTTP link: /sports/article/micah-parsons-trade-details-packers-213555682.html
+Skipping non-HTTP link: /entertainment/music/articles/taylor-swifts-antique-engagement-ring-174837563.html
+Skipping non-HTTP link: /news/articles/cdc-director-dr-susan-monarez-210501474.html
+Skipping non-HTTP link: /news/articles/trumps-alligator-alcatraz-being-emptied-163012915.html
+Found link: https://www.yahoo.com/news/
+Found link: https://finance.yahoo.com/
+Found link: https://sports.yahoo.com/
+Found link: https://mail.yahoo.com/
+Found link: https://search.yahoo.com/
+Found link: https://www.yahoo.com/news/weather/
+Found link: https://www.yahoo.com/games/
+Found link: https://shopping.yahoo.com/
+Found link: https://creators.yahoo.com/
+Found link: https://www.yahoo.com/entertainment/
+Found link: https://www.yahoo.com/lifestyle/
+Found link: https://www.yahoo.com/newsletters/
+Skipping non-HTTP link: /news/articles/father-one-children-killed-minneapolis-213000279.html
+Skipping non-HTTP link: /news/articles/church-leaders-arrested-alleged-trafficking-170237975.html
+Skipping non-HTTP link: /sports/soccer/breaking-news/article/fourth-tier-grimsby-town-shocks-manchester-united-in-carabao-cup-fans-storm-field-after-
+1000
+13-rounds-of-penalty-kicks-222137397.html
+Skipping non-HTTP link: /news/articles/b-52-bomber-almost-hit-101514291.html
+Skipping non-HTTP link: /news/articles/millionaire-alexis-ohanian-walked-lsat-163019446.html
+Found link: https://www.yahoo.com/games/
+Found link: https://x.com/yahoonews
+Found link: https://facebook.com/YahooNews
+Found link: https://instagram.com/yahoonews
+Found link: https://www.youtube.com/c/yahoonews
+Found link: https://www.tiktok.com/@yahoonews
+Found link: https://www.yahooinc.com/
+Found link: https://legal.yahoo.com/us/en/yahoo/privacy/adinfo/index.html
+Found link: https://www.yahooinc.com/careers/
+Found link: https://help.yahoo.com/kb/account
+Found link: https://yahoo.uservoice.com/forums/341361-yahoo-home
+Found link: https://www.yahoo.com/news/finance_data.html
+Found link: https://x.com/yahoonews
+Found link: https://facebook.com/YahooNews
+Found link: https://instagram.com/yahoonews
+Found link: https://www.youtube.com/c/yahoonews
+Found link: https://www.tiktok.com/@yahoonews
+Found link: https://www.yahooinc.com/
+Found link: https://legal.yahoo.com/us/en/yahoo/privacy/adinfo/index.html
+Found link: https://www.yahooinc.com/careers/
+Found link: https://help.yahoo.com/kb/account
+Found link: https://yahoo.uservoice.com/forums/341361-yahoo-home
+Found link: https://www.yahoo.com/news/finance_data.html
+Total links extracted: 44
+Counting inbound links for 6 pages
+Inbound link to google.com from google.com
+Inbound link to facebook.com from yahoo.com
+Inbound link to facebook.com from yahoo.com
+Keyword: search
