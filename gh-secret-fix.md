@@ -60,6 +60,22 @@ git ls-tree -r --name-only HEAD | rg 'secret|bot_keys|main_log|receive_log|pipe_
 git push --force-with-lease origin main
 ```
 
+## Fix `git push` After A Rewrite
+
+If you see:
+
+```text
+fatal: The current branch main has no upstream branch.
+```
+
+set the upstream once:
+
+```bash
+git push --set-upstream origin main
+```
+
+After that, plain `git push` and `git pull` will work on `main` without repeating the remote and branch name.
+
 ## Notes
 
 - Use `--force-with-lease`, not plain `--force`, unless you intentionally want to override remote changes.

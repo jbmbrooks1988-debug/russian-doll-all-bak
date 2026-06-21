@@ -1,0 +1,458 @@
+TEAR IT : 气 - Qi-Forged Mecha-Beast Skirmish Game
+🕹️
+
+🚀ok gen jpg for #1make sure they say "tear it" on it somewhere, (there should also be stats. remember we want image on card like mtg, but the figure standing on the flat card. get it? gen both the 3d image, and the 2d image on a flat card. 3d on top of its matching card. get it? were selling cards and miniatures so we show both. do #22 / 2ok good. now do #4 SkySerpent CoilerWhite (Silver Qi)Reptile-avian hybrid: Flying serpent spirit with eagle wing mecha. Qi coils generate storm winds, striking from above like living lightning rods.Aerial harasser / sniper. Dive and coil to control air, precision strikes, disrupt ground formations.2 / 2make sure they say "tear it" on it somewhere, (there should also be stats. remember we want image on card like mtg, but the figure standing on the flat card. get it? gen both the 3d image, and the 2d image on a flat card. 3d on top of its matching card. get it? were selling cards and miniatures so we show both. do #5 : TerraToad BurrowerYellow (Gold Qi)Amphibious-reptile hybrid: Giant toad fused with drilling mecha. Qi burrows create tunnels, emerging for seismic ambushes in fractured earth. do #6 :VenomJelly DrifterRed (Crimson Qi)Underwater-insect hybrid: Jellyfish with scorpion stinger mecha. Qi venom floats through air/water, paralyzing foes in stinging clouds.2 / 2do # 7:CrystalMoth IlluminatorWhite (Silver Qi)Insect-avian hybrid: Moth wings blended with crystal-prism mecha. Qi refracts light into blinding lasers, illuminating or scorching from afar.do #8 : 8SpikeAnemone SentinelBlue (Cyan Qi)Underwater-plant hybrid: Sea anemone fused with spiked turret mecha. Qi tentacles root into ground, forming defensive spikes that impale intruders.lets expand to 10 more (e.g., fungal-slug hybrids, avian-lizard gliders)?Here are 10 brand-new creature designs expanding the TEAR IT : 气 lineup. These are completely original hybrids, pulling from fungal-slug, avian-lizard glider, and other creative combos (e.g., bioluminescent deep-sea, crystalline arachnid, volcanic salamander, etc.). Each includes a quick Character Sheet with name, faction/color suggestion, lore/theme, role/playstyle, base stats (tuneable), signature abilities, and visual/mini description.
+These build toward thousands by modularizing hybrids (swap parts: e.g., fungal + avian = spore-dispersing glider). All maintain the electronic/robotic core: charging ports, nano-bots, QR/NFC, painted plastic with weathering.
+
+Mycelium Slug Devourer
+Color: Black (Void Purple Qi)
+Theme: Fungal-slug hybrid — slow, corrosive slime-trail mecha that digests metal and recycles it into spore armor. Qi spreads fungal networks underground.
+Role: Attrition tank / terrain corrupter. Crawl slowly, melt armor, spawn fungal zones.
+Stats: HP 14, Move 5", Melee 5 dice (corrode), Armor 3+
+Abilities: Slime Trail (leave damaging terrain), Digest Recycle (heal on killing armored unit), Spore Bloom (AoE debuff).
+Visual: Elongated slug body with mushroom-fruiting caps, purple-veined slime trails, robotic segments with dissolving ports, QR on cap.
+
+GlideRaptor Vortex
+Color: White (Silver Qi)
+Theme: Avian-lizard glider — pterosaur-like with membrane wings and vortex thrusters. Qi creates mini-tornadoes for lift and disruption.
+Role: Aerial control / disruptor. Glide circles, pull enemies off course, dive-bomb.
+Stats: HP 9, Move 11" (glide), Melee 4 dice, Ranged 5 dice (vortex pull)
+Abilities: Tornado Coil (pull adjacent models), Glide Evasion (dodge ranged), Qi Vortex (redirect enemy movement).
+Visual: Lizard head on feathered glider wings, silver scales with turbine vents, NFC in tail, dynamic soaring pose on white card.
+
+Lumifin Eel Shocker
+Color: Blue (Cyan Qi)
+Theme: Electric eel fused with bioluminescent fish mecha. Qi arcs chain through water/air for multi-target shocks.
+Role: Chain attacker / support zapper. Arc lightning between foes, buff allies with charge.
+Stats: HP 8, Move 9" (swim/hover), Ranged 6 dice (chain)
+Abilities: Arc Chain (hit multiple in line), Bio-Lume Burst (blind + damage), Qi Recharge (heal on zap).
+Visual: Sleek eel body with glowing fin arrays, cyan electrodes, robotic spine ports, QR on gill slits.
+
+Crystal Widow Weaver
+Color: White (Silver Qi)
+Theme: Arachnid-crystal hybrid — spider with prism-web mecha. Qi webs refract lasers into traps or mirrors.
+Role: Trap setter / reflector. Spin crystal webs for defense/offense, reflect shots.
+Stats: HP 10, Move 8", Melee 4 dice, Ranged 5 dice (web laser)
+Abilities: Prism Web (reflect ranged attacks), Crystal Trap (immobilize + damage), Qi Refract (bounce ability).
+Visual: Spider legs with faceted crystal abdomen, silver plating, glowing web launchers, NFC on spinnerets.
+
+VolcaSalamander Igniter
+Color: Red (Crimson Qi)
+Theme: Salamander-volcanic hybrid — fire-regenerating mecha with lava-core. Qi erupts molten bursts.
+Role: Regenerator / AoE blaster. Heal from fire, explode on low HP.
+Stats: HP 11, Move 7", Melee 5 dice (lava bite), Ranged 5 dice (erupt)
+Abilities: Lava Regen (heal in fire terrain), Molten Burst (AoE on death), Qi Ignite (set terrain ablaze).
+Visual: Salamander body with cracked volcanic armor, red-hot vents, exhaust flames, QR on back ridge.
+
+NebulaWasp Swarm Lord
+Color: Purple (new Void Qi variant)
+Theme: Wasp-nebula hybrid — insect with cosmic dust wings. Qi swarms phase through matter.
+Role: Phasing horde / infiltrator. Split into mini-swarms, phase past obstacles.
+Stats: HP 7 (x3 pack), Move 10" (phase)
+Abilities: Phase Sting (ignore armor), Nebula Split (spawn tokens), Qi Dust Cloud (stealth).
+Visual: Wasp body with starry nebula wings, purple glow, nano-bots in stinger, QR on thorax.
+
+Abyssal Angler Lure
+Color: Blue (Cyan Qi)
+Theme: Anglerfish-deep abyss hybrid — lure mecha with hypnotic Qi light. Draws enemies into traps.
+Role: Bait & ambush / controller. Lure pull, then strike.
+Stats: HP 12, Move 6", Melee 6 dice (bite)
+Abilities: Hypno Lure (pull enemy), Abyss Snap (bonus vs lured), Qi Mirage (decoy).
+Visual: Bulbous head with glowing lure rod, armored jaws, cyan bioluminescence, NFC in lure bulb.
+
+FrostWyrm Glider
+Color: White (Silver Qi)
+Theme: Wyrm-lizard glider — icy serpent with frost-membrane wings. Qi freezes on contact.
+Role: Freeze debuffer / glider sniper. Slow enemies, ice trails.
+Stats: HP 10, Move 12" (glide)
+Abilities: Frost Coil (slow + damage), Ice Trail (terrain debuff), Qi Freeze (stun).
+Visual: Serpentine body with icy glider wings, silver-blue frost plating, QR on scales.
+
+SporeBloom Tortoise
+Color: Green (Emerald Qi)
+Theme: Tortoise-fungal hybrid — armored shell with blooming spore vents. Qi terraforms into mushroom fields.
+Role: Mobile fortress / zone controller. Shell up, spread spores.
+Stats: HP 15, Move 5", Armor 2+
+Abilities: Spore Fortress (shield + AoE debuff), Bloom Erupt (spawn fungal allies), Qi Terraform (change terrain).
+Visual: Dome shell with mushroom clusters, green plating, robotic vents, NFC under shell.
+
+ThunderBeetle Charger
+Color: Yellow (Gold Qi)
+Theme: Beetle-rhino hybrid — horned charger with thunder capacitors. Qi builds static for explosive charges.
+Role: Heavy cavalry / impact blaster. Build speed, discharge on impact.
+Stats: HP 12, Move 9" (charge)
+Abilities: Static Build (bonus on long move), Thunder Horn (pierce + stun), Qi Discharge (AoE on hit).
+Visual: Rhino-beetle body with gold horn capacitor, yellow armor, exhaust sparks, QR on horn base.
+
+
+These expand the roster with new synergies (e.g., fungal for Black horde, gliders for White air). Want full card+mini JPG generations for any (like before), deeper lore, faction integration, or another 10 (e.g., cyber-slime amoeba, plasma phoenix hybrids)? Let's keep building! 🚀do #1 Mycelium Slug Devourer
+
+Color: Black (Void Purple Qi)
+Theme: Fungal-slug hybrid — slow, corrosive slime-trail mecha that digests metal and recycles it into spore armor. Qi spreads fungal networks underground.
+Role: Attrition tank / terrain corrupter. Crawl slowly, melt armor, spawn fungal zones.
+Stats: HP 14, Move 5", Melee 5 dice (corrode), Armor 3+
+Abilities: Slime Trail (leave damaging terrain), Digest Recycle (heal on killing armored unit), Spore Bloom (AoE debuff).
+Visual: Elongated slug body with mushroom-fruiting caps, purple-veined slime trails, robotic segments with dissolving ports, QR on cap.
+do # 2 GlideRaptor Vortex
+
+Color: White (Silver Qi)
+Theme: Avian-lizard glider — pterosaur-like with membrane wings and vortex thrusters. Qi creates mini-tornadoes for lift and disruption.
+Role: Aerial control / disruptor. Glide circles, pull enemies off course, dive-bomb.
+Stats: HP 9, Move 11" (glide), Melee 4 dice, Ranged 5 dice (vortex pull)
+Abilities: Tornado Coil (pull adjacent models), Glide Evasion (dodge ranged), Qi Vortex (redirect enemy movement).
+Visual: Lizard head on feathered glider wings, silver scales with turbine vents, NFC in tail, dynamic soaring pose on white card.
+do #3 Lumifin Eel Shocker
+
+Color: Blue (Cyan Qi)
+Theme: Electric eel fused with bioluminescent fish mecha. Qi arcs chain through water/air for multi-target shocks.
+Role: Chain attacker / support zapper. Arc lightning between foes, buff allies with charge.
+Stats: HP 8, Move 9" (swim/hover), Ranged 6 dice (chain)
+Abilities: Arc Chain (hit multiple in line), Bio-Lume Burst (blind + damage), Qi Recharge (heal on zap).
+Visual: Sleek eel body with glowing fin arrays, cyan electrodes, robotic spine ports, QR on gill slits.
+do #4 : Crystal Widow Weaver
+
+Color: White (Silver Qi)
+Theme: Arachnid-crystal hybrid — spider with prism-web mecha. Qi webs refract lasers into traps or mirrors.
+Role: Trap setter / reflector. Spin crystal webs for defense/offense, reflect shots.
+Stats: HP 10, Move 8", Melee 4 dice, Ranged 5 dice (web laser)
+Abilities: Prism Web (reflect ranged attacks), Crystal Trap (immobilize + damage), Qi Refract (bounce ability).
+Visual: Spider legs with faceted crystal abdomen, silver plating, glowing web launchers, NFC on spinnerets.
+do #5 VolcaSalamander Igniter
+
+Color: Red (Crimson Qi)
+Theme: Salamander-volcanic hybrid — fire-regenerating mecha with lava-core. Qi erupts molten bursts.
+Role: Regenerator / AoE blaster. Heal from fire, explode on low HP.
+Stats: HP 11, Move 7", Melee 5 dice (lava bite), Ranged 5 dice (erupt)
+Abilities: Lava Regen (heal in fire terrain), Molten Burst (AoE on death), Qi Ignite (set terrain ablaze).
+Visual: Salamander body with cracked volcanic armor, red-hot vents, exhaust flames, QR on back ridge.
+do #6 NebulaWasp Swarm Lord
+
+Color: Purple (new Void Qi variant)
+Theme: Wasp-nebula hybrid — insect with cosmic dust wings. Qi swarms phase through matter.
+Role: Phasing horde / infiltrator. Split into mini-swarms, phase past obstacles.
+Stats: HP 7 (x3 pack), Move 10" (phase)
+Abilities: Phase Sting (ignore armor), Nebula Split (spawn tokens), Qi Dust Cloud (stealth).
+Visual: Wasp body with starry nebula wings, purple glow, nano-bots in stinger, QR on thorax.
+do 7 : Abyssal Angler Lure
+
+Color: Blue (Cyan Qi)
+Theme: Anglerfish-deep abyss hybrid — lure mecha with hypnotic Qi light. Draws enemies into traps.
+Role: Bait & ambush / controller. Lure pull, then strike.
+Stats: HP 12, Move 6", Melee 6 dice (bite)
+Abilities: Hypno Lure (pull enemy), Abyss Snap (bonus vs lured), Qi Mirage (decoy).
+Visual: Bulbous head with glowing lure rod, armored jaws, cyan bioluminescence, NFC in lure bulb.
+do #9 SporeBloom Tortoise
+
+Color: Green (Emerald Qi)
+Theme: Tortoise-fungal hybrid — armored shell with blooming spore vents. Qi terraforms into mushroom fields.
+Role: Mobile fortress / zone controller. Shell up, spread spores.
+Stats: HP 15, Move 5", Armor 2+
+Abilities: Spore Fortress (shield + AoE debuff), Bloom Erupt (spawn fungal allies), Qi Terraform (change terrain).
+Visual: Dome shell with mushroom clusters, green plating, robotic vents, NFC under shell.
+2 / 2 the "qi" logo is actualy a "cube" like "QUBE" a square shaped q get it?(qr code) lets gen 8 more designs on a char sheet before we make more images2 / 2Got it—replacing the previous Qi symbol with a cube-inspired "Q" logo (a stylized square Q that visually nods to QR codes / "QUBE" / cubic energy core). This becomes the new faction/Qi marker across cards and minis: a bold, geometric Q made from interlocking cubes, often with a subtle 3D extrusion or glowing edges in the faction color. It ties perfectly into the tech/mecha theme and QR integration.
+Here are 8 brand-new creature designs, each with a full Character Sheet format like before. All fresh hybrids, no repeats.
+
+PlasmaPhoenix Reborn
+Color: Red (Crimson Qi)
+Theme: Phoenix-plasma hybrid — fiery bird reborn from molten plasma core mecha. Qi allows self-resurrection cycles with explosive rebirth bursts.
+Role: Suicide bomber / phoenix respawner. Die to deal massive AoE, revive stronger.
+Stats: HP 10, Move 12" (fly), Melee 4 dice, Ranged 6 dice (plasma burst)
+Abilities: Plasma Nova (AoE on death), Rebirth Cycle (revive at 50% HP after death once per game), Qi Ashen Wings (ignore terrain).
+Visual: Bird body with flaming plasma wings, red molten cracks in armor, cubic Q emblem on chest core, QR on beak crest.
+
+VoidKrill Devourer
+Color: Black (Void Purple Qi)
+Theme: Krill-whale filter feeder turned void-vacuum mecha. Qi creates black-hole mouths to suck in and shred enemies.
+Role: Pull & shred / crowd control. Vacuum pull groups, then multi-hit shred.
+Stats: HP 13, Move 7", Melee 7 dice (multi-target shred)
+Abilities: Void Suction (pull all in 6" radius), Krill Shred (extra dice vs pulled models), Qi Black Hole (disable movement in zone).
+Visual: Tiny krill-like swarm forming whale mouth, purple void glow inside, robotic filter plates, NFC on main "head" cluster.
+
+EchoBat Sonar
+Color: White (Silver Qi)
+Theme: Bat-echolocation hybrid with sonic-crystal mecha. Qi pulses reveal hidden units and shatter armor with focused sound.
+Role: Scout / debuffer. Reveal stealth, sonic damage ignores cover.
+Stats: HP 8, Move 11" (fly), Ranged 6 dice (sonic pulse)
+Abilities: Sonar Ping (reveal all hidden in 12"), Echo Shatter (reduce armor), Qi Resonance (chain sonic hits).
+Visual: Bat wings with silver sonic emitters, crystal ears, cubic Q on forehead, QR in wing membrane.
+
+CoralGolem Sentinel
+Color: Blue (Cyan Qi)
+Theme: Coral-golem hybrid — living reef fortress mecha that grows defensive spines and heals via Qi coral regrowth.
+Role: Static super-tank / healer. Root down, grow armor, heal allies.
+Stats: HP 18, Move 4" (rooted +immobile), Armor 2+
+Abilities: Coral Growth (gain +armor over turns), Reef Mend (heal adjacent), Qi Spine Volley (ranged counter).
+Visual: Bulky humanoid with branching coral armor, cyan glowing polyps, robotic joints under growth, NFC on core "brain" coral.
+
+FrostWisp Jelly
+Color: White (Silver Qi)
+Theme: Jellyfish-frost wisp hybrid — ethereal floating orb with freezing tendrils. Qi creates ice clouds that slow and freeze.
+Role: Slow-field controller / debuffer. Hover, create ice zones, freeze movement.
+Stats: HP 9, Move 10" (hover), Ranged 5 dice (freeze tendril)
+Abilities: Frost Cloud (slow terrain), Wisp Freeze (stun on hit), Qi Chill (reduce enemy attack dice).
+Visual: Translucent jelly orb with silver frost tendrils, icy core glow, cubic Q floating inside, QR on outer membrane.
+
+RustBeetle Corroder
+Color: Black (Void Purple Qi)
+Theme: Beetle-rust hybrid — insect mecha that spreads corrosive rust Qi, weakening metal armor over time.
+Role: Armor debuffer / attrition. Infect armor, cause stacking weakness.
+Stats: HP 9, Move 8", Melee 5 dice (rust bite)
+Abilities: Rust Infection (permanent -1 armor debuff stack), Corrode Burst (AoE rust spread), Qi Rust Cloud (debuff aura).
+Visual: Beetle shell with rust-pitted plating, purple corrosive drips, robotic mandibles, NFC on elytra.
+
+SolarViper Charger
+Color: Yellow (Gold Qi)
+Theme: Viper-solar hybrid — snake with photovoltaic scales and energy-charging coils. Qi stores solar power for explosive dashes.
+Role: Charge assassin / burst striker. Build charge, then high-speed strike.
+Stats: HP 10, Move 9" (dash +charge)
+Abilities: Solar Charge (gain bonus after standing still), Viper Strike (extra damage on charged move), Qi Overload (explode on kill).
+Visual: Coiled snake body with gold solar panels, yellow energy coils, cubic Q on hood, QR on tail rattle.
+
+MagmaCrab Burrower
+Color: Red (Crimson Qi)
+Theme: Crab-magma hybrid — armored crab with lava vents and burrowing claws. Qi melts ground for underground ambushes.
+Role: Burrow ambusher / terrain melter. Dig in, emerge with lava AoE.
+Stats: HP 12, Move 6" (burrow +6"), Melee 6 dice (lava claw)
+Abilities: Magma Tunnel (underground move), Lava Emerge (AoE on surface), Qi Melt (create impassable lava terrain).
+Visual: Crab shell with cracked magma vents, red-hot pincers, robotic legs, NFC on carapace.
+
+
+These 8 are ready to slot into factions (mostly Red/Black for aggression, White/Blue for control/utility). Want to generate card+mini JPGs for any of these next (like before), or keep expanding to another batch of 8–10? Or tweak the cube-Q logo style further? 🚀do #1 PlasmaPhoenix Reborn
+
+Color: Red (Crimson Qi)
+Theme: Phoenix-plasma space ship hybrid — fiery bird reborn from molten plasma core mecha. Qi allows self-resurrection cycles with explosive rebirth bursts.
+Role: Suicide bomber / phoenix respawner. Die to deal massive AoE, revive stronger.
+Stats: HP 10, Move 12" (fly), Melee 4 dice, Ranged 6 dice (plasma burst)
+Abilities: Plasma Nova (AoE on death), Rebirth Cycle (revive at 50% HP after death once per game), Qi Ashen Wings (ignore terrain).
+Visual: Bird body with flaming plasma wings, red molten cracks in armor, cubic Q emblem on chest core, QR on beak crest.
+do #2 VoidKrill Devourer
+
+Color: Black (Void Purple Qi)
+Theme: Krill-whale filter feeder turned void-vacuum mecha. Qi creates black-hole mouths to suck in and shred enemies.
+Role: Pull & shred / crowd control. Vacuum pull groups, then multi-hit shred.
+Stats: HP 13, Move 7", Melee 7 dice (multi-target shred)
+Abilities: Void Suction (pull all in 6" radius), Krill Shred (extra dice vs pulled models), Qi Black Hole (disable movement in zone).
+Visual: Tiny krill-like swarm forming whale mouth, purple void glow inside, robotic filter plates, NFC on main "head" cluster.
+do # 3 EchoBat Sonar
+
+Color: White (Silver Qi)
+Theme: Bat-echolocation hybrid with sonic-crystal mecha. Qi pulses reveal hidden units and shatter armor with focused sound.
+Role: Scout / debuffer. Reveal stealth, sonic damage ignores cover.
+Stats: HP 8, Move 11" (fly), Ranged 6 dice (sonic pulse)
+Abilities: Sonar Ping (reveal all hidden in 12"), Echo Shatter (reduce armor), Qi Resonance (chain sonic hits).
+Visual: Bat wings with silver sonic emitters, crystal ears, cubic Q on forehead, QR in wing membrane.
+
+
+
+do #4 CoralGolem Sentinel
+
+Color: Blue (Cyan Qi)
+Theme: Coral-golem hybrid — living reef fortress mecha that grows defensive spines and heals via Qi coral regrowth.
+Role: Static super-tank / healer. Root down, grow armor, heal allies.
+Stats: HP 18, Move 4" (rooted +immobile), Armor 2+
+Abilities: Coral Growth (gain +armor over turns), Reef Mend (heal adjacent), Qi Spine Volley (ranged counter).
+Visual: Bulky humanoid with branching coral armor, cyan glowing polyps, robotic joints under growth, NFC on core "brain" coral.
+do #5 FrostWisp Jelly
+
+Color: White (Silver Qi)
+Theme: Jellyfish-frost wisp hybrid — ethereal floating orb with freezing tendrils. Qi creates ice clouds that slow and freeze.
+Role: Slow-field controller / debuffer. Hover, create ice zones, freeze movement.
+Stats: HP 9, Move 10" (hover), Ranged 5 dice (freeze tendril)
+Abilities: Frost Cloud (slow terrain), Wisp Freeze (stun on hit), Qi Chill (reduce enemy attack dice).
+Visual: Translucent jelly orb with silver frost tendrils, icy core glow, cubic Q floating inside, QR on outer membrane.
+do # 6 RustBeetle Corroder
+
+Color: Black (Void Purple Qi)
+Theme: Beetle-rust hybrid — insect mecha that spreads corrosive rust Qi, weakening metal armor over time.
+Role: Armor debuffer / attrition. Infect armor, cause stacking weakness.
+Stats: HP 9, Move 8", Melee 5 dice (rust bite)
+Abilities: Rust Infection (permanent -1 armor debuff stack), Corrode Burst (AoE rust spread), Qi Rust Cloud (debuff aura).
+Visual: Beetle shell with rust-pitted plating, purple corrosive drips, robotic mandibles, NFC on elytra.
+do #7 : SolarViper Charger
+
+Color: Yellow (Gold Qi)
+Theme: Viper-solar hybrid — snake with photovoltaic scales and energy-charging coils. Qi stores solar power for explosive dashes.
+Role: Charge assassin / burst striker. Build charge, then high-speed strike.
+Stats: HP 10, Move 9" (dash +charge)
+Abilities: Solar Charge (gain bonus after standing still), Viper Strike (extra damage on charged move), Qi Overload (explode on kill).
+Visual: Coiled snake body with gold solar panels, yellow energy coils, cubic Q on hood, QR on tail rattle.
+do #8 MagmaCrab Burrower
+
+Color: Red (Crimson Qi)
+Theme: Crab-magma hybrid — armored crab with lava vents and burrowing claws. Qi melts ground for underground ambushes.
+Role: Burrow ambusher / terrain melter. Dig in, emerge with lava AoE.
+Stats: HP 12, Move 6" (burrow +6"), Melee 6 dice (lava claw)
+Abilities: Magma Tunnel (underground move), Lava Emerge (AoE on surface), Qi Melt (create impassable lava terrain).
+Visual: Crab shell with cracked magma vents, red-hot pincers, robotic legs, NFC on carapace.
+we want to generate 8 more designs for char sheet b4 we gen again2 / 2Here are 8 brand-new creature designs for TEAR IT : 气, each with a full Character Sheet. These continue the pattern: fresh hybrids, cube-Q logo integration, electronic/robotic elements (ports, nano-bots, QR/NFC), faction-color Qi glows, and balanced roles. All are original—no repeats from previous batches.
+
+ThunderWorm Shockcoil
+Color: Yellow (Gold Qi)
+Theme: Worm-thunder hybrid — segmented burrowing mecha with electromagnetic coils that discharge chain lightning when coiled. Qi builds static underground.
+Role: Burrow striker / chain disruptor. Emerge with electric AoE, chain hits.
+Stats: HP 11, Move 8" (burrow +4"), Melee 5 dice (coil shock)
+Abilities: Static Coil (gain charge underground), Thunder Emerge (AoE chain on surface), Qi Discharge (stun chain).
+Visual: Segmented worm body with gold coil rings, yellow lightning vents, robotic segments, cubic Q on head segment, QR on coil joint.
+
+ShadowMantis Phantom
+Color: Black (Void Purple Qi)
+Theme: Mantis-shadow hybrid — stealth assassin mecha that phases into darkness, striking with void blades. Qi creates shadow clones.
+Role: Stealth assassin / decoy. Phase in/out, create decoys, backstab.
+Stats: HP 8, Move 10" (phase), Melee 6 dice (void slash)
+Abilities: Shadow Phase (invisible when not moving), Phantom Clone (spawn decoy), Qi Backstab (bonus vs flanked).
+Visual: Sleek mantis frame with purple void plating, translucent shadow wings, robotic scythe arms, NFC on thorax, QR on blade edge.
+
+AquaSerpent Hydrojet
+Color: Blue (Cyan Qi)
+Theme: Serpent-aquatic jet hybrid — streamlined water snake with hydro-thrusters and pressurized water cannons. Qi jets propel at high speed.
+Role: Fast skirmisher / ranged harasser. Jet dashes, water knockback.
+Stats: HP 9, Move 12" (jet), Ranged 6 dice (hydro blast)
+Abilities: Jet Dash (extra move + knockback), Pressure Cannon (push + damage), Qi Torrent (AoE push).
+Visual: Long serpent body with cyan turbine fins, water-jet exhausts, robotic scale plates, cubic Q on head crest, QR on tail fin.
+
+CrystalScorpion Prism
+Color: White (Silver Qi)
+Theme: Scorpion-crystal hybrid — armored tail-stinger with refracting prism gems that split laser attacks. Qi amplifies light into multi-beam.
+Role: Split-shot sniper / reflector. Long-range multi-target, reflect incoming fire.
+Stats: HP 10, Move 7", Ranged 7 dice (prism beam)
+Abilities: Prism Split (hit multiple in line), Gem Reflect (return ranged damage), Qi Refract (bounce ability).
+Visual: Scorpion body with faceted crystal tail, silver armored plating, glowing prism stinger, NFC on claw, QR on carapace.
+
+FungusFly Sporewing
+Color: Green (Emerald Qi)
+Theme: Fly-fungal hybrid — winged insect mecha that disperses spore clouds while flying. Qi spores infect and slow.
+Role: Aerial debuffer / spore bomber. Fly over, drop spore fields.
+Stats: HP 7, Move 11" (fly), Ranged 5 dice (spore drop)
+Abilities: Spore Cloud (slow + DoT zone), Infect Wing (debuff on fly-over), Qi Spore Burst (AoE on death).
+Visual: Fly body with fungal wing membranes, green spore sacs, robotic legs, cubic Q on thorax, QR on wing vein.
+
+VoltaicEel Coil
+Color: Yellow (Gold Qi)
+Theme: Eel-voltaic hybrid — electric eel with coil capacitors that store and release massive voltage. Qi chains through water/metal.
+Role: Chain zapper / capacitor tank. Build charge, release big burst.
+Stats: HP 12, Move 8" (swim/hover), Ranged 6 dice (volt chain)
+Abilities: Charge Coil (store power), Voltaic Release (big AoE on full charge), Qi Chain (jump to metal terrain).
+Visual: Eel body with gold capacitor rings, yellow electric arcs, robotic spine, NFC on head, QR on coil band.
+
+VoidSpider Lurker
+Color: Black (Void Purple Qi)
+Theme: Spider-void hybrid — eight-legged lurker with void-web traps that teleport victims. Qi webs connect to shadow rifts.
+Role: Trap teleporter / ambush. Web traps, teleport enemies into danger.
+Stats: HP 10, Move 9", Melee 5 dice (void fang)
+Abilities: Void Web (trap + teleport), Rift Ambush (swap positions), Qi Shadow Step (short teleport).
+Visual: Spider with purple void-webbing, black shadowy legs, robotic fangs, cubic Q on abdomen, QR on spinneret.
+
+BlazeHawk Inferno
+Color: Red (Crimson Qi)
+Theme: Hawk-blaze hybrid — raptor mecha with afterburner wings and incendiary talons. Qi ignites air trails.
+Role: Dive bomber / fire chaser. Fast dives, leave fire trails.
+Stats: HP 9, Move 13" (fly), Melee 5 dice (talon rake)
+Abilities: Inferno Dive (damage + ignite trail), Flame Trail (persistent fire zone), Qi Afterburn (speed boost).
+Visual: Hawk body with red flame wings, molten talon tips, robotic beak, cubic Q on chest, QR on tail feathers.
+
+
+These 8 expand the roster with strong synergy potential (e.g., Yellow chargers, Black ambushers, Blue mobility). Ready for card+mini generations whenever you want—or we can do another 8 first. Which one(s) to image next, or keep going with more sheets? 🚀we want to actually do items, and "buildings" (different kinds of factories with different specialties , ie ice, smoke, jungle, fire , water , sky , ground/mine , etc ; get it?Here are 8 brand-new building designs for TEAR IT : 气, shifting focus to "buildings" as factories with thematic specialties (e.g., ice for frost control, smoke for stealth/poison, jungle for growth, fire for burn damage, water for mobility/heal, sky for air superiority, ground/mine for defense/resources, and one new: void for attrition/debuff). These are Qi-powered mecha-structures that produce items/units, provide zone bonuses, or alter terrain. Each has a Character Sheet adapted for buildings (e.g., no "move" stat, but "production" and "durability").
+I've also included 4 sample item designs (equipable artifacts or power-ups generated by these factories), tied to the buildings' themes. Items can be equipped to creatures for boosts. All incorporate the cube-Q logo, QR/NFC for scanning, and robotic elements.
+Building Designs
+
+IceForge Citadel
+Color: White (Silver Qi)
+Theme: Ice-specialty factory — frozen crystal mecha-fortress that churns out frost weapons and slows enemy advances. Qi generates perpetual blizzards.
+Role: Slow-zone controller / item producer. Root in place, produce ice items, create freezing fields.
+Stats: HP 20, Durability 3+ (armor), Production 2 items/turn (frost gear)
+Abilities: Blizzard Aura (slow all in 8" radius), Forge Freeze (produce item that stuns), Qi Crystal Wall (temporary barrier).
+Visual: Towering citadel with icy crystal spires, silver Qi-frost vents, robotic forge arms, cubic Q on central core, QR on gate.
+
+SmokeVeil Foundry
+Color: Black (Void Purple Qi)
+Theme: Smoke-specialty factory — smog-belching chimney mecha that crafts poison gear and obscures vision. Qi spreads toxic fog.
+Role: Stealth debuffer / item producer. Produce smoke items, create poison clouds.
+Stats: HP 18, Durability 4+, Production 1 item/turn (poison tools)
+Abilities: Fog Veil (stealth aura for allies), Toxin Forge (produce item with DoT), Qi Smog Burst (blind AoE).
+Visual: Industrial foundry with purple smoke stacks, void-glowing vents, robotic bellows, cubic Q on chimney, QR on exhaust port.
+
+JungleGrowth Hive
+Color: Green (Emerald Qi)
+Theme: Jungle-specialty factory — vine-overgrown pod mecha that spawns growth boosters and terraforms into dense foliage. Qi accelerates plant regrowth.
+Role: Ally spawner / item producer. Produce jungle items, spawn fungal minions.
+Stats: HP 16, Durability 3+, Production 3 items/turn (growth aids)
+Abilities: Vine Overgrowth (terraform to difficult terrain), Hive Bloom (spawn ally token), Qi Root Network (heal over time).
+Visual: Pod-like hive with emerald vine tendrils, glowing spore pods, robotic root drills, cubic Q on central pod, QR on vine leaf.
+
+FireSpire Kiln
+Color: Red (Crimson Qi)
+Theme: Fire-specialty factory — blazing forge tower mecha that forges burn weapons and ignites surrounding areas. Qi fuels eternal flames.
+Role: Damage amplifier / item producer. Produce fire items, create burn zones.
+Stats: HP 15, Durability 2+, Production 2 items/turn (flame gear)
+Abilities: Flame Aura (burn adjacent), Kiln Forge (produce item with ignite), Qi Inferno Pulse (AoE burn).
+Visual: Tower kiln with crimson lava flows, red-hot vents, robotic hammer arms, cubic Q on spire top, QR on forge door.
+
+WaterFlow Aqueduct
+Color: Blue (Cyan Qi)
+Theme: Water-specialty factory — flowing conduit mecha that pumps healing fluids and crafts mobility aids. Qi creates tidal surges.
+Role: Healer / item producer. Produce water items, flow heal to allies.
+Stats: HP 17, Durability 3+, Production 2 items/turn (flow tools)
+Abilities: Tidal Heal (regen adjacent), Aqueduct Forge (produce item with dash), Qi Surge Wave (push enemies).
+Visual: Aqueduct structure with cyan water channels, glowing pump nodes, robotic valves, cubic Q on main basin, QR on flow gate.
+
+SkyAero Spire
+Color: White (Silver Qi)
+Theme: Sky-specialty factory — elevated turbine tower mecha that assembles flight gear and generates wind currents. Qi lifts units into air.
+Role: Air booster / item producer. Produce sky items, grant fly to ground units.
+Stats: HP 14, Durability 4+, Production 1 item/turn (aero gear)
+Abilities: Wind Lift (grant fly to ally), Spire Forge (produce item with hover), Qi Gale Force (ranged push).
+Visual: Tall spire with silver turbine blades, aerial docking ports, robotic lift arms, cubic Q on pinnacle, QR on blade hub.
+
+GroundMine Excavator
+Color: Green (Emerald Qi)
+Theme: Ground/mine-specialty factory — drilling rig mecha that extracts resources and crafts defensive barriers. Qi reinforces earth.
+Role: Resource generator / item producer. Produce mine items, build walls.
+Stats: HP 19, Durability 2+, Production 3 items/turn (earth gear)
+Abilities: Resource Dig (gain extra production), Mine Barrier (create wall), Qi Earth Shift (terrain shift).
+Visual: Rig with emerald drill bits, rocky plating, robotic excavator claws, cubic Q on drill head, QR on ore hopper.
+
+VoidRift Portal
+Color: Black (Void Purple Qi)
+Theme: Void-specialty factory — rift gate mecha that summons debuff drones and warps space. Qi pulls in void energy.
+Role: Debuff summoner / item producer. Produce void items, warp enemies.
+Stats: HP 16, Durability 3+, Production 2 items/turn (rift gear)
+Abilities: Rift Summon (spawn debuff drone), Void Warp (teleport enemy), Qi Entropy Drain (debuff stack).
+Visual: Portal frame with purple rift energy, shadowy tendrils, robotic gate arms, cubic Q on arch, QR on energy core.
+
+
+Sample Item Designs (Produced by Factories)
+
+FrostShard Lance (From IceForge Citadel)
+Color: White (Silver Qi)
+Theme: Spear item with freezing crystal tip. Qi slows on hit.
+Role: Equippable weapon. Add stun to melee.
+Stats: +2 melee dice, +slow effect
+Abilities: Shard Pierce (ignore 1 armor), Qi Freeze (stun on crit).
+Visual: Crystal lance with silver Qi veins, cubic Q on hilt, QR on blade.
+
+SmokeVenom Vial (From SmokeVeil Foundry)
+Color: Black (Void Purple Qi)
+Theme: Poison flask item that releases toxic gas. Qi spreads DoT.
+Role: Consumable debuff. Throw for AoE poison.
+Stats: Ranged 4 dice (gas)
+Abilities: Venom Cloud (DoT zone), Qi Toxin Amp (stack poison).
+Visual: Purple vial with gas vents, cubic Q on cap, QR on label.
+
+VineGrowth Booster (From JungleGrowth Hive)
+Color: Green (Emerald Qi)
+Theme: Serum item that accelerates unit growth. Qi heals and buffs.
+Role: Equippable heal. Regen over turns.
+Stats: +3 HP regen/turn
+Abilities: Growth Surge (temp +stats), Qi Root Bind (entangle enemy).
+Visual: Emerald vial with vine coils, cubic Q on stopper, QR on glass.
+
+FlameCore Battery (From FireSpire Kiln)
+Color: Red (Crimson Qi)
+Theme: Battery item with burn charge. Qi ignites attacks.
+Role: Equippable amp. Add fire to ranged.
+Stats: +2 ranged dice (burn)
+Abilities: Core Ignite (ignite on hit), Qi Overheat (self-burst damage).
+Visual: Red battery with flame ports, cubic Q on case, QR on terminal.
+
+
+If you'd like more items, tweaks to these, or images for any, let me know! Or we can gen another 8 buildings/items.

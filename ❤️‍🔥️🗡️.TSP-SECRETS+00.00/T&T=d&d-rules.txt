@@ -1,0 +1,24 @@
+In Dungeons & Dragons (D&D), rolls are generally split into two main categories: D20 Tests, which determine the success or failure of an action, and Variable Rolls, which determine the magnitude of an outcome (like damage or healing). [1, 2, 3, 4] 
+## 1. The D20 Tests
+Nearly every action that has a chance of failure uses a 20-sided die (d20). These are called "D20 Tests" in the [2024 Rules Guide](https://www.dndbeyond.com/sources/dnd/br-2024/playing-the-game). [3, 5, 6, 7, 8] 
+
+* Ability Checks: Used when your character tries to accomplish a task that isn't combat-related, such as jumping a gap (Strength) or picking a lock (Dexterity). Skill checks (like Perception or Athletics) are specific types of ability checks.
+* Attack Rolls: Used in combat to see if you hit an enemy. You roll a d20 and compare the total to the target's Armor Class (AC).
+* Saving Throws: These are reactive rolls used to resist or avoid harmful effects, such as dodging a fireball (Dexterity save) or resisting a poison (Constitution save).
+* Initiative: A specialized Dexterity check made at the start of combat to determine the turn order. [9, 10, 11, 12, 13, 14, 15] 
+
+## 2. Magnitude & Effect Rolls
+Once success is determined by a d20, other polyhedral dice (d4, d6, d8, d10, d12) are used to find the result. [16, 17] 
+
+* Damage Rolls: Determined by your weapon or spell description to see how much health an enemy loses.
+* Healing Rolls: Similar to damage but for restoring hit points, often using a d4 (like a healing potion) or other dice from spells.
+* Hit Dice: Rolled during a "Short Rest" to recover hit points or when you level up to increase your maximum health. [4, 6, 9, 15, 16] 
+
+## 3. Special Roll Mechanics
+
+* Advantage/Disadvantage: If you have an edge, you roll two d20s and take the higher (Advantage). If you are hindered, you roll two and take the lower (Disadvantage).
+* Critical Hits: Rolling a "Natural 20" (the 20 face on the die) is an automatic success on attacks and usually results in double damage dice.
+* Percentile Rolls (d100): Used primarily by the Dungeon Master for random tables or specific class features (like a Cleric's Divine Intervention). This uses two d10s—one for the tens place and one for the ones. [16, 18, 19, 20, 21] 
+
+Are you looking for help with a specific class's rolls, or do you want to know which ability scores to use for certain tasks?
+

@@ -1,0 +1,59 @@
+///
+
+/// plugin for real testable game code/
+
+//global functions // generic common events
+
+// we will write all real code here, probably best 2 write them as tiny lil plugins
+// that way there most organizable and editable, then u can peice them 2gether later
+
+/// seriously i would start by doing every tiny little thing. just to get some working code out
+// and build from there
+// even to start on   moves, and    turns , and hunger and go from there, get a peice working and move it.
+
+// also look at libraries
+
+// and moving the stuff that isn't working code but more descriptive, out of the plugins folder .
+
+
+
+/// server side game manager for all games
+
+
+
+
+Tsotscode.duringturn = 
+
+//isdead?   =  if any peices health reaches zero at any time it will immediatly show as dead
+
+
+//retaliate? = check  if a peice is able to retaliate , if so retaliate
+
+//===
+// Tsotscode.turntaken = every peice registers when a turn is complete, and begins its bodily functions .also
+//  a method for peices .every new peice made receives this method. 
+//===
+// minus from stomach 
+// minus from stress level (all peices shed stress)
+// //is sick?  == reduces health ( peice could be sick from dirt or disease or bad/poisoned food/drug);
+
+// is a waste peice? if so do adjacent damages. 
+// waste peice radiates morale,loyalty, damage sickness, sadness chances etc. otherwords clean good.
+// big waste doesn't dissapear but must be moved  *dump truck*cleaning bots*
+// cleaners have immunities 2 waste and ways of dealing with it and even disposing of it thier important, start as maids, but
+// can end up being like the wolf in pulp fiction
+
+// is plant? = grow 
+// uses electricity? = consume electricity 
+
+// peices radiate a bit uncleanliness to surrounding tiles after every turn 
+
+// especially depending on their  "manner" which is a subset of the calculation of their soul and beauty and lil charism
+// there are alot of little easy combo codes formulas liek that happen in the back ground and make this really alive GOD .
+
+
+// is rescource gatherer? replenish according to formula tiel res + tool quality 
+
+
+
+
