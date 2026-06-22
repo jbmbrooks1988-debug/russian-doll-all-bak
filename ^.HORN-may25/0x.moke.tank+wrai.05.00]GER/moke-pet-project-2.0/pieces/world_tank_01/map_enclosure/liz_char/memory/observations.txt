@@ -1,4 +1,0 @@
-liz_bulb | food
-rock_2 | rock
-liz_char | lizard
-rock_1 | rock

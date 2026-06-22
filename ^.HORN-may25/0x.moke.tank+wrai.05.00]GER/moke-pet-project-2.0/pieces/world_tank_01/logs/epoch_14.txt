@@ -1,2 +1,0 @@
-[Mon Jun 15 22:34:24 2026] liz_bulb | rest | NONE
-[Mon Jun 15 22:34:25 2026] liz_char | rest | NONE

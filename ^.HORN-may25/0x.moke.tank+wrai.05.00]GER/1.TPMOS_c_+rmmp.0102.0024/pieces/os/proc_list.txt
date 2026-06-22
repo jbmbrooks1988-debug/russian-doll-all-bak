@@ -1,9 +1,0 @@
-84510 orchestrator
-84530 keyboard_input
-84531 joystick_input
-84533 response_handler
-84543 renderer
-84542 chtpm_parser
-84545 gl_renderer
-84547 clock_daemon
-84548 loader_module
