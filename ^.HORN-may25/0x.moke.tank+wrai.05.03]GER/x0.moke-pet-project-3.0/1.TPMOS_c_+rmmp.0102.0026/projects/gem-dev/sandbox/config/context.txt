@@ -1,2 +1,0 @@
-project_id=gem-dev
-sandbox_depth=4
