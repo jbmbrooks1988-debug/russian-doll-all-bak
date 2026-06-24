@@ -1,7 +1,0 @@
-[2026-06-23 01:17:26] FrameRendered: at 2026-06-23 01:17:26 | Source: renderer
-[2026-06-23 01:17:29] InputReceived: key_code=13 | Source: keyboard_linux
-[2026-06-23 01:17:29] FrameRendered: at 2026-06-23 01:17:29 | Source: renderer
-[2026-06-23 01:17:30] InputReceived: key_code=13 | Source: keyboard_linux
-[2026-06-23 01:17:30] FrameRendered: at 2026-06-23 01:17:30 | Source: renderer
-[2026-06-23 01:17:32] InputReceived: key_code=13 | Source: keyboard_linux
-[2026-06-23 01:17:32] FrameRendered: at 2026-06-23 01:17:32 | Source: renderer

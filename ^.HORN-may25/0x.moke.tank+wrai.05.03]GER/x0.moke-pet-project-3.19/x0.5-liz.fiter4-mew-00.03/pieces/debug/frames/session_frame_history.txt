@@ -1,0 +1,82 @@
+=== NEW SESSION at 2026-06-24 02:50:53 ===
+
+--- FRAME UPDATE at 2026-06-24 02:50:53 ---
++===========================================================+
+|                                                           |
+|           C H T P M + O S   C L I   v2.0                 |
+|                                                           |
+|  CHTPM+OS Main Menu                                      |
+|                                                           |
+|  [>] 1. [Project Loader]                             |
+|  [ ] 2. [App Store (Fondu)]                          |
+|  [ ] 3. [Status]  [ ] 4. [GL-OS]                                          |
+|  [ ] 5. [Process Monitor]                            |
+|  [ ] 6. [Toggle Frame History (Current: )]                                         |
+|  [ ] 7. [Help]                                            |
+|                                                           |
++===========================================================+
+|  Running Applications: None                               |
+|  System Time: 08:00:00 | Turn: 0 | Key: None |
++===========================================================+
+|                                                           |
+|  $ | [ ] 8. []                                                 |                                                 |
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-24 02:50:54 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [>] 1. [gem-xo]                                        ║
+║  [ ] 2. [template]                                      ║
+║  [ ] 3. [wraith-alpha]                                  ║
+║  [ ] 4. [xo-pet-v1]                                     ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 5. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-24 02:50:55 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [ ] 1. [gem-xo]                                        ║
+║  [ ] 2. [template]                                      ║
+║  [ ] 3. [wraith-alpha]                                  ║
+║  [>] 4. [xo-pet-v1]                                     ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 5. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > 4_
+
+
+--- FRAME UPDATE at 2026-06-24 02:50:56 ---
+[37;41m [ SIM ACTIVE: PAUSED (0) ][0m
+[32m [ ACTIVE ID: xolector ][0m
+[37m [ EPOCH: 519 ][0m
+[37m [ STEPS: 0 ][0m
+[33m PROJECT CONTROLS:[0m
+[30;46m[>] 1. [[ START ]][0m[30;43m[ ] 2. [[ PAUSE ]][0m[30;46m[ ] 3. [[ STEP / END TURN ]][0m
+[33m PET SWITCHER:[0m
+[30;46m[ ] 4. [Possess liz_bulb][0m[30;46m[ ] 5. [Possess liz_char][0m[30;46m[ ] 6. [Possess liz_gen_5414][0m
+[33m METHODS (xolector):[0m
+[30;46m[ ] 7. [possess_bulb][0m[30;46m[ ] 8. [possess_char][0m
+[37m LOG: Input consumed: 13[0m
+[37m TURN SUMMARY: [0m
+
++=========================================================+
+Nav > _
+
