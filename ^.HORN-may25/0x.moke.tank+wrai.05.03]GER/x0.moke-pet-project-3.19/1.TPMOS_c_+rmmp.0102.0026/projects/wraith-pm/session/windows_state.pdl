@@ -1,2 +1,0 @@
-SECTION | KEY | VALUE
-WINDOW | id=terminal_window | title=Wraith Terminal v1.0 | x=2 | y=2 | w=30 | h=8 | z=40 | focused=true | minimized=false | role=panel | src=terminal_window.view.txt

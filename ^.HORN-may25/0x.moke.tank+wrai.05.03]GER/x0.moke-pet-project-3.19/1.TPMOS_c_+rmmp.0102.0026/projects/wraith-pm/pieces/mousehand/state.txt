@@ -1,6 +1,0 @@
-name=Mousehand
-pos_x=36
-pos_y=16
-pos_z=100
-status=active
-type=xelector

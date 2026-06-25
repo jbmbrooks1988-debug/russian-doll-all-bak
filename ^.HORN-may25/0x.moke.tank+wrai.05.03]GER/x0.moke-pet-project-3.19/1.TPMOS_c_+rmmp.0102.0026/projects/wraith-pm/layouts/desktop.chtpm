@@ -1,1 +1,0 @@
-<panel>\n    <module>${module_path}</module>\n    ${game_map}\n</panel>

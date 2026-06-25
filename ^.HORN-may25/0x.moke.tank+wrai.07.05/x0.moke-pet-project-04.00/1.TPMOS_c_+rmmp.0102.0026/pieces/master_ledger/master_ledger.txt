@@ -1,0 +1,16 @@
+[2026-06-24 20:03:30] FrameRendered: at 2026-06-24 20:03:30 | Source: renderer
+[2026-06-24 20:03:30] FrameRendered: at 2026-06-24 20:03:30 | Source: renderer
+[2026-06-24 20:03:31] FrameRendered: at 2026-06-24 20:03:31 | Source: renderer
+[2026-06-24 20:03:35] FrameRendered: at 2026-06-24 20:03:35 | Source: renderer
+[2026-06-24 20:03:35] FrameRendered: at 2026-06-24 20:03:35 | Source: renderer
+[2026-06-24 20:03:35] FrameRendered: at 2026-06-24 20:03:35 | Source: renderer
+[2026-06-24 20:03:35] FrameRendered: at 2026-06-24 20:03:35 | Source: renderer
+[2026-06-24 20:03:35] FrameRendered: at 2026-06-24 20:03:35 | Source: renderer
+[2026-06-24 20:03:36] FrameRendered: at 2026-06-24 20:03:36 | Source: renderer
+[2026-06-24 20:03:36] FrameRendered: at 2026-06-24 20:03:36 | Source: renderer
+[2026-06-24 20:03:36] FrameRendered: at 2026-06-24 20:03:36 | Source: renderer
+[2026-06-24 20:03:38] FrameRendered: at 2026-06-24 20:03:38 | Source: renderer
+[2026-06-24 20:03:38] FrameRendered: at 2026-06-24 20:03:38 | Source: renderer
+[2026-06-24 20:03:38] FrameRendered: at 2026-06-24 20:03:38 | Source: renderer
+[2026-06-24 20:03:39] FrameRendered: at 2026-06-24 20:03:39 | Source: renderer
+[2026-06-24 20:03:39] FrameRendered: at 2026-06-24 20:03:39 | Source: renderer
