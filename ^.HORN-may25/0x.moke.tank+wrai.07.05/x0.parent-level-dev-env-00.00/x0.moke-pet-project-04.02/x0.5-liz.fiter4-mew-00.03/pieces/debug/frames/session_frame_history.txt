@@ -1,0 +1,503 @@
+=== NEW SESSION at 2026-06-25 15:46:09 ===
+
+--- FRAME UPDATE at 2026-06-25 15:46:09 ---
++===========================================================+
+|                                                           |
+|           C H T P M + O S   C L I   v2.0                 |
+|                                                           |
+|  CHTPM+OS Main Menu                                      |
+|                                                           |
+|  [>] 1. [Project Loader]                             |
+|  [ ] 2. [App Store (Fondu)]                          |
+|  [ ] 3. [Status]  [ ] 4. [GL-OS]                                          |
+|  [ ] 5. [Process Monitor]                            |
+|  [ ] 6. [Toggle Frame History (Current: )]                                         |
+|  [ ] 7. [Help]                                            |
+|                                                           |
++===========================================================+
+|  Running Applications: None                               |
+|  System Time: 08:00:00 | Turn: 0 | Key: None |
++===========================================================+
+|                                                           |
+|  $ | [ ] 8. []                                                 |                                                 |
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-25 15:46:11 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [>] 1. [gem-xo]                                        ║
+║  [ ] 2. [template]                                      ║
+║  [ ] 3. [wraith-alpha]                                  ║
+║  [ ] 4. [xo-pet-v1]                                     ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 5. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-25 15:46:12 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [ ] 1. [gem-xo]                                        ║
+║  [>] 2. [template]                                      ║
+║  [ ] 3. [wraith-alpha]                                  ║
+║  [ ] 4. [xo-pet-v1]                                     ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 5. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-25 15:46:13 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [ ] 1. [gem-xo]                                        ║
+║  [ ] 2. [template]                                      ║
+║  [>] 3. [wraith-alpha]                                  ║
+║  [ ] 4. [xo-pet-v1]                                     ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 5. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-25 15:46:13 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+
+
+| [ TASKBAR ] [>] 1. [Terminal] |
++----------------------------------------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 8
+Focused Window: Desktop
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 1
+Manager Key:   0
+Manager Mouse: X:0 Y:0 B:-1
+Last Click:    X:-1 Y:-1
+
+[ PARSER BYPASS DEBUG ]
+RAW: [2026-06-25 15:46:13] KEY_PRESSED: 13
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-25 15:46:15 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+
+
+| [ TASKBAR ] [>] 1. [Terminal] |
++----------------------------------------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 8
+Focused Window: Desktop
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 1
+Manager Key:   0
+Manager Mouse: X:0 Y:0 B:-1
+Last Click:    X:-1 Y:-1
+
+[ PARSER BYPASS DEBUG ]
+RAW: [2026-06-25 15:46:15] KEY_PRESSED: 13
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-25 15:46:15 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ Terminal #9 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ] [>] 5. [Terminal] |
++----------------------------------------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 9
+Focused Window: Terminal #9
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 1
+Manager Key:   0
+Manager Mouse: X:0 Y:0 B:-1
+Last Click:    X:-1 Y:-1
+
+[ PARSER BYPASS DEBUG ]
+RAW: [2026-06-25 15:46:15] KEY_PRESSED: 13
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-25 15:46:18 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ Terminal #9 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ] [ ] 5. [Terminal] |
++----------------------------------------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 9
+Focused Window: Terminal #9
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 1
+Manager Key:   1
+Manager Mouse: X:0 Y:0 B:-1
+Last Click:    X:-1 Y:-1
+
+[ PARSER BYPASS DEBUG ]
+RAW: [2026-06-25 15:46:18] KEY_PRESSED: 49
+
++=========================================================+
+Nav > 1_
+
+
+--- FRAME UPDATE at 2026-06-25 15:46:18 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ Terminal #9 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ] [ ] 5. [Terminal] |
++----------------------------------------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 9
+Focused Window: Terminal #9
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 1
+Manager Key:   1
+Manager Mouse: X:0 Y:0 B:-1
+Last Click:    X:-1 Y:-1
+
+[ PARSER BYPASS DEBUG ]
+RAW: [2026-06-25 15:46:18] KEY_PRESSED: 49
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-25 15:46:19 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ Terminal #9 ]------------------------------------------[>] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ] [ ] 5. [Terminal] |
++----------------------------------------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 9
+Focused Window: Terminal #9
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 1
+Manager Key:   1
+Manager Mouse: X:0 Y:0 B:-1
+Last Click:    X:-1 Y:-1
+
+[ PARSER BYPASS DEBUG ]
+RAW: [2026-06-25 15:46:19] KEY_PRESSED: 50
+
++=========================================================+
+Nav > 2_
+
+
+--- FRAME UPDATE at 2026-06-25 15:46:19 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ Terminal #9 ]------------------------------------------[>] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ] [ ] 5. [Terminal] |
++----------------------------------------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 9
+Focused Window: Terminal #9
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 2
+Manager Key:   2
+Manager Mouse: X:0 Y:0 B:-1
+Last Click:    X:-1 Y:-1
+
+[ PARSER BYPASS DEBUG ]
+RAW: [2026-06-25 15:46:19] KEY_PRESSED: 50
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-25 15:46:19 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ Terminal #9 ]------------------------------------------[>] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |[ ] 5. [terminal    ]|
+| |[ ] 6. [blank-proj  ]|
+| |                                                                                              |
+| |                                                                                              |
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ] [ ] 7. [Terminal] |
++----------------------------------------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 9
+Focused Window: Terminal #9
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 2
+Manager Key:   2
+Manager Mouse: X:0 Y:0 B:-1
+Last Click:    X:-1 Y:-1
+
+[ PARSER BYPASS DEBUG ]
+RAW: [2026-06-25 15:46:19] KEY_PRESSED: 13
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-25 15:46:19 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ Terminal #9 ]------------------------------------------[>] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |[ ] 5. [terminal    ]|
+| |[ ] 6. [blank-proj  ]|
+| |                                                                                              |
+| |                                                                                              |
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ] [ ] 7. [Terminal] |
++----------------------------------------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 9
+Focused Window: Terminal #9
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 2
+Manager Key:   0
+Manager Mouse: X:0 Y:0 B:-1
+Last Click:    X:-1 Y:-1
+
+[ PARSER BYPASS DEBUG ]
+RAW: [2026-06-25 15:46:19] KEY_PRESSED: 13
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-25 15:46:20 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ Terminal #9 ]------------------------------------------[ ] 2. [o][>] 3. [-][ ] 4. [x]-+               |
+| |[ ] 5. [terminal    ]|
+| |[ ] 6. [blank-proj  ]|
+| |                                                                                              |
+| |                                                                                              |
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ] [ ] 7. [Terminal] |
++----------------------------------------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 9
+Focused Window: Terminal #9
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 3
+Manager Key:   3
+Manager Mouse: X:0 Y:0 B:-1
+Last Click:    X:-1 Y:-1
+
+[ PARSER BYPASS DEBUG ]
+RAW: [2026-06-25 15:46:20] KEY_PRESSED: 51
+
++=========================================================+
+Nav > 3_
+
+
+--- FRAME UPDATE at 2026-06-25 15:46:21 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ Terminal #9 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |[>] 5. [terminal    ]|
+| |[ ] 6. [blank-proj  ]|
+| |                                                                                              |
+| |                                                                                              |
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ] [ ] 7. [Terminal] |
++----------------------------------------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 9
+Focused Window: Terminal #9
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 5
+Manager Key:   5
+Manager Mouse: X:0 Y:0 B:-1
+Last Click:    X:-1 Y:-1
+
+[ PARSER BYPASS DEBUG ]
+RAW: [2026-06-25 15:46:21] KEY_PRESSED: 53
+
++=========================================================+
+Nav > 5_
+
+
+--- FRAME UPDATE at 2026-06-25 15:46:21 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ Terminal #9 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |[>] 5. [terminal    ]|
+| |[ ] 6. [blank-proj  ]|
+| |                                                                                              |
+| |                                                                                              |
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ] [ ] 7. [Terminal] |
++----------------------------------------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 9
+Focused Window: Terminal #9
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 5
+Manager Key:   5
+Manager Mouse: X:0 Y:0 B:-1
+Last Click:    X:-1 Y:-1
+
+[ PARSER BYPASS DEBUG ]
+RAW: [2026-06-25 15:46:21] KEY_PRESSED: 53
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-25 15:46:22 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ Terminal #9 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |[>] 5. [terminal    ]|
+| |[ ] 6. [blank-proj  ]|
+| |                                                                                              |
+| |                                                                                              |
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ] [ ] 7. [Terminal] |
++----------------------------------------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 9
+Focused Window: Terminal #9
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 5
+Manager Key:   5
+Manager Mouse: X:0 Y:0 B:-1
+Last Click:    X:-1 Y:-1
+
+[ PARSER BYPASS DEBUG ]
+RAW: [2026-06-25 15:46:21] KEY_PRESSED: 13
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-25 15:46:26 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ Terminal #9 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |[>] 5. [terminal    ]|
+| |[ ] 6. [blank-proj  ]|
+| |                                                                                              |
+| |                                                                                              |
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ] [ ] 7. [Terminal] |
++----------------------------------------------------------------------------------------------+
+
+Desktop Mode: desktop
+Open Windows: 9
+Focused Window: Terminal #9
+Window Mode: half
+
+[ DESKTOP DEBUG ]
+Manager Index: 5
+Manager Key:   5
+Manager Mouse: X:0 Y:0 B:-1
+Last Click:    X:-1 Y:-1
+
+[ PARSER BYPASS DEBUG ]
+RAW: [2026-06-25 15:46:26] KEY_PRESSED: 13
+
++=========================================================+
+Nav > _
+

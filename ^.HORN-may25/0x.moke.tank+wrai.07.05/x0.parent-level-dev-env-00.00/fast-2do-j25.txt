@@ -1,0 +1,37 @@
+# FAST 2DO J25
+
+Goal:
+- Make Wraith Alpha's desktop shell fully dynamic in the same spirit as TPMOS dynamic menus.
+- Remove hardcoded launcher/taskbar slot math from both the manager and the layout.
+- Keep `terminal` and `blank-project` project-backed and reusable.
+
+Planned change set:
+1. Build the desktop shell projection from runtime state.
+2. Read launcher rows from `projects/wraith-alpha/wraith-projects/launcher/piece.pdl`.
+3. Read taskbar rows from the live non-closed window registry.
+4. Map `Enter` to the same runtime menu model that the layout exports.
+5. Keep `pieces/display/active_gui_index.txt` as the live focus seam between parser and manager.
+6. Preserve session bootstrap cleanup so stale windows do not leak across runs.
+
+What this could break:
+- Button ordering in the layout if the manager-generated markup does not match parser expectations.
+- Launcher selection if the manifest order and rendered order drift apart.
+- Taskbar activation if visible-window ordering changes and the manager does not mirror it.
+- Existing save/load experiments if they still assume a static `SET_ACTIVE:5/6/7+` contract.
+
+What remains safe:
+- The parser stays thin.
+- The shared launch helper remains reusable.
+- `terminal` and `blank-project` still launch through project-backed commands.
+- The desktop shell still owns the projection boundary, not project-specific behavior.
+
+Acceptance checks:
+- `terminal` launches from the toolbar and appears in the live taskbar.
+- `blank-proj` launches from the toolbar and appears in the live taskbar.
+- The visible row you navigate to is the same row that `Enter` dispatches.
+- No stale windows are inherited from the previous run after bootstrap cleanup.
+
+If this regresses:
+- Roll back the layout placeholder first.
+- Then roll back the dynamic dispatcher in `wraith-alpha_manager.c`.
+- Do not reintroduce hardcoded row numbers unless it is only for a temporary debug branch.

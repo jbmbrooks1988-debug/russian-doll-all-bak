@@ -1,0 +1,61 @@
+# QUICK HANDOFF J25
+
+Purpose:
+- Give a fresh agent the minimum stable context without inheriting our wrong assumptions.
+- Keep this focused on the real Wraith goal: project-backed session contexts inside one virtual OS.
+
+What Wraith Is:
+- Wraith is a virtual OS.
+- Save/load applies to the entire session environment, not just a terminal buffer.
+- `terminal`, `blank-project`, and the desktop shell are supposed to be real session contexts.
+
+What Is Still Wrong:
+- The current desktop shell still has a single shared session registry, but the visible menu is now meant to be projected from runtime state.
+- The launcher/taskbar contract must be dynamic: the launcher count comes from the launcher PDL, and the taskbar count comes from the live visible window registry.
+- This is not supposed to be a fixed `5/6/7+` layout.
+- The old launcher failure was a static-slot bug, not a missing project.
+- One concrete current bug was that the title-bar chrome got rendered as literal text instead of real buttons.
+- When that happens, the parser's first live controls become launcher/taskbar rows, but the manager still dispatches as if chrome indices `1-4` exist.
+- That specific mismatch is what turned taskbar `Terminal` into minimize/close behavior and kept `blank-proj` from honoring the expected shell control order.
+
+Why That Matters:
+- It lets surface fixes look successful while the underlying project-context problem remains.
+- It is the same class of mistake that kept `blank-proj` from becoming a true project-backed launch path.
+- If we keep refacing the shell, we can keep missing the actual contract: each context must be backed by a real project/path/state model.
+
+Current Architectural Intent:
+- `terminal` should resolve to a real project directory under `wraith/wraith-projects/terminal`.
+- `blank-project` should resolve to `wraith/wraith-projects/blank-project`.
+- Launcher actions should route through real commands and reusable ops.
+- The manager should stay thin and preserve the session registry as source of truth.
+- The default toolbar terminal is not a fake shortcut; it is supposed to be a real project-backed launcher entry just like `blank-project`.
+- All terminal launches should use that same project-backed path, not a separate bootstrap-only shortcut path.
+- The terminal and blank-project launchers should share one common project-launch helper and one common dispatch table, not separate one-off branches.
+- `blank-project` should never open on its own during startup. It should open only after explicit user selection from navigation.
+
+Cleanup Direction:
+- Fix the underlying project/context model instead of adding more shell chrome hacks.
+- Keep launcher selection synchronized through `pieces/display/active_gui_index.txt`.
+- Preserve launcher-range indices instead of clamping them to window-chrome bounds.
+- Keep the desktop shell as a projector, but not as the place where project identity is invented.
+- Use the launcher PDL as the source of truth for command order, with matching index base on the manager side.
+- Do not treat taskbar indices as launcher indices; launcher rows and taskbar rows are separate ranges and must dispatch differently.
+- Build the shell from the live launcher manifest and live window registry so indices open dynamically.
+
+What A Fresh Agent Should Do:
+- Read `wraith-architecture-j25.md` first.
+- Treat `wrai-pro-fix-j25.txt` as the current bug narrative, but verify the code before trusting the narrative.
+- Inspect `projects/wraith-alpha/manager/wraith-alpha_manager.c` and `projects/wraith-alpha/ops/wraith_parser_alpha.c` together.
+- Do not add more surface fixes until the project-backed context path is correct.
+- Verify that the layout and manager use the same runtime menu counts before touching parser code.
+
+Files of Interest:
+- `wraith-architecture-j25.md`
+- `wrai-pro-fix-j25.txt`
+- `fast-2do-j25.txt`
+- `projects/wraith-alpha/manager/wraith-alpha_manager.c`
+- `projects/wraith-alpha/ops/wraith_parser_alpha.c`
+
+Bottom Line:
+- The intended fix is not “make the shell look more right.”
+- The intended fix is “make the contexts real, project-backed, and routed through the same session contract.”

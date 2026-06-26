@@ -1,8 +1,0 @@
-project_id=xo-pet-v1
-active_target_id=xolector
-sim_active=0
-step_pending=0
-step_count=0
-epoch=1
-last_response=Input consumed: 13
-turn_summary=

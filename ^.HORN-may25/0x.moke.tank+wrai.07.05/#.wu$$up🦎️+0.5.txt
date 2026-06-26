@@ -24,6 +24,89 @@ and will register as a "project"(or cage or something w/e made2load those)
 and over time we will congeal this into super compatible swappable all over the place.
 🚬️🥡️
 
+📅️j25++ were kind of in a functional lul. we need to do some 
+"mid scaffold  maintinece style architecture b4 we get serious/fun momentum again"
+📅️j25:
+PROTIP? JUST DO WRAITH. (IN 1.TPMOS) 
+wraith status ?  = 
+still no "[]options in window" but once there are u can start opening
+more windows , and mimmicking chtmgl-os...
+
+do emoji studio. make sure everything has a 3d-z visual, even if its not 'attached 2 gui'.
+(bonus if u can take input from multiple sources/guis/ thats very sophisticated "end game" fx()
+
+
+
+>wait 
+
+--- FRAME UPDATE at 2026-06-25 01:07:08 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ Terminal #6 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |[>] 5. [terminal    ]|
+| |[ ] 6. [blank-proj  ]|
+| |                                                                                              |
+| |                                                                                              |
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ] [ ] 7. [Terminal] |
++----------------------------------------------------------------------------------------------+
+
+
+(1.tpmos has options. just not xo-pet's ; so lets finish this before 'reporting' 2 pet . 
+)
+
+; ok. so what? how? 
+can we open / play any normal projects? chtpmgl? 
+(can we <switch between ascii and gl like emoji?>🔍️
+
+🐗️bored. wanna write book faster? make a "book writing suite"
+(just the chat interface? yea +- "tools" or something (ops for any ai or w/e)
+
+
+🏁️
+1. too much debug info on the screen first of all.
+<especialy if some is redundant>
+<would be nice if each window scaled on its own , premature frame instead of locking
+to terminal size , terminal is just a debug output ; frame should be truth 
+2.
+<why does 'blank project' lock up everything?>
+3. currently the gl window doesn't send mouse/kbd info back to history(which it
+definately should > 
+🏁️
+📅️
+📅️j24:
+instead of doign "WSR" game again. spend ur time more wisely 
+isolate a copy of "LSR" and start building it out in isolation . who cares
+and test it get it "up to snuff" , show screenshots if u can. etc.  
+❗️take xo-pet but push it inside out to make ox-pet? w/e ❗️
+(then wut? wraith or lsr...)
+✳️i just asked it to do this but it just hallucinated. we did too much in that last session
+🎑️
+pick a "large smol chunk" of thing u wanna do .
+
+like "lrs isolated + fsm + add entities (pets) once its done"
+(who cares , and add locations/visualization after. who is gonna complain if lsr is done 
+DO IT ALREADY LOL"
+🎑️
+⚗️pushing towards chem compoundy stuff
+
+🥈️2nd alt do op ed . up 2 readable pal save/load (HOW IS THIS NOT DONE!)
+
+🥉️🐖️🏪️(emoji studio 3d ) in wraith. this isn't done for reasons
+
+👁️ duh just do wraith. first , cuz duh {then do any and everything} <- have doc for pushing this
+
+🍀️4🍀️ do book writing.(but only with googlegemini)[only if they are chill]
+🤖️
+WAIT ON "IQA_LLM" till much later, cuz it may needs lots of "weights"
+(have fondue, and user-fondu bin folders first)
+
+however DO do fsm/ops/pal in mean time
+
+🙊️actually thats not true. seperate it . and train it on mac or debilu tbh 
+🤖️
 📅️j19: 
 🇷🇴️
 y xo-control is good? 

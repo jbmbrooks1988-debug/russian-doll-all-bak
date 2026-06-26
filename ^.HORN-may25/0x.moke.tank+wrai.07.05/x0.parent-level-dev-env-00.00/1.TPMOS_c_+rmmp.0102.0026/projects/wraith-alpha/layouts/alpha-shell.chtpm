@@ -1,0 +1,24 @@
+<layout id="wraith_alpha_shell">
+    <module>projects/wraith-alpha/manager/+x/wraith-alpha_manager.+x</module>
+    <interact src="projects/wraith-alpha/session/history.txt" />
+    <panel title="WRAITH ALPHA - DESKTOP">
+        <text label="[ KPI 1: Keyboard Nav Proof ]" /><br/>
+        <text label="Use arrows to move selector. Windows and controls stay indexable." /><br/>
+        <br/>
+        ${desktop_shell_markup}
+        <br/>
+        <text label="Desktop Mode: ${desktop_mode}" /><br/>
+        <text label="Open Windows: ${desktop_window_count}" /><br/>
+        <text label="Focused Window: ${desktop_focused_window_title}" /><br/>
+        <text label="Window Mode: ${desktop_active_window_mode}" /><br/>
+        <br/>
+        <text label="[ DESKTOP DEBUG ]" /><br/>
+        <text label="Manager Index: ${active_gui_index}" /><br/>
+        <text label="Manager Key:   ${current_key_label}" /><br/>
+        <text label="Manager Mouse: X:${mouse_x} Y:${mouse_y} B:${mouse_btn}" /><br/>
+        <text label="Last Click:    X:${last_click_x} Y:${last_click_y}" /><br/>
+        <br/>
+        <text label="[ PARSER BYPASS DEBUG ]" /><br/>
+        <text label="RAW: ${PARSER_KBD_DEBUG}" /><br/>
+    </panel>
+</layout>

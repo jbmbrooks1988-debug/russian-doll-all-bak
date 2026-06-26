@@ -1,9 +1,0 @@
-desktop_window_1_open=false
-desktop_window_1_collapsed=false
-fold_terminal=open
-desktop_window_1_body_visible=false
-desktop_window_1_collapse_glyph=-
-desktop_window_1_fullscreen=false
-desktop_window_1_mode=half
-desktop_window_1_halfscreen_visible=true
-desktop_launcher_1_title=Terminal
