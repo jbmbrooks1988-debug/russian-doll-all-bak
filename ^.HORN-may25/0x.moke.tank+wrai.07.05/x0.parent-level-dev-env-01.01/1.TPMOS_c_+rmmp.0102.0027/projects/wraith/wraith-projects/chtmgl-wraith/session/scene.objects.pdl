@@ -1,0 +1,4 @@
+# Project-owned Wraith scene records.
+# Widget roles should later be emitted by a chtmgl-wraith manager/parser, not wraith-alpha hardcoding.
+OBJECT tag=surface id=game_map role=game_map x=54 y=8 w=24 h=10 z=16 nav=5 source=semantic:game_map_surface fg=#E8F1F2 bg=#0B1118 border=#7EDFF2 action=INTERACT label=Control_Surface
+OBJECT tag=model id=chtmgl_preview role=widget_surface_probe x=54 y=8 w=24 h=10 z=23 source=layouts/chtmgl-wraith.chtpm fg=#7EDFF2 bg=#0B1118 border=#FFD166 action=- label=CHTMGL_SURFACE:source=layouts/chtmgl-wraith.chtpm

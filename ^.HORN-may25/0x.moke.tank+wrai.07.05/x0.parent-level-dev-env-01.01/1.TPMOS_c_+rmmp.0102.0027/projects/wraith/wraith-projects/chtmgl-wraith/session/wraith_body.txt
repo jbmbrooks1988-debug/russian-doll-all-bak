@@ -1,0 +1,6 @@
+CHTMGL WRAITH | widget probe
+[HEADER] CHTMGL Widget Probe
+[PANEL Controls] [Button] [Checkbox:x] Slider:[==========-----]
+[PANEL Visuals] Image:missingno Media:gowon Surface:${game_map}
+[MENU Options] Save | Load | Exit
+Audit: roles=header,panel,button,checkbox,slider,img,media,menu,surface

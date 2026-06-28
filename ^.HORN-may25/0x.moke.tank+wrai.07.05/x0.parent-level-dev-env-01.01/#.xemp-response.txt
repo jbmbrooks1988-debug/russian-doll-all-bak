@@ -1,0 +1,82 @@
+• Partially, but not in the full sense you described.
+
+  What is actually in place now:
+
+  - Wraith does launch an RGB pipeline from the manager in
+    1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/manager/wraith-
+    alpha_manager.c:1474.
+
+  - That pipeline includes wraith_rgb_daemon.+x and wraith_gl.+x.
+  - The daemon reads pieces/display/current_frame.txt and writes projects/
+    wraith-alpha/session/rgb/current_frame.rgba32 in /home/no/Desktop/🤖️🪤️🪤️🏠️/
+    🚽️🧻️/🚽️🥡️-00.00/ZEST-00.00/x0.parent-level-dev-env-
+    01.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/plugins/
+    wraith_rgb_daemon.c:111.
+
+  - The GL side then just displays that RGBA buffer as a texture in /home/no/
+    Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-00.00/ZEST-00.00/x0.parent-level-dev-
+    env-01.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/ops/
+    wraith_gl.c:29.
+
+  But that converter is not yet the richer thing you described.
+
+  What it is today:
+
+  - an ASCII glyph rasterizer
+  - it paints characters from current_frame.txt into RGBA pixels
+  - it uses very simple coloring logic
+  - GL is presenting RGB only
+
+  What it is not yet:
+
+  - a semantic converter from ASCII/frame objects into GL windows, buttons,
+    rectangles, panels, etc.
+
+  - a chtmgl-style shape converter driven by scene/object metadata
+  - a real “ascii to GL shapes via rgb primitives” pipeline
+
+  There is evidence the intended direction exists:
+
+  - 1.TPMOS_c_+rmmp.0102.0027/pieces/display/current_frame.meta.pdl:20 says
+    converter_owns_glyphs and gl_presents_rgb_only
+
+  - 1.TPMOS_c_+rmmp.0102.0027/pieces/display/current_frame.objects.pdl:5 already
+    has semantic objects like panel, game_map_window, bounds, colors, labels
+
+  That means the missing piece is the middle fork:
+
+  - not ASCII chars -> glyph bitmap
+  - but frame objects/meta -> RGB rectangles/shapes/widgets
+
+  Separate but related:
+
+  - fuzz-op-gl already does game_map ASCII to semantic GL tiles/sprites directly
+    in gltpm_process_canvas_block() in 1.TPMOS_c_+rmmp.0102.0027/xo/!.gem-
+    xo=00.03/pieces/apps/gl_os/plugins/gltpm_parser.c:413
+
+  - that path uses tile metadata like rgb_top
+  - but it is not the same as Wraith’s current current_frame.txt -> rgba32
+    mirror
+
+  So the direct answer is:
+
+  - yes, an RGB thread/daemon exists
+  - no, the semantic RGB shape converter is not fully in place yet
+  - fast-2do.txt should mention this explicitly, because right now it reads more
+    like the semantic converter already exists
+
+  If you want, I can update the doc and todo next to split this into:
+
+  1. current state: glyph raster mirror exists
+  2. missing next step: object/meta-driven RGB shape converter
+  3. later step: game_map/INTERACT surfaces rendered as semantic GL primitives
+     instead of glyph textures
+
+────────────────────────────────────────────────────────────────────────────────
+
+ 
+› Implement {feature}
+ 
+  gpt-5.4 low · ~/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-00.00/x0.parent-level-dev…
+
+

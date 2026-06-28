@@ -1,0 +1,98 @@
+# Wraith Active Fixes
+
+Last updated: 2026-06-27
+
+This file is intentionally cleared of the long historical repair log.
+
+For completed context, read:
+- `handoff-j26.txt`
+- `wraith-architecture-j25.md`
+- `WRAITH-GL-STD.md`
+
+## Current State
+
+The recent GL parity/debug issues are considered fixed enough to move forward:
+- stale GL startup frame
+- GL 10+ digit navigation
+- GL fullscreen mouse transform receipt
+- RGB receipt freshness/timestamps
+- GL display upload receipt
+- footer text projection drift caused by `GLYPH_H=16` vs `cell_height_px=18`
+- receipt fields for text, hit, and focus rectangles
+
+Do not reopen these as active fixes unless a fresh run produces a current receipt and screenshot showing regression.
+
+## Active Fix 1: `wraith-3d-cube` Must Open Real Body Content
+
+Problem:
+- `wraith-3d-cube` exists under the correct internal Wraith project tree and now has starter body content.
+- the next sprint must confirm the body appears in a live Wraith run in both ASCII and GL receipts.
+
+Expected:
+- location is `1.TPMOS_c_+rmmp.0102.0027/projects/wraith/wraith-projects/wraith-3d-cube`.
+- selecting it from Wraith's internal launcher opens a project window inside Wraith.
+- ASCII and GL both show a cube/project body.
+- receipts prove the cube body/game-map region was converted.
+
+Fix direction:
+- live-test launcher selection from Wraith.
+- verify `project_body_text` objects appear in `current_frame.objects.pdl` and `current_frame.receipt.pdl`.
+- verify GL display checksum matches the RGB receipt checksum.
+- avoid top-level TPMOS project registration.
+
+Applied:
+- cube layout now includes an ASCII cube audit body.
+- cube session state exists.
+- manager renders specialized cube body text for non-terminal project windows.
+- manager emits matching semantic `project_body_text` objects.
+
+## Active Fix 2: Preserve Receipt Parity While Adding Project Bodies
+
+Problem:
+- new project bodies can easily bypass the current receipt/debug contract if added as ad hoc text or direct GL behavior.
+
+Expected:
+- all new Wraith project body content should become semantic scene objects and RGB converter input.
+- GL remains a thin presenter.
+- receipts remain sufficient for debugging without screenshots.
+
+Fix direction:
+- after adding project content, compare:
+  - `current_frame.receipt.pdl:render_checksum_fnv1a64`
+  - `gl_display.receipt.pdl:loaded_rgba_checksum_fnv1a64`
+- inspect `text_px_*`, `hit_px_*`, and `focus_px_*` for the new body objects.
+- add missing receipt fields before guessing at visual coordinate changes.
+
+Applied:
+- `piececraft-wraith` scaffold, starter map, state, README, and project body renderer exist.
+- `chtmgl-wraith` scaffold, starter widget page, state, README, and project body renderer exist.
+- the manager rebuild succeeded.
+
+Momentum:
+- `piececraft-wraith` is the best next polish target because the source project already has the right map/control vocabulary.
+- `chtmgl-wraith` needs the most future work because widget primitives still need real semantic/RGB support.
+
+## Active Fix 3: Focus Rect May Still Be Too Broad
+
+Problem:
+- the red focus rectangle now has receipt fields, but it may still visually follow broad hit regions rather than compact label/slot bounds.
+
+Expected:
+- hit regions can stay broad for usability.
+- focus visuals should surround the visible label or deliberate row slot.
+
+Fix direction:
+- if the next fresh screenshot shows detached red rectangles, implement `focus_rect_source=label` for text/nav controls.
+- preserve separate `hit_px_*` for clickability.
+- do not shrink hit regions just to make focus visuals look cleaner.
+
+## Next Validation Projects
+
+After these active fixes are handled through `wraith-3d-cube`, continue in order:
+
+1. `piececraft-wraith`
+2. `chtmgl-wraith`
+
+Both must be internal Wraith projects under:
+
+`1.TPMOS_c_+rmmp.0102.0027/projects/wraith/wraith-projects/`

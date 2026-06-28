@@ -1,0 +1,14 @@
+piece_id=cube_probe
+artifact=pieces/cube_probe/artifact.txt
+role=zslice_piece
+surface=${game_map}
+source_standard=piececraft_zslice_piece
+pos_x=0
+pos_y=0
+pos_z=0
+rot_x=15
+rot_y=35
+rot_z=0
+selected=1
+rgb_top=36,201,74
+rgb_side=23,142,49

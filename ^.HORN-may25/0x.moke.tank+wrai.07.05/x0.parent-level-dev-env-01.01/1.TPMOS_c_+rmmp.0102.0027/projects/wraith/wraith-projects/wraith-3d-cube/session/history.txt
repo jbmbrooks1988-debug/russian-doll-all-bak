@@ -1,0 +1,4 @@
+# Wraith project input history.
+# Wraith Alpha appends COMMAND: INTERACT, COMMAND: ESC, and KEY_PRESSED events here.
+[Sat Jun 27 21:54:52 2026] COMMAND: INTERACT
+[Sat Jun 27 21:54:52 2026] COMMAND: INTERACT

@@ -1,0 +1,4 @@
+# Project-owned Wraith scene records.
+# Piececraft world standard: maps/map_01_z*.txt + assets/tiles/registry.txt + tile extrude fields.
+OBJECT tag=surface id=game_map role=game_map x=35 y=6 w=48 h=14 z=16 nav=5 source=semantic:game_map_surface fg=#E8F1F2 bg=#0B1118 border=#7EDFF2 action=INTERACT label=Control_Map
+OBJECT tag=model id=piececraft_map_01 role=tile_zmap x=35 y=6 w=48 h=14 z=23 source=1.TPMOS_c_+rmmp.0102.0027/projects/wraith/wraith-projects/piececraft-wraith/maps/map_01_z0.txt fg=#24C94A bg=#0B1118 border=#FFD166 action=- label=MAP_SOURCE:source=maps/map_01_z0.txt;registry=assets/tiles/registry.txt;z=0;selected=4,2,0
