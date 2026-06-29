@@ -1,7 +1,0 @@
-EMOJI STUDIO WRAITH | ${game_map} RGBA extrusion probe
-Reference: #.emoji-studio-501.02.05t/&.emoji-studio-solo.02.01
-Source: pieces/sample_emoji/voxels_8.csv
-2D RGBA pixels -> extruded colored columns -> RGB frame
-[PICKER] resolution 8/16/32/64
-[PREVIEW] ${game_map} camera_mode=${camera_mode} INTERACT
-Audit: role=rgba_extrusion alpha=occupancy rgb=material

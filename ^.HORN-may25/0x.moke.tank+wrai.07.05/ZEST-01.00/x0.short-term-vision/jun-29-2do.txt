@@ -1,0 +1,155 @@
+jun-29-2do.txt
+Date: 2026-06-29
+Status: Active task list for current dev epoch
+
+==================================================
+TOP DECISION
+==================================================
+
+The current Wraith hosted-project location:
+
+- projects/wraith/wraith-projects/
+
+is probably not the final correct TPM/world-ownership shape.
+
+Reason:
+- per `!.world_architecture+1=rusindol.txt`, a parent/container should own its nested property inside its own root
+- `wraith-alpha` is the host parent
+- therefore Wraith-hosted internal projects likely belong under:
+
+  projects/wraith-alpha/wraith-projects/
+
+instead of as a sibling namespace under `projects/wraith/`
+
+This should be treated as a deliberate migration step, not as an incidental path tweak.
+
+==================================================
+ACTIVE TODO
+==================================================
+
+1. [done] Document and confirm the intended migration:
+   - from `projects/wraith/wraith-projects/`
+   - to `projects/wraith-alpha/wraith-projects/`
+
+2. Before implementing the new Wraith-local scan op, plan the migration impact:
+   - launcher discovery
+   - project_id references in `project.pdl`
+   - entry_layout paths
+   - `./button.sh c` compile path expectations in `#.dev-storage/#.tools/compile_all.sh`
+   - session/body/scene file loads
+   - any hardcoded or derived paths in `wraith-alpha_manager.c`
+   - any docs/handoffs that currently assume `projects/wraith/wraith-projects/`
+
+3. [done] Move the hosted Wraith project folder to the new parent-owned location.
+
+4. Re-test the old hosted Wraith projects after the move:
+   - [done] compile where needed
+   - [done] verify `./button.sh c` still compiles nested Wraith projects after compile script updates
+   - [done] detect in launcher/discovery
+   - [done] verify existing internal projects still load
+   - [done] verify project IDs and entry layouts still resolve
+
+5. [done] Only after the move is proven:
+   - [done] build the Wraith-local nested discovery op
+   - [done] aim it at the new canonical host-owned location
+
+==================================================
+CURRENT STATUS
+==================================================
+
+Completed in this epoch:
+- moved hosted Wraith projects under `projects/wraith-alpha/wraith-projects/`
+- updated core path references in:
+  - hosted Wraith project metadata / session files / local ops
+  - `projects/wraith-alpha/manager/wraith-alpha_manager.c`
+  - `#.dev-storage/#.tools/compile_all.sh`
+- ran the normal compile path:
+  - `./button.sh c`
+- compile result:
+  - 188 binaries compiled
+  - 0 compile failures
+  - binary verification passed
+- added a Wraith-local copied scan op:
+  - `projects/wraith-alpha/ops/wraith_project_scan.c`
+- compiled and ran it directly
+- direct proof output:
+  - `projects/wraith-alpha/session/wraith_project_manifest.txt`
+  - `projects/wraith-alpha/session/wraith_project_scan.receipt.pdl`
+- local proof result:
+  - 8 hosted Wraith projects discovered
+  - receipt status `ok`
+- re-ran the normal compile path after adding the op:
+  - `./button.sh c`
+- updated compile result:
+  - 189 binaries compiled
+  - 0 compile failures
+  - binary verification passed
+
+Still needed:
+- replace manager-local direct directory scanning with the local manifest flow
+- decide where manifest refresh should be triggered:
+  - manager boot
+  - launcher refresh
+  - explicit wrapper op
+- [in progress] copy-mod the AGY browser pattern into project-owned `fs` logic
+- [in progress] add nav-owned fs scrolling controls:
+  - `^` up control
+  - `v` down control
+  - visual thumb / range indicator
+  - keep `^` / `v` / thumb on one utility strip row in both GL and ASCII mirror
+  - keep ASCII + GL aligned through the same project scene
+  - record thumb-scroll strip as reusable CHTPM/Wraith standard, not `fs`-only behavior
+- [in progress] replace visible manual refresh with dir-watch marker flow:
+  - local watcher op
+  - session marker file
+  - manager poll + rerender
+  - no user-facing refresh row/button in steady-state UI
+- continue the focused `chtpmgl` alignment/doc + implementation lane
+  - [done] write down the ASCII/GL mirror contract before deeper `chtpmgl-wraith` work
+  - next: use that contract to audit `chtpmgl-wraith` against semantic-truth mirroring
+
+Also completed in this epoch:
+- created a minimal real Wraith-hosted `fs` project scaffold:
+  - `projects/wraith-alpha/wraith-projects/fs`
+  - `project.pdl`
+  - `layouts/fs.chtpm`
+  - `README.md`
+  - `ASSUMPTIONS.md`
+- refreshed local Wraith project scan after adding `fs`
+- current local scan proof now reports:
+  - 9 hosted Wraith projects discovered
+  - receipt status `ok`
+- wrote dedicated `chtpmgl` alignment doc:
+  - `x0.short-term-vision/chtpmgl-assumptions-j29.md`
+
+==================================================
+CURRENT IMPLEMENTATION RULE
+==================================================
+
+Do not continue hardening new scan/discovery logic around the old sibling location if the intended architecture is host-owned nesting inside `wraith-alpha`.
+
+Resolve the canonical path first.
+
+==================================================
+REFERENCE DOCS
+==================================================
+
+Read alongside this file:
+
+- x0.short-term-vision/handoff-j29.txt
+- x0.short-term-vision/wraith-shell-fs-roadmap-j28.md
+- x0.short-term-vision/ops-surface-j28.md
+- x0.short-term-vision/ops-audit-table-j29.md
+- x0.short-term-vision/chtpmgl-assumptions-j29.md
+- x0.short-term-vision/chtpmgl-mirror-contract-j29.md
+- x0.parent-level-dev-env-02.01/wraith-architecture-j25.md
+- x0.parent-level-dev-env-02.01/handoff-j26.txt
+- x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/!.gem-flashlite--yolo/#.docs/future-facing/!.world_architecture+1=rusindol.txt
+
+==================================================
+NOTES
+==================================================
+
+- `x0.moke-pet-project-04.03` remains reference-only for current Wraith work.
+- Do not copy Wraith changes there yet.
+- Update this TODO file each dev epoch rather than scattering short-lived task notes elsewhere.

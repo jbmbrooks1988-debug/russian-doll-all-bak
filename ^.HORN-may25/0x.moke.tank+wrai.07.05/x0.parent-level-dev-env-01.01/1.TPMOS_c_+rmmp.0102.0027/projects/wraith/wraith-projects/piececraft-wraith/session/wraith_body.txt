@@ -1,9 +1,0 @@
-PIECECRAFT WRAITH | ${game_map} | z=0 | INTERACT
-####################
-#..................#
-#...T..........R...#
-#.........T........#
-#....R.............#
-#...........T......#
-####################
-Audit: selected=(4,2,0) tile=T legend # wall . grass T tree R rock

@@ -1,0 +1,13 @@
+SECTION      | KEY                | VALUE
+----------------------------------------
+META         | project_id         | wraith-alpha/wraith-projects/chtmgl-wraith
+META         | version            | 0.1
+META         | author             | TPMOS
+META         | entry_layout       | projects/wraith-alpha/wraith-projects/chtmgl-wraith/layouts/chtmgl-wraith.chtpm
+
+STATE        | title              | CHTMGL WRAITH
+STATE        | status             | ready
+STATE        | mode               | widget_probe
+STATE        | reference          | projects/chtmgl-alpha
+
+RESPONSE     | default            | CHTMGL Wraith Ready.

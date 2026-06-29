@@ -1,0 +1,4 @@
+WRAITH FS
+Dir: repo-root/
+Entries: 30 | Window: 1-6 | scrolled
+Last: Already at top

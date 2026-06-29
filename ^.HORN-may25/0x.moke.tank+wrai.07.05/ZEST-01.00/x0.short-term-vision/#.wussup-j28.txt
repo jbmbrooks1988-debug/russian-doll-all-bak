@@ -1,0 +1,177 @@
+
+
+📅️jun-28
+
+
+🪙️pre open ai cancel use super tokens push🪙️
+
+0️⃣️pre existing bugs? chtpmgl doesn't open anything in ascii. 
+
+honestly i dont think using "super tokens" is gonna do any better
+than using regular tokens for the tasks we have. that push is "DEAD" 
+
+so , if u need to rest go for it. ]RIP 🪦️🔍️
+<this is inlight of being kicked from "KPG" and heavy assault rap,and their delusions btw; qlu knows>💉️
+
+
+if i was gonna use super tokens for something to , 
+id use them to do xo bots in wraith , + map / xelector and have xo editor 2 ai/lsr&d 
+<but honestly u dont need super tokens for that, u need sleep / energy more than anything else 
+lol <3 💤️
+🎣️i do think u could get momentum for another push from focusing on a single set of problems
+but its never gonna be like the one we just had but if it was
+it would come from chatting back and forth with the ai. 
+and solidifying near term desires. 
+
+
+🥇️move wraith projects INSIDE OF WRAITH FOLDER 
+to be discovered nested intead of out in the open <with non wraith projects where it currently is> 
+(does compiler need to be changed to do this?)
+{Wraith-gl}
+📁️
+⚡️
+yes u should add "file folders" file directories (even hidden not on desktop to mimmic linux)
+⚡️
+every way to add files should have "nav" 
+⚡️
+if u have ot "nest nav options'(like in context but actually in menu; figure out how2
+❤️‍🔥️ auto detected nested nav so users can build/games like this❤️‍🔥️
+
+<i think we will stick to "text-fs"/ "gui-fs"
+for now , and let folders be non visual or visual
+depending on choice. 
+they will crawl teh same folders
+one will show as nav text only
+and the other can show in "fs-gui" 
+(later we can allow file editing. ) 
+
+<were also gonna add a "settings" project
+
+<finally we are gonna nest 'app-like programs' inside of 
+wraith-projects, and find them using same 
+nested finding we use for 'fs'
+
+<if possible create ops , or use ops from op-ed 
+to do the file manipulation>
+
+<we will label "files, dirs and 'programs'"
+different , using a symbol or something. 
+(i think op ed already does something like this
+in its file system so u should check that out)
+⚡️
+<make everything (colors w/e etc CUSTOMIZABLE EARLY ON)
+
+⚡️
+then soon we can maybe make a "XELECXTOR MINECRAFT" 
+🫀️
+start editing it externallly , and even treat it like "XO PETS"
+(so be doing "XO PETS" around this too. and we can more easily mix and match 
+ai and fsm etc, also ; dont forget keep things op based, 
+🫀️
+i may even have you push back in "op-ed ascii" just 2 iron out and make sure basic
+❤️‍🔥️
+"PAL EVENTS FILE SAVING LOADING WORKS IN SOME INCARNATION BUT W/e
+MAYBE IF U COULD DO IT WITH XO PETS INSTEAD, EVEN BETTER ; EXO PETS IS OBVIOUSLY 🤓️
+MORE REASONABLE AND MODULAR , EVEN IF U HAVE TO "NEST IT"💗️🪆️
+and drag and drop auto discovery is a big priority....<even esp for game entities, no hardcoding
+but now u have exo pet, <does turning it inside out help/hurts?>
+🙋🏽‍♂️️
+btw, just ask, r fuzz-op entitis hardcoded or drag and drop. >
+
+
+✂️copy wraith to x0pet. and make wraith-pet 
+(i haven't done this yet, because i wanna finish wraith bugs etc first, 
+but it maybe for the best if we wanna work on exo pet. 
+or better yet, just make a "inverted xopet inside of wraith project"
+📅️
+📅️j29
+📮️
+yes i got a lot done in previous days, (we fully built wraith gui and fixed bugs etc) 
+ but also , 'we hit that cap' ; time 2 regroup.
+this is a time for synergy and architecting , so we got some of that done today . dont be discouraged.
+
+when u have arch direction , its easier to mindlessly push. 
+so were sussing that out , always use existing projects and just 
+make arch docs and discuss them if there right or rong. read them . why not. etc.
+
+anyways ill probably go 2 bed early 2. 🛌️ 
+📮️
+💬️
+› ok, so what should we tackle today, with our remaining time.
+💬️
+🅰️
+
+
+• Today, June 29, 2026, I’d keep it narrow.
+
+  Best use of the remaining time:
+
+  1. Build the first Wraith-local nested discovery op.
+  2. Prove it locally against projects/wraith/wraith-projects/.
+  3. Emit one typed manifest with project / program / dir / file.
+  4. Do not wire full UI yet unless the manifest is clean.
+
+  That is the highest-leverage move because it unlocks:
+
+  - Wraith launcher cleanup
+  - text-fs / gui-fs
+  - later 0x-pet enclosure choosing
+  - editor-pattern selection flows
+  - PAL/agent reuse over one real scan surface
+
+  Concretely, I’d tackle:
+
+  - copy-mod from gl_os_project_scan.+x
+  - make it Wraith-local first
+  - add nested crawl
+  - preserve old op untouched
+  - write a manifest format we can reuse later
+
+  If there’s still time after that:
+
+  - define the first manifest schema doc
+  - or stub the first fs_list op contract from the op-ed file-browser side
+
+  I would not spend today on:
+
+  - full settings UI
+  - full 0x-pet-wraith
+  - PAL scripting over unproven ops
+  - broad editor polish
+
+  So the short answer is: Wraith local nested discovery op first. If you want, I can start that
+  implementation pass now.
+
+🅰️
+💬️
+› ok, my question is, how will chtpmgl style stuff be mirrored in teh ascii window, this is important
+  and we should make sure things dont drift too far from auditability
+💬️
+
+🆎️
+───────────────────────────────────────────────────
+
+• Done.
+
+  I updated the existing chtpmgl assumptions doc and added a dedicated mirror-contract doc so this does
+  not get lost in implementation noise.
+
+  Updated:
+
+  - x0.short-term-vision/chtpmgl-assumptions-j29.md
+  - x0.short-term-vision/chtpmgl-mirror-contract-j29.md
+  - x0.short-term-vision/handoff-j29.txt
+  - x0.short-term-vision/jun-29-2do.txt
+
+  What is now explicitly documented:
+
+  - chtpmgl-wraith should mirror semantic truth, not GL pixels
+  - shared truth should include nav/action/label/state/row ownership/focus
+  - ASCII must preserve behaviorally meaningful structure and state
+  - decorative GL richness may degrade into audit tokens
+  - thumb-scroll strip and row intent are part of that shared contract
+
+  We can start the chtpmgl-wraith audit from that rule now, instead of improvising it mid-build.
+
+─ Worked for 1m 26s ────────────────────────────────────
+📅️

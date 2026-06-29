@@ -1,9 +1,0 @@
-WRAITH 3D CUBE
-Surface: ${game_map} | Action: INTERACT | Mode: is_map_control
-    +--------+
-   /        /|
-  +--------+ |
-  |        | +
-  |        |/
-  +--------+
-Audit: piece=cube_probe artifact=pieces/cube_probe/artifact.txt rot=x15,y35,z0

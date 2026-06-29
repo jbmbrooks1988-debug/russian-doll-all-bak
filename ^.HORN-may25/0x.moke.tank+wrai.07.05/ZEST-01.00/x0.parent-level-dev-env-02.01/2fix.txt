@@ -1,0 +1,175 @@
+# Wraith Active Fixes
+
+Last updated: 2026-06-27
+
+This file is intentionally limited to current live bugs. Historical context lives in:
+- `handoff-j26.txt`
+- `wraith-architecture-j25.md`
+- `WRAITH-GL-STD.md`
+- `wraith-chtmgl&3d.md`
+
+## Active Fix 1: Window Chrome And Interact Startup State
+
+Live screenshot:
+- `Screenshot from 2026-06-27 22-27-33.png`
+
+Observed:
+- `wraith-3d-cube` is in interact mode.
+- cube key controls work and update project state/body.
+- GL shows the projected wireframe cube.
+- `Control_Map` is now visible as a toolbar/headerbar-ish control.
+- normal window chrome controls are not visually complete enough around the project-specific toolbar control.
+- the project started in active `is_map_control=1`, so it showed `[^]` immediately instead of requiring click/Enter.
+- this was caused by persisted project state, not by a fresh intentional default.
+
+Expected:
+- new windows should start in shell/window-nav mode unless the project explicitly declares a resume policy.
+- `Control_Map` should show `[>]` when selected but inactive.
+- pressing Enter or clicking the `Control_Map` affordance enters interact mode and changes it to `[^]`.
+- entering `INTERACT` for a `${game_map}` payload should sandbox input like `fuzz-op` / `fuzz-op-gl`.
+- selected map control should remain visibly active as `[^]`.
+- the visible control may live in a project headerbar, toolbar, side menu, overlay, or footer as the project layout requires, but it must not replace or erase normal Wraith window focus/chrome controls.
+- the `${game_map}` surface should stay payload-only for cube/map/model rendering.
+- while `is_map_control=1`, keyboard control belongs to the project map surface.
+- external Wraith nav should not move or show active focus changes from map-control keys.
+- `ESC` is the escape hatch back to external Wraith nav.
+
+Receipt finding:
+- the manager/export side can already report the game map as `nav_selected=1` with `nav_selector_glyph=^`.
+- therefore the remaining issue is UI modeling/render placement, not just missing manager state.
+
+Fix direction:
+- keep project scene records migrated away from `nav=<n> action=INTERACT` on `role=game_map` and into a project UI control:
+  - `tag=control`
+  - `role=window_toolbar_item`
+  - `action=INTERACT`
+  - `target_surface=game_map`
+- keep the `${game_map}` surface as payload-only:
+  - `role=game_map`
+  - `nav=0`
+  - `action=NONE`
+- while `is_map_control=1`, pin/render the project-local interact control as `[^]`.
+- on new project window launch, reset or initialize `is_map_control=0` without writing a fake user `ESC` event.
+- keep key events appended to project `session/history.txt` and processed by project-owned `ops/+x/wraith_project_input.+x`.
+
+Applied code fix:
+- added generic `g_map_control_nav_index` pin in `wraith-alpha_manager.c`.
+- entering `INTERACT` resolves the current `action=INTERACT` nav and pins `g_active_gui_index` there.
+- while `is_map_control=1`, display-index sync is skipped so stale parser/GL focus cannot pull the manager to chrome/taskbar/debug nav.
+- imported project scene objects with `action=INTERACT` render selected as `[^]` while map control is active, even if stale shell nav was elsewhere.
+- `ESC` clears the map-control nav pin.
+- rebuilt `projects/wraith-alpha/manager/+x/wraith-alpha_manager.+x`.
+
+Status:
+- sandbox pin code was applied.
+- generic launch/open now silently initializes the opened Wraith project's `session/state.txt` to `is_map_control=0` without appending a fake `COMMAND: ESC`.
+- project-local interact control standard was applied to `wraith-3d-cube` scene generation, currently using a toolbar-style control.
+- `wraith-3d-cube/session/scene.objects.pdl` now emits:
+  - `tag=control role=window_toolbar_item nav=5 action=INTERACT target_surface=game_map label=Control_Map`
+  - `tag=surface role=game_map nav=0 action=-`
+  - `tag=model role=zslice_piece ... source=projects/wraith/wraith-projects/wraith-3d-cube/pieces/cube_probe/artifact.txt`
+- `wraith_rgb_daemon.c` now preserves `target_surface` in receipts and draws `role=window_toolbar_item` as a small filled/bordered chrome item.
+- rebuilt `wraith-alpha_manager.+x`, `wraith_rgb_daemon.+x`, and `wraith-3d-cube/ops/+x/wraith_project_input.+x`.
+- current `wraith-3d-cube/session/state.txt` was reset to `is_map_control=0` for the next live check.
+- launch-default fix is applied in `wraith-alpha_manager.c` through `set_project_map_control_in_dir(project_dir, 0, 0)`.
+
+Receipt checks after fix:
+- `current_frame.receipt.pdl` should show the `Control_Map` toolbar object with:
+  - `role=window_toolbar_item`
+  - `target_surface=game_map`
+  - inactive startup: `nav_selector_glyph=>` only when selected by shell nav
+  - active interact: `nav_selected=1` and `nav_selector_glyph=^`
+  - `action=INTERACT`
+- the `role=game_map` surface should show:
+  - `nav=0`
+  - `action=`
+- chrome close/min/open objects should not show `nav_selected=1` while map control is active.
+- primitive receipt for `role=zslice_piece` should no longer report `source_exists=0` if the daemon is resolving from the TPMOS project root.
+- project `session/history.txt` should receive key events.
+- project `session/state.txt` should update rotation/camera.
+
+## Active Fix 2: Receipt Should Prove Sandbox State
+
+Observed:
+- receipts currently show object nav state, but do not explicitly summarize map-control ownership.
+
+Expected:
+- receipt should make it easy to answer:
+  - which project owns interact mode
+  - which nav id is pinned as the interact surface
+  - whether shell nav is sandboxed
+
+Fix direction:
+- after Active Fix 1, add receipt/meta fields if needed:
+  - `map_control_active=1`
+  - `map_control_project=<project>`
+  - `map_control_nav=<nav>`
+  - `shell_nav_sandboxed=1`
+
+Do not implement those fields until the sandbox behavior is correct enough to audit.
+
+## Active Fix 3: Explore CHTMGL-Style Map Menus
+
+Observed:
+- forcing every `${game_map}` control into the window title/header is too narrow.
+- `chtmgl-alpha` style layouts may need map controls as overlays, sidebars, footer controls, menus, or local toolbars around the canvas.
+
+Expected:
+- normal Wraith window chrome/focus controls remain standard and visible.
+- project-specific map controls are layout-owned controls targeting `${game_map}`.
+- controls may be headerbar, toolbar, side menu, footer, or overlay if the project's layout declares them.
+- receipts must preserve `target_surface=game_map` so agents can audit which UI control owns which payload.
+
+Next exploration:
+- use `chtmgl-wraith` to define richer project-local controls around a `${game_map}` or canvas-like area.
+- then backport the useful standard to `wraith-3d-cube` and `piececraft-wraith` without hardcoding project details in Wraith Alpha.
+
+Progress:
+- `chtmgl-wraith` now has project-owned `panel`, `button`, `checkbox`, `slider`, `menu`, `window_toolbar_item`, `game_map`, and `widget_surface_probe` scene records.
+- this is still static scene truth, not a full CHTMGL parser.
+- RGB presenter now draws first-pass CHTMGL-style button/checkbox/slider/menu shapes and a `widget_surface_probe` preview.
+- receipts now audit `widget_surface_probe`.
+- `chtmgl-wraith/session/scene.objects.pdl` now uses higher panel/control/model z-levels so project body audit text should sit behind filled CHTMGL panels.
+- next fix is a project-owned CHTMGL parser/manager so scene records come from layout files instead of static seed files.
+
+## Active Fix 4: CHTMGL Fill Priority And Generic Window Move/Resize
+
+Live screenshot:
+- `Screenshot from 2026-06-27 23-45-34.png`
+
+Observed:
+- `chtmgl-wraith` now opens and shows representative controls/widgets.
+- panel/window regions are not visually filled strongly enough, so body text and controls appear to bleed through or visually collide.
+- some CHTMGL sub-panels look like outlines instead of real filled containers.
+- Wraith subwindows are not yet draggable or resizable.
+
+Expected:
+- container objects such as project panels, widget panels, visual panels, and `${game_map}` surfaces should fill their background before text/controls are drawn above them.
+- fill order should be auditable in receipts so an agent can tell whether overlap is source order, z-order, clipping, or missing fill.
+- normal Wraith host window chrome stays separate from project-local CHTMGL controls.
+- project-local controls may be headerbar, toolbar, side panel, footer, menu, or overlay controls if they declare `target_surface=game_map`.
+- host windows should become movable by titlebar/drag-region and resizable by edge/corner handles.
+
+Fix direction:
+- first fix RGB fill priority for CHTMGL/project containers:
+  - draw filled panel/surface backgrounds before control/text glyphs
+  - preserve border visibility
+  - preserve nav focus/highlight visibility above fills
+  - receipt should report fill rect, border rect, z, parent/container, and clipping result
+- then implement generic host window movement/resizing:
+  - add file-owned window geometry in the Wraith session/window registry
+  - export semantic host controls like `role=window_titlebar action=WINDOW_DRAG window_id=<id>`
+  - export resize handles like `role=window_resize_handle action=WINDOW_RESIZE edge=se window_id=<id>`
+  - GL input writes semantic drag/resize events, not direct geometry mutation
+  - manager consumes events, clamps geometry, writes registry, and exports next frame
+  - receipts include old rect, raw/mapped mouse, hit action, delta, clamp reason, and final rect
+
+Do not:
+- hardcode CHTMGL, Piececraft, cube, or Emoji window behavior into `wraith-alpha_manager.c`.
+- let project-specific ops own host drag/resize.
+- fix overlap by hiding text without receipt evidence.
+
+Applied partial fix:
+- `wraith-alpha_manager.c` now exports `project_body_text` at `z=14` instead of `z=22`, so project scene panels/surfaces can cover audit body text in GL.
+- `chtmgl-wraith` static scene records were raised to panel `z=24`, controls `z=30+`, and preview `z=34`.
+- this should reduce CHTMGL panel bleed, but receipts/screenshots still need live verification.

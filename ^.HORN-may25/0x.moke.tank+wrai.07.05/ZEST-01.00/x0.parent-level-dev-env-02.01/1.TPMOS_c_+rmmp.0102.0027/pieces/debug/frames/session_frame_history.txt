@@ -1,0 +1,3475 @@
+=== NEW SESSION at 2026-06-29 05:42:50 ===
+
+--- FRAME UPDATE at 2026-06-29 05:42:50 ---
+
+--- FRAME UPDATE at 2026-06-29 05:42:50 ---
++===========================================================+
+|                                                           |
+|           C H T P M + O S   C L I   v2.0                 |
+|                                                           |
+|  CHTPM+OS Main Menu                                      |
+|                                                           |
+|  [>] 1. [Project Loader]                             |
+|  [ ] 2. [App Store (Fondu)]                          |
+|  [ ] 3. [Status]  [ ] 4. [GL-OS]                                          |
+|  [ ] 5. [Process Monitor]                            |
+|  [ ] 6. [Toggle Frame History (Current: )]                                         |
+|  [ ] 7. [Help]                                            |
+|                                                           |
++===========================================================+
+|  Running Applications: None                               |
+|  System Time: 08:00:00 | Turn: 0 | Key: None |
++===========================================================+
+|                                                           |
+|  $ | [ ] 8. []                                                 |                                                 |
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:42:51 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [>] 1. [+-demo]                                        ║
+║  [ ] 2. [404-test]                                      ║
+║  [ ] 3. [agy-text-editor]                               ║
+║  [ ] 4. [ai-labs]                                       ║
+║  [ ] 5. [aow]                                           ║
+║  [ ] 6. [aow-2d]                                        ║
+║  [ ] 7. [bot-editor]                                    ║
+║  [ ] 8. [bots-sov]                                      ║
+║  [ ] 9. [chat-op]                                       ║
+║  [ ] 10. [checkers]                                      ║
+║  [ ] 11. [chtmgl-alpha]                                  ║
+║  [ ] 12. [chtmgl-beta]                                   ║
+║  [ ] 13. [cpp-llm]                                       ║
+║  [ ] 14. [cyoa-engine]                                   ║
+║  [ ] 15. [demo_1]                                        ║
+║  [ ] 16. [fuzz-op]                                       ║
+║  [ ] 17. [gem-dev]                                       ║
+║  [ ] 18. [gitlet]                                        ║
+║  [ ] 19. [gltpm-demo]                                    ║
+║  [ ] 20. [groq-ollama]                                   ║
+║  [ ] 21. [hangman]                                       ║
+║  [ ] 22. [lsr]                                           ║
+║  [ ] 23. [man-pal]                                       ║
+║  [ ] 24. [media-editor]                                  ║
+║  [ ] 25. [mouse-test]                                    ║
+║  [ ] 26. [mp3-store]                                     ║
+║  [ ] 27. [op-ed]                                         ║
+║  [ ] 28. [op-ed-gl]                                      ║
+║  [ ] 29. [p2p-net]                                       ║
+║  [ ] 30. [piececraft-3d]                                 ║
+║  [ ] 31. [quiz-engine]                                   ║
+║  [ ] 32. [slop-ed-dev]                                   ║
+║  [ ] 33. [template]                                      ║
+║  [ ] 34. [test_fondu]                                    ║
+║  [ ] 35. [tsots-irc]                                     ║
+║  [ ] 36. [tsots-online]                                  ║
+║  [ ] 37. [user]                                          ║
+║  [ ] 38. [wraith-alpha]                                  ║
+║  [ ] 39. [xsr]                                           ║
+║  [ ] 40. [yahoo]                                         ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 41. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:42:51 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [>] 1. [+-demo]                                        ║
+║  [ ] 2. [404-test]                                      ║
+║  [ ] 3. [agy-text-editor]                               ║
+║  [ ] 4. [ai-labs]                                       ║
+║  [ ] 5. [aow]                                           ║
+║  [ ] 6. [aow-2d]                                        ║
+║  [ ] 7. [bot-editor]                                    ║
+║  [ ] 8. [bots-sov]                                      ║
+║  [ ] 9. [chat-op]                                       ║
+║  [ ] 10. [checkers]                                      ║
+║  [ ] 11. [chtmgl-alpha]                                  ║
+║  [ ] 12. [chtmgl-beta]                                   ║
+║  [ ] 13. [cpp-llm]                                       ║
+║  [ ] 14. [cyoa-engine]                                   ║
+║  [ ] 15. [demo_1]                                        ║
+║  [ ] 16. [fuzz-op]                                       ║
+║  [ ] 17. [gem-dev]                                       ║
+║  [ ] 18. [gitlet]                                        ║
+║  [ ] 19. [gltpm-demo]                                    ║
+║  [ ] 20. [groq-ollama]                                   ║
+║  [ ] 21. [hangman]                                       ║
+║  [ ] 22. [lsr]                                           ║
+║  [ ] 23. [man-pal]                                       ║
+║  [ ] 24. [media-editor]                                  ║
+║  [ ] 25. [mouse-test]                                    ║
+║  [ ] 26. [mp3-store]                                     ║
+║  [ ] 27. [op-ed]                                         ║
+║  [ ] 28. [op-ed-gl]                                      ║
+║  [ ] 29. [p2p-net]                                       ║
+║  [ ] 30. [piececraft-3d]                                 ║
+║  [ ] 31. [quiz-engine]                                   ║
+║  [ ] 32. [slop-ed-dev]                                   ║
+║  [ ] 33. [template]                                      ║
+║  [ ] 34. [test_fondu]                                    ║
+║  [ ] 35. [tsots-irc]                                     ║
+║  [ ] 36. [tsots-online]                                  ║
+║  [ ] 37. [user]                                          ║
+║  [ ] 38. [wraith-alpha]                                  ║
+║  [ ] 39. [xsr]                                           ║
+║  [ ] 40. [yahoo]                                         ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 41. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:42:52 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [ ] 1. [+-demo]                                        ║
+║  [ ] 2. [404-test]                                      ║
+║  [>] 3. [agy-text-editor]                               ║
+║  [ ] 4. [ai-labs]                                       ║
+║  [ ] 5. [aow]                                           ║
+║  [ ] 6. [aow-2d]                                        ║
+║  [ ] 7. [bot-editor]                                    ║
+║  [ ] 8. [bots-sov]                                      ║
+║  [ ] 9. [chat-op]                                       ║
+║  [ ] 10. [checkers]                                      ║
+║  [ ] 11. [chtmgl-alpha]                                  ║
+║  [ ] 12. [chtmgl-beta]                                   ║
+║  [ ] 13. [cpp-llm]                                       ║
+║  [ ] 14. [cyoa-engine]                                   ║
+║  [ ] 15. [demo_1]                                        ║
+║  [ ] 16. [fuzz-op]                                       ║
+║  [ ] 17. [gem-dev]                                       ║
+║  [ ] 18. [gitlet]                                        ║
+║  [ ] 19. [gltpm-demo]                                    ║
+║  [ ] 20. [groq-ollama]                                   ║
+║  [ ] 21. [hangman]                                       ║
+║  [ ] 22. [lsr]                                           ║
+║  [ ] 23. [man-pal]                                       ║
+║  [ ] 24. [media-editor]                                  ║
+║  [ ] 25. [mouse-test]                                    ║
+║  [ ] 26. [mp3-store]                                     ║
+║  [ ] 27. [op-ed]                                         ║
+║  [ ] 28. [op-ed-gl]                                      ║
+║  [ ] 29. [p2p-net]                                       ║
+║  [ ] 30. [piececraft-3d]                                 ║
+║  [ ] 31. [quiz-engine]                                   ║
+║  [ ] 32. [slop-ed-dev]                                   ║
+║  [ ] 33. [template]                                      ║
+║  [ ] 34. [test_fondu]                                    ║
+║  [ ] 35. [tsots-irc]                                     ║
+║  [ ] 36. [tsots-online]                                  ║
+║  [ ] 37. [user]                                          ║
+║  [ ] 38. [wraith-alpha]                                  ║
+║  [ ] 39. [xsr]                                           ║
+║  [ ] 40. [yahoo]                                         ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 41. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > 3_
+
+
+--- FRAME UPDATE at 2026-06-29 05:42:53 ---
+╔══════════════ P I E C E M A R K   L O A D E R ════════════╗
+║ LAYOUT ID: playrm/loader.chtpm                            ║
+║                                                           ║
+║  Select a project to begin:                               ║
+║                                                           ║
+║  [ ] 1. [+-demo]                                        ║
+║  [ ] 2. [404-test]                                      ║
+║  [ ] 3. [agy-text-editor]                               ║
+║  [ ] 4. [ai-labs]                                       ║
+║  [ ] 5. [aow]                                           ║
+║  [ ] 6. [aow-2d]                                        ║
+║  [ ] 7. [bot-editor]                                    ║
+║  [ ] 8. [bots-sov]                                      ║
+║  [ ] 9. [chat-op]                                       ║
+║  [ ] 10. [checkers]                                      ║
+║  [ ] 11. [chtmgl-alpha]                                  ║
+║  [ ] 12. [chtmgl-beta]                                   ║
+║  [ ] 13. [cpp-llm]                                       ║
+║  [ ] 14. [cyoa-engine]                                   ║
+║  [ ] 15. [demo_1]                                        ║
+║  [ ] 16. [fuzz-op]                                       ║
+║  [ ] 17. [gem-dev]                                       ║
+║  [ ] 18. [gitlet]                                        ║
+║  [ ] 19. [gltpm-demo]                                    ║
+║  [ ] 20. [groq-ollama]                                   ║
+║  [ ] 21. [hangman]                                       ║
+║  [ ] 22. [lsr]                                           ║
+║  [ ] 23. [man-pal]                                       ║
+║  [ ] 24. [media-editor]                                  ║
+║  [ ] 25. [mouse-test]                                    ║
+║  [ ] 26. [mp3-store]                                     ║
+║  [ ] 27. [op-ed]                                         ║
+║  [ ] 28. [op-ed-gl]                                      ║
+║  [ ] 29. [p2p-net]                                       ║
+║  [ ] 30. [piececraft-3d]                                 ║
+║  [ ] 31. [quiz-engine]                                   ║
+║  [ ] 32. [slop-ed-dev]                                   ║
+║  [ ] 33. [template]                                      ║
+║  [ ] 34. [test_fondu]                                    ║
+║  [ ] 35. [tsots-irc]                                     ║
+║  [ ] 36. [tsots-online]                                  ║
+║  [ ] 37. [user]                                          ║
+║  [>] 38. [wraith-alpha]                                  ║
+║  [ ] 39. [xsr]                                           ║
+║  [ ] 40. [yahoo]                                         ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  [ ] 41. [Back to Main Menu]                                  ║
+╚═══════════════════════════════════════════════════════════╝
+
++=========================================================+
+Nav > 38_
+
+
+--- FRAME UPDATE at 2026-06-29 05:42:53 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+
+
+
+| [ TASKBAR ][>] 1. [Terminal]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 0 | Focus: Desktop | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:1 Key:0 | Mouse X:0 Y:0 B:-1 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:53] KEY_PRESSED: 13
+View:[ ] 2. [ASCII*] [ ] 3. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:42:54 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ WRAITH TERMINAL #2 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |[ ] 5. [blank-projec]|
+| |[ ] 6. [chtmgl-wrait]|
+| |[ ] 7. [emoji-studio]|
+| |[ ] 8. [fs          ]|
+| |[ ] 9. [piececraft-w]|
+| |[ ] 10. [probe-projec]|
+| |[ ] 11. [terminal    ]|
+| |[ ] 12. [wraith-3d-cu]|
+| |[ ] 13. [wraith-ed   ]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 1 | Focus: WRAITH TERMINAL #2 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:1 Key:0 | Mouse X:0 Y:0 B:-1 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:54] KEY_PRESSED: 13
+View:[ ] 16. [ASCII*] [ ] 17. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:42:55 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH TERMINAL #2 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |[ ] 5. [blank-projec]|
+| |[ ] 6. [chtmgl-wrait]|
+| |[ ] 7. [emoji-studio]|
+| |[>] 8. [fs          ]|
+| |[ ] 9. [piececraft-w]|
+| |[ ] 10. [probe-projec]|
+| |[ ] 11. [terminal    ]|
+| |[ ] 12. [wraith-3d-cu]|
+| |[ ] 13. [wraith-ed   ]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 1 | Focus: WRAITH TERMINAL #2 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:1 Key:0 | Mouse X:0 Y:0 B:-1 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:55] KEY_PRESSED: 56
+View:[ ] 16. [ASCII*] [ ] 17. [GL]
+
++=========================================================+
+Nav > 8_
+
+
+--- FRAME UPDATE at 2026-06-29 05:42:55 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH TERMINAL #2 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |[ ] 5. [blank-projec]|
+| |[ ] 6. [chtmgl-wrait]|
+| |[ ] 7. [emoji-studio]|
+| |[>] 8. [fs          ]|
+| |[ ] 9. [piececraft-w]|
+| |[ ] 10. [probe-projec]|
+| |[ ] 11. [terminal    ]|
+| |[ ] 12. [wraith-3d-cu]|
+| |[ ] 13. [wraith-ed   ]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 1 | Focus: WRAITH TERMINAL #2 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:8 Key:8 | Mouse X:0 Y:0 B:-1 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:55] KEY_PRESSED: 56
+View:[ ] 16. [ASCII*] [ ] 17. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:42:55 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH TERMINAL #2 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |[ ] 5. [blank-projec]|
+| |[ ] 6. [chtmgl-wrait]|
+| |[ ] 7. [emoji-studio]|
+| |[>] 8. [fs          ]|
+| |[ ] 9. [piececraft-w]|
+| |[ ] 10. [probe-projec]|
+| |[ ] 11. [terminal    ]|
+| |[ ] 12. [wraith-3d-cu]|
+| |[ ] 13. [wraith-ed   ]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 1 | Focus: WRAITH TERMINAL #2 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:8 Key:8 | Mouse X:0 Y:0 B:-1 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:55] KEY_PRESSED: 13
+View:[ ] 16. [ASCII*] [ ] 17. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:42:55 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:1 Key:0 | Mouse X:0 Y:0 B:-1 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:55] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:42:55 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:1 Key:0 | Mouse X:0 Y:0 B:-1 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:55] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:42:56 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:1 Key:0 | Mouse X:0 Y:0 B:-1 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:55] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:42:56 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:1 Key:0 | Mouse X:0 Y:0 B:-1 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:55] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:42:56 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:1 Key:0 | Mouse X:0 Y:0 B:-1 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:55] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:42:56 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:1 Key:0 | Mouse X:0 Y:0 B:-1 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:55] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:42:57 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:1 Key:0 | Mouse X:0 Y:0 B:-1 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:55] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:42:57 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:1 Key:0 | Mouse X:37 Y:18 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:55] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:42:57 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:1 Key:0 | Mouse X:47 Y:8 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:55] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:42:58 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:1 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:55] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:42:58 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:1 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:55] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:42:58 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:1 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:55] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:42:59 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:1 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:55] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:42:59 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:1 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:55] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:42:59 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:1 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:55] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:42:59 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:1 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:55] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:00 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:1 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:55] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:00 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:1 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:55] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:00 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:1 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:55] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:00 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:1 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:55] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:01 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:1 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:55] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:01 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:1 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:55] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:01 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[>] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:1 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:42:55] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:01 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][>] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:6 Key:6 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:01] KEY_PRESSED: 54
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > 6_
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:01 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][>] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:6 Key:6 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:01] KEY_PRESSED: 54
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:02 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][>] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:6 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:01] KEY_PRESSED: 54
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:02 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][>] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:6 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:01] KEY_PRESSED: 54
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:02 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | ready                                                   |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][>] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:6 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:02] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:02 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Scrolled down                                                                 |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][>] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:6 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:02] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:02 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Scrolled down                                                                 |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][>] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:6 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:02] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:02 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Scrolled down                                                                 |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][>] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:6 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:02] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:03 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Scrolled down                                                                 |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][>] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:6 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:02] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:03 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Scrolled down                                                                 |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][>] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:6 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:02] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:03 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Scrolled down                                                                 |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][>] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:6 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:02] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:04 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Scrolled down                                                                 |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][>] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:6 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:02] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:04 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Scrolled down                                                                 |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][>] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:6 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:02] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:04 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Scrolled down                                                                 |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][>] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:6 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:02] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:05 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Scrolled down                                                                 |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][>] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:6 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:02] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:05 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Scrolled down                                                                 |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][>] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:6 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:02] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:05 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Scrolled down                                                                 |
+| |  Directory_Contents |
+| |[ ] 5. [^_UP][>] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:6 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:02] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:05 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Scrolled down                                                                 |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:6 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:05] KEY_PRESSED: 53
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > 5_
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:05 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Scrolled down                                                                 |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:5 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:05] KEY_PRESSED: 53
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:05 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Scrolled down                                                                 |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:05] KEY_PRESSED: 53
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:06 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Scrolled down                                                                 |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:06 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:06 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:06 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:07 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:07 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:07 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:08 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:08 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:08 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:08 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:09 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:52 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:09 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:72 Y:2 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:09 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:71 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:10 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:71 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:10 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:71 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:10 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:71 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:11 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:70 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:11 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:70 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:11 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:70 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:11 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:70 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:12 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:70 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:12 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:70 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:12 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:69 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:13 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:69 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:13 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:69 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:13 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:69 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:14 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:69 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:14 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:69 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:14 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:69 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:14 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:69 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:15 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:69 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:15 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:69 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:15 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:69 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:16 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:69 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:16 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:69 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:16 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:69 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:17 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:69 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:17 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:69 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:17 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:69 Y:3 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:17 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:65 Y:6 B:35 | Click X:-1 Y:-1
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:18 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:65 Y:7 B:0 | Click X:65 Y:7
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:18 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:65 Y:7 B:0 | Click X:65 Y:7
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:18 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:65 Y:7 B:0 | Click X:65 Y:7
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME UPDATE at 2026-06-29 05:43:18 ---
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ WRAITH FS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x]-+               |
+| |  WRAITH FS                                                                           |
+| |  Dir: repo-root/                                                                     |
+| |  Entries: 30 | Window: 1-6 | scrolled                                                |
+| |  Last: Already at top                                                                |
+| |  Directory_Contents |
+| |[>] 5. [^_UP][ ] 6. [v_DOWN]Thumb:[#-------]1-6/30 |
+| |[ ] 7. [<-_BACK]|
+| |[ ] 8. [DIR:!.2do/]|
+| |[ ] 9. [DIR:!.gem-flashlite--yolo/]|
+| |[ ] 10. [DIR:#.co-pilot/]|
+| |[ ] 11. [DIR:#.dev-storage/]|
+| |[ ] 12. [DIR:#.mp3-library/]|
+| |[ ] 13. [DIR:#.ref/]|
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 14. [Terminal][ ] 15. [WRAITH TERMINAL #2][ ] 16. [WRAITH FS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: WRAITH FS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:5 Key:0 | Mouse X:65 Y:7 B:0 | Click X:65 Y:7
+
+[ PARSER ] RAW: [2026-06-29 05:43:06] KEY_PRESSED: 13
+View:[ ] 17. [ASCII*] [ ] 18. [GL]
+
++=========================================================+
+Nav > _
+
