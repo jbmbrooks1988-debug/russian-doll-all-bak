@@ -1,0 +1,38 @@
+[2026-06-30 06:40:09] FrameRendered: at 2026-06-30 06:40:09 | Source: renderer
+[2026-06-30 06:40:11] InputReceived: key_code=13 | Source: keyboard_linux
+[2026-06-30 06:40:11] FrameRendered: at 2026-06-30 06:40:11 | Source: renderer
+[2026-06-30 06:40:14] InputReceived: key_code=51 | Source: keyboard_linux
+[2026-06-30 06:40:14] FrameRendered: at 2026-06-30 06:40:14 | Source: renderer
+[2026-06-30 06:40:15] InputReceived: key_code=13 | Source: keyboard_linux
+[2026-06-30 06:40:15] FrameRendered: at 2026-06-30 06:40:15 | Source: renderer
+[2026-06-30 06:40:15] FrameRendered: at 2026-06-30 06:40:15 | Source: renderer
+[2026-06-30 06:40:16] FrameRendered: at 2026-06-30 06:40:16 | Source: renderer
+[2026-06-30 06:40:16] FrameRendered: at 2026-06-30 06:40:16 | Source: renderer
+[2026-06-30 06:40:18] FrameRendered: at 2026-06-30 06:40:18 | Source: renderer
+[2026-06-30 06:40:18] FrameRendered: at 2026-06-30 06:40:18 | Source: renderer
+[2026-06-30 06:40:20] FrameRendered: at 2026-06-30 06:40:20 | Source: renderer
+[2026-06-30 06:40:20] FrameRendered: at 2026-06-30 06:40:20 | Source: renderer
+[2026-06-30 06:40:20] FrameRendered: at 2026-06-30 06:40:20 | Source: renderer
+[2026-06-30 06:40:20] FrameRendered: at 2026-06-30 06:40:20 | Source: renderer
+[2026-06-30 06:40:21] FrameRendered: at 2026-06-30 06:40:21 | Source: renderer
+[2026-06-30 06:40:21] FrameRendered: at 2026-06-30 06:40:21 | Source: renderer
+[2026-06-30 06:40:21] FrameRendered: at 2026-06-30 06:40:21 | Source: renderer
+[2026-06-30 06:40:21] FrameRendered: at 2026-06-30 06:40:21 | Source: renderer
+[2026-06-30 06:40:21] FrameRendered: at 2026-06-30 06:40:21 | Source: renderer
+[2026-06-30 06:40:21] FrameRendered: at 2026-06-30 06:40:21 | Source: renderer
+[2026-06-30 06:40:21] FrameRendered: at 2026-06-30 06:40:21 | Source: renderer
+[2026-06-30 06:40:25] FrameRendered: at 2026-06-30 06:40:25 | Source: renderer
+[2026-06-30 06:40:25] FrameRendered: at 2026-06-30 06:40:25 | Source: renderer
+[2026-06-30 06:40:26] FrameRendered: at 2026-06-30 06:40:26 | Source: renderer
+[2026-06-30 06:40:26] FrameRendered: at 2026-06-30 06:40:26 | Source: renderer
+[2026-06-30 06:40:27] FrameRendered: at 2026-06-30 06:40:27 | Source: renderer
+[2026-06-30 06:40:27] FrameRendered: at 2026-06-30 06:40:27 | Source: renderer
+[2026-06-30 06:40:27] FrameRendered: at 2026-06-30 06:40:27 | Source: renderer
+[2026-06-30 06:40:27] FrameRendered: at 2026-06-30 06:40:27 | Source: renderer
+[2026-06-30 06:40:27] FrameRendered: at 2026-06-30 06:40:27 | Source: renderer
+[2026-06-30 06:40:28] FrameRendered: at 2026-06-30 06:40:28 | Source: renderer
+[2026-06-30 06:40:29] FrameRendered: at 2026-06-30 06:40:29 | Source: renderer
+[2026-06-30 06:40:30] FrameRendered: at 2026-06-30 06:40:30 | Source: renderer
+[2026-06-30 06:40:31] FrameRendered: at 2026-06-30 06:40:31 | Source: renderer
+[2026-06-30 06:40:32] FrameRendered: at 2026-06-30 06:40:32 | Source: renderer
+[2026-06-30 06:40:33] FrameRendered: at 2026-06-30 06:40:33 | Source: renderer

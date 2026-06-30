@@ -1,0 +1,10 @@
+PIECECRAFT WRAITH | ${game_map} | z=0 | Control_Map_INTERACT
+####################
+#..................#
+#...T..........R...#
+#.........T........#
+#....R.............#
+#...........T......#
+####################
+Audit: selected=(4,2,0) tile=T legend # wall . grass T tree R rock
+Reference: projects/piececraft-3d maps/map_01_z*.txt + assets/tiles/*.tile.txt + camera_mode/camera_move

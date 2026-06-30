@@ -1,3 +1,0 @@
-SECTION | KEY | VALUE
-METHOD | terminal   | DESKTOP_ACTION:launch_terminal
-METHOD | blank-proj | DESKTOP_ACTION:launch_blank_project

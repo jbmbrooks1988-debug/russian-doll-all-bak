@@ -1,0 +1,6 @@
+# Wraith Ed project input history.
+[test] KEY_PRESSED: 100
+[test] KEY_PRESSED: 80
+[test] KEY_PRESSED: 83
+[test] KEY_PRESSED: 69
+[test] KEY_PRESSED: 88

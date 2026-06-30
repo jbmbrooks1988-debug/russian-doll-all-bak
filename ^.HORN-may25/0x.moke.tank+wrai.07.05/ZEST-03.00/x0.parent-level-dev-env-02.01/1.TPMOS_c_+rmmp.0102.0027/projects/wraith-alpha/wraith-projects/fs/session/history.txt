@@ -1,0 +1,1 @@
+[test] COMMAND: FS_OPEN:5

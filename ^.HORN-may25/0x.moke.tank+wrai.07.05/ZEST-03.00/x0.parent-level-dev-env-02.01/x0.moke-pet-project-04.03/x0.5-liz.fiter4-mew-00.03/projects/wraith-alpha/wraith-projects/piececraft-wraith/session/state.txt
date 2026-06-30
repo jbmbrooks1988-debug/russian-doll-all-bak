@@ -1,0 +1,15 @@
+project_id=wraith-alpha/wraith-projects/piececraft-wraith
+reference_project=projects/piececraft-3d
+game_map=maps/map_01_z0.txt
+is_map_control=0
+active_z=0
+selected_cell=4,2,0
+active_tile=T
+camera_mode=4
+cam_x=0.00
+cam_y=0.00
+cam_z=0.00
+cam_pitch=15.00
+cam_yaw=0.00
+cam_roll=0.00
+last_response=Piececraft Wraith z-map probe ready.

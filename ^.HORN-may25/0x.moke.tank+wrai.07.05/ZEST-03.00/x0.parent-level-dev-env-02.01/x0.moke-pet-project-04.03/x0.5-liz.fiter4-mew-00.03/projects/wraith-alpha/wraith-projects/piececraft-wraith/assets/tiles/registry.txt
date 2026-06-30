@@ -1,0 +1,5 @@
+# Piececraft Wraith Tile Registry
+.=grass
+#=wall
+T=tree
+R=stone
