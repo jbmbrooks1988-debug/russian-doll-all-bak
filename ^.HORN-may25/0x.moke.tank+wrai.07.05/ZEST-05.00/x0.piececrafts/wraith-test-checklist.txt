@@ -1,0 +1,139 @@
+================================================================================
+WRAITH MANAGER TEST CHECKLIST - Jul 3, 2026
+================================================================================
+
+PURPOSE: Diagnose which part of the manager → layout → display flow is broken
+
+STEP 1: TEST WRAITH-MAN-TEST PROJECT (Diagnostic)
+========================================================
+1. Open Wraith
+2. Select "WRAITH MANAGER TEST" project
+3. Wait 3 seconds
+4. CHECK YOUR SCREEN - Can you see ANY of this?
+
+   a) Box drawing characters (╔═╗║╚)?
+      YES → Wraith IS rendering layout content
+      NO → Layout not being read/rendered at all
+
+   b) Text "WRAITH MANAGER TEST PROJECT"?
+      YES → Layout file exists and loads
+      NO → Layout path broken or Wraith can't read it
+
+   c) Variable substitution (like "Manager Status: Running")?
+      YES → gui_state.txt IS being read by layout parser
+      NO → Variables not substituting (biggest issue)
+
+   d) Changing counter (like "Counter: 10", "Counter: 20")?
+      YES → Real-time updates working
+      NO → Layout only renders once at load
+
+---
+
+STEP 2: CHECK MANAGER IS ACTUALLY RUNNING
+==========================================
+After running wraith-man-test in Wraith:
+
+1. Go to: projects/wraith-alpha/wraith-projects/wraith-man-test/session/
+2. Open debug_log.txt - should have recent entries like:
+   [1234567890] wraith-man-test Manager Started
+   [1234567890] Manager running
+   [1234567891] Heartbeat: 10 seconds
+
+   YES → Manager launched successfully ✓
+   NO → Manager never started (launch mechanism broken)
+
+3. Open manager/gui_state.txt
+   Should contain: status=Running, test_output=MANAGER ACTIVE
+   If file doesn't exist → manager not writing output
+   If empty → manager isn't running
+   If old timestamp → manager crashed
+
+---
+
+STEP 3: CHECK PIECECRAFT-WRAITH MANAGER
+=========================================
+After running piececraft-wraith in Wraith:
+
+1. Go to: projects/wraith-alpha/wraith-projects/piececraft-wraith/session/
+2. Open debug_log.txt - should have entries like:
+   [1234567890] Piececraft-Wraith Manager Started
+   [1234567890] Key received: 1000 (?)
+
+   YES → Manager started and received input ✓
+   NO → Manager never launched
+
+3. Open state.txt
+   Check: xel_x, xel_y, xel_z values
+   Try pressing arrow keys in Wraith
+   Check state.txt again - values should change
+
+   YES → Manager processing input ✓
+   NO → Input not reaching manager
+
+4. Open session/game_map.txt
+   Should contain a 10-line map with > showing xelector position
+
+   YES → Render op working ✓
+   NO → Render op failing or not called
+
+---
+
+INTERPRETATION GUIDE
+====================
+
+RESULT 1: wraith-man-test shows nothing
+   Problem: Wraith's layout parser OR wraith-alpha manager not reading child projects
+   Action: Check wraith-alpha_manager code, how it exposes child state
+
+RESULT 2: wraith-man-test shows static text but NO variable substitution
+   Problem: Variables like ${status} not being resolved
+   Action: Check how gui_state.txt is being read/scoped
+
+RESULT 3: wraith-man-test shows changing counters
+   Problem is NOT wraith-man-test! It's piececraft-wraith specific
+   Action: Check if piececraft-wraith layout is different
+
+RESULT 4: piececraft-wraith shows map but it doesn't update on key presses
+   Problem: Input processing works but frame not re-rendering on state change
+   Action: Check frame_changed.txt triggering mechanism
+
+RESULT 5: Everything works perfectly
+   Champagne 🍾 Go back to normal piececraft-wraith development
+
+---
+
+COMMAND REFERENCE (for debugging)
+==================================
+
+# Check if manager process is running:
+ps aux | grep wraith-man-test_manager
+
+# Tail debug log in real time:
+tail -f projects/wraith-alpha/wraith-projects/wraith-man-test/session/debug_log.txt
+
+# Check if gui_state.txt exists and when it was updated:
+ls -lah projects/wraith-alpha/wraith-projects/wraith-man-test/session/manager/gui_state.txt
+
+# See if Wraith is detecting state changes:
+tail -f pieces/display/frame_changed.txt
+
+# Test render op manually:
+./projects/wraith-alpha/wraith-projects/piececraft-wraith/ops/+x/render_map_wraith.+x 4 2 0 "./projects/wraith-alpha/wraith-projects/piececraft-wraith/maps/map_01_z0.txt"
+
+---
+
+NOTES
+=====
+- wraith-man-test is a diagnostic tool ONLY
+  It's not meant to be a game, just a test of the plumbing
+
+- If wraith-man-test works but piececraft-wraith doesn't:
+  The issue is in piececraft-wraith's layout or how it calls render_map
+  NOT in the manager launching mechanism
+
+- The biggest unknown right now:
+  Does Wraith read child project gui_state.txt files at all?
+  Or does it only read wraith-alpha's own state?
+  This could be the blocker
+
+================================================================================

@@ -1,0 +1,8 @@
+[1783059438] CHTMGL Wraith Manager Started
+[1783059438] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783059438] Session dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/chtmgl-wraith/session
+[1783059438] CHTMGL Wraith Manager init complete (hot path owned by ops/wraith_project_input.c)
+[1783059545] CHTMGL Wraith Manager Started
+[1783059545] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783059545] Session dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/chtmgl-wraith/session
+[1783059545] CHTMGL Wraith Manager init complete (hot path owned by ops/wraith_project_input.c)

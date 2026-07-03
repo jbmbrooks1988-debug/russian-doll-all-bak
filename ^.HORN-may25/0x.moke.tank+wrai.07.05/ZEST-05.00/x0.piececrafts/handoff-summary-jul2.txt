@@ -1,0 +1,247 @@
+================================================================================
+PIECECRAFT-WRAITH ARCHITECTURAL INVESTIGATION & WRAITH MANAGER LAUNCH FIX
+Session: July 2, 2026 | Handoff Summary
+================================================================================
+
+CURRENT STATUS
+==============
+✓ Wraith-alpha manager UPDATED to detect and launch child project managers
+✓ piececraft-wraith manager COMPILES (26KB, executable, receiving input)
+✓ Render op FIXED to accept full map paths (17KB, renders correctly on test)
+✓ Input IS captured and processed (xel_x position DOES update)
+✗ BUT: Game map NOT visible in Wraith layout (layout not re-rendering)
+✗ BUT: Variables ${game_map}, ${xel_x}, etc. NOT substituting in display
+
+================================================================================
+WHAT ACTUALLY WORKS (Verified by Testing)
+================================================================================
+
+1. MANAGER LAUNCH MECHANISM
+   ✓ When piececraft-wraith is selected in Wraith, wraith-alpha_manager calls:
+     - ensure_project_manager() → launch_project_manager()
+     - Reads project.pdl, finds manager path
+     - fork()/execl() spawns piececraft-wraith_manager.+x
+     - .manager.lock file created to prevent duplicates
+   ✓ Evidence: .manager.lock timestamp, debug_log.txt entries
+
+2. INPUT ROUTING
+   ✓ Wraith captures keypresses → history.txt
+   ✓ piececraft-wraith manager polls history.txt
+   ✓ Arrow keys (1000, 1003, 1002) detected in debug log
+   ✓ Manager calls route_input() and updates state.txt
+   ✓ Evidence: xel_x changed from 4 to 1 after left arrow presses
+
+3. RENDER OP (After Fix)
+   ✓ render_map_wraith.+x compiles and executes
+   ✓ Accepts full map file path
+   ✓ Correctly renders map with xelector marked as '>'
+   ✓ Manual test: ./ops/+x/render_map_wraith.+x 4 2 0 "/full/path/map_01_z0.txt"
+     → Output shows 10x20 map with > at position (4,2)
+
+4. STATE FILES
+   ✓ session/state.txt: updates correctly (xel_x, xel_y, xel_z, display_mode)
+   ✓ session/debug_log.txt: manager logging works
+   ✓ session/xelector_state.txt: initial state stored
+   ✓ session/history.txt: receives key events from Wraith
+
+================================================================================
+WHAT DOESN'T WORK (The Real Problem)
+================================================================================
+
+HYPOTHESIS: The issue is NOT the manager launch or state updates.
+The issue is LAYOUT RENDERING and VARIABLE SUBSTITUTION in Wraith.
+
+EVIDENCE:
+1. piececraft-wraith layout contains:
+   <text label="${game_map}" />
+   <text label="[${display_mode}] [Xelector: (${xel_x},${xel_y},${xel_z})]" />
+
+2. These variables should be read from gui_state.txt:
+   - Manager writes gui_state.txt with all these values
+   - Layout should read ${game_map} via substitution
+
+3. BUT: When project displays, no variables are substituted
+   - Layout appears static/blank
+   - ${game_map} shows literally, not the content
+   - No xelector or coordinates visible
+
+POSSIBLE ROOT CAUSES (to investigate):
+
+A) WRAITH DOESN'T PARSE CHILD PROJECT gui_state.txt
+   - Wraith may only read wraith-alpha's own gui_state.txt
+   - Child projects' state files might be invisible to layout parser
+   - Solution: Need to understand how Wraith projects expose state to parent
+
+B) LAYOUT PARSER DOESN'T TRIGGER AFTER MANAGER UPDATES
+   - Manager updates state.txt but layout isn't re-rendered
+   - Frame composition happens once at load, not on state change
+   - Solution: May need to trigger frame_changed.txt marker
+
+C) VARIABLE SCOPING ISSUE
+   - ${game_map} might need special syntax or path reference
+   - Child project variables might need namespace (${piececraft.game_map}?)
+   - Solution: Check how variable substitution works in nested contexts
+
+D) LAYOUT/RECEIPT ARCHITECTURE MISMATCH
+   - Wraith-hosted projects may not support dynamic state projection
+   - Layout files might be terminal (no real-time updates from manager)
+   - Solution: May require structural change to how Wraith handles child projects
+
+================================================================================
+AGENT FINDINGS (Critical Architectural Insights)
+================================================================================
+
+From investigation of Wraith + TPMOS standards:
+
+1. WRAITH IS FILE-BACKED REACTIVITY, NOT DAEMON ORCHESTRATION
+   - Wraith manager updates state files (pieces/world/*/state.txt)
+   - Parser reads those files and composes frame
+   - No inter-process variable sharing
+   - Each piece publishes view.txt, Wraith composes them
+
+2. SUB-PROJECTS (LIKE PIECECRAFT-WRAITH) ARE "PIECES"
+   - Should work like Terminal window or Inspector window
+   - Should have their own manager writing view.txt
+   - Wraith parser should read their view.txt and include in composed frame
+   - Expected flow: piececraft-wraith_manager → writes view.txt → Wraith reads → renders
+
+3. THE LAYOUT TAG `<module>` IS INFORMATIONAL, NOT EXECUTABLE
+   - Top-level projects (op-ed, fuzz-op) have managers launched by Player App
+   - Wraith-hosted projects need equivalent: parent (wraith-alpha) launches child
+   - WE IMPLEMENTED THIS - wraith-alpha now spawns piececraft-wraith_manager
+   - ✓ This part is CORRECT and WORKING
+
+4. MISSING PIECE: CONTENT PROJECTION
+   - Piececraft-wraith manager writes game_map.txt locally
+   - But Wraith's layout can't access it (scoping/path issue)
+   - Solution likely: Manager should write to wraith-alpha's view.txt instead
+   - OR: Different mechanism for content projection from child → parent
+
+================================================================================
+CREATED: WRAITH-MAN-TEST PROJECT
+================================================================================
+
+Location: projects/wraith-alpha/wraith-projects/wraith-man-test/
+Binary: manager/+x/wraith-man-test_manager.+x (25KB)
+
+Purpose: DIAGNOSTIC test for manager launching and state flow
+
+Simple manager that:
+  ✓ Launches when project selected
+  ✓ Logs to debug_log.txt (proof of execution)
+  ✓ Writes gui_state.txt with test values every 10 seconds
+  ✓ Writes manager_output.txt with static text
+  ✓ No complex input handling - just verifies basic flow
+
+Layout contains:
+  ${status} - should show "Running"
+  ${test_output} - should show "MANAGER ACTIVE - Counter: NN"
+  ${manager_output} - should show the box drawing text
+
+INSTRUCTIONS FOR TESTING:
+1. Open Wraith
+2. Select "WRAITH MANAGER TEST" project
+3. Check if:
+   a) Text appears (any text, even broken)
+   b) Variables substitute (${status} becomes "Running")
+   c) Content from manager is visible
+4. If YES to all: manager launching works, variable substitution works
+5. If NO: narrows down which piece is broken
+
+================================================================================
+NEXT STEPS (For Future Session)
+================================================================================
+
+IMMEDIATE (Required to unblock piececraft-wraith):
+1. Test wraith-man-test project
+   - Determine if manager launching alone is working
+   - Determine if variable substitution is working
+   - This splits the problem into two testable pieces
+
+2. If wraith-man-test works but piececraft-wraith doesn't:
+   - Problem is specific to piececraft-wraith layout or state flow
+   - Check: are maps/game_map paths correct?
+   - Check: is render_map being called correctly?
+   - Check: is game_map.txt being populated?
+
+3. If wraith-man-test fails (variables don't substitute):
+   - Problem is WRAITH'S LAYOUT PARSER, not our manager
+   - May need to examine wraith-alpha_manager's render/composition logic
+   - May need to modify how child project state is exposed
+
+ARCHITECTURAL (Long-term Wraith improvements):
+1. Document how child projects expose state to parent
+2. Create standard pattern for Wraith-hosted projects
+3. Consider if wraith-pm_manager (from handoff) has similar patterns
+4. Update TPMOS handbook with Wraith manager + layout guidelines
+
+================================================================================
+FILES MODIFIED
+================================================================================
+
+WRAITH CORE:
+  projects/wraith-alpha/manager/wraith-alpha_manager.c
+    + launch_project_manager() function
+    + ensure_project_manager() function
+    + Integrated into launch_window_instance()
+  projects/wraith-alpha/manager/+x/wraith-alpha_manager.+x (100KB, recompiled)
+
+PIECECRAFT-WRAITH:
+  projects/wraith-alpha/wraith-projects/piececraft-wraith/project.pdl
+    + Added: manager = projects/.../piececraft-wraith_manager.+x
+  projects/wraith-alpha/wraith-projects/piececraft-wraith/layouts/piececraft-wraith.chtpm
+    + Changed: <module>${module_path}</module> → hardcoded path
+  projects/wraith-alpha/wraith-projects/piececraft-wraith/manager/piececraft-wraith_manager.c
+    + Updated: render_map() to pass full map file path
+  projects/wraith-alpha/wraith-projects/piececraft-wraith/manager/+x/piececraft-wraith_manager.+x (26KB, recompiled)
+  projects/wraith-alpha/wraith-projects/piececraft-wraith/ops/src/+x/render_map_wraith.c
+    + Changed: Accept full map file path instead of map_id
+  projects/wraith-alpha/wraith-projects/piececraft-wraith/ops/+x/render_map_wraith.+x (17KB, recompiled)
+
+TEST PROJECT:
+  projects/wraith-alpha/wraith-projects/wraith-man-test/ (NEW)
+    - manager/wraith-man-test_manager.c (diagnostic manager)
+    - project.pdl (declares manager path)
+    - layouts/wraith-man-test.chtpm (simple variable test layout)
+
+DOCUMENTATION:
+  x0.piececrafts/wraith-man-fix-j2.md (updated with fix details)
+  x0.piececrafts/handoff-summary-jul2.txt (this file)
+
+================================================================================
+KEY INSIGHTS FOR FUTURE WORK
+================================================================================
+
+1. TPMOS PATTERNS WORK CORRECTLY
+   - Manager launch mechanism: ✓ WORKING
+   - File-based state: ✓ WORKING
+   - Input routing: ✓ WORKING
+   - Render ops: ✓ WORKING (after path fix)
+
+2. THE PROBLEM IS AT THE BOUNDARY
+   - Between child project state and parent layout rendering
+   - Not in the manager or ops themselves
+   - Likely in Wraith's composition/parsing layer
+
+3. WRAITH IS YOUNG AND NEEDS ARCHITECTURAL WORK
+   - Designed for internal window management (Wraith-PM style)
+   - Not fully designed for hosting rich interactive sub-projects
+   - Manager launching is now working (we added it)
+   - But content projection still incomplete
+
+4. DON'T GIVE UP ON THIS APPROACH
+   - The patterns are correct
+   - The manager is running
+   - The state is updating
+   - Just need to fix the final display/projection layer
+   - This is achievable - likely 1-2 small changes
+
+================================================================================
+END HANDOFF
+================================================================================
+
+Questions for next session:
+- Does wraith-man-test show ANY output?
+- Does it show variables substituted or literal ${var} strings?
+- Are there any log files in wraith-man-test/session/?
+- Check: pieces/display/frame_changed.txt - is Wraith detecting state changes?

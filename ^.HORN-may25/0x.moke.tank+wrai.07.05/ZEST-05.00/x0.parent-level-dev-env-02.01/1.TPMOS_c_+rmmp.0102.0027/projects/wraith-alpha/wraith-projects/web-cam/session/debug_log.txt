@@ -1,0 +1,8 @@
+[1783060676] Web Cam Manager Started
+[1783060676] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783060676] Session dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/web-cam/session
+[1783060676] Web Cam Manager init complete (hot path owned by ops/wraith_project_input.c, uses shared-memory KVP DB)
+[1783060769] Web Cam Manager Started
+[1783060769] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783060769] Session dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/web-cam/session
+[1783060769] Web Cam Manager init complete (hot path owned by ops/wraith_project_input.c, uses shared-memory KVP DB)

@@ -1,0 +1,160 @@
+================================================================================
+JULY 2, 2026 - WORK SUMMARY & FILES
+================================================================================
+
+HANDOFF DOCUMENTS (Read these first):
+  handoff-summary-jul2.txt ⭐ (Comprehensive architectural analysis)
+  wraith-test-checklist.txt ⭐ (Testing procedure for tomorrow)
+  wraith-man-fix-j2.md (Previous emergency analysis - now updated)
+
+================================================================================
+WRAITH CORE CHANGES
+================================================================================
+
+File: projects/wraith-alpha/manager/wraith-alpha_manager.c
+  + Added: launch_project_manager() - reads project.pdl, spawns manager
+  + Added: ensure_project_manager() - prevents duplicate launches via lock
+  + Modified: launch_window_instance() - calls ensure_project_manager()
+  + Recompiled: 100KB binary at manager/+x/wraith-alpha_manager.+x
+
+Impact: When any Wraith-hosted project is selected, Wraith-alpha now spawns
+        that project's manager automatically (if declared in project.pdl)
+
+================================================================================
+PIECECRAFT-WRAITH FIXES
+================================================================================
+
+File: project.pdl
+  + Added: manager = projects/wraith-alpha/wraith-projects/piececraft-wraith/manager/+x/piececraft-wraith_manager.+x
+  - Removed: module_path entry (not needed with hardcoded layout)
+
+File: layouts/piececraft-wraith.chtpm
+  Changed: <module>${module_path}</module> → hardcoded path
+
+File: manager/piececraft-wraith_manager.c
+  Modified: render_map() function
+    - Now passes full map file path to render op
+    - Previously: 'maps/map_01_z0.txt' (relative, broken)
+    - Now: '/full/path/projects/.../piececraft-wraith/maps/map_01_z0.txt'
+  Recompiled: 26KB binary at manager/+x/piececraft-wraith_manager.+x
+
+File: ops/src/+x/render_map_wraith.c
+  Modified: main() function signature
+    - Was: argc[4] = map_id (built path internally)
+    - Now: argc[4] = full map file path (manager builds path)
+  Recompiled: 17KB binary at ops/+x/render_map_wraith.+x
+
+Status: Manager LAUNCHES, INPUT processes, STATE updates, RENDER works
+        BUT: Layout not showing output (variables not substituting in Wraith)
+
+================================================================================
+TEST PROJECT (NEW)
+================================================================================
+
+Location: projects/wraith-alpha/wraith-projects/wraith-man-test/
+
+Files Created:
+  manager/wraith-man-test_manager.c (diagnostic manager, 25KB binary)
+  project.pdl (declares manager path)
+  layouts/wraith-man-test.chtpm (simple layout with variable tests)
+  session/ (empty, will be populated when manager runs)
+
+Purpose: Isolate whether manager launching + variable substitution works
+         in Wraith, independent of piececraft-wraith complexity
+
+How to Test:
+  1. Open Wraith
+  2. Select "WRAITH MANAGER TEST"
+  3. See if ANY variables substitute (${status}, ${test_output})
+  4. If yes → problem is piececraft-wraith specific
+  5. If no → problem is in Wraith's parser/composition
+
+================================================================================
+WHAT'S WORKING ✓
+================================================================================
+
+1. Manager Launch Mechanism
+   ✓ wraith-alpha detects child projects in project.pdl
+   ✓ Reads "manager" entry and full path
+   ✓ fork()/execl() spawns manager process
+   ✓ .manager.lock prevents duplicates
+   ✓ Evidence: lock file, debug_log.txt entries
+
+2. Input Routing
+   ✓ Wraith captures keypresses → history.txt
+   ✓ Manager polls history.txt
+   ✓ route_input() processes arrow keys (1000, 1003, 1002)
+   ✓ state.txt updates (verified: xel_x changed 4→1)
+
+3. Render Operation
+   ✓ render_map_wraith.+x accepts full file paths
+   ✓ Manual test produces correct map output
+   ✓ Xelector marked correctly with '>'
+
+================================================================================
+WHAT'S NOT WORKING ✗
+================================================================================
+
+1. Layout Display
+   ✗ No output visible in Wraith when piececraft-wraith loads
+   ✗ Should show map from ${game_map} substitution
+   ✗ Should show coordinates from ${xel_x}, ${xel_y}, ${xel_z}
+
+2. Variable Substitution
+   ✗ Unknown if Wraith reads child project gui_state.txt
+   ✗ Unknown if variables are scoped correctly
+   ✗ May require debugging Wraith's parser
+
+================================================================================
+THEORY (Most Likely Problem)
+================================================================================
+
+Wraith-alpha's parser may only read its OWN gui_state.txt, not child
+projects' state files. This would explain why:
+
+  - Manager IS running (proven by debug_log.txt)
+  - Manager IS updating state (proven by state.txt changes)
+  - But layout shows nothing (variables not available to parser)
+
+SOLUTION PATH:
+  1. Confirm with wraith-man-test (simpler diagnostic)
+  2. If confirmed, check how Wraith exposes child state to layouts
+  3. May need to modify wraith-alpha manager to read child state
+     and merge it into wraith-alpha's own gui_state.txt
+  4. Or create special syntax for child variable references
+
+================================================================================
+RECOMMENDED NEXT STEPS
+================================================================================
+
+IMMEDIATE (Before continuing):
+  1. Run wraith-man-test in Wraith
+  2. Check results against wraith-test-checklist.txt
+  3. This will pinpoint exactly what's broken
+
+SHORT TERM (Same session as fix):
+  1. Based on test results, modify either:
+     a) Wraith-alpha manager (if child state not being read)
+     b) Piececraft-wraith layout (if syntax issue)
+     c) Render mechanism (if frame not re-rendering)
+
+MEDIUM TERM (Polish):
+  1. Get piececraft-wraith fully interactive in Wraith
+  2. Test with arrow keys, mode toggle, debug info
+  3. Verify xelector moves, map updates in real-time
+
+LONG TERM (Architecture):
+  1. Document manager + layout pattern for Wraith projects
+  2. Update TPMOS handbook
+  3. Create templates for other Wraith-hosted projects
+
+================================================================================
+FILES NOT CHANGED (But might need changes)
+================================================================================
+
+These files work correctly - don't modify unless tests indicate:
+  - piececraft-wraith/maps/map_01_z[012].txt (map data)
+  - piececraft-wraith/session/xelector_state.txt (initialization)
+  - wraith-alpha_manager render operations (already tested separately)
+
+================================================================================

@@ -1,0 +1,9 @@
+[1782995242] wraith-man-test Manager Started
+[1782995242] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1782995242] Session dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/wraith-man-test/session
+[1782995242] Manager running
+[1782995252] Heartbeat: 10 seconds
+[1782995262] Heartbeat: 20 seconds
+[1782995272] Heartbeat: 30 seconds
+[1782995282] Heartbeat: 40 seconds
+[1782995285] Manager shutdown
