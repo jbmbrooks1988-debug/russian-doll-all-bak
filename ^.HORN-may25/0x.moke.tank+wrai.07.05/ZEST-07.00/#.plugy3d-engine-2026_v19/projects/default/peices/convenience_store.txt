@@ -1,0 +1,21 @@
+{
+  "id": "convenience_store",
+  "type": "emoji_entity",
+  "scale_x": 2.0,
+  "scale_y": 2.0,
+  "scale_z": 2.0,
+  "render_style": "extruded",
+  "pos_x": 20,
+  "pos_y": 0,
+  "pos_z": 10,
+  "color": "building",
+  "source_file": "data/entities/emoji/convenience_store/convenience_store.csv",
+  "rotation_x": 0,
+  "rotation_y": 0,
+  "rotation_z": 0,
+  "movable": false,
+  "interactable": false,
+  "health": 200,
+  "scale_mode": "macro",
+  "voxel_expansion": 0.25
+}

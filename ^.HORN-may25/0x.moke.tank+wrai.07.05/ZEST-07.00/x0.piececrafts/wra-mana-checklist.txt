@@ -1,0 +1,254 @@
+================================================================================
+WRAITH MANAGER MIGRATION CHECKLIST
+================================================================================
+Date: July 2, 2026 (updated 2026-07-03)
+Status: 9 of 14 original Wraith-hosted projects compliant. All 7 projects
+that already had ops/wraith_project_input.c now have managers, following
+the identical fs_manager.c pattern. Of the 4 that needed investigation,
+blank-project was deleted (scaffolding), probe-project and terminal are
+confirmed non-priority/ignore, and emoji-studio-wraith still needs a
+manager (mechanical, low priority) — see RESOLVED section below.
+
+Standing rule (user directive, locked): EVERY Wraith-hosted project's
+layout must load a manager — the same way HTML loads a <script> tag —
+regardless of whether the project's actual hot-path logic already lives
+entirely in a synchronous ops/wraith_project_input.c file. This is a
+structural/architectural requirement, not a case-by-case optimization.
+Do not skip a project just because it currently "works" without one.
+
+--------------------------------------------------------------------------------
+CURRENT STATUS (full audit)
+--------------------------------------------------------------------------------
+
+DONE:
+  fs                     — manager added, verified live, works well
+  piececraft-wraith      — manager added earlier tonight (original proof of concept)
+  chtmgl-video-isolate    — manager added, verified live, works well
+  chtmgl-wraith           — manager added, verified live, works well
+  screen-record           — manager added, verified standalone (live test pending user confirmation)
+  wraith-3d-cube          — manager added, verified standalone. SEPARATE FINDING: this
+                             project's README.md/IMPLEMENTATION.md were WRONG (per
+                             project owner correction 2026-07-02) — described a
+                             single-cube probe (role=zslice_piece,
+                             pieces/cube_probe/artifact.txt) as the design intent.
+                             CORRECTED intent: should use a tile-based map like
+                             piececraft-wraith (role=tile_zmap, maps/map_01_z*.txt).
+                             Docs corrected with a prominent notice; the actual
+                             renderer/data migration (single-cube -> map-based) is
+                             NOT done yet — separate follow-up task, bigger than the
+                             manager-add pattern this checklist otherwise covers.
+
+  wraith-browser          — manager added, verified standalone (live test pending user confirmation)
+  wraith-ed               — manager added, verified standalone
+  web-cam                 — manager added, verified standalone. SPECIAL CASE
+                             (as flagged): this project's ops/wraith_project_input.c
+                             reads/writes session state through
+                             pieces/chtpm/ops/lib/tpmos_share_kvp_runtime.c
+                             (POSIX shared memory, /tpmos_share_kvp_v1),
+                             not plain file I/O — the "in-memory database"
+                             warning was accurate. Investigated before
+                             touching: confirmed the runtime is
+                             self-bootstrapping (tpmos_share_kvp_ensure_daemon()
+                             auto-starts the backing daemon if the shared-
+                             memory segment isn't attached yet), and this
+                             manager invokes the op the exact same way
+                             wraith-alpha already does per keypress — no new
+                             timing/ordering risk. Confirmed the shm segment
+                             (/dev/shm/tpmos_share_kvp_v1) exists and the
+                             manager ran clean against it standalone.
+
+RESOLVED (2026-07-03, per project owner):
+  blank-project          — DELETED. Confirmed scaffolding only, not a real
+                            project. Removed entirely from
+                            wraith-projects/; no manager needed since it no
+                            longer exists.
+  probe-project          — Confirmed empty/placeholder by owner. Left
+                            as-is, not migrated. Revisit only if it becomes
+                            a real project.
+  terminal                — Owner said to ignore. Not migrated, not
+                            investigated further.
+  emoji-studio-wraith    — Owner confirmed this project is meant to mirror
+                            the standalone `projects/emoji-studio`
+                            project's voxel data convention (it already has
+                            `pieces/sample_emoji/voxels_8.csv`, matching
+                            emoji-studio's CSV voxel format). Still
+                            technically needs a manager per the standing
+                            rule, but that is a separate, lower-priority
+                            mechanical task — not done this pass. Do NOT
+                            invent a new data model for it; reuse
+                            emoji-studio's pieces/*.csv convention as-is.
+
+SPECIAL CASE (not part of this migration):
+  wraith-man-test        — diagnostic project created earlier tonight to test
+                            the manager-launch mechanism itself, already has a
+                            manager, no ops (not meant to be a real game/tool)
+
+--------------------------------------------------------------------------------
+THE PATTERN (proven twice: piececraft-wraith, then fs)
+--------------------------------------------------------------------------------
+
+For any project that already has ops/src/wraith_project_input.c (the
+synchronous hot-path input handler), adding a TPMOS-compliant manager is
+mechanical — do NOT duplicate the ops file's logic in the manager. The
+manager's only job is to be the thing the layout loads (the "script tag"),
+plus trigger one initial render so the window isn't blank before the
+first keypress.
+
+### Step 1: Create manager/<project>_manager.c
+
+Minimal, init-only — no persistent loop, no input polling thread. Copy
+this shape (this is fs_manager.c's actual structure, works as-is for any
+project with an existing ops/wraith_project_input.c):
+
+```c
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <ctype.h>
+#include <time.h>
+#include <stdarg.h>
+#include <sys/wait.h>
+
+#define MAX_PATH 4096
+char project_root[2048] = ".";
+char project_session_dir[2048] = ".";
+char debug_log_path[4096] = "";
+
+char* trim_str(char *str) { /* standard trim, copy from any existing manager */ }
+int root_has_anchors(const char* root) { /* checks for pieces/ + projects/ dirs */ }
+void resolve_paths() { /* find project_root via location_kvp, set project_session_dir */ }
+void log_debug(const char* fmt, ...) { /* append to debug_log.txt */ }
+
+void trigger_initial_render() {
+    /* fork()/exec()/waitpid() the project's own
+       ops/+x/wraith_project_input.+x with project_dir as argv[1] —
+       exactly what wraith-alpha's run_active_project_input_op() does
+       on every keypress. Running it once here means the window shows
+       real content immediately, not a blank/stale frame. */
+}
+
+void trigger_render() {
+    /* append "X\n" to pieces/display/frame_changed.txt */
+}
+
+int main() {
+    resolve_paths();
+    log_debug("<Project> Manager Started");
+    trigger_initial_render();
+    trigger_render();
+    log_debug("<Project> Manager init complete (hot path owned by ops/wraith_project_input.c)");
+    return 0;
+}
+```
+
+### Step 2: Compile it
+
+```
+gcc -std=gnu11 -Wall -O2 manager/<project>_manager.c -o manager/+x/<project>_manager.+x
+```
+
+No special flags needed (no pthread, since there's no persistent thread).
+
+### Step 3: Add to project.pdl
+
+```
+META | manager | projects/wraith-alpha/wraith-projects/<project>/manager/+x/<project>_manager.+x
+```
+
+This is the field `wraith-alpha_manager.c`'s `launch_project_manager()`
+actually reads to auto-launch the manager when the project window opens
+— this is the real trigger mechanism.
+
+### Step 4: Add <module> tag to the layout
+
+```xml
+<module>projects/wraith-alpha/wraith-projects/<project>/manager/+x/<project>_manager.+x</module>
+```
+
+Add this as the first line inside the layout's root tag (right after
+`<panel>` or `<chtpm>`). This is the declared, TPMOS-compliant "this
+project loads a manager" shape — matches the standing HTML/`<script>`
+principle even though (per tonight's investigation) Wraith doesn't
+currently parse this tag to trigger anything itself; the real launch
+happens via project.pdl's `manager=` field. Both should be present:
+project.pdl for the actual mechanism, the layout for correctness/future-
+proofing (Wraith may be refactored later to read this tag directly,
+matching a more literal HTML/JS model — see conversation with user about
+Wraith eventually becoming browser-like).
+
+### Step 5: Verify standalone before touching Wraith
+
+```bash
+rm -f session/debug_log.txt
+./manager/+x/<project>_manager.+x
+cat session/debug_log.txt   # should show "Manager Started" + "init complete"
+grep -E "^status|^<some key field>" session/state.txt   # confirm existing state untouched
+```
+
+### Step 6: Clear any stale lock, reload in Wraith
+
+```bash
+rm -f session/.manager.lock
+```
+
+Then reopen the project in Wraith and check `session/debug_log.txt` for
+the manager's startup log lines.
+
+--------------------------------------------------------------------------------
+WHAT NOT TO DO
+--------------------------------------------------------------------------------
+
+- Do NOT put per-keypress state mutation in the new manager. That's what
+  caused the input-lag bug fixed earlier tonight (documented in
+  ARCHITECTURE-RGB-RENDERING.md / HANDOFF-WRAITH-STATE-MYSTERY.md) — a
+  manager with its own polling thread races against Wraith's synchronous
+  per-keypress render call. If a project's ops/wraith_project_input.c
+  already owns the hot path (true for all 7 "needs a manager" projects
+  above), leave it exactly as-is. The manager is init-only.
+- Do NOT skip a project because "it already works fine without one" —
+  see the standing rule at the top of this file.
+- Do NOT use system() calls in the new manager for launching the op —
+  use fork()/exec()/waitpid(), matching TPMOS convention and what
+  fs_manager.c/piececraft-wraith_manager.c already do.
+- Do NOT write project.pdl or session state files non-atomically
+  (direct fopen(path,"w") without a temp-file+rename). This exact
+  mistake (inherited from the wraith-3d-cube reference pattern originally
+  copied for piececraft-wraith) caused a real, reproduced bug tonight:
+  Wraith's read_project_map_control() re-reads state.txt on every
+  keystroke, and a non-atomic write left a race window where it could
+  read a truncated file mid-write. Fixed in piececraft-wraith's
+  ops/wraith_project_input.c; check whether any of the 7 pending
+  projects' existing wraith_project_input.c files have the same gap
+  while touching them for this migration (worth auditing, not yet done
+  for these 7).
+
+--------------------------------------------------------------------------------
+NEXT SESSION
+--------------------------------------------------------------------------------
+
+1. RESOLVED 2026-07-03: blank-project deleted, probe-project/terminal
+   confirmed skip, emoji-studio-wraith confirmed to mirror
+   projects/emoji-studio's voxel CSV convention. Only remaining item:
+   add the standard init-only manager to emoji-studio-wraith (mechanical,
+   same pattern as the other 9) — low priority, do whenever convenient.
+2. Finish the remaining "needs a manager" projects: web-cam (last —
+   uses an in-memory database, treat carefully, spend more time if
+   needed), wraith-browser, wraith-ed.
+3. While touching each one's ops/wraith_project_input.c, audit for the
+   non-atomic-write bug (see "WHAT NOT TO DO" above) and fix if present.
+4. Update this checklist's "DONE" list as each project is completed.
+5. SEPARATE, BIGGER TASK: migrate wraith-3d-cube from its current
+   single-cube-probe renderer (role=zslice_piece) to a proper tile-based
+   map (role=tile_zmap, maps/map_01_z*.txt), matching piececraft-wraith.
+   This was the project's actual intended design all along (per owner
+   correction 2026-07-02) — its docs described the wrong thing. Not part
+   of the manager-migration pattern; needs its own dedicated pass:
+   create maps/, assets/tiles/*.tile.txt, rewrite scene.objects.pdl and
+   ops/wraith_project_input.c to follow piececraft-wraith's pattern
+   instead of the single-piece artifact.txt approach.
+
+================================================================================

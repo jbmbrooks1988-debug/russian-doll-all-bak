@@ -1,6 +1,0 @@
-[1783056600] Piececraft-Wraith Manager Started (init-only; hot path is ops/wraith_project_input.+x)
-[1783056600] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
-[1783056600] Session dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/piececraft-wraith/session
-[1783056747] Piececraft-Wraith Manager Started (init-only; hot path is ops/wraith_project_input.+x)
-[1783056747] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
-[1783056747] Session dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/piececraft-wraith/session

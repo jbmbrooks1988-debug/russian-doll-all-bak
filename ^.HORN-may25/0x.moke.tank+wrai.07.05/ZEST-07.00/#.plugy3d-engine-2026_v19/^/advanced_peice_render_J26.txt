@@ -1,0 +1,149 @@
+# Advanced Piece Render Specification - Jan 2026
+
+## Overview
+This document outlines advanced rendering capabilities for the project pieces system, including special scaling modes and dynamic terrain integration.
+
+## 1. Unified Entity Loading from Projects
+All entities (adam, eve, cow, pig, etc.) should be loaded from project configuration files rather than being hardcoded.
+
+### 1.1 Default Project Configuration Update
+Update `projects/default/peices/piece_map.csv` to include all default entities:
+
+```
+id,type,scale_x,scale_y,scale_z,render_style,pos_x,pos_y,pos_z,color,source_file,rotation_x,rotation_y,rotation_z,movable,interactable,health
+adam,emoji_entity,1.0,1.0,1.0,extruded,5,0,1,red,data/entities/emoji/adam/adam.csv,0,0,0,True,True,100
+eve,emoji_entity,1.0,1.0,1.0,extruded,6,0,3,blue,data/entities/emoji/eve/eve.csv,0,0,0,True,True,100
+cow,emoji_entity,1.0,1.0,1.0,extruded,5,0,5,brown,data/entities/emoji/cow/cow.csv,0,0,0,True,True,100
+pig,emoji_entity,1.0,1.0,1.0,extruded,10,0,1,pink,data/entities/emoji/pig/pig.csv,0,0,0,True,True,80
+grass,terrain_block,1.0,1.0,1.0,six-faced,0,0,0,green,^.fin_mc_8&16_c2--]FIXD/mc_extracted_csvs_8x8/grass/grass.csv,0,0,0,False,False,0
+```
+
+## 2. Dynamic Terrain Generation Integration
+When the terrain generator runs, it should dynamically update the piece map in the current project.
+
+### 2.1 Terrain Generation Process
+1. When terrain is generated/modified, the terrain generator writes to the active project's piece_map.csv
+2. The project manager detects changes and triggers a grid refresh
+3. Generated terrain pieces are saved with appropriate coordinates and properties
+
+### 2.2 Terrain-to-Piece Mapping
+```
+// Example of how terrain generator output maps to piece definitions
+{
+  "id": "terrain_grass_0_0_0",
+  "type": "terrain",
+  "block_type": "grass",
+  "pos_x": 0,
+  "pos_y": 0, 
+  "pos_z": 0,
+  "color": "green",
+  "source_file": "^.fin_mc_8&16_c2--]FIXD/mc_extracted_csvs_8x8/grass/grass.csv",
+  "scale_x": 1.0,
+  "scale_y": 1.0,
+  "scale_z": 1.0,
+  "render_style": "six-faced"
+}
+```
+
+## 3. Advanced Scaling Modes
+
+### 3.1 Smaller Scale Mode (Micro Scaling)
+For entities that need to be rendered smaller (fit 8x8x8 voxels into 2x2x2 space):
+
+**Example: Avocado Entity**
+```
+{
+  "id": "avocado",
+  "type": "emoji_entity", 
+  "scale_x": 0.25,
+  "scale_y": 0.25,
+  "scale_z": 0.25,
+  "render_style": "extruded",
+  "pos_x": 15,
+  "pos_y": 0,
+  "pos_z": 5,
+  "color": "green",
+  "source_file": "data/entities/emoji/avocado/avocado.csv",
+  "scale_mode": "micro",  // 8x8x8 fits in 2x2x2 voxel space
+  "voxel_density": 4.0    // 4x smaller than default
+}
+```
+
+Parameters:
+- `scale_mode: "micro"` indicates micro-scaling
+- `voxel_density: 4.0` means each original voxel becomes 1/4th the size
+- Actual visual result: 8x8x8 source data renders as a dense 2x2x2 entity
+
+### 3.2 Bigger Scale Mode (Macro Scaling)
+For entities that need to be rendered larger (fit 8x8x8 voxels into 2x2x2 GRID space):
+
+**Example: Convenience Store Entity**
+```
+{
+  "id": "convenience_store",
+  "type": "emoji_entity",
+  "scale_x": 2.0,
+  "scale_y": 2.0, 
+  "scale_z": 2.0,
+  "render_style": "extruded",
+  "pos_x": 20,
+  "pos_y": 0,
+  "pos_z": 10,
+  "color": "building",
+  "source_file": "data/entities/emoji/convenience_store/convenience_store.csv", 
+  "scale_mode": "macro",  // 8x8x8 fits in 2x2x2 GRID space
+  "voxel_expansion": 0.25  // Each voxel takes 4x4x4 grid space
+}
+```
+
+Parameters:
+- `scale_mode: "macro"` indicates macro-scaling
+- `voxel_expansion: 0.25` means each voxel occupies 4x4x4 space in grid terms
+- Actual visual result: 8x8x8 source data renders across a 2x2x2 grid area
+
+## 4. Implementation Requirements
+
+### 4.1 Renderer Updates
+The EntityRendererPlugin needs to support:
+- Micro scaling: Increase vertex density to fit more detail in smaller space
+- Macro scaling: Expand each voxel to cover larger grid areas
+- Dynamic scaling factor adjustments per entity
+
+### 4.2 Entity Processing Updates
+The emoji entity loader needs to:
+- Detect `scale_mode` in entity definitions
+- Adjust voxel processing based on scale mode
+- Apply appropriate scaling transforms before passing to renderer
+
+### 4.3 Project Manager Updates  
+- Monitor terrain generation for auto-updates to piece maps
+- Handle special scale mode entities in loading/saving
+- Maintain backward compatibility with standard entities
+
+## 5. Configuration Examples
+
+### 5.1 Micro-Scaled Entity (Avocado)
+```
+id,type,scale_mode,voxel_density,pos_x,pos_y,pos_z,color,source_file
+avocado,emoji_entity,micro,4.0,15,0,5,green,data/entities/emoji/avocado/avocado.csv
+```
+
+### 5.2 Macro-Scaled Entity (Convenience Store)
+```
+id,type,scale_mode,voxel_expansion,pos_x,pos_y,pos_z,color,source_file  
+convenience_store,emoji_entity,macro,0.25,20,0,10,building,data/entities/emoji/convenience_store/convenience_store.csv
+```
+
+## 6. Technical Implementation Notes
+
+### 6.1 Micro Scaling Algorithm
+- Reduce each original voxel by the density factor
+- Pack 8x8x8 source into proportionally smaller space
+- Maintain detail through increased vertex density
+
+### 6.2 Macro Scaling Algorithm  
+- Expand each original voxel by the expansion factor
+- Spread 8x8x8 source across larger area
+- Allow entity to span multiple grid positions conceptually
+
+This approach maintains the 8x8x8 source data format while providing flexible rendering options for different use cases.

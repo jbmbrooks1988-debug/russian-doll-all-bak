@@ -1,0 +1,63 @@
+NPC PLUGIN TODO LIST (January 24, 2026)
+
+1. CREATE NPC PLUGIN STRUCTURE
+   - Create plugins/entities/npc/ directory
+   - Implement NPCPlugin following BasePlugin interface (Qt-based)
+   - Create event-driven architecture as described in event_plugin_arch_idea_v0.0.txt
+   - Integrate with existing cow/pig emoji entities
+
+2. IMPLEMENT CORE ARCHITECTURE COMPONENTS
+   - Master Event Processor to read from central event ledger (data/master_ledger.txt)
+   - Track last processed event in data/master_reader.txt
+   - Event type handlers for NPC movements and actions
+   - Dynamic event parameter parsing and execution
+
+3. EVENTS & ACTION SYSTEM
+   - NPC_MOVE: Move cow/pig entities to new positions
+   - NPC_INTERACT: Cause cow/pig to interact with environment/player
+   - NPC_STATE_CHANGE: Change behavior patterns (aggressive/passive/etc)
+   - NPC_SPAWN: Spawn additional cow/pig entities if needed
+
+4. TIME INTEGRATION
+   - Connect to time plugin for event scheduling
+   - Basic actions every game hour (NPC_MOVE)
+   - Complex decisions every game day (NPC_INTERACT)
+   - Seasonal behavior changes every quarter
+   - Support both manual (player-move triggered) and automatic time modes
+
+5. EVENT LEDGER SYSTEM
+   - Write events to data/master_ledger.txt in format:
+     "Time: YYYY-MM-DD HH:MM:SS | Type: EVENT_TYPE | Entity: COW_001 | Params: x:5,y:0,z:5,target:PLAYER | Status: PENDING"
+   - Process events and update status to COMPLETED/FAILED
+   - Persist event history for continuity across sessions
+
+6. BEHAVIOR PATTERNS FOR COW/PIG
+   - Cow: Grazing, wandering, following player at distance
+   - Pig: Rooting, exploring, random movements
+   - Reactive to player presence and environmental changes
+   - Different behaviors based on time of day/season
+
+7. CONFIGURABLE SCHEDULING
+   - Schedule actions in presets/schedule_npcs.txt
+   - Support different frequencies: hourly, daily, etc.
+   - Allow for random timing within parameters
+
+8. INTEGRATION WITH EXISTING SYSYEMS
+   - Coordinate with emoji entity manager for entity manipulation
+   - Work with selector system for interaction
+   - Connect with terrain system for environment awareness
+   - Interface with time system for triggering
+
+9. NPC LOGGING SYSTEM
+   - Create logs/ directory for storing activity logs  
+   - Write to npc_log.txt with timestamped entries when NPCs take actions
+   - Log format: "YYYY-MM-DD HH:MM:SS - COW_001 performed NPC_MOVE to x:5,y:0,z:5"
+   - Include status updates: success, failure, cancellation
+   - Enable debugging and sanity checks through log analysis
+
+10. TESTING & VALIDATION
+   - Verify events are written to ledger correctly
+   - Confirm NPC movements happen as scheduled
+   - Test time system integration
+   - Validate persistence across game sessions
+   - Check npc_log.txt for expected behavioral patterns

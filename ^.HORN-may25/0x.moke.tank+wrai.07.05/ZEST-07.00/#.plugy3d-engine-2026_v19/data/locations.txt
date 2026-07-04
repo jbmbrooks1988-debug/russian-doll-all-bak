@@ -1,0 +1,2 @@
+terrain: data/entities/mc_extracted_csvs_8x8
+entities: data/entities

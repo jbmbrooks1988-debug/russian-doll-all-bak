@@ -1,4 +1,0 @@
-[1783060355] Wraith Browser Manager Started
-[1783060355] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
-[1783060355] Session dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/wraith-browser/session
-[1783060355] Wraith Browser Manager init complete (hot path owned by ops/wraith_project_input.c)

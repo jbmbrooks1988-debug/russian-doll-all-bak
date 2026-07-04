@@ -1,0 +1,19 @@
+{
+  "id": "adam",
+  "type": "emoji_entity",
+  "scale_x": 1.0,
+  "scale_y": 1.0,
+  "scale_z": 1.0,
+  "render_style": "extruded",
+  "pos_x": 5,
+  "pos_y": 0,
+  "pos_z": 1,
+  "color": "red",
+  "source_file": "data/entities/adam/tile_8x8/1st_place_medal.csv",
+  "rotation_x": 0,
+  "rotation_y": 0,
+  "rotation_z": 0,
+  "movable": true,
+  "interactable": true,
+  "health": 100
+}

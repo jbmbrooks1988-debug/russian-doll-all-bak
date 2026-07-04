@@ -1,5 +1,0 @@
-# Wraith project input history.
-# Wraith Alpha appends COMMAND: INTERACT, COMMAND: ESC, and KEY_PRESSED events here.
-[test] COMMAND: AUDIO_STOP
-[Thu Jul  2 23:19:15 2026] COMMAND: AUDIO_PLAY
-[Thu Jul  2 23:19:29 2026] COMMAND: AUDIO_PLAY

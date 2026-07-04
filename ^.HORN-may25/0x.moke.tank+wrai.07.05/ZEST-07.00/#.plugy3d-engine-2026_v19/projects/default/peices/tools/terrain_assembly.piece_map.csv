@@ -1,0 +1,3 @@
+id,type,scale_x,scale_y,scale_z,render_style,pos_x,pos_y,pos_z,color,source_file,rotation_x,rotation_y,rotation_z,movable,interactable,health
+grass_block,terrain_block,1.0,1.0,1.0,six-faced,0,0,0,green,data/entities/mc_extracted_csvs_8x8/grass/grass.csv,0,0,0,False,False,0
+dirt_block,terrain_block,1.0,1.0,1.0,six-faced,1,0,0,brown,data/entities/mc_extracted_csvs_8x8/dirt/dirt.csv,0,0,0,False,False,0

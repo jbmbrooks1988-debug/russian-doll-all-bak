@@ -1,0 +1,66 @@
+BUG REPORT: Piece Map Loading Logic Issue
+==========================================
+
+PROBLEM DESCRIPTION:
+--------------------
+
+Currently, the project loading system in plugins/core/project_manager.py implements incorrect logic for handling piece_map.csv and individual piece files. According to the current implementation:
+
+1. The system checks for piece_map.csv first
+2. IF piece_map.csv exists, it ONLY loads from piece_map.csv and IGNORES individual piece files
+3. IF piece_map.csv does not exist, it loads individual .txt files as fallback
+
+THIS IS WRONG. The intended behavior should be:
+- Load BOTH piece_map.csv files AND individual piece files
+- They should serve DIFFERENT purposes rather than being redundant:
+  * piece_map.csv files contain "building assemblies" - groups of pieces that form larger structures
+  * individual .txt files contain standalone pieces that can be placed independently
+
+DESIGN INTENT:
+--------------
+
+Piece maps should represent pre-built structures or buildings composed of multiple individual pieces. For example:
+- house.piece_map - contains multiple pieces that form a house (walls, roof, door, windows)
+- castle.piece_map - contains pieces forming a castle structure
+- individual pieces like cow.txt, pig.txt remain as individual entities that can be placed separately
+
+This way, users can:
+1. Load a building assembly from a piece_map file
+2. Also have individual pieces available for custom placement
+3. Combine both approaches in the same project
+
+CURRENT BUG:
+------------
+
+The current loading logic treats piece_map and individual pieces as mutually exclusive rather than complementary, defeating the purpose of having both file formats.
+
+PROPOSED SOLUTION:
+------------------
+
+Modify the `_load_piece_map` method in ProjectManagerPlugin to:
+
+1. Check for ALL piece_map.csv files in the peices directory (not just piece_map.csv)
+2. Load ALL of them (could be house.piece_map.csv, castle.piece_map.csv, etc.)
+3. ALSO load all individual .txt files
+4. Combine both sets of pieces into the final grid
+5. Implement proper position conflict resolution (perhaps allow user choice or prioritize one set over another)
+
+IMPLEMENTATION PLAN:
+-------------------
+
+1. Update `_load_piece_map` to find and load all *.piece_map.csv files in the directory
+2. Update the main `load_project` method to load both piece maps AND individual pieces
+3. Modify `_apply_pieces_to_grid` to handle combined loading without position conflicts becoming problematic
+4. Potentially add a priority system where individual pieces override piece_map pieces at the same position, or vice versa
+5. Update the save functionality to potentially save both types of files separately
+
+FILE LOCATIONS TO MODIFY:
+- plugins/core/project_manager.py
+- plugin_system.md (to update documentation after fix)
+
+TESTING STRATEGY:
+After fix:
+1. Place multiple *.piece_map.csv files in projects/default/peices/ directory
+2. Place multiple *.txt files in same directory
+3. Verify both are loaded together in the same project
+4. Ensure no pieces are lost due to the old mutually-exclusive loading logic

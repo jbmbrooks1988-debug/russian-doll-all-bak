@@ -1,0 +1,134 @@
+# Event Plugin Architecture for Roguelike Game AI NPCs
+
+## Overview
+This document describes an event-driven plugin architecture inspired by the Mars StreetRace Raider stock market simulation game's event loop system. The architecture enables AI NPCs to perform timed actions in a roguelike game environment.
+
+## Core Architecture Components
+
+### 1. Clock System (`wsr_clock.c` equivalent)
+- Maintains game time state (year, month, day, hour, minute, second, centisecond)
+- Updates game time based on real-time passage with configurable ratios
+- Different speeds: cent, sec, min, hour, day (allowing for varied temporal experiences)
+- Persists time state to `data/wsr_clock.txt`
+- Uses `clock_gettime()` for accurate time measurement
+
+### 2. Scheduled Event Loop (`clockwise_loop.c` equivalent)
+- Continuously monitors game time changes
+- Executes scheduled commands based on time intervals
+- Supports multiple time granularities:
+  - Hourly (`1_hour`)
+  - Daily (`1_day`)
+  - Quarterly (3-monthly) (`3_months`)
+  - Yearly (`1_year`)
+- Maintains separate log files for each time period
+- Parses schedule from `presets/schedule.txt`
+- Executes external commands via `system()` calls
+
+### 3. Master Event Processor (`master_reader.c` equivalent)
+- Reads from a central event ledger (`data/master_ledger.txt`)
+- Tracks last processed event line number in `data/master_reader.txt`
+- Processes new events since last check
+- Implements event-type-specific handlers
+- Parses event parameters dynamically
+- Executes appropriate actions based on event type
+
+## Plugin System Architecture
+
+### Plugin Interface Definition
+Following the `plugin_system.md` structure:
+
+```c
+typedef struct {
+    char name[64];
+    bool enabled;
+    void* (*initialize)(void);
+    void (*activate)(void* plugin_data);
+    void (*deactivate)(void* plugin_data);
+    void (*process_event)(char* event_type, char* event_params, void* plugin_data);
+    void* plugin_data;
+} EventPlugin;
+```
+
+### Core Plugin Types
+
+#### 1. NPC Action Scheduler
+- Schedules AI NPC actions based on game time
+- Supports different action frequencies (random, hourly, daily, seasonal)
+- Manages NPC behavior patterns (aggressive, defensive, passive)
+
+#### 2. Environmental Event Generator
+- Triggers environmental changes (weather, lighting, dungeon conditions)
+- Randomly generates events based on location and time
+- Responds to game calendar seasons/cycles
+
+#### 3. Combat Event Handler
+- Processes combat-related triggers
+- Manages encounter generation
+- Handles battle resolution and consequences
+
+## Implementation Strategy for Roguelike AI NPCs
+
+### 1. Time-Based NPC Action Scheduling
+The architecture maps game time to NPC actions:
+- NPCs perform basic actions every game hour
+- More complex decisions every game day
+- Seasonal behavior changes every quarter
+- Major story events on annual basis
+
+### 2. Event-Driven Behavior Patterns
+Events in `data/master_ledger.txt` might include:
+```
+Time: 2026-01-15 08:27:12 | Type: NPC_MOVE | Entity: GOBLIN_001 | Params: x:15,y:23,target:PLAYER | Status: PENDING
+Time: 2026-01-15 08:27:13 | Type: TREASURE_SPAWN | Entity: CHEST_002 | Params: room_id:15,content:rare | Status: PENDING
+Time: 2026-01-15 08:27:14 | Type: DUNGEON_EVENT | Entity: BOSS_SPAWN | Params: level:3,enemies:5 | Status: PENDING
+```
+
+### 3. Master Reader Event Processing
+The `master_reader.c` equivalent would parse these events and:
+- Instantiate NPC movement behaviors
+- Spawn treasures and environmental effects
+- Trigger boss encounters and special events
+- Update game state based on completed actions
+
+### 4. Configuration File Structure
+```
+presets/schedule_npcs.txt:
+1_hour ./+x/npc_move.+x
+1_hour ./+x/npc_attack.+x
+1_day ./+x/npc_regroup.+x
+1_day ./+x/environment_change.+x
+3_months ./+x/npc_upgrade.+x
+1_year ./+x/story_event.+x
+```
+
+### 5. Event Persistence and State Management
+- Events stored in chronological order in master ledger
+- Last processed event tracked in separate reader file
+- State maintained across game sessions
+- Failed events marked for retry
+
+## Integration Example Workflow
+
+1. **NPC Decision Phase**: Every game hour, NPC scheduler plugin evaluates all active NPCs
+2. **Action Queueing**: Decisions converted to event entries in master ledger
+3. **Event Processing**: Master reader continuously processes new events
+4. **Action Execution**: Appropriate plugin handles the specific action type
+5. **State Update**: Game world updated, results reflected in persistent state
+
+## Advantages of This Architecture
+
+1. **Decoupled Systems**: Time management, event processing, and action execution are separate
+2. **Scalable**: New event types can be added without changing core logic
+3. **Persistent**: Events survive game restarts and maintain continuity
+4. **Flexible Timing**: Multiple time scales for different types of events
+5. **Modular**: Plugins can be enabled/disabled independently
+6. **Robust**: Failed events can be retried, state is durable
+
+## Implementation Notes
+
+- Use thread-safe mechanisms for concurrent event processing
+- Implement rate limiting to prevent overwhelming the system
+- Consider event prioritization based on importance
+- Add debugging facilities to trace event processing
+- Maintain separate logs for error tracking
+- Implement rollback mechanisms for failed complex events

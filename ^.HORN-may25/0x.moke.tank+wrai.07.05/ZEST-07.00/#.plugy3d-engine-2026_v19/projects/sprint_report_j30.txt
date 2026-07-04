@@ -1,0 +1,78 @@
+SPRINT REPORT - JANUARY 30, 2026
+=================================
+
+KEY FINDINGS:
+-------------
+
+1. PROJECT STRUCTURE STATUS:
+   - Project system is partially implemented with 'projects/default' directory
+   - 'peices' directory exists with both individual piece files (.txt) and piece_map.csv
+   - Current implementation allows for different entity configurations per project
+
+2. ENTITY LOADING TRANSITION:
+   - System has evolved from hardcoded entity loading to project-based entity definitions
+   - The 'data/locations.txt' file is currently NOT being used by any active code
+   - Entities are loaded from project files in 'projects/default/peices/' directory
+   - Individual piece files (cow.txt, pig.txt) and combined piece_map.csv are actively used
+
+3. WHY CHANGES TO data/locations.txt DON'T AFFECT RENDERING:
+   - The file 'data/locations.txt' is deprecated/remnant code from earlier implementation
+   - Current entity loading happens through project system (piece_map.csv and individual .txt files)
+   - Files in plugins/core/entity_manager.py directly load entities without reading locations.txt
+   - The entity manager hardcodes Minecraft texture paths instead of using locations.txt
+
+4. CURRENT ENTITY LOADING PATH:
+   - Projects -> pieces directory -> individual .txt files OR piece_map.csv
+   - Entities are defined with: id, type, scale, render_style, position, source_file, etc.
+   - Both individual files and CSV map formats are supported
+
+IMPLEMENTATION GAPS IDENTIFIED:
+-------------------------------
+
+1. Missing Integration:
+   - data/locations.txt file needs to be integrated with the project loading system
+   - Entities should read base paths from locations.txt rather than being hardcoded
+
+2. Incomplete Migration:
+   - Hardcoded entity loading in entity_manager.py should delegate to project system
+   - Locations.txt should act as base configuration for different entity types
+
+3. PIECE LOADING PRIORITIZATION LOGIC:
+   - Project Manager first checks for 'piece_map.csv' in the peices directory
+   - If piece_map.csv exists, it uses that for all entities (ignoring individual .txt files)
+   - If piece_map.csv does not exist, it loads individual .txt files from the peices directory
+   - If no individual .txt files exist either, it creates default demo pieces
+   - This means piece_map.csv has HIGHER priority than individual piece files
+
+KPI GOALS PARTIALLY MET:
+-----------------------
+
+✅ Loading current entities from projects/default/peices/ <piece_name>.txt or piece_map.csv
+✅ Loading a new entity of a different scale (already implemented via CSV)
+✅ Loading "map style entity" with multiple textured voxels (supported via CSV)
+❌ The locations.txt file is not yet integrated into the current system
+
+SYSTEM BEHAVIOR NUANCES:
+------------------------
+
+- Current project uses piece_map.csv (higher priority) which contains: 6 entities (adam, eve, cow, pig, grass, avocado, convenience_store)
+- Individual piece files (cow.txt, pig.txt) are NOT loaded when piece_map.csv exists
+- The piece_map.csv supports advanced features like micro/macro scaling modes
+- Entities from piece_map.csv have detailed properties: scale_x, scale_y, scale_z, render_style, rotation, health, etc.
+- The system combines entities and terrain blocks in a single grid.entities dictionary
+- Advanced scaling: 'micro' mode with voxel_density, 'macro' mode with voxel_expansion
+- Position conflicts: newer entities at same position overwrite older ones in grid
+
+RECOMMENDED NEXT STEPS:
+-----------------------
+
+1. Modify EntityManagerPlugin to read entity base paths from data/locations.txt
+2. Update load_from_mc_texture method to use paths from locations.txt
+3. Create a LocationsManager class to handle loading and accessing paths from locations.txt
+4. Update the project loading system to merge locations.txt with project-specific entity definitions
+5. Add fallback mechanism: if entity not found in project, load from locations.txt paths
+6. Implement proper error handling for missing entity files
+
+CONCLUSION:
+-----------
+The project system exists and works, but the transition from hardcoded entity loading to file-based configuration is incomplete. The locations.txt file exists but is unused. The system can load entities from project files, but needs integration with the locations.txt file for proper path management.

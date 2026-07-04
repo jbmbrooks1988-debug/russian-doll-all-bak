@@ -1,0 +1,6 @@
+id,type,scale_x,scale_y,scale_z,render_style,pos_x,pos_y,pos_z,color,source_file,rotation_x,rotation_y,rotation_z,movable,interactable,health
+house_main,emoji_entity,2.0,1.5,2.0,extruded,5,0,5,brown,data/entities/emoji/house/house.csv,0,0,0,False,False,150
+door,emoji_entity,0.8,1.2,0.2,extruded,6,0,4,brown,data/entities/emoji/door/door.csv,0,0,0,False,False,100
+window_left,emoji_entity,0.6,0.6,0.2,extruded,5.2,0.5,6,blue,data/entities/emoji/window/window.csv,0,0,0,False,False,80
+window_right,emoji_entity,0.6,0.6,0.2,extruded,6.8,0.5,6,blue,data/entities/emoji/window/window.csv,0,0,0,False,False,80
+roof,emoji_entity,2.2,0.3,2.2,extruded,5,1.5,5,red,data/entities/emoji/roof/roof.csv,0,0,0,False,False,120

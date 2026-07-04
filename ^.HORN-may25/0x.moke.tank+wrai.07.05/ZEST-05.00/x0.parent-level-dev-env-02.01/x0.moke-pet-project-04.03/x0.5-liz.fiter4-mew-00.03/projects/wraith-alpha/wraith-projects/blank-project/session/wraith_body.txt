@@ -1,6 +1,0 @@
-WRAITH BLANK PROJECT
-Status: ready
-Project ID: wraith-alpha/wraith-projects/blank-project
-Purpose: minimal real Wraith project shell
-Alias: blank-proj
-Scope: whole-session save/load, not terminal-only

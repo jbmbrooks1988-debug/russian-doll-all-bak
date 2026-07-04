@@ -1,8 +1,0 @@
-[1783059163] CHTMGL Video Isolate Manager Started
-[1783059163] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
-[1783059163] Session dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/chtmgl-video-isolate/session
-[1783059164] CHTMGL Video Isolate Manager init complete (hot path owned by ops/wraith_project_input.c)
-[1783059293] CHTMGL Video Isolate Manager Started
-[1783059293] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
-[1783059293] Session dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/chtmgl-video-isolate/session
-[1783059293] CHTMGL Video Isolate Manager init complete (hot path owned by ops/wraith_project_input.c)

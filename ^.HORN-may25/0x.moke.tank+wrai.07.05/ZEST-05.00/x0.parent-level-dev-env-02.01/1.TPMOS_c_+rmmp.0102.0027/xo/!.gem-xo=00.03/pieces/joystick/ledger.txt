@@ -1,2 +1,0 @@
---- Joystick Piece Starting (Base: ., Device: /dev/input/js0) ---
-[ERROR] Could not open joystick device: /dev/input/js0

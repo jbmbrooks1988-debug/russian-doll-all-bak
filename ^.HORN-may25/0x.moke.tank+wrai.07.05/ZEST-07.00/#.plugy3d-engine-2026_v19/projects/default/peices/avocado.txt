@@ -1,0 +1,21 @@
+{
+  "id": "avocado",
+  "type": "emoji_entity",
+  "scale_x": 0.25,
+  "scale_y": 0.25,
+  "scale_z": 0.25,
+  "render_style": "extruded",
+  "pos_x": 15,
+  "pos_y": 0,
+  "pos_z": 5,
+  "color": "green",
+  "source_file": "data/entities/emoji/avocado/avocado.csv",
+  "rotation_x": 0,
+  "rotation_y": 0,
+  "rotation_z": 0,
+  "movable": true,
+  "interactable": true,
+  "health": 90,
+  "scale_mode": "micro",
+  "voxel_density": 4.0
+}

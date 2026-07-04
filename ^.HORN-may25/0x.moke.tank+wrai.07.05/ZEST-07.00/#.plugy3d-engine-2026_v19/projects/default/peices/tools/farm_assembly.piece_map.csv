@@ -1,0 +1,5 @@
+id,type,scale_x,scale_y,scale_z,render_style,pos_x,pos_y,pos_z,color,source_file,rotation_x,rotation_y,rotation_z,movable,interactable,health,scale_mode,voxel_density,voxel_expansion
+cow,emoji_entity,1.0,1.0,1.0,extruded,0,0,0,brown,data/entities/emoji/cow/cow.csv,0,0,0,True,True,100,,,
+pig,emoji_entity,1.0,1.0,1.0,extruded,2,0,0,pink,data/entities/emoji/pig/pig.csv,0,0,0,True,True,80,,,
+farmer,emoji_entity,1.0,1.0,1.0,extruded,1,0,1,brown,data/entities/emoji/man/man.csv,0,0,0,True,True,100,,,
+barn,emoji_entity,2.0,1.0,2.0,extruded,4,0,1,red,data/entities/emoji/house/house.csv,0,0,0,False,False,200,macro,,0.5
