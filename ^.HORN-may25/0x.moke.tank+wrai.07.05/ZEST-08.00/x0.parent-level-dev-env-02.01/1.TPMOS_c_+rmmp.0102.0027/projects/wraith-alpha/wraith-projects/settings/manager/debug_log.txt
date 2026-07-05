@@ -1,0 +1,25 @@
+[1783256787] Settings Hub Manager Started
+[1783256787] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783256787] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783256787] Discovered 1 settings entry
+[1783256787] Settings Hub Manager init complete (discovery is one-time; href clicks are handled generically, no hot path needed)
+[1783257726] Settings Hub Manager Started
+[1783257726] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783257726] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783257726] Discovered 1 settings entry
+[1783257726] Settings Hub Manager init complete (discovery is one-time; href clicks are handled generically, no hot path needed)
+[1783258023] Settings Hub Manager Started
+[1783258023] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783258023] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783258023] Discovered 1 settings entry
+[1783258023] Settings Hub Manager init complete (discovery is one-time; href clicks are handled generically, no hot path needed)
+[1783258230] Settings Hub Manager Started
+[1783258230] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783258230] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783258230] Discovered 1 settings entry
+[1783258230] Settings Hub Manager init complete (discovery is one-time; href clicks are handled generically, no hot path needed)
+[1783258343] Settings Hub Manager Started
+[1783258343] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783258343] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783258343] Discovered 1 settings entry
+[1783258343] Settings Hub Manager init complete (discovery is one-time; href clicks are handled generically, no hot path needed)

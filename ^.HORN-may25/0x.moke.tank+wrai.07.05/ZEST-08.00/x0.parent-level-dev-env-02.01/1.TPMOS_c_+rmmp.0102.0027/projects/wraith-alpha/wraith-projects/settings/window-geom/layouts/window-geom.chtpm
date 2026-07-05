@@ -1,0 +1,11 @@
+<layout id="window-geom">
+    <module>projects/wraith-alpha/wraith-projects/settings/window-geom/manager/+x/window-geom_manager.+x</module>
+    <panel title="WINDOW GEOMETRY">
+        <text label="╔═════════════════ W I N D O W   G E O M E T R Y ═════════════════╗" /><br/>
+        <text label="Read-only view of the currently active window's saved geometry." /><br/>
+        <br/>
+        <text label="${window_geom_display}" /><br/>
+        <br/>
+        <button label="Back to Settings" href="projects/wraith-alpha/wraith-projects/settings/layouts/settings.chtpm" /><br/>
+    </panel>
+</layout>

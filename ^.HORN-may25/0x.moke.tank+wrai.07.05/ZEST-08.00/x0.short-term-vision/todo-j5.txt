@@ -1,0 +1,535 @@
+todo-j5.txt
+Date: 2026-07-05
+Status: Active — nearest-term focus
+
+==================================================
+TOPIC
+==================================================
+
+RPG-style editing (picker / map / event-vs-interact toggle / PAL script
+op editor) needs to happen in windows SEPARATE from the main control
+window, not bolted into it. User direction, verbatim intent:
+
+- window GUI/UX should be "#1, more or less done" as of today, meaning:
+  specifically the part where micro-menu editor ops (picker, map,
+  event toggle, PAL op editor) live in their own windows instead of
+  crowding the main control window
+- the main/basic-control window should stay a raw map display + basic
+  controls, nothing more
+- TPMOS-level shared options should expand or hide based on WHICH
+  window currently has focus, not be static across all windows
+- bigger/later: open a whole user/dev-defined SET of windows at once,
+  each at specific sizes/positions (a saved layout preset)
+- even bigger/later: make the whole editor-window-family optionally
+  render as what feels like one page — a "meta layout" — possibly by
+  reusing the existing .chtpm layout scheme to embed/position multiple
+  micro-layouts inside one outer layout
+
+==================================================
+CURRENT STATE (grounded in real code/docs, not assumed)
+==================================================
+
+1. Multi-window infrastructure already exists and is real, not
+   theoretical:
+   - `wraith-alpha_manager.c`: `g_windows[]` array, `g_active_window_slot`,
+     `WSTATE_OPEN` state, `recompute_active_window_slot()`,
+     `active_window()`, `minimize_active_window()`,
+     `close_active_window()`.
+   - Body content is ALREADY gated by active-window focus today via a
+     `desktop_active_window_body_visible` visibility variable threaded
+     through the rendered layout (`appendf(..., visibility="${desktop_active_window_body_visible}")`
+     throughout the desktop-chrome render path). This is the exact
+     primitive "expand/hide options based on window focus" wants — it
+     already exists for body visibility, it just isn't generalized to
+     arbitrary TPMOS-level menu/option groups yet.
+
+2. The window-first, multi-program editor concept is already designed,
+   not new: `window-first-enclosure-editor-vision-j29.md` (2026-06-29)
+   already lays out exactly this shape:
+   - Map View window (2D/3D)
+   - Picker window (entity/tile/asset chooser)
+   - Event Editor window (behavior/script editing for the selection)
+   - Exporter/Builder window
+   All operating on one shared enclosure/project file truth (map files,
+   entity/piece files, event/script files, controller bindings,
+   session/editor metadata) — explicitly recommending "Path B: editor
+   family first, integration later" over one giant editor window.
+
+3. `0x-pet-wraith-architecture-j29.md` (2026-06-29) already establishes
+   that host/window differences (x0-pet vs 0x-pet, main-control-window
+   vs editor-window-family) should be about discovery/default behavior
+   over ONE shared enclosure contract, never a second file format or a
+   second ops contract. Directly applicable here: picker/event windows
+   must read/write the same project files the main control window does.
+
+4. `wra-mana-checklist.txt` (2026-07-03) already enforces, across 9 real
+   Wraith-hosted projects, that every Wraith-hosted window/project loads
+   its own init-only manager (`project.pdl`'s `manager=` field is the
+   real auto-launch trigger; `<module>` tag is the declared shape). Any
+   new picker/event-editor window follows this exact convention — no new
+   loading pattern needed.
+
+5. Precedent for a mode-toggle-within-one-window already exists and
+   works: camera_mode / is_map_control-style fields in project state.txt
+   (see terminal's `is_map_control`, piececraft-wraith's `camera_mode`)
+   — a single window switching between two editing behaviors via a state
+   field, not two separate windows. Relevant to the "toggle between real
+   entity interaction and entity event/PAL script op editor" ask below.
+
+==================================================
+SCOPE — WHAT "DONE" MEANS FOR JULY 5
+==================================================
+
+Not "the unified editor exists." Specifically:
+
+1. Main control window stays exactly what it is today: raw map display
+   + basic controls. No picker/event/PAL editing chrome added to it.
+2. A picker window exists as its own tracked window (own `g_windows[]`
+   slot, own manager, own project), independently addressable —
+   selecting something in it writes selection state back to the shared
+   project/enclosure files (per window-first-enclosure-editor-vision-j29.md
+   §3), it does not require the main window to be closed.
+3. An event/PAL window exists with an internal toggle between two edit
+   modes:
+   - "interact" mode: acts on the real entity (move it, trigger it,
+     same as normal gameplay interaction)
+   - "events" mode: edits that entity's event/PAL script definition
+   This toggle is a state field inside that window's own state.txt
+   (same shape as `is_map_control`/`camera_mode`), not two separate
+   windows — matching item 5 above.
+4. Focus-scoped TPMOS option expansion: at least one real, working
+   example of a shared TPMOS-level menu/option group that expands when
+   a specific window holds `g_active_window_slot` and collapses/hides
+   when it doesn't — generalizing the existing
+   `desktop_active_window_body_visible` mechanism rather than
+   hardcoding a second one-off visibility flag.
+
+==================================================
+TECHNICAL STEPS
+==================================================
+
+1. Window registry reuse (no new system)
+   - New editor windows register into the EXISTING `g_windows[]` /
+     `WSTATE_OPEN` / `g_active_window_slot` mechanism in
+     `wraith-alpha_manager.c`. Do not invent a parallel window-tracking
+     struct for "editor windows" as a special case.
+
+2. Project-per-window, manager-per-project
+   - Picker and event/PAL windows are their own Wraith-hosted projects
+     (e.g. `wraith-picker`, or a picker "mode" inside `wraith-ed` if it
+     turns out they're always opened together — see Open Questions).
+   - Each follows `wra-mana-checklist.txt`'s pattern exactly: init-only
+     manager, `project.pdl`'s `manager=` field, `<module>` tag in the
+     layout. No shortcut/no bespoke loader.
+
+3. Shared enclosure/project truth
+   - Confirm (do not assume) that map files, entity/piece files, and
+     event/script files for whatever project is being edited live under
+     ONE project directory that both the picker window and the event
+     window read/write — per `window-first-enclosure-editor-vision-j29.md`
+     §3. If any window currently caches its own private copy of this
+     data, that's the first bug to remove.
+
+4. Interact-vs-events toggle
+   - Add `edit_mode=interact|events` (default `interact`) to the event
+     window's `session/state.txt`.
+   - A single button (or hotkey, project owner's existing preference is
+     clickable buttons over hotkey-only — see terminal.chtpm precedent)
+     flips `edit_mode` and re-renders `session/wraith_body.txt`
+     accordingly — same op-invoked-per-keystroke shape already used
+     everywhere else in Wraith (`ops/wraith_project_input.c` pattern).
+
+5. Focus-scoped option expansion/collapse
+   - Generalize `desktop_active_window_body_visible` into a small,
+     named set of visibility keys keyed off `g_active_window_slot`'s
+     current project id (not just "is this window's OWN body visible"
+     but "should shared TPMOS menu group X be visible given which
+     window is active").
+   - First real example to implement: when the picker window is active,
+     expand a picker-specific TPMOS toolbar group; when it's not active,
+     collapse it back down. Prove the mechanism on one group before
+     generalizing further.
+
+6. PAL script editing surface
+   - Reuse the existing `OP` call / PAL scripting conventions already
+     established (`projects/user/README_OPS.txt`'s `OP <ns>::<op> args`
+     shape, `fsm_bot_programmer.txt`'s `bot::*` ops) for whatever the
+     event window lets a user actually script — do not design a new
+     scripting syntax for this editor.
+
+==================================================
+KPIs / SUCCESS CRITERIA (testable, not vibes)
+==================================================
+
+KPI 1 — Independent window addressing
+  Opening the picker window does not disturb the main control window's
+  own `WSTATE_OPEN`/focus. Both remain independently selectable in
+  `g_windows[]`. Verify: open both, alt/click-focus between them, main
+  window's controls still respond correctly after the switch.
+
+KPI 2 — Focus-scoped expansion proven once
+  Switching active window (main vs picker) visibly expands/collapses at
+  least one shared TPMOS-level option group tied to focus — implemented
+  as a generalization of `desktop_active_window_body_visible`, not a new
+  one-off hardcoded flag per project.
+
+KPI 3 — In-window mode toggle works without reopening
+  Inside the event/PAL window, toggling `edit_mode` between
+  `interact`/`events` changes rendered body content immediately, with no
+  window close/reopen required.
+
+KPI 4 — Shared truth, no stale copies
+  An edit made in the picker window (e.g. selecting a different entity)
+  is visible in the map/main window without a manual reload step —
+  both read the same underlying project files.
+
+KPI 5 — Manager convention compliance
+  Every new editor window (picker, event/PAL) compiles clean and has its
+  own init-only manager + `<module>` tag, matching the same pattern
+  verified across the 9 projects in `wra-mana-checklist.txt` — not a
+  10th divergent loading convention.
+
+KPI 6 (explicitly DEFERRED, not part of July 5 "done")
+  User/dev-defined named window layouts — a saved set of windows with
+  specific sizes/positions, opened together as one preset. Tracked as
+  NEXT-AFTER, see Non-Goals.
+
+KPI 7 (explicitly DEFERRED, not part of July 5 "done")
+  "Meta layout" — reusing the existing `.chtpm` layout scheme to embed
+  and position multiple micro-layouts inside one outer layout, so the
+  editor-window-family can optionally present as what feels like one
+  page. Flagged as needing its own design pass (see Open Questions), not
+  a July 5 deliverable.
+
+==================================================
+NON-GOALS FOR THIS PASS
+==================================================
+
+- Do NOT build the full unified `wraith-ed` editor yet — per
+  `window-first-enclosure-editor-vision-j29.md`'s explicit
+  recommendation (Path B: narrow cooperating windows first, integration
+  later). This pass is about proving the window-family shape, not
+  finishing it.
+- Do NOT implement saved window-layout presets (KPI 6) in this pass.
+- Do NOT implement meta-layout/embedded-micro-layout rendering (KPI 7)
+  in this pass — it's a real, worthwhile idea, but it changes how
+  `.chtpm` layouts compose and deserves dedicated design time, not a
+  rushed bolt-on while proving the simpler window-family split.
+- Do NOT invent a second windowing/focus-tracking system parallel to
+  `g_windows[]`/`g_active_window_slot`. If something that mechanism
+  can't do is discovered, extend it — don't route around it.
+
+==================================================
+OPEN QUESTIONS
+==================================================
+
+- Should picker and event/PAL editing be TWO sibling Wraith projects
+  (each with its own manager/window), or two MODES inside one shared
+  "editor" project (like `edit_mode` is a mode inside the event window,
+  per Technical Step 4)? Recommendation: start as sub-modes of one
+  project if picker and event-editing are always opened together in
+  practice; only split into sibling projects if real usage shows they
+  get opened independently often. Don't decide this permanently before
+  it's actually used.
+- Does focus-scoped option expansion (KPI 2) get its own dedicated
+  visibility-key namespace, or does it extend
+  `desktop_active_window_body_visible` directly? Leaning toward a small
+  additional named set of keys (e.g. `${focus_menu_<group>_visible}`)
+  rather than overloading the existing single flag, but this should be
+  decided once KPI 2's first real example is being implemented, not in
+  the abstract.
+- For KPI 7 (meta layout): does "embed a micro-layout inside a layout"
+  mean literal nested `.chtpm` inclusion (a new tag), or does it mean
+  the outer layout just renders multiple projects' `wraith_body.txt`
+  outputs into positioned sub-regions of one outer frame (no new tag,
+  just composition at the renderer level)? Needs its own investigation
+  pass before implementation — do not guess an implementation here.
+
+==================================================
+ADDENDUM (same day, later): WINDOW RESIZE/DRAG +
+PROJECT-SETTINGS GEOMETRY EDITOR
+==================================================
+
+User direction, verbatim intent: add window resizing and dragging: one
+path via a new option on each window's chrome bar that opens a small
+"menu window" for changing that window's size/position directly; a
+second, separate path via a dedicated "project-settings" project that
+lets you edit the stored size/pos (in that project's `project.pdl`) for
+ANY project, including ones not currently open — framed explicitly as
+an accessibility option (nav/`<cli_io>`-driven, not mouse-required).
+Wants this documented in full technical detail now, then implemented
+"in a few moments" — so this addendum is written at implementation
+detail, not just vision level.
+
+--------------------------------------------------
+REALITY CHECK FIRST (grounded in actual code, read before writing this)
+--------------------------------------------------
+
+This is bigger than a config tweak, and it's important to say so before
+starting:
+
+`wraith-alpha_manager.c`'s `Window` struct today is:
+```c
+typedef struct {
+    char id[32];
+    char title[64];
+    char project_id[64];
+    int instance_no;
+    WindowState state;   // CLOSED / OPEN / MINIMIZED
+} Window;
+```
+There is **no x/y/width/height on a Window at all today.** The desktop
+chrome renders open windows as fixed-width text ROWS in a list (see the
+`row_width = 83` list-rendering block), not as independently positioned
+rectangles. So "dragging/resizing a window" isn't yet meaningful in the
+literal sense until Window entries actually carry geometry AND the
+renderer draws each open window as its own rect at that geometry instead
+of a list row.
+
+The good news: the underlying OBJECT model already has the right shape
+to extend into — individual rendered elements already carry
+`x=/y=/w=/h=/z=` (see taskbar/debug-selector OBJECT lines, e.g.
+`x=14 y=%d w=18 h=1 z=41`). This addendum is "promote that same
+x/y/w/h/z idea from a fixed-at-render-time property of static UI
+elements to a live, per-Window, mutable property" — not inventing a new
+kind of number the system has never dealt with.
+
+--------------------------------------------------
+DATA MODEL: WHERE GEOMETRY LIVES
+--------------------------------------------------
+
+Two tiers, matching the session-vs-persisted split already used
+elsewhere in this codebase (e.g. `state.txt` vs `project.pdl`):
+
+1. **Persisted default geometry — `project.pdl`, new `WINDOW` section**
+   (a new top-level SECTION, not overloading `META`/`STATE`, matching
+   the existing `SECTION | KEY | VALUE` tabular convention exactly):
+   ```
+   WINDOW       | width              | 80
+   WINDOW       | height             | 24
+   WINDOW       | x                  | 10
+   WINDOW       | y                  | 4
+   ```
+   Read when a project's window is opened FRESH (not already in
+   `g_windows[]`) to set its initial geometry. Missing fields fall back
+   to today's default rendering behavior — this must stay backward
+   compatible with every existing `project.pdl` that doesn't have a
+   `WINDOW` section yet; no mass migration required, just a fallback.
+
+2. **Live geometry — extend the in-memory `Window` struct:**
+   ```c
+   typedef struct {
+       char id[32];
+       char title[64];
+       char project_id[64];
+       int instance_no;
+       WindowState state;
+       int x, y, width, height;   // NEW
+   } Window;
+   ```
+   Dragging/resizing during a session only changes THIS in-memory copy
+   by default. It does not silently rewrite `project.pdl` on every
+   pixel of movement — that would be both slow (disk write per mouse
+   event) and surprising (nobody asked to change the default just by
+   nudging a window this one time).
+
+Persisting a live change back to `project.pdl` is an explicit action
+("Save as Default" — see menu-window path below), not automatic.
+
+--------------------------------------------------
+PATH 1 — CHROME BAR -> "MENU WINDOW" (direct manipulation)
+--------------------------------------------------
+
+- Add a new chrome-bar button/option per open window, following the
+  exact existing action-dispatch convention already used for
+  `DESKTOP_ACTION:minimize_terminal` / `close_terminal` / etc.
+  (`wraith-alpha_manager.c`'s `strcmp(cmd, "DESKTOP_ACTION:...")`
+  dispatch block) — e.g. `action=DESKTOP_ACTION:open_window_menu:<id>`.
+- This opens a small, dedicated menu window (itself just another
+  `Window` entry, likely backed by a lightweight built-in
+  plugin/project, not a full external Wraith project) showing the
+  target window's CURRENT live `x/y/width/height` as editable fields.
+- Editing options (support both, they serve different needs):
+  - `<cli_io>`-typed exact numeric entry (same real free-text widget
+    already confirmed working in `os.chtpm`'s prompt / `user_login.chtpm`'s
+    fields) — for typing an exact value.
+  - Arrow-key nudges (the same `ARROW_UP/DOWN/LEFT/RIGHT` codes already
+    parsed in `keyboard_input_linux.c`) — for quick incremental
+    adjustment, mirroring the existing camera-pan precedent
+    (`W/S/A/D` pan in piececraft-wraith).
+- Also supports actual mouse drag directly on the target window's
+  chrome bar / edge-resize hit-region, using the mouse state already
+  tracked at the manager level (`g_mouse_x`, `g_mouse_y`, `g_mouse_btn`
+  already exist as statics in `wraith-alpha_manager.c`) — press-down on
+  the chrome bar records a `(drag_start_mouse_x/y, drag_start_window_x/y)`
+  pair; each subsequent mouse-move while the button stays down computes
+  a delta and updates the window's live `x/y` (or `width/height`, if the
+  press was in an edge/corner hit-region instead); mouse-up ends the
+  drag. **This continuous-drag state machine does not exist yet** —
+  today's mouse handling (`writeMouseCommand` in
+  `keyboard_input_linux.c`) only logs discrete `MOUSE_EVENT: btn x y`
+  lines for click-target dispatch, it has no concept of "button still
+  down, keep tracking movement as a drag." This is new state to add,
+  not a rename of something that already tracks drags.
+- On confirm/close: a "Save as Default" option writes the current
+  values into that project's `project.pdl` `WINDOW` section (rewrite
+  those specific lines, same read-modify-write already implied by how
+  `manager=`/other META lines get edited elsewhere); otherwise the
+  change stays live-only for this session.
+
+--------------------------------------------------
+PATH 2 — "project-settings" PROJECT (accessibility / admin path)
+--------------------------------------------------
+
+A new project, `projects/project-settings/` (name checked — nothing
+with "settings" or "config" exists yet at the top level of `projects/`,
+clear to use).
+
+- **Discovery:** lists every real project by crawling for `project.pdl`
+  markers (the same crawl approach already planned in the fable's §16
+  project-loader section, and the same "don't hardcode a registry"
+  discipline already confirmed for `chtpm_parser.c`'s
+  `resolve_project_module_path()`) — NOT `pieces/os/app_list.txt`,
+  which is the OS-level installed-app list, a different and narrower
+  thing than "every Wraith project with a `project.pdl`."
+- **Navigation:** a plain nav list (arrow up/down + Enter), no mouse
+  required at any point — this is the actual accessibility contract:
+  the same underlying data (a project's window geometry) reachable
+  through a fully keyboard/nav-driven form, not just spatial mouse
+  manipulation. Matches this codebase's own "front doors differ, the
+  underlying contract doesn't" principle (already written down in
+  `0x-pet-wraith-architecture-j29.md`).
+- **Editing:** selecting a project shows its current `WINDOW` section
+  values (falling back to defaults if absent) in `<cli_io>` fields —
+  width, height, x, y — typed directly, no dragging involved at all.
+- **Saving:** writes straight to that project's `project.pdl`
+  (read-modify-write of the `WINDOW` section lines, adding the section
+  if it's the project's first time getting one).
+- **Decided (2026-07-05): live, immediately.** If the project being
+  edited is CURRENTLY open in a live window, saving here moves/resizes
+  that live window right away — not just on next open. Both save paths
+  (chrome-bar menu window's "Save as Default" and project-settings)
+  therefore do the same two things on save: (1) write the `WINDOW`
+  section into `project.pdl`, and (2) if that `project_id` has a
+  matching entry in `g_windows[]` with `state == WSTATE_OPEN`, apply the
+  same `x/y/width/height` to that live entry immediately so the
+  on-screen window updates without needing to close/reopen it.
+
+--------------------------------------------------
+KPIs FOR THIS ADDENDUM
+--------------------------------------------------
+
+KPI A1 — `Window` struct carries real geometry [DONE 2026-07-05]
+  `x/y/width/height` added to the struct; each of the (up to
+  `MAX_WINDOWS=20`) open windows has independent values, not a shared
+  default.
+  Implemented in `projects/wraith-alpha/manager/wraith-alpha_manager.c`:
+  - `Window` struct gained `int x, y, width, height;`.
+  - New `load_window_geometry_from_pdl(project_dir, &x, &y, &w, &h)`
+    reads `window_x`/`window_y`/`window_width`/`window_height` from that
+    project's `project.pdl` via the existing `read_pdl_value()` helper
+    (the same one already used for `project_id`/`entry_layout`/`title`).
+    Any key absent from the file leaves that output at 0 -- expected for
+    now, since no project.pdl has a WINDOW section yet.
+  - Wired into `launch_window_instance()`, right alongside the existing
+    `reset_project_view_from_default()` call, so every freshly opened
+    window gets this treatment the same way camera defaults already do.
+  - Verified: `gcc -Wall` on the file exits 0, 0 errors, and the 78
+    pre-existing warnings (unrelated snprintf-truncation notices already
+    present before this change) are unchanged -- nothing new introduced.
+    No rendering changes were made; this is the read-path only, per
+    KPI A1's scope.
+
+KPI A2 — Desktop chrome renders positioned rects, not list rows
+  An open window's on-screen rectangle reflects its live `x/y/width/height`
+  — this is the prerequisite everything else in this addendum depends
+  on, and should be built/verified FIRST.
+
+KPI A3 — Mouse drag moves exactly one window
+  Press on a window's chrome bar, drag, release: only that window
+  moves; other open windows are visually and positionally undisturbed.
+
+KPI A4 — Mouse drag resizes with a sane floor
+  Press near an edge/corner hit-region, drag, release: that window
+  resizes; it cannot be shrunk below some sane minimum (e.g. can't reach
+  zero or negative width/height).
+
+KPI A5 — Chrome-bar menu window works end to end
+  `DESKTOP_ACTION:open_window_menu:<id>` opens a menu window showing the
+  target's live geometry; editing via `<cli_io>` and/or arrow keys
+  updates the target window live; "Save as Default" round-trips into
+  that project's `project.pdl` `WINDOW` section correctly.
+
+KPI A6 — project-settings project works end to end, mouse-free
+  Using only arrow keys + Enter + `<cli_io>` typing (no mouse at any
+  step), a user can: open project-settings, find a project via the
+  `project.pdl`-crawl listing, view its current geometry, change it,
+  and save — verified by literally not touching mouse input during the
+  test pass.
+
+KPI A7 — Fresh-open uses persisted default
+  A project with a saved `WINDOW` section, when opened for the first
+  time in a session (not already in `g_windows[]`), appears at exactly
+  that saved `x/y/width/height` — not some hardcoded fallback.
+
+KPI A8 — Backward compatibility
+  A project with NO `WINDOW` section in its `project.pdl` still opens
+  normally, using today's default placement behavior — nothing breaks
+  for the many existing projects that won't have this section yet.
+
+--------------------------------------------------
+NON-GOALS FOR THIS ADDENDUM
+--------------------------------------------------
+
+- No drag "physics" (momentum, snapping to a grid, magnetic edges),
+  and no multi-monitor concerns — plain linear delta-based move/resize
+  is enough for v1.
+- No bulk migration of every existing `project.pdl` to add a `WINDOW`
+  section up front — add it lazily (only when a project is actually
+  resized/moved and saved, via either path above).
+- This is NOT the same thing as KPI 6 from the main body of this file
+  (saved multi-window LAYOUT presets — a whole arranged set of windows
+  opened together). This addendum is about ONE window's own geometry.
+  It is, however, the direct prerequisite for KPI 6 later: once every
+  open window has real, addressable geometry, "save the current layout"
+  becomes "save the geometry of every currently open window together" —
+  this work is what unblocks that later goal, not a detour from it.
+
+--------------------------------------------------
+OPEN QUESTIONS (do not guess these, ask/decide explicitly)
+--------------------------------------------------
+
+- Should the chrome-bar "menu window" and the "project-settings"
+  project be two genuinely separate UIs (as described above), or could
+  the menu-window simply be a shortcut that opens project-settings
+  pre-filtered/scoped to that one project? The second option is less
+  code to maintain long-term but couples a quick in-context action to a
+  heavier full project-settings launch — worth deciding once path 1 is
+  actually being built, not before.
+- Does this apply to the RGB/GL-rendered desktop chrome only (per the
+  locked decision in `x0.piececrafts/ARCHITECTURE-RGB-RENDERING.md` —
+  raw RGB signal is the real display path), or does an ASCII/text
+  desktop chrome (if still in use anywhere) also need its own
+  resize/drag story? Recommend scoping this addendum to the RGB-rendered
+  chrome only unless told otherwise.
+- ~~Live-edit-while-open question from Path 2~~ — RESOLVED 2026-07-05:
+  live, immediately (see Path 2 above).
+
+==================================================
+REFERENCES (what this builds on, so it isn't re-derived)
+==================================================
+
+- x0.short-term-vision/window-first-enclosure-editor-vision-j29.md
+  (the map-view/picker/event-editor/exporter window split, Path B
+  recommendation)
+- x0.short-term-vision/0x-pet-wraith-architecture-j29.md (shared
+  enclosure/project truth over multiple host windows, x0-pet vs 0x-pet
+  as discovery/default modes only)
+- x0.piececrafts/wra-mana-checklist.txt (manager-per-project convention,
+  already enforced across 9 Wraith-hosted projects)
+- projects/wraith-alpha/manager/wraith-alpha_manager.c (`g_windows[]`,
+  `g_active_window_slot`, `WSTATE_OPEN`, `desktop_active_window_body_visible`
+  — the real, existing window/focus primitives this work extends)
+- ❤️‍🔥️.⚛️.wrai-dust.fable-0.0.md §15 (the longer-horizon build order this
+  slots into — this file is the sharper, dated, technical companion to
+  that section, not a replacement for it)

@@ -1,0 +1,9 @@
+╔═════════════════ W I N D O W   G E O M E T R Y ═════════════════╗
+Read-only view of the currently active window's saved geometry.
+
+
+
+[>] 1. [Back to Settings]
+
++=========================================================+
+Nav > _

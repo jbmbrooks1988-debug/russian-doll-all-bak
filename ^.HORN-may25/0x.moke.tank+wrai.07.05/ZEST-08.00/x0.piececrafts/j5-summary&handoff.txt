@@ -1,0 +1,652 @@
+J5 SUMMARY & HANDOFF
+Date: 2026-07-05
+Status: Active session paused for handoff. Everything below is real,
+compiled, and at least standalone-verified unless explicitly marked
+otherwise. Written verbosely on purpose in case of a disconnect --
+assume whoever reads this (a future agent, or future you) has ZERO
+memory of today's session.
+
+================================================================================
+0. READ THIS FIRST -- WHERE EVERYTHING LIVES
+================================================================================
+
+Primary code touched today (one file, most of the real work):
+  1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/manager/wraith-alpha_manager.c
+
+New projects built today (real, compiled, standalone-tested):
+  1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings/
+  1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings/window-geom/
+
+Other files touched today:
+  1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/piececraft-wraith/manager/piececraft-wraith_manager.c
+  1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/piececraft-wraith/ops/src/wraith_project_input.c
+
+Design/plan docs written today (read these for full reasoning, this
+summary just indexes them):
+  x0.short-term-vision/todo-j5.txt
+  x0.short-term-vision/window-geometry-render-plan-j5.md
+  x0.short-term-vision/settings-hub-window-geom-design-j5.md
+  x0.parent-level-dev-env-02.01/2fix.txt  (multiple dated entries added
+    today -- this is the running "what broke, what fixed it" log,
+    complementary to this summary, not a duplicate of it)
+
+If you only read ONE other file besides this one, read
+window-geometry-render-plan-j5.md -- it has the deepest architecture
+tracing (how Wraith's desktop actually renders, both ASCII and GL
+paths) and most of today's later work depends on understanding it.
+
+================================================================================
+1. WHAT WE SET OUT TO DO (the arc of the whole session)
+================================================================================
+
+Started from a simple question: "what format is current_frame.rgba32,
+why isn't it human-readable" (answered: raw headerless RGBA32 pixel
+dump, 60fps hot path, documented in
+x0.piececrafts/ARCHITECTURE-RGB-RENDERING.md).
+
+That led into: "let's add window resizing and dragging" -- which turned
+into a much larger arc:
+  1. Give windows real, persisted geometry (x/y/width/height) in their
+     own project.pdl.
+  2. Make the rendering pipeline actually HONOR that geometry (both the
+     text/ASCII rendering path AND the GL/objects-based rendering path).
+  3. Build a UI to EDIT that geometry -- which became the "settings hub"
+     pattern: a reusable, discoverable project-of-projects, with
+     "window-geom" as its first real entry (a POC for a pattern the
+     project owner has wanted for a while).
+  4. Along the way, found and fixed several real, unrelated-but-adjacent
+     bugs (piececraft-wraith's camera not resetting on open; GL mode
+     never re-parsing embedded interactive markup; GL mode having no nav
+     numbering for those objects; href navigation being silently inert
+     in GL mode).
+
+Everything below is in roughly chronological order, matching how the
+session actually unfolded, because the LATER work depends on
+understanding traps discovered in the EARLIER work.
+
+================================================================================
+2. WINDOW GEOMETRY: KPI A1 (DONE, foundational)
+================================================================================
+
+Added real geometry to the `Window` struct in wraith-alpha_manager.c:
+
+    typedef struct {
+        char id[32];
+        char title[64];
+        char project_id[64];
+        int instance_no;
+        WindowState state;
+        int x, y, width, height;   /* NEW */
+    } Window;
+
+New function `load_window_geometry_from_pdl(project_dir, &x, &y, &w, &h)`
+reads a project's own `project.pdl` for a `WINDOW` section:
+
+    WINDOW       | x                  | 10
+    WINDOW       | y                  | 3
+    WINDOW       | width              | 80
+    WINDOW       | height             | 24
+
+using the SAME `read_pdl_value()` helper already used for
+`project_id`/`entry_layout`/`title` -- no new parsing convention, just
+new keys on the existing one. Wired into `launch_window_instance()`,
+called every time a window opens fresh.
+
+IMPORTANT: as of today, ZERO real projects have a `WINDOW` section in
+their `project.pdl` yet (except test edits made during verification,
+which were reverted). This is expected -- it's the read-path only. All
+real projects will resolve to `x=0 y=0 w=0 h=0` (the safe default)
+until either (a) a project.pdl is hand-edited to add one, or (b) the
+never-built "chrome-bar menu window" editor UI (see section 8, Not
+Done) writes one.
+
+Verified: standalone compile + logic check. No live test needed here,
+it's pure data-plumbing with no visible effect until something ELSE
+(sections 3-4 below) reads it.
+
+================================================================================
+3. PATH A: OUTER FRAME WIDTH IS NOW REAL (DONE, live-tested by user)
+================================================================================
+
+Doc: window-geometry-render-plan-j5.md, sections "Path A" / "Concrete
+steps for Path A" / "KPIs for Path A".
+
+New functions in wraith-alpha_manager.c:
+  - `resolve_frame_width(window, layout_declared_width)` -- 3-tier
+    precedence: project.pdl's saved width (always wins) > a
+    layout-declared width (NOT wired yet, always pass -1 for now --
+    see section 9, Not Done, for why) > hardcoded historical default
+    (96, matching the old literal border length exactly).
+  - `append_frame_border(out, size, label, width)` -- builds one
+    "+-LABEL---+" or "+-------+" border line of exactly `width`
+    characters, replacing the two literal fixed-length border strings
+    in `build_desktop_shell_markup()`'s active-window path.
+
+Verified: standalone test (byte-for-byte identical to the original
+literal at width=0; correct scaling at width=120), then integrated,
+compiled clean, and the USER live-confirmed no regression (window
+still opens normally with no saved WINDOW section).
+
+================================================================================
+4. PICECRAFT-WRAITH CAMERA-RESET BUG (DONE, not user-reported --
+   found while investigating something else, then fixed on request)
+================================================================================
+
+Unrelated tangent that came up mid-session: piececraft-wraith's map
+camera was supposed to reset to neutral immediately on window open, but
+visually waited for the first keypress.
+
+Root cause: `reset_project_view_from_default()` (in
+wraith-alpha_manager.c) correctly writes the neutral camera into
+`session/state.txt` on open. But the actual 3D camera scene
+(`scene.objects.pdl`'s `camera=` line) is only regenerated by
+`ops/src/wraith_project_input.c`'s `main()`, and ONLY when it finds a
+NEW keystroke since last run (`if (changed) { ...; write_scene(...); }`).
+piececraft-wraith_manager.c (the one-time init manager) never invoked
+that ops binary at all -- it only ran its own older, unrelated 2D ASCII
+`render_map()`.
+
+Fix:
+  - `ops/src/wraith_project_input.c`: added an additive `--force` flag
+    (argv[2]) that bypasses the `changed` gate for exactly one
+    invocation. Normal per-keystroke behavior completely untouched.
+  - `manager/piececraft-wraith_manager.c`: added
+    `trigger_initial_scene_render()`, mirroring `terminal_manager.c`'s
+    already-proven `trigger_initial_render()` pattern (fork+execl+waitpid),
+    calling the ops binary once at startup with `--force`.
+
+Verified: both compiled clean, both real `+x` binaries rebuilt in
+place. NOT live-tested by the user (this was a side-quest fixed on
+request, then the session moved back to the main window-geometry arc
+before it got re-verified live). If picking this back up, opening
+piececraft-wraith fresh and confirming the camera looks neutral
+immediately (no keypress needed) is the outstanding check.
+
+================================================================================
+5. PATH B: WINDOW CONTENT POSITIONING (DONE, standalone-verified,
+   awaiting your live test)
+================================================================================
+
+Doc: window-geometry-render-plan-j5.md, "Path B investigation, done" /
+"Path B implementation plan" / "Precedence decision" sections.
+
+### 5a. The investigation (read this before touching rendering code again)
+
+Traced the FULL pipeline for how Wraith's desktop actually reaches
+pixels, end to end:
+
+  wraith-alpha_manager.c's build_desktop_shell_markup()
+    -> writes desktop_shell_markup= into session/alpha_state.txt
+    -> wraith_parser_alpha.c (Wraith's OWN ~2700-line reimplementation
+       of the classic chtpm parser, NOT pieces/chtpm/plugins/chtpm_parser.c)
+       substitutes it into alpha-shell.chtpm, parses the WHOLE thing
+    -> compose_frame() writes the result to pieces/display/current_frame.txt
+       (a plain, flat, sequential text stream -- confirmed via a FULL
+       trace of render_element(): there is NO row/column cursor
+       ANYWHERE in it, pure strcat()-based accumulation)
+    -> wraith_rgb_daemon.c's render_ascii_frame() reads that file,
+       blit_char()'s each character as an 8x16 pixel glyph -- this is
+       ASCII mode.
+
+  SEPARATELY, GL mode reads pieces/display/current_frame.objects.pdl
+  instead -- built by write_semantic_projection_files() in
+  wraith-alpha_manager.c, an entirely independent description of the
+  same screen (real x/y/w/h/label/action per OBJECT, used for both
+  GL-mode drawing AND mouse/keyboard hit-testing).
+
+KEY FINDING: these are TWO INDEPENDENTLY-WRITTEN DESCRIPTIONS of the
+same screen. Nothing forces them to agree except careful, matching
+arithmetic on both sides. This is the single most important thing to
+understand before changing ANYTHING about how windows are positioned or
+rendered -- see section 5c for how this bit us again later.
+
+### 5b. The fix
+
+New shared helper:
+  `resolve_window_content_origin(window, &row_offset, &col_offset)` --
+  resolves a window's saved x/y into row/col offsets, {0,0} by default.
+  Called from BOTH sides so they can't drift apart by construction:
+
+  - Visual side: `append_with_origin_offset(out, size, raw, row_offset, col_offset)`
+    -- pads a composed markup block with leading spaces / blank lines.
+    Confirmed (from the render_element() trace) this is the ONLY
+    positioning mechanism available at this layer -- there's no
+    coordinate API to call instead.
+  - Semantic side: every window-owned OBJECT's x=/y= in
+    write_semantic_projection_files() (chrome row, title, panel, all
+    three chrome buttons, body-text lines, launcher rows) gets this
+    same offset added. `append_project_scene_objects()` (a project's
+    own scene.objects.pdl content) needed the SAME treatment too --
+    found while implementing, not in the original plan; its signature
+    now takes win_row_offset/win_col_offset.
+
+Scope, deliberately: only the window's OWN title bar + content moves.
+The outer desktop frame border and the taskbar stay fixed (matches how
+write_semantic_projection_files() already separates "wraith_root"/
+"desktop_banner"/"footer_band"/"taskbar" from window-owned objects).
+
+### 5c. Verification status
+
+Standalone-verified: KPI C1 (zero regression at x=0,y=0, confirmed via
+clean warning-diff), and the underlying offset math. NOT yet
+live-verified with actual eyes on a real running session with a
+nonzero WINDOW section -- the manual test recipe is in
+window-geometry-render-plan-j5.md's "Manual verification checklist":
+
+    Add to any project's project.pdl (not `terminal`, it has a slightly
+    different code branch):
+        WINDOW       | x                  | 10
+        WINDOW       | y                  | 3
+    Open it live. Check: title bar + content shift right/down. Click a
+    button at its NEW position (should work) and its OLD position
+    (should NOT work) -- that's the real proof both systems moved
+    together, not just the visual one.
+
+================================================================================
+6. SETTINGS HUB + WINDOW-GEOM (DONE, partially live-tested)
+================================================================================
+
+Doc: settings-hub-window-geom-design-j5.md -- READ THE REVISION NOTE AT
+THE TOP, the first version of this design was wrong (see below) and was
+corrected mid-session.
+
+### 6a. What it is
+
+Two real, independent, standalone Wraith projects:
+
+  projects/wraith-alpha/wraith-projects/settings/
+    project.pdl, manager/settings_manager.c, layouts/settings.chtpm
+
+  projects/wraith-alpha/wraith-projects/settings/window-geom/
+    project.pdl, manager/window-geom_manager.c, layouts/window-geom.chtpm,
+    settings_entry.pdl (the marker settings' own discovery scan reads)
+
+`settings` scans its OWN directory for `settings_entry.pdl` markers
+(discovery, not hardcoding -- adding a second settings entry later
+means adding one marker file, zero code changes) and renders them as
+`<button href="...">` links. Clicking one uses TPMOS's existing,
+already-shipping `href`/`current_layout` navigation mechanism (same
+thing `terminal.chtpm`'s "Back to Wraith Desktop" link already uses) --
+NOT the Window/g_windows[] desktop-shell system at all.
+
+### 6b. The design correction that happened mid-session (important)
+
+The FIRST version of this design made `window-geom` an internal MODE
+inside a single persistent `settings` window, specifically to avoid a
+nesting restriction found in `project_dir_for_window()` (it rejects any
+project_id containing a `/`). That turned out to be solving the wrong
+problem -- `href` navigation doesn't go through `project_dir_for_window()`
+at all (it's a completely separate, simpler "swap which file is being
+read" mechanism, confirmed by tracing `wraith_parser_alpha.c`'s
+`current_layout` global and its `parse_chtm()` read loop). So the
+REVISED, ACTUALLY-BUILT design is simpler: two genuinely separate
+projects, connected by ordinary hrefs, nested on disk under settings/
+purely for organization (disk nesting has zero functional consequence
+for href-reached projects). If you see references to "settings as one
+persistent window with internal modes" anywhere, that's the ABANDONED
+first draft -- the real code does NOT work that way.
+
+### 6c. window-geom's scope (deliberately narrower than first proposed)
+
+Originally proposed: window-geom shows "a nav list of every open
+window to pick from." Building it surfaced that NO existing file
+exposes every open window -- only the currently ACTIVE one
+(desktop_focused_window_id/_title, and a NEW additive line added today,
+desktop_focused_window_project_id, in write_projection()). Building a
+true multi-window picker would need a SECOND, larger change to
+write_projection() (a full window-list export) that was never proposed
+or approved. So: **window-geom currently shows ONLY the active
+window's geometry, read-only. It is NOT a multi-window picker yet.**
+
+It DOES have the dual-invocation discovery mechanism fully built and
+tested:
+  - `session/wg_target.txt` (a single line, a project_id) -- if
+    present, window-geom shows/would-edit THAT specific project
+    (the "opened from a chrome-bar button on that project" case --
+    the button itself was never built, but the file-based handoff
+    mechanism it would use is done and tested).
+  - If absent, falls back to whichever window is currently active
+    (the "opened from settings, generically" case).
+
+Verified standalone (all three cases: no target + no active window;
+target set to a real project; no target + active window simulated) --
+see the design doc for exact commands. NOT yet live-verified inside a
+real running session (only exercised by running the compiled managers
+directly and inspecting the output files).
+
+### 6d. What the user actually verified live
+
+- Discovered `settings` via the PRE-EXISTING, already-generic
+  `discover_launcher_projects()` launcher-row list (it's a real project
+  with a project.pdl, so it showed up there for free -- this was NOT
+  the intended primary entry point, see section 9, Not Done, "how to
+  reach it live").
+- First click showed the generic "Missing project body file" fallback
+  -- because opening via the launcher-row list uses the DESKTOP-EMBEDDED
+  Window path (reads session/wraith_body.txt), which `settings`
+  initially didn't write at all (it only wrote manager/state.txt, for
+  the href/standalone path). FIXED: settings_manager.c now ALSO writes
+  session/wraith_body.txt with the same discovered menu, as raw
+  `<button href="..." /><br/>` lines -- append_project_probe_body()
+  already passes those through verbatim, no changes needed elsewhere.
+- Second live check: button showed correctly (label + real click target)
+  but with NO box border around it (plain `<button>` passthrough has no
+  border built in). FIXED: wrapped the button in its own raw `<text>`
+  border pieces on the same passthrough line.
+- Third live check: button had no nav number (`[ ] N.`) the way
+  everything else does. This turned into the biggest sub-investigation
+  of the whole session -- see section 7.
+
+================================================================================
+7. GL-MODE GAPS FOUND AND FIXED (DONE, one item still needs live re-test)
+================================================================================
+
+This section covers three related-but-separate bugs, all found because
+the user asked "why does GL mode look different from ASCII" and then
+"why no nav number" and I kept tracing one level deeper each time.
+Full detail in 2fix.txt's dated entries -- this is the condensed
+version.
+
+### 7a. GL mode never re-parsed embedded markup (label showed raw tag text)
+
+ASCII mode re-parses embedded `<text>`/`<button>` tags in a project's
+`session/wraith_body.txt` (that's how buttons embedded in body text
+work at all -- confirmed via `append_project_probe_body()`'s "pass
+through verbatim if the line starts with '<'" convention, then
+re-parsed by wraith_parser_alpha.c). GL mode's equivalent
+(`project_probe_body_lines()` inside `write_semantic_projection_files()`)
+just copied the WHOLE raw line into one OBJECT's label= field, with
+zero tag-parsing. Confirmed via the actual GL receipt
+(current_frame.receipt.pdl) that `chtmgl-video-isolate`'s own
+Play/Pause buttons ALREADY had this exact bug -- pre-existing, not
+something introduced by settings.
+
+Fix: new `extract_attr()` (bounded memmem-based attribute scanner) and
+`emit_embedded_line_objects()` (walks a line tag-by-tag, emits one real
+OBJECT per chunk with its own x/y/w/label/action). Wired into the
+body-line loop: lines starting with '<' get parsed properly now; all
+other lines (the vast majority) are completely untouched.
+
+### 7b. Embedded objects had no nav number (nav=0 always)
+
+`g_max_index`/`launcher_start` (the formulas controlling how many
+keyboard-Tab slots exist and where subsequent ranges like the taskbar
+begin) had NO concept of embedded body-tag objects -- only
+scene.objects.pdl's author-declared nav controls were counted
+(`count_project_nav_controls()`, confirmed against piececraft-wraith's
+REAL file: nav=5..22, contiguous, author-chosen).
+
+Fix: split `count_project_nav_controls()` into `count_scene_nav_controls()`
+(unchanged original logic) + new `count_embedded_body_nav_slots()`
+(counts labeled chunks in wraith_body.txt), summed. In
+write_semantic_projection_files(), `next_body_nav = 5 + count_scene_nav_controls(...)`
+is computed before the body-line loop and threaded through
+emit_embedded_line_objects() as an in-out counter -- only chunks with a
+real action (actual buttons, not decorative <text> border pieces)
+consume a slot.
+
+Verified against REAL project files, not just logic: a standalone test
+(nav_count_test.c, see 2fix.txt) run against piececraft-wraith's actual
+scene.objects.pdl (18 controls, nav=5..22) combined with settings' real
+body -- confirmed the new range starts at 23, no collision with
+launcher_start=25. Also confirmed settings alone (no scene file) starts
+correctly at nav=5 -- which happens to match what ASCII mode
+independently shows too (a nice consistency bonus, not a requirement).
+
+### 7c. href actions were silently inert in GL mode (found during
+    end-of-session code review, NOT reported live by the user)
+
+The deepest one. Even with (a) and (b) fixed, actually CLICKING/
+activating the button in GL mode would have done NOTHING, because:
+- ASCII mode's href navigation is handled entirely in-process by
+  wraith_parser_alpha.c's own element tree (it owns the click, never
+  calls into wraith-alpha_manager.c at all for this).
+- GL mode's click/Enter path is completely different
+  (wraith_gl.c's hit_test_semantic_action() -> route_command() in
+  wraith-alpha_manager.c), and route_command() had literally no
+  recognized prefix for a raw layout path -- it would silently drop it.
+
+Fix: found `request_layout_change()` ALREADY EXISTED in
+wraith-alpha_manager.c, fully correct, and completely unused (the
+compiler had been flagging it as dead code all session -- I saw this
+warning multiple times before realizing what it was). It already writes
+to `pieces/display/layout_changed.txt`, which wraith_parser_alpha.c
+ALREADY polls and applies (confirmed by reading its poll loop directly:
+reads the last non-empty line, sets current_layout, re-parses). Added
+one fallback branch at the end of route_command(): any command
+containing ".chtpm" that matched nothing else now calls
+`request_layout_change(cmd)`. This is wiring up dead, correct,
+pre-existing code -- not new infrastructure.
+
+**THIS IS THE ONE ITEM IN THIS WHOLE SESSION THAT HAS NOT BEEN TESTED
+AT ALL BEYOND A CLEAN COMPILE.** It was found and fixed in the final
+minutes of the session during a deliberate "look for bugs" pass, after
+the user's last live check. If you do ONE live test before anything
+else tomorrow, make it this one: switch to GL mode, click "Window
+Geometry" in the settings menu, confirm it actually navigates to the
+window-geom screen (not just that it LOOKS clickable).
+
+### 7d. Two more bugs found in the same final review pass (also untested live)
+
+- `extract_attr()`'s attribute search wasn't anchored to a word
+  boundary -- fixed by prefixing the search pattern with a space
+  (every real attribute in this codebase's generated tags is
+  space-preceded; confirmed, not assumed). Not a live bug against
+  current markup, but was a latent one.
+- `project_probe_body_lines()`'s storage buffer (`char[16][160]`) was
+  smaller than the 256-byte read buffer it copies from, adding an
+  unnecessary second truncation ceiling. Confirmed LIVE against the
+  real settings body line (231 chars) -- it got cut at 159, mid-attribute
+  on the trailing decorative border tag. Landed harmlessly this specific
+  time (the actual button was earlier in the line, unaffected; the
+  malformed-tag guard in emit_embedded_line_objects() safely dropped the
+  cut-off trailing tag rather than misrendering) -- but a longer href
+  path or project name would have cut into the button itself. Fixed by
+  widening to `char[16][256]` to match.
+
+Both fixed, both compiled clean (diffed warning-for-warning against the
+prior build, zero new warnings), real binary rebuilt. Neither
+independently live-tested (bug 2's fix is implicitly covered by
+whatever live test you do on the settings menu generally, since it's
+the same body line).
+
+================================================================================
+8. FULL FILE MANIFEST (everything touched or created today)
+================================================================================
+
+MODIFIED (existing files):
+  1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/manager/wraith-alpha_manager.c
+    -- the big one. Struct change (Window x/y/width/height), ~10 new
+       functions, several existing functions extended. All changes are
+       additive (new fields/functions/branches) except two 1-line
+       widenings (a buffer size, a search pattern). Nothing removed.
+  1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/piececraft-wraith/manager/piececraft-wraith_manager.c
+    -- added trigger_initial_scene_render(), one new call in main().
+  1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/piececraft-wraith/ops/src/wraith_project_input.c
+    -- added --force argv flag, changed one `if (changed)` to
+       `if (changed || force)`.
+  x0.parent-level-dev-env-02.01/2fix.txt
+    -- multiple dated entries appended, nothing removed/edited.
+
+NEW (created today):
+  1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings/
+    project.pdl
+    manager/settings_manager.c  (+  manager/+x/settings_manager.+x compiled)
+    layouts/settings.chtpm
+    manager/state.txt, manager/debug_log.txt, session/wraith_body.txt
+      (all runtime-generated by running the manager, not hand-authored)
+  1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings/window-geom/
+    project.pdl
+    manager/window-geom_manager.c  (+ manager/+x/window-geom_manager.+x compiled)
+    layouts/window-geom.chtpm
+    settings_entry.pdl
+    manager/state.txt, manager/debug_log.txt, session/ (runtime-generated;
+      session/wg_target.txt was created/removed during testing, should
+      be absent/empty in the committed state -- verify before assuming
+      "generic" mode is what's currently active)
+  x0.short-term-vision/todo-j5.txt
+  x0.short-term-vision/window-geometry-render-plan-j5.md
+  x0.short-term-vision/settings-hub-window-geom-design-j5.md
+  x0.piececrafts/j5-summary&handoff.txt  (this file)
+
+Scratch/throwaway test files (in the session scratchpad, NOT part of
+the real codebase, safe to ignore/delete, listed here only for
+completeness):
+  frame_border_test.c, embedded_line_test.c, nav_count_test.c
+
+================================================================================
+9. NOT DONE / EXPLICITLY DEFERRED (do not assume these exist)
+================================================================================
+
+- **The chrome-bar "menu window" button itself.** todo-j5.txt's Path 1
+  (a new [i]-style button on every window's title bar, opening a small
+  editor for that window's x/y/width/height) was designed in detail but
+  NEVER implemented. Only the underlying pieces it would need are done:
+  the WINDOW section read/write path (section 2), the rendering that
+  honors it (sections 3+5), and window-geom's target-file discovery
+  (section 6c) that such a button would write to.
+- **window-geom's editing capability.** Currently 100% read-only. No
+  <cli_io> fields, no save-back to project.pdl. The design doc's
+  "Explicitly deferred" section covers this.
+- **A true multi-window picker in window-geom.** See section 6c --
+  currently shows only the active window, not a selectable list of all
+  open windows. Needs a new additive export in write_projection() (a
+  full window list, not just the active one) before this is possible.
+- **Live drag / mouse-based resize.** todo-j5.txt's addendum covers the
+  design (a continuous drag state machine in handle_mouse(), tracking
+  press-start-position vs current-position). Not started.
+- **A permanent, intentional entry point to `settings` from the main
+  desktop.** The user found it by accident via the pre-existing
+  launcher-row list. That's a real, working entry point (now that the
+  wraith_body.txt fix landed) but wasn't the originally-envisioned "one
+  clear way in" -- whether that's good enough or whether a dedicated
+  link/button should be added is an open call, not decided.
+- **Full keyboard-Tab parity for embedded body objects specifically in
+  GL mode** was explicitly discussed as a scope question and RESOLVED
+  (see section 7b) -- don't confuse this with the earlier "deferred"
+  framing in an older comment in the code; that comment was corrected
+  in-place once the fix landed, but if you find an OLDER cached copy of
+  this file anywhere, don't trust a stale "nav=0 forever" comment over
+  what's actually in the code now.
+- **piececraft-wraith's camera fix (section 4) was never re-verified
+  live** after being built -- it compiled clean and was reasoned through
+  carefully, but nobody has actually opened piececraft-wraith fresh and
+  watched the camera since the fix landed.
+
+================================================================================
+10. OPEN QUESTIONS (real decisions someone needs to make, not bugs)
+================================================================================
+
+- Should `settings`' entry point be the launcher-row list (already
+  works, zero extra effort) or a dedicated link somewhere more visible?
+- Should the chrome-bar menu-window button and window-geom's own
+  generic picker be two separate UIs, or should the button just be a
+  shortcut into window-geom pre-filled with a target? (todo-j5.txt
+  flagged this, never resolved.)
+- Does editing a project's geometry via window-geom (once editing is
+  built) apply live to an already-open window, or only on next open?
+  DECIDED for the ORIGINAL chrome-bar-button design (live, immediately
+  -- see todo-j5.txt) but window-geom's OWN eventual editing flow wasn't
+  re-confirmed against this decision since the design changed (section
+  6b's correction happened after that decision was made).
+- The layout-declared-width tier (the "new" option in the 3-tier
+  precedence from section 3) is still unwired -- chtpm_parser.c's
+  parse_attributes() has no width/height attribute support at all, and
+  wiring it means touching that shared parser. Explicitly deferred, not
+  reconsidered since.
+
+================================================================================
+11. KEY THINGS A FUTURE AGENT MUST KNOW BEFORE TOUCHING THIS CODE AGAIN
+================================================================================
+
+1. **ASCII mode and GL mode are two almost-entirely-separate rendering
+   pipelines** reading from two different files
+   (current_frame.txt vs current_frame.objects.pdl), built by two
+   different pieces of code (wraith_parser_alpha.c's render_element()
+   vs wraith-alpha_manager.c's write_semantic_projection_files()).
+   ANY change to how something renders or gets clicked needs to be
+   checked against BOTH, independently. This bit us three separate
+   times today (labels, nav numbers, href activation).
+
+2. **href navigation lives entirely inside wraith_parser_alpha.c's own
+   process memory** (the `current_layout` global). The ONLY way another
+   process (wraith-alpha_manager.c) can trigger a layout switch is via
+   the file-based `request_layout_change()` -> `layout_changed.txt` ->
+   wraith_parser_alpha.c's poll loop mechanism. This ALREADY EXISTED
+   and was unused all session until the very end -- don't reinvent it.
+
+3. **`project_dir_for_window()` rejects any project_id containing a
+   `/`.** This only matters for projects that need to be a real `Window`
+   in the g_windows[]/taskbar system. Projects reached purely via href
+   (like window-geom) never hit this function at all -- disk nesting is
+   fine for them.
+
+4. **Two independent nav-index systems exist and are NOT the same
+   thing:** wraith_parser_alpha.c's own auto-incrementing interactive-
+   element counter (drives the visual "[ ] N." prefix in ASCII mode,
+   and which item gets focused as you press arrow keys) vs.
+   wraith-alpha_manager.c's own self-contained g_max_index/
+   launcher_start arithmetic (drives GL mode's nav numbers and which
+   index means what for dispatch_menu_index()). They happen to often
+   agree by coincidence of careful ordering, but nothing enforces it.
+   Extending ONE does not automatically extend the other.
+
+5. **`manager/state.txt` and `session/state.txt` are DIFFERENT
+   conventions for DIFFERENT purposes**, easy to confuse:
+   - `session/wraith_body.txt`, `session/state.txt` etc. = the
+     desktop-EMBEDDED (Window/g_windows[]) convention, read by
+     wraith-alpha_manager.c's append_project_probe_body() /
+     write_semantic_projection_files().
+   - `manager/state.txt` = the STANDALONE/href-reached convention, read
+     generically by wraith_parser_alpha.c's load_vars()/load_state_file()
+     via a project_id derived from the current_layout path
+     (set_project_id_from_layout()), completely independent of the
+     Window system. `settings` and `window-geom` both use ONLY this
+     second convention (plus, as of the wraith_body.txt fix, settings
+     ALSO writes the first one, so it works via either entry path).
+
+6. **This codebase's own `snprintf`-truncation compiler warnings
+   (dozens of them, pre-existing, present in every build all session)
+   are NOT bugs** -- they're GCC being cautious about generously-sized
+   MAX_PATH buffers. The discipline used all session: after any change,
+   diff the FULL warning list against the previous build; only NEW
+   warnings (or a changed warning COUNT beyond an expected +/-1 for
+   known reasons like a newly-used/unused function) are worth
+   investigating. Don't chase the pre-existing ones.
+
+7. **Verify standalone before integrating, every time.** Nearly every
+   fix in this session was proven correct in an isolated test file
+   (extracted copies of the real function, run against real project
+   data) BEFORE being wired into the live wraith-alpha_manager.c and
+   compiled. This caught real bugs before they shipped (e.g. the nav
+   counting arithmetic was verified against piececraft-wraith's actual
+   18-control scene file before trusting it). Keep doing this.
+
+================================================================================
+12. RECOMMENDED NEXT STEPS, IN PRIORITY ORDER
+================================================================================
+
+1. Live-test section 7c's href-in-GL-mode fix -- the one thing in this
+   whole session that's only compile-tested, never run. Switch to GL
+   mode, click "Window Geometry" in settings, confirm it navigates.
+2. Live-test section 5's Path B window positioning (the manual test
+   recipe in window-geometry-render-plan-j5.md) -- add a WINDOW section
+   to a test project's project.pdl, confirm visual shift + click
+   parity.
+3. Live-verify piececraft-wraith's camera fix (section 4) -- open it
+   fresh, confirm neutral camera immediately, no keypress needed.
+4. Decide the open questions in section 10, especially "how does
+   settings get a permanent entry point" and "chrome-bar button vs.
+   window-geom's own picker as one UI or two."
+5. If continuing the original feature arc: build window-geom's actual
+   editing capability (cli_io fields, save-back to project.pdl) --
+   that's the next real increment past today's read-only version.
+6. Longer-term, revisit the multi-window picker (section 9) once the
+   above is solid -- it needs its own additive write_projection() change
+   (full window-list export), which should get the same
+   propose-before-touching-shared-code treatment everything else in
+   this session got.
+
+================================================================================
+END OF HANDOFF
+================================================================================

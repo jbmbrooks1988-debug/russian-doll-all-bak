@@ -1,8 +1,0 @@
-project_id=wraith-alpha/wraith-projects/web-cam
-device=/dev/video0
-state=streaming
-detail=/dev/video0
-frame_width=320
-frame_height=240
-frame_loaded=1
-history_cursor=252

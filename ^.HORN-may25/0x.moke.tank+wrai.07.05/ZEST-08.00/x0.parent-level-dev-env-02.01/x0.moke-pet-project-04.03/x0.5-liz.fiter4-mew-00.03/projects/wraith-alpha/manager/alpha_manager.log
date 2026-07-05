@@ -1,0 +1,503 @@
+[Fri Jul  3 22:43:39 2026] Command received: DESKTOP_ACTION:launch_terminal
+[Fri Jul  3 22:43:39 2026] Launch requested: opening WRAITH TERMINAL #2
+[Fri Jul  3 22:43:39 2026] State updated: idx=1, windows=1, minimized=0
+[Fri Jul  3 22:43:41 2026] Input received: 57
+[Fri Jul  3 22:43:41 2026] State updated: idx=9, windows=1, minimized=0
+[Fri Jul  3 22:43:42 2026] Input received: 13
+[Fri Jul  3 22:43:42 2026] Enter received: gui_index=9 max_index=21
+[Fri Jul  3 22:43:42 2026] Command received: DESKTOP_ACTION:launch_piececraft_wraith
+[Fri Jul  3 22:43:42 2026] Launch requested: opening PIECECRAFT WRAITH #3
+[Fri Jul  3 22:43:42 2026] State updated: idx=1, windows=2, minimized=1
+[Fri Jul  3 22:43:42 2026] Synced active_gui_index from display: 1 -> 9
+[Fri Jul  3 22:43:42 2026] Synced active_gui_index from display: 9 -> 1
+[Fri Jul  3 22:43:45 2026] Input received: 53
+[Fri Jul  3 22:43:45 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 495 440
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=495 y=440 (last_click: 495,440)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 499 442
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=499 y=442 (last_click: 499,442)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 503 444
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=503 y=444 (last_click: 503,444)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 507 446
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=507 y=446 (last_click: 507,446)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 512 448
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=512 y=448 (last_click: 512,448)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 516 450
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=516 y=450 (last_click: 516,450)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 519 451
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=519 y=451 (last_click: 519,451)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 522 452
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=522 y=452 (last_click: 522,452)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 525 453
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=525 y=453 (last_click: 525,453)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 528 454
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=528 y=454 (last_click: 528,454)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 533 455
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=533 y=455 (last_click: 533,455)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 537 456
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=537 y=456 (last_click: 537,456)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 540 457
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=540 y=457 (last_click: 540,457)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 543 457
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=543 y=457 (last_click: 543,457)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 546 458
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=546 y=458 (last_click: 546,458)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 549 458
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=549 y=458 (last_click: 549,458)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 553 458
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=553 y=458 (last_click: 553,458)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 557 458
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=557 y=458 (last_click: 557,458)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 560 458
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=560 y=458 (last_click: 560,458)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 563 458
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=563 y=458 (last_click: 563,458)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 567 458
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=567 y=458 (last_click: 567,458)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 571 458
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=571 y=458 (last_click: 571,458)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 575 458
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=575 y=458 (last_click: 575,458)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 579 458
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=579 y=458 (last_click: 579,458)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 583 458
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=583 y=458 (last_click: 583,458)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 587 457
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=587 y=457 (last_click: 587,457)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 589 457
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=589 y=457 (last_click: 589,457)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 591 457
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=591 y=457 (last_click: 591,457)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 592 457
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=592 y=457 (last_click: 592,457)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 593 457
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=593 y=457 (last_click: 593,457)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 594 457
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=594 y=457 (last_click: 594,457)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 594 457
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=594 y=457 (last_click: 594,457)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 594 457
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=594 y=457 (last_click: 594,457)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 598 452
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=598 y=452 (last_click: 598,452)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:46 2026] Command received: MOUSE_MOVE 0 598 452
+[Fri Jul  3 22:43:46 2026] Mouse updated: btn=0 x=598 y=452 (last_click: 598,452)
+[Fri Jul  3 22:43:46 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:47 2026] Command received: MOUSE_MOVE 0 660 322
+[Fri Jul  3 22:43:47 2026] Mouse updated: btn=0 x=660 y=322 (last_click: 660,322)
+[Fri Jul  3 22:43:47 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:47 2026] Command received: SET_ACTIVE:1
+[Fri Jul  3 22:43:47 2026] State updated: idx=1, windows=2, minimized=1
+[Fri Jul  3 22:43:47 2026] Command received: MOUSE_MOVE 0 677 304
+[Fri Jul  3 22:43:47 2026] Mouse updated: btn=0 x=677 y=304 (last_click: 677,304)
+[Fri Jul  3 22:43:47 2026] State updated: idx=1, windows=2, minimized=1
+[Fri Jul  3 22:43:47 2026] Command received: MOUSE_MOVE 0 695 282
+[Fri Jul  3 22:43:47 2026] Mouse updated: btn=0 x=695 y=282 (last_click: 695,282)
+[Fri Jul  3 22:43:47 2026] State updated: idx=1, windows=2, minimized=1
+[Fri Jul  3 22:43:47 2026] Command received: MOUSE_MOVE 0 703 270
+[Fri Jul  3 22:43:47 2026] Mouse updated: btn=0 x=703 y=270 (last_click: 703,270)
+[Fri Jul  3 22:43:47 2026] State updated: idx=1, windows=2, minimized=1
+[Fri Jul  3 22:43:47 2026] Command received: MOUSE_MOVE 0 712 260
+[Fri Jul  3 22:43:47 2026] Mouse updated: btn=0 x=712 y=260 (last_click: 712,260)
+[Fri Jul  3 22:43:47 2026] State updated: idx=1, windows=2, minimized=1
+[Fri Jul  3 22:43:47 2026] Command received: MOUSE_MOVE 0 720 250
+[Fri Jul  3 22:43:47 2026] Mouse updated: btn=0 x=720 y=250 (last_click: 720,250)
+[Fri Jul  3 22:43:47 2026] State updated: idx=1, windows=2, minimized=1
+[Fri Jul  3 22:43:47 2026] Command received: MOUSE_MOVE 0 730 242
+[Fri Jul  3 22:43:47 2026] Mouse updated: btn=0 x=730 y=242 (last_click: 730,242)
+[Fri Jul  3 22:43:47 2026] State updated: idx=1, windows=2, minimized=1
+[Fri Jul  3 22:43:47 2026] Command received: MOUSE_MOVE 0 733 239
+[Fri Jul  3 22:43:47 2026] Mouse updated: btn=0 x=733 y=239 (last_click: 733,239)
+[Fri Jul  3 22:43:47 2026] State updated: idx=1, windows=2, minimized=1
+[Fri Jul  3 22:43:47 2026] Command received: MOUSE_MOVE 0 741 232
+[Fri Jul  3 22:43:47 2026] Mouse updated: btn=0 x=741 y=232 (last_click: 741,232)
+[Fri Jul  3 22:43:47 2026] State updated: idx=1, windows=2, minimized=1
+[Fri Jul  3 22:43:47 2026] Command received: MOUSE_MOVE 0 746 227
+[Fri Jul  3 22:43:47 2026] Mouse updated: btn=0 x=746 y=227 (last_click: 746,227)
+[Fri Jul  3 22:43:47 2026] State updated: idx=1, windows=2, minimized=1
+[Fri Jul  3 22:43:47 2026] Command received: MOUSE_MOVE 0 750 225
+[Fri Jul  3 22:43:47 2026] Mouse updated: btn=0 x=750 y=225 (last_click: 750,225)
+[Fri Jul  3 22:43:47 2026] State updated: idx=1, windows=2, minimized=1
+[Fri Jul  3 22:43:47 2026] Command received: MOUSE_MOVE 0 752 223
+[Fri Jul  3 22:43:47 2026] Mouse updated: btn=0 x=752 y=223 (last_click: 752,223)
+[Fri Jul  3 22:43:47 2026] State updated: idx=1, windows=2, minimized=1
+[Fri Jul  3 22:43:47 2026] Command received: MOUSE_MOVE 0 753 222
+[Fri Jul  3 22:43:47 2026] Mouse updated: btn=0 x=753 y=222 (last_click: 753,222)
+[Fri Jul  3 22:43:47 2026] State updated: idx=1, windows=2, minimized=1
+[Fri Jul  3 22:43:47 2026] Command received: MOUSE_MOVE 0 754 221
+[Fri Jul  3 22:43:47 2026] Mouse updated: btn=0 x=754 y=221 (last_click: 754,221)
+[Fri Jul  3 22:43:47 2026] State updated: idx=1, windows=2, minimized=1
+[Fri Jul  3 22:43:47 2026] Command received: MOUSE_MOVE 0 755 221
+[Fri Jul  3 22:43:47 2026] Mouse updated: btn=0 x=755 y=221 (last_click: 755,221)
+[Fri Jul  3 22:43:47 2026] State updated: idx=1, windows=2, minimized=1
+[Fri Jul  3 22:43:47 2026] Command received: MOUSE_MOVE 0 756 221
+[Fri Jul  3 22:43:47 2026] Mouse updated: btn=0 x=756 y=221 (last_click: 756,221)
+[Fri Jul  3 22:43:47 2026] State updated: idx=1, windows=2, minimized=1
+[Fri Jul  3 22:43:47 2026] Command received: MOUSE_MOVE 0 756 221
+[Fri Jul  3 22:43:47 2026] Mouse updated: btn=0 x=756 y=221 (last_click: 756,221)
+[Fri Jul  3 22:43:47 2026] State updated: idx=1, windows=2, minimized=1
+[Fri Jul  3 22:43:47 2026] Input received: 13
+[Fri Jul  3 22:43:47 2026] Enter received: gui_index=5 max_index=39
+[Fri Jul  3 22:43:47 2026] Command received: INTERACT
+[Fri Jul  3 22:43:47 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:48 2026] Command received: MOUSE_MOVE 0 617 330
+[Fri Jul  3 22:43:48 2026] Mouse updated: btn=0 x=617 y=330 (last_click: 617,330)
+[Fri Jul  3 22:43:48 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:48 2026] Command received: MOUSE_MOVE 0 628 324
+[Fri Jul  3 22:43:48 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:48 2026] Command received: MOUSE_MOVE 0 641 314
+[Fri Jul  3 22:43:48 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:48 2026] Command received: MOUSE_MOVE 0 654 303
+[Fri Jul  3 22:43:48 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:48 2026] Command received: MOUSE_MOVE 0 665 294
+[Fri Jul  3 22:43:48 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:48 2026] Command received: MOUSE_MOVE 0 677 284
+[Fri Jul  3 22:43:48 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:48 2026] Command received: MOUSE_MOVE 0 689 275
+[Fri Jul  3 22:43:48 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:48 2026] Command received: MOUSE_MOVE 0 700 268
+[Fri Jul  3 22:43:48 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:48 2026] Command received: MOUSE_MOVE 0 709 263
+[Fri Jul  3 22:43:48 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:48 2026] Command received: MOUSE_MOVE 0 719 258
+[Fri Jul  3 22:43:48 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:48 2026] Command received: MOUSE_MOVE 0 727 255
+[Fri Jul  3 22:43:48 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:48 2026] Command received: MOUSE_MOVE 0 734 251
+[Fri Jul  3 22:43:48 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:48 2026] Command received: MOUSE_MOVE 0 740 249
+[Fri Jul  3 22:43:48 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:48 2026] Command received: MOUSE_MOVE 0 745 247
+[Fri Jul  3 22:43:48 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:48 2026] Command received: MOUSE_MOVE 0 749 246
+[Fri Jul  3 22:43:48 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:48 2026] Command received: MOUSE_MOVE 0 754 245
+[Fri Jul  3 22:43:48 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:48 2026] Command received: MOUSE_MOVE 0 756 244
+[Fri Jul  3 22:43:48 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:48 2026] Command received: MOUSE_MOVE 0 758 243
+[Fri Jul  3 22:43:48 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:48 2026] Command received: MOUSE_MOVE 0 760 243
+[Fri Jul  3 22:43:48 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:48 2026] Command received: MOUSE_MOVE 0 761 243
+[Fri Jul  3 22:43:48 2026] Mouse updated: btn=0 x=761 y=243 (last_click: 761,243)
+[Fri Jul  3 22:43:48 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:48 2026] Command received: MOUSE_MOVE 0 762 243
+[Fri Jul  3 22:43:48 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:48 2026] Command received: MOUSE_MOVE 0 763 243
+[Fri Jul  3 22:43:48 2026] Mouse updated: btn=0 x=763 y=243 (last_click: 763,243)
+[Fri Jul  3 22:43:48 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:48 2026] Command received: MOUSE_MOVE 0 764 243
+[Fri Jul  3 22:43:48 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:48 2026] Command received: MOUSE_MOVE 0 765 244
+[Fri Jul  3 22:43:48 2026] Mouse updated: btn=0 x=765 y=244 (last_click: 765,244)
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 766 245
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 768 249
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 771 253
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 773 259
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 775 265
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 776 272
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 777 276
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 778 281
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 778 284
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 778 286
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 778 288
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 778 289
+[Fri Jul  3 22:43:49 2026] Mouse updated: btn=0 x=778 y=289 (last_click: 778,289)
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 778 290
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 778 291
+[Fri Jul  3 22:43:49 2026] Mouse updated: btn=0 x=778 y=291 (last_click: 778,291)
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 778 295
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 778 300
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 778 304
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 778 306
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 778 308
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 777 309
+[Fri Jul  3 22:43:49 2026] Mouse updated: btn=0 x=777 y=309 (last_click: 777,309)
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 777 310
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 777 311
+[Fri Jul  3 22:43:49 2026] Mouse updated: btn=0 x=777 y=311 (last_click: 777,311)
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 777 312
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 777 313
+[Fri Jul  3 22:43:49 2026] Mouse updated: btn=0 x=777 y=313 (last_click: 777,313)
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 777 314
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 777 315
+[Fri Jul  3 22:43:49 2026] Mouse updated: btn=0 x=777 y=315 (last_click: 777,315)
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 777 316
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 777 317
+[Fri Jul  3 22:43:49 2026] Mouse updated: btn=0 x=777 y=317 (last_click: 777,317)
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 777 318
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 777 318
+[Fri Jul  3 22:43:49 2026] Mouse updated: btn=0 x=777 y=318 (last_click: 777,318)
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 777 319
+[Fri Jul  3 22:43:49 2026] Mouse updated: btn=0 x=777 y=319 (last_click: 777,319)
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 777 319
+[Fri Jul  3 22:43:49 2026] Mouse updated: btn=0 x=777 y=319 (last_click: 777,319)
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 776 320
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 774 321
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 771 323
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 765 326
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 759 329
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 753 330
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 745 331
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 738 332
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 731 333
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 724 334
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 718 334
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 711 334
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 702 334
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 695 334
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 689 334
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 682 334
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 677 334
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 674 334
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 671 334
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 667 334
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 665 334
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 663 334
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 661 334
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 660 334
+[Fri Jul  3 22:43:49 2026] Mouse updated: btn=0 x=660 y=334 (last_click: 660,334)
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 659 334
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 658 334
+[Fri Jul  3 22:43:49 2026] Mouse updated: btn=0 x=658 y=334 (last_click: 658,334)
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 657 334
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 656 334
+[Fri Jul  3 22:43:49 2026] Mouse updated: btn=0 x=656 y=334 (last_click: 656,334)
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 655 334
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 654 334
+[Fri Jul  3 22:43:49 2026] Mouse updated: btn=0 x=654 y=334 (last_click: 654,334)
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 653 334
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 652 334
+[Fri Jul  3 22:43:49 2026] Mouse updated: btn=0 x=652 y=334 (last_click: 652,334)
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 651 334
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 650 334
+[Fri Jul  3 22:43:49 2026] Mouse updated: btn=0 x=650 y=334 (last_click: 650,334)
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 650 334
+[Fri Jul  3 22:43:49 2026] Mouse updated: btn=0 x=650 y=334 (last_click: 650,334)
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 648 334
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 647 334
+[Fri Jul  3 22:43:49 2026] Mouse updated: btn=0 x=647 y=334 (last_click: 647,334)
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 643 338
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 639 343
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 637 347
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 634 349
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 633 351
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 632 352
+[Fri Jul  3 22:43:49 2026] Mouse updated: btn=0 x=632 y=352 (last_click: 632,352)
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 631 353
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 630 354
+[Fri Jul  3 22:43:49 2026] Mouse updated: btn=0 x=630 y=354 (last_click: 630,354)
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 630 356
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 630 357
+[Fri Jul  3 22:43:49 2026] Mouse updated: btn=0 x=630 y=357 (last_click: 630,357)
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 630 358
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:49 2026] Command received: MOUSE_MOVE 0 630 359
+[Fri Jul  3 22:43:49 2026] Mouse updated: btn=0 x=630 y=359 (last_click: 630,359)
+[Fri Jul  3 22:43:49 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:50 2026] Command received: MOUSE_MOVE 0 629 359
+[Fri Jul  3 22:43:50 2026] Mouse updated: btn=0 x=629 y=359 (last_click: 629,359)
+[Fri Jul  3 22:43:50 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:50 2026] Command received: MOUSE_MOVE 0 629 359
+[Fri Jul  3 22:43:50 2026] Mouse updated: btn=0 x=629 y=359 (last_click: 629,359)
+[Fri Jul  3 22:43:50 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:50 2026] Command received: MOUSE_MOVE 0 628 359
+[Fri Jul  3 22:43:50 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:50 2026] Command received: MOUSE_MOVE 0 626 360
+[Fri Jul  3 22:43:50 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:50 2026] Command received: MOUSE_MOVE 0 624 360
+[Fri Jul  3 22:43:50 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:50 2026] Command received: MOUSE_MOVE 0 621 360
+[Fri Jul  3 22:43:50 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:50 2026] Command received: MOUSE_MOVE 0 618 360
+[Fri Jul  3 22:43:50 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:50 2026] Command received: MOUSE_MOVE 0 612 359
+[Fri Jul  3 22:43:50 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:50 2026] Command received: MOUSE_MOVE 0 607 357
+[Fri Jul  3 22:43:50 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:50 2026] Command received: MOUSE_MOVE 0 602 355
+[Fri Jul  3 22:43:50 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:50 2026] Command received: MOUSE_MOVE 0 598 354
+[Fri Jul  3 22:43:50 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:50 2026] Command received: MOUSE_MOVE 0 593 353
+[Fri Jul  3 22:43:50 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:50 2026] Command received: MOUSE_MOVE 0 589 352
+[Fri Jul  3 22:43:50 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:50 2026] Command received: MOUSE_MOVE 0 585 351
+[Fri Jul  3 22:43:50 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:50 2026] Command received: MOUSE_MOVE 0 583 351
+[Fri Jul  3 22:43:50 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:50 2026] Command received: MOUSE_MOVE 0 581 351
+[Fri Jul  3 22:43:50 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:50 2026] Command received: MOUSE_MOVE 0 580 351
+[Fri Jul  3 22:43:50 2026] Mouse updated: btn=0 x=580 y=351 (last_click: 580,351)
+[Fri Jul  3 22:43:50 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:50 2026] Command received: MOUSE_MOVE 0 579 351
+[Fri Jul  3 22:43:50 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:50 2026] Command received: MOUSE_MOVE 0 578 351
+[Fri Jul  3 22:43:50 2026] Mouse updated: btn=0 x=578 y=351 (last_click: 578,351)
+[Fri Jul  3 22:43:50 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:50 2026] Command received: MOUSE_MOVE 0 577 351
+[Fri Jul  3 22:43:50 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:50 2026] Command received: MOUSE_MOVE 0 576 351
+[Fri Jul  3 22:43:50 2026] Mouse updated: btn=0 x=576 y=351 (last_click: 576,351)
+[Fri Jul  3 22:43:50 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:50 2026] Command received: MOUSE_MOVE 0 573 350
+[Fri Jul  3 22:43:50 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:50 2026] Command received: MOUSE_MOVE 0 572 350
+[Fri Jul  3 22:43:50 2026] Mouse updated: btn=0 x=572 y=350 (last_click: 572,350)
+[Fri Jul  3 22:43:50 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:50 2026] Command received: MOUSE_MOVE 0 572 350
+[Fri Jul  3 22:43:50 2026] Mouse updated: btn=0 x=572 y=350 (last_click: 572,350)
+[Fri Jul  3 22:43:50 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:50 2026] Command received: MOUSE_MOVE 0 571 350
+[Fri Jul  3 22:43:50 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:50 2026] Command received: MOUSE_MOVE 0 571 350
+[Fri Jul  3 22:43:50 2026] Mouse updated: btn=0 x=571 y=350 (last_click: 571,350)
+[Fri Jul  3 22:43:50 2026] State updated: idx=5, windows=2, minimized=1
+[Fri Jul  3 22:43:52 2026] Wraith-Alpha Manager shutting down.
+[Fri Jul  3 22:43:52 2026] Stopped wraith_gl (pid=690713)
+[Fri Jul  3 22:43:52 2026] Stopped wraith_rgb_daemon (pid=690712)
+[Sun Jul  5 02:30:06 2026] Mouse mode requested via /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/x0.moke-pet-project-04.03/x0.5-liz.fiter4-mew-00.03/pieces/mouse/mouse_enabled.lock
+[Sun Jul  5 02:30:06 2026] Discovered 13 Wraith launcher projects: chtmgl-video-isolate,chtmgl-wraith,emoji-studio-wraith,fs,piececraft-wraith,probe-project,screen-record,terminal,web-cam,wraith-3d-cube,wraith-browser,wraith-ed,wraith-man-test
+[Sun Jul  5 02:30:07 2026] State updated: idx=1, windows=0, minimized=0
+[Sun Jul  5 02:30:07 2026] Bootstrapped fresh Wraith Alpha session state.
+[Sun Jul  5 02:30:07 2026] State updated: idx=1, windows=0, minimized=0
+[Sun Jul  5 02:30:07 2026] Launching RGB Pipeline...
+[Sun Jul  5 02:30:07 2026] Runtime identity: root=/home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/x0.moke-pet-project-04.03/x0.5-liz.fiter4-mew-00.03 binary=/home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/x0.moke-pet-project-04.03/x0.5-liz.fiter4-mew-00.03/projects/wraith-alpha/manager/+x/wraith-alpha_manager.+x mtime=1783143799 build=Jul  3 2026 22:43:18
+[Sun Jul  5 02:30:07 2026] Wraith-Alpha Manager starting in /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/x0.moke-pet-project-04.03/x0.5-liz.fiter4-mew-00.03
+[Sun Jul  5 02:30:07 2026] Raised max index for launcher sync: 3 -> 5
+[Sun Jul  5 02:30:07 2026] Synced active_gui_index from display beyond max: 1 -> 5
+[Sun Jul  5 02:30:07 2026] Synced active_gui_index from display: 5 -> 1
+[Sun Jul  5 02:30:08 2026] Input received: 13
+[Sun Jul  5 02:30:08 2026] Enter received: gui_index=1 max_index=3
+[Sun Jul  5 02:30:08 2026] Command received: DESKTOP_ACTION:launch_terminal
+[Sun Jul  5 02:30:08 2026] Launch requested: opening WRAITH TERMINAL #2
+[Sun Jul  5 02:30:08 2026] State updated: idx=1, windows=1, minimized=0
+[Sun Jul  5 02:30:10 2026] Input received: 57
+[Sun Jul  5 02:30:10 2026] State updated: idx=9, windows=1, minimized=0
+[Sun Jul  5 02:30:11 2026] Input received: 13
+[Sun Jul  5 02:30:11 2026] Enter received: gui_index=9 max_index=21
+[Sun Jul  5 02:30:11 2026] Command received: DESKTOP_ACTION:launch_piececraft_wraith
+[Sun Jul  5 02:30:11 2026] Launch requested: opening PIECECRAFT WRAITH #3
+[Sun Jul  5 02:30:11 2026] State updated: idx=1, windows=2, minimized=1
+[Sun Jul  5 02:30:11 2026] Synced active_gui_index from display: 1 -> 9
+[Sun Jul  5 02:30:11 2026] Synced active_gui_index from display: 9 -> 1
+[Sun Jul  5 02:30:54 2026] Wraith-Alpha Manager shutting down.
+[Sun Jul  5 02:30:54 2026] Stopped wraith_gl (pid=1093445)
+[Sun Jul  5 02:30:54 2026] Stopped wraith_rgb_daemon (pid=1093444)

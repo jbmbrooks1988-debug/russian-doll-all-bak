@@ -1,4 +1,0 @@
-WRAITH FS
-Dir: projects/wraith-alpha/wraith-projects/
-Entries: 10 | Window: 1-6 | launched
-Last: Launched project piececraft-wraith
