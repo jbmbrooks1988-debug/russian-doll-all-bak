@@ -1,2 +1,0 @@
-settings_menu_markup=<button label="Window Geometry" href="projects/wraith-alpha/wraith-projects/settings/window-geom/layouts/window-geom.chtpm" />
-settings_entry_count=1

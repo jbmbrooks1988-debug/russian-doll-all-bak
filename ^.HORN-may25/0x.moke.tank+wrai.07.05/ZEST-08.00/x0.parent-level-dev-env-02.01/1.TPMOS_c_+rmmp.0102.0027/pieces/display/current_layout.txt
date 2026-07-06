@@ -1,1 +1,0 @@
-projects/wraith-alpha/wraith-projects/settings/window-geom/layouts/window-geom.chtpm

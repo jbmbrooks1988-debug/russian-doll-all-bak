@@ -1,0 +1,678 @@
+J5 PROMPT — FOR THE NEXT MODEL/AGENT
+Date written: 2026-07-05
+Purpose: this is a task brief, not a summary. It's written so a model
+with ZERO memory of the prior session can pick up three concrete,
+still-open problems and fix them correctly, using patterns already
+PROVEN to work elsewhere in this exact codebase rather than inventing
+new ones. Read the "REQUIRED READING FIRST" section before touching
+any code.
+
+================================================================================
+REQUIRED READING FIRST (in this order)
+================================================================================
+
+1. x0.piececrafts/j5-summary&handoff.txt
+   Full narrative of everything built in the prior session (window
+   geometry, GL-mode fixes, the settings/window-geom projects). This
+   prompt assumes you've read it — it will not re-explain things that
+   doc already covers in depth.
+2. x0.parent-level-dev-env-02.01/2fix.txt
+   The dated bug log. Several entries from 2026-07-05 are directly
+   relevant to the three problems below.
+3. x0.short-term-vision/window-geometry-render-plan-j5.md
+   Has the deepest trace of how Wraith's ASCII vs GL rendering
+   pipelines actually work (two independent files/code paths,
+   current_frame.txt vs current_frame.objects.pdl). You need this
+   mental model before touching problem 2 below.
+4. x0.short-term-vision/settings-hub-window-geom-design-j5.md
+   Explains href/current_layout navigation and why it's the right
+   mechanism for `settings`/`window-geom` (both real, standalone
+   projects, not registered as a `Window` in the desktop-shell system).
+
+================================================================================
+CRITICAL RESEARCH FINDING FROM THIS SESSION — READ BEFORE FIXING ANYTHING
+================================================================================
+
+The prior session built `window-geom`'s display using ONE variable
+(`window_geom_display`) containing a `\n`-escaped, multi-line blob of
+text, substituted into a single `<text label="${window_geom_display}" />`.
+This does not appear to be how ANY other real, working project in this
+codebase does dynamic multi-line display. Comparative research (done
+just before writing this prompt, not assumed) found:
+
+`projects/user/layouts/user_profile.chtpm` (a real, working, mature
+classic TPMOS project — NOT Wraith, but the SAME manager writes
+`manager/state.txt` and the SAME generic `${var}` substitution
+mechanism resolves it, confirmed via `projects/user/manager/user_manager.c`):
+
+    <text label="║  Welcome, ${current_user}                                     ║" /><br/>
+    <text label="║  Status: ${session_status}                                    ║" /><br/>
+    <text label="║  Response: ${auth_response:-You are logged in.}                 ║" /><br/>
+
+Notice the pattern:
+- MULTIPLE separate, SHORT, single-value variables (`current_user`,
+  `session_status`, `auth_response`), one per line — NOT one giant
+  variable holding everything.
+- The border characters (║) and padding are HARDCODED DIRECTLY IN THE
+  LAYOUT FILE, on each line, around the `${var}` — the manager does NOT
+  generate a whole pre-formatted, bordered block of text and stuff it
+  into a single variable.
+- `${auth_response:-You are logged in.}` — there's even a default-value
+  syntax (`:-`) already supported, worth checking if it's needed.
+
+This is almost certainly why `window-geom`'s display renders blank:
+the single-giant-escaped-string approach is a novel, untested pattern
+this session invented, not the established convention. **The fix is
+very likely: stop writing one `window_geom_display` variable. Write
+several small variables instead (e.g. `wg_source`, `wg_window_title`,
+`wg_project_id`, `wg_x`, `wg_y`, `wg_width`, `wg_height`), and give
+`window-geom.chtpm` several separate `<text>` lines, each with its own
+literal border/label text and ONE simple `${wg_...}` substitution,
+matching `user_profile.chtpm`'s pattern exactly.**
+
+Also worth checking while you're in there (found, not yet investigated
+to a root cause): confirm whether the multi-line `\n`-escape mechanism
+(`substitute_vars()` converting literal `\n` to a real newline,
+confirmed to work for the desktop_shell_markup case in the prior
+session) has some length limit (`MAX_LABEL_LEN` or similar) that a
+~250-character value could be exceeding, silently producing an empty
+result. Don't assume this is or isn't the cause — verify with a
+standalone test the same way the prior session verified everything
+(extract the real `substitute_vars()`/`get_var()`/`load_state_file()`
+logic into a throwaway test file, feed it a real multi-line escaped
+value of the actual length being used, and see what comes out).
+
+================================================================================
+PROBLEM 1 — window-geom still shows blank (user-reported, twice)
+================================================================================
+
+Symptom: navigating to `projects/wraith-alpha/wraith-projects/settings/window-geom/layouts/window-geom.chtpm`
+via the settings menu shows the header/back-link correctly but the
+`${window_geom_display}` line renders as nothing. Reported as still
+happening on a fresh navigation, not just a one-time race (the prior
+session's "timing race" theory was checked and looks insufficient —
+`manager/state.txt` DOES have correct, real, non-stale content on disk,
+confirmed by `cat`'ing it directly, yet the rendered frame still shows
+blank even well after the manager should have finished).
+
+Relevant files:
+- `projects/wraith-alpha/wraith-projects/settings/window-geom/manager/window-geom_manager.c`
+  — writes `window_geom_display=...` into `manager/state.txt`.
+- `projects/wraith-alpha/wraith-projects/settings/window-geom/layouts/window-geom.chtpm`
+  — has `<text label="${window_geom_display}" />`.
+- `projects/wraith-alpha/ops/wraith_parser_alpha.c`
+  — `load_vars()` (search for `project_state_path`, around line 1074-1078)
+    is what generically loads `manager/state.txt` for ANY project reached
+    via its own layout — trace this function's gating conditions
+    carefully, don't assume they pass.
+  - `load_state_file()` (search for its definition) does the actual
+    `key=value` parsing and `set_var()` call.
+  - `substitute_vars()` (search for it) is what expands `${var}` INTO
+    final text and does the `\n` → real-newline unescaping.
+  - `render_element()`'s `text` tag branch (`strcat(frame, scratch_substituted)`)
+    is where a `<text>` element's substituted label actually lands in
+    the composed frame.
+
+What to do:
+1. Apply the `user_profile.chtpm`-style fix described above (multiple
+   small variables, hardcoded borders per line in the .chtpm file, no
+   single mega-variable).
+2. Before declaring it fixed, verify STANDALONE the same way the whole
+   prior session did every fix: extract the real substitution/loading
+   functions into a throwaway test file, feed them real values, confirm
+   correct output — THEN wire it in, compile, THEN ask for a live
+   check. Do not skip the standalone step.
+3. If, after switching to the multiple-small-variables pattern, it's
+   STILL blank, the bug is somewhere upstream in `load_vars()`'s gating
+   logic or `set_project_id_from_layout()`'s path parsing for a NESTED
+   project_id (`wraith-alpha/wraith-projects/settings/window-geom` —
+   confirm this derives correctly, it has more path segments than most
+   examples in this codebase, which might expose an off-by-one or an
+   assumption that doesn't hold for a doubly-nested project).
+
+================================================================================
+PROBLEM 2 — GL mode renders extra "|" bar characters (user-reported)
+================================================================================
+
+Symptom: in GL mode, extra vertical bar characters appear somewhere
+(exact location/reproduction steps not pinned down precisely by the
+user's report — get a screenshot or precise description before
+guessing further, but SOME research is already done, below, to save
+you time).
+
+What's already been RULED OUT (verified, not assumed) so you don't
+waste time re-checking it: `draw_object()` in
+`projects/wraith-alpha/plugins/wraith_rgb_daemon.c` only calls
+`draw_border_px()` (a decorative rectangle outline) for objects whose
+`tag` is `window`/`panel`/`header`/`window_toolbar_item`/a chtmgl
+control role. Objects with `tag=text` (which is what EVERY object
+`emit_embedded_line_objects()` emits, including the settings button's
+border/padding pieces) only get `fill_rect_px()` (a background fill),
+NOT a border rectangle. So it is NOT "each text fragment getting its
+own decorative box outline, creating visual double-lines" — that
+theory is dead, don't re-investigate it.
+
+What HASN'T been checked yet, in likely order of suspicion:
+1. `emit_embedded_line_objects()` in `wraith-alpha_manager.c` splits one
+   line into multiple OBJECTs (e.g. the settings button line becomes 3:
+   a "| |  " text object, the button object, and a padding+"|" text
+   object). Check whether the X-POSITION math (`cursor_x` advancing by
+   `strlen(label)` per chunk) is actually correct once real GL rendering
+   converts character-cell x/y into pixel x0/y0/x1/y1 (`draw_object()`'s
+   `x0 = obj->x * cell_w`, etc.) — an off-by-one or double-counted
+   cell width here could make two adjacent text objects' backgrounds
+   overlap or leave a gap that reads as an extra/duplicated "|".
+2. Compare against how a REAL, proven multi-object-per-line case
+   already renders correctly in GL mode today (if one exists) — check
+   `piececraft-wraith`'s `scene.objects.pdl`-based controls (which have
+   been working in GL mode for a while, unrelated to this session's
+   changes) to see if adjacent objects on the same visual row are
+   spaced/positioned any differently than what `emit_embedded_line_objects()`
+   produces.
+3. Check whether the settings button's OWN literal "|" characters
+   (deliberately included in the border/padding text,
+   e.g. `<text label="| |  " />`) are being rendered AND some other,
+   separate mechanism is ALSO drawing a "|" near the same position —
+   i.e. is there possibly a totally separate, simpler explanation, like
+   the outer window frame's own right-edge border character landing
+   very close to (not exactly on) the trailing "|" this session
+   manually added to the padding text, so what looks like "extra bars"
+   is actually two SEPARATE real "|" characters (the manually-added one
+   AND the actual frame edge) that were never meant to be the same
+   character and just happen to sit near each other. If so, the actual
+   fix might be: don't manually add a trailing "|" in embedded body
+   lines' padding at all — let the real outer frame border be the only
+   right-edge character, and stop after the content instead of trying
+   to hand-draw a matching close-border. Compare this idea directly
+   against `user_profile.chtpm`'s style once more: that classic pattern
+   DOES manually include both `║` characters on every line (opening and
+   closing) as part of one hand-authored decorative box — so hand-drawn
+   borders per line ARE the convention. This means the bug is more
+   likely a MISALIGNMENT (wrong count of padding characters, so the
+   hand-drawn closing character doesn't line up with where the real
+   frame edge is) rather than "shouldn't be doing this at all." Get the
+   exact width math right: the outer frame's real width comes from
+   `resolve_frame_width()`/`append_frame_border()` (see
+   window-geometry-render-plan-j5.md's Path A), and any per-line
+   hand-authored border content needs to fit within that same
+   width, consistently.
+
+Do the same standalone-verify-first discipline as Problem 1 before
+touching the live render pipeline.
+
+================================================================================
+PROBLEM 3 — add a universal per-window chrome button (design changed
+from the prior session's approach — read this carefully)
+================================================================================
+
+**Important scope change, explicit correction of the prior session's
+direction:** do NOT implement this as something each individual
+project embeds in its own `session/wraith_body.txt` (that's how the
+settings project's OWN "Window Geometry" menu link works, which is
+correct FOR THAT specific case — a project's own menu — but is the
+WRONG pattern for this). This button needs to appear on **every
+window, automatically, for every project, in ASCII mode AND GL mode**,
+without any per-project code. That means it has to be emitted directly
+by `wraith-alpha_manager.c` itself, in the exact same place the
+existing `o`/`-`/`x` chrome buttons are — NOT something individual
+projects opt into.
+
+**The exact, already-researched precedent to follow (from earlier in
+this session, re-confirm it's still accurate before relying on it):**
+
+- Visual/ASCII side: `build_desktop_shell_markup()` in
+  `wraith-alpha_manager.c` emits the title bar's `o`/`-`/`x` buttons as
+  three `appendf()` calls with `onClick="SET_ACTIVE:2/3/4"`. A fourth
+  button here (matching this exact style) is where the new chrome
+  button belongs.
+- Semantic/GL side: `write_semantic_projection_files()` emits matching
+  `chrome_open`/`chrome_min`/`chrome_close` OBJECT lines with
+  `nav=2/3/4` and `action=SET_ACTIVE:2/3/4`. A fourth OBJECT here,
+  matching this exact style, is needed too — both sides must move
+  together (see the "two independent descriptions of the same screen"
+  principle in window-geometry-render-plan-j5.md; this bit the prior
+  session multiple times).
+- **The dispatch mechanism is ALREADY confirmed fully modular** — this
+  was researched in depth earlier this session (see
+  `x0.short-term-vision/window-geometry-render-plan-j5.md` if it's
+  documented there, or re-derive it: `route_command()`'s
+  `DESKTOP_ACTION:<name>` named-string dispatch, and
+  `action_for_nav_index()`'s OBJECT-file `action=` lookup, are both
+  ALREADY order-independent / do not require hardcoded index math).
+  Give the new button a real, named action —
+  `DESKTOP_ACTION:open_window_geom` is a reasonable name — and add ONE
+  new `strcmp()` branch in `route_command()`, matching the existing
+  `DESKTOP_ACTION:view_ascii`/`view_gl` style exactly.
+- **The nav-index-slot-reservation concern IS real but was already
+  solved once for a related case** — inserting a 4th chrome-row button
+  shifts where `launcher_start` begins. Earlier this session, this was
+  traced precisely: `launcher_start` is `5` in exactly TWO places
+  (`build_desktop_shell_markup()` and `dispatch_menu_index()`), and
+  everything downstream (`taskbar_start`, `debug_selector_ascii_index()`,
+  `debug_selector_gl_index()`) is ALREADY a formula/function derived
+  from it, not independently hardcoded. Bumping both `5`s to `6` (to
+  make room for the new 4th button occupying what would have been index
+  5) is the confirmed-safe, small, bounded fix — this was verified in
+  the prior session for exactly this scenario (though for a different,
+  ultimately-abandoned placement decision — re-verify the exact numbers
+  still hold given everything else that changed since, don't just
+  copy-paste blindly).
+
+**What the button should DO when clicked:** open `window-geom`, with
+THIS SPECIFIC window as the target — i.e. write this window's own
+`project_id` into
+`projects/wraith-alpha/wraith-projects/settings/window-geom/session/wg_target.txt`
+(the file-based handoff mechanism already built and tested in the
+prior session — see `settings-hub-window-geom-design-j5.md` section on
+"targeted" invocation), THEN navigate there. Since navigation itself
+needs `request_layout_change()` (see 2fix.txt's "href actions were
+silently inert in GL mode" entry from 2026-07-05 — this is the
+mechanism, already wired into `route_command()`'s fallback branch for
+any command containing `.chtpm`), the new `DESKTOP_ACTION:open_window_geom`
+handler should: write `wg_target.txt` with the CURRENT active window's
+`project_id`, then call
+`request_layout_change("projects/wraith-alpha/wraith-projects/settings/window-geom/layouts/window-geom.chtpm")`
+directly (or route through `route_command()` a second time with that
+path — whichever is more consistent with how `DESKTOP_ACTION:` handlers
+elsewhere in `route_command()` already call other functions directly,
+follow that existing style).
+
+**Label suggestion:** a single compact character like `i` (info) or `g`
+(geometry), matching the terse single-char style of `o`/`-`/`x`.
+
+**Verification checklist for this piece specifically:**
+- Works via mouse click in BOTH ASCII and GL mode.
+- Works via keyboard (Tab to it, Enter) in BOTH ASCII and GL mode.
+- Appears on EVERY window automatically — test with at least two
+  different projects open (e.g. `terminal` and one other), confirm the
+  button is present and correctly targets whichever window is ACTIVE at
+  the time it's clicked, not a hardcoded one.
+- Does not shift/break the taskbar or ASCII/GL toggle buttons — verify
+  their indices/positions still work correctly after the `5`→`6` bump,
+  the same way the prior session verified Path A/B changes (compile
+  clean, diff warnings against the prior build, standalone test before
+  live test).
+
+================================================================================
+EXPLICITLY: IGNORE "Terminated"
+================================================================================
+
+A prior message mentioned a bare "Terminated" appearing in one console
+dump. The user has explicitly said to ignore this — do not investigate
+it, do not treat it as a bug, do not mention it in your work.
+
+================================================================================
+WORKING DISCIPLINE — MATCH THE PRIOR SESSION'S STANDARD, DON'T SKIP STEPS
+================================================================================
+
+The prior session's entire body of work followed a consistent
+discipline that caught multiple real bugs before they shipped. Keep
+doing this:
+
+1. **Read the real code before assuming how it works.** Every wrong
+   guess in the prior session (e.g. "href navigation needs matching
+   wraith_parser_alpha.c numbering" turned out to be false once traced)
+   got corrected by actually reading the function, not by reasoning in
+   the abstract.
+2. **Verify standalone before integrating.** Extract the real function(s)
+   into a throwaway test file (scratchpad directory), feed them real
+   data from the actual project files, confirm correct output, THEN
+   wire the change into the real file.
+3. **Compile clean, diff the warning list against the prior build.**
+   This codebase has ~77 pre-existing, harmless `snprintf`-truncation
+   warnings present in every build. Only NEW warnings (or an unexpected
+   COUNT change) are worth investigating — don't chase the pre-existing
+   ones, but DO diff every time so you notice if you introduced
+   something new.
+4. **Rebuild the real `+x` binary after every fix**, not just the
+   throwaway test binary — `gcc -o "manager/+x/wraith-alpha_manager.+x" wraith-alpha_manager.c -Wall`
+   (adjust path per file).
+5. **Log every fix in `2fix.txt`** with the same Observed/Applied/Verified
+   structure the existing entries use — dated, specific, honest about
+   what's verified vs. not yet live-tested.
+6. **Be explicit about what's compile-verified vs. standalone-verified
+   vs. actually live-tested.** Don't claim something works live if it
+   hasn't been. The user has caught this distinction mattering multiple
+   times already this session (e.g. the href-in-GL-mode bug was only
+   found because a "done" fix was reviewed one more time before
+   handoff).
+7. **Don't expand scope beyond what's asked.** If a fix reveals a
+   second, unrelated problem (like the piececraft-wraith UTF-8
+   truncation bug was found while investigating something else),
+   flag it clearly and ask before fixing it, unless it's small,
+   obviously safe, and directly blocking the actual task.
+
+================================================================================
+FILE INDEX (where things live)
+================================================================================
+
+Primary file for problems 2 and 3 (and most of problem 1's substitution
+tracing):
+  1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/manager/wraith-alpha_manager.c
+  1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/ops/wraith_parser_alpha.c
+  1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/plugins/wraith_rgb_daemon.c
+
+window-geom itself (problem 1):
+  1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings/window-geom/manager/window-geom_manager.c
+  1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings/window-geom/layouts/window-geom.chtpm
+
+Reference/proven-pattern examples (read these, don't just take this
+prompt's word for it):
+  1.TPMOS_c_+rmmp.0102.0027/projects/user/manager/user_manager.c
+  1.TPMOS_c_+rmmp.0102.0027/projects/user/layouts/user_profile.chtpm
+  1.TPMOS_c_+rmmp.0102.0027/projects/user/layouts/user_login.chtpm
+  (dozens of other classic projects use href the same way — `grep -rn 'href="' projects/ --include=*.chtpm`
+  to see more if these three aren't enough context)
+
+Docs to update as you go (same convention as the prior session):
+  x0.parent-level-dev-env-02.01/2fix.txt  (append dated entries)
+  x0.piececrafts/j5-summary&handoff.txt  (only if you want to extend
+    the handoff further — not required, 2fix.txt is the primary log)
+
+================================================================================
+END OF ORIGINAL PROMPT
+================================================================================
+
+
+################################################################################
+################################################################################
+J5 ADDENDUM — VALIDATION PASS + CORRECTED PLAN (appended 2026-07-05)
+Author: review agent (Opus). This section was written AFTER reading the
+real code and the on-disk state artifacts. Where it contradicts the
+original prompt above, THIS SECTION WINS — the original is kept intact as
+a reasoning trail, not because it was right on every point.
+################################################################################
+################################################################################
+
+--------------------------------------------------------------------------------
+0. HOW THIS WAS VALIDATED (evidence, not reasoning-in-the-abstract)
+--------------------------------------------------------------------------------
+Read the actual files:
+- wraith_parser_alpha.c: set_var/get_var (l.372-412), substitute_vars
+  (l.443-469), load_state_file (l.571-613), set_project_id_from_layout
+  (l.924-962), load_vars (l.964-1098).
+- window-geom manager/state.txt, window-geom.chtpm, project.pdl.
+- The LIVE on-disk render artifacts under pieces/display/ (current_frame.txt,
+  current_frame.objects.pdl, .desktop_state.pdl, .focus_state.pdl,
+  .audit.txt) and pieces/config/receipts.conf.
+
+--------------------------------------------------------------------------------
+1. PROBLEM 1 — REAL ROOT CAUSE FOUND. THE PROMPT'S THEORY IS *REJECTED*.
+--------------------------------------------------------------------------------
+The original prompt's central theory ("the single mega-variable
+`window_geom_display` is a novel/untested pattern; the fix is to switch
+to multiple small variables like user_profile.chtpm") is WRONG, and doing
+that refactor would NOT fix the blank. Evidence:
+
+  a. The value IS correctly on disk:
+     manager/state.txt contains a full, correct, ~230-char
+     `window_geom_display=Source: active window...\n...` line.
+  b. substitute_vars() (l.443-469) DOES correctly expand `${var}` and DOES
+     convert literal `\n` -> real newline. The mega-variable substitution
+     path works fine. Tested by reading the function, not assumed.
+  c. The length-limit theory is DEAD: MAX_LABEL_LEN and MAX_VAR_VALUE are
+     both 65536 (l.54, l.62). A ~230-char value is nowhere near any cap.
+  d. The nested-project_id theory is ALSO essentially dead for the *initial*
+     derivation: set_project_id_from_layout() (l.924) parses
+     `.../settings/window-geom/layouts/...` correctly to
+     `wraith-alpha/wraith-projects/settings/window-geom`. The deep nesting
+     does NOT break it.
+
+THE ACTUAL BUG (confirmed, in load_vars(), wraith_parser_alpha.c):
+  1. l.993  set_project_id_from_layout() sets project_id CORRECTLY to
+            "wraith-alpha/wraith-projects/settings/window-geom".
+  2. l.1008 `const char* proj_id = get_var("project_id");`
+            -- captures a POINTER into the vars[] slot's value buffer.
+  3. l.1011 load_state_file("projects/wraith-alpha/session/alpha_state.txt")
+            reads that file's LINE 1, which is literally `project_id=wraith-alpha`,
+            and calls set_var("project_id","wraith-alpha") -> l.375 overwrites
+            the slot IN PLACE. `proj_id` now silently reads "wraith-alpha".
+  4. l.1074-1077 builds project_state_path from the (now-clobbered) proj_id:
+            "projects/wraith-alpha/manager/state.txt"
+            -- THE WRONG FILE. window-geom's own manager/state.txt is never
+            loaded, so `window_geom_display` is never set -> renders blank.
+
+  Independent corroboration: pieces/display/current_frame.audit.txt shows
+  `project_id=wraith-alpha` even while current_layout.txt points at
+  window-geom.chtpm. That mismatch is the clobber, visible in the artifacts.
+
+  This is a GENERIC bug: ANY href-reached project whose own manager/state.txt
+  vars it depends on will render blank, because alpha_state.txt's
+  `project_id=wraith-alpha` always wins the clobber. window-geom is just the
+  first project to actually depend on it. (The already-working href examples
+  -- terminal.chtpm, fs.chtpm "Back to Desktop" -- don't hit this because
+  they have no dynamic ${var} of their own to lose.)
+
+  CORROBORATION (added after the first review, per user's push to actually
+  check): this is a textbook instance of the project's OWN documented
+  Golden Pitfall #31 in !.TPMOS_ONBORD_BIBLE_10.md:
+    "#31 App Layout project_id Drift: When loading an APP layout via href,
+     explicitly set project_id to match the app, otherwise PDL lookups fail."
+  set_project_id_from_layout() at l.993 IS the #31 mitigation. The bug is
+  that a LATER state-file load (alpha_state.txt at l.1011) silently re-drifts
+  project_id back to "wraith-alpha" after the mitigation already ran. So the
+  fix (re-assert project_id after the last state load) is not a novel idea --
+  it's re-applying the documented #31 remedy at the point it currently gets
+  undone.
+
+  EMPIRICAL CONFIRMATION (2026-07-05, after a real `button.sh r` session):
+  the user drove the live path Loader -> wraith-alpha -> Terminal -> settings
+  -> Window Geometry and reproduced the blank on screen. That run also
+  regenerated location_kvp to the correct ZEST-09.00 root. A clean headless
+  re-run of wraith_parser_alpha.+x against window-geom.chtpm (now with the
+  correct root) produced the debug trace (parser.out / load_state_file DEBUG):
+    -> Loaded: project_id=wraith-alpha            (clobbered by alpha_state.txt)
+    load_state_file trying: projects/wraith-alpha/manager/state.txt - FAILED
+    (it NEVER tried .../settings/window-geom/manager/state.txt)
+    window_geom_display loaded: 0 times  -> frame renders blank.
+  Meanwhile window-geom's OWN manager/state.txt DOES contain the correct
+  window_geom_display value -- proving the manager side is fine and the fault
+  is purely the parser loading the WRONG project's state file due to the
+  clobber. Diagnosis is now empirically confirmed, not just static + #31.
+
+  NOTE ON THE FIRST REVIEW'S FLAWED TEST (kept as a lesson): the FIRST
+  headless attempt was CONFOUNDED -- location_kvp still had the stale
+  `project_root=.../ZEST-01.00/...` (a dead path; that dir exists only as .7z
+  archives), so resolve_root() pointed at a nonexistent tree and EVERY state
+  load failed for THAT reason, masking the real clobber. `button.sh r` (via
+  run_orchestrator.sh) regenerates location_kvp = $(pwd) on every launch, so
+  this never affects a real run. Lesson: do the live/orchestrated run (or let
+  the user do it) BEFORE trusting a headless artifact check -- the stale-root
+  trap and the empty-history false alarm (see GAP-R1 retraction) both came
+  from skipping that step.
+
+THE FIX (small, surgical, one place):
+  In load_vars(), re-assert the layout-derived project_id AFTER the
+  alpha_state.txt / gui_state.txt loads (l.1011-1012) and BEFORE the
+  project_state_path load (l.1074), then refresh the pointer:
+
+      // after l.1012
+      if (strstr(current_layout, "projects/") != NULL) {
+          set_project_id_from_layout();   // undo alpha_state.txt's clobber
+      }
+      proj_id = get_var("project_id");     // refresh (pointer was stale)
+
+  Safety: when current_layout IS alpha-shell.chtpm, set_project_id_from_layout()
+  re-derives "wraith-alpha" -- identical to what alpha_state.txt set, so the
+  desktop shell path is byte-for-byte unaffected (zero regression). Only
+  href-reached nested layouts change behavior, which is the intended fix.
+  (Note: l.990's existing comment already states this invariant -- "MUST be
+  AFTER load_state_file to override any stale project_id" -- the bug is that a
+  SECOND state-file load was added afterward that re-broke it. This fix
+  restores the documented invariant.)
+
+  DO NOT bother with the multiple-small-variables .chtpm refactor for the fix
+  itself. (It's a fine style cleanup and matches convention, but it is
+  cosmetic here and must NOT be conflated with "the fix" -- if you do it,
+  the display would STILL be blank until the project_id clobber above is
+  fixed. Fix the clobber first; verify blank->populated; THEN decide
+  separately whether to also do the style refactor.)
+
+--------------------------------------------------------------------------------
+2. PROBLEM 2 — CANNOT be root-caused from artifacts alone; needs a live
+   GL capture. But the receipt already narrows it. Prompt is PARTIALLY valid.
+--------------------------------------------------------------------------------
+current_frame.objects.pdl (the live GL/semantic receipt) shows the settings
+button line is emitted as THREE objects (this confirms the prompt's
+emit_embedded_line_objects() model exactly):
+
+  OBJECT 0011  label="| |  "            x=3  w=5    (TWO literal '|' at col 3 and col 5)
+  OBJECT 0012  label="Window Geometry"  x=8  w=15   (the button)
+  OBJECT 0013  label="<58 spaces>|"     x=23 w=61   (ONE literal '|' at ~col 83)
+
+So on that row there are hand-authored '|' glyphs at cols 3, 5, and ~83,
+PLUS the panel's own border box (OBJECT 0005, role=panel, border color set).
+The prompt's theory #3 (hand-drawn '|' colliding/doubling with the real frame
+edge) is the most likely, and the receipt supports it: the closing '|' at
+col ~83 does NOT line up with the panel right edge (panel is x=1 w=94 ->
+right edge col ~95). That misalignment is exactly the "extra bar" shape.
+=> Prompt's "it's misalignment, not shouldn't-exist" conclusion looks right.
+
+BUT: do not fix blind. The exact repro (which project, ASCII vs GL, which
+column) still needs one live screenshot. Ask the user for it (see TEST
+list, T2). The RULED-OUT note in the original prompt (draw_object only
+borders window/panel/header tags, not text tags) was spot-checked against
+wraith_rgb_daemon.c and holds -- don't re-investigate that.
+
+--------------------------------------------------------------------------------
+3. PROBLEM 3 — design is sound; index numbers in the prompt are STALE.
+--------------------------------------------------------------------------------
+Verified against live code + receipt:
+- Chrome buttons o/-/x are real: objects.pdl OBJECT 0006/0007/0008,
+  nav=2/3/4, action=SET_ACTIVE:2/3/4. ASCII side is at
+  wraith-alpha_manager.c l.2146 (`SET_ACTIVE:2`) etc. Confirmed both sides
+  exist as the prompt says -- a 4th button must be added to BOTH.
+- launcher_start=5 is at l.2137 (build_desktop_shell_markup) AND l.3043
+  (dispatch_menu_index, as `5 + extra_project_slots`) AND effectively l.3680.
+  The prompt said "exactly TWO places" -- that's STALE, there are ~3 sites.
+  Re-grep `launcher_start` and every literal `5` in the menu-index math
+  before bumping. Do not trust the prompt's count.
+- BIG CAVEAT the prompt underweights: in the live artifacts, the GL/semantic
+  objects.pdl is written by the MANAGER and describes the desktop shell
+  (settings_3 panel) -- it did NOT follow the href navigation into
+  window-geom (current_layout=window-geom.chtpm, yet objects.pdl still shows
+  settings). i.e. href nav updates the ASCII parser's current_frame.txt but
+  the GL/semantic layer does not follow it. This is the "href silently inert
+  in GL mode" issue from 2fix.txt, still live. Problem 3's button navigates
+  via request_layout_change() -> so in GL mode the button may change ASCII
+  current_frame.txt but the GL view will not follow. VERIFY the GL path of
+  the new button explicitly; it may surface that href-in-GL still needs the
+  fix noted in 2fix.txt before Problem 3 is truly "works in GL mode".
+
+--------------------------------------------------------------------------------
+4. RECEIPTS / FRAMES — direct answer to "can you test GL windows by
+   reading receipts?"
+--------------------------------------------------------------------------------
+YES, per-frame GL receipts exist and are RICH and usable:
+  pieces/display/current_frame.objects.pdl   <- full semantic object list:
+      every object's tag/id/role/x/y/w/h/z/focused/nav/action/label/colors.
+      This is the single best artifact for testing GL windows headlessly --
+      you can assert button positions, nav indices, actions, focus, labels
+      WITHOUT a display. Problems 2 and 3 are both checkable against it.
+  current_frame.desktop_state.pdl  <- window list w/ x/y/w/h/z/focus/role.
+  current_frame.focus_state.pdl    <- which object is active.
+  current_frame.cells.pdl          <- full rasterized 96x30 cell grid.
+  current_frame.hitmap.pdl         <- click hit-testing map.
+  current_frame.audit.txt / .meta.pdl <- frame_id, cols/rows, cell px, counts.
+
+GAP-R1 -- RETRACTED (was WRONG). The first review claimed "no history is
+  being recorded" because session_frame_history.txt / session_receipt_history.txt
+  were both 0 bytes. That was a bad inference: the writer EXISTS and works
+  (wraith-alpha_manager.c l.2983 writes session_receipt_history.txt), and the
+  user confirms it populates fine when they run the project. The files were
+  empty here ONLY because no live session has ever run in this review
+  environment (and the AI shell can't launch it -- no /dev/tty). Empty files
+  != broken writer. Lesson logged: run the k3 headless flow (or ask the user
+  to run) before declaring an artifact-producer dead. NOT a work item.
+
+ONE REAL RECEIPT GAP (note as work item -- "make better receipts"):
+  GAP-R2: href-reached layouts get NO GL/semantic receipt of their OWN
+    content. objects.pdl always describes the desktop shell, never the
+    href-navigated layout (window-geom). So an agent CAN read the ASCII
+    receipt (current_frame.txt) of window-geom, but CANNOT read a GL/object
+    receipt of it -- because, per section 3, the GL layer never followed the
+    href. Until href-in-GL is wired, "test the window-geom GL window by
+    reading receipts" is not possible; only its ASCII frame is inspectable.
+
+  RECOMMENDATION: (a) fix the history writer (GAP-R1) so the k3 guide works;
+  (b) once href-in-GL is wired (needed for Problem 3 anyway), objects.pdl
+  will start reflecting href'd layouts and GAP-R2 closes for free.
+
+--------------------------------------------------------------------------------
+5. HOW-TO-DO LIST (ordered; do in this order)
+--------------------------------------------------------------------------------
+STEP 1 (Problem 1 -- highest value, smallest, root-caused):
+  1a. Standalone-verify first (per the discipline): extract set_var/get_var/
+      get + load_state_file + set_project_id_from_layout into a scratch test;
+      feed it current_layout=window-geom.chtpm and the REAL alpha_state.txt
+      +window-geom manager/state.txt; confirm proj_id ends as
+      "...settings/window-geom" AFTER the fix (and reproduces "wraith-alpha"
+      BEFORE it, proving the diagnosis).
+  1b. Apply the re-assert-project_id fix in load_vars() (section 1 above).
+  1c. Rebuild the real parser +x binary; diff warning count vs prior build
+      (expect the same ~77-78 pre-existing snprintf notices, nothing new).
+  1d. Live-check: navigate settings -> Window Geometry; confirm the geometry
+      block now renders (was blank).
+  1e. (OPTIONAL, separate) only after 1d passes, decide whether to also do
+      the multiple-small-variables .chtpm style refactor. It is NOT the fix.
+
+STEP 2 (Receipts -- unblocks testing everything else):
+  2a. Fix GAP-R1: find why session_frame_history.txt /
+      session_receipt_history.txt are empty (grep the manager for where they
+      SHOULD be appended; check only_on_change / the run mode gate). Get at
+      least session_frame_history.txt populating so the k3 guide works.
+  2b. Re-run, confirm history files grow.
+
+STEP 3 (Problem 2 -- needs the live capture from TEST T2 first):
+  3a. With the user's screenshot + the matching objects.pdl row, compute the
+      exact column math (panel right edge vs the hand-authored closing '|').
+  3b. Fix emit_embedded_line_objects() padding width so the closing '|'
+      lands on the frame edge (or drop the redundant one) -- match
+      user_profile.chtpm's balanced-border convention.
+  3c. Standalone-verify the column math, rebuild, re-capture objects.pdl,
+      confirm the '|' columns line up.
+
+STEP 4 (Problem 3 -- the universal chrome button):
+  4a. Re-grep launcher_start / the menu-index math; get the CURRENT set of
+      sites (prompt's "two places" is stale -- there are ~3).
+  4b. Add the 4th chrome button on BOTH the ASCII (build_desktop_shell_markup)
+      and semantic (objects.pdl emit) sides together; new
+      DESKTOP_ACTION:open_window_geom branch in route_command.
+  4c. CRITICAL: verify the GL path. Per section 3, href/request_layout_change
+      may not move the GL view. If it doesn't, the href-in-GL wiring (2fix.txt)
+      is a prerequisite -- flag it and fix that first, don't fake it.
+  4d. Verify via objects.pdl (receipt) that the 4th button appears on every
+      window and targets the ACTIVE window's project_id.
+
+--------------------------------------------------------------------------------
+6. WAYS I NEED YOU (the user) TO TEST AFTER EACH FIX
+--------------------------------------------------------------------------------
+T1 (Problem 1, after STEP 1): In a live session, open Settings -> click
+   "Window Geometry". Report: does the geometry block (Source/Window/Project/
+   x/y/width/height lines) now show text where it used to be blank? Paste
+   the block or a screenshot. Also try it in BOTH ASCII and GL mode and say
+   which worked -- per section 3, GL may still be blank even after the fix
+   (that would confirm the href-in-GL gap, not a regression).
+
+T2 (Problem 2, BEFORE I fix it): Reproduce the "extra | bars" and send a
+   screenshot (or exact description: which project, ASCII or GL, and roughly
+   which column the extra bar is in). One capture is enough -- I'll match it
+   to the objects.pdl row. Without this I'd be guessing.
+
+T3 (Problem 3, after STEP 4): Open at least TWO windows (e.g. Terminal +
+   one other). For EACH, with it active, click the new chrome button; confirm
+   it opens window-geom targeted at THAT window (not a hardcoded one). Do it
+   via mouse AND via Tab+Enter. Do it in ASCII AND GL. Report any of the 8
+   combinations that fail.
+
+T4 (Receipts, after STEP 2): After doing a few actions, tell me whether
+   pieces/debug/frames/session_frame_history.txt is now non-empty (just
+   `wc -l` it). That confirms the receipt history writer is live.
+
+T5 (Regression, after any step): Confirm normal desktop still works --
+   Terminal opens, taskbar buttons work, ASCII<->GL toggle still works
+   (these share the index math Problem 3 touches).
+
+################################################################################
+END OF J5 ADDENDUM
+################################################################################

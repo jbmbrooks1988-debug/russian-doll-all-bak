@@ -1,3 +1,0 @@
-SETTINGS -- choose an option:
-
-<text label="| |  " /><button label="Window Geometry" href="projects/wraith-alpha/wraith-projects/settings/window-geom/layouts/window-geom.chtpm" /><text label="                                                            |" /><br/>

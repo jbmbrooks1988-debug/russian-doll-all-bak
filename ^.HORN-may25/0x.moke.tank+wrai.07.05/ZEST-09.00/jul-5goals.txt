@@ -1,0 +1,45 @@
+JUL-5 GOALS — WINDOW GEOMETRY & CHROME BUTTONS
+================================================
+
+COMPLETED:
+----------
+✓ Step 1: Populated window-geom in the settings window (nested inside settings project)
+
+
+CURRENT GOALS (3 & 4):
+----------------------
+
+GOAL 3: ADD CHROME BUTTONS TO EVERY WINDOW
+===========================================
+- Add a clickable button to the title bar / chrome of every window (both ASCII and GL)
+- Button appearance: something like "[geometry]" or a gear icon next to minimize/close
+- Button action: navigate_active_window:wraith-alpha/wraith-projects/settings/window-geom
+- Before navigation: write the CURRENT active window's id/title/geometry to session/wg_target.txt
+  so window-geom knows which window it's describing
+- Result: clicking the button opens window-geom in THE SAME WINDOW, showing that window's geometry
+- Appearance: universal — appears on every window's chrome automatically, no per-window config
+- Scope: both ASCII (build_desktop_shell_markup) and GL (write_semantic_projection_files)
+
+
+GOAL 4: MAKE WINDOW-GEOM EDITABLE VIA CLI-IO
+=============================================
+- window-geom currently displays read-only geometry info
+- Add cli-io controls to allow inline editing of:
+  - window x position
+  - window y position
+  - window width
+  - window height
+- Edits should:
+  - Update the window's WINDOW section in its project.pdl (new pattern from j5 changes)
+  - Trigger a render refresh to show updated geometry immediately
+  - Persist across sessions (stored in project.pdl)
+- UI: keep simple read-only display above, add editable fields below for x/y/width/height
+- Validation: prevent negative values, ensure geometry fits within desktop bounds
+
+
+ARCHITECTURE NOTES:
+-------------------
+- Projects work nested (inside settings) OR at main level — populate accordingly
+- window-geom stays nested in settings; settings will have other "settings projects" too
+- Chrome button is universal — not a per-window setting, appears on every window's markup
+- Window geometry is now a project.pdl WINDOW section (sovereign artifact pattern)

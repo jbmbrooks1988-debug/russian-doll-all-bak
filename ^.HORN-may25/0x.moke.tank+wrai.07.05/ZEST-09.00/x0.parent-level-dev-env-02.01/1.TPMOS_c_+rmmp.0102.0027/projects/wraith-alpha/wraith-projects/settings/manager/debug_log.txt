@@ -1,0 +1,259 @@
+[1783256787] Settings Hub Manager Started
+[1783256787] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783256787] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783256787] Discovered 1 settings entry
+[1783256787] Settings Hub Manager init complete (discovery is one-time; href clicks are handled generically, no hot path needed)
+[1783257726] Settings Hub Manager Started
+[1783257726] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783257726] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783257726] Discovered 1 settings entry
+[1783257726] Settings Hub Manager init complete (discovery is one-time; href clicks are handled generically, no hot path needed)
+[1783258023] Settings Hub Manager Started
+[1783258023] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783258023] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783258023] Discovered 1 settings entry
+[1783258023] Settings Hub Manager init complete (discovery is one-time; href clicks are handled generically, no hot path needed)
+[1783258230] Settings Hub Manager Started
+[1783258230] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783258230] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783258230] Discovered 1 settings entry
+[1783258230] Settings Hub Manager init complete (discovery is one-time; href clicks are handled generically, no hot path needed)
+[1783258343] Settings Hub Manager Started
+[1783258343] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783258343] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-01.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783258343] Discovered 1 settings entry
+[1783258343] Settings Hub Manager init complete (discovery is one-time; href clicks are handled generically, no hot path needed)
+[1783303662] Settings Hub Manager Started
+[1783303662] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783303662] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783303662] Discovered 1 settings entry
+[1783303662] Settings Hub Manager init complete (discovery is one-time; href clicks are handled generically, no hot path needed)
+[1783303795] Settings Hub Manager Started
+[1783303795] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783303795] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783303795] Discovered 1 settings entry
+[1783303795] Settings Hub Manager init complete (discovery is one-time; href clicks are handled generically, no hot path needed)
+[1783303795] Settings Hub Manager Started
+[1783303795] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783303795] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783303795] Discovered 1 settings entry
+[1783303795] Settings Hub Manager init complete (discovery is one-time; href clicks are handled generically, no hot path needed)
+[1783305612] Settings Hub Manager Started
+[1783305612] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783305612] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783305612] Discovered 1 settings entry
+[1783305612] Settings Hub Manager init complete (discovery is one-time; href clicks are handled generically, no hot path needed)
+[1783305618] Settings Hub Manager Started
+[1783305618] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783305618] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783305618] Discovered 1 settings entry
+[1783305618] Settings Hub Manager init complete (discovery is one-time; href clicks are handled generically, no hot path needed)
+[1783319273] Settings Hub Manager Started
+[1783319273] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783319273] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783319273] Discovered 1 settings entry
+[1783319273] Settings Hub Manager: init complete, entering hot-path loop
+[1783319273] Active page changed, re-rendering wraith_body.txt
+[1783320530] Settings Hub Manager Started
+[1783320530] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783320530] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783320530] Discovered 1 settings entry
+[1783320530] Settings Hub Manager: init complete, entering marker-file-watch loop
+[1783320693] Settings Hub Manager Started
+[1783320693] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783320693] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783320693] Discovered 1 settings entry
+[1783320693] Settings Hub Manager: init complete, entering marker-file-watch loop
+[1783320873] Settings Hub Manager Started
+[1783320873] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783320873] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783320873] Discovered 1 settings entry
+[1783320873] Settings Hub Manager: init complete, entering marker-file-watch loop
+[1783326198] Settings Hub Manager Started
+[1783326198] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783326198] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783326198] Discovered 1 settings entry
+[1783326198] Settings Hub Manager: init complete, entering marker-file-watch loop
+[1783326202] Page change detected, re-rendering wraith_body.txt
+[1783326203] Page change detected, re-rendering wraith_body.txt
+[1783326907] Settings Hub Manager Started
+[1783326907] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783326907] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783326907] Discovered 1 settings entry
+[1783326907] Settings Hub Manager: init complete, entering marker-file-watch loop
+[1783326997] Settings Hub Manager Started
+[1783326997] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783326997] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783326997] Discovered 1 settings entry
+[1783326997] Settings Hub Manager: init complete, entering marker-file-watch loop
+[1783327057] Settings Hub Manager Started
+[1783327057] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783327057] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783327057] Discovered 1 settings entry
+[1783327057] Settings Hub Manager: init complete, entering marker-file-watch loop
+[1783335776] Settings Hub Manager Started
+[1783335776] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783335776] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783335776] Discovered 1 settings entry
+[1783335776] Settings Hub Manager: init complete, entering marker-file-watch loop
+[1783335778] Page change detected, re-rendering wraith_body.txt
+[1783335780] Page change detected, re-rendering wraith_body.txt
+[1783335824] Settings Hub Manager Started
+[1783335824] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783335824] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783335824] Discovered 1 settings entry
+[1783335824] Settings Hub Manager: init complete, entering marker-file-watch loop
+[1783335826] Page change detected, re-rendering wraith_body.txt
+[1783335828] Page change detected, re-rendering wraith_body.txt
+[1783338781] Settings Hub Manager Started
+[1783338781] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783338781] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783338781] Discovered 1 settings entry
+[1783338781] Settings Hub Manager: init complete, entering marker-file-watch loop
+[1783338783] Page change detected, re-rendering wraith_body.txt
+[1783338783] Page change detected, re-rendering wraith_body.txt
+[1783339129] Settings Hub Manager Started
+[1783339129] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783339129] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783339129] Discovered 1 settings entry
+[1783339129] Settings Hub Manager: init complete, entering marker-file-watch loop
+[1783339136] Page change detected, re-rendering wraith_body.txt
+[1783339212] Settings Hub Manager Started
+[1783339212] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783339212] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783339212] Discovered 1 settings entry
+[1783339212] Settings Hub Manager: init complete, entering marker-file-watch loop
+[1783339235] Page change detected, re-rendering wraith_body.txt
+[1783339237] Page change detected, re-rendering wraith_body.txt
+[1783343781] Settings Hub Manager Started
+[1783343781] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783343781] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783343781] Discovered 1 settings entry
+[1783343781] Settings Hub Manager: init complete, entering marker-file-watch loop
+[1783343783] Page change detected, re-rendering wraith_body.txt
+[1783345155] Settings Hub Manager Started
+[1783345155] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783345155] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783345155] Discovered 1 settings entry
+[1783345155] Settings Hub Manager: init complete, entering marker-file-watch loop
+[1783345157] Page change detected, re-rendering wraith_body.txt
+[1783347199] Settings Hub Manager Started
+[1783347199] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783347199] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783347199] Discovered 1 settings entry
+[1783347199] Settings Hub Manager: init complete, entering marker-file-watch loop
+[1783347203] Page change detected, re-rendering wraith_body.txt
+[1783347205] Page change detected, re-rendering wraith_body.txt
+[1783347939] Settings Hub Manager Started
+[1783347939] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783347939] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783347939] Discovered 1 settings entry
+[1783347939] Settings Hub Manager: init complete, entering marker-file-watch loop
+[1783347942] Page change detected, re-rendering wraith_body.txt
+[1783347944] Page change detected, re-rendering wraith_body.txt
+[1783347948] Page change detected, re-rendering wraith_body.txt
+[1783347948] Page change detected, re-rendering wraith_body.txt
+[1783347948] Page change detected, re-rendering wraith_body.txt
+[1783347948] Page change detected, re-rendering wraith_body.txt
+[1783347948] Page change detected, re-rendering wraith_body.txt
+[1783347948] Page change detected, re-rendering wraith_body.txt
+[1783347948] Page change detected, re-rendering wraith_body.txt
+[1783347948] Page change detected, re-rendering wraith_body.txt
+[1783347948] Page change detected, re-rendering wraith_body.txt
+[1783347948] Page change detected, re-rendering wraith_body.txt
+[1783347948] Page change detected, re-rendering wraith_body.txt
+[1783347948] Page change detected, re-rendering wraith_body.txt
+[1783347948] Page change detected, re-rendering wraith_body.txt
+[1783347948] Page change detected, re-rendering wraith_body.txt
+[1783347948] Page change detected, re-rendering wraith_body.txt
+[1783347949] Page change detected, re-rendering wraith_body.txt
+[1783347949] Page change detected, re-rendering wraith_body.txt
+[1783347949] Page change detected, re-rendering wraith_body.txt
+[1783347949] Page change detected, re-rendering wraith_body.txt
+[1783347949] Page change detected, re-rendering wraith_body.txt
+[1783347949] Page change detected, re-rendering wraith_body.txt
+[1783347949] Page change detected, re-rendering wraith_body.txt
+[1783347949] Page change detected, re-rendering wraith_body.txt
+[1783347949] Page change detected, re-rendering wraith_body.txt
+[1783347949] Page change detected, re-rendering wraith_body.txt
+[1783347949] Page change detected, re-rendering wraith_body.txt
+[1783347949] Page change detected, re-rendering wraith_body.txt
+[1783347949] Page change detected, re-rendering wraith_body.txt
+[1783347949] Page change detected, re-rendering wraith_body.txt
+[1783347949] Page change detected, re-rendering wraith_body.txt
+[1783347949] Page change detected, re-rendering wraith_body.txt
+[1783347949] Page change detected, re-rendering wraith_body.txt
+[1783347949] Page change detected, re-rendering wraith_body.txt
+[1783347949] Page change detected, re-rendering wraith_body.txt
+[1783347950] Page change detected, re-rendering wraith_body.txt
+[1783347950] Page change detected, re-rendering wraith_body.txt
+[1783347950] Page change detected, re-rendering wraith_body.txt
+[1783347950] Page change detected, re-rendering wraith_body.txt
+[1783347950] Page change detected, re-rendering wraith_body.txt
+[1783347950] Page change detected, re-rendering wraith_body.txt
+[1783347950] Page change detected, re-rendering wraith_body.txt
+[1783347950] Page change detected, re-rendering wraith_body.txt
+[1783347950] Page change detected, re-rendering wraith_body.txt
+[1783347950] Page change detected, re-rendering wraith_body.txt
+[1783347950] Page change detected, re-rendering wraith_body.txt
+[1783347950] Page change detected, re-rendering wraith_body.txt
+[1783347950] Page change detected, re-rendering wraith_body.txt
+[1783347950] Page change detected, re-rendering wraith_body.txt
+[1783347950] Page change detected, re-rendering wraith_body.txt
+[1783347950] Page change detected, re-rendering wraith_body.txt
+[1783347950] Page change detected, re-rendering wraith_body.txt
+[1783347950] Page change detected, re-rendering wraith_body.txt
+[1783347950] Page change detected, re-rendering wraith_body.txt
+[1783347950] Page change detected, re-rendering wraith_body.txt
+[1783347951] Page change detected, re-rendering wraith_body.txt
+[1783347951] Page change detected, re-rendering wraith_body.txt
+[1783347951] Page change detected, re-rendering wraith_body.txt
+[1783347951] Page change detected, re-rendering wraith_body.txt
+[1783347951] Page change detected, re-rendering wraith_body.txt
+[1783347951] Page change detected, re-rendering wraith_body.txt
+[1783347951] Page change detected, re-rendering wraith_body.txt
+[1783347951] Page change detected, re-rendering wraith_body.txt
+[1783347951] Page change detected, re-rendering wraith_body.txt
+[1783347951] Page change detected, re-rendering wraith_body.txt
+[1783347951] Page change detected, re-rendering wraith_body.txt
+[1783347951] Page change detected, re-rendering wraith_body.txt
+[1783347951] Page change detected, re-rendering wraith_body.txt
+[1783347951] Page change detected, re-rendering wraith_body.txt
+[1783347951] Page change detected, re-rendering wraith_body.txt
+[1783347951] Page change detected, re-rendering wraith_body.txt
+[1783347951] Page change detected, re-rendering wraith_body.txt
+[1783347951] Page change detected, re-rendering wraith_body.txt
+[1783347951] Page change detected, re-rendering wraith_body.txt
+[1783347951] Page change detected, re-rendering wraith_body.txt
+[1783347952] Page change detected, re-rendering wraith_body.txt
+[1783347952] Page change detected, re-rendering wraith_body.txt
+[1783347952] Page change detected, re-rendering wraith_body.txt
+[1783347952] Page change detected, re-rendering wraith_body.txt
+[1783347952] Page change detected, re-rendering wraith_body.txt
+[1783347952] Page change detected, re-rendering wraith_body.txt
+[1783347952] Page change detected, re-rendering wraith_body.txt
+[1783347952] Page change detected, re-rendering wraith_body.txt
+[1783347952] Page change detected, re-rendering wraith_body.txt
+[1783347952] Page change detected, re-rendering wraith_body.txt
+[1783347952] Page change detected, re-rendering wraith_body.txt
+[1783347952] Page change detected, re-rendering wraith_body.txt
+[1783347952] Page change detected, re-rendering wraith_body.txt
+[1783347952] Page change detected, re-rendering wraith_body.txt
+[1783347952] Page change detected, re-rendering wraith_body.txt
+[1783347952] Page change detected, re-rendering wraith_body.txt
+[1783347952] Page change detected, re-rendering wraith_body.txt
+[1783347952] Page change detected, re-rendering wraith_body.txt
+[1783347952] Page change detected, re-rendering wraith_body.txt
+[1783347952] Page change detected, re-rendering wraith_body.txt
+[1783347953] Page change detected, re-rendering wraith_body.txt
+[1783347953] Page change detected, re-rendering wraith_body.txt
+[1783347953] Page change detected, re-rendering wraith_body.txt
+[1783347953] Page change detected, re-rendering wraith_body.txt
+[1783347953] Page change detected, re-rendering wraith_body.txt
+[1783347953] Page change detected, re-rendering wraith_body.txt
+[1783347953] Page change detected, re-rendering wraith_body.txt
+[1783347953] Page change detected, re-rendering wraith_body.txt
+[1783347953] Page change detected, re-rendering wraith_body.txt
+[1783347953] Page change detected, re-rendering wraith_body.txt
+[1783347953] Page change detected, re-rendering wraith_body.txt
+[1783347953] Page change detected, re-rendering wraith_body.txt

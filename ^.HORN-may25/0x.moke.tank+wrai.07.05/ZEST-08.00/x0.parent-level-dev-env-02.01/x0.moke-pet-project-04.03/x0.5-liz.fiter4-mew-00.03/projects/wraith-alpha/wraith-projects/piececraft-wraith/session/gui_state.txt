@@ -1,9 +1,0 @@
-module_path=projects/wraith-alpha/wraith-projects/piececraft-wraith/manager/+x/piececraft-wraith_manager.+x
-project_id=wraith-alpha/wraith-projects/piececraft-wraith
-xel_x=4
-xel_y=2
-xel_z=0
-active_tile=.
-display_mode=2d_topdown
-debug_mode_on=0
-game_map=╔════════════════════════════════════════════╗\n║   PIECECRAFT WRAITH - MAP VIEW             ║\n╚════════════════════════════════════════════╝\n\n\n─────────────────────────────────────────────\nPosition: (1, 1, 0) | Mode: 3D | Debug: OFF\n─────────────────────────────────────────────\n\nCONTROLS:\n  Arrows move | X/Z z-level | 8 mode | 9 debug | WASD camera | 1/2/3 POV | ESC menu\n

@@ -1,0 +1,186 @@
+JUL-5 PATTERNS RESEARCH — STEP 3: EDITABLE WINDOW-GEOM
+=======================================================
+Investigated existing code patterns before implementing goal 3 & 4.
+All patterns found; no reinvention needed.
+
+---
+
+PATTERN 1: READING & WRITING STATE FILES
+==========================================
+Location: terminal/ops/src/wraith_project_input.c (exemplar)
+Also used by: wraith-ed, every wraith project
+
+Convention:
+  - session/state.txt stores key=value pairs (one per line)
+  - Load: parse key=value pairs, build struct
+  - Save: fprintf() to temp file, atomic rename (tmp → actual)
+
+Atomic write pattern (needed for concurrent access):
+  FILE *f = fopen(tmp_path, "w");
+  fprintf(f, "key1=%s\n", value1);
+  fprintf(f, "key2=%d\n", value2);
+  fclose(f);
+  rename(tmp_path, actual_path);
+
+Helper functions already in codebase:
+  - trim_newline(char *s) — strip \r\n
+  - copy_value(char *dst, size_t dst_sz, const char *src) — safe strcpy
+  - trim_both_ends(char *s) — strip whitespace
+
+---
+
+PATTERN 2: READING PROJECT.PDL (window geometry example)
+========================================================
+Location: wraith-alpha_manager.c & window-geom_manager.c
+
+Format: SECTION | KEY | VALUE (pipe-delimited)
+Example:
+  WINDOW | window_x | 10
+  WINDOW | window_y | 20
+  WINDOW | window_width | 80
+  WINDOW | window_height | 30
+
+Read function pattern (from window-geom_manager.c:read_pdl_value):
+  void read_pdl_value(const char *path, const char *key, char *dst, size_t dst_sz) {
+      FILE *f;
+      char line[MAX_LINE];
+
+      dst[0] = '\0';
+      f = fopen(path, "r");
+      if (!f) return;
+
+      while (fgets(line, sizeof(line), f)) {
+          char *pipe1, *pipe2, *val, *nl;
+          if (!strstr(line, key)) continue;
+          pipe1 = strchr(line, '|');
+          if (!pipe1) continue;
+          pipe2 = strchr(pipe1 + 1, '|');
+          if (!pipe2) continue;
+          val = trim_str(pipe2 + 1);
+          nl = strchr(val, '\n');
+          if (nl) *nl = '\0';
+          strncpy(dst, val, dst_sz - 1);
+          dst[dst_sz - 1] = '\0';
+          break;
+      }
+      fclose(f);
+  }
+
+Current status in wraith-alpha_manager.c:
+  - READS window geometry from project.pdl (load_window_geometry_from_pdl exists)
+  - Does NOT yet write window geometry back to project.pdl
+  - This is where goal 4 (editable geometry) lives
+
+---
+
+PATTERN 3: WRITING PROJECT.PDL (NOT YET IMPLEMENTED)
+====================================================
+No existing write_pdl_value() or update_project_pdl() function found.
+This is new for window-geom editing.
+
+Recommended approach (matches codebase style):
+  1. Read entire project.pdl into memory (all lines)
+  2. Update or insert WINDOW section lines for x/y/width/height
+  3. Write to temp file, atomic rename
+
+Or simpler: use sed-style line-by-line update
+  - Scan for existing WINDOW | window_x | ... line
+  - If found, replace it; if not, append at end
+  - Same atomic write pattern
+
+---
+
+PATTERN 4: CLI_IO & USER INPUT (GOAL 4)
+=======================================
+Location: terminal/layouts/terminal.chtpm
+
+Markup pattern:
+  <interact src="projects/wraith-alpha/wraith-projects/terminal/session/history.txt" />
+  <button label="Start Typing" onClick="INTERACT" />
+
+How it works:
+  1. <interact src="..."> — defines which file to append input to
+  2. onClick="INTERACT" — on button click, switches input mode
+  3. User types into that file (char-by-char)
+  4. wraith_project_input.c reads that file on every keystroke
+  5. Parses KEY_PRESSED: <keycode> or COMMAND: <line>
+
+For window-geom editable fields, we need:
+  - NOT cli_io input (that's for shell-like input)
+  - Instead: render editable text fields in layout
+  - Capture SUBMIT clicks
+  - Parse the input, validate, write to project.pdl
+
+Pattern from terminal input example (wraith_project_input.c):
+  - Read KEY_PRESSED lines from history
+  - Accumulate into input_line buffer
+  - On Enter (key 13), process the command
+  - Same pattern can apply: numeric input → parse → validate → save
+
+---
+
+PATTERN 5: OUTPUT VIA SESSION/WRAITH_BODY.TXT
+==============================================
+Location: every wraith project's manager
+
+Convention:
+  - Session/wraith_body.txt is the generic body-render fallback
+  - Every hosted project gets it for free
+  - Manager writes plain text or markup to this file
+  - wraith-alpha renders it unchanged
+
+Current window-geom output pattern:
+  - window-geom_manager.c writes manager/state.txt (NOT session/wraith_body.txt)
+  - Reads that via ${window_geom_display} variable substitution
+  - This is the "mega-variable" pattern that's known problematic
+
+For editable version, per 2do-july5.txt:
+  - Switch to writing session/wraith_body.txt directly
+  - Use plain lines + <button> markup
+  - Same output path every other Window project uses
+  - Deletes the mega-variable problem by reusing proven path
+
+---
+
+STEP 3 IMPLEMENTATION ROADMAP
+==============================
+
+Task 3.1: Create write_pdl_value() helper
+  - Input: path, key (e.g. "window_x"), value (e.g. "42")
+  - Read entire file into memory
+  - Find or create WINDOW section
+  - Update/insert the line
+  - Write atomically (temp+rename)
+  - Matches read_pdl_value()'s style
+
+Task 3.2: Capture editable input
+  - window-geom layout already has static display
+  - Add editable <input> or <button> fields for x/y/width/height
+  - On submit/button click, write values to session/edit_pending.txt
+  - window-geom_manager runs and sees those files
+
+Task 3.3: Parse input, update project.pdl
+  - Read session/edit_pending.txt (if exists)
+  - Parse int x, y, width, height values
+  - Validate (non-negative, fit within bounds)
+  - Call write_pdl_value() 4 times (once per field)
+  - Trigger render refresh
+
+Task 3.4: Feedback to user
+  - Update session/wraith_body.txt output
+  - Show "Saved" message or validation error
+  - Re-display updated values
+
+---
+
+KEY FINDINGS FOR GOALS 3 & 4
+=============================
+
+✓ No new file formats needed — reuse project.pdl (already proven)
+✓ No new communication patterns — use session/*.txt files (standard)
+✓ Atomic write pattern — already proven in terminal_manager.c
+✓ PDL read function — exists; just need write counterpart
+✓ User input capture — terminal/wraith_project_input.c is the model
+✓ Output rendering — switch window-geom to session/wraith_body.txt (matches goal in 2do-july5.txt)
+
+All building blocks exist. This is assembly, not invention.

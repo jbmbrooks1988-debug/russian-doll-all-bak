@@ -1,0 +1,215 @@
+2DO — JULY 5 — "NAVIGATE WITHIN THE SAME WINDOW" REDESIGN
+============================================================
+Supersedes part of j5-prompt.txt (Problem 1's fix direction, Problem 3's
+action mechanism). Problem 2 (GL "extra | bars") is UNCHANGED and still
+open — see bottom of this doc.
+
+THE BUG IN THE CURRENT DESIGN
+------------------------------
+Today, clicking "Window Geometry" inside the settings window does:
+    href="projects/.../window-geom/layouts/window-geom.chtpm"
+which wraith_parser_alpha.c turns into:
+    strncpy(current_layout, el->href, ...)
+
+current_layout is ONE GLOBAL variable for the whole process. Every frame,
+parse_chtm() reads THAT FILE and renders it as the ENTIRE SCREEN. So
+"navigating" inside the settings window actually replaces the whole
+desktop shell — alpha-shell.chtpm, the taskbar, every other open window —
+with just window-geom.chtpm. Nothing of the desktop survives the click.
+
+This is the classic TPMOS mechanism and it's the RIGHT tool for the
+classic use case (a stand-alone project like `user` or `checkers`, loaded
+fresh with nothing else on screen, navigating between its own screens).
+It is the WRONG tool the moment a project is being hosted INSIDE the
+multi-window desktop shell as a Window (i.e. it has a slot in
+g_windows[], a taskbar entry, and is composed by
+build_desktop_shell_markup()). settings is a Window. So is every other
+project launched from the desktop's launcher row. href/current_layout
+was never designed for "one pane among several," only "the whole screen."
+
+Your framing is exactly right: a Window in the desktop is a browser tab.
+Clicking a link inside it should navigate that ONE tab to new content,
+in place — same tab, same position in the tab bar, same close button —
+while every other tab and the browser chrome around it stay untouched.
+This has to hold in ASCII and GL identically, since both are just two
+different renderings of the same g_windows[] state.
+
+THE FIX: REASSIGN THE WINDOW'S project_id IN PLACE, DON'T TOUCH current_layout
+--------------------------------------------------------------------------
+Every place that renders a Window's content — build_desktop_shell_markup()
+(ASCII), write_semantic_projection_files() (GL objects.pdl),
+append_project_probe_body() (reads session/wraith_body.txt) — already
+derives project_dir FRESH, EVERY RENDER, from window->project_id via
+project_dir_for_window(). None of them cache anything. That means if you
+change window->project_id and trigger_render(), the SAME Window instance
+(same g_windows[] slot, same id, same taskbar entry, same x/y/w/h) will
+just start showing different content on the very next frame — in BOTH
+ASCII and GL, for free, with no new rendering logic. This is the "browser
+tab navigates to a new URL" behavior, implemented the simplest way this
+codebase already supports it.
+
+Concretely:
+
+1. New named action in route_command(), same style as the existing
+   DESKTOP_ACTION: dispatch chain (view_ascii, view_gl, minimize_terminal,
+   etc — already proven, order-independent, modular):
+
+       DESKTOP_ACTION:navigate_active_window:<target_project_id>
+
+   Handler:
+       Window *w = active_window();
+       if (w) {
+           strncpy(w->project_id, target_project_id, sizeof(w->project_id) - 1);
+           w->project_id[sizeof(w->project_id) - 1] = '\0';
+           force_run_project_manager(g_project_root, w->project_id);  // see #3
+           trigger_render();
+       }
+
+   w->project_id is a plain char[128] (confirmed by reading the struct) —
+   nothing fancy, safe to overwrite directly.
+
+2. window-geom's project_id MUST become flat (no "/" after the
+   "wraith-alpha/wraith-projects/" prefix), because project_dir_for_window()
+   explicitly rejects any nested id:
+
+       name = window->project_id + strlen(prefix);
+       if (!name[0] || strstr(name, "..") || strchr(name, '/')) { return false; }
+
+   Its id today is "wraith-alpha/wraith-projects/settings/window-geom" —
+   this WILL be rejected. Fix: promote window-geom to a sibling of
+   settings, project_id = "wraith-alpha/wraith-projects/window-geom".
+   The files can physically move to
+   wraith-projects/window-geom/ (project.pdl, manager/, layouts/,
+   settings_entry.pdl-equivalent) — a flat directory move, not a code
+   change to project_dir_for_window() itself. Nothing in
+   project_dir_for_window() needs editing at all.
+
+3. ensure_project_manager() ONLY launches a project's manager the FIRST
+   time (it's gated by a lockfile in session/.manager.lock that is
+   written once and never cleaned up — confirmed by reading it just now).
+   That's fine for a normal Window that's opened once. It's NOT fine here:
+   navigating back and forth between settings and window-geom needs FRESH
+   content each visit (window-geom is displaying live state; settings'
+   entry list could change). So the navigate_active_window handler should
+   NOT reuse ensure_project_manager()'s lockfile gate — it should
+   fork+execl+waitpid the target project's manager SYNCHRONOUSLY every
+   single time navigate_active_window fires, exactly the way
+   trigger_initial_scene_render()/trigger_initial_render() already do
+   for piececraft-wraith/terminal. Call this force_run_project_manager()
+   — same fork/exec plumbing as the existing helpers, just always-run
+   instead of lockfile-gated.
+
+4. window-geom_manager.c should STOP writing manager/state.txt +
+   window_geom_display (the single \n-escaped mega-variable — this was
+   the suspected root cause of the still-blank display, since it violates
+   the proven ${var} convention seen in user_profile.chtpm: many small
+   variables with hand-authored borders, not one giant escaped blob).
+   Once window-geom is reached via project_id reassignment instead of
+   href/current_layout, it is being rendered by the SAME machinery as
+   terminal_manager.c and piececraft-wraith_manager.c — i.e. it should
+   just write session/wraith_body.txt directly, as plain lines/raw
+   passthrough markup, e.g.:
+
+       fprintf(body, "WINDOW GEOMETRY (read-only)\n");
+       fprintf(body, "\n");
+       fprintf(body, "Window: %s (%s)\n", title, id);
+       fprintf(body, "Project: %s\n", project_id);
+       fprintf(body, "x=%d y=%d width=%d height=%d\n", x, y, w, h);
+       fprintf(body, "\n");
+       fprintf(body, "<button label=\"Back to Settings\" onClick=\"DESKTOP_ACTION:navigate_active_window:wraith-alpha/wraith-projects/settings\" />\n");
+
+   This deletes the whole ${var}-substitution problem rather than
+   debugging it — it switches window-geom onto the SAME proven path
+   every other Window-hosted project already uses successfully. This is
+   a side-effect fix for Problem 1 in j5-prompt.txt, not a separate task.
+
+   window-geom still needs to know WHICH window's geometry to show. Keep
+   the existing session/wg_target.txt convention: right before reassigning
+   project_id, the caller (settings' button handler, or the future
+   universal chrome button) writes the ORIGINAL window's id/title/geometry
+   into wg_target.txt (or just the id, and window-geom looks up the rest
+   from alpha_state.txt) so window-geom knows what it's describing even
+   though it's now "borrowing" that window's pane.
+
+5. settings_manager.c's write_wraith_body() currently emits:
+       <button label="Window Geometry" href="projects/.../window-geom.chtpm" />
+   Change to:
+       <button label="Window Geometry" onClick="DESKTOP_ACTION:navigate_active_window:wraith-alpha/wraith-projects/window-geom" />
+   No change needed to extract_attr()/emit_embedded_line_objects() — it
+   already checks onClick before href:
+       if (!extract_attr(p, tag_end, "onClick", action, sizeof(action))) {
+           extract_attr(p, tag_end, "href", action, sizeof(action));
+       }
+   so onClick-based actions already flow through the GL embedded-object
+   pipeline built earlier this session, unmodified.
+
+6. settings_entry.pdl's marker schema changes meaning from "a .chtpm
+   layout path to href to" → "a project_id to navigate to." Rename the
+   field for clarity (entry_project_id= instead of entry_layout=) so
+   settings_manager.c's discover_entries()/write_wraith_body() build
+   onClick="DESKTOP_ACTION:navigate_active_window:<entry_project_id>"
+   instead of href="<entry_layout>".
+
+7. The universal chrome button (Problem 3, j5-prompt.txt) changes the
+   same way: its action becomes
+   DESKTOP_ACTION:navigate_active_window:wraith-alpha/wraith-projects/window-geom
+   (writing wg_target.txt with the CURRENT active window's identity first,
+   same as #4), not request_layout_change()/href. Everything else about
+   that design (wire it into build_desktop_shell_markup() once, so it
+   appears on every window automatically — ASCII, GL, and any window
+   already open before this code shipped, since content is recomputed
+   fresh every render from live g_windows[] state, never baked in at
+   window-creation time) is unaffected and still correct.
+
+WHY THIS NEVER TOUCHES chtpm_parser.c
+--------------------------------------
+Confirmed by stat + find --newermt earlier this session: chtpm_parser.c's
+mtime (2026-07-02) predates this whole session and was never modified.
+Everything above — the new DESKTOP_ACTION, the project_id reassignment,
+force_run_project_manager(), settings/window-geom's manager rewrites — is
+entirely inside wraith-alpha_manager.c (the desktop-shell/Window layer)
+and the two projects' own manager .c files. chtpm_parser.c only renders
+whatever .chtpm markup it's handed; it has no opinion about how a
+project_id gets chosen, so none of this needs to go near it. Confirms:
+yes, we can get here without editing chtpm_parser.c.
+
+WHY THIS FIXES ASCII TOO, NOT JUST GL
+---------------------------------------
+build_desktop_shell_markup() (the ASCII path) already re-derives each
+window's content from window->project_id on every single render, exactly
+like the GL path does. It was never broken by DIFFERENT logic — it was
+correct already because ASCII was never using href/current_layout for
+in-desktop windows in the first place... except settings' OWN button
+was still emitting href=, which — if ever clicked in ASCII mode too —
+would have caused the exact same "whole screen replaced" bug there.
+Switching settings' button (and window-geom's "back" button) to
+onClick=navigate_active_window fixes both renderers with the same one
+edit, because both renderers read the same underlying window->project_id.
+
+STILL OPEN / NOT PART OF THIS REDESIGN
+-----------------------------------------
+- GL "extra | bars" rendering bug — unrelated to href vs. navigate_active_window,
+  still needs the investigation described in j5-prompt.txt (draw_object()/
+  emit_embedded_line_objects() x-position math already partly checked;
+  decorative-border hypothesis already ruled out).
+- Live window dragging, multi-window picker UI, actual geometry EDITING
+  (window-geom is currently read-only display) — unchanged, still future work.
+
+IMPLEMENTATION ORDER (SMALLEST SAFE SLICES)
+----------------------------------------------
+1. Move window-geom to a flat project_id + directory, update its
+   project.pdl and settings' discovery reference. Compile-diff.
+2. Add force_run_project_manager() (copy trigger_initial_render()'s
+   fork/exec pattern, drop the lockfile check) + the
+   navigate_active_window DESKTOP_ACTION in route_command(). Compile-diff.
+3. Rewrite window-geom_manager.c to write session/wraith_body.txt
+   directly (drop manager/state.txt + window_geom_display entirely).
+4. Switch settings_manager.c's button + window-geom's "back" button from
+   href= to onClick=navigate_active_window. Compile-diff.
+5. Live-verify: open settings from the desktop, click Window Geometry —
+   confirm the SAME window now shows geometry content, taskbar/other
+   windows untouched, in both ASCII and GL. Click Back — confirm it
+   returns to settings' menu the same way.
+6. Only then: wire the universal chrome button using the same action,
+   per j5-prompt.txt's Problem 3, updated to use navigate_active_window
+   instead of request_layout_change.

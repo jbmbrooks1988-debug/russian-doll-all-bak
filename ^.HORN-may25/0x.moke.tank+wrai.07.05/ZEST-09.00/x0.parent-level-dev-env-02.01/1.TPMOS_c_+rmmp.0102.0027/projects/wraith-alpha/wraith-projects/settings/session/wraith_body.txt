@@ -1,0 +1,21 @@
+WINDOW GEOMETRY EDITOR
+
+Project: wraith-alpha/wraith-projects/piececraft-wraith
+Current: x=0 (not set) y=0 (not set) width=0 (not set) height=0 (not set)
+
+Edit via CLI Input:
+<cli_io id="edit_x" label="  X position" target_id="edit_x" /><br/>
+<cli_io id="edit_y" label="  Y position" target_id="edit_y" /><br/>
+<cli_io id="edit_width" label="  Width" target_id="edit_width" /><br/>
+<cli_io id="edit_height" label="  Height" target_id="edit_height" /><br/>
+
+Or use buttons (working values: x=0 y=0 w=0 h=0):
+<button label="[-] X" onClick="KEY:5" /><button label="[+] X" onClick="KEY:6" /><br/>
+<button label="[-] Y" onClick="KEY:7" /><button label="[+] Y" onClick="KEY:8" /><br/>
+<button label="[-] W" onClick="KEY:9" /><button label="[+] W" onClick="KEY:10" /><br/>
+<button label="[-] H" onClick="KEY:11" /><button label="[+] H" onClick="KEY:12" /><br/>
+
+<button label="Apply Changes" onClick="KEY:13" /><br/>
+<button label="Back to Project List" onClick="SETTINGS_PAGE:window-geom" /><br/>
+
+Status: Ready to edit

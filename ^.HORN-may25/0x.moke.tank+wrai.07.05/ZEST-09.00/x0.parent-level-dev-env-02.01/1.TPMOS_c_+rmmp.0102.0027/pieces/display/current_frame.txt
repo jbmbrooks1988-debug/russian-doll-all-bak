@@ -1,0 +1,40 @@
+[ KPI 1: Keyboard Nav Proof ]
+Use arrows to move selector. Windows and controls stay indexable.
+
++-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
+| +-[ ] 1. [ SETTINGS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x][ ] 5. [&]-+               |
+| |  WINDOW GEOMETRY EDITOR                                                              |
+| |                                                                  <                   |
+| |  Project: wraith-alpha/wraith-projects/piececraft-wraith                             |
+| |  Current: x=0 (not set) y=0 (not set) width=0 (not set) height=0 (not set)           |
+| |                                                                                      |
+| |  Edit via CLI Input:                                                                 |
+| [ ] 6. [hi ]                                                 |
+| [ ] 7. [hi ]                                                 |
+| [ ] 8. [hi ]                                                 |
+| [ ] 9. [hi ]                                                 |
+| |                                                                                      |
+| |  Or use buttons (working values: x=0 y=0 w=0 h=0):                                   |
+[ ] 10. [[-] X][ ] 11. [[+] X]
+[>] 12. [[-] Y][ ] 13. [[-] Y]
+[ ] 14. [[-] W][ ] 15. [[+] W]
+[ ] 16. [[-] H][ ] 17. [[+] H]
+| |                                                                                      |
+[ ] 18. [Apply Changes]
+[ ] 19. [Back to Project List]
+| |                                                                                      |
+| |  Status: Ready to edit                                                               |
+| +----------------------------------------------------------------------------------------------+               |
+| [ TASKBAR ][ ] 20. [Terminal][ ] 21. [WRAITH TERMINAL #2][ ] 22. [SETTINGS #3]|
++----------------------------------------------------------------------------------------------+
+
+Desktop: desktop | Open: 2 | Focus: SETTINGS #3 | Mode: half
+
+[ DESKTOP DEBUG ]
+Idx:12 Key:0 | Mouse X:70 Y:14 B:0 | Click X:70 Y:14
+
+[ PARSER ] RAW: [2026-07-06 07:25:52] KEY_PRESSED: 61
+View:[ ] 23. [ASCII*] [ ] 24. [GL]
+
++=========================================================+
+Nav > _
