@@ -220,6 +220,24 @@ int main(int argc, char **argv) {
     if (argc < 2) return 2;
     root = argv[1];
 
+    /* wraith-alpha_manager.c's process_active_project_marker() re-invokes
+     * this op every time session/fs_watch.marker grows -- including when
+     * OUR OWN trigger_render() below is what grew it, not a new keypress.
+     * It passes "marker_tick" as argv[2] specifically so this op can tell
+     * the difference (a real key event comes through the OTHER call path,
+     * run_active_project_input_op(), with no argv[2] at all). Ignoring
+     * this was a real, confirmed, currently-shipping bug (2fix-july6.txt,
+     * bug 1): read_last_key_pressed() re-reads whatever the last
+     * KEY_PRESSED line happens to be, with no concept of "already
+     * consumed," so any marker_tick invocation re-processed the same
+     * stale key and re-triggered a render, which regrew fs_watch.marker,
+     * which triggered another marker_tick, forever -- a real ~60Hz
+     * infinite loop, not a one-time redundant render, and the direct
+     * cause of the ASCII geometry editor's flicker. */
+    if (argc > 2 && strcmp(argv[2], "marker_tick") == 0) {
+        return 0;
+    }
+
     derive_repo_root(root, repo_root, sizeof(repo_root));
 
     read_active_page(root, active_page, sizeof(active_page));

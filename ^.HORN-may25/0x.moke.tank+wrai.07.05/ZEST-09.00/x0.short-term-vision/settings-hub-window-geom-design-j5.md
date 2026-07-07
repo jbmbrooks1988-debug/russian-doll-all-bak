@@ -412,3 +412,64 @@ settings/session/
 - **Project-owned**: No parser changes needed
 - **Modular**: Settings manages its own state transitions
 - **Clean separation**: Embedded (onClick) vs standalone (chrome/direct href) are distinct paths
+
+## Numeric-only cli_io input -- IMPLEMENTED (2026-07-06, see 2fix-july6.txt section 9)
+
+The `edit_x`/`edit_y`/`edit_width`/`edit_height` fields are geometry
+values -- they should only ever accept digits, but `<cli_io>` currently
+accepts any printable character (32-126) with no validation. Recorded
+here as a design note, ahead of actually building it, since the
+mechanism will likely get reused by other numeric-only fields later.
+
+### HTML precedent (why this shape)
+
+HTML has a few relevant mechanisms, in decreasing order of strictness:
+- `<input type="number">` -- the closest match. Browsers reject non-digit
+  keystrokes before they land in the field at all (not just on submit),
+  plus optional `min`/`max`/`step`.
+- `<input type="text" inputmode="numeric" pattern="[0-9]*">` -- hints a
+  numeric virtual keyboard on mobile, but doesn't block keystrokes
+  itself; `pattern` is only checked at form-submission time.
+- `pattern="..."` generally -- regex validation, submit-time only, on any
+  text input.
+
+Only `type="number"`'s native behavior does real per-keystroke
+rejection, which is the shape that actually matters here, since
+`<cli_io>` processes raw keypresses directly (there's no "submit-time"
+moment to validate at instead).
+
+### Proposed TPMOS shape
+
+Mirror the existing `input_mode="password"` attribute (already parsed
+on `<cli_io>` in both `chtpm_parser.c` and `wraith_parser_alpha.c` --
+see `is_password` / `cli_prompt` checks in each file's cli_io render
+branch) with a new `input_mode="numeric"` value:
+
+- Layout side: `<cli_io id="edit_x" label="" target_id="edit_x" input_mode="numeric" />`
+  in `settings_manager.c`'s and `window-geom_manager.c`'s generated
+  markup (the same 4 fields section 8 of `2fix-july6.txt` just fixed).
+- Parser side: in the printable-char handler (`key >= 32 && key <= 126`)
+  in both `chtpm_parser.c` and `wraith_parser_alpha.c` -- the same
+  branch that currently calls `save_cli_io_gui_state()` on every
+  keystroke -- add a per-element check: if `el->input_mode` (a new field
+  on `UIElement`, parsed alongside `target_id`/existing `input_mode`)
+  equals `"numeric"`, reject the keystroke (skip appending to
+  `input_buffer`, no save) unless `isdigit((unsigned char)key)`.
+  Optionally allow a single leading `-` if negative window positions
+  ever need supporting (off-screen coordinates) -- not needed for
+  width/height, worth deciding per-field rather than blanket.
+- Needs porting to both `chtpm_parser.c` and `wraith_parser_alpha.c`
+  identically, per this session's established practice of keeping the
+  two forks in sync even though only one currently executes live (see
+  `2fix-july6.txt` sections 7a/7b).
+
+Built as designed above: `input_mode="numeric"` on `<cli_io>`, enforced
+per-keystroke (reject before append) in both parsers, wired onto all 4
+geometry fields in both markup generators. One correction from the
+original design note: there was no existing per-element
+`input_mode="password"` to mirror -- password masking turned out to be
+driven by a single global `cli_prompt` var, not a per-element attribute
+-- so `target_id`'s parsing was used as the structural template instead.
+Full details, exact diffs, and scope notes (no negative numbers, no
+min/max/step) in `2fix-july6.txt` section 9. Not yet live-tested (needs
+a stack restart, same as sections 7/8's outstanding items).

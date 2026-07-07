@@ -124,6 +124,16 @@ static int g_window_count = 0;
 static int g_next_instance_no = 1;
 static int g_active_window_slot = -1;
 static int g_active_gui_index = 1;
+/* Whether the element g_active_gui_index points at is genuinely ACTIVE
+ * (a cli_io field accepting keystrokes, wraith_parser_alpha.c's
+ * active_index != -1), as opposed to merely focused. Synced from
+ * pieces/display/active_gui_is_typing.txt in sync_active_gui_index_from_display() --
+ * see that file's own comment in wraith_parser_alpha.c's export_active_index()
+ * for why this couldn't be derived from active_gui_index.txt alone
+ * (2fix-july6.txt, bug 3). Used only to pick "^" vs ">" for cli_io nav
+ * glyphs in emit_embedded_line_objects() -- unrelated to the existing,
+ * separate "^" used for map-control/INTERACT mode elsewhere in this file. */
+static int g_active_gui_is_typing = 0;
 static int g_max_index = 1;
 static int g_digit_accum = 0;
 static int g_map_control_nav_index = 0;
@@ -189,6 +199,7 @@ static void append_frame_border(char *out, size_t size, const char *label, int w
 static void resolve_window_content_origin(const Window *window, int *out_row_offset, int *out_col_offset);
 static void append_with_origin_offset(char *out, size_t size, const char *raw, int row_offset, int col_offset);
 static int extract_attr(const char *tag_start, const char *tag_end, const char *attr_name, char *out, size_t out_sz);
+static void read_gui_state_value(const char *project_dir, const char *key, char *out, size_t out_sz);
 static void emit_embedded_line_objects(FILE *objects, int *object_id, const Window *window,
                                        const char *window_chain, const char *line,
                                        int base_x, int base_y, int line_index, int *next_nav);
@@ -1139,6 +1150,19 @@ static pid_t launch_project_manager(const char *root, const char *project_id) {
     }
     if (child > 0) {
         log_alpha("Launched manager for %s (pid=%d)", project_id, (int)child);
+        /* Same tracking convention already used for wraith_gl/wraith_rgb_daemon
+           below, and the SAME shared pieces/os/proc_list.txt the orchestrator
+           (pieces/chtpm/plugins/orchestrator.c) uses for the other ~40
+           chtpm-parser-launched projects -- confirmed same file, same
+           "%d %s\n" format. Without this, every per-project manager this
+           function ever launches (settings, window-geom, piececraft-wraith,
+           literally all of them) was invisible to any tracked-process
+           cleanup: log_pid() previously only got called for wraith_gl and
+           wraith_rgb_daemon, so quitting wraith-alpha_manager.c left every
+           spawned project manager running as an orphan. See
+           kill_all_tracked_processes() and its call site for the other half
+           of this fix. */
+        log_pid((int)child, project_id);
     }
     return child;
 }
@@ -1920,6 +1944,53 @@ static int extract_attr(const char *tag_start, const char *tag_end, const char *
     return 1;
 }
 
+/* Reads a single key=value pair back out of <project_dir>/manager/gui_state.txt
+ * -- the SAME file wraith_parser_alpha.c's save_to_gui_state()/get_var()
+ * already read and write for cli_io state on the ASCII side (confirmed:
+ * identical path shape -- project_root_path/projects/<project_id>/manager/gui_state.txt
+ * there, project_dir/manager/gui_state.txt here, where project_dir already
+ * IS project_root_path + "/projects/" + project_id -- and identical
+ * "key=value\n" line format). Scoped correctly by construction: callers
+ * pass the SPECIFIC embedded window's own project_dir (from
+ * project_dir_for_window()), not this manager's own project_id, avoiding
+ * the "5a. gui_state scoping" mistake documented in
+ * 真.how-2-fix-clio-chtpm.txt (reading the desktop shell's own gui_state
+ * instead of the embedded project's). Did not exist anywhere in this file
+ * before -- see 2fix-july6.txt, bug 2, for why GL's embedded cli_io fields
+ * could never show typed content without it. Keeps scanning to the last
+ * match (gui_state.txt is fully rewritten on every save, so there's
+ * normally exactly one, but this matches the same "last line wins"
+ * convention already used elsewhere in this codebase, e.g. the input-ops'
+ * own read_active_page()). */
+static void read_gui_state_value(const char *project_dir, const char *key, char *out, size_t out_sz) {
+    char path[MAX_PATH];
+    FILE *f;
+    char line[512];
+    size_t key_len;
+
+    if (!out || out_sz == 0) return;
+    out[0] = '\0';
+    if (!project_dir || !key || !key[0]) return;
+    key_len = strlen(key);
+
+    snprintf(path, sizeof(path), "%s/manager/gui_state.txt", project_dir);
+    f = fopen(path, "r");
+    if (!f) return;
+
+    while (fgets(line, sizeof(line), f)) {
+        if (strncmp(line, key, key_len) == 0 && line[key_len] == '=') {
+            char *val = line + key_len + 1;
+            size_t len;
+            val[strcspn(val, "\r\n")] = '\0';
+            len = strlen(val);
+            if (len >= out_sz) len = out_sz - 1;
+            memcpy(out, val, len);
+            out[len] = '\0';
+        }
+    }
+    fclose(f);
+}
+
 static void emit_embedded_line_objects(FILE *objects, int *object_id, const Window *window,
                                         const char *window_chain, const char *line,
                                         int base_x, int base_y, int line_index,
@@ -1949,6 +2020,34 @@ static void emit_embedded_line_objects(FILE *objects, int *object_id, const Wind
                 extract_attr(p, tag_end, "href", action, sizeof(action));
             }
 
+            /* Mirrors wraith_parser_alpha.c's own cli_io rendering exactly:
+               that file's display_val is "input_buffer if non-empty, else
+               the placeholder label" -- ASCII's input_buffer is populated
+               by reading this SAME target_id-keyed gui_state.txt value
+               back on reparse. GL had no equivalent at all before this:
+               emit_embedded_line_objects() only ever echoed the tag's
+               static label attribute, so even with focus+typing fully
+               working on the ASCII/backend side, GL's cli_io boxes could
+               never show it (see 2fix-july6.txt, bug 2). Buttons are
+               untouched -- this only fires for <cli_io> tags, and only
+               when a live, non-empty value actually exists for its own
+               target_id. */
+            int is_cli_io = (strncmp(p, "<cli_io", 7) == 0);
+            if (is_cli_io) {
+                char target_id[128];
+                if (extract_attr(p, tag_end, "target_id", target_id, sizeof(target_id)) && target_id[0]) {
+                    char project_dir[MAX_PATH];
+                    if (project_dir_for_window(window, project_dir, sizeof(project_dir))) {
+                        char live_value[256];
+                        read_gui_state_value(project_dir, target_id, live_value, sizeof(live_value));
+                        if (live_value[0]) {
+                            strncpy(label, live_value, sizeof(label) - 1);
+                            label[sizeof(label) - 1] = '\0';
+                        }
+                    }
+                }
+            }
+
             if (label[0]) {
                 /* Only real buttons (a non-empty action) OR a <cli_io>
                    field consume a nav slot -- plain <text> border/padding
@@ -1968,7 +2067,7 @@ static void emit_embedded_line_objects(FILE *objects, int *object_id, const Wind
                    synthesizes SET_ACTIVE:<nav> for any nav>0 OBJECT with
                    no action of its own -- the same generic click-to-focus
                    path every other nav-only element already uses. */
-                if ((action[0] || strncmp(p, "<cli_io", 7) == 0) && next_nav) {
+                if ((action[0] || is_cli_io) && next_nav) {
                     nav = (*next_nav)++;
                 }
                 rendered_len = (int)strlen(label);
@@ -1991,6 +2090,23 @@ static void emit_embedded_line_objects(FILE *objects, int *object_id, const Wind
                        zest-09.00-handoff.md/WRAITH_RGB_ARCHITECTURE.md
                        for the fuller trace. */
                     int display_len = rendered_len;
+                    int is_selected = (nav > 0 && g_active_gui_index == nav);
+                    /* "^" only for a cli_io field that's genuinely ACTIVE
+                       (accepting keystrokes), not just focused -- mirrors
+                       ASCII's own is_active-vs-is_focused distinction
+                       exactly (wraith_parser_alpha.c's render_element():
+                       is_active uses "[^]", is_focused-only uses "[>]").
+                       g_active_gui_is_typing is the ONLY signal that
+                       distinguishes them; without it (before this fix)
+                       this could only ever say ">" (see 2fix-july6.txt,
+                       bug 3). Deliberately scoped to is_cli_io -- this
+                       must not affect the UNRELATED existing "^" used for
+                       map-control/INTERACT elements elsewhere in this
+                       file. */
+                    const char *glyph = " ";
+                    if (is_selected) {
+                        glyph = (is_cli_io && g_active_gui_is_typing) ? "^" : ">";
+                    }
                     if (nav > 0) {
                         int nav_digits = 1;
                         int tmp = nav;
@@ -2001,13 +2117,13 @@ static void emit_embedded_line_objects(FILE *objects, int *object_id, const Wind
                         (*object_id)++,
                         window->id, line_index, chunk_index,
                         cursor_x, base_y, display_len > 0 ? display_len : 1,
-                        (nav > 0 && g_active_gui_index == nav) ? "true" : "false",
+                        is_selected ? "true" : "false",
                         window->id, window->id,
                         window_chain, window->id, line_index, chunk_index,
                         window_chain,
                         nav,
-                        (nav > 0 && g_active_gui_index == nav) ? "true" : "false",
-                        (nav > 0 && g_active_gui_index == nav) ? ">" : " ",
+                        is_selected ? "true" : "false",
+                        glyph,
                         label,
                         action[0] ? action : "");
                     cursor_x += display_len;
@@ -3413,6 +3529,26 @@ static bool dispatch_menu_index(int menu_index) {
             }
         }
     }
+    /* Generic "just focus it" fallback for embedded project-body content
+       (cli_io fields, scene.objects.pdl controls) -- everything between
+       chrome (1..CHROME_CONTENT_START-1) and launcher_start. This is the
+       exact gap that made cli_io fields unclickable in GL: a <cli_io>
+       tag has no onClick/href, so hit_test_semantic_action() in
+       wraith_gl.c can only synthesize SET_ACTIVE:<nav> for it (never a
+       real action string) -- and until this branch existed, THAT number
+       matched no case here at all, so dispatch_menu_index() fell through
+       to `return false` and g_active_gui_index never moved. Buttons in
+       the same body (KEY:5, KEY:13, etc.) never needed this: they carry
+       a real action, so their click bypasses dispatch_menu_index()
+       entirely via route_command()'s own "KEY:" branch. Mirrors exactly
+       what menu_index==1 (title) and CHROME_ACTION_FOCUS ('o') already
+       do -- just move focus, nothing project-specific. */
+    if (menu_index >= CHROME_CONTENT_START && menu_index < launcher_start) {
+        g_active_gui_index = menu_index;
+        update_state(0);
+        trigger_render();
+        return true;
+    }
     if (menu_index >= launcher_start && menu_index < launcher_start + launcher_count) {
         if (dispatch_launcher_method_by_index(menu_index - launcher_start + 1)) {
             return true;
@@ -4237,6 +4373,95 @@ static void purge_tracked_process_name(const char *name) {
     rename(tmp_path, path);
 }
 
+/* Shutdown-time cleanup, mirroring pieces/chtpm/plugins/orchestrator.c's
+   own kill_all_tracked_processes() (the "HOLY Pattern - File-Backed"
+   process tracking already used for the ~40 other, non-wraith-alpha
+   projects orchestrator.c launches) term-for-term: two phases (SIGTERM to
+   every tracked pid's own process group AND the pid directly, wait 200ms
+   for graceful exit, then SIGKILL the same way to any survivors), reading
+   the SAME shared pieces/os/proc_list.txt file both this manager and the
+   orchestrator already write to via log_pid(). This did not exist here
+   before -- wraith-alpha_manager.c's own shutdown path (see
+   handle_signal()'s call site, end of main()) previously just logged
+   "shutting down" and returned, leaving every forked child (project
+   managers, wraith_gl, wraith_rgb_daemon) running as an orphan. Not a new
+   invention: replicated the existing, working pattern rather than
+   designing a new one, per this codebase's own "use existing patterns"
+   standard. */
+static void kill_all_tracked_processes(void) {
+    char path[MAX_PATH];
+    FILE *f;
+    char line[256];
+
+    snprintf(path, sizeof(path), "%s/pieces/os/proc_list.txt", g_project_root);
+
+    f = fopen(path, "r");
+    if (f) {
+        while (fgets(line, sizeof(line), f)) {
+            int pid;
+            char name[128];
+            if (sscanf(line, "%d %127s", &pid, name) == 2 && pid > 1) {
+                kill(-pid, SIGTERM);
+                kill(pid, SIGTERM);
+            }
+        }
+        fclose(f);
+    }
+
+    usleep(200000);
+
+    f = fopen(path, "r");
+    if (f) {
+        while (fgets(line, sizeof(line), f)) {
+            int pid;
+            char name[128];
+            if (sscanf(line, "%d %127s", &pid, name) == 2 && pid > 1) {
+                kill(-pid, SIGKILL);
+                kill(pid, SIGKILL);
+                waitpid(pid, NULL, WNOHANG);
+            }
+        }
+        fclose(f);
+    }
+
+    /* Clear the file for next run, same as orchestrator.c does. */
+    f = fopen(path, "w");
+    if (f) fclose(f);
+}
+
+/* Final sweep: exec kill_all.sh directly (fork/exec, not system() -- the
+   orchestrator's own equivalent step uses system("bash kill_all.sh ..."),
+   which is the one part of that pattern NOT replicated verbatim here,
+   since this codebase's own CPU-safety standard is explicit that system()
+   must never be used for child process management (see the TPMOS Bible,
+   section 3, "The Fuzzpet Pattern"). Same practical effect -- kill_all.sh
+   runs and does its own broad pattern-based pkill sweep as a last-resort
+   safety net -- via the mandated fork()/exec()/waitpid() shape instead. */
+static void run_final_kill_sweep(void) {
+    char script_path[MAX_PATH];
+    pid_t pid;
+    int status;
+
+    snprintf(script_path, sizeof(script_path), "%s/pieces/os/kill_all.sh", g_project_root);
+    if (access(script_path, X_OK) != 0 && access(script_path, F_OK) != 0) {
+        return;
+    }
+
+    pid = fork();
+    if (pid == 0) {
+        freopen("/dev/null", "w", stdout);
+        freopen("/dev/null", "w", stderr);
+        if (chdir(g_project_root) != 0) {
+            _exit(127);
+        }
+        execl("/bin/bash", "bash", "pieces/os/kill_all.sh", (char *)NULL);
+        _exit(127);
+    }
+    if (pid > 0) {
+        waitpid(pid, &status, 0);
+    }
+}
+
 static void sync_active_gui_index_from_display(void) {
     char path[MAX_PATH];
     FILE *f = NULL;
@@ -4280,6 +4505,20 @@ static void sync_active_gui_index_from_display(void) {
             log_alpha("Synced active_gui_index from display beyond max: %d -> %d", g_active_gui_index, idx);
         }
         g_active_gui_index = idx;
+    }
+
+    /* Companion read for g_active_gui_is_typing -- see that global's own
+     * comment and export_active_index() in wraith_parser_alpha.c
+     * (2fix-july6.txt, bug 3). Defaults to 0 (not typing) if the file is
+     * missing/unreadable, which is the safe fallback (shows ">" not "^"). */
+    g_active_gui_is_typing = 0;
+    snprintf(path, sizeof(path), "%s/pieces/display/active_gui_is_typing.txt", g_project_root);
+    f = fopen(path, "r");
+    if (f) {
+        if (fgets(line, sizeof(line), f)) {
+            g_active_gui_is_typing = (atoi(line) != 0);
+        }
+        fclose(f);
     }
 }
 
@@ -4425,6 +4664,33 @@ static void route_input(int key) {
         return;
     } else {
         g_digit_accum = 0;
+        /* Any other key -- overwhelmingly, in practice, the printable
+           characters cli_io typing sends. This process has zero
+           interpretation of them; that entire state machine (focus_index
+           vs. active_index, el->input_buffer, save_to_gui_state()) is
+           wraith_parser_alpha.c's own, private, internal state. But
+           GL-content-mode rendering depends on THIS process re-running
+           write_semantic_projection_files() (which reads gui_state.txt's
+           live per-keystroke value for whichever cli_io field is
+           currently active -- see read_gui_state_value(),
+           2fix-july6.txt bug 3) -- and until this line, "changed" was
+           never set here, so update_state()/trigger_render() never ran
+           for these keys. objects.pdl went stale the instant focus moved
+           to a cli_io field and stayed stale through every character
+           subsequently typed, even though current_frame.txt (written by
+           the OTHER process) re-rendered correctly on every single key
+           via its own unconditional "NAV MARKER: for ALL layouts"
+           convention. Confirmed live: current_frame.txt showed
+           "[^] 6. [hi hitest_]" (correct) while the objects.pdl generated
+           at the same moment still showed nav_selector_glyph=">" and the
+           static placeholder label (stale from focus time) -- this is
+           why ASCII always reflected typed text/the >/^ glyph correctly
+           while GL content mode never did. Matches the SAME "any key =>
+           re-render, let whichever process actually understands it
+           decide what to do" precedent the read_project_map_control()
+           branch above already uses unconditionally, for a different
+           mode. */
+        changed = 1;
     }
 
     if (changed) {
@@ -4499,5 +4765,19 @@ int main(void) {
     }
 
     log_alpha("Wraith-Alpha Manager shutting down.");
+
+    /* Mirrors pieces/chtpm/plugins/orchestrator.c's handle_sigint(): kill
+       this process's own group first (fast path -- reaches every child
+       that was fork()'d without its own setpgid(), which is every child
+       this file spawns today), then the file-backed tracked-process sweep
+       (catches anything that escaped the group), then the same kill_all.sh
+       final sweep the orchestrator uses as its own last resort. Previously
+       none of this existed here at all -- see kill_all_tracked_processes()'s
+       own comment for why that mattered (every project manager this
+       process ever launched was left running as an orphan on quit). */
+    kill(0, SIGTERM);
+    usleep(100000);
+    kill_all_tracked_processes();
+    run_final_kill_sweep();
     return 0;
 }

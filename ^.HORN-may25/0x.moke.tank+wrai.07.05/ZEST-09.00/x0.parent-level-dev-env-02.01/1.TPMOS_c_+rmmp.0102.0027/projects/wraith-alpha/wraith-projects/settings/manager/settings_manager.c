@@ -139,6 +139,71 @@ void read_pdl_value(const char *path, const char *key, char *dst, size_t dst_sz)
     fclose(f);
 }
 
+/* Writes/updates one key=value line in this project's OWN
+ * manager/gui_state.txt -- the SAME file chtpm_parser.c's
+ * save_cli_io_gui_state()/read_cli_io_gui_state_value() and
+ * wraith-alpha_manager.c's read_gui_state_value() already read for
+ * this window's cli_io fields (2fix-july6.txt section 6/7: this
+ * window's project_id, via desktop_focused_window_project_id, IS
+ * "wraith-alpha/wraith-projects/settings" -- the same project_dir
+ * already used everywhere else in this file). Used to seed the
+ * edit_x/edit_y/edit_width/edit_height cli_io fields with the target
+ * project's REAL current geometry the first time a target is opened,
+ * instead of leaving them empty (which only ever renders the cli_io
+ * tag's own label text as a placeholder -- see 2fix-july6.txt section
+ * 8 for why that's not a real default). */
+void write_gui_state_kv(const char *key, const char *value) {
+    char path[4096];
+    char tmp_path[4096];
+    char names[64][64];
+    char values[64][256];
+    int count = 0;
+    int found = 0;
+    FILE *f;
+
+    snprintf(path, sizeof(path), "%s/manager/gui_state.txt", project_dir);
+    f = fopen(path, "r");
+    if (f) {
+        char line[MAX_LINE];
+        while (fgets(line, sizeof(line), f) && count < 64) {
+            char *eq = strchr(line, '=');
+            if (!eq) continue;
+            *eq = '\0';
+            strncpy(names[count], trim_str(line), sizeof(names[0]) - 1);
+            names[count][sizeof(names[0]) - 1] = '\0';
+            strncpy(values[count], trim_str(eq + 1), sizeof(values[0]) - 1);
+            values[count][sizeof(values[0]) - 1] = '\0';
+            count++;
+        }
+        fclose(f);
+    }
+
+    for (int i = 0; i < count; i++) {
+        if (strcmp(names[i], key) == 0) {
+            strncpy(values[i], value, sizeof(values[0]) - 1);
+            values[i][sizeof(values[0]) - 1] = '\0';
+            found = 1;
+            break;
+        }
+    }
+    if (!found && count < 64) {
+        strncpy(names[count], key, sizeof(names[0]) - 1);
+        names[count][sizeof(names[0]) - 1] = '\0';
+        strncpy(values[count], value, sizeof(values[0]) - 1);
+        values[count][sizeof(values[0]) - 1] = '\0';
+        count++;
+    }
+
+    snprintf(tmp_path, sizeof(tmp_path), "%s.tmp", path);
+    f = fopen(tmp_path, "w");
+    if (!f) return;
+    for (int i = 0; i < count; i++) {
+        fprintf(f, "%s=%s\n", names[i], values[i]);
+    }
+    fclose(f);
+    rename(tmp_path, path);
+}
+
 /* Scans settings/ for immediate subdirectories that declare themselves
  * a settings entry via settings_entry.pdl (label= / entry_layout=).
  * Discovery, not hardcoding -- adding a new settings sub-project later
@@ -456,6 +521,18 @@ void write_wraith_body(void) {
                 fclose(wf);
                 rename(tmp_es_path, edit_state_path);
             }
+
+            /* Seed the cli_io fields' OWN persisted state (gui_state.txt,
+             * keyed by target_id) with the real current geometry, so they
+             * open pre-filled with the actual number instead of empty
+             * (which only ever renders as the cli_io tag's label text --
+             * see 2fix-july6.txt section 8). Only on a genuine target
+             * switch, same guard as edit_state.txt above, so it never
+             * stomps a value the user is actively typing. */
+            write_gui_state_kv("edit_x", edit_x);
+            write_gui_state_kv("edit_y", edit_y);
+            write_gui_state_kv("edit_width", edit_w);
+            write_gui_state_kv("edit_height", edit_h);
         }
 
         fprintf(f, "WINDOW GEOMETRY EDITOR\n");
@@ -466,10 +543,14 @@ void write_wraith_body(void) {
                 win_w[0] ? win_w : "0 (not set)", win_h[0] ? win_h : "0 (not set)");
         fprintf(f, "\n");
         fprintf(f, "Edit via CLI Input:\n");
-        fprintf(f, "<cli_io id=\"edit_x\" label=\"  X position\" target_id=\"edit_x\" /><br/>\n");
-        fprintf(f, "<cli_io id=\"edit_y\" label=\"  Y position\" target_id=\"edit_y\" /><br/>\n");
-        fprintf(f, "<cli_io id=\"edit_width\" label=\"  Width\" target_id=\"edit_width\" /><br/>\n");
-        fprintf(f, "<cli_io id=\"edit_height\" label=\"  Height\" target_id=\"edit_height\" /><br/>\n");
+        /* Name is a separate, non-editable <text> caption -- the cli_io's
+         * own label is deliberately empty so an unset field renders as an
+         * empty box, never the field's name masquerading as its value
+         * (2fix-july6.txt section 8). */
+        fprintf(f, "<text label=\"  X position: \" /><cli_io id=\"edit_x\" label=\"\" target_id=\"edit_x\" input_mode=\"numeric\" /><br/>\n");
+        fprintf(f, "<text label=\"  Y position: \" /><cli_io id=\"edit_y\" label=\"\" target_id=\"edit_y\" input_mode=\"numeric\" /><br/>\n");
+        fprintf(f, "<text label=\"  Width: \" /><cli_io id=\"edit_width\" label=\"\" target_id=\"edit_width\" input_mode=\"numeric\" /><br/>\n");
+        fprintf(f, "<text label=\"  Height: \" /><cli_io id=\"edit_height\" label=\"\" target_id=\"edit_height\" input_mode=\"numeric\" /><br/>\n");
         fprintf(f, "\n");
         fprintf(f, "Or use buttons (working values: x=%s y=%s w=%s h=%s):\n", edit_x, edit_y, edit_w, edit_h);
         fprintf(f, "<button label=\"[-] X\" onClick=\"KEY:5\" /><button label=\"[+] X\" onClick=\"KEY:6\" /><br/>\n");

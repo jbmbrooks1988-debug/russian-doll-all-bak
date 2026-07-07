@@ -14,7 +14,7 @@ FRAME | focused_object_id | 3
 FRAME | focused_object_dom_id | settings_3
 FRAME | focused_object_label | SETTINGS #3
 FRAME | focused_object_role | panel
-FRAME | mouse_x | 70
+FRAME | mouse_x | 52
 FRAME | mouse_y | 14
 FRAME | mouse_cursor_visual_uses_offset | true
 FRAME | mouse_hit_offset_x | 0

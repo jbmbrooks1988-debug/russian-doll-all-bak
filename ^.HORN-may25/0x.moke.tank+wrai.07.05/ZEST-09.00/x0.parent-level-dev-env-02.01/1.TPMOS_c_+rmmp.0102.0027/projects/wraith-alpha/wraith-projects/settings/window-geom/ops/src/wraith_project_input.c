@@ -184,6 +184,19 @@ int main(int argc, char **argv) {
     if (argc < 2) return 2;
     root = argv[1];
 
+    /* Same fix as settings/ops/src/wraith_project_input.c -- see that
+     * file's own comment and 2fix-july6.txt (bug 1) for the full trace.
+     * process_active_project_marker() re-invokes this op with
+     * argv[2]="marker_tick" whenever session/fs_watch.marker grows,
+     * including growth caused by THIS op's own trigger_regenerate()/
+     * trigger_render() below -- without this check, that created a
+     * self-sustaining ~60Hz loop (re-read stale key -> re-trigger ->
+     * regrow marker -> re-invoke -> repeat), not a one-time redundant
+     * render. */
+    if (argc > 2 && strcmp(argv[2], "marker_tick") == 0) {
+        return 0;
+    }
+
     derive_repo_root(root, repo_root, sizeof(repo_root));
 
     key = read_last_key_pressed(root);

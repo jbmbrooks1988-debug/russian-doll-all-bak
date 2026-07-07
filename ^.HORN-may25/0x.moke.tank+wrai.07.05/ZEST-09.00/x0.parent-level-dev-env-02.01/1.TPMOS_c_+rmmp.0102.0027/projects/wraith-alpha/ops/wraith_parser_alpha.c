@@ -73,6 +73,7 @@ typedef struct {
     char type[32]; char label[MAX_LABEL_LEN]; char href[MAX_PATH]; char onClick[128];
     char id[MAX_ATTR_LEN]; char visibility_expr[MAX_ATTR_LEN];
     char target_id[MAX_ATTR_LEN];  /* cli_io: distinct gui_state var name, so multiple cli_io fields don't collide on "input_text" */
+    char input_mode[MAX_ATTR_LEN];  /* cli_io: e.g. "numeric" -- per-keystroke input filtering. See settings-hub-window-geom-design-j5.md's "Future work: numeric-only cli_io input" and 2fix-july6.txt section 9. */
     char input_buffer[256];  /* For cli_io text input */
     int parent_index; int children[MAX_CHILDREN]; int num_children;
     bool visibility; int interactive_idx;
@@ -84,6 +85,20 @@ char current_layout[MAX_PATH] = "pieces/chtpm/layouts/os.chtpm";
 char last_active_id[64] = "";
 char last_methods_raw[MAX_VAR_VALUE] = "";
 char last_wraith_desktop_sig[MAX_VAR_VALUE] = "";
+/* Tracks the last "active_gui_index" value this process has already
+   applied to focus_index. Without this, an external focus change (GL
+   clicking a cli_io field or embedded button, which writes a NEW
+   active_gui_index into the shared state file) is silently ignored:
+   initialize_focus() -- the only code that reads active_gui_index and
+   moves focus_index to match -- is only called at true process startup,
+   when the unrelated active_target_id variable also changes, or as
+   emergency recovery when focus_index becomes structurally invalid.
+   None of those three conditions fire just because GL moved focus while
+   the same project/layout stays active, so a long-running parser process
+   would keep rendering whatever element it already had focused,
+   regardless of what the user clicked in GL. See zest-09.00-handoff.md's
+   cli_io-input appendix for the full trace. */
+int last_synced_gui_index = 0;
 int focus_index = 0; int active_index = -1;
 int element_count = 0; UIElement elements[MAX_ELEMENTS];
 char nav_buffer[512] = {0};
@@ -140,6 +155,13 @@ char* trim_pmo(char *str);
 static void debug_focus_state(const char *phase, int idx);
 void save_to_gui_state(const char* name, const char* value);
 static bool handle_desktop_action_command(const char* cmd);
+/* Option B (2fix-july6.txt section 6), ported here from chtpm_parser.c
+   (the parser actually running wraith-alpha's live sessions) to keep the
+   two forks in sync, matching how bug 4's target_id fix was already
+   ported both ways. */
+static const char* resolve_cli_io_project_id(void);
+static bool read_cli_io_gui_state_value(const char *target_id, char *out, size_t out_sz);
+void save_cli_io_gui_state(const char* name, const char* value);
 
 static void sync_wraith_alpha_state(void) {
     /* Wraith Alpha keeps manager-owned focus/index state in alpha_state.txt.
@@ -613,10 +635,49 @@ void load_state_file(const char* rel_path, const char* prefix) {
     free(path);
 }
 
-void save_to_gui_state(const char* name, const char* value) {
-    const char* project_id = get_var("project_id");
-    if (strlen(project_id) == 0) return;
-    
+/* Option B (2fix-july6.txt section 6): resolves the SPECIFIC embedded
+   sub-project's gui_state.txt (e.g. "wraith-alpha/wraith-projects/
+   settings") via desktop_focused_window_project_id when available,
+   falling back to the generic project_id ("wraith-alpha" for the shell
+   itself) for every non-embedded case -- unchanged behavior there. */
+static const char* resolve_cli_io_project_id(void) {
+    const char *focused = get_var("desktop_focused_window_project_id");
+    if (focused && focused[0]) return focused;
+    return get_var("project_id");
+}
+
+static bool read_cli_io_gui_state_value(const char *target_id, char *out, size_t out_sz) {
+    const char *proj_id = resolve_cli_io_project_id();
+    if (!proj_id || !proj_id[0] || !target_id || !target_id[0]) return false;
+
+    char *path = NULL;
+    if (asprintf(&path, "%s/projects/%s/manager/gui_state.txt", project_root_path, proj_id) == -1) return false;
+
+    FILE *f = fopen(path, "r");
+    free(path);
+    if (!f) return false;
+
+    bool found = false;
+    char *line = malloc(MAX_LINE);
+    if (line) {
+        while (fgets(line, MAX_LINE, f)) {
+            char *eq = strchr(line, '=');
+            if (!eq) continue;
+            *eq = '\0';
+            if (strcmp(trim_pmo(line), target_id) != 0) continue;
+            strncpy(out, trim_pmo(eq + 1), out_sz - 1);
+            out[out_sz - 1] = '\0';
+            found = true;
+        }
+        free(line);
+    }
+    fclose(f);
+    return found;
+}
+
+static void save_to_gui_state_impl(const char* name, const char* value, const char* project_id) {
+    if (!project_id || strlen(project_id) == 0) return;
+
     char *path = NULL;
     asprintf(&path, "%s/projects/%s/manager/gui_state.txt", project_root_path, project_id);
     if (!path) return;
@@ -684,6 +745,18 @@ void save_to_gui_state(const char* name, const char* value) {
     free(names);
     free(values);
     free(path);
+}
+
+void save_to_gui_state(const char* name, const char* value) {
+    save_to_gui_state_impl(name, value, get_var("project_id"));
+}
+
+/* Option B (2fix-july6.txt section 6): used only by cli_io save sites so
+   embedded sub-project content (settings, window-geom, etc.) saves to its
+   OWN gui_state.txt instead of the desktop shell's. Every other caller of
+   save_to_gui_state() is unaffected. */
+void save_cli_io_gui_state(const char* name, const char* value) {
+    save_to_gui_state_impl(name, value, resolve_cli_io_project_id());
 }
 
 static void save_desktop_ui_state(bool collapsed, bool fullscreen, bool open, int window_count) {
@@ -1774,6 +1847,7 @@ void parse_attributes(UIElement* el, const char* attr_str) {
         else if (strcmp(name_start, "onClick") == 0) { strncpy(el->onClick, val_start, 127); }
         else if (strcmp(name_start, "id") == 0) { strncpy(el->id, val_start, MAX_ATTR_LEN - 1); }
         else if (strcmp(name_start, "target_id") == 0) { strncpy(el->target_id, val_start, MAX_ATTR_LEN - 1); }
+        else if (strcmp(name_start, "input_mode") == 0) { strncpy(el->input_mode, val_start, MAX_ATTR_LEN - 1); }
         else if (strcmp(name_start, "visibility") == 0) { strncpy(el->visibility_expr, val_start, MAX_ATTR_LEN - 1); }
         else if (strcmp(name_start, "compact") == 0 || strcmp(name_start, "chrome") == 0 || strcmp(name_start, "compact_nav") == 0) {
             el->compact_nav = (strcmp(val_start, "true") == 0 || strcmp(val_start, "1") == 0);
@@ -2034,8 +2108,14 @@ void parse_chtm() {
              * colliding on the single "input_text"/cli_input slot above.
              * Runs after (so it wins over) the generic restores above. */
             if (strcmp(t->tag_name, "cli_io") == 0 && el->target_id[0]) {
-                const char* saved = get_var(el->target_id);
-                if (saved) {
+                /* Option B (2fix-july6.txt section 6): read directly from
+                   the embedded window's OWN gui_state.txt (via
+                   desktop_focused_window_project_id when available)
+                   instead of get_var(), which only ever reflects the
+                   generic project_id ("wraith-alpha" for the desktop
+                   shell, never the specific embedded sub-project). */
+                char saved[256];  /* matches UIElement.input_buffer's own size */
+                if (read_cli_io_gui_state_value(el->target_id, saved, sizeof(saved)) && saved[0]) {
                     strncpy(el->input_buffer, saved, sizeof(el->input_buffer) - 1);
                     el->input_buffer[sizeof(el->input_buffer) - 1] = '\0';
                 }
@@ -2058,11 +2138,29 @@ void export_active_index() {
     int active_gui_idx = 0;
     if (active_index != -1) active_gui_idx = elements[active_index].interactive_idx;
     else active_gui_idx = elements[focus_index].interactive_idx;
-    
+
     char *agi_path = build_path_malloc("pieces/display/active_gui_index.txt");
     FILE *agi_f = fopen(agi_path, "w");
     if (agi_f) { fprintf(agi_f, "%d\n", active_gui_idx); fclose(agi_f); }
     free(agi_path);
+
+    /* Companion signal, new: active_gui_index.txt alone conflates "just
+     * focused" and "genuinely active/typing" into ONE number -- whichever
+     * of active_index/focus_index is set above, the exported number looks
+     * identical either way to any external reader. wraith-alpha_manager.c
+     * (GL-content-mode rendering) has NO way to distinguish them from that
+     * file alone, so it can never show the "[^]" (active/typing) glyph
+     * for a cli_io field -- only ever "[>]" (focused) or " " (neither).
+     * This file makes that distinction externally visible: "1" means
+     * active_index != -1 (a cli_io field is genuinely accepting
+     * keystrokes right now), "0" means focus-only or nothing focused.
+     * See 2fix-july6.txt, bug 3. */
+    {
+        char *typing_path = build_path_malloc("pieces/display/active_gui_is_typing.txt");
+        FILE *typing_f = fopen(typing_path, "w");
+        if (typing_f) { fprintf(typing_f, "%d\n", active_index != -1 ? 1 : 0); fclose(typing_f); }
+        free(typing_path);
+    }
 }
 
 void render_element(int idx, char* frame, int* p_global_counter, int* p_scoped_counter) {
@@ -2584,7 +2682,7 @@ void process_key(int key) {
                      * target_id (when set) gives this field its own gui_state
                      * variable so multiple simultaneous cli_io fields don't
                      * collide on the single shared "input_text" slot. */
-                    save_to_gui_state(el->target_id[0] ? el->target_id : "input_text", el->input_buffer);
+                    save_cli_io_gui_state(el->target_id[0] ? el->target_id : "input_text", el->input_buffer);
 
                     /* Clear the input buffer of the cli_io element */
                     el->input_buffer[0] = '\0';
@@ -2607,18 +2705,23 @@ void process_key(int key) {
                 int len = strlen(el->input_buffer);
                 if (len > 0) {
                     el->input_buffer[len-1] = '\0';
-                    save_to_gui_state(el->target_id[0] ? el->target_id : "input_text", el->input_buffer);
+                    save_cli_io_gui_state(el->target_id[0] ? el->target_id : "input_text", el->input_buffer);
                 }
             }
-            else if (key >= 32 && key <= 126) { 
-                /* Printable char */
-                int len = strlen(el->input_buffer); 
-                if (len < sizeof(el->input_buffer) - 2) { 
-                    el->input_buffer[len] = (char)key; 
+            else if (key >= 32 && key <= 126 &&
+                     !(strcmp(el->input_mode, "numeric") == 0 && !isdigit((unsigned char)key))) {
+                /* Printable char. The input_mode=="numeric" guard rejects
+                   the keystroke before it ever reaches input_buffer --
+                   see settings-hub-window-geom-design-j5.md's "Future
+                   work: numeric-only cli_io input" and 2fix-july6.txt
+                   section 9. */
+                int len = strlen(el->input_buffer);
+                if (len < sizeof(el->input_buffer) - 2) {
+                    el->input_buffer[len] = (char)key;
                     el->input_buffer[len+1] = '\0';
-                    
+
                     /* Live sync to gui_state.txt for UI visibility */
-                    save_to_gui_state(el->target_id[0] ? el->target_id : "input_text", el->input_buffer);
+                    save_cli_io_gui_state(el->target_id[0] ? el->target_id : "input_text", el->input_buffer);
 
                     /* Append to cli_buffers.txt - simple and safe fallback */
                     FILE *bf = fopen("pieces/apps/player_app/cli_buffers.txt", "a");
@@ -2716,11 +2819,44 @@ int main(int argc, char **argv) {
                 focus_index = 0;
                 parse_chtm();
                 initialize_focus();
+                {
+                    const char* gui_idx_str = get_var("active_gui_index");
+                    last_synced_gui_index = gui_idx_str ? atoi(gui_idx_str) : 0;
+                }
             } else {
-                /* Active target didn't change, but other state might have. 
+                /* Active target didn't change, but other state might have.
                    Re-parse but preserve navigation state. */
                 parse_chtm();
-                if (focus_index >= element_count || !is_navigable(focus_index)) initialize_focus();
+                if (focus_index >= element_count || !is_navigable(focus_index)) {
+                    initialize_focus();
+                } else {
+                    /* Structurally-valid focus alone isn't enough to catch
+                       an EXTERNAL focus change (GL clicking a cli_io field
+                       or embedded button while this same project/layout
+                       stays active) -- the element focus_index already
+                       points at is still "valid," just not the one GL just
+                       asked for. Detect that case directly: if
+                       active_gui_index moved since we last applied it,
+                       jump focus_index to whichever element now has that
+                       interactive_idx (same matching rule
+                       initialize_focus() uses), so a GL click actually
+                       moves ASCII-side focus instead of being silently
+                       ignored by an already-running process. Guarded so
+                       ASCII's own arrow-key/number-jump navigation (which
+                       updates focus_index directly, not through this
+                       variable) is never overridden by a stale value. */
+                    const char* gui_idx_str = get_var("active_gui_index");
+                    int new_gui_idx = gui_idx_str ? atoi(gui_idx_str) : 0;
+                    if (new_gui_idx > 0 && new_gui_idx != last_synced_gui_index) {
+                        for (int i = 0; i < element_count; i++) {
+                            if (elements[i].interactive_idx == new_gui_idx && is_navigable(i)) {
+                                focus_index = i;
+                                break;
+                            }
+                        }
+                        last_synced_gui_index = new_gui_idx;
+                    }
+                }
             }
             /* Auto-activate cli_io if cli_input has content (TPM app signal) */
             const char* cli = get_var("cli_input");

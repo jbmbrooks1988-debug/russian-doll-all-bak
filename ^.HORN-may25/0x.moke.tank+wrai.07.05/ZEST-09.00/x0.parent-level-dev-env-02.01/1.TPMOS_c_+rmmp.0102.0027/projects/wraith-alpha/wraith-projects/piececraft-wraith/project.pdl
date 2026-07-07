@@ -12,3 +12,7 @@ STATE        | mode               | z_map_probe
 STATE        | reference          | projects/piececraft-3d
 
 RESPONSE     | default            | Piececraft Wraith Ready.
+WINDOW | window_x | 0
+WINDOW | window_y | 0
+WINDOW | window_width | 0
+WINDOW | window_height | 0
