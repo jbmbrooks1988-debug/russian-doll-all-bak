@@ -6,4 +6,4 @@ detail=fast
 frame_width=240
 frame_height=180
 frame_loaded=1
-history_cursor=644
+history_cursor=0

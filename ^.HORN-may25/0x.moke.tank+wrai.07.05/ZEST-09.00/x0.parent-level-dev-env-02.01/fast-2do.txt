@@ -264,7 +264,44 @@ Current status:
 - first-pass `rgba_extrusion` preview exists in `wraith_rgb_daemon.c`, fed by `pieces/sample_emoji/voxels_8.csv`.
 - next implementation step is a receipt-rich extrusion primitive with visible pixel counts/projected bounds and project-owned edit ops.
 
-## Task 5: Create `wraith-ed`
+## Task 5 (NEW PRIORITY): Create `wrai-text-editor` — Emoji Rendering + FreeType Integration
+
+Reference:
+- `1.TPMOS_c_+rmmp.0102.0027/projects/agy-text-editor` (template structure)
+- `#.emoji-studio-501.02.05t/&.emoji-studio-solo.02.01` (emoji-studio working implementation, use for pattern reference)
+
+New Wraith project path:
+- `1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/wrai-text-editor`
+
+Goal:
+- Implement lazy-load FreeType emoji rendering with Noto Color Emoji font
+- Prove emoji glyphs render correctly in both ASCII (UTF-8 or fallback) and GL (voxel quads)
+- Validate on-demand emoji cache, config-driven font paths, and per-keystroke input validation
+- Use agy-text-editor project structure as template (multi-layout, manager + ops pattern)
+
+Minimum implementation:
+- Copy agy-text-editor structure (layouts/, manager/, pieces/, project.pdl)
+- Main layout displays text file with emoji content (pieces/document.txt sample)
+- FreeType integration in wraith_rgb_daemon.c (9 functions: load_config, init, decode_utf8, render, cache, bitmap_to_voxel, etc.)
+- Config file: pieces/config/wraith_debug.conf with [emoji_rendering] section
+- manager: standard init-only template, loads pieces/document.txt
+- ops: minimal input handler (navigate/scroll, no editing yet)
+
+Phase sequence:
+1. **Phase 1**: Core emoji infrastructure (FreeType lazy-load, cache, config) → compile clean → live test wrai-text-editor
+2. **Phase 2**: Right-click context menus (window-specific, per-project actions) → context menu in wrai-text-editor (Edit, Copy, etc.)
+3. **Phase 3**: Window-geom verification + overlapping windows (use context menu "Edit Geometry" to trigger settings/window-geom)
+
+Acceptance criteria:
+- wrai-text-editor opens from launcher
+- emoji glyphs render correctly (not blank, not garbled) in both ASCII and GL
+- cache working (repeated emoji renders fast, LRU eviction if cache full)
+- config override works (disable emoji → fallback to [?])
+- no crashes, no orphaned FreeType handles
+
+See: /ZEST-09.00/wraimoji-j10.txt (detailed implementation plan with 9 C functions, project structure, success criteria)
+
+## Task 6: Create `wraith-ed`
 
 References:
 - `1.TPMOS_c_+rmmp.0102.0027/projects/op-ed`

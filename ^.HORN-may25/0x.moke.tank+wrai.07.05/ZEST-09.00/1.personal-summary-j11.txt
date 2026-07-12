@@ -1,0 +1,298 @@
+1.personal-summary-j11.txt — plain-language summary of today's work,
+what's still open, and what comes next
+
+Date: 2026-07-11
+Written for a human reader, not another agent — plain explanations, no
+assumed context.
+
+=====================================================================
+PHASE 1: WHAT I CHANGED IN THE WRAITH DESKTOP, AND WHY
+=====================================================================
+
+The problem: when you open a project like wrai-text-editor inside the
+Wraith desktop (as a window in the taskbar), the desktop was NOT
+actually reading that project's own layout file (the file that defines
+what buttons and boxes look like). Instead, every project that wanted
+real buttons/framing in its window had to hand-write that structure
+directly in program code (C code), duplicating what the layout file
+already said. Two copies of the same UI, only one of which was ever
+actually used.
+
+This is NOT how the rest of this codebase works. Everywhere else
+(including agy-text-editor, which is the reference for "correct"), a
+project writes VALUES to a state file, and one generic system reads the
+layout file plus those values and produces the final screen. One source
+of truth, one merge step.
+
+**What I built:** a real version of that merge step, but only for
+Wraith's desktop windows in ASCII (text) mode. It's a new function in
+the desktop's shared code (`wraith-alpha_manager.c`) that:
+1. Checks if a project has a `gui_state.txt` file (the values file).
+2. Checks if that project isn't using a different, older special mode
+   (`is_map_control` — piececraft-wraith uses this).
+3. If both checks pass: opens the project's real layout file, reads its
+   values file, and produces the actual merged screen — just like agy
+   does.
+
+**Why this is the right direction:** it removes the need for hand-
+duplicated code per project, which is both wasted work and a source of
+bugs (the two copies can drift apart, and did — that's why
+wrai-text-editor initially looked wrong compared to agy).
+
+=====================================================================
+PHASE 2: WHAT ELSE NEEDS TO BE FIXED TO BE COMPATIBLE WITH THIS CHANGE
+=====================================================================
+
+The new function is written to be "opt-in" — it only changes behavior
+for projects that meet both conditions above. Here's exactly where that
+leaves things, project by project:
+
+- **wrai-text-editor** — this is the ONE project that actually uses the
+  new path right now. Its ASCII-mode window content should now come
+  from its real layout file, not hand-written code. This needs to be
+  visually confirmed live (see Phase 4 below) — it was tested with
+  direct file-level checks, not by actually opening it in a running
+  Wraith session yet.
+
+- **piececraft-wraith** — explicitly excluded (it uses the older
+  `is_map_control` mode), so this should be completely unaffected. I
+  compared its files against a separately-working copy of the project
+  and confirmed the only difference in the shared desktop code was my
+  new function itself, safely switched off for this project.
+
+- **settings** — CHECKED. Two real problems found and handled:
+  1. A value the settings menu needs was being saved to the wrong file
+     — fixed, confirmed working (the settings menu should now show
+     correctly in the embedded window instead of showing broken
+     placeholder text).
+  2. A bigger one: settings has its own working "multiple pages inside
+     one window" feature (settings home → window geometry picker → the
+     actual geometry editor for a chosen project). My earlier change had
+     no way to know about this and was silently always showing just the
+     settings home page no matter what, even after clicking into a
+     sub-page. I did NOT build proper support for this — instead I
+     switched settings back to its OLD, working method (the same
+     special-mode switch piececraft-wraith uses) so the sub-pages work
+     again. This means settings is temporarily NOT using the "proper
+     fix" either, on purpose, until that multi-page capability gets
+     built into the shared mechanism for real.
+
+- **Every other Wraith project** (fs, web-cam, terminal,
+  chtmgl-video-isolate, wraith-3d-cube, wraith-browser, wraith-ed,
+  chtmgl-wraith, screen-record, wraith-man-test, emoji-studio-wraith) —
+  none of these have a `gui_state.txt` file, so my new function does
+  nothing for them at all. They should be completely unaffected.
+
+**Also confirmed, but NOT fixed by this change:** the new function only
+updates the TEXT (ASCII) view. The 3D/graphical (GL) view still uses the
+older code path entirely. So right now, for wrai-text-editor, the text
+view and the graphical view could show DIFFERENT things — a new gap
+that needs closing later (details in the foundation document below).
+
+=====================================================================
+PHASE 3: THE OTHER FIXES — WHAT I'LL LOOK AT AFTER, AND WHAT'S STILL OPEN
+=====================================================================
+
+- **fs's duplicate-number bug** — FIXED, but the fix is "fake" in the
+  sense that it's still a hardcoded number, just corrected to the
+  currently-right value. It'll break again the next time the desktop's
+  icon row changes, the same way it just broke this time. The REAL fix
+  is to make this number read itself automatically instead of being
+  typed in by hand — you pointed out that plain (non-Wraith) projects
+  like `+-demo` already do this correctly (their numbering comes
+  automatically from the screen-drawing system, never hand-typed). The
+  nine Wraith projects that currently hand-type this number should be
+  moved to work the same way `+-demo` already does. Not done yet — full
+  writeup in `x/fs-fix.txt`.
+
+- **The 3D map disappearing — SET ASIDE for now, decision made
+  deliberately, not abandoned.** I ruled out nearly every file that
+  could plausibly cause it (compared against a known-working copy of
+  the whole project, byte-for-byte — no real differences in the
+  3D-rendering code, the map data, or piececraft-wraith's own code).
+  Then a bigger clue came up: clicking the on-screen "[8] 2D/3D" button
+  behaves differently than pressing '8' directly, on multiple projects,
+  not just this one (Phase 5 below). Current best guess: this is
+  connected to the SAME kind of hand-typed/hardcoded-number problem as
+  the fs bug — an index mismatch somewhere in how a clicked button's
+  number gets turned into the actual key it's supposed to send, rather
+  than anything wrong with the 3D drawing code itself (which was already
+  confirmed identical to a working copy). **Plan: fix the legacy-vs-hack
+  migration work below FIRST (settings, and deciding piececraft-wraith's
+  own fate), then come back and check whether the 3D bug is STILL
+  happening at all.** If the real underlying cause is the same
+  hand-typed-number pattern the rest of this migration is removing, it
+  may simply go away as a side effect, without ever needing a dedicated
+  fix of its own. If it's still broken after that, then it's confirmed
+  to be a separate, real bug worth investigating on its own — worth
+  re-reading `x/3d-fix.txt` at that point.
+
+- **The foundation-level rewrite** — a longer write-up
+  (`j11.wraith-foundation-fix-fut.txt`) lists everything that's
+  currently a workaround instead of a real fix: the hand-duplicated
+  window content, the cli_io (text input box) special-casing that only
+  works in graphical mode, the nine hand-typed numbers, and one more
+  finding from today (a piece of startup code labeled "RE-WRAITH" that
+  changes which screen the whole desktop boots into, found while
+  investigating the 3D bug). This is a "do this later, in careful
+  small steps" list, not something to act on all at once — today
+  already proved that even a small, careful change can break something
+  unexpected.
+
+=====================================================================
+PHASE 4: WHAT HAPPENS AFTER ALL OF THE ABOVE IS SETTLED
+=====================================================================
+
+Once the compatibility checks in Phase 2 are done (especially
+confirming `settings` still works) and you've decided how much of the
+Phase 3 foundation work to do now versus later, the plan goes back to
+the ORIGINAL goal this whole effort was for:
+
+1. **Confirm emoji rendering actually works, live, inside
+   wrai-text-editor** — this was the very first thing being built this
+   session (FreeType + Noto Color Emoji, a glyph cache, etc.). It was
+   tested by running pieces directly from the command line, but never
+   confirmed by actually opening the file and LOOKING at it inside a
+   real, running Wraith window. That's the next concrete milestone.
+
+2. **Then: right-click context menus** — a feature planned from the
+   start, for window-specific actions (not just the fixed
+   minimize/close/etc. buttons every window shares).
+
+3. **Then: window resizing and overlapping-window behavior** — the
+   context menus from step 2 were specifically planned as the tool
+   you'd use to test and drive this resize/geometry work, which is why
+   it comes after, not before.
+
+(This three-step plan was written up in more detail earlier today in
+`x/wraith-editor-arch.md`, if you want the fuller version.)
+
+=====================================================================
+PHASE 5: BUGS YOU MAY RUN INTO, AND ONE THAT CAUSED REAL CONFUSION TODAY
+=====================================================================
+
+**The "8" key vs. clicking the on-screen button mismatch.** You found
+that pressing the "8" key directly on your keyboard correctly switches
+piececraft-wraith into 3D mode, but clicking the on-screen "[8] 2D/3D"
+button does NOT work correctly — and you confirmed this same mismatch
+happens on OTHER projects too, not just piececraft-wraith.
+
+This is a big deal for how today's investigation went: I spent a
+significant amount of time assuming the 3D map disappearing was a bug
+specifically in piececraft-wraith's 3D drawing code. Once you reported
+that hotkey-vs-click behaves differently, and that this happens
+everywhere (not just in 3D, not just in piececraft-wraith), it became
+clear the REAL bug is probably in how on-screen button clicks get
+translated into key presses in general — a much more basic, more
+widely-affecting bug than "piececraft-wraith's 3D view is broken."
+
+**Practical effect:** if you see something that looks broken specifically
+after CLICKING a numbered button (rather than pressing the matching key
+directly), suspect this same click-vs-key mismatch first, before
+assuming the feature itself is broken. This may explain other odd
+behavior you run into that isn't otherwise written up here.
+
+**On the fs fix specifically:** as covered in Phase 3, the fs fix that
+went in today was a real, correct fix for the SPECIFIC symptom you
+reported (numbers repeating) — but it's not the "real" fix, because the
+number is still hand-typed rather than computed automatically. Plain,
+non-Wraith projects (confirmed: `+-demo` exists and works this way
+already) don't have this problem at all, because their numbering is
+never hand-typed in the first place. That's the standard the nine
+Wraith projects should eventually be moved to.
+
+**Why pressing Enter on settings pages didn't work, but clicking did
+(found and fixed):** You reported that pressing Enter on a settings
+page button didn't move to the next page — it only moved after you
+clicked the screen with the mouse. I'd already made one fix (a missing
+relay case for the SETTINGS_PAGE: command) that was necessary but
+turned out not to be the real problem.
+
+The actual bug: when you press Enter on a keyboard, the command has to
+travel from the on-screen text renderer to the desktop's "brain"
+process through a small hand-off file. That hand-off file's name was
+being built wrong for every window opened inside the Wraith desktop
+(settings, fs, and every other embedded project) — so the command was
+being written to a file that literally nobody was ever reading. It
+just vanished, silently, every time, for every keyboard-driven button
+in every embedded window. Mouse clicks never had this problem because
+mouse clicks take a shortcut straight into the brain process and skip
+that hand-off file entirely — which is exactly why "click works,
+keyboard doesn't" was the symptom.
+
+This is fixed now (the hand-off file name is built correctly). It's a
+foundation-level fix, not settings-specific — it should also make any
+other keyboard-only interaction inside embedded windows (not just
+settings) more reliable than it's been, since this bug applied broadly,
+not narrowly. Worth keeping an eye out for whether this quietly cleans
+
+---
+
+## Progress report: everything closed since the last update, plus the
+## emoji work that got set aside earlier and shouldn't be forgotten
+
+**Nav/dispatch bugs — all closed and you've confirmed them live:**
+- Settings keyboard Enter not advancing pages: fixed (a missing
+  re-projection call).
+- Piececraft-wraith: arrows not navigating past a certain point, fixed
+  (the project was silently overwriting the desktop's own "exit
+  map-control mode" flag on every keypress). A second, related bug
+  (ASCII never showing piececraft's real buttons at all, only the map
+  text) also fixed.
+- The "hardcoded chrome/nav numbers in nine separate files" problem:
+  fixed properly, not patched — the desktop now publishes the real
+  number to a file at startup, and all nine projects read it instead of
+  guessing. This was flagged as unfinished work back on 2026-07-06 and
+  had never actually been done until now.
+- cli_io text-input boxes (the "type a number, apply" fields used in
+  settings' window-geometry editor): fixed a narrow special case
+  (typed values weren't showing up in GL) into a general capability, so
+  future fields get this for free. Also fixed two follow-on GL-only
+  bugs this uncovered: typing numbers into a field was making the
+  on-screen selector jump around, and the "actively typing" indicator
+  (^) was lagging by one keystroke instead of appearing the instant you
+  pressed Enter.
+- A leftover, abandoned piece of piececraft-wraith from an earlier
+  design attempt (a 9-day-stale file that nothing was writing to
+  anymore) was quietly capable of showing fake, frozen map content
+  instead of the live map, as an unintended side effect of the
+  map-control fix above. Found and neutralized before it ever showed up
+  for you live.
+- The 3D map disappearing bug: confirmed fixed by you, no further work.
+
+Everything above has been written up in detail in
+`j11.wraith-foundation-fix-fut.txt` and the architecture docs, in case
+a future agent (or you, later) needs the full technical trace instead
+of this summary.
+
+**The emoji rendering work — separate track, paused earlier this
+session before all of the above started, not abandoned.** This was the
+very first thing worked on this session: getting emoji characters to
+render properly inside wrai-text-editor (modeled on agy-text-editor).
+The infrastructure is about 85% done — the hard part (loading emoji
+font data and turning it into displayable bitmaps, with a cache so it's
+not slow) already works and compiles cleanly. Three concrete things are
+left before it's actually usable:
+
+1. **Wire it into the actual drawing code.** The emoji-bitmap machinery
+   exists but isn't called yet from the part of the code that draws
+   text character-by-character. This is the "plug it in" step — for
+   each character being drawn, check if it's an emoji, and if so use
+   the new bitmap path instead of the normal text path.
+2. **Turn it on/off properly at startup and shutdown.** Right now
+   nothing calls "start up the emoji system" when the program launches,
+   or "clean up the emoji system" when it closes. Small, mechanical,
+   but needs doing before step 1 will actually work without leaking
+   resources.
+3. **Actually test it live in wrai-text-editor** — open it, see real
+   emoji render correctly in both the plain-text view and the 3D/GL
+   view, confirm turning the feature off in settings falls back to a
+   plain "[?]" placeholder instead of crashing, and confirm typing the
+   same emoji repeatedly doesn't get slow (the cache should make repeat
+   emoji fast).
+
+None of this is hard, it's just unfinished — it got set aside once the
+nav/dispatch bugs started piling up and needed fixing "now, in order,"
+per your own instruction that day. Worth picking back up once the
+current wave of fixes is fully settled.
+up the 3D map issue too, once you're back to testing that.

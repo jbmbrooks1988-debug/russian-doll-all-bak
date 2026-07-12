@@ -18,6 +18,37 @@
 #define MAX_PATH 4096
 #define MAX_LINE 1024
 
+/*
+ * 2026-07-11: refactored to comply with Bible section 11 ("Standalone
+ * Operational Architecture" -- "NEVER hardcode functional logic...
+ * directly into manager modules... Managers orchestrate; Ops execute")
+ * and its REUSE RULE ("If logic is shared across managers or projects,
+ * prefer a reusable Op first"). This manager used to hardcode cursor-based
+ * text editing, file save/load, and directory scanning directly inline --
+ * all genuinely reusable logic that wrai-text-editor (a second project
+ * needing the exact same capabilities) would otherwise have had to
+ * duplicate wholesale. That logic now lives in four standalone,
+ * independently CLI-testable Ops under pieces/system/file_ops/ (not under
+ * any one project, so any project needing text editing/file copy/
+ * directory browsing can reuse them, not just text editors):
+ *   - text_edit_key.+x   -- apply one keystroke to a document+cursor
+ *   - text_editor_view.+x -- render a scrolled/cursor-marked viewport
+ *   - file_copy.+x        -- generic file copy (load/save)
+ *   - dir_browse.+x       -- generic directory listing with search filter
+ * This file now only orchestrates: which Op to call for a given key/
+ * command, and how to present the results (this project's own box-drawing
+ * markup) -- exactly the manager/Op boundary section 11 describes.
+ *
+ * Also fixes the rendering corruption bug reported live on the editor's
+ * map screen: the ORIGINAL build_editor_map() copied document lines with
+ * strncpy(buf, src, N-1) and never explicitly null-terminated afterward.
+ * strncpy does not null-terminate when the source is >= N-1 bytes, so any
+ * line at or beyond a buffer's capacity left it unterminated and the
+ * strlen()/strcpy() calls that followed read past the buffer. Fixed inside
+ * text_editor_view.+x (see that file's own header comment) -- every buffer
+ * there is explicitly terminated after every copy now.
+ */
+
 static char project_root[MAX_PATH] = ".";
 static char active_file_path[MAX_PATH] = "projects/agy-text-editor/pieces/document.txt";
 static char file_path_input_buffer[MAX_PATH] = "projects/agy-text-editor/pieces/document.txt";
@@ -25,39 +56,18 @@ static char search_query_buffer[MAX_LINE] = "";
 static char current_dir[MAX_PATH] = "projects/agy-text-editor";
 static int browser_mode = 0; // 0 = Load, 1 = Save As
 
-static int cursor_x = 0, cursor_y = 0;
-static char document_lines[100][MAX_LINE];
-static int total_lines = 0;
-
 static char response_buffer[256] = "Ready.";
 static char input_line_buffer[MAX_LINE] = "";
 
 static volatile sig_atomic_t g_shutdown = 0;
 
 static void handle_command(const char *cmd);
-static void load_document_to_buffer(void);
-static void save_buffer_to_document(void);
 static void handle_interact_key(int key);
 static int process_key(int key);
 
 static void handle_sigint(int sig) {
     (void)sig;
     g_shutdown = 1;
-}
-
-static int run_command(const char* cmd) {
-    pid_t pid = fork();
-    if (pid == 0) {
-        freopen("/dev/null", "w", stdout);
-        freopen("/dev/null", "w", stderr);
-        execl("/bin/sh", "/bin/sh", "-c", cmd, (char *)NULL);
-        _exit(127);
-    } else if (pid > 0) {
-        int status;
-        waitpid(pid, &status, 0);
-        return WIFEXITED(status) ? WEXITSTATUS(status) : -1;
-    }
-    return -1;
 }
 
 static char* trim_str(char *str) {
@@ -149,7 +159,6 @@ static int get_active_gui_index(void) {
     return idx;
 }
 
-
 static void read_editor_line(void) {
     char *path = NULL;
     if (asprintf(&path, "%s/pieces/apps/player_app/cli_buffers.txt", project_root) == -1) return;
@@ -179,8 +188,6 @@ static void read_file_path_input(void) {
                 char *nl = strchr(line, '\n');
                 if (nl) *nl = '\0';
                 char *val = trim_str(line + 1);
-                // If value is empty, only overwrite if we don't have a previous value
-                // This helps persist the name when Enter clears the parser side buffer
                 if (strlen(val) > 0 || strlen(file_path_input_buffer) == 0) {
                     strncpy(file_path_input_buffer, val, sizeof(file_path_input_buffer) - 1);
                 }
@@ -250,12 +257,10 @@ static void clear_search_query(void) {
 
 static void trigger_render(void) {
     char pulse[MAX_PATH];
-    // 1. Standard CHTPM Frame pulse - use 'L' for Layout/State reload
     snprintf(pulse, sizeof(pulse), "%s/pieces/display/frame_changed.txt", project_root);
     FILE *f = fopen(pulse, "a");
     if (f) { fprintf(f, "L\n"); fclose(f); }
-    
-    // 2. Player App State pulse (Fuzz-op style)
+
     snprintf(pulse, sizeof(pulse), "%s/pieces/apps/player_app/state_changed.txt", project_root);
     f = fopen(pulse, "a");
     if (f) { fprintf(f, "S\n"); fclose(f); }
@@ -273,104 +278,126 @@ static void transition_to_layout(const char *layout_path) {
     }
 }
 
+/* ---- Op invocation helper (Bible section 11: "Managers orchestrate; Ops
+   execute" -- this is the ONE place that knows how to run one) ---- */
+static int run_op(const char *op_rel_path, char *const op_argv[]) {
+    char full_path[MAX_PATH];
+    pid_t pid;
+    int status;
+
+    snprintf(full_path, sizeof(full_path), "%s/%s", project_root, op_rel_path);
+    pid = fork();
+    if (pid == 0) {
+        execv(full_path, op_argv);
+        _exit(127);
+    } else if (pid > 0) {
+        waitpid(pid, &status, 0);
+        return WIFEXITED(status) ? WEXITSTATUS(status) : -1;
+    }
+    return -1;
+}
+
 static void get_document_path(char *out, size_t sz) {
     snprintf(out, sz, "%s/projects/agy-text-editor/pieces/document.txt", project_root);
 }
 
-static int save_to_path(const char *rel_path) {
-    // Update active path immediately for UI feedback
-    if (rel_path[0] == '/' || strstr(rel_path, "projects/") == rel_path) {
-        strncpy(active_file_path, rel_path, sizeof(active_file_path) - 1);
-    } else {
-        snprintf(active_file_path, sizeof(active_file_path), "%s/%s", current_dir, rel_path);
-    }
-    snprintf(response_buffer, sizeof(response_buffer), "Saving to %s...", active_file_path);
-
-    char full_path[MAX_PATH];
-    snprintf(full_path, sizeof(full_path), "%s/%s", project_root, active_file_path);
-    
-    char doc_path[MAX_PATH];
-    get_document_path(doc_path, sizeof(doc_path));
-    
-    FILE *src = fopen(doc_path, "r");
-    if (!src) {
-        snprintf(response_buffer, sizeof(response_buffer), "Error: cannot read working buffer");
-        return -1;
-    }
-    
-    FILE *dst = fopen(full_path, "w");
-    if (!dst) {
-        fclose(src);
-        snprintf(response_buffer, sizeof(response_buffer), "Error: cannot write target file");
-        return -1;
-    }
-    
-    char buffer[4096];
-    size_t bytes;
-    while ((bytes = fread(buffer, 1, sizeof(buffer), src)) > 0) {
-        fwrite(buffer, 1, bytes, dst);
-    }
-    
-    fclose(src);
-    fclose(dst);
-    
-    snprintf(response_buffer, sizeof(response_buffer), "Saved to %s", active_file_path);
-    return 0;
+static void get_cursor_path(char *out, size_t sz) {
+    snprintf(out, sz, "%s/projects/agy-text-editor/pieces/cursor.txt", project_root);
 }
 
-static int load_from_path(const char *rel_path) {
-    // Update active path immediately for UI feedback
-    if (rel_path[0] == '/' || strstr(rel_path, "projects/") == rel_path) {
-        strncpy(active_file_path, rel_path, sizeof(active_file_path) - 1);
-    } else {
-        snprintf(active_file_path, sizeof(active_file_path), "%s/%s", current_dir, rel_path);
-    }
-    snprintf(response_buffer, sizeof(response_buffer), "Loading %s...", active_file_path);
+static int count_document_lines(void) {
+    char doc_path[MAX_PATH];
+    FILE *f;
+    int count = 0;
+    char line[MAX_LINE];
+    get_document_path(doc_path, sizeof(doc_path));
+    f = fopen(doc_path, "r");
+    if (!f) return 0;
+    while (fgets(line, sizeof(line), f)) count++;
+    fclose(f);
+    return count > 0 ? count : 1;
+}
 
-    char full_path[MAX_PATH];
-    snprintf(full_path, sizeof(full_path), "%s/%s", project_root, active_file_path);
-    
-    FILE *src = fopen(full_path, "r");
-    if (!src) {
-        snprintf(response_buffer, sizeof(response_buffer), "Error: file not found");
-        return -1;
+static void read_cursor(int *cx, int *cy) {
+    char cursor_path[MAX_PATH];
+    FILE *f;
+    char line[128];
+    *cx = 0;
+    *cy = 0;
+    get_cursor_path(cursor_path, sizeof(cursor_path));
+    f = fopen(cursor_path, "r");
+    if (!f) return;
+    while (fgets(line, sizeof(line), f)) {
+        if (strncmp(line, "cursor_x=", 9) == 0) *cx = atoi(trim_str(line + 9));
+        else if (strncmp(line, "cursor_y=", 9) == 0) *cy = atoi(trim_str(line + 9));
     }
-    
-    // Load into memory buffer first
-    total_lines = 0;
-    while (fgets(document_lines[total_lines], MAX_LINE, src) && total_lines < 99) {
-        char *nl = strchr(document_lines[total_lines], '\n');
+    fclose(f);
+}
+
+static void reset_cursor(void) {
+    char cursor_path[MAX_PATH];
+    FILE *f;
+    get_cursor_path(cursor_path, sizeof(cursor_path));
+    f = fopen(cursor_path, "w");
+    if (f) { fprintf(f, "cursor_x=0\ncursor_y=0\n"); fclose(f); }
+}
+
+/* Delegates the actual keystroke-to-document editing to the shared Op --
+   see this file's own header comment. Replaces what used to be ~85 lines
+   of inline cursor/line-editing logic. */
+static void handle_interact_key(int key) {
+    char doc_path[MAX_PATH], cursor_path[MAX_PATH], key_str[16];
+    get_document_path(doc_path, sizeof(doc_path));
+    get_cursor_path(cursor_path, sizeof(cursor_path));
+    snprintf(key_str, sizeof(key_str), "%d", key);
+    char *op_argv[] = { "text_edit_key.+x", doc_path, cursor_path, key_str, NULL };
+    run_op("pieces/system/file_ops/+x/text_edit_key.+x", op_argv);
+}
+
+/* Delegates viewport rendering to the shared Op, then wraps each plain
+   line in this project's own box-drawing markup -- the presentation
+   choice stays here, the view/cursor logic is shared. */
+static void build_editor_map(char *out, size_t max_sz) {
+    char doc_path[MAX_PATH], cursor_path[MAX_PATH], view_path[MAX_PATH];
+    FILE *vf;
+    char line[512];
+
+    out[0] = '\0';
+    get_document_path(doc_path, sizeof(doc_path));
+    get_cursor_path(cursor_path, sizeof(cursor_path));
+    snprintf(view_path, sizeof(view_path), "%s/projects/agy-text-editor/pieces/view.txt", project_root);
+
+    char *op_argv[] = { "text_editor_view.+x", doc_path, cursor_path, "40", "8", view_path, NULL };
+    run_op("pieces/system/file_ops/+x/text_editor_view.+x", op_argv);
+
+    vf = fopen(view_path, "r");
+    if (!vf) return;
+    while (fgets(line, sizeof(line), vf)) {
+        char *nl = strchr(line, '\n');
         if (nl) *nl = '\0';
-        nl = strchr(document_lines[total_lines], '\r');
-        if (nl) *nl = '\0';
-        total_lines++;
+        char formatted[600];
+        snprintf(formatted, sizeof(formatted), "<text label=\"║  %-40.40s ║\" /><br/>", line);
+        strncat(out, formatted, max_sz - strlen(out) - 1);
     }
-    fclose(src);
-    
-    if (total_lines == 0) {
-        strcpy(document_lines[0], "");
-        total_lines = 1;
-    }
-    
-    // Now save this to the working buffer (document.txt)
-    save_buffer_to_document();
-    
-    snprintf(response_buffer, sizeof(response_buffer), "Loaded %s", active_file_path);
-    
-    cursor_x = 0;
-    cursor_y = 0;
-    
-    return 0;
+    fclose(vf);
 }
 
 static int compare_names(const void *a, const void *b) {
     return strcmp((const char *)a, (const char *)b);
 }
 
+/* Reuses the shared directory-listing Op for autocomplete too (substring
+   match against whatever the user has typed so far, scoped to the
+   directory implied by that input) rather than a second bespoke scan. */
 static int find_autocomplete_matches(const char *input, const char *current_browser_dir, char matches[][256], int max_matches) {
     char dir_to_scan[MAX_PATH];
     const char *prefix = "";
-    
+    char full_scan_path[MAX_PATH];
+    char listing_path[MAX_PATH];
+    FILE *lf;
+    char line[512];
+    int count = 0;
+
     const char *last_slash = strrchr(input, '/');
     if (last_slash) {
         size_t dir_len = last_slash - input;
@@ -378,45 +405,46 @@ static int find_autocomplete_matches(const char *input, const char *current_brow
         strncpy(dir_to_scan, input, dir_len);
         dir_to_scan[dir_len] = '\0';
         prefix = last_slash + 1;
-        if (strlen(dir_to_scan) == 0) {
-            strcpy(dir_to_scan, ".");
-        }
+        if (strlen(dir_to_scan) == 0) strcpy(dir_to_scan, ".");
     } else {
         prefix = input;
         strcpy(dir_to_scan, current_browser_dir);
     }
-    
-    char full_scan_path[MAX_PATH];
+
     snprintf(full_scan_path, sizeof(full_scan_path), "%s/%s", project_root, dir_to_scan);
-    
-    DIR *d = opendir(full_scan_path);
-    if (!d) return 0;
-    
-    struct dirent *entry;
-    int count = 0;
-    size_t prefix_len = strlen(prefix);
-    
-    while ((entry = readdir(d)) != NULL && count < max_matches) {
-        if (entry->d_name[0] == '.') continue;
-        
-        if (strncmp(entry->d_name, prefix, prefix_len) == 0) {
-            char entry_path[MAX_PATH];
-            snprintf(entry_path, sizeof(entry_path), "%s/%s", full_scan_path, entry->d_name);
-            struct stat st;
-            int is_dir = 0;
-            if (stat(entry_path, &st) == 0 && S_ISDIR(st.st_mode)) {
-                is_dir = 1;
-            }
-            
-            if (last_slash) {
-                snprintf(matches[count], 256, "%.*s/%s%s", (int)(last_slash - input), input, entry->d_name, is_dir ? "/" : "");
-            } else {
-                snprintf(matches[count], 256, "%s%s", entry->d_name, is_dir ? "/" : "");
-            }
-            count++;
+    snprintf(listing_path, sizeof(listing_path), "%s/projects/agy-text-editor/pieces/autocomplete_listing.txt", project_root);
+
+    char *op_argv[] = { "dir_browse.+x", full_scan_path, (char *)prefix, listing_path, NULL };
+    run_op("pieces/system/file_ops/+x/dir_browse.+x", op_argv);
+
+    lf = fopen(listing_path, "r");
+    if (!lf) return 0;
+    while (count < max_matches && fgets(line, sizeof(line), lf)) {
+        char *nl = strchr(line, '\n');
+        if (nl) *nl = '\0';
+        char kind[8], name[256];
+        char *bar1 = strchr(line, '|');
+        if (!bar1) continue;
+        size_t klen = bar1 - line;
+        if (klen >= sizeof(kind)) continue;
+        memcpy(kind, line, klen);
+        kind[klen] = '\0';
+        char *name_start = bar1 + 1;
+        char *bar2 = strchr(name_start, '|');
+        size_t nlen = bar2 ? (size_t)(bar2 - name_start) : strlen(name_start);
+        if (nlen >= sizeof(name)) nlen = sizeof(name) - 1;
+        memcpy(name, name_start, nlen);
+        name[nlen] = '\0';
+        int is_dir = (strcmp(kind, "DIR") == 0);
+
+        if (last_slash) {
+            snprintf(matches[count], 256, "%.*s/%s%s", (int)(last_slash - input), input, name, is_dir ? "/" : "");
+        } else {
+            snprintf(matches[count], 256, "%s%s", name, is_dir ? "/" : "");
         }
+        count++;
     }
-    closedir(d);
+    fclose(lf);
     return count;
 }
 
@@ -430,112 +458,122 @@ static void append_aligned_button_attr(char *out, size_t max_sz, const char *lab
     int num = *p_display_num;
     int digits = get_digits(num);
     int label_len = strlen(label);
-    
+
     int visual_len = 8 + digits + label_len;
     int padding = 40 - visual_len;
     if (padding < 0) padding = 0;
-    
+
     char btn_markup[1024];
     snprintf(btn_markup, sizeof(btn_markup), "<text label=\"║  \" /><button label=\"%s\" %s=\"%s\" />", label, attr_name, attr_val);
     strncat(out, btn_markup, max_sz - strlen(out) - 1);
-    
+
     if (padding > 0) {
         char pad_str[128];
         snprintf(pad_str, sizeof(pad_str), "<text label=\"%.*s\" />", padding, "                                                                                ");
         strncat(out, pad_str, max_sz - strlen(out) - 1);
     }
     strncat(out, "<text label=\" ║\" /><br/>", max_sz - strlen(out) - 1);
-    
+
     (*p_display_num)++;
 }
 
-static void handle_interact_key(int key) {
-    int modified = 0;
-    if (key == 'w' || key == 'W' || key == 1002) {
-        if (cursor_y > 0) cursor_y--;
-        int len = strlen(document_lines[cursor_y]);
-        if (cursor_x > len) cursor_x = len;
-    } else if (key == 's' || key == 'S' || key == 1003) {
-        if (cursor_y < 98) {
-            if (cursor_y >= total_lines - 1) {
-                strcpy(document_lines[total_lines], "");
-                total_lines++;
-                modified = 1;
-            }
-            cursor_y++;
-            int len = strlen(document_lines[cursor_y]);
-            if (cursor_x > len) cursor_x = len;
+/* Delegates to the shared file_copy Op. Replaces what used to be an
+   inline fopen/fread/fwrite loop. */
+static int save_to_path(const char *rel_path) {
+    if (rel_path[0] == '/' || strstr(rel_path, "projects/") == rel_path) {
+        strncpy(active_file_path, rel_path, sizeof(active_file_path) - 1);
+    } else {
+        snprintf(active_file_path, sizeof(active_file_path), "%s/%s", current_dir, rel_path);
+    }
+    snprintf(response_buffer, sizeof(response_buffer), "Saving to %s...", active_file_path);
+
+    char full_path[MAX_PATH], doc_path[MAX_PATH];
+    snprintf(full_path, sizeof(full_path), "%s/%s", project_root, active_file_path);
+    get_document_path(doc_path, sizeof(doc_path));
+
+    char *op_argv[] = { "file_copy.+x", doc_path, full_path, NULL };
+    int rc = run_op("pieces/system/file_ops/+x/file_copy.+x", op_argv);
+    if (rc != 0) {
+        snprintf(response_buffer, sizeof(response_buffer), "Error: cannot write target file");
+        return -1;
+    }
+
+    snprintf(response_buffer, sizeof(response_buffer), "Saved to %s", active_file_path);
+    return 0;
+}
+
+/* Delegates to the shared file_copy Op, then resets cursor to (0,0). */
+static int load_from_path(const char *rel_path) {
+    if (rel_path[0] == '/' || strstr(rel_path, "projects/") == rel_path) {
+        strncpy(active_file_path, rel_path, sizeof(active_file_path) - 1);
+    } else {
+        snprintf(active_file_path, sizeof(active_file_path), "%s/%s", current_dir, rel_path);
+    }
+    snprintf(response_buffer, sizeof(response_buffer), "Loading %s...", active_file_path);
+
+    char full_path[MAX_PATH], doc_path[MAX_PATH];
+    snprintf(full_path, sizeof(full_path), "%s/%s", project_root, active_file_path);
+    get_document_path(doc_path, sizeof(doc_path));
+
+    char *op_argv[] = { "file_copy.+x", full_path, doc_path, NULL };
+    int rc = run_op("pieces/system/file_ops/+x/file_copy.+x", op_argv);
+    if (rc != 0) {
+        snprintf(response_buffer, sizeof(response_buffer), "Error: file not found");
+        return -1;
+    }
+
+    reset_cursor();
+    snprintf(response_buffer, sizeof(response_buffer), "Loaded %s", active_file_path);
+    return 0;
+}
+
+static void handle_command(const char *cmd) {
+    if (strncmp(cmd, "SET_DIR:", 8) == 0) {
+        strncpy(current_dir, cmd + 8, sizeof(current_dir) - 1);
+        if (strlen(current_dir) == 0) strcpy(current_dir, ".");
+        clear_search_query();
+    } else if (strncmp(cmd, "SET_PATH:", 9) == 0) {
+        set_file_path_input(cmd + 9);
+    } else if (strncmp(cmd, "SET_AUTOCOMPLETE:", 17) == 0) {
+        set_file_path_input(cmd + 17);
+    } else if (strncmp(cmd, "SET_LOAD_FILE:", 14) == 0) {
+        set_file_path_input(cmd + 14);
+        load_from_path(cmd + 14);
+    } else if (strcmp(cmd, "SET_LOAD_ACTION") == 0) {
+        read_file_path_input();
+        load_from_path(file_path_input_buffer);
+    } else if (strcmp(cmd, "SET_SAVE_ACTION") == 0) {
+        read_file_path_input();
+        save_to_path(file_path_input_buffer);
+    } else if (strcmp(cmd, "SET_NEW_FILE") == 0) {
+        char doc_path[MAX_PATH];
+        get_document_path(doc_path, sizeof(doc_path));
+        FILE *f = fopen(doc_path, "w");
+        if (f) {
+            fclose(f);
+            strcpy(active_file_path, "none");
+            strcpy(response_buffer, "New file created (buffer cleared).");
+            reset_cursor();
+        } else {
+            strcpy(response_buffer, "Error creating new file.");
         }
-    } else if (key == 'a' || key == 'A' || key == 1000) {
-        if (cursor_x > 0) cursor_x--;
-    } else if (key == 'd' || key == 'D' || key == 1001) {
-        int len = strlen(document_lines[cursor_y]);
-        if (cursor_x < len) {
-            cursor_x++;
-        } else if (len < MAX_LINE - 2) {
-            // Pad with space to move right
-            document_lines[cursor_y][len] = ' ';
-            document_lines[cursor_y][len + 1] = '\0';
-            cursor_x++;
-            modified = 1;
-        }
-    } else if (key == 127 || key == 8) {
-        // Backspace
-        if (cursor_x > 0) {
-            char *line = document_lines[cursor_y];
-            memmove(line + cursor_x - 1, line + cursor_x, strlen(line + cursor_x) + 1);
-            cursor_x--;
-            modified = 1;
-        } else if (cursor_y > 0) {
-            // Merge with previous line
-            int prev_len = strlen(document_lines[cursor_y-1]);
-            if (prev_len + strlen(document_lines[cursor_y]) < MAX_LINE - 1) {
-                strcat(document_lines[cursor_y-1], document_lines[cursor_y]);
-                for (int i = cursor_y; i < total_lines - 1; i++) {
-                    strcpy(document_lines[i], document_lines[i+1]);
-                }
-                total_lines--;
-                cursor_y--;
-                cursor_x = prev_len;
-                modified = 1;
-            }
-        }
-    } else if (key == 10 || key == 13) {
-        // New line
-        if (total_lines < 99) {
-            for (int i = total_lines; i > cursor_y + 1; i--) {
-                strcpy(document_lines[i], document_lines[i-1]);
-            }
-            strcpy(document_lines[cursor_y + 1], document_lines[cursor_y] + cursor_x);
-            document_lines[cursor_y][cursor_x] = '\0';
-            total_lines++;
-            cursor_y++;
-            cursor_x = 0;
-            modified = 1;
-        }
-    } else if (key >= 32 && key <= 126) {
-        // Printable character
-        char *line = document_lines[cursor_y];
-        int len = strlen(line);
-        if (len < MAX_LINE - 2) {
-            if (cursor_x > len) {
-                // Pad with spaces if cursor was moved right past end
-                for (int i = len; i < cursor_x; i++) line[i] = ' ';
-                line[cursor_x] = '\0';
-                len = cursor_x;
-            }
-            memmove(line + cursor_x + 1, line + cursor_x, len - cursor_x + 1);
-            line[cursor_x] = (char)key;
-            cursor_x++;
-            modified = 1;
+    } else if (strcmp(cmd, "SET_CLEAR_FILE") == 0) {
+        char doc_path[MAX_PATH];
+        get_document_path(doc_path, sizeof(doc_path));
+        FILE *f = fopen(doc_path, "w");
+        if (f) {
+            fclose(f);
+            strcpy(response_buffer, "File cleared.");
+            reset_cursor();
+        } else {
+            strcpy(response_buffer, "Error clearing file.");
         }
     }
-    if (modified) save_buffer_to_document();
 }
 
 static int process_key(int key) {
     int processed = 0;
-    
+
     char layout[MAX_LINE];
     get_current_layout_name(layout, sizeof(layout));
 
@@ -593,7 +631,6 @@ static int process_key(int key) {
             }
         }
     } else if (key == 10 || key == 13) {
-        // Enter or CR pressed
         if (strcmp(layout, "file_browser.chtpm") == 0) {
             int active_idx = get_active_gui_index();
             if (active_idx == 2) { // file_path_input
@@ -607,9 +644,11 @@ static int process_key(int key) {
                 read_search_query_input();
                 processed = 1;
             }
+        } else if (strcmp(layout, "editor.chtpm") == 0) {
+            handle_interact_key(key);
+            return 1;
         }
     } else if (strcmp(layout, "editor.chtpm") == 0) {
-        // Editor-specific commands
         if (key == '6') {
             handle_command("SET_NEW_FILE");
             processed = 1;
@@ -617,16 +656,14 @@ static int process_key(int key) {
             handle_command("SET_CLEAR_FILE");
             processed = 1;
         } else {
-             handle_interact_key(key);
-             return 1;
+            handle_interact_key(key);
+            return 1;
         }
     } else if (strcmp(layout, "file_menu.chtpm") == 0) {
-        // Menu-specific commands
         if (key == '6') {
             handle_command("SET_NEW_FILE");
             processed = 1;
         } else if (key == '7') {
-            // Save File (to active path)
             if (strcmp(active_file_path, "none") == 0 || strlen(active_file_path) == 0) {
                 browser_mode = 1;
                 clear_search_query();
@@ -638,7 +675,6 @@ static int process_key(int key) {
             }
             processed = 1;
         } else if (key == '8') {
-            // Save As...
             browser_mode = 1;
             clear_search_query();
             set_file_path_input(active_file_path);
@@ -646,7 +682,6 @@ static int process_key(int key) {
             strcpy(response_buffer, "Enter Save-As path.");
             processed = 1;
         } else if (key == '9') {
-            // Load File...
             browser_mode = 0;
             clear_search_query();
             set_file_path_input("");
@@ -658,171 +693,34 @@ static int process_key(int key) {
     return processed;
 }
 
-static void handle_command(const char *cmd) {
-    if (strncmp(cmd, "SET_DIR:", 8) == 0) {
-        strncpy(current_dir, cmd + 8, sizeof(current_dir) - 1);
-        if (strlen(current_dir) == 0) strcpy(current_dir, ".");
-        clear_search_query();
-    } else if (strncmp(cmd, "SET_PATH:", 9) == 0) {
-        set_file_path_input(cmd + 9);
-    } else if (strncmp(cmd, "SET_AUTOCOMPLETE:", 17) == 0) {
-        set_file_path_input(cmd + 17);
-    } else if (strncmp(cmd, "SET_LOAD_FILE:", 14) == 0) {
-        set_file_path_input(cmd + 14);
-        load_from_path(cmd + 14);
-    } else if (strcmp(cmd, "SET_LOAD_ACTION") == 0) {
-        read_file_path_input();
-        load_from_path(file_path_input_buffer);
-    } else if (strcmp(cmd, "SET_SAVE_ACTION") == 0) {
-        read_file_path_input();
-        save_to_path(file_path_input_buffer);
-    } else if (strcmp(cmd, "SET_NEW_FILE") == 0) {
-        char doc_path[MAX_PATH];
-        get_document_path(doc_path, sizeof(doc_path));
-        FILE *f = fopen(doc_path, "w");
-        if (f) {
-            fclose(f);
-            strcpy(active_file_path, "none");
-            strcpy(response_buffer, "New file created (buffer cleared).");
-            load_document_to_buffer(); // Reload into memory buffer
-            cursor_x = 0; cursor_y = 0;
-        } else {
-            strcpy(response_buffer, "Error creating new file.");
-        }
-    } else if (strcmp(cmd, "SET_CLEAR_FILE") == 0) {
-        char doc_path[MAX_PATH];
-        get_document_path(doc_path, sizeof(doc_path));
-        FILE *f = fopen(doc_path, "w");
-        if (f) {
-            fclose(f);
-            strcpy(response_buffer, "File cleared.");
-            load_document_to_buffer(); // Reload into memory buffer
-        } else {
-            strcpy(response_buffer, "Error clearing file.");
-        }
-    }
-}
-
-static void load_document_to_buffer(void) {
-    char doc_path[MAX_PATH];
-    snprintf(doc_path, sizeof(doc_path), "%s/projects/agy-text-editor/pieces/document.txt", project_root);
-    FILE *f = fopen(doc_path, "r");
-    total_lines = 0;
-    if (f) {
-        while (fgets(document_lines[total_lines], MAX_LINE, f) && total_lines < 99) {
-            char *nl = strchr(document_lines[total_lines], '\n');
-            if (nl) *nl = '\0';
-            nl = strchr(document_lines[total_lines], '\r');
-            if (nl) *nl = '\0';
-            total_lines++;
-        }
-        fclose(f);
-    }
-    if (total_lines == 0) {
-        strcpy(document_lines[0], "");
-        total_lines = 1;
-    }
-}
-
-static void save_buffer_to_document(void) {
-    char doc_path[MAX_PATH];
-    snprintf(doc_path, sizeof(doc_path), "%s/projects/agy-text-editor/pieces/document.txt", project_root);
-    FILE *f = fopen(doc_path, "w");
-    if (f) {
-        for (int i = 0; i < total_lines; i++) {
-            fprintf(f, "%s\n", document_lines[i]);
-        }
-        fclose(f);
-    }
-}
-
-static void build_editor_map(char *out, size_t max_sz) {
-    out[0] = '\0';
-    
-    // Vertical Camera
-    int view_height = 8;
-    int view_start_y = cursor_y - (view_height / 2);
-    if (view_start_y < 0) view_start_y = 0;
-    if (view_start_y + view_height > total_lines && total_lines > view_height) 
-        view_start_y = total_lines - view_height;
-    
-    // Horizontal Camera
-    int view_width = 40;
-    int view_start_x = cursor_x - (view_width / 2);
-    if (view_start_x < 0) view_start_x = 0;
-
-    for (int i = view_start_y; i < view_start_y + view_height; i++) {
-        char line_buf[MAX_LINE];
-        if (i < total_lines) {
-            strncpy(line_buf, document_lines[i], MAX_LINE - 1);
-        } else {
-            strcpy(line_buf, "");
-        }
-        
-        char formatted[MAX_LINE + 512];
-        char final_line[MAX_LINE + 64];
-        
-        int len = strlen(line_buf);
-        if (i == cursor_y) {
-            if (cursor_x > len) cursor_x = len;
-            
-            // Render line with [X] cursor
-            char before[MAX_LINE], after[MAX_LINE];
-            strncpy(before, line_buf, cursor_x);
-            before[cursor_x] = '\0';
-            strcpy(after, line_buf + cursor_x);
-            
-            snprintf(final_line, sizeof(final_line), "%s[X]%s", before, after);
-        } else {
-            strcpy(final_line, line_buf);
-        }
-        
-        // Apply horizontal scrolling
-        char scrolled_line[view_width + 1];
-        int final_len = strlen(final_line);
-        if (view_start_x < final_len) {
-            strncpy(scrolled_line, final_line + view_start_x, view_width);
-            scrolled_line[view_width] = '\0';
-        } else {
-            strcpy(scrolled_line, "");
-        }
-        
-        snprintf(formatted, sizeof(formatted), "<text label=\"║  %-40.40s ║\" /><br/>", scrolled_line);
-        strncat(out, formatted, max_sz - strlen(out) - 1);
-    }
-}
-
 static void update_gui_state(void) {
     char state_path[MAX_PATH];
     snprintf(state_path, sizeof(state_path), "%s/projects/agy-text-editor/manager/gui_state.txt", project_root);
-    
+
     char editor_map[8192] = "";
     build_editor_map(editor_map, sizeof(editor_map));
-    
+
     read_editor_line();
     read_file_path_input();
     read_search_query_input();
-    
-    // Build browser mode header
+
     char browser_mode_header_val[256];
     if (browser_mode == 0) {
         strcpy(browser_mode_header_val, "<text label=\"║  MODE: LOAD FILE                            ║\" /><br/>");
     } else {
         strcpy(browser_mode_header_val, "<text label=\"║  MODE: SAVE FILE AS                         ║\" /><br/>");
     }
-    
-    // Build current directory line
+
     char browser_current_dir_line_val[512];
-    snprintf(browser_current_dir_line_val, sizeof(browser_current_dir_line_val), 
+    snprintf(browser_current_dir_line_val, sizeof(browser_current_dir_line_val),
              "<text label=\"║  DIR: %-35.35s ║\" /><br/>", current_dir);
-             
-    // Build autocomplete suggestions
+
     char autocomplete_markup[8192] = "";
     char suggestions[4][256];
     int num_suggestions = find_autocomplete_matches(file_path_input_buffer, current_dir, suggestions, 4);
-    
+
     int next_display_num = 3; // search_query is 1, file_path_input is 2
-    
+
     if (num_suggestions > 0) {
         strcat(autocomplete_markup, "<text label=\"║  SUGGESTIONS:                               ║\" /><br/>");
         for (int i = 0; i < num_suggestions; i++) {
@@ -839,10 +737,12 @@ static void update_gui_state(void) {
     } else {
         strcat(autocomplete_markup, "<text label=\"║  (Type to see autocompletions)              ║\" /><br/>");
     }
-    
-    // Build directory browser tree
+
+    /* Directory browser tree -- delegates the actual scan to the shared
+       dir_browse Op (see this file's own header comment), replacing what
+       used to be ~65 lines of inline opendir()/readdir()/qsort() here. */
     char browser_markup[8192] = "";
-    
+
     if (strcmp(current_dir, ".") != 0 && strlen(current_dir) > 0) {
         char parent_dir[MAX_PATH];
         char *last_slash = strrchr(current_dir, '/');
@@ -856,119 +756,107 @@ static void update_gui_state(void) {
         snprintf(action, sizeof(action), "SET_DIR:%s", parent_dir);
         append_aligned_button_attr(browser_markup, sizeof(browser_markup), "<- BACK", "onClick", action, &next_display_num);
     }
-    
-    char subdirs[256][256];
-    char files[256][256];
-    int subdir_count = 0;
-    int file_count = 0;
-    
+
     char full_current_dir[MAX_PATH];
     snprintf(full_current_dir, sizeof(full_current_dir), "%s/%s", project_root, current_dir);
-    
-    DIR *d = opendir(full_current_dir);
-    if (d) {
-        struct dirent *entry;
-        while ((entry = readdir(d)) != NULL) {
-            if (entry->d_name[0] == '.') continue;
-            
-            // Replicate groq-ollama directory search filter
-            if (strlen(search_query_buffer) > 0 && strcasestr(entry->d_name, search_query_buffer) == NULL) {
-                continue;
-            }
-            
-            char entry_path[MAX_PATH];
-            snprintf(entry_path, sizeof(entry_path), "%s/%s", full_current_dir, entry->d_name);
-            struct stat st;
-            if (stat(entry_path, &st) == 0) {
-                if (S_ISDIR(st.st_mode)) {
-                    if (subdir_count < 256) {
-                        strncpy(subdirs[subdir_count++], entry->d_name, 255);
-                    }
-                } else {
-                    if (file_count < 256) {
-                        strncpy(files[file_count++], entry->d_name, 255);
-                    }
-                }
-            }
-        }
-        closedir(d);
+    char listing_path[MAX_PATH];
+    snprintf(listing_path, sizeof(listing_path), "%s/projects/agy-text-editor/pieces/browser_listing.txt", project_root);
+
+    {
+        char *op_argv[] = { "dir_browse.+x", full_current_dir, search_query_buffer, listing_path, NULL };
+        run_op("pieces/system/file_ops/+x/dir_browse.+x", op_argv);
     }
-    
-    qsort(subdirs, subdir_count, 256, compare_names);
-    qsort(files, file_count, 256, compare_names);
-    
+
     int items_displayed = 0;
+    int total_entries = 0;
     int limit = 8;
-    
-    for (int i = 0; i < subdir_count && items_displayed < limit; i++) {
-        char next_dir_path[MAX_PATH];
-        if (strcmp(current_dir, ".") == 0) {
-            snprintf(next_dir_path, sizeof(next_dir_path), "%s", subdirs[i]);
-        } else {
-            snprintf(next_dir_path, sizeof(next_dir_path), "%s/%s", current_dir, subdirs[i]);
-        }
-        
-        char btn_label[300];
-        snprintf(btn_label, sizeof(btn_label), "[DIR] %s/", subdirs[i]);
-        
-        char display_label[256];
-        if (strlen(btn_label) > 28) {
-            snprintf(display_label, sizeof(display_label), "...%s", btn_label + strlen(btn_label) - 25);
-        } else {
-            strcpy(display_label, btn_label);
-        }
-        
-        char action[MAX_PATH + 10];
-        snprintf(action, sizeof(action), "SET_DIR:%s", next_dir_path);
-        
-        append_aligned_button_attr(browser_markup, sizeof(browser_markup), display_label, "onClick", action, &next_display_num);
-        items_displayed++;
-    }
-    
-    for (int i = 0; i < file_count && items_displayed < limit; i++) {
-        char target_file_path[MAX_PATH];
-        if (strcmp(current_dir, ".") == 0) {
-            snprintf(target_file_path, sizeof(target_file_path), "%s", files[i]);
-        } else {
-            snprintf(target_file_path, sizeof(target_file_path), "%s/%s", current_dir, files[i]);
-        }
-        
-        char full_target_path[MAX_PATH];
-        snprintf(full_target_path, sizeof(full_target_path), "%s/%s", project_root, target_file_path);
-        struct stat st;
-        long size = 0;
-        if (stat(full_target_path, &st) == 0) size = st.st_size;
+    FILE *lf = fopen(listing_path, "r");
+    if (lf) {
+        char line[512];
+        while (fgets(line, sizeof(line), lf)) {
+            char *nl = strchr(line, '\n');
+            if (nl) *nl = '\0';
+            total_entries++;
+            if (items_displayed >= limit) continue;
 
-        char size_str[32];
-        if (size < 1024) snprintf(size_str, sizeof(size_str), "%ldB", size);
-        else if (size < 1024 * 1024) snprintf(size_str, sizeof(size_str), "%ldKB", size / 1024);
-        else snprintf(size_str, sizeof(size_str), "%.1fMB", (float)size / (1024 * 1024));
+            char *bar1 = strchr(line, '|');
+            if (!bar1) continue;
+            *bar1 = '\0';
+            const char *kind = line;
+            char *rest = bar1 + 1;
 
-        char btn_label[300];
-        snprintf(btn_label, sizeof(btn_label), "[FIL] %s (%s)", files[i], size_str);
-        
-        char display_label[256];
-        if (strlen(btn_label) > 28) {
-            snprintf(display_label, sizeof(display_label), "...%s", btn_label + strlen(btn_label) - 25);
-        } else {
-            strcpy(display_label, btn_label);
+            if (strcmp(kind, "DIR") == 0) {
+                char *name = rest;
+                char next_dir_path[MAX_PATH];
+                if (strcmp(current_dir, ".") == 0) {
+                    snprintf(next_dir_path, sizeof(next_dir_path), "%s", name);
+                } else {
+                    snprintf(next_dir_path, sizeof(next_dir_path), "%s/%s", current_dir, name);
+                }
+                char btn_label[300];
+                snprintf(btn_label, sizeof(btn_label), "[DIR] %s/", name);
+                char display_label[256];
+                if (strlen(btn_label) > 28) {
+                    snprintf(display_label, sizeof(display_label), "...%s", btn_label + strlen(btn_label) - 25);
+                } else {
+                    strcpy(display_label, btn_label);
+                }
+                char action[MAX_PATH + 10];
+                snprintf(action, sizeof(action), "SET_DIR:%s", next_dir_path);
+                append_aligned_button_attr(browser_markup, sizeof(browser_markup), display_label, "onClick", action, &next_display_num);
+            } else {
+                char *bar2 = strchr(rest, '|');
+                char name[256], size_str_raw[64];
+                if (bar2) {
+                    size_t nlen = bar2 - rest;
+                    if (nlen >= sizeof(name)) nlen = sizeof(name) - 1;
+                    memcpy(name, rest, nlen);
+                    name[nlen] = '\0';
+                    strncpy(size_str_raw, bar2 + 1, sizeof(size_str_raw) - 1);
+                    size_str_raw[sizeof(size_str_raw) - 1] = '\0';
+                } else {
+                    strncpy(name, rest, sizeof(name) - 1);
+                    name[sizeof(name) - 1] = '\0';
+                    size_str_raw[0] = '\0';
+                }
+                long size = atol(size_str_raw);
+                char size_str[32];
+                if (size < 1024) snprintf(size_str, sizeof(size_str), "%ldB", size);
+                else if (size < 1024 * 1024) snprintf(size_str, sizeof(size_str), "%ldKB", size / 1024);
+                else snprintf(size_str, sizeof(size_str), "%.1fMB", (float)size / (1024 * 1024));
+
+                char target_file_path[MAX_PATH];
+                if (strcmp(current_dir, ".") == 0) {
+                    snprintf(target_file_path, sizeof(target_file_path), "%s", name);
+                } else {
+                    snprintf(target_file_path, sizeof(target_file_path), "%s/%s", current_dir, name);
+                }
+
+                char btn_label[300];
+                snprintf(btn_label, sizeof(btn_label), "[FIL] %s (%s)", name, size_str);
+                char display_label[256];
+                if (strlen(btn_label) > 28) {
+                    snprintf(display_label, sizeof(display_label), "...%s", btn_label + strlen(btn_label) - 25);
+                } else {
+                    strcpy(display_label, btn_label);
+                }
+                char action[MAX_PATH + 20];
+                if (browser_mode == 0) {
+                    snprintf(action, sizeof(action), "SET_LOAD_FILE:%s", target_file_path);
+                } else {
+                    snprintf(action, sizeof(action), "SET_PATH:%s", target_file_path);
+                }
+                append_aligned_button_attr(browser_markup, sizeof(browser_markup), display_label, "onClick", action, &next_display_num);
+            }
+            items_displayed++;
         }
-        
-        char action[MAX_PATH + 20];
-        if (browser_mode == 0) {
-            snprintf(action, sizeof(action), "SET_LOAD_FILE:%s", target_file_path);
-        } else {
-            snprintf(action, sizeof(action), "SET_PATH:%s", target_file_path);
-        }
-        
-        append_aligned_button_attr(browser_markup, sizeof(browser_markup), display_label, "onClick", action, &next_display_num);
-        items_displayed++;
+        fclose(lf);
     }
-    
+
     if (items_displayed == 0) {
         strcat(browser_markup, "<text label=\"║  [Empty Directory]                         ║\" /><br/>");
     } else {
-        int total_remaining = (subdir_count + file_count) - items_displayed;
+        int total_remaining = total_entries - items_displayed;
         if (total_remaining > 0) {
             char temp_msg[128];
             snprintf(temp_msg, sizeof(temp_msg), "... and %d more items ...", total_remaining);
@@ -977,8 +865,7 @@ static void update_gui_state(void) {
             strcat(browser_markup, remaining_line);
         }
     }
-    
-    // Build browser action buttons markup
+
     char action_markup[8192] = "";
     if (browser_mode == 0) {
         append_aligned_button_attr(action_markup, sizeof(action_markup), "LOAD FILE", "onClick", "SET_LOAD_ACTION", &next_display_num);
@@ -986,12 +873,11 @@ static void update_gui_state(void) {
         append_aligned_button_attr(action_markup, sizeof(action_markup), "SAVE FILE", "onClick", "SET_SAVE_ACTION", &next_display_num);
     }
     append_aligned_button_attr(action_markup, sizeof(action_markup), "CANCEL", "href", "projects/agy-text-editor/layouts/file_menu.chtpm", &next_display_num);
-    
-    // Build file info line
+
     char active_file_info_line_val[512];
-    snprintf(active_file_info_line_val, sizeof(active_file_info_line_val), 
+    snprintf(active_file_info_line_val, sizeof(active_file_info_line_val),
              "<text label=\"║  FILE: %-34.34s ║\" /><br/>", active_file_path);
-             
+
     FILE *f = fopen(state_path, "w");
     if (f) {
         fprintf(f, "module_path=projects/agy-text-editor/manager/+x/agy-text-editor_manager.+x\n");
@@ -1000,11 +886,10 @@ static void update_gui_state(void) {
         fprintf(f, "active_project=%s\n", active_file_path);
         fprintf(f, "editor_map=%s\n", editor_map);
         fprintf(f, "input_line=%s\n", input_line_buffer);
-        
+
         fprintf(f, "active_file_info_line=%s\n", active_file_info_line_val);
         fprintf(f, "editor_response_line=║  %-40.40s ║\n", response_buffer);
-        
-        // Browser fields
+
         fprintf(f, "browser_mode_header=%s\n", browser_mode_header_val);
         fprintf(f, "browser_current_dir_line=%s\n", browser_current_dir_line_val);
         fprintf(f, "search_query_val=%s\n", search_query_buffer);
@@ -1012,15 +897,13 @@ static void update_gui_state(void) {
         fprintf(f, "autocomplete_suggestions_markup=%s\n", autocomplete_markup);
         fprintf(f, "directory_browser_markup=%s\n", browser_markup);
         fprintf(f, "browser_action_buttons_markup=%s\n", action_markup);
-        
-        // Legacy slot support just in case
+
         fprintf(f, "slot_name_input=default\n");
         fprintf(f, "slot_info_line=║  CURRENT SLOT: default                    ║\n");
         fprintf(f, "slot_selection_markup=<text label=\"║  [Slots deprecated]                    ║\" /><br/>\n");
         fclose(f);
     }
-    
-    // Sync active project to player_app
+
     char main_state_path[MAX_PATH];
     snprintf(main_state_path, sizeof(main_state_path), "%s/pieces/apps/player_app/manager/state.txt", project_root);
     FILE *rf = fopen(main_state_path, "r");
@@ -1052,23 +935,39 @@ int main(void) {
     signal(SIGTERM, handle_sigint);
     setpgid(0, 0);
     resolve_paths();
-    load_document_to_buffer();
-    
+
+    /* Seed the working document/cursor files on first run if they don't
+       exist yet, so a fresh checkout behaves the same as before this
+       refactor (a ready, non-empty default document). */
+    {
+        char doc_path[MAX_PATH], cursor_path[MAX_PATH];
+        struct stat st;
+        get_document_path(doc_path, sizeof(doc_path));
+        get_cursor_path(cursor_path, sizeof(cursor_path));
+        if (stat(doc_path, &st) != 0) {
+            FILE *f = fopen(doc_path, "w");
+            if (f) { fprintf(f, "\n"); fclose(f); }
+        }
+        if (stat(cursor_path, &st) != 0) {
+            reset_cursor();
+        }
+    }
+
     update_gui_state();
-    
+
     char *hist_path = NULL;
     if (asprintf(&hist_path, "%s/pieces/apps/player_app/history.txt", project_root) == -1) return 1;
-    
+
     long last_pos = 0;
     struct stat st;
     if (stat(hist_path, &st) == 0) last_pos = st.st_size;
-    
+
     while (!g_shutdown) {
         if (!is_active_layout()) {
             usleep(100000);
             continue;
         }
-        
+
         if (stat(hist_path, &st) == 0) {
             if (st.st_size > last_pos) {
                 FILE *hf = fopen(hist_path, "r");
@@ -1092,7 +991,7 @@ int main(void) {
                                 if (process_key(key)) processed_this_line = 1;
                             }
                         }
-                        
+
                         if (processed_this_line) {
                             update_gui_state();
                             trigger_render();
@@ -1108,7 +1007,7 @@ int main(void) {
         }
         usleep(16667);
     }
-    
+
     free(hist_path);
     return 0;
 }

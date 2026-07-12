@@ -65,6 +65,26 @@ char* trim_str(char *str) {
     return str;
 }
 
+/* 2026-07-11: see ops/src/wraith_project_input.c's identical helper for
+ * the full rationale -- reads CHROME_CONTENT_START's live value, published
+ * by wraith-alpha_manager.c, instead of hardcoding this file's own guess.
+ * This manager binary is fork+exec'd without a chdir() (same pattern as
+ * every other init-only manager this session), so it inherits the
+ * manager's own cwd and this relative path resolves correctly without
+ * combining it with project_root (which is this project's own dir, not
+ * the repo root). */
+int read_chrome_content_start(int fallback) {
+    FILE *f = fopen("pieces/display/chrome_reserved_nav_count.txt", "r");
+    int value;
+    if (!f) return fallback;
+    if (fscanf(f, "%d", &value) != 1 || value <= 0) {
+        fclose(f);
+        return fallback;
+    }
+    fclose(f);
+    return value;
+}
+
 char* build_path_malloc(const char* rel) {
     size_t sz = strlen(project_root) + strlen(rel) + 2;
     char* p = (char*)malloc(sz);
@@ -232,6 +252,7 @@ void save_state_txt() {
 
 void update_scene_objects(void) {
     char scene_path[4096];
+    int nav_base = read_chrome_content_start(6);
     snprintf(scene_path, sizeof(scene_path), "%s/scene.objects.pdl", project_session_dir);
 
     FILE *f = fopen(scene_path, "w");
@@ -239,7 +260,7 @@ void update_scene_objects(void) {
 
     fprintf(f, "# Project-owned Wraith scene records.\n");
     fprintf(f, "# Piececraft world standard: maps/map_01_z*.txt + assets/tiles/registry.txt + tile extrude fields.\n");
-    fprintf(f, "OBJECT tag=control id=control_map role=window_toolbar_item x=35 y=5 w=26 h=1 z=26 nav=6 source=semantic:window_toolbar fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=INTERACT target_surface=game_map label=Control_Map\n");
+    fprintf(f, "OBJECT tag=control id=control_map role=window_toolbar_item x=35 y=5 w=26 h=1 z=26 nav=%d source=semantic:window_toolbar fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=INTERACT target_surface=game_map label=Control_Map\n", nav_base + 0);
     fprintf(f, "OBJECT tag=surface id=game_map role=game_map x=35 y=6 w=48 h=14 z=16 nav=0 source=semantic:game_map_surface fg=#E8F1F2 bg=#0B1118 border=#7EDFF2 action=- label=\n");
     fprintf(f, "OBJECT tag=model id=piececraft_map_01 role=tile_zmap x=35 y=6 w=48 h=14 z=23 "
                "source=projects/wraith-alpha/wraith-projects/piececraft-wraith/maps/%s_z%d.txt "
@@ -249,22 +270,22 @@ void update_scene_objects(void) {
             pet_x, pet_y,
             display_mode == 0 ? "2d" : "3d");
 
-    fprintf(f, "OBJECT tag=control id=btn_up role=game_button x=84 y=6 w=14 h=1 z=25 nav=7 "
-               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:1002 label=[Up]\n");
-    fprintf(f, "OBJECT tag=control id=btn_down role=game_button x=84 y=7 w=14 h=1 z=25 nav=8 "
-               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:1003 label=[Down]\n");
-    fprintf(f, "OBJECT tag=control id=btn_left role=game_button x=84 y=8 w=14 h=1 z=25 nav=9 "
-               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:1000 label=[Left]\n");
-    fprintf(f, "OBJECT tag=control id=btn_right role=game_button x=84 y=9 w=14 h=1 z=25 nav=10 "
-               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:1001 label=[Right]\n");
-    fprintf(f, "OBJECT tag=control id=btn_ascend role=game_button x=84 y=10 w=14 h=1 z=25 nav=11 "
-               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:101 label=[E] Z-Level Up\n");
-    fprintf(f, "OBJECT tag=control id=btn_descend role=game_button x=84 y=11 w=14 h=1 z=25 nav=12 "
-               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:113 label=[Q] Z-Level Dn\n");
-    fprintf(f, "OBJECT tag=control id=btn_mode role=game_button x=84 y=12 w=14 h=1 z=25 nav=13 "
-               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:56 label=[8] 2D/3D\n");
-    fprintf(f, "OBJECT tag=control id=btn_debug role=game_button x=84 y=13 w=14 h=1 z=25 nav=14 "
-               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:57 label=[9] Debug\n");
+    fprintf(f, "OBJECT tag=control id=btn_up role=game_button x=84 y=6 w=14 h=1 z=25 nav=%d "
+               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:1002 label=[Up]\n", nav_base + 1);
+    fprintf(f, "OBJECT tag=control id=btn_down role=game_button x=84 y=7 w=14 h=1 z=25 nav=%d "
+               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:1003 label=[Down]\n", nav_base + 2);
+    fprintf(f, "OBJECT tag=control id=btn_left role=game_button x=84 y=8 w=14 h=1 z=25 nav=%d "
+               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:1000 label=[Left]\n", nav_base + 3);
+    fprintf(f, "OBJECT tag=control id=btn_right role=game_button x=84 y=9 w=14 h=1 z=25 nav=%d "
+               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:1001 label=[Right]\n", nav_base + 4);
+    fprintf(f, "OBJECT tag=control id=btn_ascend role=game_button x=84 y=10 w=14 h=1 z=25 nav=%d "
+               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:101 label=[E] Z-Level Up\n", nav_base + 5);
+    fprintf(f, "OBJECT tag=control id=btn_descend role=game_button x=84 y=11 w=14 h=1 z=25 nav=%d "
+               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:113 label=[Q] Z-Level Dn\n", nav_base + 6);
+    fprintf(f, "OBJECT tag=control id=btn_mode role=game_button x=84 y=12 w=14 h=1 z=25 nav=%d "
+               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:56 label=[8] 2D/3D\n", nav_base + 7);
+    fprintf(f, "OBJECT tag=control id=btn_debug role=game_button x=84 y=13 w=14 h=1 z=25 nav=%d "
+               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:57 label=[9] Debug\n", nav_base + 8);
     fprintf(f, "OBJECT tag=text id=coords_hud role=game_hud x=84 y=15 w=22 h=1 z=25 nav=0 "
                "source=- fg=#FFD166 bg=#0B1118 border=#0B1118 action=- "
                "label=(%d,%d,%d) %s\n",
@@ -277,24 +298,24 @@ void update_scene_objects(void) {
     fprintf(f, "OBJECT tag=text id=cam_hud role=game_hud x=84 y=18 w=22 h=1 z=25 nav=0 "
                "source=- fg=#7EDFF2 bg=#0B1118 border=#0B1118 action=- "
                "label=Camera: POV1\n");
-    fprintf(f, "OBJECT tag=control id=btn_cam_fwd role=game_button x=84 y=19 w=14 h=1 z=25 nav=15 "
-               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:119 label=[W] Cam Fwd\n");
-    fprintf(f, "OBJECT tag=control id=btn_cam_back role=game_button x=84 y=20 w=14 h=1 z=25 nav=16 "
-               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:115 label=[S] Cam Back\n");
-    fprintf(f, "OBJECT tag=control id=btn_cam_left role=game_button x=84 y=21 w=14 h=1 z=25 nav=17 "
-               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:97 label=[A] Cam Left\n");
-    fprintf(f, "OBJECT tag=control id=btn_cam_right role=game_button x=84 y=22 w=14 h=1 z=25 nav=18 "
-               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:100 label=[D] Cam Right\n");
-    fprintf(f, "OBJECT tag=control id=btn_cam_up role=game_button x=84 y=23 w=14 h=1 z=25 nav=19 "
-               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:120 label=[X] Cam Up\n");
-    fprintf(f, "OBJECT tag=control id=btn_cam_down role=game_button x=84 y=24 w=14 h=1 z=25 nav=20 "
-               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:122 label=[Z] Cam Down\n");
-    fprintf(f, "OBJECT tag=control id=btn_pov1 role=game_button x=84 y=25 w=14 h=1 z=25 nav=21 "
-               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:49 label=[1] POV-1\n");
-    fprintf(f, "OBJECT tag=control id=btn_pov2 role=game_button x=84 y=26 w=14 h=1 z=25 nav=22 "
-               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:50 label=[2] POV-2\n");
-    fprintf(f, "OBJECT tag=control id=btn_pov3 role=game_button x=84 y=27 w=14 h=1 z=25 nav=23 "
-               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:51 label=[3] POV-3\n");
+    fprintf(f, "OBJECT tag=control id=btn_cam_fwd role=game_button x=84 y=19 w=14 h=1 z=25 nav=%d "
+               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:119 label=[W] Cam Fwd\n", nav_base + 9);
+    fprintf(f, "OBJECT tag=control id=btn_cam_back role=game_button x=84 y=20 w=14 h=1 z=25 nav=%d "
+               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:115 label=[S] Cam Back\n", nav_base + 10);
+    fprintf(f, "OBJECT tag=control id=btn_cam_left role=game_button x=84 y=21 w=14 h=1 z=25 nav=%d "
+               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:97 label=[A] Cam Left\n", nav_base + 11);
+    fprintf(f, "OBJECT tag=control id=btn_cam_right role=game_button x=84 y=22 w=14 h=1 z=25 nav=%d "
+               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:100 label=[D] Cam Right\n", nav_base + 12);
+    fprintf(f, "OBJECT tag=control id=btn_cam_up role=game_button x=84 y=23 w=14 h=1 z=25 nav=%d "
+               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:120 label=[X] Cam Up\n", nav_base + 13);
+    fprintf(f, "OBJECT tag=control id=btn_cam_down role=game_button x=84 y=24 w=14 h=1 z=25 nav=%d "
+               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:122 label=[Z] Cam Down\n", nav_base + 14);
+    fprintf(f, "OBJECT tag=control id=btn_pov1 role=game_button x=84 y=25 w=14 h=1 z=25 nav=%d "
+               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:49 label=[1] POV-1\n", nav_base + 15);
+    fprintf(f, "OBJECT tag=control id=btn_pov2 role=game_button x=84 y=26 w=14 h=1 z=25 nav=%d "
+               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:50 label=[2] POV-2\n", nav_base + 16);
+    fprintf(f, "OBJECT tag=control id=btn_pov3 role=game_button x=84 y=27 w=14 h=1 z=25 nav=%d "
+               "source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:51 label=[3] POV-3\n", nav_base + 17);
 
     fclose(f);
 }

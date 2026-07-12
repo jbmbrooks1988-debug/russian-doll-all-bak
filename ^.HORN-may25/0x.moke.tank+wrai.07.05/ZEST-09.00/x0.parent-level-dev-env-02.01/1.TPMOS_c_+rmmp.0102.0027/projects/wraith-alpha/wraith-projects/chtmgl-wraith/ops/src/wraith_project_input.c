@@ -35,6 +35,28 @@ static void path_join(char *out, size_t out_sz, const char *root, const char *re
     snprintf(out, out_sz, "%s/%s", root, rel);
 }
 
+/* 2026-07-11: reads CHROME_CONTENT_START's live value, published by
+ * wraith-alpha_manager.c (see that file's publish_chrome_reserved_nav_count(),
+ * added same day) to pieces/display/chrome_reserved_nav_count.txt, instead
+ * of hardcoding this project's own guess about where its nav range may
+ * safely start. This ops binary is fork+exec'd by
+ * wraith-alpha_manager.c's run_active_project_input_op() WITHOUT a chdir(),
+ * so it inherits the manager's own cwd -- the relative path below is
+ * correct without combining it with `root` (which is this PROJECT's own
+ * dir, not the repo root). Falls back to the literal this file always used
+ * before if the manager hasn't published yet. */
+static int read_chrome_content_start(int fallback) {
+    FILE *f = fopen("pieces/display/chrome_reserved_nav_count.txt", "r");
+    int value;
+    if (!f) return fallback;
+    if (fscanf(f, "%d", &value) != 1 || value <= 0) {
+        fclose(f);
+        return fallback;
+    }
+    fclose(f);
+    return value;
+}
+
 static void build_scene_ref(char *out, size_t out_sz, const char *root, const char *rel) {
     char joined[MAX_PATH_LEN];
     char resolved[MAX_PATH_LEN];
@@ -331,6 +353,7 @@ static void write_scene(const char *root, const ImageProbeState *state) {
     char audio_scene_ref[MAX_PATH_LEN];
     FILE *f;
     int y;
+    int nav_base = read_chrome_content_start(6);
 
     path_join(path, sizeof(path), root, "session/scene.objects.pdl");
     build_scene_ref(asset_scene_ref, sizeof(asset_scene_ref), root, state->asset_rel);
@@ -342,9 +365,9 @@ static void write_scene(const char *root, const ImageProbeState *state) {
     fprintf(f, "# First media slice: semantic image row + coarse ASCII preview rows.\n");
     fprintf(f, "OBJECT tag=panel id=controls_panel role=chtmgl_panel x=3 y=6 w=24 h=9 z=24 nav=0 source=reference:chtmgl-alpha fg=#E8F1F2 bg=#162534 border=#7EDFF2 action=- label=Controls\n");
     fprintf(f, "OBJECT tag=text id=header_label role=chtmgl_header x=4 y=6 w=22 h=1 z=28 nav=0 source=reference:chtmgl-alpha fg=#E8F1F2 bg=#162534 border=#7EDFF2 action=- label=CHTMGL_UI\n");
-    fprintf(f, "OBJECT tag=control id=btn_test role=chtmgl_button x=5 y=8 w=16 h=1 z=30 nav=6 source=reference:chtmgl-alpha fg=#E8F1F2 bg=#22384A border=#FFD166 action=EVENT:test_click label=Test_Button\n");
-    fprintf(f, "OBJECT tag=control id=chk_feature role=chtmgl_checkbox x=5 y=10 w=18 h=1 z=30 nav=7 source=reference:chtmgl-alpha fg=#E8F1F2 bg=#22384A border=#7EDFF2 action=EVENT:toggle_feature label=Enable_Feature\n");
-    fprintf(f, "OBJECT tag=control id=slider_volume role=chtmgl_slider x=5 y=12 w=18 h=1 z=30 nav=8 source=reference:chtmgl-alpha fg=#E8F1F2 bg=#22384A border=#7EDFF2 action=EVENT:slider_volume label=Volume_50\n");
+    fprintf(f, "OBJECT tag=control id=btn_test role=chtmgl_button x=5 y=8 w=16 h=1 z=30 nav=%d source=reference:chtmgl-alpha fg=#E8F1F2 bg=#22384A border=#FFD166 action=EVENT:test_click label=Test_Button\n", nav_base + 0);
+    fprintf(f, "OBJECT tag=control id=chk_feature role=chtmgl_checkbox x=5 y=10 w=18 h=1 z=30 nav=%d source=reference:chtmgl-alpha fg=#E8F1F2 bg=#22384A border=#7EDFF2 action=EVENT:toggle_feature label=Enable_Feature\n", nav_base + 1);
+    fprintf(f, "OBJECT tag=control id=slider_volume role=chtmgl_slider x=5 y=12 w=18 h=1 z=30 nav=%d source=reference:chtmgl-alpha fg=#E8F1F2 bg=#22384A border=#7EDFF2 action=EVENT:slider_volume label=Volume_50\n", nav_base + 2);
 
     fprintf(f, "OBJECT tag=panel id=visual_panel role=chtmgl_panel x=31 y=6 w=52 h=18 z=24 nav=0 source=reference:chtmgl-alpha fg=#E8F1F2 bg=#162534 border=#7EDFF2 action=- label=Visuals_Media\n");
     fprintf(f, "OBJECT tag=text id=image_state role=chtmgl_image_state x=33 y=8 w=48 h=1 z=30 nav=0 source_ref=%s fg=#E8F1F2 bg=#162534 border=#7EDFF2 action=- label=IMG:missingno.png_%s_%dx%d\n",
@@ -364,17 +387,17 @@ static void write_scene(const char *root, const ImageProbeState *state) {
 
     fprintf(f, "OBJECT tag=text id=audio_state role=chtmgl_audio_state x=62 y=20 w=18 h=1 z=30 nav=0 source_ref=%s fg=#E8F1F2 bg=#162534 border=#7EDFF2 action=- label=AUDIO:gowon_%s\n",
         audio_scene_ref, state->audio_state);
-    fprintf(f, "OBJECT tag=control id=audio_play role=chtmgl_button x=62 y=21 w=8 h=1 z=30 nav=11 source_ref=%s fg=#E8F1F2 bg=#22384A border=#7EDFF2 action=PROJECT_ACTION:AUDIO_PLAY label=Play\n",
-        audio_scene_ref);
-    fprintf(f, "OBJECT tag=control id=audio_pause role=chtmgl_button x=71 y=21 w=8 h=1 z=30 nav=12 source_ref=%s fg=#E8F1F2 bg=#22384A border=#7EDFF2 action=PROJECT_ACTION:AUDIO_PAUSE label=Pause\n",
-        audio_scene_ref);
-    fprintf(f, "OBJECT tag=control id=audio_resume role=chtmgl_button x=62 y=22 w=8 h=1 z=30 nav=13 source_ref=%s fg=#E8F1F2 bg=#22384A border=#7EDFF2 action=PROJECT_ACTION:AUDIO_RESUME label=Resume\n",
-        audio_scene_ref);
-    fprintf(f, "OBJECT tag=control id=audio_stop role=chtmgl_button x=71 y=22 w=8 h=1 z=30 nav=14 source_ref=%s fg=#E8F1F2 bg=#22384A border=#7EDFF2 action=PROJECT_ACTION:AUDIO_STOP label=Stop\n",
-        audio_scene_ref);
+    fprintf(f, "OBJECT tag=control id=audio_play role=chtmgl_button x=62 y=21 w=8 h=1 z=30 nav=%d source_ref=%s fg=#E8F1F2 bg=#22384A border=#7EDFF2 action=PROJECT_ACTION:AUDIO_PLAY label=Play\n",
+        nav_base + 5, audio_scene_ref);
+    fprintf(f, "OBJECT tag=control id=audio_pause role=chtmgl_button x=71 y=21 w=8 h=1 z=30 nav=%d source_ref=%s fg=#E8F1F2 bg=#22384A border=#7EDFF2 action=PROJECT_ACTION:AUDIO_PAUSE label=Pause\n",
+        nav_base + 6, audio_scene_ref);
+    fprintf(f, "OBJECT tag=control id=audio_resume role=chtmgl_button x=62 y=22 w=8 h=1 z=30 nav=%d source_ref=%s fg=#E8F1F2 bg=#22384A border=#7EDFF2 action=PROJECT_ACTION:AUDIO_RESUME label=Resume\n",
+        nav_base + 7, audio_scene_ref);
+    fprintf(f, "OBJECT tag=control id=audio_stop role=chtmgl_button x=71 y=22 w=8 h=1 z=30 nav=%d source_ref=%s fg=#E8F1F2 bg=#22384A border=#7EDFF2 action=PROJECT_ACTION:AUDIO_STOP label=Stop\n",
+        nav_base + 8, audio_scene_ref);
 
-    fprintf(f, "OBJECT tag=control id=menu_options role=chtmgl_menu x=64 y=6 w=16 h=1 z=30 nav=9 source=reference:chtmgl-alpha fg=#E8F1F2 bg=#2A3E52 border=#FFD166 action=EVENT:menu_options label=Options\n");
-    fprintf(f, "OBJECT tag=control id=control_surface role=window_toolbar_item x=54 y=23 w=24 h=1 z=32 nav=10 source=semantic:window_toolbar fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=INTERACT target_surface=game_map label=Control_Surface\n");
+    fprintf(f, "OBJECT tag=control id=menu_options role=chtmgl_menu x=64 y=6 w=16 h=1 z=30 nav=%d source=reference:chtmgl-alpha fg=#E8F1F2 bg=#2A3E52 border=#FFD166 action=EVENT:menu_options label=Options\n", nav_base + 3);
+    fprintf(f, "OBJECT tag=control id=control_surface role=window_toolbar_item x=54 y=23 w=24 h=1 z=32 nav=%d source=semantic:window_toolbar fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=INTERACT target_surface=game_map label=Control_Surface\n", nav_base + 4);
     fprintf(f, "OBJECT tag=surface id=game_map role=game_map x=62 y=9 w=18 h=10 z=20 nav=0 source=semantic:game_map_surface fg=#E8F1F2 bg=#0B1118 border=#7EDFF2 action=- label=\n");
     fprintf(f, "OBJECT tag=model id=chtmgl_preview role=widget_surface_probe x=62 y=22 w=18 h=2 z=24 source=projects/wraith-alpha/wraith-projects/chtmgl-wraith/layouts/chtmgl-wraith.chtpm fg=#7EDFF2 bg=#0B1118 border=#FFD166 action=- label=CHTMGL_SURFACE:source=layouts/chtmgl-wraith.chtpm;reference=chtmgl-alpha;canvas=game_map\n");
     fclose(f);

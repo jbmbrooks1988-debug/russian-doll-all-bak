@@ -1,57 +1,98 @@
-i*
-i*
-s
-s
-fprojects/op-ed/games/
-fprojects/op-ed/games/
-s
-f
-s
-f
-s
-s
-f
-f
-s
-f
-s
-f
-Uh
-Uhi
-Uhi 
 ih
-ii
-ij
-ii
-ih
-ihi h
-ihi ho
-ihi how
-ihi howd
-ihi howdy
-ehi 3
-ehi j
-ehi i
-ehi i
-ehi d
-ehi s
-ehi h
-ehi i
-ehi h
-ehi hi
-ehi h
-ehi hi
-ehi hit
-ehi hite
-ehi hites
-ehi hitest
-ehi h
-ehi hi
-ehi h
-ehi hi
-ehi h
-ehi hi
-e0h
-e0hi
-e02
-e023
+ihi
+ihi 
+ihi ,
+ihi , 
+ihi , h
+ihi , ho
+ihi , how
+ihi , howd
+ihi , howdy
+ihi , howdy?
+e08
+e083
+e08
+e089
+e0899
+e08998
+e91
+e911
+e93
+e932
+e9323
+e03
+e032
+e98
+s
+fprojects/agy-text-editor/pieces/document.txt
+s
+fprojects/agy-text-editor/pieces/document.txt
+fh
+fi
+ft
+fe
+ft
+ft
+fte
+fs
+ft
+fprojects/agy-text-editor/pieces/document.txt
+fprojects/agy-text-editor/pieces/document.txt
+fprojects/agy-text-editor/pieces/document.txt
+fprojects/agy-text-editor/pieces/document.txt
+fprojects/agy-text-editor/pieces/document.txt
+fprojects/agy-text-editor/pieces/document.txt
+ft
+fe
+fs
+ft
+ff
+fi
+fl
+fe
+s
+fprojects/agy-text-editor/pieces/document.txt
+s
+fprojects/agy-text-editor/pieces/document.txt
+fh
+fhi
+fhi 
+fhi.
+fhi.t
+fhi.tx
+fhi.txt
+s
+s
+s
+s
+ft
+fte
+ftes
+ftest
+ftest.
+ftest.m
+ftest.md
+ft
+fte
+ftes
+ftest
+ftest.
+ftest.t
+ftest.tx
+ftest.txt
+ft
+fte
+ftes
+ftest
+ftest.
+ftest.t
+ftest.tx
+ftest.txt
+ft
+fte
+ftes
+ftest
+ftest.
+ftest.t
+ftest.tx
+ftest.txt

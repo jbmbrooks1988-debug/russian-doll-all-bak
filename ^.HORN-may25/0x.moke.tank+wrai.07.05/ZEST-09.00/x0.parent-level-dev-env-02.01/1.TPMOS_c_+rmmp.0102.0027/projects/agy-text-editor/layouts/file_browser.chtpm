@@ -5,8 +5,8 @@
     <text label="╔══════════════ FILE BROWSER ════════════════╗" /><br/>
     ${browser_mode_header}
     ${browser_current_dir_line}
-    <text label="║ SEARCH: " /><cli_io id="search_query" label="${search_query_val}" /><br/>
-    <text label="║ FILE:   " /><cli_io id="file_path_input" label="${file_path_input_val}" /><br/>
+    <text label="║ SEARCH: " /><cli_io id="search_query" target_id="search_query" label="${search_query_val}" /><br/>
+    <text label="║ FILE:   " /><cli_io id="file_path_input" target_id="file_path_input" label="${file_path_input_val}" /><br/>
     <text label="║                                             ║" /><br/>
     <text label="║ ACTIVE: " /><text label="${active_project}" /><br/>
     <text label="║                                             ║" /><br/>

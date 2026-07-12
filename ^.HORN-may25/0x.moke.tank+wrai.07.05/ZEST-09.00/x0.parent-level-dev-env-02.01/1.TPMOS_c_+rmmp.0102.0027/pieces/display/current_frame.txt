@@ -2,39 +2,30 @@
 Use arrows to move selector. Windows and controls stay indexable.
 
 +-WRAITH DESKTOP GUI---------------------------------------------------------------------------+
-| +-[ ] 1. [ SETTINGS #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x][ ] 5. [&]-+               |
-| |  WINDOW GEOMETRY EDITOR                                                              |
-| |                                                                                      |
-| |  Project: wraith-alpha/wraith-projects/piececraft-wraith                             |
-| |  Current: x=0 y=0 width=0 height=0              <                                    |
-| |                                                                                      |
-| |  Edit via CLI Input:                                                                 |
-  X position: | [^] 6. [023_]                                              |
-  Y position: | [ ] 7. [0]                                                 |
-  Width: | [ ] 8. [0]                                                 |
-  Height: | [ ] 9. [0]                                                 |
-| |                                                                                      |
-| |  Or use buttons (working values: x=0 y=0 w=0 h=0):                                   |
-[ ] 10. [[-] X][ ] 11. [[+] X]
-[ ] 12. [[-] Y][ ] 13. [[+] Y]
-[ ] 14. [[-] W][ ] 15. [[+] W]
-[ ] 16. [[-] H][ ] 17. [[+] H]
-| |                                                                                      |
-[ ] 18. [Apply Changes]
-[ ] 19. [Back to Project List]
-| |                                                                                      |
-| |  Status: Editing wraith-alpha/wraith-projects/piececraft-wraith                      |
+| +-[ ] 1. [ Wrai Text Editor #3 ]------------------------------------------[ ] 2. [o][ ] 3. [-][ ] 4. [x][ ] 5. [&]-+               |
+╔══════════════ F I L E   M E N U ════════════╗
+║  ACTIVE: test.txt
+║                                             ║
+║  [ ] 6. [NEW FILE]                       ║
+║  [ ] 7. [SAVE FILE]                      ║
+║  [ ] 8. [SAVE AS...]                     ║
+║  [ ] 9. [LOAD FILE...]                   ║
+║  [ ] 10. [BACK TO EDITOR]                 ║
+║                                             ║
+╠═════════════════════════════════════════════╣
+Saved to test.txt
+╚═════════════════════════════════════════════╝
 | +----------------------------------------------------------------------------------------------+               |
-| [ TASKBAR ][ ] 20. [Terminal][ ] 21. [WRAITH TERMINAL #2][ ] 22. [SETTINGS #3]|
+| [ TASKBAR ][ ] 11. [Terminal][ ] 12. [WRAITH TERMINAL #2][ ] 13. [Wrai Text Editor #3]|
 +----------------------------------------------------------------------------------------------+
 
-Desktop: desktop | Open: 2 | Focus: SETTINGS #3 | Mode: half
+Desktop: desktop | Open: 2 | Focus: Wrai Text Editor #3 | Mode: half
 
 [ DESKTOP DEBUG ]
-Idx:6 Key:c | Mouse X:52 Y:14 B:64 | Click X:53 Y:16
+Idx:7 Key:0 | Mouse X:34 Y:7 B:0 | Click X:34 Y:7
 
-[ PARSER ] RAW: [2026-07-06 20:34:56] KEY_PRESSED: 99
-View:[ ] 23. [ASCII*] [ ] 24. [GL]
+[ PARSER ] RAW: [2026-07-12 00:01:52] KEY_PRESSED: 13
+View:[ ] 14. [ASCII*] [ ] 15. [GL]
 
 +=========================================================+
 Active [^]:  (ESC to exit)

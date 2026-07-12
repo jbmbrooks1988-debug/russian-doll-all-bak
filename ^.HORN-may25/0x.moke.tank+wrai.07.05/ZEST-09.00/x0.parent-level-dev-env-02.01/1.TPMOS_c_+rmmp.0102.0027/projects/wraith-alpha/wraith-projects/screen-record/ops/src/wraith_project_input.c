@@ -36,6 +36,28 @@ static void path_join(char *out, size_t out_sz, const char *root, const char *re
     snprintf(out, out_sz, "%s/%s", root, rel);
 }
 
+/* 2026-07-11: reads CHROME_CONTENT_START's live value, published by
+ * wraith-alpha_manager.c (see that file's publish_chrome_reserved_nav_count(),
+ * added same day) to pieces/display/chrome_reserved_nav_count.txt, instead
+ * of hardcoding this project's own guess about where its nav range may
+ * safely start. This ops binary is fork+exec'd by
+ * wraith-alpha_manager.c's run_active_project_input_op() WITHOUT a chdir(),
+ * so it inherits the manager's own cwd -- the relative path below is
+ * correct without combining it with `root` (which is this PROJECT's own
+ * dir, not the repo root). Falls back to the literal this file always used
+ * before if the manager hasn't published yet. */
+static int read_chrome_content_start(int fallback) {
+    FILE *f = fopen("pieces/display/chrome_reserved_nav_count.txt", "r");
+    int value;
+    if (!f) return fallback;
+    if (fscanf(f, "%d", &value) != 1 || value <= 0) {
+        fclose(f);
+        return fallback;
+    }
+    fclose(f);
+    return value;
+}
+
 static void build_scene_ref(char *out, size_t out_sz, const char *root, const char *rel) {
     char joined[MAX_PATH_LEN];
     char resolved[MAX_PATH_LEN];
@@ -284,6 +306,7 @@ static void write_scene(const char *root, const RecordState *state) {
     char poster_ref[MAX_PATH_LEN];
     FILE *f;
     int y, x;
+    int nav_base = read_chrome_content_start(6);
     path_join(path, sizeof(path), root, "session/scene.objects.pdl");
     build_scene_ref(poster_ref, sizeof(poster_ref), root, state->poster_rel);
     f = fopen(path, "w");
@@ -292,9 +315,9 @@ static void write_scene(const char *root, const RecordState *state) {
     fprintf(f, "OBJECT tag=text id=record_header role=chtmgl_header x=4 y=6 w=22 h=1 z=28 nav=0 source_ref=%s fg=#E8F1F2 bg=#162534 border=#7EDFF2 action=- label=SCREEN_RECORD\n", poster_ref);
     fprintf(f, "OBJECT tag=text id=record_state role=record_state x=5 y=8 w=20 h=1 z=30 nav=0 source_ref=%s fg=#E8F1F2 bg=#162534 border=#7EDFF2 action=- label=STATE:%s\n", poster_ref, state->state);
     fprintf(f, "OBJECT tag=text id=record_audio role=record_audio x=5 y=9 w=20 h=1 z=30 nav=0 source_ref=%s fg=#E8F1F2 bg=#162534 border=#7EDFF2 action=- label=AUDIO:%s\n", poster_ref, state->audio_mode);
-    fprintf(f, "OBJECT tag=control id=record_start role=chtmgl_button x=5 y=12 w=8 h=1 z=30 nav=6 source_ref=%s fg=#E8F1F2 bg=#22384A border=#7EDFF2 action=PROJECT_ACTION:SCREENREC_START label=Start\n", poster_ref);
-    fprintf(f, "OBJECT tag=control id=record_stop role=chtmgl_button x=14 y=12 w=8 h=1 z=30 nav=7 source_ref=%s fg=#E8F1F2 bg=#22384A border=#7EDFF2 action=PROJECT_ACTION:SCREENREC_STOP label=Stop\n", poster_ref);
-    fprintf(f, "OBJECT tag=control id=record_refresh role=chtmgl_button x=5 y=14 w=17 h=1 z=30 nav=8 source_ref=%s fg=#E8F1F2 bg=#22384A border=#FFD166 action=PROJECT_ACTION:SCREENREC_REFRESH label=Refresh\n", poster_ref);
+    fprintf(f, "OBJECT tag=control id=record_start role=chtmgl_button x=5 y=12 w=8 h=1 z=30 nav=%d source_ref=%s fg=#E8F1F2 bg=#22384A border=#7EDFF2 action=PROJECT_ACTION:SCREENREC_START label=Start\n", nav_base + 0, poster_ref);
+    fprintf(f, "OBJECT tag=control id=record_stop role=chtmgl_button x=14 y=12 w=8 h=1 z=30 nav=%d source_ref=%s fg=#E8F1F2 bg=#22384A border=#7EDFF2 action=PROJECT_ACTION:SCREENREC_STOP label=Stop\n", nav_base + 1, poster_ref);
+    fprintf(f, "OBJECT tag=control id=record_refresh role=chtmgl_button x=5 y=14 w=17 h=1 z=30 nav=%d source_ref=%s fg=#E8F1F2 bg=#22384A border=#FFD166 action=PROJECT_ACTION:SCREENREC_REFRESH label=Refresh\n", nav_base + 2, poster_ref);
     fprintf(f, "OBJECT tag=panel id=record_visual_panel role=chtmgl_panel x=31 y=6 w=52 h=18 z=24 nav=0 source_ref=%s fg=#E8F1F2 bg=#162534 border=#7EDFF2 action=- label=Last_Capture\n", poster_ref);
     fprintf(f, "OBJECT tag=text id=record_output role=record_output x=33 y=8 w=48 h=1 z=30 nav=0 source_ref=%s fg=#E8F1F2 bg=#162534 border=#7EDFF2 action=- label=OUTPUT:%s\n", poster_ref, state->output_rel[0] ? state->output_rel : "(pending)");
     fprintf(f, "OBJECT tag=img id=record_poster role=image_asset x=62 y=9 w=18 h=10 z=33 nav=0 source_ref=%s fg=#E8F1F2 bg=#0B1118 border=#FFD166 action=- label=LAST_CAPTURE\n", poster_ref);

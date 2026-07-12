@@ -364,3 +364,7 @@ Please retry in 58.599771604s.
 USER: hi
 AGENT: Hello! I'm Aida, a technical agent. How can I help you today?
 
+[Sat Jul 11 09:29:31 2026]
+USER: hi , howdy?
+AGENT: API key not valid. Please pass a valid API key.
+

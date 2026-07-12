@@ -45,6 +45,26 @@ surgical_kill() {
     fi
 }
 
+emergency_media_cleanup() {
+    local project_root="projects/wraith-alpha/wraith-projects"
+    local record_path="${project_root}/screen-record/session/recordings/"
+    local webcam_path="${project_root}/web-cam/session/current_frame.png"
+
+    echo "Emergency media cleanup..."
+
+    pkill -TERM -f "$record_path" 2>/dev/null
+    pkill -TERM -f "$webcam_path" 2>/dev/null
+    pkill -TERM -f "ffmpeg .*video4linux2" 2>/dev/null
+    pkill -TERM -f "ffmpeg .*x11grab" 2>/dev/null
+
+    sleep 1
+
+    pkill -9 -f "$record_path" 2>/dev/null
+    pkill -9 -f "$webcam_path" 2>/dev/null
+    pkill -9 -f "ffmpeg .*video4linux2" 2>/dev/null
+    pkill -9 -f "ffmpeg .*x11grab" 2>/dev/null
+}
+
 echo "Cleaning environment..."
 
 # System components
@@ -66,9 +86,7 @@ surgical_kill "playrm_module"
 surgical_kill "fuzzpet_v2_module"
 
 # System apps (man-*)
-surgical_kill "man-ops_module"
 surgical_kill "man-pal_module"
-surgical_kill "man-add_module"
 surgical_kill "op-ed_module"
 surgical_kill "user_module"
 surgical_kill "loader_module"
@@ -111,13 +129,21 @@ surgical_kill "fuzz-op_manager"
 surgical_kill "fuzz-op-gl_manager"
 surgical_kill "piececraft-3d_manager"
 surgical_kill "groq-ollama_manager"
-surgical_kill "gem-api_manager"
 surgical_kill "gem-dev_manager"
 surgical_kill "cpp-llm_manager"
 surgical_kill "tsots-online_manager"
+surgical_kill "wraith_webcam_capture"
+surgical_kill "wraith_screen_record"
+surgical_kill "wraith_share_kvp_db"
+surgical_kill "wraith_share_kvp_adapter"
 
 # Kill Watchdog
 pkill -9 -f "pal_watchdog.sh" 2>/dev/null
+emergency_media_cleanup
+
+# Clear project-scoped mouse reporting lock
+rm -f projects/mouse-test/session/mouse_enabled.lock 2>/dev/null
+rm -f pieces/mouse/mouse_enabled.lock 2>/dev/null
 
 # Nuclear Option: Kill any CHTPM-related executables in pieces/ or projects/ directories
 # This aims to catch residual processes that might not fit the specific surgical kill patterns.
@@ -138,5 +164,9 @@ rm -f pieces/apps/gl_os/session/input_focus.lock
 
 # Clear the process list log to ensure a clean state for the next run.
 rm -f pieces/os/proc_list.txt
+find projects/wraith-alpha/wraith-projects -path "*/session/webcam.pid" -delete 2>/dev/null
+find projects/wraith-alpha/wraith-projects -path "*/session/webcam.ffmpeg.pid" -delete 2>/dev/null
+find projects/wraith-alpha/wraith-projects -path "*/session/record.pid" -delete 2>/dev/null
+find projects/wraith-alpha/wraith-projects -path "*/session/record.ffmpeg.pid" -delete 2>/dev/null
 
 echo "Cleanup complete."

@@ -79,6 +79,29 @@ static void path_join(char *out, size_t out_sz, const char *a, const char *b) {
     else snprintf(out, out_sz, "%s/%s", a, b);
 }
 
+/* 2026-07-11: reads CHROME_CONTENT_START's live value, published by
+ * wraith-alpha_manager.c (see that file's publish_chrome_reserved_nav_count(),
+ * added same day) to pieces/display/chrome_reserved_nav_count.txt, instead
+ * of hardcoding this project's own guess about where its nav range may
+ * safely start. This ops binary is fork+exec'd by
+ * wraith-alpha_manager.c's run_active_project_input_op() WITHOUT a chdir(),
+ * so it inherits the manager's own cwd -- the relative path below is
+ * correct without combining it with `root` (which is this PROJECT's own
+ * dir, not the repo root). Falls back to the literal this file always used
+ * before if the manager hasn't published yet -- matching the exact
+ * CHROME_CONTENT_START-drift incident already noted below in write_scene(). */
+static int read_chrome_content_start(int fallback) {
+    FILE *f = fopen("pieces/display/chrome_reserved_nav_count.txt", "r");
+    int value;
+    if (!f) return fallback;
+    if (fscanf(f, "%d", &value) != 1 || value <= 0) {
+        fclose(f);
+        return fallback;
+    }
+    fclose(f);
+    return value;
+}
+
 static void parent_dir(char *path) {
     char *slash;
     if (!path || !path[0]) return;
@@ -581,7 +604,19 @@ static void write_scene(const char *root, const FsState *st, FsEntry *entries, i
     fprintf(f, "# Wraith FS scene rows. Host owns numbering/selectors; labels stay raw.\n");
     fprintf(f, "OBJECT tag=text id=fs_header role=window_toolbar_item x=4 y=8 w=24 h=1 z=30 nav=0 source=semantic:fs_header fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=- label=Directory_Contents src=\n");
 
-    nav = 5;
+    /* Must start at wraith-alpha_manager.c's CHROME_CONTENT_START
+       (2 + CHROME_ICON_COUNT; currently 6, since chrome has 4 icons).
+       This was hardcoded to 5 (stale from when CHROME_ICON_COUNT was 3)
+       and collided with chrome's own nav 5 icon -- see x/fs-fix.txt for
+       the full incident.
+       2026-07-11: a shared constant now exists -- wraith-alpha_manager.c
+       publishes CHROME_CONTENT_START's live value to
+       pieces/display/chrome_reserved_nav_count.txt (see
+       read_chrome_content_start() above), so this reads that instead of
+       trusting a literal that can silently drift again the next time
+       CHROME_ICON_COUNT changes. Fallback stays 6, matching the literal
+       this file already used. */
+    nav = read_chrome_content_start(6);
     scene_y = 9;
     build_thumb_label(thumb_label, sizeof(thumb_label), st->scroll_offset, entry_count);
     fprintf(f, "OBJECT tag=control id=fs_scroll_up role=window_toolbar_item x=4 y=%d w=10 h=1 z=30 nav=%d source=semantic:fs_scroll fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=PROJECT_ACTION:FS_SCROLL_UP label=^_UP src=\n",

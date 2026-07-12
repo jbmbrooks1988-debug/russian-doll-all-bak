@@ -1,0 +1,102 @@
+fs-fix.txt — nav-index collision in fs/, and the ASCII-shows-wrong-project
+lead
+
+Date: 2026-07-11
+Scope: `projects/wraith-alpha/wraith-projects/fs/`
+Status: nav-collision root cause CONFIRMED via code, fix applied.
+ASCII-wrong-project cause NOT confirmed — lead only, flagged for whoever
+picks this up next.
+
+---
+
+## Bug 1: "repeating numbers in both chrome bar and layout" — CONFIRMED, FIXED
+
+### Root cause
+
+`wraith-alpha_manager.c` (lines 30-93) documents its own chrome nav
+numbering explicitly:
+
+- `CHROME_ICON_COUNT` = 4 (icons: `o` open, `-` minimize, `x` close,
+  `&` window-geom — `g_chrome_icons[]`, line 80-85).
+- Title button is always nav 1. Icons occupy nav 2..(1+CHROME_ICON_COUNT)
+  = nav 2..5.
+- `CHROME_CONTENT_START` = `2 + CHROME_ICON_COUNT` = **6**. Everything
+  after chrome — launcher/taskbar slots, embedded body nav, and every
+  project's OWN `session/scene.objects.pdl` — is supposed to start at 6.
+
+The same comment block states, verbatim: nine Wraith sub-projects each
+hand-hardcode their own starting `nav=N` in their own
+`ops/src/wraith_project_input.c` (piececraft-wraith, wraith-browser,
+chtmgl-wraith, wraith-ed, web-cam, chtmgl-video-isolate, **fs**,
+wraith-3d-cube, screen-record) because they're separate C binaries that
+can't share a header with the manager (TPMOS convention: no shared .h
+files) and don't read `CHROME_CONTENT_START` at all. It explicitly says
+this exact literal had to be re-bumped in all nine files "when
+CHROME_ICON_COUNT went from 3 to 4" (old `CHROME_CONTENT_START` was 5).
+
+**Confirmed via direct comparison:** `piececraft-wraith/ops/src/wraith_project_input.c`
+starts its own nav range at 6 (correctly bumped). `fs/ops/src/wraith_project_input.c`
+line 584 has `nav = 5;` — **not bumped**. This is the exact, predicted
+failure mode the code's own comment warns about: fs's `nav=5`
+(`fs_scroll_up`) collides with chrome's own icon nav 5 (the `&`
+window-geom icon) — two different elements claiming the same nav index,
+in both the ASCII nav-jump list and the GL semantic scene — which shows
+up as "repeating numbers in both chrome bar and layout," exactly as
+reported.
+
+### Immediate fix applied (matches the existing convention, low risk)
+
+`fs/ops/src/wraith_project_input.c` line 584: `nav = 5;` → `nav = 6;`.
+This matches what piececraft-wraith (and presumably the other seven
+correctly-bumped projects) already do — same pattern, same file shape,
+no new mechanism introduced. Recompiled via the standard build script
+and verified the emitted `scene.objects.pdl` now starts fs's own
+controls at nav=6 with no collision against chrome's nav 2-5.
+
+### The fix that should actually happen (not done here — separate, larger task)
+
+This is a whack-a-mole fix, not a real one. The next time
+`CHROME_ICON_COUNT` grows (a 5th chrome icon), all nine hardcoded
+literals need to be found and bumped again by hand — exactly the
+failure that just happened (fs was apparently missed in the last
+bump-all-nine pass). `wraith-alpha_manager.c`'s own comment already
+names the correct fix and says it wasn't done: **a file-based shared
+constant** (e.g. a small `pieces/os/`-owned KVP or plain text file
+containing the current `CHROME_CONTENT_START` value, written once by
+wraith-alpha_manager.c or a shared build step) that each of the nine
+projects' `wraith_project_input.c` reads at the START of building its
+own `scene.objects.pdl`, instead of a hardcoded `int nav = N;` literal.
+This turns "nine-file manual audit every time chrome grows" into
+"nine files that automatically stay correct." Not implemented as part
+of this fix — flagged as the real follow-up, scoped separately from
+today's regression-fix pass since it touches all nine projects, not
+just fs.
+
+---
+
+## Bug 2: "doesn't even render the right project in ASCII" — NOT CONFIRMED, lead only
+
+Investigated but not resolved. One structural oddity found, not yet
+proven to be the cause:
+
+`fs/layouts/fs.chtpm`'s `<interact>` tag points at
+`projects/wraith-alpha/session/history.txt` — the **shared, desktop-wide**
+history file — not a project-scoped `projects/wraith-alpha/wraith-projects/fs/session/history.txt`
+the way other embedded projects (piececraft-wraith, wrai-text-editor)
+use. Whether this is actually related to the wrong-project-in-ASCII
+symptom, or is an intentional/harmless scaffold-stage choice (fs's own
+manager comment calls it "scaffold" and references agy-text-editor as
+"First surface" reference, suggesting fs may still be early/incomplete
+rather than regressed), was not determined. `fs_manager.c` itself never
+references `project_id` at all (confirmed via grep — zero matches),
+which is unusual compared to other project managers but not
+automatically a bug given fs's own stated scaffold status.
+
+**Recommended next step, not done here:** reproduce live — open fs from
+the Wraith launcher, capture the actual ASCII frame, and check which
+project's content is actually showing (fs's own vs. some other
+project's stale content) against `pieces/display/current_frame.txt` and
+whichever project's `session/wraith_body.txt`/`manager/gui_state.txt`
+that content actually matches. This needs a live session to diagnose
+further; reading the source alone did not turn up a confirmed root
+cause the way it did for Bug 1.

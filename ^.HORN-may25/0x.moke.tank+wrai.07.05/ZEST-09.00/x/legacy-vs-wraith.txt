@@ -1,0 +1,186 @@
+legacy-vs-wraith.txt — did Wraith drift from the legacy CHTPM/TPM model,
+does it matter, and should we refactor back toward it?
+
+Date: 2026-07-11
+Context: written after a same-session regression — a shared-infrastructure
+change to wraith-alpha_manager.c (adding real per-window layout+substitution
+rendering, intended to fix wrai-text-editor) broke piececraft-wraith's
+window opening. No git in this workspace at the checked levels; a known-good
+older snapshot exists at x/ZEST-09.00+8TWIN/. User is likely restarting
+from that snapshot with a different agent. This document is the handoff
+analysis: did something drift, does it affect currently-working projects,
+and is refactoring toward legacy actually the right call.
+
+---
+
+## 1. The legacy model (CHTPM_TPM_DOX+1.md, agy-text-editor)
+
+One render pipeline, everywhere, no exceptions:
+- A project's manager computes VALUES only (e.g. agy's `editor_map`) and
+  writes them to `manager/gui_state.txt`.
+- A project's `layouts/<name>.chtpm` file holds STRUCTURE only (box
+  frames, `<button>` elements, `${var}` placeholders).
+- One shared, long-lived parser process (`chtpm_parser.c`, confirmed the
+  actually-running one; `wraith_parser_alpha.c` is a dormant fork) opens
+  the layout, walks it as real XML, and substitutes `${var}`s from
+  gui_state.txt as it renders. This is the ONLY place structure and
+  values ever merge.
+- Nav (`[>]`/`[ ]`), button semantics, focus — all handled generically by
+  this one parser, for any project, the same way, because every project
+  goes through the identical mechanism.
+
+This is simple to reason about: exactly one source of truth per concept
+(structure lives in one file, values in another), exactly one merge
+point (the parser). agy-text-editor has no Wraith-specific code at all
+and still works today by relying purely on this model.
+
+## 2. What Wraith actually built (confirmed by direct code trace, this session)
+
+Wraith's desktop-embedded window system did NOT reuse this pipeline for
+embedded windows. Confirmed via `wraith-alpha_manager.c`:
+
+- `append_project_probe_body()` — the function that composes an embedded
+  window's visible body — does a raw `fopen(session/wraith_body.txt)` +
+  `fgets()` loop. Zero `${var}` substitution. One crude escape hatch: a
+  line starting with `<` is passed through verbatim and gets parsed as
+  real markup downstream; anything else is wrapped in a fixed plain-text
+  border and can never become a button.
+- `project.pdl`'s `entry_layout` field is read once at project-discovery
+  time into a launcher struct and then never consumed again for embedded
+  windows (confirmed: exactly one read site, no second reference in the
+  whole file, before this session's change).
+- Separately, GL-mode nav for embedded windows comes from a THIRD
+  mechanism: `session/scene.objects.pdl`'s `OBJECT tag=control nav=N
+  action=...` rows, hand-maintained by each project's own ops, unrelated
+  to either of the above.
+- A narrow, working exception already existed before this session:
+  `wraith-alpha_manager.c`'s `emit_embedded_line_objects()` special-cases
+  `<cli_io>` tags specifically and calls `read_gui_state_value()` to pull
+  one live keystroke value from `manager/gui_state.txt` — proving the
+  desire for real substitution was already there, just never generalized
+  beyond that one tag type.
+
+Net result: three independent, uncoordinated embedded-window mechanisms
+(raw wraith_body.txt passthrough, the cli_io-only gui_state peek, and
+scene.objects.pdl for GL nav) where legacy TPM has exactly one. Every
+Wraith-hosted project that wants real interactive markup in its embedded
+window has had to hand-duplicate its own layout's structure in C
+(`settings_manager.c` does this explicitly; wrai-text-editor was made to
+do the same this session before the regression).
+
+**Yes, this is a real architectural drift, not a misreading of the
+code** — confirmed independently by grep (no shared "render this layout
+with substitution" library exists anywhere in `pieces/chtpm/`) and by
+`settings_manager.c`'s own header comment, which documents the
+duplication as a deliberate, known workaround rather than an oversight.
+
+## 3. Does the drift actually hurt fs/ and piececraft-wraith today?
+
+Checked directly, not assumed:
+
+**fs/** — has no `manager/gui_state.txt` at all, and its layout contains
+zero `${var}` placeholders (`grep -c '\${' layouts/*.chtpm` → 0). It
+never touches the gap described above in either direction. Unaffected by
+the drift, and structurally could not have been touched by this
+session's attempted fix (which gated strictly on `gui_state.txt`
+existing).
+
+**piececraft-wraith** — does have `manager/gui_state.txt`, and its own
+layout file explicitly documents that its `<button>`/`<text>` markup is
+NOT parsed even when the layout is reached directly, because it runs in
+`is_map_control=1` mode: the window body instead comes from `state.txt`'s
+`game_map=` field, and real interactivity comes from raw hotkeys
+(`w`/`a`/`s`/`d`, digit keys) via `<interact>` + `session/history.txt`,
+plus GL-mode mouse nav via `scene.objects.pdl`. It never relied on the
+legacy layout+substitution model to begin with — it built its own third
+mechanism specifically because the gap existed. **It was working before
+this session, using none of the missing capability, by design.**
+
+**What broke it this session**: this session's fix added a new
+`render_project_layout_body()` gated on (a) `gui_state.txt` existing and
+(b) `is_map_control` != 1, intending to skip piececraft-wraith safely.
+piececraft-wraith satisfies (a) (it has gui_state.txt) and was expected
+to fail (b) safely. It did not stay safely gated — user confirmed
+piececraft-wraith's windows stopped opening correctly after this change
+went in. Root cause was not confirmed before the session was interrupted
+for a rollback; the leading suspect, not yet verified, is a
+**pre-existing, separately-documented race**: piececraft-wraith's own
+ops source has standing comments noting `is_map_control` "intermittently
+reading as false" due to non-atomic writes to `session/state.txt`
+elsewhere in its own code. A new reader of that same file
+(`project_is_map_control()`, added this session) racing against that
+same known-flaky write path is a plausible, not-yet-proven explanation.
+This needs live reproduction against the pre-regression baseline
+(x/ZEST-09.00+8TWIN/) before being treated as confirmed.
+
+## 4. Should we refactor toward legacy?
+
+**The case for:** one render pipeline instead of three is a real
+simplification. It would let wrai-text-editor (and any future
+Wraith-hosted editor-like project) work exactly like agy — one source of
+truth, no hand-duplicated structure, no risk of the layout file and the
+hand-written body drifting apart over time. It also directly matches
+this codebase's own stated design intent (`CHTPM_TPM_DOX+1.md`: "The
+stack must remain modular and recursively composable... If behavior is
+hardcoded across layers, this design intent is broken" — the current
+embedded-window system is exactly this kind of hardcoded, per-project
+duplication).
+
+**The case against, demonstrated concretely today:** every existing
+embedded Wraith project was built and tested against the CURRENT
+(drifted) model, not the legacy one. piececraft-wraith's raw-hotkey +
+map-field + scene.objects.pdl approach is a deliberate, working
+adaptation to the gap, not an oversight — unifying rendering would mean
+either (a) migrating it onto real layout+substitution (real work: its
+current `<button>` tags in `piececraft-wraith.chtpm` were never designed
+to be literally parsed, so they'd need auditing/rewriting, and its
+map-field rendering would need to become a `${game_map}` substitution
+site instead of a special-cased is_map_control branch) or (b)
+special-casing it to keep its current behavior forever, which is exactly
+the kind of permanent exception this refactor is trying to eliminate.
+web-cam's shared-memory/KVP architecture and settings' href-vs-embedded
+hybrid are two more working, independently-evolved patterns that would
+each need individual audit. And — demonstrated directly this session —
+even a supposedly narrow, gated addition to shared render code broke a
+previously-working project within the same session it was written,
+before any of the harder migration work had even started. This is not a
+hypothetical risk.
+
+**This document takes no position on whether to proceed.** The honest
+framing: legacy alignment is architecturally correct and would prevent
+future duplication bugs, but it is a real, non-trivial migration with
+demonstrated regression risk to every existing embedded project, not a
+drop-in fix. Given this codebase's own stated philosophy ("Foundation
+Sovereignty: the existing legacy codebase is assumed to be near-perfect
+and TPMOS compliant... do not reinvent the wheel" and "Harden Tomorrow:
+working code can be hardened tomorrow — we cannot build on a broken or
+unproven foundation," both from `!.TPMOS_ONBORD_BIBLE_10.md`), the
+prerequisite for attempting this refactor again is: audit every
+Wraith-hosted project's actual current rendering dependency (not
+assumed, checked file-by-file the way this document checked fs/ and
+piececraft-wraith) before writing a single line of shared-manager code,
+and land it behind a real regression test per project, not a single
+attempted-safe gate discovered wrong live.
+
+## 5. If resumed from x/ZEST-09.00+8TWIN/ — starting checklist
+
+1. Confirm the pre-regression baseline actually has piececraft-wraith
+   (and every other embedded project) working, live, before touching
+   anything — this document assumes it did, based on the user's own
+   report, but that should be re-verified against the restored snapshot
+   directly, not assumed from this write-up.
+2. Enumerate every project under `wraith-projects/` and record, per
+   project: does it have `manager/gui_state.txt`? Does its layout
+   reference `${var}`? Is `is_map_control` used, and if so, is its
+   write path atomic (temp-file + rename) or the same non-atomic
+   pattern already flagged in piececraft-wraith's own comments? This
+   table is the actual scope of any future refactor attempt — this
+   document only checked fs/ and piececraft-wraith, both named by the
+   user; `web-cam`, `settings`, `chtmgl-wraith`, `chtmgl-video-isolate`,
+   `wraith-3d-cube`, `terminal`, `screen-record`, `wraith-browser`,
+   `wraith-man-test`, `emoji-studio-wraith`, `wraith-ed` were not
+   individually audited this session and should not be assumed safe or
+   unsafe either way.
+3. See `wraith-editor-arch.md` (this same directory) for what
+   wrai-text-editor is trying to accomplish, independent of whether this
+   refactor happens — that goal is unchanged either way.

@@ -31,6 +31,28 @@ static void path_join(char *out, size_t out_sz, const char *a, const char *b) {
     snprintf(out, out_sz, "%s/%s", a, b);
 }
 
+/* 2026-07-11: reads CHROME_CONTENT_START's live value, published by
+ * wraith-alpha_manager.c (see that file's publish_chrome_reserved_nav_count(),
+ * added same day) to pieces/display/chrome_reserved_nav_count.txt, instead
+ * of hardcoding this project's own guess about where its nav range may
+ * safely start. This ops binary is fork+exec'd by
+ * wraith-alpha_manager.c's run_active_project_input_op() WITHOUT a chdir(),
+ * so it inherits the manager's own cwd -- the relative path below is
+ * correct without combining it with `root` (which is this PROJECT's own
+ * dir, not the repo root). Falls back to the literal this file always used
+ * before if the manager hasn't published yet. */
+static int read_chrome_content_start(int fallback) {
+    FILE *f = fopen("pieces/display/chrome_reserved_nav_count.txt", "r");
+    int value;
+    if (!f) return fallback;
+    if (fscanf(f, "%d", &value) != 1 || value <= 0) {
+        fclose(f);
+        return fallback;
+    }
+    fclose(f);
+    return value;
+}
+
 static void set_defaults(EditorState *st) {
     memset(st, 0, sizeof(*st));
     st->is_map_control = 0;
@@ -287,6 +309,7 @@ static void write_body(const char *root, const EditorState *st) {
 static void write_scene(const char *root, const EditorState *st) {
     char path[MAX_PATH_LEN];
     FILE *f;
+    int nav_base = read_chrome_content_start(6);
     path_join(path, sizeof(path), root, "session/scene.objects.pdl");
     f = fopen(path, "w");
     if (!f) return;
@@ -294,12 +317,12 @@ static void write_scene(const char *root, const EditorState *st) {
     fprintf(f, "# Wraith Ed merges op-ed editor controls with piececraft-style game_map editing.\n");
     fprintf(f, "OBJECT tag=panel id=editor_panel role=chtmgl_panel x=3 y=5 w=28 h=12 z=24 nav=0 source=reference:op-ed fg=#E8F1F2 bg=#17293A border=#7EDFF2 action=- label=Editor_Tools\n");
     fprintf(f, "OBJECT tag=text id=editor_header role=chtmgl_header x=4 y=5 w=24 h=1 z=28 nav=0 source=semantic:wraith_ed fg=#E8F1F2 bg=#17293A border=#7EDFF2 action=- label=WRAITH_ED\n");
-    fprintf(f, "OBJECT tag=control id=control_editor_map role=window_toolbar_item x=4 y=7 w=24 h=1 z=30 nav=6 source=semantic:project_control fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=INTERACT target_surface=game_map label=Control_Editor_Map\n");
-    fprintf(f, "OBJECT tag=control id=load_map role=chtmgl_button x=4 y=9 w=13 h=1 z=30 nav=7 source=reference:op-ed fg=#E8F1F2 bg=#22384A border=#FFD166 action=EDITOR:load_map label=Load_Map\n");
-    fprintf(f, "OBJECT tag=control id=place_glyph role=chtmgl_button x=18 y=9 w=12 h=1 z=30 nav=8 source=reference:op-ed fg=#E8F1F2 bg=#22384A border=#FFD166 action=EDITOR:place_glyph label=Place_%c\n", st->active_glyph);
-    fprintf(f, "OBJECT tag=control id=save_game role=chtmgl_button x=4 y=11 w=13 h=1 z=30 nav=9 source=reference:op-ed fg=#E8F1F2 bg=#22384A border=#FFD166 action=EDITOR:save_game label=Save_Game\n");
-    fprintf(f, "OBJECT tag=control id=pal_event role=chtmgl_button x=18 y=11 w=12 h=1 z=30 nav=10 source=reference:op-ed fg=#E8F1F2 bg=#22384A border=#FFD166 action=EDITOR:pal_event label=PAL_Event\n");
-    fprintf(f, "OBJECT tag=control id=export_game role=chtmgl_button x=4 y=13 w=13 h=1 z=30 nav=11 source=reference:op-ed fg=#E8F1F2 bg=#22384A border=#FFD166 action=EDITOR:export label=Export\n");
+    fprintf(f, "OBJECT tag=control id=control_editor_map role=window_toolbar_item x=4 y=7 w=24 h=1 z=30 nav=%d source=semantic:project_control fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=INTERACT target_surface=game_map label=Control_Editor_Map\n", nav_base + 0);
+    fprintf(f, "OBJECT tag=control id=load_map role=chtmgl_button x=4 y=9 w=13 h=1 z=30 nav=%d source=reference:op-ed fg=#E8F1F2 bg=#22384A border=#FFD166 action=EDITOR:load_map label=Load_Map\n", nav_base + 1);
+    fprintf(f, "OBJECT tag=control id=place_glyph role=chtmgl_button x=18 y=9 w=12 h=1 z=30 nav=%d source=reference:op-ed fg=#E8F1F2 bg=#22384A border=#FFD166 action=EDITOR:place_glyph label=Place_%c\n", nav_base + 2, st->active_glyph);
+    fprintf(f, "OBJECT tag=control id=save_game role=chtmgl_button x=4 y=11 w=13 h=1 z=30 nav=%d source=reference:op-ed fg=#E8F1F2 bg=#22384A border=#FFD166 action=EDITOR:save_game label=Save_Game\n", nav_base + 3);
+    fprintf(f, "OBJECT tag=control id=pal_event role=chtmgl_button x=18 y=11 w=12 h=1 z=30 nav=%d source=reference:op-ed fg=#E8F1F2 bg=#22384A border=#FFD166 action=EDITOR:pal_event label=PAL_Event\n", nav_base + 4);
+    fprintf(f, "OBJECT tag=control id=export_game role=chtmgl_button x=4 y=13 w=13 h=1 z=30 nav=%d source=reference:op-ed fg=#E8F1F2 bg=#22384A border=#FFD166 action=EDITOR:export label=Export\n", nav_base + 5);
     fprintf(f, "OBJECT tag=panel id=game_panel role=chtmgl_panel x=34 y=5 w=52 h=18 z=24 nav=0 source=reference:piececraft-wraith fg=#E8F1F2 bg=#142638 border=#7EDFF2 action=- label=Game_Map\n");
     fprintf(f, "OBJECT tag=surface id=game_map role=game_map x=36 y=7 w=48 h=14 z=26 nav=0 source=semantic:game_map_surface fg=#E8F1F2 bg=#0B1118 border=#7EDFF2 action=- label=\n");
     fprintf(f, "OBJECT tag=model id=wraith_ed_map role=tile_zmap x=36 y=7 w=48 h=14 z=32 source=projects/wraith-alpha/wraith-projects/wraith-ed/games/%s/maps/%s.txt fg=#24C94A bg=#0B1118 border=#FFD166 action=- label=MAP_SOURCE:source=games/%s/maps/%s.txt;registry=assets/tiles/registry.txt;z=%d;selected=%d,%d,%d;glyph=%c;editor=wraith-ed\n",

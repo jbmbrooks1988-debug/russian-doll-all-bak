@@ -50,6 +50,28 @@ static void path_join(char *out, size_t out_sz, const char *root, const char *re
     snprintf(out, out_sz, "%s/%s", root, rel);
 }
 
+/* 2026-07-11: reads CHROME_CONTENT_START's live value, published by
+ * wraith-alpha_manager.c (see that file's publish_chrome_reserved_nav_count(),
+ * added same day) to pieces/display/chrome_reserved_nav_count.txt, instead
+ * of hardcoding this project's own guess about where its nav range may
+ * safely start. This ops binary is fork+exec'd by
+ * wraith-alpha_manager.c's run_active_project_input_op() WITHOUT a chdir(),
+ * so it inherits the manager's own cwd -- the relative path below is
+ * correct without combining it with `root` (which is this PROJECT's own
+ * dir, not the repo root). Falls back to the literal this file always used
+ * before if the manager hasn't published yet. */
+static int read_chrome_content_start(int fallback) {
+    FILE *f = fopen("pieces/display/chrome_reserved_nav_count.txt", "r");
+    int value;
+    if (!f) return fallback;
+    if (fscanf(f, "%d", &value) != 1 || value <= 0) {
+        fclose(f);
+        return fallback;
+    }
+    fclose(f);
+    return value;
+}
+
 static void defaults(BrowserState *st) {
     memset(st, 0, sizeof(*st));
     snprintf(st->project_id, sizeof(st->project_id), "wraith-alpha/wraith-projects/wraith-browser");
@@ -436,6 +458,7 @@ static void build_outputs(const char *root, const BrowserState *st, const Script
     char value[384];
     char doc_lines[MAX_DOC_LINES][384];
     int doc_count = 0;
+    int nav_base = read_chrome_content_start(6);
     FILE *f;
 
     path_join(page_path, sizeof(page_path), root, st->current_page[0] ? "" : "");
@@ -514,17 +537,26 @@ static void build_outputs(const char *root, const BrowserState *st, const Script
 
     strncat(scene_buf, "OBJECT tag=panel id=browser_panel role=browser_panel x=16 y=4 w=98 h=30 z=24 nav=0 source=semantic:browser_panel fg=#E8F1F2 bg=#162534 border=#7EDFF2 action=- label=WRAITH_BROWSER\n", sizeof(scene_buf) - strlen(scene_buf) - 1);
     strncat(scene_buf, "OBJECT tag=text id=browser_title role=browser_header x=18 y=5 w=34 h=1 z=26 nav=0 source=semantic:browser_header fg=#E8F1F2 bg=#162534 border=#7EDFF2 action=- label=WRAITH_BROWSER\n", sizeof(scene_buf) - strlen(scene_buf) - 1);
-    snprintf(line, sizeof(line), "OBJECT tag=control id=browser_search role=window_toolbar_item x=18 y=7 w=88 h=1 z=30 nav=6 source=semantic:browser_search fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=INTERACT label=%s src=\n", st->address_input);
+    snprintf(line, sizeof(line), "OBJECT tag=control id=browser_search role=window_toolbar_item x=18 y=7 w=88 h=1 z=30 nav=%d source=semantic:browser_search fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=INTERACT label=%s src=\n", nav_base + 0, st->address_input);
     strncat(scene_buf, line, sizeof(scene_buf) - strlen(scene_buf) - 1);
-    strncat(scene_buf, "OBJECT tag=control id=browser_home role=window_toolbar_item x=18 y=9 w=12 h=1 z=30 nav=7 source=semantic:browser_nav fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=PROJECT_ACTION:BROWSER_HOME label=Home src=\n", sizeof(scene_buf) - strlen(scene_buf) - 1);
-    strncat(scene_buf, "OBJECT tag=control id=browser_audit role=window_toolbar_item x=31 y=9 w=12 h=1 z=30 nav=8 source=semantic:browser_nav fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=PROJECT_ACTION:BROWSER_AUDIT label=Audit src=\n", sizeof(scene_buf) - strlen(scene_buf) - 1);
-    strncat(scene_buf, "OBJECT tag=control id=browser_js_lab role=window_toolbar_item x=44 y=9 w=14 h=1 z=30 nav=9 source=semantic:browser_nav fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=PROJECT_ACTION:BROWSER_JS_LAB label=JS_Lab src=\n", sizeof(scene_buf) - strlen(scene_buf) - 1);
-    strncat(scene_buf, "OBJECT tag=control id=browser_back role=window_toolbar_item x=59 y=9 w=11 h=1 z=30 nav=10 source=semantic:browser_nav fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=PROJECT_ACTION:BROWSER_BACK label=Back src=\n", sizeof(scene_buf) - strlen(scene_buf) - 1);
-    strncat(scene_buf, "OBJECT tag=control id=browser_forward role=window_toolbar_item x=71 y=9 w=14 h=1 z=30 nav=11 source=semantic:browser_nav fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=PROJECT_ACTION:BROWSER_FORWARD label=Forward src=\n", sizeof(scene_buf) - strlen(scene_buf) - 1);
-    strncat(scene_buf, "OBJECT tag=control id=browser_reload role=window_toolbar_item x=86 y=9 w=12 h=1 z=30 nav=12 source=semantic:browser_nav fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=PROJECT_ACTION:BROWSER_RELOAD label=Reload src=\n", sizeof(scene_buf) - strlen(scene_buf) - 1);
-    strncat(scene_buf, "OBJECT tag=control id=browser_toggle_js role=window_toolbar_item x=18 y=10 w=16 h=1 z=30 nav=13 source=semantic:browser_nav fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=PROJECT_ACTION:BROWSER_TOGGLE_JS label=Toggle_JS src=\n", sizeof(scene_buf) - strlen(scene_buf) - 1);
-    strncat(scene_buf, "OBJECT tag=control id=browser_js_inc role=window_toolbar_item x=35 y=10 w=10 h=1 z=30 nav=14 source=semantic:browser_nav fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=PROJECT_ACTION:BROWSER_JS:counter_inc label=JS+1 src=\n", sizeof(scene_buf) - strlen(scene_buf) - 1);
-    strncat(scene_buf, "OBJECT tag=control id=browser_js_reset role=window_toolbar_item x=46 y=10 w=14 h=1 z=30 nav=15 source=semantic:browser_nav fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=PROJECT_ACTION:BROWSER_JS:counter_reset label=JS_Reset src=\n", sizeof(scene_buf) - strlen(scene_buf) - 1);
+    snprintf(line, sizeof(line), "OBJECT tag=control id=browser_home role=window_toolbar_item x=18 y=9 w=12 h=1 z=30 nav=%d source=semantic:browser_nav fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=PROJECT_ACTION:BROWSER_HOME label=Home src=\n", nav_base + 1);
+    strncat(scene_buf, line, sizeof(scene_buf) - strlen(scene_buf) - 1);
+    snprintf(line, sizeof(line), "OBJECT tag=control id=browser_audit role=window_toolbar_item x=31 y=9 w=12 h=1 z=30 nav=%d source=semantic:browser_nav fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=PROJECT_ACTION:BROWSER_AUDIT label=Audit src=\n", nav_base + 2);
+    strncat(scene_buf, line, sizeof(scene_buf) - strlen(scene_buf) - 1);
+    snprintf(line, sizeof(line), "OBJECT tag=control id=browser_js_lab role=window_toolbar_item x=44 y=9 w=14 h=1 z=30 nav=%d source=semantic:browser_nav fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=PROJECT_ACTION:BROWSER_JS_LAB label=JS_Lab src=\n", nav_base + 3);
+    strncat(scene_buf, line, sizeof(scene_buf) - strlen(scene_buf) - 1);
+    snprintf(line, sizeof(line), "OBJECT tag=control id=browser_back role=window_toolbar_item x=59 y=9 w=11 h=1 z=30 nav=%d source=semantic:browser_nav fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=PROJECT_ACTION:BROWSER_BACK label=Back src=\n", nav_base + 4);
+    strncat(scene_buf, line, sizeof(scene_buf) - strlen(scene_buf) - 1);
+    snprintf(line, sizeof(line), "OBJECT tag=control id=browser_forward role=window_toolbar_item x=71 y=9 w=14 h=1 z=30 nav=%d source=semantic:browser_nav fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=PROJECT_ACTION:BROWSER_FORWARD label=Forward src=\n", nav_base + 5);
+    strncat(scene_buf, line, sizeof(scene_buf) - strlen(scene_buf) - 1);
+    snprintf(line, sizeof(line), "OBJECT tag=control id=browser_reload role=window_toolbar_item x=86 y=9 w=12 h=1 z=30 nav=%d source=semantic:browser_nav fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=PROJECT_ACTION:BROWSER_RELOAD label=Reload src=\n", nav_base + 6);
+    strncat(scene_buf, line, sizeof(scene_buf) - strlen(scene_buf) - 1);
+    snprintf(line, sizeof(line), "OBJECT tag=control id=browser_toggle_js role=window_toolbar_item x=18 y=10 w=16 h=1 z=30 nav=%d source=semantic:browser_nav fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=PROJECT_ACTION:BROWSER_TOGGLE_JS label=Toggle_JS src=\n", nav_base + 7);
+    strncat(scene_buf, line, sizeof(scene_buf) - strlen(scene_buf) - 1);
+    snprintf(line, sizeof(line), "OBJECT tag=control id=browser_js_inc role=window_toolbar_item x=35 y=10 w=10 h=1 z=30 nav=%d source=semantic:browser_nav fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=PROJECT_ACTION:BROWSER_JS:counter_inc label=JS+1 src=\n", nav_base + 8);
+    strncat(scene_buf, line, sizeof(scene_buf) - strlen(scene_buf) - 1);
+    snprintf(line, sizeof(line), "OBJECT tag=control id=browser_js_reset role=window_toolbar_item x=46 y=10 w=14 h=1 z=30 nav=%d source=semantic:browser_nav fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=PROJECT_ACTION:BROWSER_JS:counter_reset label=JS_Reset src=\n", nav_base + 9);
+    strncat(scene_buf, line, sizeof(scene_buf) - strlen(scene_buf) - 1);
     strncat(scene_buf, "OBJECT tag=panel id=browser_doc_panel role=browser_doc_panel x=18 y=12 w=88 h=20 z=24 nav=0 source=semantic:browser_doc_panel fg=#E8F1F2 bg=#1A2B3A border=#7EDFF2 action=- label=Document\n", sizeof(scene_buf) - strlen(scene_buf) - 1);
     snprintf(line, sizeof(line), "OBJECT tag=surface id=browser_doc_text role=text_asset x=20 y=13 w=84 h=17 z=28 nav=0 source_ref=%s fg=#E8F1F2 bg=#1A2B3A border=#1A2B3A action=- label=Browser_Document\n", doc_text_path);
     strncat(scene_buf, line, sizeof(scene_buf) - strlen(scene_buf) - 1);

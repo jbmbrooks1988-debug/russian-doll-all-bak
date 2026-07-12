@@ -77,6 +77,8 @@ typedef struct {
     char source_expr[MAX_PATH];
     char prefix_expr[128];
     char suffix_expr[128];
+    char target_id[MAX_ATTR_LEN];  /* cli_io: distinct gui_state var name, so multiple cli_io fields don't collide on "input_text" -- ported from wraith_parser_alpha.c's own fix, since THIS file (not that one) is the parser actually running for wraith-alpha's live sessions. See parsers.txt section 6 and 2fix-july6.txt for the full trace of why. */
+    char input_mode[MAX_ATTR_LEN];  /* cli_io: e.g. "numeric" -- per-keystroke input filtering. See settings-hub-window-geom-design-j5.md's "Future work: numeric-only cli_io input" and 2fix-july6.txt section 9. NOT the same mechanism as the existing password masking (that's driven by the global cli_prompt var, not a per-element attribute). */
     char input_buffer[256];  /* For cli_io text input */
     int parent_index; int children[MAX_CHILDREN]; int num_children;
     bool visibility; int interactive_idx;
@@ -107,7 +109,7 @@ int hit_zone_count = 0;
 char last_rendered_frame[MAX_BUFFER];
 bool last_frame_valid = false;
 
-long last_history_position = 0; 
+long last_history_position = 0;
 long last_state_file_size = 0;
 long last_master_pulse_size = 0;
 long last_display_pulse_size = 0;
@@ -136,6 +138,7 @@ void load_vars(void);
 void substitute_vars(const char* src, char* dst, int max_len);
 void set_var(const char* name, const char* value);
 const char* get_var(const char* name);
+static bool has_var(const char* name);
 bool is_navigable(int idx);
 void initialize_focus(void);
 static void sync_focus_from_saved_active_index(void);
@@ -148,24 +151,65 @@ void handle_launch_command(const char* cmd);
 void send_command(const char* cmd);
 bool evaluate_visibility(UIElement* el);
 bool is_interactive(UIElement* el);
+bool is_modern_layout(const char* layout);
 void parse_attributes(UIElement* el, const char* attr_str);
 void render_element(int idx, char* frame, int* p_global_counter, int* p_scoped_counter);
 char* build_path_malloc(const char* rel);
 char* trim_pmo(char *str);
 static void render_grid(UIElement *el, char *frame);
+/* Option B (2fix-july6.txt section 6): cli_io-only gui_state scoping fix,
+   forward-declared here since sync_cli_input_from_gui_state() (below)
+   uses them before their definitions further down the file. */
+static const char* resolve_cli_io_project_id(void);
+static bool read_cli_io_gui_state_value(const char *target_id, char *out, size_t out_sz);
+void save_cli_io_gui_state(const char* name, const char* value);
 
 static void sync_cli_input_from_gui_state(void) {
+    /* Target_id-keyed restore: an INDEPENDENT pass over every cli_io
+       element that has its own target_id, run first and unconditionally
+       (no early return), so it can never be skipped by the legacy
+       single-slot logic below -- that logic returns as soon as it finds
+       the FIRST "id==input_text" element, which would otherwise silently
+       skip any target_id-keyed elements sitting later in the list. Ported
+       from wraith_parser_alpha.c's own fix (see that file's own restore
+       logic) since THIS file is the parser actually running for
+       wraith-alpha's live sessions -- see parsers.txt section 6 and
+       2fix-july6.txt. */
+    for (int i = 0; i < element_count; i++) {
+        if (strcmp(elements[i].type, "cli_io") != 0) continue;
+        if (!elements[i].target_id[0]) continue;
+        /* Option B (2fix-july6.txt section 6): read directly from the
+           embedded window's OWN gui_state.txt (via
+           desktop_focused_window_project_id when available) instead of
+           get_var(), which only ever reflects the generic project_id
+           ("wraith-alpha" for the desktop shell, never the specific
+           embedded sub-project). This is a targeted file read, not a
+           var-table load, so it cannot collide with fold-state or any
+           other var sharing this element's target_id name. */
+        char targeted_val[256];  /* matches UIElement.input_buffer's own size */
+        if (read_cli_io_gui_state_value(elements[i].target_id, targeted_val, sizeof(targeted_val)) &&
+            targeted_val[0] != '\0') {
+            strncpy(elements[i].input_buffer, targeted_val, sizeof(elements[i].input_buffer) - 1);
+            elements[i].input_buffer[sizeof(elements[i].input_buffer) - 1] = '\0';
+        }
+    }
+
+    /* Legacy single-slot restore, UNCHANGED -- only ever applies to cli_io
+       elements that do NOT set target_id, preserving old behavior for any
+       layout that doesn't use the fix above (backward compatible). */
     const char *state_input = get_var("input_text");
+    bool state_input_present = has_var("input_text");
 
     int fallback_idx = -1;
     for (int i = 0; i < element_count; i++) {
         if (strcmp(elements[i].type, "cli_io") != 0) continue;
+        if (elements[i].target_id[0]) continue;  /* already handled above */
 
         if (strcmp(elements[i].id, "input_text") == 0) {
-            if (state_input && state_input[0] != '\0') {
+            if (state_input_present && state_input && state_input[0] != '\0') {
                 strncpy(elements[i].input_buffer, state_input, sizeof(elements[i].input_buffer) - 1);
                 elements[i].input_buffer[sizeof(elements[i].input_buffer) - 1] = '\0';
-            } else {
+            } else if (state_input_present) {
                 elements[i].input_buffer[0] = '\0';
             }
             return;
@@ -175,10 +219,10 @@ static void sync_cli_input_from_gui_state(void) {
     }
 
     if (fallback_idx != -1) {
-        if (state_input && state_input[0] != '\0') {
+        if (state_input_present && state_input && state_input[0] != '\0') {
             strncpy(elements[fallback_idx].input_buffer, state_input, sizeof(elements[fallback_idx].input_buffer) - 1);
             elements[fallback_idx].input_buffer[sizeof(elements[fallback_idx].input_buffer) - 1] = '\0';
-        } else {
+        } else if (state_input_present) {
             elements[fallback_idx].input_buffer[0] = '\0';
         }
     }
@@ -290,6 +334,55 @@ static void resolve_project_state_path(char *dst, size_t sz, const char *proj_id
 
 static void resolve_project_gui_state_path(char *dst, size_t sz, const char *proj_id) {
     snprintf(dst, sz, "projects/%s/manager/gui_state.txt", proj_id);
+}
+
+/* Option B (2fix-july6.txt section 6): cli_io save/restore needs the
+   SPECIFIC embedded sub-project's own gui_state.txt (e.g.
+   "wraith-alpha/wraith-projects/settings"), not the generic project_id,
+   which stays "wraith-alpha" (the desktop shell) for embedded content
+   since current_layout never changes for body-passthrough pages.
+   desktop_focused_window_project_id is published every frame by
+   wraith-alpha_manager.c's write_projection() and already tracks the
+   real embedded project -- prefer it here, falling back to project_id
+   for every non-wraith-alpha project (unaffected, since that variable
+   is only ever loaded when current_layout contains
+   "projects/wraith-alpha/"). Scoped to cli_io only -- fold-state and
+   every other save_to_gui_state() caller is untouched. */
+static const char* resolve_cli_io_project_id(void) {
+    const char *focused = get_var("desktop_focused_window_project_id");
+    if (focused && focused[0]) return focused;
+    return get_var("project_id");
+}
+
+static bool read_cli_io_gui_state_value(const char *target_id, char *out, size_t out_sz) {
+    const char *proj_id = resolve_cli_io_project_id();
+    if (!proj_id || !proj_id[0] || !target_id || !target_id[0]) return false;
+
+    char gui_rel[MAX_PATH];
+    resolve_project_gui_state_path(gui_rel, sizeof(gui_rel), proj_id);
+    char *path = build_path_malloc(gui_rel);
+    if (!path) return false;
+
+    FILE *f = fopen(path, "r");
+    free(path);
+    if (!f) return false;
+
+    bool found = false;
+    char *line = malloc(MAX_LINE);
+    if (line) {
+        while (fgets(line, MAX_LINE, f)) {
+            char *eq = strchr(line, '=');
+            if (!eq) continue;
+            *eq = '\0';
+            if (strcmp(trim_pmo(line), target_id) != 0) continue;
+            strncpy(out, trim_pmo(eq + 1), out_sz - 1);
+            out[out_sz - 1] = '\0';
+            found = true;
+        }
+        free(line);
+    }
+    fclose(f);
+    return found;
 }
 
 static void resolve_project_module_path(char *dst, size_t sz, const char *proj_id) {
@@ -489,6 +582,13 @@ const char* get_var(const char* name) {
     return "";
 }
 
+static bool has_var(const char* name) {
+    for (int i = 0; i < var_count; i++) {
+        if (strcmp(vars[i].name, name) == 0) return true;
+    }
+    return false;
+}
+
 void substitute_vars_naked(const char* src, char* dst, int max_len) {
     const char *p_src = src; char *p_dst = dst;
     bool in_tag = false;
@@ -584,12 +684,15 @@ void load_state_file(const char* rel_path, const char* prefix) {
     free(path);
 }
 
-void save_to_gui_state(const char* name, const char* value) {
-    const char* project_id = get_var("project_id");
-    if (strlen(project_id) == 0) return;
-    
+static void save_to_gui_state_impl(const char* name, const char* value, const char* project_id) {
     char gui_rel[MAX_PATH];
-    resolve_project_gui_state_path(gui_rel, sizeof(gui_rel), project_id);
+    if (strlen(project_id) > 0) {
+        resolve_project_gui_state_path(gui_rel, sizeof(gui_rel), project_id);
+    } else if (is_modern_layout(current_layout)) {
+        snprintf(gui_rel, sizeof(gui_rel), "pieces/apps/player_app/manager/gui_state.txt");
+    } else {
+        return;
+    }
     char *path = build_path_malloc(gui_rel);
     if (!path) return;
 
@@ -656,6 +759,18 @@ void save_to_gui_state(const char* name, const char* value) {
     free(names);
     free(values);
     free(path);
+}
+
+void save_to_gui_state(const char* name, const char* value) {
+    save_to_gui_state_impl(name, value, get_var("project_id"));
+}
+
+/* Option B (2fix-july6.txt section 6): used only by cli_io save sites so
+   embedded sub-project content (settings, window-geom, etc.) saves to its
+   OWN gui_state.txt instead of the desktop shell's. Every other caller of
+   save_to_gui_state() (accordion fold-state, etc.) is unaffected. */
+void save_cli_io_gui_state(const char* name, const char* value) {
+    save_to_gui_state_impl(name, value, resolve_cli_io_project_id());
 }
 
 // Count available projects for digit accumulation bounds checking
@@ -817,6 +932,7 @@ bool is_modern_layout(const char* layout) {
             strstr(layout, "ai-labs") != NULL || strstr(layout, "p2p-net") != NULL ||
             strstr(layout, "lsr") != NULL || strstr(layout, "blank") != NULL ||
             strstr(layout, "cyoa") != NULL || strstr(layout, "quiz") != NULL ||
+            strstr(layout, "pieces/chtpm/layouts/") != NULL ||
             strstr(layout, "mp3") != NULL);
 }
 
@@ -850,7 +966,21 @@ void load_vars() {
     // MUST be AFTER load_state_file to override any stale project_id in state.txt
     if (strstr(current_layout, "projects/") != NULL) {
         const char *start = strstr(current_layout, "projects/") + 9;
-        const char *end = strchr(start, '/');
+        /* project_id is everything from here up to the "/layouts/" (or
+           "/project.pdl") boundary -- NOT just the first path segment.
+           A naive strchr(start,'/') collapses a NESTED project like
+           projects/wraith-alpha/wraith-projects/settings/window-geom/layouts/...
+           down to just "wraith-alpha", so its own manager/state.txt is
+           never loaded and its ${vars} render blank. For a normal
+           single-segment project (projects/<id>/layouts/...) the first '/'
+           IS the "/layouts/" boundary, so this is byte-identical to the old
+           behavior there -- only multi-segment (nested) projects change. */
+        const char *layout_marker = strstr(start, "/layouts/");
+        const char *pdl_marker = strstr(start, "/project.pdl");
+        const char *end = NULL;
+        if (layout_marker && (!pdl_marker || layout_marker < pdl_marker)) end = layout_marker;
+        else if (pdl_marker) end = pdl_marker;
+        else end = strchr(start, '/');
         if (start && end && end > start) {
             char proj_name[64]; int len = (int)(end - start);
             if (len > 0 && len < 64) { memcpy(proj_name, start, len); proj_name[len] = '\0'; set_var("project_id", proj_name); }
@@ -880,6 +1010,8 @@ void load_vars() {
     // Load project or app-specific gui_state.txt if it exists
     if (strlen(proj_id) > 0 && strcmp(proj_id, "template") != 0) {
         load_project_gui_state(proj_id);
+    } else if (is_modern_layout(current_layout)) {
+        load_state_file("pieces/apps/player_app/manager/gui_state.txt", NULL);
     }
 
     const char* active_id = get_var("active_target_id");
@@ -1489,6 +1621,8 @@ void parse_attributes(UIElement* el, const char* attr_str) {
         else if (strcmp(name_start, "href") == 0) { strncpy(el->href, val_start, MAX_PATH - 1); }
         else if (strcmp(name_start, "onClick") == 0) { strncpy(el->onClick, val_start, 127); }
         else if (strcmp(name_start, "id") == 0) { strncpy(el->id, val_start, MAX_ATTR_LEN - 1); }
+        else if (strcmp(name_start, "target_id") == 0) { strncpy(el->target_id, val_start, MAX_ATTR_LEN - 1); }
+        else if (strcmp(name_start, "input_mode") == 0) { strncpy(el->input_mode, val_start, MAX_ATTR_LEN - 1); }
         else if (strcmp(name_start, "visibility") == 0) { strncpy(el->visibility_expr, val_start, MAX_ATTR_LEN - 1); }
         else if (strcmp(name_start, "fg") == 0) { strncpy(el->fg_expr, val_start, MAX_ATTR_LEN - 1); }
         else if (strcmp(name_start, "bg") == 0) { strncpy(el->bg_expr, val_start, MAX_ATTR_LEN - 1); }
@@ -1877,11 +2011,26 @@ void export_active_index() {
     int active_gui_idx = 0;
     if (active_index != -1) active_gui_idx = elements[active_index].interactive_idx;
     else active_gui_idx = elements[focus_index].interactive_idx;
-    
+
     char *agi_path = build_path_malloc("pieces/display/active_gui_index.txt");
     FILE *agi_f = fopen(agi_path, "w");
     if (agi_f) { fprintf(agi_f, "%d\n", active_gui_idx); fclose(agi_f); }
     free(agi_path);
+
+    /* Companion signal, ported from wraith_parser_alpha.c's own fix:
+     * active_gui_index.txt alone conflates "just focused" and "genuinely
+     * active/typing" into ONE number -- wraith-alpha_manager.c (GL-content-
+     * mode rendering) has no way to distinguish them from that file alone,
+     * so it could never show the "[^]" (active/typing) glyph for a cli_io
+     * field, only ever "[>]" or " ". "1" means active_index != -1 (a
+     * cli_io field is genuinely accepting keystrokes right now), "0" means
+     * focus-only or nothing focused. See 2fix-july6.txt, bug 3. */
+    {
+        char *typing_path = build_path_malloc("pieces/display/active_gui_is_typing.txt");
+        FILE *typing_f = fopen(typing_path, "w");
+        if (typing_f) { fprintf(typing_f, "%d\n", active_index != -1 ? 1 : 0); fclose(typing_f); }
+        free(typing_path);
+    }
 }
 
 void render_element(int idx, char* frame, int* p_global_counter, int* p_scoped_counter) {
@@ -2465,7 +2614,7 @@ void process_key(int key) {
             if (key == 10 || key == 13) { 
                 if (strlen(el->input_buffer) > 0) {
                     /* Sync the input text to gui_state.txt so manager can read it */
-                    save_to_gui_state("input_text", el->input_buffer);
+                    save_cli_io_gui_state(el->target_id[0] ? el->target_id : "input_text", el->input_buffer);
 
                     /* Clear the input buffer of the cli_io element */
                     el->input_buffer[0] = '\0';
@@ -2488,18 +2637,23 @@ void process_key(int key) {
                 int len = strlen(el->input_buffer); 
                 if (len > 0) {
                     el->input_buffer[len-1] = '\0';
-                    save_to_gui_state("input_text", el->input_buffer);
+                    save_cli_io_gui_state(el->target_id[0] ? el->target_id : "input_text", el->input_buffer);
                 }
             }
-            else if (key >= 32 && key <= 126) { 
-                /* Printable char */
-                int len = strlen(el->input_buffer); 
-                if (len < sizeof(el->input_buffer) - 2) { 
+            else if (key >= 32 && key <= 126 &&
+                     !(strcmp(el->input_mode, "numeric") == 0 && !isdigit((unsigned char)key))) {
+                /* Printable char. The input_mode=="numeric" guard rejects
+                   the keystroke before it ever reaches input_buffer --
+                   see settings-hub-window-geom-design-j5.md's "Future
+                   work: numeric-only cli_io input" and 2fix-july6.txt
+                   section 9. */
+                int len = strlen(el->input_buffer);
+                if (len < sizeof(el->input_buffer) - 2) {
                     el->input_buffer[len] = (char)key; 
                     el->input_buffer[len+1] = '\0';
                     
                     /* Live sync to gui_state.txt for UI visibility */
-                    save_to_gui_state("input_text", el->input_buffer);
+                    save_cli_io_gui_state(el->target_id[0] ? el->target_id : "input_text", el->input_buffer);
 
                     /* Append to cli_buffers.txt - simple and safe fallback */
                     FILE *bf = fopen("pieces/apps/player_app/cli_buffers.txt", "a");

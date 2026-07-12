@@ -719,3 +719,10 @@
 [1783347233] Updated state for target=wraith-alpha/wraith-projects/settings/window-geom
 [1783347233] Regenerate marker grew, updating state for standalone view
 [1783347233] Updated state for target=wraith-alpha/wraith-projects/settings/window-geom
+[1783763700] Window Geometry Manager Started
+[1783763700] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783763700] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings/window-geom
+[1783763700] Updated state for target=wraith-alpha/wraith-projects/web-cam
+[1783763700] Window Geometry Manager init complete, entering hot-path loop
+[1783763700] Regenerate marker grew, updating state for standalone view
+[1783763700] Updated state for target=wraith-alpha/wraith-projects/settings/window-geom

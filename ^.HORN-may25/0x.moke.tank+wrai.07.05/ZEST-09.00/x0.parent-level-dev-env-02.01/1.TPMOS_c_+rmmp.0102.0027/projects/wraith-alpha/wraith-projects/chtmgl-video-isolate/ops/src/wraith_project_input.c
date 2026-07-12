@@ -51,6 +51,28 @@ static void path_join(char *out, size_t out_sz, const char *root, const char *re
     snprintf(out, out_sz, "%s/%s", root, rel);
 }
 
+/* 2026-07-11: reads CHROME_CONTENT_START's live value, published by
+ * wraith-alpha_manager.c (see that file's publish_chrome_reserved_nav_count(),
+ * added same day) to pieces/display/chrome_reserved_nav_count.txt, instead
+ * of hardcoding this project's own guess about where its nav range may
+ * safely start. This ops binary is fork+exec'd by
+ * wraith-alpha_manager.c's run_active_project_input_op() WITHOUT a chdir(),
+ * so it inherits the manager's own cwd -- the relative path below is
+ * correct without combining it with `root` (which is this PROJECT's own
+ * dir, not the repo root). Falls back to the literal this file always used
+ * before if the manager hasn't published yet. */
+static int read_chrome_content_start(int fallback) {
+    FILE *f = fopen("pieces/display/chrome_reserved_nav_count.txt", "r");
+    int value;
+    if (!f) return fallback;
+    if (fscanf(f, "%d", &value) != 1 || value <= 0) {
+        fclose(f);
+        return fallback;
+    }
+    fclose(f);
+    return value;
+}
+
 static void build_scene_ref(char *out, size_t out_sz, const char *root, const char *rel) {
     char joined[MAX_PATH_LEN];
     char resolved[MAX_PATH_LEN];
@@ -668,6 +690,7 @@ static void write_scene(const char *root, const VideoProbeState *state) {
     FILE *f;
     int y;
     int x;
+    int nav_base = read_chrome_content_start(6);
 
     path_join(path, sizeof(path), root, "session/scene.objects.pdl");
     build_scene_ref(video_scene_ref, sizeof(video_scene_ref), root, state->video_rel);
@@ -682,11 +705,11 @@ static void write_scene(const char *root, const VideoProbeState *state) {
     fprintf(f, "OBJECT tag=text id=video_status role=video_status x=5 y=8 w=20 h=1 z=30 nav=0 source_ref=%s fg=#E8F1F2 bg=#162534 border=#7EDFF2 action=- label=STATE:%s\n", video_scene_ref, state->video_state);
     fprintf(f, "OBJECT tag=text id=video_meta role=video_meta x=5 y=9 w=20 h=1 z=30 nav=0 source_ref=%s fg=#E8F1F2 bg=#162534 border=#7EDFF2 action=- label=%dx%d_%.2fs\n", video_scene_ref, state->video_width, state->video_height, state->video_duration);
     fprintf(f, "OBJECT tag=text id=video_frame role=video_frame_meta x=5 y=10 w=20 h=1 z=30 nav=0 source_ref=%s fg=#E8F1F2 bg=#162534 border=#7EDFF2 action=- label=FRAME:%d/%d\n", video_scene_ref, state->frame_index, state->frame_total);
-    fprintf(f, "OBJECT tag=control id=video_play role=chtmgl_button x=5 y=12 w=8 h=1 z=30 nav=6 source_ref=%s fg=#E8F1F2 bg=#22384A border=#7EDFF2 action=PROJECT_ACTION:VIDEO_PLAY label=Play\n", video_scene_ref);
-    fprintf(f, "OBJECT tag=control id=video_pause role=chtmgl_button x=14 y=12 w=8 h=1 z=30 nav=7 source_ref=%s fg=#E8F1F2 bg=#22384A border=#7EDFF2 action=PROJECT_ACTION:VIDEO_PAUSE label=Pause\n", video_scene_ref);
-    fprintf(f, "OBJECT tag=control id=video_resume role=chtmgl_button x=5 y=14 w=8 h=1 z=30 nav=8 source_ref=%s fg=#E8F1F2 bg=#22384A border=#7EDFF2 action=PROJECT_ACTION:VIDEO_RESUME label=Resume\n", video_scene_ref);
-    fprintf(f, "OBJECT tag=control id=video_stop role=chtmgl_button x=14 y=14 w=8 h=1 z=30 nav=9 source_ref=%s fg=#E8F1F2 bg=#22384A border=#7EDFF2 action=PROJECT_ACTION:VIDEO_STOP label=Stop\n", video_scene_ref);
-    fprintf(f, "OBJECT tag=control id=video_refresh role=chtmgl_button x=5 y=16 w=17 h=1 z=30 nav=10 source_ref=%s fg=#E8F1F2 bg=#22384A border=#FFD166 action=PROJECT_ACTION:VIDEO_REFRESH label=Refresh_Poster\n", video_scene_ref);
+    fprintf(f, "OBJECT tag=control id=video_play role=chtmgl_button x=5 y=12 w=8 h=1 z=30 nav=%d source_ref=%s fg=#E8F1F2 bg=#22384A border=#7EDFF2 action=PROJECT_ACTION:VIDEO_PLAY label=Play\n", nav_base + 0, video_scene_ref);
+    fprintf(f, "OBJECT tag=control id=video_pause role=chtmgl_button x=14 y=12 w=8 h=1 z=30 nav=%d source_ref=%s fg=#E8F1F2 bg=#22384A border=#7EDFF2 action=PROJECT_ACTION:VIDEO_PAUSE label=Pause\n", nav_base + 1, video_scene_ref);
+    fprintf(f, "OBJECT tag=control id=video_resume role=chtmgl_button x=5 y=14 w=8 h=1 z=30 nav=%d source_ref=%s fg=#E8F1F2 bg=#22384A border=#7EDFF2 action=PROJECT_ACTION:VIDEO_RESUME label=Resume\n", nav_base + 2, video_scene_ref);
+    fprintf(f, "OBJECT tag=control id=video_stop role=chtmgl_button x=14 y=14 w=8 h=1 z=30 nav=%d source_ref=%s fg=#E8F1F2 bg=#22384A border=#7EDFF2 action=PROJECT_ACTION:VIDEO_STOP label=Stop\n", nav_base + 3, video_scene_ref);
+    fprintf(f, "OBJECT tag=control id=video_refresh role=chtmgl_button x=5 y=16 w=17 h=1 z=30 nav=%d source_ref=%s fg=#E8F1F2 bg=#22384A border=#FFD166 action=PROJECT_ACTION:VIDEO_REFRESH label=Refresh_Poster\n", nav_base + 4, video_scene_ref);
 
     fprintf(f, "OBJECT tag=panel id=video_visual_panel role=chtmgl_panel x=31 y=6 w=52 h=18 z=24 nav=0 source_ref=%s fg=#E8F1F2 bg=#162534 border=#7EDFF2 action=- label=Video_Poster\n", state->current_frame_loaded ? current_frame_scene_ref : poster_scene_ref);
     fprintf(f, "OBJECT tag=text id=video_title role=video_state x=33 y=8 w=48 h=1 z=30 nav=0 source_ref=%s fg=#E8F1F2 bg=#162534 border=#7EDFF2 action=- label=VIDEO:%s\n", video_scene_ref, state->video_state);

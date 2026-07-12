@@ -601,6 +601,24 @@ int main(int argc, char **argv) {
     glutMouseFunc(mouse);
     glutMotionFunc(motion);
     glutTimerFunc(16, timer, 0);
+    /* 2026-07-12: without this, X11's auto-repeat mechanism generates
+       synthetic KeyRelease+KeyPress pairs for held keys (and, at
+       certain timing boundaries, even for a quick tap), and freeglut
+       delivers each as a distinct call to keyboard()/special_keyboard()
+       -- neither of which has any repeat-suppression or dedup of its
+       own. Symptom, confirmed live: arrow keys sometimes registering
+       twice for one tap, or appearing to skip a step (the same
+       repeat-boundary ambiguity that causes the double-fire also
+       explains occasional drops in freeglut's internal repeat-vs-new-
+       press heuristic). ASCII's input path never hits this -- it reads
+       keys from the terminal, not GLUT/X11 callbacks -- which is why
+       this was never seen there. glutIgnoreKeyRepeat(1) is GLUT's own,
+       standard API for filtering OS-generated auto-repeat events so
+       only genuine distinct key-down transitions reach the callbacks.
+       This is the ONLY GL renderer file in the repo (every embedded
+       Wraith project's window runs through this same process), so the
+       fix applies to all of them at once, not just this project. */
+    glutIgnoreKeyRepeat(1);
 
     update_focus_lock();
 

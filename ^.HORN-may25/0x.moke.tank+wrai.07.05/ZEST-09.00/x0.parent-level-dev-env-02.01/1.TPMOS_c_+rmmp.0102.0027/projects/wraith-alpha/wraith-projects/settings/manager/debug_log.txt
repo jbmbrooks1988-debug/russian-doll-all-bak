@@ -1384,3 +1384,35 @@
 [1783395287] Settings Hub Manager: init complete, entering marker-file-watch loop
 [1783395289] Page change detected, re-rendering wraith_body.txt
 [1783395290] Page change detected, re-rendering wraith_body.txt
+[1783775442] Settings Hub Manager Started
+[1783775442] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783775442] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783775442] Discovered 1 settings entry
+[1783775442] Settings Hub Manager: init complete, entering marker-file-watch loop
+[1783776021] Settings Hub Manager Started
+[1783776021] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783776021] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783776021] Discovered 1 settings entry
+[1783776021] Settings Hub Manager: init complete, entering marker-file-watch loop
+[1783776023] Page change detected, re-rendering wraith_body.txt
+[1783776024] Page change detected, re-rendering wraith_body.txt
+[1783776362] Settings Hub Manager Started
+[1783776362] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783776362] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783776362] Discovered 1 settings entry
+[1783776362] Settings Hub Manager: init complete, entering marker-file-watch loop
+[1783776521] Settings Hub Manager Started
+[1783776521] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783776521] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783776521] Discovered 1 settings entry
+[1783776521] Settings Hub Manager: init complete, entering marker-file-watch loop
+[1783777262] Settings Hub Manager Started
+[1783777262] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783777262] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783777262] Discovered 1 settings entry
+[1783777262] Settings Hub Manager: init complete, entering marker-file-watch loop
+[1783777291] Settings Hub Manager Started
+[1783777291] Project root: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027
+[1783777291] Project dir: /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-09.00/x0.parent-level-dev-env-02.01/1.TPMOS_c_+rmmp.0102.0027/projects/wraith-alpha/wraith-projects/settings
+[1783777291] Discovered 1 settings entry
+[1783777291] Settings Hub Manager: init complete, entering marker-file-watch loop

@@ -156,6 +156,32 @@ recompiling everything.
    it's also being inserted into the ASCII text stream as a real interactive
    tag — ASCII will number it anyway, GL just won't move to match.
 
+### 2026-07-11 update: this pattern generalizes beyond nav numbers
+
+Confirmed the same session, applied to three more cases beyond chrome icons:
+the launcher row (`nav_idx = CHROME_CONTENT_START + li`, was a stale hardcoded
+`5 + li`), `scene.objects.pdl`-declared controls (`next_scene_nav` counter in
+`append_project_scene_objects()`, replacing trust in a project's own
+hardcoded `nav=N` literal), and cli_io's live-value display
+(`emit_embedded_line_objects()`, generalized from `is_cli_io` to
+`has_target_id`). Also closed the nine-hardcoded-`nav=N`-files gap this doc
+flagged and left undone since 2026-07-06: `wraith-alpha_manager.c` now
+publishes `CHROME_CONTENT_START` to `pieces/display/chrome_reserved_nav_count.txt`
+at startup, and all nine projects' `scene.objects.pdl` generators read it
+instead of hardcoding their own guess.
+
+**The general form of the rule, not just the chrome-specific one:** this
+isn't only about nav numbers. Any time a value needs to agree between the
+ASCII builder and the GL builder — a number, a live text value, a boolean
+flag — the fix is the same shape: find (or create) ONE place that computes
+or holds that value, and make both renderers read it, instead of letting
+either side compute or guess its own copy. A project's own hardcoded
+literal, a stale cross-process read, or a tag-type-specific special case are
+all instances of the same failure: something that should have exactly one
+source of truth ended up with two. This is the standing discipline for
+every future interactive element type added to Wraith, not a closed,
+one-time fix.
+
 ---
 
 ## CORRECTION (2026-07-06, same day, written after the rest of this doc)

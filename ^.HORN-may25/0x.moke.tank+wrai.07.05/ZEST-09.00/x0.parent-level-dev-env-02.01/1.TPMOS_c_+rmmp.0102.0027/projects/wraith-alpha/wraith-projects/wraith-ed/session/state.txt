@@ -8,4 +8,4 @@ cursor_z=0
 active_glyph=T
 active_tile=tree
 mode=map_edit
-last_action=Export manifest written
+last_action=Unhandled key 1002

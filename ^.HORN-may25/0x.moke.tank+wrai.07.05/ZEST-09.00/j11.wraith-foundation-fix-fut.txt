@@ -1,0 +1,581 @@
+j11.wraith-foundation-fix-fut.txt — the actual foundational refactor
+Wraith needs, and the hacks/workarounds to retire while doing it
+
+Date: 2026-07-11
+Framing, per explicit direction: NOT a rollback. This is an active,
+ongoing project — legacy compatibility is not the goal for its own sake,
+correcting the foundation before building further on it is. Where
+"hacks and workarounds" exist that legacy TPM doesn't need, they get
+removed and replaced with the real, unified standard — not preserved
+for compatibility.
+
+**Explicit end state, stated plainly so it isn't lost in the sequencing
+below: "opt-in" is NOT the target architecture, it is the current
+transitional state of an unfinished migration.** Today's fix
+(`render_project_layout_body()`) only activates for a project if it
+happens to have `manager/gui_state.txt` and doesn't set
+`is_map_control=1` — that condition describes where the migration
+currently stands, not a permanent fork in how Wraith projects are
+allowed to work. The actual goal is every Wraith-hosted project working
+this way unconditionally — no existence checks, no mode gates, no
+per-project choice about whether to use the real pipeline. Every "opt-in
+condition" and every "hardcoded fallback for projects that haven't
+migrated yet" named in this document exists to be deleted once
+migration is complete, not to become a permanent, supported second way
+of doing things.
+
+---
+
+## Direct answer to "did the recent fix solve cli_io?"
+
+No. Two separate, related gaps, neither closed yet:
+
+1. **cli_io's GL-mode live-value display** — pre-existing code
+   (`wraith-alpha_manager.c`'s `emit_embedded_line_objects()`), added
+   specifically because GL-mode's embedded-window object emission
+   otherwise only shows a `<cli_io>` field's *static* label, never the
+   live typed value. This session's fix didn't touch it. It remains a
+   narrow, `<cli_io>`-tag-specific special case bolted onto GL object
+   emission — not a generic capability.
+
+2. **The new fix's own ASCII/GL parity gap** — `render_project_layout_body()`
+   (this session's addition) is wired into the ASCII-mode composer only.
+   GL-mode's embedded-window rendering (`emit_embedded_line_objects()`
+   and whatever calls it for scene generation) still reads
+   `session/wraith_body.txt` directly, unchanged. For any project that
+   now benefits from real layout+substitution in ASCII (currently just
+   wrai-text-editor), GL mode was not updated to match — meaning ASCII
+   and GL can now show DIFFERENT content for the same project, a new
+   instance of the exact "ASCII/GL divergence" failure class already
+   documented as a standing risk in this codebase (`WRAITH-ARCHITECTURE-AND-ROADMAP.md`
+   section 3: "Any positioning/rendering change must update both
+   consistently — this has caused multiple real, separate bugs").
+
+Both gaps have the same root cause, described below.
+
+---
+
+## The actual root cause: two rendering pipelines instead of one
+
+Legacy TPM/CHTPM has exactly one render pipeline (`^.chtpm-faq/CHTPM_TPM_DOX+1.md`):
+layout file = structure, `gui_state.txt` = values, one generic parser
+step merges them — for cli_io, buttons, substitution, everything, in
+one place, used identically by every project.
+
+Wraith built two separate, independently-maintained rendering surfaces
+for the same embedded window:
+- **ASCII composer** (`append_project_probe_body()`, now also
+  `render_project_layout_body()`) — builds the text frame.
+- **GL object emitter** (`emit_embedded_line_objects()` and the
+  scene-generation code around it) — builds the GL semantic objects.
+
+Every capability that should be generic ends up needing to be built
+TWICE, once per pipeline, or it silently only works in one mode:
+- cli_io live values: had to be special-cased into the GL emitter
+  specifically (ASCII apparently already worked via a different,
+  pre-existing mechanism — `wraith_parser_alpha.c`'s own `get_var()`).
+- Real layout+substitution: this session added it to ASCII only. GL
+  wasn't touched — not because it's unimportant, but because doing it
+  properly means understanding and extending a second, separate code
+  path, and this session's scope (fix wrai-text-editor, fix fs's nav
+  collision) didn't call for it.
+- Button/nav markup passthrough (the `<`-prefix trick in
+  `wraith_body.txt`): ASCII parses it as real markup automatically. GL
+  needed its own separate parser (`emit_embedded_line_objects()`) built
+  specifically to re-interpret the same `<`-prefixed lines into GL
+  OBJECTs — and even that has a known, documented gap (nav=0 on
+  GL-emitted buttons — mouse-clickable, not Tab-navigable; a "deferred
+  gap," per `2fix.txt`'s 2026-07-05 entry).
+
+This is the same drift already covered in `x/legacy-vs-wraith.txt`
+(written earlier the same day) at the "wraith_body.txt vs. layout
+rendering" level — this document extends that same finding to cover
+cli_io and the ASCII/GL split specifically, since those are two more
+concrete instances of the identical underlying problem: no single
+shared rendering primitive, so every capability gets rebuilt per
+surface, inconsistently, with gaps.
+
+---
+
+## Hacks/workarounds to retire (concrete list, not exhaustive)
+
+1. **`session/wraith_body.txt` hand-duplicated markup convention** —
+   every embedded project that wants real buttons currently hand-writes
+   `<text>`/`<button>` tags directly in C (`settings_manager.c`,
+   piececraft-wraith's raw map-field body, this session's
+   pre-fix wrai-text-editor). Should not exist once a real shared
+   layout-render primitive exists — the project's manager/ops should
+   only ever need to write VALUES to `gui_state.txt`, the way agy's
+   manager does.
+
+2. **`emit_embedded_line_objects()`'s cli_io-specific special case** —
+   should become a generic property of whatever shared render primitive
+   replaces it (any element type gets its live gui_state.txt value
+   substituted, not just `<cli_io>` specifically).
+
+3. **Nine hardcoded `nav=N` starting literals** (`x/fs-fix.txt` — fs,
+   piececraft-wraith, wraith-browser, chtmgl-wraith, wraith-ed, web-cam,
+   chtmgl-video-isolate, wraith-3d-cube, screen-record). No shared,
+   file-based `CHROME_CONTENT_START` constant exists for these separate
+   binaries to read; every chrome-icon-count change requires a manual
+   nine-file audit (already missed once — that's what broke `fs`).
+   Today's `fs` fix corrected the number but kept it hardcoded — real
+   fix is the same shape as the rest of this document: read it, don't
+   type it. Confirmed there's already a working precedent for this in
+   this same codebase: plain (non-Wraith-hosted) projects like
+   `projects/+-demo` never hand-type nav numbers at all — the parser
+   auto-assigns them as it encounters `<button>` elements in a layout,
+   in order. The nine Wraith projects' hand-authored `scene.objects.pdl`
+   approach is what forces the hardcoding in the first place; moving GL
+   nav generation onto something closer to that auto-assignment model
+   (rather than just adding a shared constant to read) may be the more
+   complete fix — worth deciding explicitly rather than defaulting to
+   the smaller patch.
+
+4. **Two independent nav-numbering systems** (ASCII's own
+   auto-incrementing counter vs. GL's `scene.objects.pdl` `nav=`
+   literals) — documented as "agree by coincidence, not by construction"
+   in `PIECECRAFT-WRAITH-ARCHITECTURE.md` section 2. Should be one
+   source of truth once ASCII and GL share a real pipeline.
+
+5. **`is_map_control`-gated raw-body rendering** (piececraft-wraith,
+   possibly others) — an entirely separate THIRD rendering convention
+   (raw hotkeys + a literal `game_map=` field read directly, bypassing
+   both the ASCII composer's normal path and any `${var}` substitution)
+   built because the gap this document describes already existed when
+   piececraft-wraith needed map rendering. Once a real shared primitive
+   exists that can efficiently render a large dynamic payload (a map
+   grid) via genuine substitution, this special mode should not be
+   needed as a separate mechanism — though see the "Hybrid Expansion
+   Rule" pitfall (#24) for why large payloads may still need a
+   late-stage expansion step rather than naive substitution; the FIX
+   should still be one shared mechanism with that capability, not a
+   third parallel system.
+
+6. **REMOVED 2026-07-11, not fixed — investigated and found to be dead
+   code, per explicit user direction not to build the "make it real"
+   option.** `orchestrator.c`'s `chtpm_thread_func()` ("RE-WRAITH:
+   Resolve project-specific parser from state/pdl") read
+   `pieces/apps/player_app/manager/state.txt`'s `project_id` 50ms after
+   startup to redirect the parser's boot layout. Traced the full launch
+   sequence: `run_orchestrator.sh` truncates that same file to empty
+   before the orchestrator binary even starts, and `orchestrator.c`'s
+   own `main()` unconditionally rewrites it to `project_id=playrm`
+   before any threads (including this one) are spawned. So this code
+   always read `playrm`, always failed to find a nonexistent
+   `projects/playrm/project.pdl` (`playrm` lives under `pieces/apps/`,
+   not `projects/`), and always fell through to the exact same
+   hardcoded defaults (`chtpm_parser.+x` + `os.chtpm`) regardless — it
+   never actually redirected the boot layout on any normal launch. The
+   original flag ("works today because `project_id=wraith-alpha`
+   happens to be set correctly") was checking the file well after
+   startup, during normal use once the user had already navigated into
+   Wraith — not at the actual 50ms boot-decision moment — a timing
+   mixup, not real behavior. This also retroactively closes `x/3d-fix.txt`'s
+   open question about whether this code was implicated in the 3D bug:
+   since it's inert, it was very likely a dead end, consistent with the
+   3D bug being resolved by unrelated means. User was offered three
+   options (leave as harmless dead code / remove / make it a real,
+   Wraith-scoped persistence mechanism) and chose removal — explicitly
+   deferring "make it real" to if/when actually wanted, not now.
+   Simplified back to the unconditional-defaults shape the known-working
+   alt tree always used. Rebuilt clean.
+
+7. **Nav-button-click vs. raw-keypress mismatch — believed fixed
+   2026-07-11, root cause still not formally isolated.** Discovered
+   after the 3D investigation: pressing a key directly (e.g. '8') works
+   correctly; clicking the on-screen button with the matching
+   `nav=N`/`onClick="KEY:n"` action does NOT, reproducing across
+   multiple projects. User re-tested after this session's GL
+   `route_input()` gating fix (the `g_active_gui_is_typing` digit/enter/
+   arrow gate) and the nav-numbering fixes (chrome/launcher/scene) and
+   reports it no longer reproduces — plausible, since several of those
+   fixes touched exactly this dispatch path, but NOT confirmed as the
+   specific mechanism. `wraith_gl.c`'s `action_for_nav_index()`/
+   `hit_test_semantic_action()` was never actually read this session —
+   check there first if this resurfaces, per the user's own instruction
+   ("if i have problems ill flag then new agent").
+
+8. **`settings`'s compatibility with the ASCII fix — CHECKED, two real
+   bugs found, one fixed, one worked around (not solved).**
+   `settings` DID have `is_map_control=0` and a `manager/gui_state.txt`
+   — meaning it was silently routed through `render_project_layout_body()`
+   since that function was added. Two real problems found:
+   - `settings_menu_markup` (the value `settings.chtpm`'s `${settings_menu_markup}`
+     needs) was being written to `manager/state.txt`, not
+     `manager/gui_state.txt` — `render_project_layout_body()` only reads
+     the latter, so settings' embedded window was showing the literal,
+     unsubstituted text `${settings_menu_markup}` instead of a real
+     menu. FIXED: `settings_manager.c`'s `write_state()` now writes via
+     `write_gui_state_kv()` (the same merge-preserving writer
+     `edit_x`/`edit_y`/etc. already used) directly to
+     `manager/gui_state.txt`. Also fixed the button separator from a
+     literal `"\n"` (two-character text, not a real line break) to real
+     `<br/>` markup, matching this codebase's actual row-break
+     convention — confirmed via testing that `edit_x/y/width/height`
+     survived the change (merge-preserving write verified working).
+   - **Bigger problem, NOT solved, only worked around**: `settings` has
+     a real, working multi-page system (`write_wraith_body()` renders
+     different content into `session/wraith_body.txt` depending on
+     `active_page` — settings home, window-geom project picker,
+     per-project geometry editor). `render_project_layout_body()` has
+     no concept of this — it always renders one fixed `entry_layout`
+     from `project.pdl`. Since it wins the fallback chain unconditionally
+     whenever its two opt-in conditions are met, it was silently
+     preventing settings' window-geometry navigation from ever showing
+     in the embedded ASCII window (clicks would still fire and update
+     `wraith_body.txt` correctly behind the scenes, but the fixed
+     settings-home content from `render_project_layout_body()` would
+     keep showing instead). **Worked around by setting
+     `session/state.txt`'s `is_map_control=1` for settings** — the same
+     flag piececraft-wraith uses, reusing it here for a different reason
+     (opting out of layout-substitution rendering, not "raw map field"
+     rendering specifically) — restoring settings' original, working
+     multi-page behavior while keeping the `gui_state.txt` fix (which is
+     correct and still useful once real multi-page support exists).
+     **This is a workaround, not a fix** — `is_map_control` now means
+     two different things for two different projects, which is exactly
+     the kind of overloaded/hacky flag this document is supposed to be
+     eliminating. Real fix needs either: (a) `render_project_layout_body()`
+     gaining the ability to pick a different layout file based on
+     project-published state (not just the fixed `entry_layout`), or
+     (b) a distinct, honestly-named opt-out flag instead of reusing
+     `is_map_control` for something it wasn't designed to mean.
+
+---
+
+## Proposed shape of the fix (sequenced, not a single big-bang change)
+
+Given today's demonstrated regression risk (a narrowly-scoped, gated
+addition still broke a previously-working project), any of this should
+proceed as a sequence of small, individually-verified steps, not one
+sweeping rewrite:
+
+1. **Build the shared primitive once**: a real "take a `.chtpm` layout
+   + a project's `gui_state.txt`, produce substituted output" function —
+   this session's `render_project_layout_body()` is a first, ASCII-only
+   draft of this; it needs a design pass to decide whether it becomes
+   the shared implementation or gets superseded by something more
+   complete (handling cli_io generically, handling large/`<br/>`-joined
+   values correctly — already true of the current draft — and being
+   usable from the GL object-emission path too, not just ASCII).
+2. **Extend it to GL** — make the GL embedded-window path consume the
+   SAME substituted output the ASCII path does, closing the parity gap
+   this document opened by only fixing ASCII.
+3. **Migrate `settings`** off its hand-duplicated `wraith_body.txt`
+   content onto the shared primitive — it's the other confirmed
+   duplicate-structure case besides wrai-text-editor, and doing it
+   second (after wrai-text-editor's already-live usage proves the
+   primitive out) is lower-risk than doing it first.
+4. **Decide piececraft-wraith's fate deliberately** — either migrate its
+   `game_map` rendering onto the shared primitive (real work, given the
+   Hybrid Expansion Rule concern above) or explicitly keep
+   `is_map_control` as a permanent, intentional exception for
+   large-payload map rendering — but decide this on purpose, not by
+   default.
+5. **Make the nav-index constant real** — a file-based
+   `CHROME_CONTENT_START` value the nine hardcoded-literal projects can
+   read instead of guessing, closing the `fs` bug class permanently
+   instead of just fixing this one instance.
+6. **Audit `orchestrator.c`'s RE-WRAITH boot logic** — confirm whether
+   it's implicated in the still-open 3D bug; if not, still worth scoping
+   it onto Wraith-specific state instead of the generic shared
+   `player_app` state file, matching Pitfall #31/#32's existing guidance
+   for exactly this kind of staleness risk.
+
+Each step should be verified live against every currently-working
+project it could plausibly affect before being considered done — the
+lesson from today, stated plainly so it doesn't need re-learning: a
+narrow, gated addition is not automatically low-risk just because it's
+narrow and gated. Verify, don't assume.
+
+## 2026-07-11 addendum: bugs found and fixed this session
+
+These were found via live receipt/frame-trace evidence, not guessing,
+per the working agreement for this whole effort:
+
+- **Double-render**: settings' own ops file called its own
+  `trigger_render()`, redundant with wraith-alpha_manager.c already
+  calling it after `run_active_project_input_op()`. Removed the
+  redundant function (settings/ops/src/wraith_project_input.c).
+- **CHROME_CONTENT_START launcher collision**: wraith-alpha_manager.c
+  line ~2931 hardcoded `nav_idx = 5 + li` for launcher items, stale
+  from before CHROME_ICON_COUNT went 3→4, colliding with chrome's last
+  icon. Fixed to `CHROME_CONTENT_START + li`. Confirmed via live
+  `current_frame.receipt.pdl` OBJECT lines. Item 5 on the "make the
+  nav-index constant real" list above — this instance is fixed but the
+  constant is still a hardcoded literal in nine files.
+- **SETTINGS_PAGE: silently dropped**: `chtpm_parser.c`'s
+  `send_command()` never had a case for this prefix (Pitfall #99 —
+  only SET_/OP:/MP3: relayed). Added the missing case. Necessary but,
+  per the next item, NOT sufficient on its own.
+- **History-path drift (the real root cause of "keyboard Enter doesn't
+  advance settings pages, only mouse does")**: `chtpm_parser.c`'s
+  `resolve_project_history_path()` built `projects/<project_id>/history.txt`
+  unconditionally, but `wraith-alpha_manager.c`'s poll loop only ever
+  reads the fixed `projects/wraith-alpha/session/history.txt`. Every
+  embedded-window project_id is the nested
+  `wraith-alpha/wraith-projects/<id>` form, so the built path was
+  missing `session/` (and had extra segments) — a file nobody polled.
+  ANY onClick command routed via ASCII keyboard (not just
+  SETTINGS_PAGE:, also KEY:n nudge buttons, PROJECT_ACTION:, etc.) was
+  silently vanishing into this dead file. GL mouse clicks were
+  unaffected because GL calls `route_command()` directly in-process,
+  never touching this file relay — which is why only mouse "worked".
+  Fixed by special-casing `wraith-alpha`/`wraith-alpha/*` project ids
+  in `resolve_project_history_path()` to route to the one path the
+  shell's poll loop actually reads; legacy standalone top-level
+  projects (op-ed, yahoo, mouse-test, etc.) keep the old convention.
+  Documented as Pitfall #57. This is a **foundation-level bug**, not
+  settings-specific — it affects every embedded window's ASCII
+  keyboard command dispatch, so it's plausible this also explains
+  other "works with mouse, flaky/delayed with keyboard" reports that
+  hadn't been tied to a root cause yet (e.g. worth re-checking the
+  3D map bug and any fs/piececraft-wraith keyboard-only flows once
+  those are re-tested).
+
+## 2026-07-11 addendum #2: 3D bug closed, piececraft nav bug found + fixed,
+## and the researched answer to "what's the real standard"
+
+**3D map disappearing bug: CONFIRMED FIXED** (user-verified, same day) —
+set aside earlier in this document to "see if it auto-fixes" once the
+nav/dispatch layer was corrected; it did. No further action needed here,
+but it retroactively confirms the nav-dispatch bugs fixed today
+(`update_state()` missing from the `SETTINGS_PAGE:` handler, and the two
+piececraft-specific bugs below) were touching real, load-bearing shared
+machinery, not narrow one-project issues.
+
+**Item 8's "settings worked around by reusing is_map_control=1" note
+above is now STALE.** Later the same session, settings was rebuilt with
+real multi-page support via a distinct `active_layout` key in
+`manager/gui_state.txt` (read by `render_project_layout_body()`,
+overriding `project.pdl`'s fixed `entry_layout` per-page). Confirmed live:
+`projects/wraith-alpha/wraith-projects/settings/session/state.txt` now
+reads `is_map_control=0`, and neither `settings_manager.c` nor its
+`ops/src/wraith_project_input.c` reference `is_map_control` at all
+anymore. The overloaded-flag problem item 8 described no longer exists
+for settings specifically — `is_map_control` is back to meaning only
+"this project owns raw map-control input," which is real progress toward
+this document's stated goal of one honest meaning per flag.
+
+**Two new piececraft-wraith bugs found and fixed, evidenced via live
+`alpha_manager.log` timestamps (not guessed):**
+
+1. **`is_map_control` hardcoded unconditionally.** Piececraft's own
+   `ops/src/wraith_project_input.c::save_state()` wrote
+   `is_map_control=1` literally on every keypress, silently overwriting
+   the desktop's own ESC-driven `is_map_control=0`
+   (`wraith-alpha_manager.c::set_project_map_control_in_dir()`) on the
+   very next keystroke that invoked piececraft's ops. Since
+   `route_input()` forwards EVERY key (arrows included) as raw map input
+   and skips normal nav-index advancement whenever `is_map_control` reads
+   true, this made the map-control trap effectively permanent — arrows
+   never actually navigated UI while piececraft was focused, no matter
+   how many times ESC was pressed. Fixed: `save_state()` now reads the
+   CURRENT value out of the existing `state.txt` first and preserves it,
+   matching the desktop's own read-modify-write pattern, instead of
+   hardcoding the literal.
+2. **ASCII never rendered piececraft's scene-declared controls at all.**
+   `build_desktop_shell_markup()` treated `wraith_body.txt` content and
+   `scene.objects.pdl` content as mutually exclusive fallbacks
+   (`if (project_line_count == 0) { try scene markup }`). Piececraft's
+   `wraith_body.txt` (the map/HUD text) always returns non-empty, so its
+   18 real scene.objects.pdl buttons (Up/Down/Left/Right/mode/debug/
+   camera/POV) never got parsed into real ASCII nav elements at all — GL
+   showed 18 real buttons, ASCII showed 0, and the periodic GL↔ASCII
+   active-index sync kept snapping GL's correct larger count back down to
+   ASCII's wrongly-empty one. This is what actually produced the "arrows
+   stop advancing partway through" symptom, not a nav-counting bug in the
+   traversal logic itself. Fixed conditionally: scene markup is now ALSO
+   rendered whenever the project's body contributed zero `<button>`
+   elements of its own (`count_embedded_body_nav_slots() == 0`) — NOT
+   unconditionally, because three sibling projects (web-cam,
+   chtmgl-video-isolate, screen-record — confirmed via grep) already
+   hand-author real `<button>` lines directly in `wraith_body.txt` for
+   the same actions their `scene.objects.pdl` also declares; rendering
+   both unconditionally would have double-rendered every control for
+   those three. Also raised `append_project_probe_scene_markup()`'s
+   `max_lines` cap from 14 → 40 (same truncation-cap class already fixed
+   once for `project_probe_body_lines()` — 14 was silently cutting off
+   piececraft's last 7 controls even on the rare path that did reach it).
+
+**The researched answer to "what's the actual standard here" —
+`!.gem-flashlite--yolo/!.evo&obs/WRAITH_RGB_ARCHITECTURE.md`, read in full
+2026-07-11 specifically to answer this.** Two corrections to how this
+document (j11) had been framing the fix so far:
+
+1. **"Unify ASCII and GL into one shared renderer" is not actually the
+   established, working standard — and the architecture doc's own
+   self-correction admits the original "one parser, GL just rasterizes
+   ASCII's pixels" design (still described in that doc's Parts 1-5) has
+   already drifted from what's live today.** The pattern that has
+   actually been proven to work, repeatedly, in this exact codebase (the
+   chrome-icon incident the doc is built around, and every nav-collision
+   bug fixed today — launcher row, scene-object nav) is narrower and
+   cheaper than a full unification: **one authoritative count or loop
+   lives in `wraith-alpha_manager.c`, and BOTH the ASCII markup builder
+   (`build_desktop_shell_markup()`) and the GL object builder
+   (`write_semantic_projection_files()` / `append_project_scene_objects()`
+   / etc.) iterate that exact same source, so the two renderers cannot
+   independently drift — not because they're unified into one function,
+   but because there is only one place left that could disagree with
+   itself.** `g_chrome_icons[]` + `CHROME_CONTENT_START` is the existing,
+   working template for this. Today's `next_scene_nav` counter fix
+   (`append_project_scene_objects()`, GL side) applies the identical
+   pattern to scene.objects.pdl-declared controls. This is the standard
+   to keep applying, not a signal to attempt a bigger rewrite.
+2. **The doc already names the exact, unimplemented fix for the
+   nine-hardcoded-`nav=N`-files problem (this document's item 3/item 5):**
+   publish `CHROME_CONTENT_START`'s live value to a well-known file
+   (the doc suggests `pieces/display/chrome_reserved_nav_count.txt`),
+   and have every scene.objects.pdl-generating project's ops read it at
+   startup instead of hardcoding its own guess — "if it's not in a file,
+   it's a lie" (TPMOS convention; these are separate binaries, no shared
+   C headers allowed). Flagged in the doc since 2026-07-06, never
+   implemented until now (see below).
+
+**Action plan, per explicit direction 2026-07-11 ("2 and 3 must be
+fixed, 4 should follow 2 — no special cases — and yes we must fix 5"),
+using this document's own numbering from the "Proposed shape" list
+above:**
+
+- **Item 5 (nav-index constant real) — DONE, all ten generators across
+  all nine projects.** Implemented exactly as prescribed:
+  `wraith-alpha_manager.c` gained `publish_chrome_reserved_nav_count()`,
+  called once at startup (right after `bootstrap_fresh_session()`),
+  writing `pieces/display/chrome_reserved_nav_count.txt` with
+  `CHROME_CONTENT_START`'s integer value (atomic tmp+rename write,
+  matching every other state file in this codebase). Every scene-object-
+  generating file gained a `read_chrome_content_start(int fallback)`
+  helper (identical body duplicated per file, TPMOS convention — no
+  shared headers between separate binaries) that reads the published
+  file, falling back to the literal `6` each file always hardcoded if
+  the file is missing/unreadable (first run / standalone use before the
+  manager's first frame). Every `nav=N` literal became `nav=%d` with
+  `nav_base + <fixed offset>` substituted, preserving each control's
+  exact relative ordering — only the absolute starting point now comes
+  from a file instead of being typed:
+  - `piececraft-wraith/ops/src/wraith_project_input.c` (18 controls) and
+    `piececraft-wraith/manager/piececraft-wraith_manager.c` (its own
+    independent second copy of the same scene, hand-synced — see the
+    architecture doc's note on this) — done directly this session.
+  - `wraith-browser` (10), `chtmgl-wraith` (9), `wraith-ed` (6),
+    `web-cam` (5), `chtmgl-video-isolate` (5), `wraith-3d-cube` (1),
+    `screen-record` (3) — done via delegated subagent using piececraft's
+    files as the exact template; all rebuilt clean, spot-checked
+    (wraith-browser's 10-control offset sequence, fs's helper) and
+    confirmed correct.
+  - `fs` — structurally different from the rest: its `write_scene()`
+    already used a running `int nav` accumulator (`nav = 6; ...
+    nav++;`) rather than one literal per printf call, and its own
+    existing comment already flagged this exact chrome-drift risk.
+    Applied the equivalent minimal fix (`nav = read_chrome_content_start(6);`
+    replacing `nav = 6;`, everything else — the `nav++` sequencing,
+    x/y/w/h/z — untouched) rather than restructuring it to match the
+    other files' shape, since the accumulator pattern already achieves
+    the same goal.
+  All ten `+x` binaries confirmed rebuilt with 0 compile errors
+  (warnings only, all pre-existing/unrelated). The nine-file-audit bug
+  class (already hit once this session for the launcher row, and
+  historically for the 3→4 CHROME_ICON_COUNT bump) is now closed
+  permanently: the next time chrome grows, `CHROME_CONTENT_START`
+  changes in one place, the manager republishes the file on its next
+  startup, and every project picks up the new value on ITS next run —
+  no more grep-and-bump-nine-files audits.
+- **Item 3 (cli_io generic) — DONE.** `emit_embedded_line_objects()`'s
+  live-value substitution and nav-slot assignment were gated on
+  `is_cli_io` (`strncmp(p, "<cli_io", 7) == 0`) specifically. Replaced
+  with a `has_target_id` check (`extract_attr(..., "target_id", ...)`
+  returning non-empty) — the actual capability (show this element's live
+  `gui_state.txt` value instead of its static label, and give it a nav
+  slot even with no `onClick`) was never inherently cli_io-specific;
+  `extract_attr()` already parses `target_id` for any tag. Any future
+  element type that wants a live, persisted value now gets this for
+  free by declaring `target_id`, in GL, without needing its own special
+  case the way cli_io did. Also broadened the "^" (actively-typing, vs.
+  "&gt;" merely-focused) glyph condition the same way, since it was
+  keyed off the same now-generalized signal. Removed the now-dead
+  `is_cli_io` local. Rebuilt clean.
+- **Item 2 (ASCII/GL parity) — PARTIALLY addressed by item 3's fix; the
+  remaining "deeper point" is now a documented standing rule, not an
+  open task.** Moved into `!.TPMOS_ONBORD_BIBLE_10.md` section 13.6 and
+  `WRAITH_RGB_ARCHITECTURE.md`'s "2026-07-11 update" section
+  (2026-07-11): every future interactive element type must have ASCII
+  and GL read ONE shared source (a count, a file, a value) rather than
+  each computing its own guess — this is discipline to apply going
+  forward, not a backlog item to schedule. Remove this bullet's "still
+  open" framing accordingly; the concrete gap is below. The concrete
+  gap that made cli_io
+  "GL-mode-only" (values not being read from the shared `gui_state.txt`
+  in GL) is closed by item 3, and both renderers already shared that
+  file as their real source of truth for values even before today — so
+  the "two pipelines" problem for VALUES specifically was narrower than
+  this document originally framed it. The deeper point stands, though:
+  `build_desktop_shell_markup()` (ASCII) and
+  `write_semantic_projection_files()`/`append_project_scene_objects()`/
+  `emit_embedded_line_objects()` (GL) remain separately-coded functions
+  that happen to agree today because they're now driven by the same
+  counts/files (`CHROME_CONTENT_START`, `chrome_reserved_nav_count.txt`,
+  `gui_state.txt`, `next_scene_nav`) — not because they're one
+  implementation. Recommended stance per the architecture doc's own
+  conclusion: keep closing gaps this way (find the one shared source,
+  make both sides read it) as they're discovered, rather than
+  attempting a big-bang merge — that's the standard, not a placeholder
+  for a bigger rewrite still owed.
+- **Item 4 (piececraft's `is_map_control`, no special case) — scoped and
+  the concrete risk it surfaced is FIXED; the bigger "migrate onto a
+  shared primitive" question turned out to be moot, not deferred.**
+  Investigated with 2/3 already landed, per the explicit ordering. What
+  it actually found was NOT a rendering-migration task: piececraft has a
+  legacy, ABANDONED second rendering path (`manager/gui_state.txt` +
+  `layouts/piececraft-wraith.chtpm`, referencing a `${game_map}` var)
+  left over from an earlier design iteration, superseded by the current
+  `scene.objects.pdl` + `wraith_body.txt` approach. Confirmed dead:
+  `manager/gui_state.txt` was 9 days stale and nothing in the current
+  codebase writes to it; the legacy layout file's own comment (and a
+  matching comment on `project_is_map_control()` in
+  `wraith-alpha_manager.c`) explicitly assumed `is_map_control` would
+  **permanently stay 1** for piececraft, so this dead path would never
+  actually be reached.
+
+  **That assumption broke the moment this session's earlier
+  `is_map_control` hardcoding fix (bug 1, above) started working
+  correctly.** Before that fix, `is_map_control` was stuck at 1 forever
+  (the actual bug), which coincidentally kept this legacy path
+  permanently unreachable too. After the fix, `is_map_control`
+  legitimately becomes 0 whenever ESC is pressed — which is correct and
+  necessary for arrow-key UI nav to work at all — but it also means
+  `render_project_layout_body()`'s `is_map_control`-gated check would
+  now actually fire for piececraft, rendering 9-day-stale fake map
+  content from the dead `gui_state.txt` instead of the live map,
+  anytime the window was out of map-control mode. A real regression,
+  introduced as a side effect of a correct fix, caught before it was
+  ever reported live.
+
+  **Fix:** moved the stale `manager/gui_state.txt` aside (to
+  `gui_state.txt.stale-dead-2026-07-02.bak`, reversible rather than
+  deleted, since it predates this session and its full history isn't
+  known) rather than deleting it outright. `render_project_layout_body()`'s
+  first check (`stat(gui_state_path) != 0`) now correctly and
+  permanently returns 0 for piececraft regardless of `is_map_control`'s
+  value, restoring exactly the single, live, working render path
+  (`append_project_probe_body()` + `append_project_probe_scene_markup()`,
+  the SAME shared fallback mechanism 8 sibling projects already use, no
+  longer conditionally shadowed by dead legacy code). `project.pdl`'s
+  `entry_layout` and the legacy `.chtpm` file itself were left alone
+  (not deleted) in case anything standalone/future ever wants them —
+  low-risk to leave, since they're now provably unreachable through the
+  live embedded-window path either way.
+
+  **Net effect on the original "no special case" framing:** there was
+  no big rendering-unification task actually owed here. Piececraft's
+  live rendering was ALREADY using the same generic, shared fallback
+  mechanism every sibling project uses (confirmed today when the ASCII
+  scene-markup gap was fixed) — the only genuinely piececraft-specific
+  thing left is `is_map_control`'s role as an INPUT-routing flag (raw
+  keys forwarded to the project instead of interpreted as desktop nav),
+  which is a real, legitimate, intentional difference (a game needs raw
+  movement input), not a rendering hack to eliminate. Item 4 is
+  considered closed on that basis — flag this section if a future agent
+  disagrees with that conclusion rather than assuming more work is
+  silently owed.

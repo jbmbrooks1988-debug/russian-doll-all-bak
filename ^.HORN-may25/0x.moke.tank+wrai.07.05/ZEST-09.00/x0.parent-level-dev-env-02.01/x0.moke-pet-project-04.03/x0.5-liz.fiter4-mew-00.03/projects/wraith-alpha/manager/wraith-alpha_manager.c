@@ -2,6 +2,7 @@
 #define _GNU_SOURCE
 #endif
 #include <ctype.h>
+#include <errno.h>
 #include <signal.h>
 #include <stdarg.h>
 #include <stdio.h>
@@ -21,6 +22,76 @@
 #define MAX_WINDOWS 20
 #define MAX_LAUNCHERS 32
 
+/* SINGLE SOURCE OF TRUTH for the window chrome row's fixed icon buttons
+ * (everything after the title button: o/-/x/&).
+ *
+ * Why this exists (2026-07-06): before this, ASCII (build_desktop_shell_markup())
+ * and GL (write_semantic_projection_files()) each independently hardcoded
+ * their own copy of "there are 4 chrome buttons, numbered 1-4" (or, in one
+ * reverted attempt, GL tried to dodge the count entirely with a
+ * trailing/computed nav slot). Two independent numbering systems for the
+ * SAME visual buttons drifted out of sync three times in one session:
+ * once when a new button (then "g", now "&") got nav=0 in GL while ASCII
+ * auto-numbered it into the sequence anyway; once when a "trailing nav
+ * slot" gave it a big GL number while ASCII's parse-order numbering gave
+ * it a small one; once when a stale g_max_index made its trailing number
+ * collide with the title button's own nav=1. See zest-09.00-handoff.md's
+ * chrome-button appendix for the full incident history -- do not "fix"
+ * chrome numbering again without reading it first.
+ *
+ * The fix: ONE array, consumed by BOTH renderers via the SAME loop index,
+ * so nav 2..(1+CHROME_ICON_COUNT) is defined exactly once, in exactly one
+ * place, for exactly one reason. There is no longer any separate
+ * "launcher_start"/"chrome slot count" literal anywhere in this file that
+ * could independently drift from this array -- CHROME_CONTENT_START
+ * (below) is derived from its length, and every other function that used
+ * to hardcode "4" or "5" reads that macro instead.
+ *
+ * IMPORTANT INVARIANT if you ever add a 5th icon here: every wraith
+ * sub-project with its own hand-authored session/scene.objects.pdl
+ * (confirmed as of this session: piececraft-wraith, wraith-browser,
+ * chtmgl-wraith, wraith-ed, web-cam, chtmgl-video-isolate, fs,
+ * wraith-3d-cube, screen-record -- each generates that file from a
+ * hardcoded nav=N sequence inside its own ops/src/wraith_project_input.c,
+ * confirmed via grep, NOT dynamically computed) MUST start its own nav
+ * range at CHROME_CONTENT_START or later. These are separate C binaries
+ * that cannot share a header (TPMOS convention: no shared .h files, every
+ * .c is a self-contained island) or read this macro directly, so growing
+ * this array again means manually re-checking and re-bumping all nine of
+ * those files' own hardcoded nav=N literals -- exactly what this session
+ * had to do when CHROME_ICON_COUNT went from 3 to 4. There is currently no
+ * file-based shared constant those nine projects read instead of
+ * hardcoding the number themselves; making that real (so growing chrome
+ * again doesn't require a nine-file audit) is flagged as a worthwhile
+ * follow-up, not done this session -- see WRAITH_RGB_ARCHITECTURE.md. */
+typedef enum {
+    CHROME_ACTION_FOCUS,            /* just selects it (o's current behavior) */
+    CHROME_ACTION_MINIMIZE,
+    CHROME_ACTION_CLOSE,
+    CHROME_ACTION_OPEN_WINDOW_GEOM
+} ChromeIconAction;
+
+typedef struct {
+    char glyph;             /* single-character label, e.g. 'o', '-', 'x', '&' */
+    const char *semantic;   /* id/source_ref suffix, e.g. "chrome_open" */
+    ChromeIconAction action;
+} ChromeIcon;
+
+static const ChromeIcon g_chrome_icons[] = {
+    { 'o', "chrome_open",  CHROME_ACTION_FOCUS },
+    { '-', "chrome_min",   CHROME_ACTION_MINIMIZE },
+    { 'x', "chrome_close", CHROME_ACTION_CLOSE },
+    { '&', "chrome_geom",  CHROME_ACTION_OPEN_WINDOW_GEOM },
+};
+#define CHROME_ICON_COUNT ((int)(sizeof(g_chrome_icons) / sizeof(g_chrome_icons[0])))
+/* nav 1 is always the title button (special-cased below, not in the array
+   above -- it substitutes window->title text, not a static glyph, and its
+   action is always CHROME_ACTION_FOCUS). Icons occupy nav
+   2..(1+CHROME_ICON_COUNT). Anything after chrome -- launcher/taskbar
+   slots in GL, embedded body content's own nav range, project-owned
+   scene.objects.pdl's nav range -- starts at CHROME_CONTENT_START. */
+#define CHROME_CONTENT_START (2 + CHROME_ICON_COUNT)
+
 typedef enum {
     WSTATE_CLOSED = 0,
     WSTATE_OPEN = 1,
@@ -33,6 +104,7 @@ typedef struct {
     char project_id[64];
     int instance_no;
     WindowState state;
+    int x, y, width, height;   /* live geometry; 0 until read from project.pdl or dragged/resized */
 } Window;
 
 typedef struct {
@@ -52,6 +124,16 @@ static int g_window_count = 0;
 static int g_next_instance_no = 1;
 static int g_active_window_slot = -1;
 static int g_active_gui_index = 1;
+/* Whether the element g_active_gui_index points at is genuinely ACTIVE
+ * (a cli_io field accepting keystrokes, wraith_parser_alpha.c's
+ * active_index != -1), as opposed to merely focused. Synced from
+ * pieces/display/active_gui_is_typing.txt in sync_active_gui_index_from_display() --
+ * see that file's own comment in wraith_parser_alpha.c's export_active_index()
+ * for why this couldn't be derived from active_gui_index.txt alone
+ * (2fix-july6.txt, bug 3). Used only to pick "^" vs ">" for cli_io nav
+ * glyphs in emit_embedded_line_objects() -- unrelated to the existing,
+ * separate "^" used for map-control/INTERACT mode elsewhere in this file. */
+static int g_active_gui_is_typing = 0;
 static int g_max_index = 1;
 static int g_digit_accum = 0;
 static int g_map_control_nav_index = 0;
@@ -105,11 +187,25 @@ static int count_launcher_methods(void);
 static int count_project_nav_controls(void);
 static int count_visible_windows(void);
 static bool dispatch_menu_index(int menu_index);
+static void open_window_geom_for_project(const char *target_project_id);
 static bool dispatch_launcher_method_by_index(int launcher_idx);
 static bool launch_wraith_project_command(const char *cmd);
 static void launch_window_instance(const char *id_prefix, const char *title_prefix, const char *project_id);
 static void set_project_map_control_in_dir(const char *project_dir, int enabled, int emit_history);
 static void reset_project_view_from_default(const char *project_dir);
+static void load_window_geometry_from_pdl(const char *project_dir, int *out_x, int *out_y, int *out_w, int *out_h);
+static int resolve_frame_width(const Window *window, int layout_declared_width);
+static void append_frame_border(char *out, size_t size, const char *label, int width);
+static void resolve_window_content_origin(const Window *window, int *out_row_offset, int *out_col_offset);
+static void append_with_origin_offset(char *out, size_t size, const char *raw, int row_offset, int col_offset);
+static int extract_attr(const char *tag_start, const char *tag_end, const char *attr_name, char *out, size_t out_sz);
+static void read_gui_state_value(const char *project_dir, const char *key, char *out, size_t out_sz);
+static void emit_embedded_line_objects(FILE *objects, int *object_id, const Window *window,
+                                       const char *window_chain, const char *line,
+                                       int base_x, int base_y, int line_index, int *next_nav);
+static void utf8_safe_truncate(const char *src, char *dst, size_t dst_sz);
+static int count_scene_nav_controls(const char *project_dir);
+static int count_embedded_body_nav_slots(const char *body_path);
 static void reset_all_open_project_views_on_startup(void);
 static void appendf(char *out, size_t size, const char *fmt, ...);
 static void xml_escape_attr(const char *src, char *dst, size_t dst_sz);
@@ -117,6 +213,7 @@ static void append_markup_spaces(char *out, size_t out_sz, int count);
 static void append_markup_text(char *out, size_t out_sz, const char *label, const char *fg, const char *bg);
 static int debug_selector_ascii_index(void);
 static int debug_selector_gl_index(void);
+static void recompute_nav_bounds(void);
 static void load_mouse_offset(int *offset_x, int *offset_y);
 static void write_semantic_projection_files(void);
 static void archive_receipt_history(void);
@@ -277,6 +374,101 @@ static void read_pdl_value(const char *path, const char *key, char *dst, size_t 
     }
 
     fclose(f);
+}
+
+/* Reads project.pdl's WINDOW section (window_x/window_y/window_width/
+   window_height keys). Any key missing from the file -- which is every
+   project today, since this section doesn't exist yet anywhere -- leaves
+   its output at 0. That's expected for this pass, not an error: KPI A1
+   only wires up the read path, KPI A2 teaches the renderer to do
+   anything with these values. */
+static void load_window_geometry_from_pdl(const char *project_dir, int *out_x, int *out_y, int *out_w, int *out_h) {
+    char pdl_path[MAX_PATH];
+    char value[64];
+
+    *out_x = 0;
+    *out_y = 0;
+    *out_w = 0;
+    *out_h = 0;
+
+    if (!project_dir || !project_dir[0]) {
+        return;
+    }
+
+    snprintf(pdl_path, sizeof(pdl_path), "%s/project.pdl", project_dir);
+
+    read_pdl_value(pdl_path, "window_x", value, sizeof(value));
+    if (value[0] != '\0') {
+        *out_x = atoi(value);
+    }
+    read_pdl_value(pdl_path, "window_y", value, sizeof(value));
+    if (value[0] != '\0') {
+        *out_y = atoi(value);
+    }
+    read_pdl_value(pdl_path, "window_width", value, sizeof(value));
+    if (value[0] != '\0') {
+        *out_w = atoi(value);
+    }
+    read_pdl_value(pdl_path, "window_height", value, sizeof(value));
+    if (value[0] != '\0') {
+        *out_h = atoi(value);
+    }
+}
+
+/* Path A width resolution (window-geometry-render-plan-j5.md): precedence
+   is project.pdl's saved WINDOW.width (always wins, it's the user's
+   actual current geometry) > a layout-declared width (not wired yet --
+   chtpm_parser.c's parse_attributes() is an explicit allow-list with no
+   width/height attribute today; pass -1 for "none" until that lands as
+   its own follow-up, since it touches the shared parser, not just this
+   file) > this historical hardcoded default, which matches today's
+   literal border length exactly so nothing changes for any project
+   until it actually has a saved width. */
+static int resolve_frame_width(const Window *window, int layout_declared_width) {
+    const int historical_default = 96;
+    if (window && window->width > 0) {
+        return window->width;
+    }
+    if (layout_declared_width > 0) {
+        return layout_declared_width;
+    }
+    return historical_default;
+}
+
+/* Builds one "+-LABEL----...----+" (or "+----...----+" when label is
+   NULL/empty) border line of exactly `width` characters and appends it
+   plus "<br/>" to `out`, matching the <br/>-terminated line convention
+   every other appendf() call in this file already follows. Verified
+   standalone against the two literal border strings this replaces
+   (byte-for-byte identical at width=96) before landing here. */
+static void append_frame_border(char *out, size_t size, const char *label, int width) {
+    char line[256];
+    int pos = 0;
+    int i;
+    int dash_count;
+
+    if (width < 4) {
+        width = 4;
+    }
+    if (width > (int)sizeof(line) - 8) {
+        width = (int)sizeof(line) - 8;
+    }
+
+    line[pos++] = '+';
+    if (label && label[0]) {
+        pos += snprintf(line + pos, sizeof(line) - pos, "-%s", label);
+    }
+    dash_count = width - pos - 1;
+    if (dash_count < 0) {
+        dash_count = 0;
+    }
+    for (i = 0; i < dash_count; i++) {
+        line[pos++] = '-';
+    }
+    line[pos++] = '+';
+    line[pos] = '\0';
+
+    appendf(out, size, "%s<br/>", line);
 }
 
 static int launcher_cmp(const void *a, const void *b) {
@@ -593,21 +785,21 @@ static int count_launcher_methods(void) {
     return discover_launcher_projects();
 }
 
-static int count_project_nav_controls(void) {
-    Window *window = active_window();
-    char project_dir[MAX_PATH];
+/* Author-declared nav controls in a project's own session/scene.objects.pdl
+ * (tiles/entities, e.g. piececraft-wraith) -- these numbers are chosen
+ * directly in that file (confirmed real example: piececraft-wraith's
+ * controls are nav=5..22, contiguous), NOT dynamically assigned here.
+ * Split out of count_project_nav_controls() (2fix.txt, 2026-07-05) so
+ * write_semantic_projection_files() can also call it alone, to know
+ * where the scene-declared range ends before assigning nav values to
+ * embedded body-tag objects. */
+static int count_scene_nav_controls(const char *project_dir) {
     char scene_path[MAX_PATH];
     char line[1024];
     char value[256];
     FILE *f;
     int count = 0;
 
-    if (!window) {
-        return 0;
-    }
-    if (!project_dir_for_window(window, project_dir, sizeof(project_dir))) {
-        return 0;
-    }
     snprintf(scene_path, sizeof(scene_path), "%s/session/scene.objects.pdl", project_dir);
     f = fopen(scene_path, "r");
     if (!f) {
@@ -626,6 +818,71 @@ static int count_project_nav_controls(void) {
     }
     fclose(f);
     return count;
+}
+
+/* Counts nav-worthy chunks (any embedded tag with a non-empty label=
+ * attribute) across every session/wraith_body.txt line starting with
+ * '<' -- mirrors emit_embedded_line_objects()'s own chunk-detection
+ * criterion exactly (same extract_attr() "label" check), so this count
+ * and what actually gets emitted can't drift apart. Added so
+ * g_max_index / launcher_start correctly reserve slots for these now-real
+ * GL objects instead of leaving them at nav=0 (2fix.txt, 2026-07-05). */
+static int count_embedded_body_nav_slots(const char *body_path) {
+    FILE *f;
+    char line[256];
+    int count = 0;
+
+    f = fopen(body_path, "r");
+    if (!f) {
+        return 0;
+    }
+    while (fgets(line, sizeof(line), f)) {
+        const char *p;
+        line[strcspn(line, "\r\n")] = '\0';
+        if (line[0] != '<') {
+            continue;
+        }
+        p = line;
+        while (*p) {
+            if (strncmp(p, "<br", 3) == 0) {
+                const char *tag_end = strchr(p, '>');
+                if (!tag_end) break;
+                p = tag_end + 1;
+                continue;
+            }
+            if (*p == '<') {
+                char label[256];
+                const char *tag_end = strchr(p, '>');
+                if (!tag_end) break;
+                extract_attr(p, tag_end, "label", label, sizeof(label));
+                if (label[0]) {
+                    count++;
+                }
+                p = tag_end + 1;
+            } else {
+                while (*p && *p != '<') {
+                    p++;
+                }
+            }
+        }
+    }
+    fclose(f);
+    return count;
+}
+
+static int count_project_nav_controls(void) {
+    Window *window = active_window();
+    char project_dir[MAX_PATH];
+    char body_path[MAX_PATH];
+
+    if (!window) {
+        return 0;
+    }
+    if (!project_dir_for_window(window, project_dir, sizeof(project_dir))) {
+        return 0;
+    }
+    snprintf(body_path, sizeof(body_path), "%s/session/wraith_body.txt", project_dir);
+    return count_scene_nav_controls(project_dir) + count_embedded_body_nav_slots(body_path);
 }
 
 static int discover_launcher_projects(void) {
@@ -853,13 +1110,13 @@ static Window *taskbar_slot_window(int slot) {
     return NULL;
 }
 
-static void launch_project_manager(const char *root, const char *project_id) {
+static pid_t launch_project_manager(const char *root, const char *project_id) {
     char pdl_path[MAX_PATH], manager_path[MAX_PATH], line[MAX_LINE];
     FILE *f;
 
     snprintf(pdl_path, sizeof(pdl_path), "%s/projects/%s/project.pdl", root, project_id);
     f = fopen(pdl_path, "r");
-    if (!f) return;
+    if (!f) return -1;
 
     manager_path[0] = '\0';
     while (fgets(line, sizeof(line), f)) {
@@ -881,8 +1138,8 @@ static void launch_project_manager(const char *root, const char *project_id) {
     }
     fclose(f);
 
-    if (manager_path[0] == '\0') return;
-    if (access(manager_path, X_OK) != 0) return;
+    if (manager_path[0] == '\0') return -1;
+    if (access(manager_path, X_OK) != 0) return -1;
 
     pid_t child = fork();
     if (child == 0) {
@@ -893,23 +1150,56 @@ static void launch_project_manager(const char *root, const char *project_id) {
     }
     if (child > 0) {
         log_alpha("Launched manager for %s (pid=%d)", project_id, (int)child);
+        /* Same tracking convention already used for wraith_gl/wraith_rgb_daemon
+           below, and the SAME shared pieces/os/proc_list.txt the orchestrator
+           (pieces/chtpm/plugins/orchestrator.c) uses for the other ~40
+           chtpm-parser-launched projects -- confirmed same file, same
+           "%d %s\n" format. Without this, every per-project manager this
+           function ever launches (settings, window-geom, piececraft-wraith,
+           literally all of them) was invisible to any tracked-process
+           cleanup: log_pid() previously only got called for wraith_gl and
+           wraith_rgb_daemon, so quitting wraith-alpha_manager.c left every
+           spawned project manager running as an orphan. See
+           kill_all_tracked_processes() and its call site for the other half
+           of this fix. */
+        log_pid((int)child, project_id);
     }
+    return child;
 }
 
 static void ensure_project_manager(const char *root, const char *project_id) {
     char lockfile[MAX_PATH], session_dir[MAX_PATH];
     FILE *lf;
+    pid_t locked_pid = 0;
+    bool alive = false;
 
     snprintf(session_dir, sizeof(session_dir), "%s/projects/%s/session", root, project_id);
     snprintf(lockfile, sizeof(lockfile), "%s/.manager.lock", session_dir);
 
-    if (access(lockfile, F_OK) != 0) {
-        launch_project_manager(root, project_id);
+    /* A lockfile merely existing doesn't mean its manager is still running --
+       the process could have died (crash, kill_all.sh, manual test run) any
+       time after the lock was written. Checking the stored pid with kill(pid,0)
+       is what actually tells us whether to relaunch, vs. trusting a lock that
+       could be stale from a prior session. */
+    lf = fopen(lockfile, "r");
+    if (lf) {
+        if (fscanf(lf, "%d", &locked_pid) == 1 && locked_pid > 0) {
+            if (kill(locked_pid, 0) == 0 || errno == EPERM) {
+                alive = true;
+            }
+        }
+        fclose(lf);
+    }
+
+    if (!alive) {
+        pid_t child_pid = launch_project_manager(root, project_id);
         usleep(100000);
-        lf = fopen(lockfile, "w");
-        if (lf) {
-            fprintf(lf, "%d\n", (int)getpid());
-            fclose(lf);
+        if (child_pid > 0) {
+            lf = fopen(lockfile, "w");
+            if (lf) {
+                fprintf(lf, "%d\n", (int)child_pid);
+                fclose(lf);
+            }
         }
     }
 }
@@ -947,11 +1237,34 @@ static void launch_window_instance(const char *id_prefix, const char *title_pref
         /* Reset camera/view to the project's declared default on every open,
            so it never reopens at the last session's orbited angle. */
         reset_project_view_from_default(project_dir);
+        /* KPI A1: load this project's persisted window geometry, if any.
+           Almost every project.pdl has no WINDOW section yet, so this is
+           expected to yield 0/0/0/0 for now -- read-path only, nothing
+           renders from these fields until KPI A2. */
+        load_window_geometry_from_pdl(project_dir, &window->x, &window->y, &window->width, &window->height);
     }
     g_map_control_nav_index = 0;
     window->state = WSTATE_OPEN;
     normalize_registry();
     g_active_gui_index = 1;
+
+    /* Reset settings' embedded-page state to the top menu on every window open.
+       state_changed.txt is append-only (correct marker-file pattern), but
+       write_wraith_body() reads the last line as "current page". Without this,
+       a fresh window open re-reads whatever the last test session left as the
+       final line, skipping the menu and picker entirely. Only reset for the
+       settings project itself; other projects have no multi-page state. */
+    if (project_id && strcmp(project_id, "wraith-alpha/wraith-projects/settings") == 0) {
+        char state_changed_path[MAX_PATH];
+        FILE *f;
+        snprintf(state_changed_path, sizeof(state_changed_path),
+                 "%s/projects/wraith-alpha/wraith-projects/settings/session/state_changed.txt", g_project_root);
+        f = fopen(state_changed_path, "a");
+        if (f) {
+            fprintf(f, "settings\n");
+            fclose(f);
+        }
+    }
 
     ensure_project_manager(g_project_root, project_id);
 
@@ -1257,11 +1570,49 @@ static bool project_dir_for_window(const Window *window, char *out, size_t out_s
         return false;
     }
     name = window->project_id + strlen(prefix);
-    if (!name[0] || strstr(name, "..") || strchr(name, '/')) {
+    /* No longer rejects a nested project_id (e.g.
+       "settings/window-geom") -- that restriction assumed every wraith
+       sub-project lives one level deep, which broke opening
+       window-geom as its own standalone Window (its project_id is
+       nested under settings/ purely for on-disk organization, per
+       settings-hub-window-geom-design-j5.md). ".." traversal is the
+       actual security boundary and is still rejected; a plain "/" is
+       just directory nesting and is fine. */
+    if (!name[0] || strstr(name, "..")) {
         return false;
     }
     snprintf(out, out_sz, "%s/projects/wraith-alpha/wraith-projects/%s", g_project_root, name);
     return true;
+}
+
+/* Found 2026-07-05, reported live by the user (piececraft-wraith's
+ * box-drawing header showed a corrupted replacement character instead
+ * of its border). Root cause: printf's ".83s" precision (used
+ * just below to fit body text into an 83-wide column) truncates by
+ * BYTES, not by displayed characters. Box-drawing glyphs like the
+ * "╔══...══╗" border are 3-byte UTF-8 sequences -- confirmed the actual
+ * line is 46 visible characters but 138 UTF-8 bytes, so an 83-byte cut
+ * lands mid-character, producing an invalid, truncated byte sequence
+ * (which terminals render as the replacement character). Pre-existing,
+ * not introduced today -- this format string predates this session.
+ * This helper truncates to at most `dst_sz - 1` BYTES same as before,
+ * but backs up to the last complete UTF-8 character boundary first, so
+ * a too-long multi-byte line gets cut CLEANLY (fewer glyphs shown) not
+ * CORRUPTED (a broken glyph shown). It does not make long UTF-8 lines
+ * fit -- that's still a real content-length constraint -- it only
+ * removes the corruption when they don't fit. */
+static void utf8_safe_truncate(const char *src, char *dst, size_t dst_sz) {
+    size_t max_bytes = dst_sz - 1;
+    size_t src_len = strlen(src);
+    size_t copy_len = src_len < max_bytes ? src_len : max_bytes;
+
+    if (copy_len < src_len) {
+        while (copy_len > 0 && ((unsigned char)src[copy_len] & 0xC0) == 0x80) {
+            copy_len--;
+        }
+    }
+    memcpy(dst, src, copy_len);
+    dst[copy_len] = '\0';
 }
 
 static int append_project_probe_body(char *out, size_t size, const Window *window) {
@@ -1294,7 +1645,15 @@ static int append_project_probe_body(char *out, size_t size, const Window *windo
                 if (line[0] == '<') {
                     appendf(out, size, "%s", line);
                 } else {
-                    appendf(out, size, "| |  %-83.83s |<br visibility=\"${desktop_active_window_body_visible}\" />", line);
+                    /* 84 = the .83s precision below + 1 for the null
+                       terminator -- pre-truncating here to the SAME
+                       83-byte limit, but UTF-8-safely, means the
+                       ".83s" precision that follows never has to cut
+                       anything itself (the string is already <= 83
+                       bytes), so it can't land mid-character anymore. */
+                    char safe_line[84];
+                    utf8_safe_truncate(line, safe_line, sizeof(safe_line));
+                    appendf(out, size, "| |  %-83.83s |<br visibility=\"${desktop_active_window_body_visible}\" />", safe_line);
                 }
                 count++;
             }
@@ -1454,7 +1813,34 @@ static int append_project_probe_scene_markup(char *out, size_t size, const Windo
 }
 
 static int project_probe_body_lines(const Window *window, const char **lines, int max_lines) {
-    static char body_lines[16][160];
+    /* Was char[16][160] -- silently truncated any line past 159 chars.
+     * Confirmed live (2026-07-05 review): settings' own embedded body
+     * line (231 chars, <text label="..." /><button label="..." href="..." /><text .../><br/>)
+     * got cut mid-attribute on the trailing border <text> tag. Landed
+     * harmlessly there only by luck (the actual button chunk fit inside
+     * the old 159-char limit; emit_embedded_line_objects()'s malformed-tag
+     * guard silently dropped the cut-off trailing tag rather than
+     * misrendering). A longer href path or project name would have cut
+     * INTO the button itself. Widened to match the 256-byte read buffer
+     * immediately below, so this storage step adds no truncation beyond
+     * what fgets() already imposes -- not a full fix for arbitrarily long
+     * body lines (that ceiling is fgets()'s own 256-byte read buffer,
+     * shared with ASCII mode's append_project_probe_body(), out of scope
+     * for tonight), just removes an unnecessary SECOND, smaller ceiling
+     * stacked on top of it. */
+    /* 16 -> 40: matches ASCII mode's append_project_probe_body(), which
+       was raised to 40 for the exact same reason (see that function's own
+       comment, ~line 1557) -- a body longer than the cap gets silently
+       cut off in GL only, with no error, while ASCII shows all of it.
+       Confirmed live this session: window-geom's standalone editor body
+       is 20 lines (header/cli_io/blank + the "Or use buttons" text at
+       line 12, with the actual [-]/[+] buttons starting at line 13) --
+       the call site passing max_lines=12 cut the body off in GL one line
+       before the buttons even started, so they were never read into
+       project_lines[] at all, let alone rendered. This wasn't a rendering
+       bug or a nav bug; the button objects were never generated because
+       their source lines were never read. */
+    static char body_lines[40][256];
     char project_dir[MAX_PATH];
     char body_path[MAX_PATH];
     FILE *body;
@@ -1464,8 +1850,8 @@ static int project_probe_body_lines(const Window *window, const char **lines, in
     if (!window || !lines || max_lines <= 0) {
         return 0;
     }
-    if (max_lines > 16) {
-        max_lines = 16;
+    if (max_lines > 40) {
+        max_lines = 40;
     }
     if (project_dir_for_window(window, project_dir, sizeof(project_dir))) {
         snprintf(body_path, sizeof(body_path), "%s/session/wraith_body.txt", project_dir);
@@ -1473,7 +1859,7 @@ static int project_probe_body_lines(const Window *window, const char **lines, in
         if (body) {
             while (fgets(line, sizeof(line), body) && count < max_lines) {
                 line[strcspn(line, "\r\n")] = '\0';
-                snprintf(body_lines[count], sizeof(body_lines[count]), "%.159s", line);
+                snprintf(body_lines[count], sizeof(body_lines[count]), "%.255s", line);
                 lines[count] = body_lines[count];
                 count++;
             }
@@ -1493,7 +1879,288 @@ static int project_probe_body_lines(const Window *window, const char **lines, in
     return 1;
 }
 
-static void append_project_scene_objects(FILE *objects, int *object_id, const Window *window, const char *window_chain) {
+/* 2fix.txt, 2026-07-05: GL-mode gap. project_probe_body_lines() feeds
+ * whole wraith_body.txt lines verbatim into an OBJECT's label= field.
+ * Several projects (chtmgl-video-isolate's Play/Pause/Resume/Stop
+ * buttons, the new settings project's menu) deliberately embed raw
+ * <text>/<button> tags in a body line so the ASCII path
+ * (append_project_probe_body() -> re-parsed by wraith_parser_alpha.c)
+ * renders them as real elements. GL mode never re-parses that label=
+ * text at all, so those lines showed the literal tag syntax instead of
+ * a real, clickable button. extract_attr()/emit_embedded_line_objects()
+ * below give GL-mode parity: any project_body_text line starting with
+ * '<' is now parsed into one real OBJECT per tag/text-run, each with
+ * its own x/y/w/label/action, instead of one OBJECT holding the whole
+ * raw line as text.
+ *
+ * UPDATE (2026-07-05, same day, follow-up): actionable chunks (a real
+ * onClick/href, i.e. real buttons -- not plain <text> border/padding
+ * pieces) now DO get a real nav= value, not nav=0. See
+ * count_scene_nav_controls()/count_embedded_body_nav_slots() and the
+ * next_body_nav counter threaded in from write_semantic_projection_files()
+ * below -- this turned out not to need matching wraith_parser_alpha.c's
+ * own numbering at all (that fragility concern was real for the outer
+ * chrome buttons, per window-geometry-render-plan-j5.md's Path B
+ * write-up, but g_max_index/launcher_start are entirely
+ * wraith-alpha_manager.c's own self-contained arithmetic, so this was
+ * safely fixable without touching the parser side). */
+static int extract_attr(const char *tag_start, const char *tag_end, const char *attr_name, char *out, size_t out_sz) {
+    char pattern[64];
+    void *found;
+    const char *val_start;
+    const char *val_end;
+    size_t pattern_len;
+
+    out[0] = '\0';
+    /* Leading space anchors the match to an actual attribute boundary --
+     * every real attribute in this codebase's generated tags is
+     * space-preceded ("<button label=\"...\" onClick=\"...\" />"), so
+     * without this a search for e.g. "label=\"" could false-positive
+     * match inside a hypothetical differently-named attribute ending in
+     * the same substring (not a live bug against current markup, but a
+     * latent one caught during 2026-07-05 review, cheap to close). */
+    snprintf(pattern, sizeof(pattern), " %s=\"", attr_name);
+    pattern_len = strlen(pattern);
+    if ((size_t)(tag_end - tag_start) < pattern_len) {
+        return 0;
+    }
+    found = memmem(tag_start, (size_t)(tag_end - tag_start), pattern, pattern_len);
+    if (!found) {
+        return 0;
+    }
+    val_start = (const char *)found + pattern_len;
+    val_end = strchr(val_start, '"');
+    if (!val_end || val_end > tag_end) {
+        return 0;
+    }
+    {
+        size_t len = (size_t)(val_end - val_start);
+        if (len >= out_sz) {
+            len = out_sz - 1;
+        }
+        memcpy(out, val_start, len);
+        out[len] = '\0';
+    }
+    return 1;
+}
+
+/* Reads a single key=value pair back out of <project_dir>/manager/gui_state.txt
+ * -- the SAME file wraith_parser_alpha.c's save_to_gui_state()/get_var()
+ * already read and write for cli_io state on the ASCII side (confirmed:
+ * identical path shape -- project_root_path/projects/<project_id>/manager/gui_state.txt
+ * there, project_dir/manager/gui_state.txt here, where project_dir already
+ * IS project_root_path + "/projects/" + project_id -- and identical
+ * "key=value\n" line format). Scoped correctly by construction: callers
+ * pass the SPECIFIC embedded window's own project_dir (from
+ * project_dir_for_window()), not this manager's own project_id, avoiding
+ * the "5a. gui_state scoping" mistake documented in
+ * 真.how-2-fix-clio-chtpm.txt (reading the desktop shell's own gui_state
+ * instead of the embedded project's). Did not exist anywhere in this file
+ * before -- see 2fix-july6.txt, bug 2, for why GL's embedded cli_io fields
+ * could never show typed content without it. Keeps scanning to the last
+ * match (gui_state.txt is fully rewritten on every save, so there's
+ * normally exactly one, but this matches the same "last line wins"
+ * convention already used elsewhere in this codebase, e.g. the input-ops'
+ * own read_active_page()). */
+static void read_gui_state_value(const char *project_dir, const char *key, char *out, size_t out_sz) {
+    char path[MAX_PATH];
+    FILE *f;
+    char line[512];
+    size_t key_len;
+
+    if (!out || out_sz == 0) return;
+    out[0] = '\0';
+    if (!project_dir || !key || !key[0]) return;
+    key_len = strlen(key);
+
+    snprintf(path, sizeof(path), "%s/manager/gui_state.txt", project_dir);
+    f = fopen(path, "r");
+    if (!f) return;
+
+    while (fgets(line, sizeof(line), f)) {
+        if (strncmp(line, key, key_len) == 0 && line[key_len] == '=') {
+            char *val = line + key_len + 1;
+            size_t len;
+            val[strcspn(val, "\r\n")] = '\0';
+            len = strlen(val);
+            if (len >= out_sz) len = out_sz - 1;
+            memcpy(out, val, len);
+            out[len] = '\0';
+        }
+    }
+    fclose(f);
+}
+
+static void emit_embedded_line_objects(FILE *objects, int *object_id, const Window *window,
+                                        const char *window_chain, const char *line,
+                                        int base_x, int base_y, int line_index,
+                                        int *next_nav) {
+    const char *p = line;
+    int cursor_x = base_x;
+    int chunk_index = 0;
+
+    while (*p) {
+        if (strncmp(p, "<br", 3) == 0) {
+            const char *tag_end = strchr(p, '>');
+            if (!tag_end) break;
+            p = tag_end + 1;
+            continue;
+        }
+        if (*p == '<') {
+            char label[256];
+            char action[256];
+            const char *tag_end = strchr(p, '>');
+            int rendered_len;
+            int nav = 0;
+
+            if (!tag_end) break; /* malformed tag, stop rather than loop forever */
+
+            extract_attr(p, tag_end, "label", label, sizeof(label));
+            if (!extract_attr(p, tag_end, "onClick", action, sizeof(action))) {
+                extract_attr(p, tag_end, "href", action, sizeof(action));
+            }
+
+            /* Mirrors wraith_parser_alpha.c's own cli_io rendering exactly:
+               that file's display_val is "input_buffer if non-empty, else
+               the placeholder label" -- ASCII's input_buffer is populated
+               by reading this SAME target_id-keyed gui_state.txt value
+               back on reparse. GL had no equivalent at all before this:
+               emit_embedded_line_objects() only ever echoed the tag's
+               static label attribute, so even with focus+typing fully
+               working on the ASCII/backend side, GL's cli_io boxes could
+               never show it (see 2fix-july6.txt, bug 2). Buttons are
+               untouched -- this only fires for <cli_io> tags, and only
+               when a live, non-empty value actually exists for its own
+               target_id. */
+            int is_cli_io = (strncmp(p, "<cli_io", 7) == 0);
+            if (is_cli_io) {
+                char target_id[128];
+                if (extract_attr(p, tag_end, "target_id", target_id, sizeof(target_id)) && target_id[0]) {
+                    char project_dir[MAX_PATH];
+                    if (project_dir_for_window(window, project_dir, sizeof(project_dir))) {
+                        char live_value[256];
+                        read_gui_state_value(project_dir, target_id, live_value, sizeof(live_value));
+                        if (live_value[0]) {
+                            strncpy(label, live_value, sizeof(label) - 1);
+                            label[sizeof(label) - 1] = '\0';
+                        }
+                    }
+                }
+            }
+
+            if (label[0]) {
+                /* Only real buttons (a non-empty action) OR a <cli_io>
+                   field consume a nav slot -- plain <text> border/padding
+                   chunks stay nav=0, visible but not Tab-focusable,
+                   matching count_embedded_body_nav_slots()'s job of
+                   reserving the right number of slots (that counter
+                   counts ALL labeled chunks, cli_io included, so this
+                   already fits inside its reserved upper bound -- no
+                   renumbering needed elsewhere).
+                   cli_io has no onClick/href (action[0] stays empty), so
+                   without the explicit check here it would stay nav=0
+                   forever and never become clickable in GL -- that was
+                   Bug B (window-geom's cli_io fields showing as inert
+                   text in GL, zest-09.00-handoff.md). Giving it a nav
+                   slot with no explicit action is enough:
+                   hit_test_semantic_action() in wraith_gl.c already
+                   synthesizes SET_ACTIVE:<nav> for any nav>0 OBJECT with
+                   no action of its own -- the same generic click-to-focus
+                   path every other nav-only element already uses. */
+                if ((action[0] || is_cli_io) && next_nav) {
+                    nav = (*next_nav)++;
+                }
+                rendered_len = (int)strlen(label);
+                {
+                    /* wraith_rgb_daemon.c's build_display_label() wraps
+                       ANY nav>0 object's text as "[%s] %d. [%s]" before
+                       drawing it -- 7 literal characters ([, ], space,
+                       ., space, [, ]) plus a 1-char focus glyph plus
+                       nav's own digit count, all on top of the bare
+                       label. w= (and cursor_x's advance below) MUST
+                       reserve room for that wrapped length, not the bare
+                       label -- this was the root cause of chrome icons'
+                       glyphs, cli_io fields, and [-]/[+] buttons all
+                       showing garbled/clipped/missing in GL: their w=
+                       was sized to the bare label only, so
+                       wraith_rgb_daemon.c's blit_text() clipped the
+                       wrapped prefix/suffix (or the label itself) to fit
+                       a box that was always too narrow once nav>0
+                       triggered the wrap. See
+                       zest-09.00-handoff.md/WRAITH_RGB_ARCHITECTURE.md
+                       for the fuller trace. */
+                    int display_len = rendered_len;
+                    int is_selected = (nav > 0 && g_active_gui_index == nav);
+                    /* "^" only for a cli_io field that's genuinely ACTIVE
+                       (accepting keystrokes), not just focused -- mirrors
+                       ASCII's own is_active-vs-is_focused distinction
+                       exactly (wraith_parser_alpha.c's render_element():
+                       is_active uses "[^]", is_focused-only uses "[>]").
+                       g_active_gui_is_typing is the ONLY signal that
+                       distinguishes them; without it (before this fix)
+                       this could only ever say ">" (see 2fix-july6.txt,
+                       bug 3). Deliberately scoped to is_cli_io -- this
+                       must not affect the UNRELATED existing "^" used for
+                       map-control/INTERACT elements elsewhere in this
+                       file. */
+                    const char *glyph = " ";
+                    if (is_selected) {
+                        glyph = (is_cli_io && g_active_gui_is_typing) ? "^" : ">";
+                    }
+                    if (nav > 0) {
+                        int nav_digits = 1;
+                        int tmp = nav;
+                        while (tmp >= 10) { nav_digits++; tmp /= 10; }
+                        display_len = rendered_len + 8 + nav_digits;
+                    }
+                    fprintf(objects, "OBJECT | %04d | tag=text id=%s_body_%02d_%02d role=project_body_embedded x=%d y=%d w=%d h=1 z=14 focused=%s parent_id=%s container_id=%s source_ref=semantic:project_body_embedded ancestor_chain=%s>%s_body_%02d_%02d clip_chain=%s nav=%d nav_selected=%s nav_selector_glyph=%s label_core= fg=#E8F1F2 bg=#162534 border=#E8F1F2 label=%s action=%s src=\n",
+                        (*object_id)++,
+                        window->id, line_index, chunk_index,
+                        cursor_x, base_y, display_len > 0 ? display_len : 1,
+                        is_selected ? "true" : "false",
+                        window->id, window->id,
+                        window_chain, window->id, line_index, chunk_index,
+                        window_chain,
+                        nav,
+                        is_selected ? "true" : "false",
+                        glyph,
+                        label,
+                        action[0] ? action : "");
+                    cursor_x += display_len;
+                }
+                chunk_index++;
+            }
+
+            p = tag_end + 1;
+        } else {
+            const char *run_start = p;
+            while (*p && *p != '<') {
+                p++;
+            }
+            {
+                int run_len = (int)(p - run_start);
+                if (run_len > 0) {
+                    char buf[256];
+                    int copy_len = run_len < (int)sizeof(buf) - 1 ? run_len : (int)sizeof(buf) - 1;
+                    memcpy(buf, run_start, copy_len);
+                    buf[copy_len] = '\0';
+                    fprintf(objects, "OBJECT | %04d | tag=text id=%s_body_%02d_%02d role=project_body_embedded x=%d y=%d w=%d h=1 z=14 focused=false parent_id=%s container_id=%s source_ref=semantic:project_body_embedded ancestor_chain=%s>%s_body_%02d_%02d clip_chain=%s nav=0 nav_selected=false nav_selector_glyph=  label_core= fg=#E8F1F2 bg=#162534 border=#E8F1F2 label=%s action= src=\n",
+                        (*object_id)++,
+                        window->id, line_index, chunk_index,
+                        cursor_x, base_y, run_len,
+                        window->id, window->id,
+                        window_chain, window->id, line_index, chunk_index,
+                        window_chain,
+                        buf);
+                    cursor_x += run_len;
+                    chunk_index++;
+                }
+            }
+        }
+    }
+}
+
+static void append_project_scene_objects(FILE *objects, int *object_id, const Window *window, const char *window_chain, int win_row_offset, int win_col_offset) {
     char project_dir[MAX_PATH];
     char scene_path[MAX_PATH];
     char line[1024];
@@ -1592,8 +2259,8 @@ static void append_project_scene_objects(FILE *objects, int *object_id, const Wi
             window->id,
             id,
             role,
-            x,
-            y,
+            x + win_col_offset,
+            y + win_row_offset,
             w,
             h,
             z,
@@ -1643,6 +2310,70 @@ static void load_mouse_offset(int *offset_x, int *offset_y) {
     *offset_y = y;
 }
 
+/* Path B (window-geometry-render-plan-j5.md): resolves a window's
+   content origin as row/col offsets. Called from BOTH the visual-
+   emission path (append_with_origin_offset(), below -- leading-space /
+   blank-line padding, confirmed by a full trace of
+   wraith_parser_alpha.c's render_element() to be the only positioning
+   mechanism available, since it has no row/column cursor at all) and
+   the semantic/click-emission path (write_semantic_projection_files()'s
+   OBJECT x=/y= values), so the two can't drift out of sync by
+   construction -- one function, two call sites, not two independently
+   hand-written copies of the same arithmetic. Default (window->x == 0
+   && window->y == 0, every project today, since no project.pdl has a
+   WINDOW section yet) resolves to {0, 0}, preserving today's exact
+   behavior. */
+static void resolve_window_content_origin(const Window *window, int *out_row_offset, int *out_col_offset) {
+    *out_row_offset = 0;
+    *out_col_offset = 0;
+    if (!window) {
+        return;
+    }
+    if (window->y > 0) {
+        *out_row_offset = window->y;
+    }
+    if (window->x > 0) {
+        *out_col_offset = window->x;
+    }
+}
+
+/* Applies a resolved row/col offset to an already-composed markup
+   block: emits `row_offset` blank lines first, then walks `raw`
+   appending `col_offset` spaces immediately after every "<br...>" tag
+   (and once before the first line) -- deliberately keyed on any tag
+   starting with "<br" (not just the literal "<br/>"), since this
+   codebase also uses "<br visibility=\"...\" />" as a line break, and a
+   naive exact-string split would silently fail to offset those lines. */
+static void append_with_origin_offset(char *out, size_t size, const char *raw, int row_offset, int col_offset) {
+    const char *p = raw;
+    int i;
+
+    for (i = 0; i < row_offset; i++) {
+        appendf(out, size, "<br/>");
+    }
+    for (i = 0; i < col_offset; i++) {
+        appendf(out, size, " ");
+    }
+
+    while (*p) {
+        if (strncmp(p, "<br", 3) == 0) {
+            const char *tag_end = strchr(p, '>');
+            size_t tag_len = tag_end ? (size_t)(tag_end - p + 1) : strlen(p);
+            appendf(out, size, "%.*s", (int)tag_len, p);
+            p += tag_len;
+            for (i = 0; i < col_offset; i++) {
+                appendf(out, size, " ");
+            }
+        } else {
+            const char *run_start = p;
+            while (*p && strncmp(p, "<br", 3) != 0) {
+                p++;
+            }
+            appendf(out, size, "%.*s", (int)(p - run_start), run_start);
+        }
+    }
+}
+
 static void build_desktop_shell_markup(char *out, size_t size, Window *window) {
     int launcher_index = 0;
     int taskbar_index = 0;
@@ -1650,6 +2381,14 @@ static void build_desktop_shell_markup(char *out, size_t size, Window *window) {
     int launcher_start = 0;
     int taskbar_start = 0;
     int i;
+    /* Path B: the window's own title bar + content (NOT the outer frame
+       border and NOT the taskbar, which stay fixed -- matches the same
+       split already used in write_semantic_projection_files()) is
+       composed here first, then injected into `out` with its resolved
+       row/col offset applied in one place. */
+    char raw[4096];
+    int row_offset = 0;
+    int col_offset = 0;
 
     out[0] = '\0';
 
@@ -1677,29 +2416,45 @@ static void build_desktop_shell_markup(char *out, size_t size, Window *window) {
     }
 
     launcher_count = count_launcher_methods();
-    launcher_start = 5;
+    /* CHROME_CONTENT_START, not a literal -- derived from g_chrome_icons[]'s
+       own length (see that array's comment for why this must never again
+       be a separately-maintained number). */
+    launcher_start = CHROME_CONTENT_START;
     taskbar_start = window ? (launcher_start + launcher_count) : 1;
 
-    appendf(out, size, "+-WRAITH DESKTOP GUI---------------------------------------------------------------------------+<br/>");
+    append_frame_border(out, size, "WRAITH DESKTOP GUI", resolve_frame_width(window, -1));
 
-    appendf(out, size, "| +-");
-    appendf(out, size, "<button label=\" %s \" onClick=\"SET_ACTIVE:1\" />", window->title);
-    appendf(out, size, "------------------------------------------");
-    appendf(out, size, "<button compact=\"true\" label=\"o\" onClick=\"SET_ACTIVE:2\" />");
-    appendf(out, size, "<button compact=\"true\" label=\"-\" onClick=\"SET_ACTIVE:3\" />");
-    appendf(out, size, "<button compact=\"true\" label=\"x\" onClick=\"SET_ACTIVE:4\" />");
-    appendf(out, size, "-+               |<br/>");
+    raw[0] = '\0';
+    appendf(raw, sizeof(raw), "| +-");
+    appendf(raw, sizeof(raw), "<button label=\" %s \" onClick=\"SET_ACTIVE:1\" />", window->title);
+    appendf(raw, sizeof(raw), "------------------------------------------");
+    /* Chrome icon row: iterates g_chrome_icons[] -- the single source of
+       truth -- instead of one hardcoded <button> line per icon. nav 2 is
+       the first icon, matching CHROME_CONTENT_START's own "title is 1,
+       icons follow" assumption. This loop and the matching GL OBJECT loop
+       in write_semantic_projection_files() are the ONLY two places that
+       read this array; keep them structurally identical (same icon ->
+       same nav number in both) or the ASCII/GL divergence this was built
+       to prevent comes back. */
+    {
+        int ci;
+        for (ci = 0; ci < CHROME_ICON_COUNT; ci++) {
+            appendf(raw, sizeof(raw), "<button compact=\"true\" label=\"%c\" onClick=\"SET_ACTIVE:%d\" />",
+                    g_chrome_icons[ci].glyph, 2 + ci);
+        }
+    }
+    appendf(raw, sizeof(raw), "-+               |<br/>");
 
     if (window && !active_window_is_terminal(window)) {
-        int project_line_count = append_project_probe_body(out, size, window);
+        int project_line_count = append_project_probe_body(raw, sizeof(raw), window);
         if (project_line_count == 0) {
-            project_line_count = append_project_probe_scene_markup(out, size, window, 14);
+            project_line_count = append_project_probe_scene_markup(raw, sizeof(raw), window, 14);
         }
         if (project_line_count == 0) {
-            appendf(out, size, "| |  Project: %-70.70s |<br visibility=\"${desktop_active_window_body_visible}\" />", window->project_id);
-            appendf(out, size, "| |  Missing project body file: session/wraith_body.txt                               |<br visibility=\"${desktop_active_window_body_visible}\" />");
-            appendf(out, size, "| |                                                                                   |<br visibility=\"${desktop_active_window_body_visible}\" />");
-            appendf(out, size, "| |                                                                                   |<br visibility=\"${desktop_active_window_body_visible}\" />");
+            appendf(raw, sizeof(raw), "| |  Project: %-70.70s |<br visibility=\"${desktop_active_window_body_visible}\" />", window->project_id);
+            appendf(raw, sizeof(raw), "| |  Missing project body file: session/wraith_body.txt                               |<br visibility=\"${desktop_active_window_body_visible}\" />");
+            appendf(raw, sizeof(raw), "| |                                                                                   |<br visibility=\"${desktop_active_window_body_visible}\" />");
+            appendf(raw, sizeof(raw), "| |                                                                                   |<br visibility=\"${desktop_active_window_body_visible}\" />");
             project_line_count = 4;
         }
         launcher_index = project_line_count;
@@ -1708,25 +2463,29 @@ static void build_desktop_shell_markup(char *out, size_t size, Window *window) {
         discover_launcher_projects();
         for (li = 0; li < g_launcher_count; li++) {
             launcher_index++;
-            appendf(out, size, "| |  ");
-            appendf(out, size,
+            appendf(raw, sizeof(raw), "| |  ");
+            appendf(raw, sizeof(raw),
                 "<button compact=\"true\" label=\"%-12.12s\" onClick=\"%s\" visibility=\"${desktop_active_window_body_visible}\" />",
                 g_launchers[li].display_label,
                 g_launchers[li].command);
-            appendf(out, size, "                                                                          |<br visibility=\"${desktop_active_window_body_visible}\" />");
+            appendf(raw, sizeof(raw), "                                                                          |<br visibility=\"${desktop_active_window_body_visible}\" />");
         }
     }
 
     if (launcher_index == 0) {
-        appendf(out, size, "| |  %-85s |<br visibility=\"${desktop_active_window_body_visible}\" />", "[ No Projects Found ]");
+        appendf(raw, sizeof(raw), "| |  %-85s |<br visibility=\"${desktop_active_window_body_visible}\" />", "[ No Projects Found ]");
     }
 
     while (launcher_index < 4) {
-        appendf(out, size, "| |                                                                                              |<br visibility=\"${desktop_active_window_body_visible}\" />");
+        appendf(raw, sizeof(raw), "| |                                                                                              |<br visibility=\"${desktop_active_window_body_visible}\" />");
         launcher_index++;
     }
 
-    appendf(out, size, "| +----------------------------------------------------------------------------------------------+               |<br visibility=\"${desktop_active_window_body_visible}\" />");
+    appendf(raw, sizeof(raw), "| +----------------------------------------------------------------------------------------------+               |<br visibility=\"${desktop_active_window_body_visible}\" />");
+
+    resolve_window_content_origin(window, &row_offset, &col_offset);
+    append_with_origin_offset(out, size, raw, row_offset, col_offset);
+
     {
         const WraithLauncher *terminal_launcher = find_terminal_launcher();
         appendf(out, size, "| [ TASKBAR ] <button compact=\"true\" label=\"Terminal\" onClick=\"%s\" />",
@@ -1747,7 +2506,7 @@ static void build_desktop_shell_markup(char *out, size_t size, Window *window) {
     }
 
     appendf(out, size, " |<br/>");
-    appendf(out, size, "+----------------------------------------------------------------------------------------------+<br/>");
+    append_frame_border(out, size, NULL, resolve_frame_width(window, -1));
 }
 
 static void write_semantic_projection_files(void) {
@@ -1776,9 +2535,18 @@ static void write_semantic_projection_files(void) {
     int object_id = 1;
     int taskbar_index = 0;
     int launcher_count = count_launcher_methods();
-    int taskbar_start = window ? (5 + launcher_count) : 1;
+    /* CHROME_CONTENT_START, not a literal -- see g_chrome_icons[]'s comment. */
+    int taskbar_start = window ? (CHROME_CONTENT_START + launcher_count) : 1;
     int li;
     int i;
+    /* Path B: same resolve_window_content_origin() call as
+       build_desktop_shell_markup() -- these OBJECT x=/y= values must
+       agree with that function's visual padding, not be computed
+       independently, or clicks would land where the window used to be. */
+    int win_row_offset = 0;
+    int win_col_offset = 0;
+
+    resolve_window_content_origin(window, &win_row_offset, &win_col_offset);
 
     snprintf(meta_path, sizeof(meta_path), "%s/pieces/display/current_frame.meta.pdl", g_project_root);
     snprintf(meta_tmp, sizeof(meta_tmp), "%s.tmp", meta_path);
@@ -1875,15 +2643,19 @@ static void write_semantic_projection_files(void) {
         object_id++, root_chain, root_chain);
 
     if (window) {
-        fprintf(objects, "OBJECT | %04d | tag=panel id=window_chrome_row role=window_chrome_row x=1 y=2 w=94 h=1 z=9 focused=false parent_id=%s container_id=%s source_ref=semantic:window_chrome_row ancestor_chain=%s>window_chrome_row clip_chain=%s fg=#E8F1F2 bg=#162534 border=#162534 label= action= src=\n",
+        fprintf(objects, "OBJECT | %04d | tag=panel id=window_chrome_row role=window_chrome_row x=%d y=%d w=94 h=1 z=9 focused=false parent_id=%s container_id=%s source_ref=semantic:window_chrome_row ancestor_chain=%s>window_chrome_row clip_chain=%s fg=#E8F1F2 bg=#162534 border=#162534 label= action= src=\n",
             object_id++,
+            1 + win_col_offset,
+            2 + win_row_offset,
             window->id,
             window->id,
             window_chain,
             window_chain);
-        fprintf(objects, "OBJECT | %04d | tag=text id=%s_title role=window_title x=3 y=2 w=58 h=1 z=20 focused=%s parent_id=window_chrome_row container_id=window_chrome_row source_ref=semantic:window_title ancestor_chain=%s>window_chrome_row>%s_title clip_chain=%s nav=%d nav_selected=%s nav_selector_glyph=%s label_core= fg=#E8F1F2 bg=#162534 border=#162534 label=%s action=SET_ACTIVE:1 src=\n",
+        fprintf(objects, "OBJECT | %04d | tag=text id=%s_title role=window_title x=%d y=%d w=58 h=1 z=20 focused=%s parent_id=window_chrome_row container_id=window_chrome_row source_ref=semantic:window_title ancestor_chain=%s>window_chrome_row>%s_title clip_chain=%s nav=%d nav_selected=%s nav_selector_glyph=%s label_core= fg=#E8F1F2 bg=#162534 border=#162534 label=%s action=SET_ACTIVE:1 src=\n",
             object_id++,
             window->id,
+            3 + win_col_offset,
+            2 + win_row_offset,
             g_active_gui_index == 1 ? "true" : "false",
             window_chain,
             window->id,
@@ -1892,56 +2664,130 @@ static void write_semantic_projection_files(void) {
             g_active_gui_index == 1 ? "true" : "false",
             g_active_gui_index == 1 ? ">" : " ",
             window->title);
-        fprintf(objects, "OBJECT | %04d | tag=panel id=%s role=panel x=1 y=3 w=94 h=22 z=10 focused=true parent_id=wraith_root container_id=wraith_root source_ref=%s ancestor_chain=%s clip_chain=%s nav=0 nav_selected=false nav_selector_glyph=  label_core= fg=#E8F1F2 bg=#162534 border=#FFD166 label= action=SET_ACTIVE:1 src=%s\n",
+        fprintf(objects, "OBJECT | %04d | tag=panel id=%s role=panel x=%d y=%d w=94 h=22 z=10 focused=true parent_id=wraith_root container_id=wraith_root source_ref=%s ancestor_chain=%s clip_chain=%s nav=0 nav_selected=false nav_selector_glyph=  label_core= fg=#E8F1F2 bg=#162534 border=#FFD166 label= action=SET_ACTIVE:1 src=%s\n",
             object_id++,
             window->id,
+            1 + win_col_offset,
+            3 + win_row_offset,
             strcmp(window->project_id, "wraith-alpha/wraith-projects/terminal") == 0 ? "semantic:terminal_panel" : "semantic:project_panel",
             window_chain,
             root_chain,
             strcmp(window->project_id, "wraith-alpha/wraith-projects/terminal") == 0 ? "terminal_window.view.txt" : "wraith_window.view.txt");
-        fprintf(objects, "OBJECT | %04d | tag=text id=%s_open role=chrome_button x=63 y=2 w=10 h=1 z=21 focused=%s parent_id=%s container_id=%s source_ref=semantic:chrome_open ancestor_chain=%s>%s>chrome_open clip_chain=%s nav=%d nav_selected=%s nav_selector_glyph=%s label_core=o fg=#E8F1F2 bg=#162534 border=#E8F1F2 label=o action=SET_ACTIVE:2 src=\n",
-            object_id++, window->id, g_active_gui_index == 2 ? "true" : "false", window->id, window->id, window_chain, window->id, window_chain, 2, g_active_gui_index == 2 ? "true" : "false", g_active_gui_index == 2 ? ">" : " ");
-        fprintf(objects, "OBJECT | %04d | tag=text id=%s_min role=chrome_button x=74 y=2 w=10 h=1 z=21 focused=%s parent_id=%s container_id=%s source_ref=semantic:chrome_min ancestor_chain=%s>%s>chrome_min clip_chain=%s nav=%d nav_selected=%s nav_selector_glyph=%s label_core=- fg=#E8F1F2 bg=#162534 border=#E8F1F2 label=- action=SET_ACTIVE:3 src=\n",
-            object_id++, window->id, g_active_gui_index == 3 ? "true" : "false", window->id, window->id, window_chain, window->id, window_chain, 3, g_active_gui_index == 3 ? "true" : "false", g_active_gui_index == 3 ? ">" : " ");
-        fprintf(objects, "OBJECT | %04d | tag=text id=%s_close role=chrome_button x=85 y=2 w=10 h=1 z=21 focused=%s parent_id=%s container_id=%s source_ref=semantic:chrome_close ancestor_chain=%s>%s>chrome_close clip_chain=%s nav=%d nav_selected=%s nav_selector_glyph=%s label_core=x fg=#E8F1F2 bg=#162534 border=#E8F1F2 label=x action=SET_ACTIVE:4 src=\n",
-            object_id++, window->id, g_active_gui_index == 4 ? "true" : "false", window->id, window->id, window_chain, window->id, window_chain, 4, g_active_gui_index == 4 ? "true" : "false", g_active_gui_index == 4 ? ">" : " ");
-        if (!active_window_is_terminal(window)) {
-            const char *project_lines[12];
-            int project_line_count = project_probe_body_lines(window, project_lines, 12);
-            int pl;
-            for (pl = 0; pl < project_line_count; pl++) {
-                fprintf(objects, "OBJECT | %04d | tag=text id=%s_body_%02d role=project_body_text x=3 y=%d w=86 h=1 z=14 focused=false parent_id=%s container_id=%s source_ref=semantic:project_body ancestor_chain=%s>%s_body_%02d clip_chain=%s label_core= fg=#E8F1F2 bg=#162534 border=#E8F1F2 label=%s action= src=\n",
-                    object_id++,
-                    window->id,
-                    pl + 1,
-                    4 + pl,
-                    window->id,
-                    window->id,
+        /* Chrome icon row: iterates g_chrome_icons[] -- the single source
+           of truth (see its own comment) -- instead of one hardcoded
+           OBJECT per icon. nav = 2+ci matches the ASCII loop in
+           build_desktop_shell_markup() exactly, term for term, so the two
+           renderers cannot independently drift on numbering again.
+           Width/spacing MUST fit wraith_rgb_daemon.c's build_display_label()
+           wrap ("[%s] %d. [%s]" -- 7 literal chars + 1 glyph char +
+           nav's digit count, on top of the 1-char icon glyph itself):
+           for nav 2-5 that's 1+9=10 characters. A prior version of this
+           loop used w=7/delta=8 (sized to just the bare 1-char glyph,
+           forgetting the wrap entirely) -- confirmed live this is what
+           made every chrome icon's glyph render clipped/missing in GL,
+           not just the newly-added one. See
+           WRAITH_RGB_ARCHITECTURE.md's nav-numbering-invariant section
+           and zest-09.00-handoff.md for the fuller trace. */
+        {
+            int ci;
+            for (ci = 0; ci < CHROME_ICON_COUNT; ci++) {
+                int nav = 2 + ci;
+                int nav_digits = 1;
+                int tmp = nav;
+                int display_len;
+                int x;
+                while (tmp >= 10) { nav_digits++; tmp /= 10; }
+                display_len = 1 + 8 + nav_digits; /* 1 = the bare glyph */
+                x = 63 + ci * display_len;
+                fprintf(objects, "OBJECT | %04d | tag=text id=%s_%s role=chrome_button x=%d y=%d w=%d h=1 z=21 focused=%s parent_id=%s container_id=%s source_ref=semantic:%s ancestor_chain=%s>%s>%s clip_chain=%s nav=%d nav_selected=%s nav_selector_glyph=%s label_core=%c fg=#E8F1F2 bg=#162534 border=#E8F1F2 label=%c action=SET_ACTIVE:%d src=\n",
+                    object_id++, window->id, g_chrome_icons[ci].semantic,
+                    x + win_col_offset, 2 + win_row_offset, display_len,
+                    g_active_gui_index == nav ? "true" : "false",
+                    window->id, window->id,
+                    g_chrome_icons[ci].semantic,
+                    window_chain, window->id, g_chrome_icons[ci].semantic,
                     window_chain,
-                    window->id,
-                    pl + 1,
-                    window_chain,
-                    project_lines[pl]);
+                    nav,
+                    g_active_gui_index == nav ? "true" : "false",
+                    g_active_gui_index == nav ? ">" : " ",
+                    g_chrome_icons[ci].glyph, g_chrome_icons[ci].glyph, nav);
             }
-            append_project_scene_objects(objects, &object_id, window, window_chain);
+        }
+        if (!active_window_is_terminal(window)) {
+            /* 12 -> 40: was silently truncating any embedded body longer
+               than 12 lines in GL only (see project_probe_body_lines()'s
+               own comment for the confirmed live case -- window-geom's
+               editor body's [-]/[+] buttons never got read at all). */
+            const char *project_lines[40];
+            int project_line_count = project_probe_body_lines(window, project_lines, 40);
+            int pl;
+            /* CHROME_CONTENT_START, not a literal 5 or 6 -- embedded
+               body-tag objects get real nav= values continuing right
+               after whatever this project's OWN scene.objects.pdl already
+               declared (author-chosen, contiguous from CHROME_CONTENT_START
+               by convention -- every project with its own
+               session/scene.objects.pdl generator was updated this
+               session to start there instead of a hardcoded 5, see
+               zest-09.00-handoff.md) so the two ranges never collide. If
+               this project has no scene.objects.pdl at all,
+               scene_nav_count is 0 and body objects correctly start at
+               CHROME_CONTENT_START. (2fix.txt, 2026-07-05; base updated
+               2026-07-06 when chrome grew from 4 fixed slots to
+               CHROME_ICON_COUNT+1.) */
+            int next_body_nav = CHROME_CONTENT_START;
+            {
+                char nav_project_dir[MAX_PATH];
+                if (project_dir_for_window(window, nav_project_dir, sizeof(nav_project_dir))) {
+                    next_body_nav = CHROME_CONTENT_START + count_scene_nav_controls(nav_project_dir);
+                }
+            }
+            for (pl = 0; pl < project_line_count; pl++) {
+                if (project_lines[pl][0] == '<') {
+                    /* Embedded markup line (see extract_attr()/
+                       emit_embedded_line_objects() above, 2fix.txt
+                       2026-07-05) -- parse it into real per-tag OBJECTs
+                       instead of dumping the raw line as one text label. */
+                    emit_embedded_line_objects(objects, &object_id, window, window_chain,
+                                                project_lines[pl],
+                                                3 + win_col_offset, 4 + pl + win_row_offset, pl,
+                                                &next_body_nav);
+                } else {
+                    fprintf(objects, "OBJECT | %04d | tag=text id=%s_body_%02d role=project_body_text x=%d y=%d w=86 h=1 z=14 focused=false parent_id=%s container_id=%s source_ref=semantic:project_body ancestor_chain=%s>%s_body_%02d clip_chain=%s label_core= fg=#E8F1F2 bg=#162534 border=#E8F1F2 label=%s action= src=\n",
+                        object_id++,
+                        window->id,
+                        pl + 1,
+                        3 + win_col_offset,
+                        4 + pl + win_row_offset,
+                        window->id,
+                        window->id,
+                        window_chain,
+                        window->id,
+                        pl + 1,
+                        window_chain,
+                        project_lines[pl]);
+                }
+            }
+            append_project_scene_objects(objects, &object_id, window, window_chain, win_row_offset, win_col_offset);
         } else {
             discover_launcher_projects();
             for (li = 0; li < g_launcher_count; li++) {
                 int nav_idx = 5 + li;
-                fprintf(objects, "OBJECT | %04d | tag=panel id=launcher_row_%s role=launcher_row x=2 y=%d w=30 h=1 z=18 focused=%s parent_id=%s container_id=%s source_ref=semantic:launcher_row ancestor_chain=%s>launcher_row_%s clip_chain=%s fg=#E8F1F2 bg=#162534 border=#162534 label= action= src=\n",
+                fprintf(objects, "OBJECT | %04d | tag=panel id=launcher_row_%s role=launcher_row x=%d y=%d w=30 h=1 z=18 focused=%s parent_id=%s container_id=%s source_ref=semantic:launcher_row ancestor_chain=%s>launcher_row_%s clip_chain=%s fg=#E8F1F2 bg=#162534 border=#162534 label= action= src=\n",
                     object_id++,
                     g_launchers[li].id_prefix,
-                    4 + li,
+                    2 + win_col_offset,
+                    4 + li + win_row_offset,
                     g_active_gui_index == nav_idx ? "true" : "false",
                     window->id,
                     window->id,
                     window_chain,
                     g_launchers[li].id_prefix,
                     window->id);
-                fprintf(objects, "OBJECT | %04d | tag=text id=launcher_%s role=launcher_item x=3 y=%d w=24 h=1 z=20 focused=%s parent_id=launcher_row_%s container_id=%s source_ref=semantic:launcher_item ancestor_chain=%s>launcher_row_%s>launcher_%s clip_chain=%s nav=%d nav_selected=%s nav_selector_glyph=%s label_core=%s fg=#E8F1F2 bg=#162534 border=#E8F1F2 label=%s action=%s src=\n",
+                fprintf(objects, "OBJECT | %04d | tag=text id=launcher_%s role=launcher_item x=%d y=%d w=24 h=1 z=20 focused=%s parent_id=launcher_row_%s container_id=%s source_ref=semantic:launcher_item ancestor_chain=%s>launcher_row_%s>launcher_%s clip_chain=%s nav=%d nav_selected=%s nav_selector_glyph=%s label_core=%s fg=#E8F1F2 bg=#162534 border=#E8F1F2 label=%s action=%s src=\n",
                     object_id++,
                     g_launchers[li].id_prefix,
-                    4 + li,
+                    3 + win_col_offset,
+                    4 + li + win_row_offset,
                     g_active_gui_index == nav_idx ? "true" : "false",
                     g_launchers[li].id_prefix,
                     window->id,
@@ -2117,6 +2963,11 @@ static void write_projection(FILE *f, int last_key) {
     fprintf(f, "desktop_default_window_id=terminal\n");
     fprintf(f, "desktop_default_window_title=Terminal\n");
     fprintf(f, "desktop_focused_window_id=%s\n", window ? window->id : "desktop");
+    /* Additive only (settings-hub-window-geom-design-j5.md): no existing
+       line touched. window-geom needs the active window's real
+       project_id to know which project.pdl to read -- nothing else
+       exposed this anywhere. */
+    fprintf(f, "desktop_focused_window_project_id=%s\n", window ? window->project_id : "");
     fprintf(f, "desktop_focused_window_title=%s\n", focused_title);
     fprintf(f, "desktop_presenter_mode=%s\n", g_presenter_ascii_mode ? "ascii" : "gl");
     fprintf(f, "desktop_presenter_ascii_selected=*\n");
@@ -2197,6 +3048,29 @@ static void update_state(int last_key) {
     FILE *ui;
 
     normalize_registry();
+    /* g_max_index MUST be fresh before write_semantic_projection_files()
+       (GL) and the ASCII raw-buffer builder run below, or any nav value
+       derived as an offset from it (debug_selector_ascii_index(),
+       debug_selector_gl_index()) reads whatever g_max_index was left over
+       from a DIFFERENT context. recompute_nav_bounds() used to only run
+       from route_input() (keyboard) or once at startup -- meaning any
+       window opened via a MOUSE click (dispatch_menu_index(),
+       launch_wraith_project_command(), open_window_geom_for_project(),
+       etc., all of which call update_state() but never
+       recompute_nav_bounds() themselves) could render at least once with
+       a stale, too-small g_max_index left over from a "no window" or
+       differently-sized state. Confirmed live during this feature's
+       development: a since-reverted trailing-nav-slot design for the
+       window-geom chrome button collided with the window's own title
+       button (both got nav=1) for exactly this reason -- g_max_index was
+       still 3 (the "no window" formula) at the moment that window's first
+       render happened. Chrome no longer uses a trailing slot (see
+       g_chrome_icons[]), so this exact symptom can't recur for it, but
+       the underlying staleness gap this fixes is general -- keeping the
+       fix here, unconditionally, closes it for every caller at once
+       instead of hunting down each site that opens a window without
+       going through route_input() first. */
+    recompute_nav_bounds();
 
     snprintf(alpha_path, sizeof(alpha_path), "%s/projects/wraith-alpha/session/alpha_state.txt", g_project_root);
     snprintf(alpha_tmp, sizeof(alpha_tmp), "%s.tmp", alpha_path);
@@ -2525,13 +3399,60 @@ static void archive_input(int key) {
     fclose(f);
 }
 
+/* Chrome-button targeted invocation (settings-hub-window-geom-design-j5.md
+ * "Mode 2: Standalone"): pre-writes window-geom's own session/wg_target.txt
+ * with the target project's id, then opens window-geom as its own
+ * standalone Window via the same launch_window_instance() every other
+ * wraith sub-project uses. window-geom_manager.c's write_wraith_body()
+ * reads wg_target.txt on every render, so this is the entire handoff -- no
+ * other shared state needed. Shared by both the named
+ * DESKTOP_ACTION:open_window_geom: command and the chrome "&" icon's
+ * SET_ACTIVE:<N> -> dispatch_menu_index() path (via g_chrome_icons[]'s
+ * CHROME_ACTION_OPEN_WINDOW_GEOM case), so there's exactly one place
+ * that does this, not two copies that could drift. */
+static void open_window_geom_for_project(const char *target_project_id) {
+    char wg_target_path[MAX_PATH];
+    char regenerate_marker_path[MAX_PATH];
+    FILE *f;
+
+    if (!target_project_id || !target_project_id[0]) {
+        return;
+    }
+    snprintf(wg_target_path, sizeof(wg_target_path),
+             "%s/projects/wraith-alpha/wraith-projects/settings/window-geom/session/wg_target.txt",
+             g_project_root);
+    f = fopen(wg_target_path, "w");
+    if (f) {
+        fprintf(f, "%s\n", target_project_id);
+        fclose(f);
+    }
+    /* wg_target.txt is a whole-file overwrite (not append), so its own
+       size can't be trusted as a growth signal if window-geom's manager
+       is already alive from an earlier open. Bump the SAME
+       regenerate_marker.txt its hot-path loop already watches
+       (append-only growth, the real marker-file convention) so a
+       retarget while already running is picked up exactly like a
+       KEY:5-13 edit is. */
+    snprintf(regenerate_marker_path, sizeof(regenerate_marker_path),
+             "%s/projects/wraith-alpha/wraith-projects/settings/window-geom/session/regenerate_marker.txt",
+             g_project_root);
+    f = fopen(regenerate_marker_path, "a");
+    if (f) {
+        fprintf(f, "X\n");
+        fclose(f);
+    }
+    launch_window_instance("window-geom", "WINDOW GEOM",
+                            "wraith-alpha/wraith-projects/settings/window-geom");
+}
+
 static bool dispatch_menu_index(int menu_index) {
     Window *window = active_window();
     int launcher_count = count_launcher_methods();
     int taskbar_count = count_visible_windows();
     int project_nav_count = window ? count_project_nav_controls() : 0;
     int extra_project_slots = project_nav_count > 1 ? (project_nav_count - 1) : 0;
-    int launcher_start = 5 + extra_project_slots;
+    /* CHROME_CONTENT_START, not a literal -- see g_chrome_icons[]'s comment. */
+    int launcher_start = CHROME_CONTENT_START + extra_project_slots;
     int taskbar_start;
     int ascii_idx = debug_selector_ascii_index();
     int gl_idx = debug_selector_gl_index();
@@ -2575,29 +3496,58 @@ static bool dispatch_menu_index(int menu_index) {
         trigger_render();
         return true;
     }
-    if (menu_index == 2) {
-        g_active_gui_index = 2;
+    /* Chrome icon row: one generic branch instead of a separate
+       if-block per icon, driven by the SAME g_chrome_icons[] array both
+       renderers' emission code reads -- nav 2+ci resolves to
+       g_chrome_icons[ci]'s own action, whatever that array currently
+       contains. Adding a 5th icon means adding one array entry, not a
+       5th copy-pasted if-block here. */
+    {
+        int ci;
+        for (ci = 0; ci < CHROME_ICON_COUNT; ci++) {
+            if (menu_index == 2 + ci) {
+                if (!window) {
+                    return false;
+                }
+                switch (g_chrome_icons[ci].action) {
+                    case CHROME_ACTION_FOCUS:
+                        g_active_gui_index = menu_index;
+                        break;
+                    case CHROME_ACTION_MINIMIZE:
+                        minimize_active_window();
+                        break;
+                    case CHROME_ACTION_CLOSE:
+                        close_active_window();
+                        break;
+                    case CHROME_ACTION_OPEN_WINDOW_GEOM:
+                        open_window_geom_for_project(window->project_id);
+                        break;
+                }
+                update_state(0);
+                trigger_render();
+                return true;
+            }
+        }
+    }
+    /* Generic "just focus it" fallback for embedded project-body content
+       (cli_io fields, scene.objects.pdl controls) -- everything between
+       chrome (1..CHROME_CONTENT_START-1) and launcher_start. This is the
+       exact gap that made cli_io fields unclickable in GL: a <cli_io>
+       tag has no onClick/href, so hit_test_semantic_action() in
+       wraith_gl.c can only synthesize SET_ACTIVE:<nav> for it (never a
+       real action string) -- and until this branch existed, THAT number
+       matched no case here at all, so dispatch_menu_index() fell through
+       to `return false` and g_active_gui_index never moved. Buttons in
+       the same body (KEY:5, KEY:13, etc.) never needed this: they carry
+       a real action, so their click bypasses dispatch_menu_index()
+       entirely via route_command()'s own "KEY:" branch. Mirrors exactly
+       what menu_index==1 (title) and CHROME_ACTION_FOCUS ('o') already
+       do -- just move focus, nothing project-specific. */
+    if (menu_index >= CHROME_CONTENT_START && menu_index < launcher_start) {
+        g_active_gui_index = menu_index;
         update_state(0);
         trigger_render();
         return true;
-    }
-    if (menu_index == 3) {
-        if (window) {
-            minimize_active_window();
-            update_state(0);
-            trigger_render();
-            return true;
-        }
-        return false;
-    }
-    if (menu_index == 4) {
-        if (window) {
-            close_active_window();
-            update_state(0);
-            trigger_render();
-            return true;
-        }
-        return false;
     }
     if (menu_index >= launcher_start && menu_index < launcher_start + launcher_count) {
         if (dispatch_launcher_method_by_index(menu_index - launcher_start + 1)) {
@@ -3156,6 +4106,21 @@ static void route_command(const char *cmd) {
         trigger_render();
         return;
     }
+    if (strncmp(cmd, "SETTINGS_PAGE:", 14) == 0) {
+        char page_name[256];
+        char page_file[MAX_PATH];
+        FILE *f;
+        strncpy(page_name, cmd + 14, sizeof(page_name) - 1);
+        page_name[sizeof(page_name) - 1] = '\0';
+        snprintf(page_file, sizeof(page_file), "%s/projects/wraith-alpha/wraith-projects/settings/session/state_changed.txt", g_project_root);
+        f = fopen(page_file, "a");
+        if (f) {
+            fprintf(f, "%s\n", page_name);
+            fclose(f);
+        }
+        trigger_render();
+        return;
+    }
     if (launch_wraith_project_command(cmd)) {
         return;
     }
@@ -3182,6 +4147,42 @@ static void route_command(const char *cmd) {
         g_presenter_ascii_mode = 0;
         g_active_gui_index = 1;
         update_state(0);
+        trigger_render();
+        return;
+    }
+
+    /* Chrome-button targeted invocation, named-command form. Kept for any
+     * explicit/future caller that wants to name a project directly; the
+     * chrome "&" icon itself now goes through SET_ACTIVE:<N> ->
+     * dispatch_menu_index()'s g_chrome_icons[] loop instead (see
+     * CHROME_ACTION_OPEN_WINDOW_GEOM there), so both routes funnel into
+     * the same open_window_geom_for_project() helper. */
+    if (strncmp(cmd, "DESKTOP_ACTION:open_window_geom:", 33) == 0) {
+        open_window_geom_for_project(cmd + 33);
+        return;
+    }
+
+    /* Found during 2026-07-05 code review, not something introduced today
+     * on purpose: in ASCII mode, an embedded <button href="..."> is
+     * clicked directly by wraith_parser_alpha.c's own element tree, which
+     * owns href navigation entirely in-process (strncpy into its own
+     * current_layout global) -- route_command() is never even involved.
+     * But GL-mode clicks/keyboard-Enter go through a completely different
+     * path (wraith_gl.c's hit_test_semantic_action() / action_for_nav_index()
+     * -> here), which flattens everything down to a plain action= string
+     * with no memory of "this came from an href". A raw layout path
+     * reaching here (e.g. "projects/.../window-geom.chtpm", the action
+     * emit_embedded_line_objects() extracts from href=) matched none of
+     * the prefixes above and was silently dropped -- the button looked
+     * right and was nav-indexed correctly, but activating it in GL mode
+     * did nothing. request_layout_change() already existed for exactly
+     * this (writes to pieces/display/layout_changed.txt, which
+     * wraith_parser_alpha.c already polls and applies -- confirmed by
+     * reading its own poll loop) but was completely unused (the compiler
+     * already flagged it as such). This is the missing wire, not new
+     * infrastructure. */
+    if (cmd[0] && strstr(cmd, ".chtpm")) {
+        request_layout_change(cmd);
         trigger_render();
         return;
     }
@@ -3301,7 +4302,12 @@ static void recompute_nav_bounds(void) {
     int extra_project_slots = project_nav_count > 1 ? (project_nav_count - 1) : 0;
 
     if (window) {
-        g_max_index = 4 + launcher_count + 1 + extra_project_slots + taskbar_count + 2;
+        /* (CHROME_CONTENT_START - 1), not a literal -- title (1) plus
+           CHROME_ICON_COUNT fixed icon slots, derived from
+           g_chrome_icons[]'s own length. Trailing "+2" is unrelated to
+           chrome; it reserves the two debug selectors
+           (debug_selector_ascii_index()/gl_index() = max-1/max). */
+        g_max_index = (CHROME_CONTENT_START - 1) + launcher_count + 1 + extra_project_slots + taskbar_count + 2;
     } else {
         g_max_index = 1 + taskbar_count + 2;
     }
@@ -3367,6 +4373,95 @@ static void purge_tracked_process_name(const char *name) {
     rename(tmp_path, path);
 }
 
+/* Shutdown-time cleanup, mirroring pieces/chtpm/plugins/orchestrator.c's
+   own kill_all_tracked_processes() (the "HOLY Pattern - File-Backed"
+   process tracking already used for the ~40 other, non-wraith-alpha
+   projects orchestrator.c launches) term-for-term: two phases (SIGTERM to
+   every tracked pid's own process group AND the pid directly, wait 200ms
+   for graceful exit, then SIGKILL the same way to any survivors), reading
+   the SAME shared pieces/os/proc_list.txt file both this manager and the
+   orchestrator already write to via log_pid(). This did not exist here
+   before -- wraith-alpha_manager.c's own shutdown path (see
+   handle_signal()'s call site, end of main()) previously just logged
+   "shutting down" and returned, leaving every forked child (project
+   managers, wraith_gl, wraith_rgb_daemon) running as an orphan. Not a new
+   invention: replicated the existing, working pattern rather than
+   designing a new one, per this codebase's own "use existing patterns"
+   standard. */
+static void kill_all_tracked_processes(void) {
+    char path[MAX_PATH];
+    FILE *f;
+    char line[256];
+
+    snprintf(path, sizeof(path), "%s/pieces/os/proc_list.txt", g_project_root);
+
+    f = fopen(path, "r");
+    if (f) {
+        while (fgets(line, sizeof(line), f)) {
+            int pid;
+            char name[128];
+            if (sscanf(line, "%d %127s", &pid, name) == 2 && pid > 1) {
+                kill(-pid, SIGTERM);
+                kill(pid, SIGTERM);
+            }
+        }
+        fclose(f);
+    }
+
+    usleep(200000);
+
+    f = fopen(path, "r");
+    if (f) {
+        while (fgets(line, sizeof(line), f)) {
+            int pid;
+            char name[128];
+            if (sscanf(line, "%d %127s", &pid, name) == 2 && pid > 1) {
+                kill(-pid, SIGKILL);
+                kill(pid, SIGKILL);
+                waitpid(pid, NULL, WNOHANG);
+            }
+        }
+        fclose(f);
+    }
+
+    /* Clear the file for next run, same as orchestrator.c does. */
+    f = fopen(path, "w");
+    if (f) fclose(f);
+}
+
+/* Final sweep: exec kill_all.sh directly (fork/exec, not system() -- the
+   orchestrator's own equivalent step uses system("bash kill_all.sh ..."),
+   which is the one part of that pattern NOT replicated verbatim here,
+   since this codebase's own CPU-safety standard is explicit that system()
+   must never be used for child process management (see the TPMOS Bible,
+   section 3, "The Fuzzpet Pattern"). Same practical effect -- kill_all.sh
+   runs and does its own broad pattern-based pkill sweep as a last-resort
+   safety net -- via the mandated fork()/exec()/waitpid() shape instead. */
+static void run_final_kill_sweep(void) {
+    char script_path[MAX_PATH];
+    pid_t pid;
+    int status;
+
+    snprintf(script_path, sizeof(script_path), "%s/pieces/os/kill_all.sh", g_project_root);
+    if (access(script_path, X_OK) != 0 && access(script_path, F_OK) != 0) {
+        return;
+    }
+
+    pid = fork();
+    if (pid == 0) {
+        freopen("/dev/null", "w", stdout);
+        freopen("/dev/null", "w", stderr);
+        if (chdir(g_project_root) != 0) {
+            _exit(127);
+        }
+        execl("/bin/bash", "bash", "pieces/os/kill_all.sh", (char *)NULL);
+        _exit(127);
+    }
+    if (pid > 0) {
+        waitpid(pid, &status, 0);
+    }
+}
+
 static void sync_active_gui_index_from_display(void) {
     char path[MAX_PATH];
     FILE *f = NULL;
@@ -3410,6 +4505,20 @@ static void sync_active_gui_index_from_display(void) {
             log_alpha("Synced active_gui_index from display beyond max: %d -> %d", g_active_gui_index, idx);
         }
         g_active_gui_index = idx;
+    }
+
+    /* Companion read for g_active_gui_is_typing -- see that global's own
+     * comment and export_active_index() in wraith_parser_alpha.c
+     * (2fix-july6.txt, bug 3). Defaults to 0 (not typing) if the file is
+     * missing/unreadable, which is the safe fallback (shows ">" not "^"). */
+    g_active_gui_is_typing = 0;
+    snprintf(path, sizeof(path), "%s/pieces/display/active_gui_is_typing.txt", g_project_root);
+    f = fopen(path, "r");
+    if (f) {
+        if (fgets(line, sizeof(line), f)) {
+            g_active_gui_is_typing = (atoi(line) != 0);
+        }
+        fclose(f);
     }
 }
 
@@ -3555,6 +4664,33 @@ static void route_input(int key) {
         return;
     } else {
         g_digit_accum = 0;
+        /* Any other key -- overwhelmingly, in practice, the printable
+           characters cli_io typing sends. This process has zero
+           interpretation of them; that entire state machine (focus_index
+           vs. active_index, el->input_buffer, save_to_gui_state()) is
+           wraith_parser_alpha.c's own, private, internal state. But
+           GL-content-mode rendering depends on THIS process re-running
+           write_semantic_projection_files() (which reads gui_state.txt's
+           live per-keystroke value for whichever cli_io field is
+           currently active -- see read_gui_state_value(),
+           2fix-july6.txt bug 3) -- and until this line, "changed" was
+           never set here, so update_state()/trigger_render() never ran
+           for these keys. objects.pdl went stale the instant focus moved
+           to a cli_io field and stayed stale through every character
+           subsequently typed, even though current_frame.txt (written by
+           the OTHER process) re-rendered correctly on every single key
+           via its own unconditional "NAV MARKER: for ALL layouts"
+           convention. Confirmed live: current_frame.txt showed
+           "[^] 6. [hi hitest_]" (correct) while the objects.pdl generated
+           at the same moment still showed nav_selector_glyph=">" and the
+           static placeholder label (stale from focus time) -- this is
+           why ASCII always reflected typed text/the >/^ glyph correctly
+           while GL content mode never did. Matches the SAME "any key =>
+           re-render, let whichever process actually understands it
+           decide what to do" precedent the read_project_map_control()
+           branch above already uses unconditionally, for a different
+           mode. */
+        changed = 1;
     }
 
     if (changed) {
@@ -3629,5 +4765,19 @@ int main(void) {
     }
 
     log_alpha("Wraith-Alpha Manager shutting down.");
+
+    /* Mirrors pieces/chtpm/plugins/orchestrator.c's handle_sigint(): kill
+       this process's own group first (fast path -- reaches every child
+       that was fork()'d without its own setpgid(), which is every child
+       this file spawns today), then the file-backed tracked-process sweep
+       (catches anything that escaped the group), then the same kill_all.sh
+       final sweep the orchestrator uses as its own last resort. Previously
+       none of this existed here at all -- see kill_all_tracked_processes()'s
+       own comment for why that mattered (every project manager this
+       process ever launched was left running as an orphan on quit). */
+    kill(0, SIGTERM);
+    usleep(100000);
+    kill_all_tracked_processes();
+    run_final_kill_sweep();
     return 0;
 }

@@ -341,63 +341,26 @@ void* render_thread_func(void* arg) {
 
 void* gl_render_thread_func(void* arg) { launch_and_register("gl_renderer", "pieces/display/plugins/+x/gl_renderer.+x", NULL, true); return NULL; }
 void* clock_daemon_thread_func(void* arg) { launch_and_register("clock_daemon", "pieces/system/clock_daemon/plugins/+x/clock_daemon.+x", NULL, true); return NULL; }
-void* chtpm_thread_func(void* arg) { 
+void* chtpm_thread_func(void* arg) {
     char parser_path[1024] = "pieces/chtpm/plugins/+x/chtpm_parser.+x";
     char entry_layout[1024] = "pieces/chtpm/layouts/os.chtpm";
-    
-    /* RE-WRAITH: Resolve project-specific parser from state/pdl */
-    /* Wait 50ms for state to be flushed by main() */
-    usleep(50000);
 
-    FILE *sf = fopen("pieces/apps/player_app/manager/state.txt", "r");
-    if (sf) {
-        char line[1024], proj_id[64] = "";
-        while (fgets(line, sizeof(line), sf)) {
-            if (strncmp(line, "project_id=", 11) == 0) {
-                strncpy(proj_id, line + 11, 63);
-                proj_id[strcspn(proj_id, "\n\r")] = 0;
-                break;
-            }
-        }
-        fclose(sf);
-        
-        if (proj_id[0] != '\0') {
-            char pdl_p[1024];
-            snprintf(pdl_p, sizeof(pdl_p), "projects/%s/project.pdl", proj_id);
-            FILE *pf = fopen(pdl_p, "r");
-            if (pf) {
-                while (fgets(line, sizeof(line), pf)) {
-                    if (strstr(line, "META") && strstr(line, "| parser")) {
-                        char *v = strrchr(line, '|');
-                        if (v) {
-                            char *trimmed = v + 1;
-                            while(*trimmed == ' ') trimmed++;
-                            trimmed[strcspn(trimmed, "\n\r ")] = 0;
-                            if (strlen(trimmed) > 0) {
-                                /* VERIFY: Only use if executable exists */
-                                if (access(trimmed, F_OK) == 0) {
-                                    strncpy(parser_path, trimmed, sizeof(parser_path)-1);
-                                }
-                            }
-                        }
-                    }
-                    else if (strstr(line, "META") && strstr(line, "| entry_layout")) {
-                        char *v = strrchr(line, '|');
-                        if (v) {
-                            char *trimmed = v + 1;
-                            while(*trimmed == ' ') trimmed++;
-                            trimmed[strcspn(trimmed, "\n\r ")] = 0;
-                            if (strlen(trimmed) > 0) strncpy(entry_layout, trimmed, sizeof(entry_layout)-1);
-                        }
-                    }
-                }
-                fclose(pf);
-            }
-        }
-    }
-
-    launch_and_register("chtpm_parser", parser_path, entry_layout, true); 
-    return NULL; 
+    /* 2026-07-11: removed dead "RE-WRAITH" project-specific parser/layout
+       resolution that used to live here (read pieces/apps/player_app/
+       manager/state.txt's project_id, look up that project's own
+       project.pdl for META | parser / META | entry_layout overrides).
+       Confirmed inert on every normal launch: run_orchestrator.sh
+       truncates that same state.txt to empty before this binary even
+       starts, and main() (below) unconditionally rewrites it to
+       project_id=playrm before this thread ever runs -- so this code
+       always read "playrm", always failed to find a nonexistent
+       projects/playrm/project.pdl (playrm lives under pieces/apps/, not
+       projects/), and always fell through to exactly these same
+       hardcoded defaults anyway. Never actually redirected the boot
+       layout in practice. See j11.wraith-foundation-fix-fut.txt (parent
+       dev-env directory) for the full investigation. */
+    launch_and_register("chtpm_parser", parser_path, entry_layout, true);
+    return NULL;
 }
 
 int main() {

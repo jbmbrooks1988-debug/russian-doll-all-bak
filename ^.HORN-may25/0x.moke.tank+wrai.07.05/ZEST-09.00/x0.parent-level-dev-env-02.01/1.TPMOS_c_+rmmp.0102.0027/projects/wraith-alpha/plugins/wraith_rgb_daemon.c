@@ -15,6 +15,9 @@
 #include "../../../libraries/stb_image.h"
 #include "../../../pieces/chtpm/ops/lib/tpmos_live_frame_cache.c"
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
@@ -27,6 +30,16 @@
 #define HEIGHT (ROWS * GLYPH_H)
 #define MAX_OBJECTS 2048
 #define MAX_LABEL 256
+
+#define EMOJI_CACHE_SIZE 256
+#define EMOJI_GLYPH_SIZE 16
+
+typedef struct {
+    uint32_t codepoint;
+    unsigned char* bitmap;
+    int cached;
+    time_t last_used;
+} EmojiCacheEntry;
 
 #define WRAITH_UI_STATE "projects/wraith-alpha/session/desktop_ui_state.txt"
 #define SEMANTIC_META_PATH "pieces/display/current_frame.meta.pdl"
@@ -64,6 +77,13 @@ typedef struct {
 
 static unsigned char glyphs[128][GLYPH_W * GLYPH_H];
 static int g_presenter_ascii_mode = 0;
+
+static EmojiCacheEntry emoji_cache[EMOJI_CACHE_SIZE];
+static FT_Library ft_lib = NULL;
+static FT_Face emoji_face = NULL;
+static int emoji_enabled = 1;
+static char emoji_font_path[1024];
+static int emoji_glyph_size = 16;
 
 typedef struct {
     int valid;
@@ -147,6 +167,144 @@ static int parse_hex_color(const char *value, unsigned char rgb[3]) {
     return 1;
 }
 
+static void load_emoji_config(void) {
+    FILE *f = fopen("pieces/config/wraith_debug.conf", "r");
+    if (!f) {
+        strcpy(emoji_font_path, "/usr/share/fonts/truetype/noto/NotoColorEmoji.ttf");
+        emoji_glyph_size = 16;
+        return;
+    }
+    char line[1024];
+    int in_emoji_section = 0;
+    while (fgets(line, sizeof(line), f)) {
+        if (strstr(line, "[emoji_rendering]")) {
+            in_emoji_section = 1;
+            continue;
+        }
+        if (line[0] == '[') { in_emoji_section = 0; continue; }
+        if (!in_emoji_section) continue;
+        if (strncmp(line, "enabled=", 8) == 0) {
+            emoji_enabled = atoi(line + 8);
+        } else if (strncmp(line, "font_path=", 10) == 0) {
+            char *val = line + 10;
+            val[strcspn(val, "\n\r")] = 0;
+            strncpy(emoji_font_path, val, sizeof(emoji_font_path) - 1);
+        } else if (strncmp(line, "glyph_size=", 11) == 0) {
+            emoji_glyph_size = atoi(line + 11);
+        }
+    }
+    fclose(f);
+}
+
+static void init_emoji_renderer(void) {
+    if (!emoji_enabled || ft_lib) return;
+    if (FT_Init_FreeType(&ft_lib)) {
+        fprintf(stderr, "FreeType init failed\n");
+        emoji_enabled = 0;
+        return;
+    }
+    if (FT_New_Face(ft_lib, emoji_font_path, 0, &emoji_face)) {
+        fprintf(stderr, "Failed to load emoji font: %s\n", emoji_font_path);
+        FT_Done_FreeType(ft_lib);
+        ft_lib = NULL;
+        emoji_enabled = 0;
+        return;
+    }
+    FT_Set_Pixel_Sizes(emoji_face, emoji_glyph_size, emoji_glyph_size);
+    memset(emoji_cache, 0, sizeof(emoji_cache));
+}
+
+static uint32_t decode_utf8_codepoint(const char *str, int *len) {
+    unsigned char c = (unsigned char)str[0];
+    uint32_t cp = 0;
+    if (c < 0x80) {
+        *len = 1;
+        return c;
+    } else if ((c & 0xE0) == 0xC0) {
+        cp = ((c & 0x1F) << 6) | ((unsigned char)str[1] & 0x3F);
+        *len = 2;
+    } else if ((c & 0xF0) == 0xE0) {
+        cp = ((c & 0x0F) << 12) | (((unsigned char)str[1] & 0x3F) << 6) | ((unsigned char)str[2] & 0x3F);
+        *len = 3;
+    } else if ((c & 0xF8) == 0xF0) {
+        cp = ((c & 0x07) << 18) | (((unsigned char)str[1] & 0x3F) << 12) | (((unsigned char)str[2] & 0x3F) << 6) | ((unsigned char)str[3] & 0x3F);
+        *len = 4;
+    } else {
+        *len = 1;
+        return '?';
+    }
+    return cp;
+}
+
+static int utf8_char_len(unsigned char c) {
+    if (c < 0x80) return 1;
+    else if ((c & 0xE0) == 0xC0) return 2;
+    else if ((c & 0xF0) == 0xE0) return 3;
+    else if ((c & 0xF8) == 0xF0) return 4;
+    return 1;
+}
+
+static unsigned char* render_emoji_to_bitmap(uint32_t codepoint) {
+    if (!emoji_face) return NULL;
+    FT_UInt glyph_idx = FT_Get_Char_Index(emoji_face, codepoint);
+    if (!glyph_idx) return NULL;
+    FT_Load_Glyph(emoji_face, glyph_idx, FT_LOAD_RENDER);
+    FT_Bitmap *bitmap = &emoji_face->glyph->bitmap;
+    unsigned char *out = malloc(emoji_glyph_size * emoji_glyph_size);
+    memset(out, 0, emoji_glyph_size * emoji_glyph_size);
+    int copy_w = (bitmap->width < emoji_glyph_size) ? bitmap->width : emoji_glyph_size;
+    int copy_h = (bitmap->rows < emoji_glyph_size) ? bitmap->rows : emoji_glyph_size;
+    for (int y = 0; y < copy_h; y++) {
+        memcpy(&out[y * emoji_glyph_size], &bitmap->buffer[y * bitmap->pitch], copy_w);
+    }
+    return out;
+}
+
+static unsigned char* get_emoji_bitmap(uint32_t codepoint) {
+    if (!emoji_enabled || !emoji_face) return NULL;
+    for (int i = 0; i < EMOJI_CACHE_SIZE; i++) {
+        if (emoji_cache[i].cached && emoji_cache[i].codepoint == codepoint) {
+            emoji_cache[i].last_used = time(NULL);
+            return emoji_cache[i].bitmap;
+        }
+    }
+    unsigned char *bitmap = render_emoji_to_bitmap(codepoint);
+    if (!bitmap) return NULL;
+    int slot = -1;
+    for (int i = 0; i < EMOJI_CACHE_SIZE; i++) {
+        if (!emoji_cache[i].cached) {
+            slot = i;
+            break;
+        }
+    }
+    if (slot == -1) {
+        time_t oldest = emoji_cache[0].last_used;
+        slot = 0;
+        for (int i = 1; i < EMOJI_CACHE_SIZE; i++) {
+            if (emoji_cache[i].last_used < oldest) {
+                oldest = emoji_cache[i].last_used;
+                slot = i;
+            }
+        }
+        free(emoji_cache[slot].bitmap);
+    }
+    emoji_cache[slot].codepoint = codepoint;
+    emoji_cache[slot].bitmap = bitmap;
+    emoji_cache[slot].cached = 1;
+    emoji_cache[slot].last_used = time(NULL);
+    return bitmap;
+}
+
+static void cleanup_emoji(void) {
+    for (int i = 0; i < EMOJI_CACHE_SIZE; i++) {
+        if (emoji_cache[i].bitmap) {
+            free(emoji_cache[i].bitmap);
+        }
+    }
+    if (emoji_face) FT_Done_Face(emoji_face);
+    if (ft_lib) FT_Done_FreeType(ft_lib);
+}
+
 static void load_glyphs(void) {
     int i;
     memset(glyphs, 0, sizeof(glyphs));
@@ -196,14 +354,49 @@ static void blit_char(unsigned char *buffer, int col, int row, unsigned char c,
     }
 }
 
+static void blit_codepoint(unsigned char *buffer, int col, int row, uint32_t codepoint,
+                           const unsigned char rgb[3], int cell_w, int cell_h) {
+    if (codepoint < 128 && codepoint >= 32) {
+        blit_char(buffer, col, row, (unsigned char)codepoint, rgb[0], rgb[1], rgb[2], cell_w, cell_h);
+    } else if (emoji_enabled && codepoint >= 128) {
+        unsigned char *emoji_bitmap = get_emoji_bitmap(codepoint);
+        if (emoji_bitmap) {
+            int start_x = col * (cell_w ? cell_w : GLYPH_W);
+            int start_y = row * (cell_h ? cell_h : GLYPH_H);
+            int w = (cell_w ? cell_w : GLYPH_W);
+            int h = (cell_h ? cell_h : GLYPH_H);
+            for (int y = 0; y < h && y < emoji_glyph_size; y++) {
+                for (int x = 0; x < w && x < emoji_glyph_size; x++) {
+                    int dx = start_x + x;
+                    int dy = start_y + y;
+                    int idx;
+                    if (dx >= WIDTH || dy >= HEIGHT) continue;
+                    if (!emoji_bitmap[y * emoji_glyph_size + x]) continue;
+                    idx = (dy * WIDTH + dx) * 4;
+                    buffer[idx] = rgb[0];
+                    buffer[idx + 1] = rgb[1];
+                    buffer[idx + 2] = rgb[2];
+                    buffer[idx + 3] = 255;
+                }
+            }
+        } else {
+            blit_char(buffer, col, row, '?', rgb[0], rgb[1], rgb[2], cell_w, cell_h);
+        }
+    }
+}
+
 static void blit_text(unsigned char *buffer, int col, int row, const char *text,
                       const unsigned char rgb[3], int max_cols, int cell_w, int cell_h) {
-    int i;
+    int i = 0;
+    int char_count = 0;
     if (!text) return;
-    for (i = 0; text[i] != '\0'; i++) {
-        if (max_cols >= 0 && i >= max_cols) break;
-        if ((unsigned char)text[i] < 32 || (unsigned char)text[i] > 126) continue;
-        blit_char(buffer, col + i, row, (unsigned char)text[i], rgb[0], rgb[1], rgb[2], cell_w, cell_h);
+    while (text[i] != '\0') {
+        if (max_cols >= 0 && char_count >= max_cols) break;
+        int byte_len;
+        uint32_t cp = decode_utf8_codepoint(&text[i], &byte_len);
+        blit_codepoint(buffer, col + char_count, row, cp, rgb, cell_w, cell_h);
+        i += byte_len;
+        char_count++;
     }
 }
 
@@ -2912,15 +3105,21 @@ static void render_ascii_frame(const char *frame_path, unsigned char *buffer) {
     f = fopen(frame_path, "r");
     if (!f) return;
     while (fgets(line, sizeof(line), f) && row < ROWS) {
-        int col;
+        int col = 0;
+        int byte_idx = 0;
         unsigned char r = 200, g = 200, b = 200;
         if (strstr(line, "[>]")) {
             r = 0; g = 255; b = 255;
         }
-        for (col = 0; col < (int)strlen(line) && col < COLS; col++) {
-            unsigned char c = (unsigned char)line[col];
+        while (byte_idx < (int)strlen(line) && col < COLS) {
+            unsigned char c = (unsigned char)line[byte_idx];
             if (c == '\n' || c == '\r') break;
-            blit_char(buffer, col, row, c, r, g, b, GLYPH_W, GLYPH_H);
+            int byte_len;
+            uint32_t cp = decode_utf8_codepoint(&line[byte_idx], &byte_len);
+            unsigned char rgb[3] = {r, g, b};
+            blit_codepoint(buffer, col, row, cp, rgb, GLYPH_W, GLYPH_H);
+            byte_idx += byte_len;
+            col++;
         }
         row++;
     }
@@ -2945,6 +3144,8 @@ int main(void) {
 
     printf("[RGB-DAEMON] Starting Wraith RGB converter...\n");
     load_glyphs();
+    load_emoji_config();
+    init_emoji_renderer();
     buffer = malloc(WIDTH * HEIGHT * 4);
     if (!buffer) return 1;
 
@@ -2990,6 +3191,7 @@ int main(void) {
         usleep(16667);
     }
 
+    cleanup_emoji();
     free(buffer);
     return 0;
 }

@@ -131,3 +131,6 @@
 [1782288977] Key received: 1000
 [1782288980] Key received: 50
 [1782288980] Executing hotkey 2: '/home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-00.00/x0.moke-pet-project-3.1/1.TPMOS_c_+rmmp.0102.0026/pieces/apps/playrm/ops/+x/scan_op.+x' xlector
+[1783780079] Key received: 1001
+[1783780080] Key received: 1001
+[1783780080] Key received: 1003

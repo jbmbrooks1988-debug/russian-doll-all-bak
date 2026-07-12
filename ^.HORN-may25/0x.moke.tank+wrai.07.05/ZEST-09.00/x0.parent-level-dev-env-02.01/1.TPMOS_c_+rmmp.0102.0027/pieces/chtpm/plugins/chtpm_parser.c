@@ -390,7 +390,30 @@ static void resolve_project_module_path(char *dst, size_t sz, const char *proj_i
 }
 
 static void resolve_project_history_path(char *dst, size_t sz, const char *proj_id) {
-    snprintf(dst, sz, "projects/%s/history.txt", proj_id);
+    /* 2026-07-11: The wraith-alpha desktop shell (and every embedded
+       window it hosts -- settings, fs, piececraft-wraith, etc., whose
+       project_id is the nested "wraith-alpha/wraith-projects/<id>" form)
+       is all ONE running instance, dispatched through a single
+       wraith-alpha_manager.c::main() poll loop that only ever watches
+       the fixed path projects/wraith-alpha/session/history.txt for
+       "COMMAND: " lines (see route_command()/process_history_file()).
+       Before this fix, this function built "projects/%s/history.txt"
+       unconditionally, so any embedded-window project_id (which always
+       starts with "wraith-alpha") produced a path with no "session/"
+       segment and, for nested ids, extra path segments too -- a file
+       nothing ever polled. inject_command()/inject_raw_key() commands
+       (SETTINGS_PAGE:, KEY:n, PROJECT_ACTION:, etc.) sent via ASCII
+       keyboard therefore silently vanished; only GL mouse clicks worked,
+       because GL calls route_command() directly in-process, bypassing
+       this file relay entirely. Legacy standalone top-level projects
+       (op-ed, yahoo, mouse-test, ...) are NOT part of the wraith-alpha
+       shell and keep the old projects/<id>/history.txt convention their
+       own managers read. */
+    if (strcmp(proj_id, "wraith-alpha") == 0 || strncmp(proj_id, "wraith-alpha/", 13) == 0) {
+        snprintf(dst, sz, "projects/wraith-alpha/session/history.txt");
+    } else {
+        snprintf(dst, sz, "projects/%s/history.txt", proj_id);
+    }
 }
 
 static void resolve_project_session_history_path(char *dst, size_t sz, const char *proj_id) {
@@ -1549,9 +1572,57 @@ void send_command(const char* cmd) {
         return;
     }
     if (strncmp(cmd, "LAUNCH:", 7) == 0) { handle_launch_command(cmd); return; }
-    if (strncmp(cmd, "MP3:", 4) == 0 || strncmp(cmd, "OP:", 3) == 0 || strncmp(cmd, "SET_", 4) == 0) { 
-        inject_command(cmd); 
-        return; 
+    if (strncmp(cmd, "MP3:", 4) == 0 || strncmp(cmd, "OP:", 3) == 0 || strncmp(cmd, "SET_", 4) == 0) {
+        inject_command(cmd);
+        return;
+    }
+    /* 2026-07-11: PROJECT_ACTION: has the exact same Pitfall #99 gap
+       SETTINGS_PAGE: had -- it's a real, pervasively-used onClick prefix
+       (wraith-alpha_manager.c's route_command() has always handled it,
+       used by fs/settings/piececraft-wraith's own generated markup) that
+       does not start with SET_/OP:/MP3:, so it fell through every case
+       above and was silently dropped for ASCII keyboard input, working
+       only via GL mouse clicks. Was only ever mentioned in a comment
+       here (this file's own note about SETTINGS_PAGE:/KEY:n/
+       PROJECT_ACTION: all needing relay), never actually implemented.
+       Found while building wrai-text-editor's new PROJECT_ACTION:-based
+       command buttons (NEW_FILE/SAVE/etc.) -- fixing here before it
+       reproduces the identical "works with mouse, not keyboard" bug
+       SETTINGS_PAGE: had. */
+    if (strncmp(cmd, "PROJECT_ACTION:", 15) == 0) {
+        inject_command(cmd);
+        return;
+    }
+    /* 2026-07-11: SETTINGS_PAGE: is a real, pervasively-used onClick prefix
+       (settings.chtpm, window-geom-picker.chtpm, window-geom-editor.chtpm,
+       settings' ops-generated menu/picker markup, and
+       wraith-alpha_manager.c's own route_command() SETTINGS_PAGE: handler)
+       but does NOT start with "SET_" (it's "SETT", not "SET_") -- so it
+       fell through every case above and was silently dropped, matching
+       Pitfall #99 (PITFALLS_ACTIVE_2026-03-18.txt) exactly: "Commands...
+       will be SILENTLY IGNORED. Always prefix project commands with SET_".
+       Confirmed live, 2026-07-11: pressing Enter on a settings page-nav
+       button did nothing via ASCII keyboard input at all -- the SAME
+       action worked instantly via a GL mouse click, because GL's click
+       path calls wraith-alpha_manager.c's route_command() directly,
+       never through this function. inject_command() passes cmd through
+       UNCHANGED (into whichever history file wraith-alpha_manager.c's
+       main loop polls), so route_command()'s existing SETTINGS_PAGE:
+       handler receives the exact same string it always expected --
+       no renaming needed anywhere else, this was purely a missing
+       relay case here. */
+    if (strncmp(cmd, "SETTINGS_PAGE:", 14) == 0) {
+        inject_command(cmd);
+        return;
+    }
+    /* 2026-07-11: PROJECT_PAGE: is SETTINGS_PAGE:'s newly-generalized
+       sibling (wraith-alpha_manager.c's route_command() now handles both
+       identically, scoped to whichever project window is active, not
+       hardcoded to settings) -- same relay gap would apply here too if
+       not added explicitly, per this file's own Pitfall #99. */
+    if (strncmp(cmd, "PROJECT_PAGE:", 13) == 0) {
+        inject_command(cmd);
+        return;
     }
     if (strcmp(cmd, "BACK") == 0) {
         if (active_index != -1) {

@@ -204,6 +204,7 @@ static void emit_embedded_line_objects(FILE *objects, int *object_id, const Wind
                                        const char *window_chain, const char *line,
                                        int base_x, int base_y, int line_index, int *next_nav);
 static void utf8_safe_truncate(const char *src, char *dst, size_t dst_sz);
+static int render_project_layout_body(char *out, size_t size, const Window *window);
 static int count_scene_nav_controls(const char *project_dir);
 static int count_embedded_body_nav_slots(const char *body_path);
 static void reset_all_open_project_views_on_startup(void);
@@ -499,6 +500,34 @@ static void resolve_root(void) {
         }
     }
     fclose(kvp);
+}
+
+/* 2026-07-11: publishes CHROME_CONTENT_START to a well-known file so the
+ * nine separate wraith sub-project ops binaries with their own
+ * session/scene.objects.pdl generators (piececraft-wraith x2 files,
+ * wraith-browser, chtmgl-wraith, wraith-ed, web-cam, chtmgl-video-isolate,
+ * fs, wraith-3d-cube, screen-record) can read the real value at their own
+ * startup instead of hardcoding their own guess -- exactly the follow-up
+ * WRAITH_RGB_ARCHITECTURE.md's "NAV-NUMBERING INVARIANT" section flagged
+ * on 2026-07-06 and left undone ("if it's not in a file, it's a lie";
+ * these are separate binaries, TPMOS convention forbids shared C headers
+ * between them). Written once at startup -- CHROME_CONTENT_START is a
+ * compile-time constant for the lifetime of one manager process, so there
+ * is nothing to refresh mid-session. */
+static void publish_chrome_reserved_nav_count(void) {
+    char path[MAX_PATH];
+    char tmp_path[MAX_PATH];
+    FILE *f;
+
+    snprintf(path, sizeof(path), "%s/pieces/display/chrome_reserved_nav_count.txt", g_project_root);
+    snprintf(tmp_path, sizeof(tmp_path), "%s.tmp", path);
+    f = fopen(tmp_path, "w");
+    if (!f) {
+        return;
+    }
+    fprintf(f, "%d\n", CHROME_CONTENT_START);
+    fclose(f);
+    rename(tmp_path, path);
 }
 
 static void log_alpha(const char *fmt, ...) {
@@ -820,13 +849,28 @@ static int count_scene_nav_controls(const char *project_dir) {
     return count;
 }
 
-/* Counts nav-worthy chunks (any embedded tag with a non-empty label=
- * attribute) across every session/wraith_body.txt line starting with
- * '<' -- mirrors emit_embedded_line_objects()'s own chunk-detection
- * criterion exactly (same extract_attr() "label" check), so this count
- * and what actually gets emitted can't drift apart. Added so
- * g_max_index / launcher_start correctly reserve slots for these now-real
- * GL objects instead of leaving them at nav=0 (2fix.txt, 2026-07-05). */
+/* Counts nav-worthy chunks across every session/wraith_body.txt line
+ * starting with '<' -- MUST mirror emit_embedded_line_objects()'s own
+ * nav-assignment criterion exactly (label[0] && (action[0] ||
+ * has_target_id)), not just "has a label=", or this count and what
+ * actually gets a nav number during emission drift apart. That drift
+ * is exactly what happened: this originally counted any labeled chunk
+ * (2fix.txt, 2026-07-05), which was correct when EVERY labeled chunk
+ * got a nav slot. The 2026-07-11 target_id generalization narrowed
+ * emit_embedded_line_objects() to only assign nav to chunks with a
+ * real action or a target_id (plain <text label="..."/> border/status
+ * chunks stay nav=0) but never updated this counter to match, so any
+ * project whose embedded body has plain labeled <text> lines (e.g.
+ * wrai-text-editor's header, "DIR:" line, and 8 editor_map viewport
+ * rows) over-reserves nav slots here. dispatch_menu_index() derives
+ * launcher_start/taskbar_start from this count, not from the actual
+ * per-frame nav numbers objects carry -- so the over-reservation
+ * shifted those computed boundaries away from where nav numbers are
+ * really assigned during emission, misrouting clicks on later real
+ * objects (e.g. file_path_input) into the taskbar range. See
+ * WRAITH_RGB_ARCHITECTURE.md's nav-numbering invariant: two
+ * independent computations of the same number must never be allowed
+ * to diverge. */
 static int count_embedded_body_nav_slots(const char *body_path) {
     FILE *f;
     char line[256];
@@ -852,10 +896,17 @@ static int count_embedded_body_nav_slots(const char *body_path) {
             }
             if (*p == '<') {
                 char label[256];
+                char action[256];
+                char target_id[128];
+                int has_target_id;
                 const char *tag_end = strchr(p, '>');
                 if (!tag_end) break;
                 extract_attr(p, tag_end, "label", label, sizeof(label));
-                if (label[0]) {
+                if (!extract_attr(p, tag_end, "onClick", action, sizeof(action))) {
+                    extract_attr(p, tag_end, "href", action, sizeof(action));
+                }
+                has_target_id = extract_attr(p, tag_end, "target_id", target_id, sizeof(target_id)) && target_id[0];
+                if (label[0] && (action[0] || has_target_id)) {
                     count++;
                 }
                 p = tag_end + 1;
@@ -1615,6 +1666,159 @@ static void utf8_safe_truncate(const char *src, char *dst, size_t dst_sz) {
     dst[copy_len] = '\0';
 }
 
+/* Reads is_map_control=0/1 from <project_dir>/session/state.txt. Projects
+   that opt into map-control raw rendering (piececraft-wraith) must keep
+   using append_project_probe_body()'s raw wraith_body.txt passthrough --
+   their own layout's <button>/<text> markup is documented as
+   intentionally unparsed in that mode (see
+   layouts/piececraft-wraith.chtpm's own comment). Defaults to 0 (not
+   map-control) if the file/key is absent -- last value wins if the key
+   somehow appears more than once, matching this file's existing
+   "last line wins" convention (see read_gui_state_value()'s comment). */
+static int project_is_map_control(const char *project_dir) {
+    char path[MAX_PATH];
+    FILE *f;
+    char line[256];
+    int result = 0;
+
+    snprintf(path, sizeof(path), "%s/session/state.txt", project_dir);
+    f = fopen(path, "r");
+    if (!f) return 0;
+    while (fgets(line, sizeof(line), f)) {
+        if (strncmp(line, "is_map_control=", 15) == 0) {
+            result = atoi(line + 15);
+        }
+    }
+    fclose(f);
+    return result;
+}
+
+/* Substitutes ${key} placeholders in a single layout line using
+   read_gui_state_value() as the KVP source -- the SAME per-window-scoped
+   gui_state.txt reader already proven correct for <cli_io> fields (see
+   read_gui_state_value()'s own comment: reads project_dir/manager/gui_state.txt,
+   scoped to the specific embedded window, not this manager's own state).
+   Bounded, single-pass. An unresolved/empty ${var} is left in the output
+   as literal text rather than silently blanked -- makes a missing
+   substitution visible/debuggable instead of an invisible blank gap. */
+static void substitute_layout_line(const char *project_dir, const char *line, char *out, size_t out_sz) {
+    const char *p = line;
+    size_t used = 0;
+    out[0] = '\0';
+
+    while (*p && used + 1 < out_sz) {
+        if (p[0] == '$' && p[1] == '{') {
+            const char *close = strchr(p + 2, '}');
+            if (close) {
+                char key[128];
+                char value[2048];
+                size_t key_len = (size_t)(close - (p + 2));
+                if (key_len >= sizeof(key)) key_len = sizeof(key) - 1;
+                memcpy(key, p + 2, key_len);
+                key[key_len] = '\0';
+
+                read_gui_state_value(project_dir, key, value, sizeof(value));
+                if (value[0]) {
+                    size_t vlen = strlen(value);
+                    if (used + vlen >= out_sz) vlen = out_sz - used - 1;
+                    memcpy(out + used, value, vlen);
+                    used += vlen;
+                    out[used] = '\0';
+                    p = close + 1;
+                    continue;
+                }
+            }
+        }
+        out[used++] = *p++;
+        out[used] = '\0';
+    }
+}
+
+/* Renders a Wraith-hosted project's OWN layouts/<entry_layout>.chtpm for
+   its embedded desktop window body -- the real CHTPM model (structure
+   lives in the layout file, values live in manager/gui_state.txt, one
+   render step merges them), matching how agy-text-editor's standalone
+   layout is rendered by chtpm_parser.c -- instead of requiring every
+   embedded project to hand-duplicate its own layout structure into
+   session/wraith_body.txt via C fprintf() calls. See 2fix-july-11.txt
+   for the full research trail: confirmed real architecture gap (no
+   embedded window previously got genuine layout+substitution rendering
+   at all), not a per-project mistake.
+   Opt-in by construction, zero risk to existing projects: only fires
+   when the project has BOTH an entry_layout (project.pdl) and a
+   manager/gui_state.txt, and is not flagged is_map_control=1
+   (piececraft-wraith's own layout explicitly documents its own
+   <button>/<text> markup as intentionally unparsed in that mode --
+   preserved untouched by this gate). Any project without
+   manager/gui_state.txt silently returns 0 and falls through to the
+   existing append_project_probe_body() raw wraith_body.txt passthrough
+   at the call site, completely unchanged.
+
+   Multi-page support (added for `settings`'s window-geometry editor,
+   which needs to show one of several different layouts depending on
+   its own page-navigation state, not always the same fixed
+   entry_layout): if the project's manager/gui_state.txt publishes an
+   `active_layout=<relative path>` key, that path is used INSTEAD of
+   project.pdl's entry_layout for this render only -- project.pdl's
+   entry_layout remains the correct value for the project's initial/
+   default page and for any project that never publishes an override.
+   A project with only one page never needs to publish this key at all
+   (read_gui_state_value() returns empty, falls through to entry_layout,
+   identical to before this capability existed). */
+static int render_project_layout_body(char *out, size_t size, const Window *window) {
+    char project_dir[MAX_PATH];
+    char pdl_path[MAX_PATH];
+    char gui_state_path[MAX_PATH];
+    char entry_layout[MAX_PATH];
+    char active_layout_override[MAX_PATH];
+    struct stat st;
+    FILE *layout;
+    char line[1024];
+    int count = 0;
+
+    if (!window) return 0;
+    if (!project_dir_for_window(window, project_dir, sizeof(project_dir))) return 0;
+
+    snprintf(gui_state_path, sizeof(gui_state_path), "%s/manager/gui_state.txt", project_dir);
+    if (stat(gui_state_path, &st) != 0) return 0;
+
+    if (project_is_map_control(project_dir)) return 0;
+
+    read_gui_state_value(project_dir, "active_layout", active_layout_override, sizeof(active_layout_override));
+    if (active_layout_override[0]) {
+        snprintf(entry_layout, sizeof(entry_layout), "%s", active_layout_override);
+    } else {
+        snprintf(pdl_path, sizeof(pdl_path), "%s/project.pdl", project_dir);
+        entry_layout[0] = '\0';
+        read_pdl_value(pdl_path, "entry_layout", entry_layout, sizeof(entry_layout));
+        if (!entry_layout[0]) return 0;
+    }
+
+    layout = fopen(entry_layout, "r");
+    if (!layout) return 0;
+
+    while (fgets(line, sizeof(line), layout) && count < 60) {
+        char *trimmed;
+        char substituted[1200];
+
+        line[strcspn(line, "\r\n")] = '\0';
+        trimmed = line;
+        while (isspace((unsigned char)*trimmed)) trimmed++;
+
+        if (trimmed[0] != '<' && strncmp(trimmed, "${", 2) != 0) continue;
+        if (strncmp(trimmed, "<panel", 6) == 0 || strncmp(trimmed, "</panel", 7) == 0) continue;
+        if (strncmp(trimmed, "<chtpm", 6) == 0 || strncmp(trimmed, "</chtpm", 7) == 0) continue;
+        if (strncmp(trimmed, "<module", 7) == 0) continue;
+        if (strncmp(trimmed, "<interact", 9) == 0) continue;
+
+        substitute_layout_line(project_dir, trimmed, substituted, sizeof(substituted));
+        appendf(out, size, "%s", substituted);
+        count++;
+    }
+    fclose(layout);
+    return count;
+}
+
 static int append_project_probe_body(char *out, size_t size, const Window *window) {
     char project_dir[MAX_PATH];
     char body_path[MAX_PATH];
@@ -2020,40 +2224,51 @@ static void emit_embedded_line_objects(FILE *objects, int *object_id, const Wind
                 extract_attr(p, tag_end, "href", action, sizeof(action));
             }
 
-            /* Mirrors wraith_parser_alpha.c's own cli_io rendering exactly:
+            /* 2026-07-11: generalized from an `is_cli_io`-only special case
+               to "any tag with a target_id attribute" -- the underlying
+               capability (show this element's live gui_state.txt value
+               instead of its static label attribute) was never actually
+               cli_io-specific, `extract_attr()` already parses target_id
+               generically regardless of tag name, and ASCII's own
+               equivalent (wraith_parser_alpha.c's save_to_gui_state()/
+               get_var() pair) has no such tag-type restriction either --
+               it substitutes by target_id/key for whatever element
+               declares one. Narrowing this to <cli_io> specifically was
+               solving the one gap that had been noticed (window-geom's
+               input fields, 2fix-july6.txt bug 2), not a deliberate design
+               choice to keep it cli_io-only. Generalizing here closes part
+               of j11.wraith-foundation-fix-fut.txt's "cli_io should become
+               a generic property of whatever shared render primitive"
+               item -- any future element type that wants a live,
+               persisted value (not just cli_io input boxes) now gets it
+               for free by declaring target_id, in both ASCII and GL,
+               instead of needing its own bolted-on special case here.
+               Mirrors wraith_parser_alpha.c's own cli_io rendering exactly:
                that file's display_val is "input_buffer if non-empty, else
                the placeholder label" -- ASCII's input_buffer is populated
                by reading this SAME target_id-keyed gui_state.txt value
-               back on reparse. GL had no equivalent at all before this:
-               emit_embedded_line_objects() only ever echoed the tag's
-               static label attribute, so even with focus+typing fully
-               working on the ASCII/backend side, GL's cli_io boxes could
-               never show it (see 2fix-july6.txt, bug 2). Buttons are
-               untouched -- this only fires for <cli_io> tags, and only
-               when a live, non-empty value actually exists for its own
-               target_id. */
-            int is_cli_io = (strncmp(p, "<cli_io", 7) == 0);
-            if (is_cli_io) {
-                char target_id[128];
-                if (extract_attr(p, tag_end, "target_id", target_id, sizeof(target_id)) && target_id[0]) {
-                    char project_dir[MAX_PATH];
-                    if (project_dir_for_window(window, project_dir, sizeof(project_dir))) {
-                        char live_value[256];
-                        read_gui_state_value(project_dir, target_id, live_value, sizeof(live_value));
-                        if (live_value[0]) {
-                            strncpy(label, live_value, sizeof(label) - 1);
-                            label[sizeof(label) - 1] = '\0';
-                        }
+               back on reparse. */
+            char target_id[128];
+            int has_target_id = extract_attr(p, tag_end, "target_id", target_id, sizeof(target_id)) && target_id[0];
+            if (has_target_id) {
+                char project_dir[MAX_PATH];
+                if (project_dir_for_window(window, project_dir, sizeof(project_dir))) {
+                    char live_value[256];
+                    read_gui_state_value(project_dir, target_id, live_value, sizeof(live_value));
+                    if (live_value[0]) {
+                        strncpy(label, live_value, sizeof(label) - 1);
+                        label[sizeof(label) - 1] = '\0';
                     }
                 }
             }
 
             if (label[0]) {
-                /* Only real buttons (a non-empty action) OR a <cli_io>
-                   field consume a nav slot -- plain <text> border/padding
-                   chunks stay nav=0, visible but not Tab-focusable,
-                   matching count_embedded_body_nav_slots()'s job of
-                   reserving the right number of slots (that counter
+                /* Only real buttons (a non-empty action) OR a target_id-
+                   bearing field (cli_io and, now, anything else that
+                   declares target_id) consume a nav slot -- plain <text>
+                   border/padding chunks stay nav=0, visible but not
+                   Tab-focusable, matching count_embedded_body_nav_slots()'s
+                   job of reserving the right number of slots (that counter
                    counts ALL labeled chunks, cli_io included, so this
                    already fits inside its reserved upper bound -- no
                    renumbering needed elsewhere).
@@ -2067,7 +2282,7 @@ static void emit_embedded_line_objects(FILE *objects, int *object_id, const Wind
                    synthesizes SET_ACTIVE:<nav> for any nav>0 OBJECT with
                    no action of its own -- the same generic click-to-focus
                    path every other nav-only element already uses. */
-                if ((action[0] || is_cli_io) && next_nav) {
+                if ((action[0] || has_target_id) && next_nav) {
                     nav = (*next_nav)++;
                 }
                 rendered_len = (int)strlen(label);
@@ -2091,21 +2306,23 @@ static void emit_embedded_line_objects(FILE *objects, int *object_id, const Wind
                        for the fuller trace. */
                     int display_len = rendered_len;
                     int is_selected = (nav > 0 && g_active_gui_index == nav);
-                    /* "^" only for a cli_io field that's genuinely ACTIVE
-                       (accepting keystrokes), not just focused -- mirrors
-                       ASCII's own is_active-vs-is_focused distinction
-                       exactly (wraith_parser_alpha.c's render_element():
-                       is_active uses "[^]", is_focused-only uses "[>]").
-                       g_active_gui_is_typing is the ONLY signal that
-                       distinguishes them; without it (before this fix)
-                       this could only ever say ">" (see 2fix-july6.txt,
-                       bug 3). Deliberately scoped to is_cli_io -- this
-                       must not affect the UNRELATED existing "^" used for
+                    /* "^" only for a target_id-bearing field that's
+                       genuinely ACTIVE (accepting keystrokes), not just
+                       focused -- mirrors ASCII's own is_active-vs-is_focused
+                       distinction exactly (wraith_parser_alpha.c's
+                       render_element(): is_active uses "[^]",
+                       is_focused-only uses "[>]"). g_active_gui_is_typing is
+                       the ONLY signal that distinguishes them; without it
+                       (before the original fix) this could only ever say
+                       ">" (see 2fix-july6.txt, bug 3). Scoped to
+                       has_target_id (broadened 2026-07-11 from cli_io-only,
+                       see this function's own header comment) -- this must
+                       not affect the UNRELATED existing "^" used for
                        map-control/INTERACT elements elsewhere in this
                        file. */
                     const char *glyph = " ";
                     if (is_selected) {
-                        glyph = (is_cli_io && g_active_gui_is_typing) ? "^" : ">";
+                        glyph = (has_target_id && g_active_gui_is_typing) ? "^" : ">";
                     }
                     if (nav > 0) {
                         int nav_digits = 1;
@@ -2166,6 +2383,24 @@ static void append_project_scene_objects(FILE *objects, int *object_id, const Wi
     char line[1024];
     FILE *scene;
     int is_map_control = 0;
+    /* 2026-07-11: was trusting the LITERAL nav=N a project's own
+       ops/src/wraith_project_input.c hardcodes into scene.objects.pdl
+       (confirmed: piececraft-wraith and eight other projects each write
+       "nav=6".."nav=23"-style literals, per this file's own
+       CHROME_CONTENT_START comment -- "author-declared... NOT dynamically
+       assigned"). That's only correct as long as nothing else occupies
+       CHROME_CONTENT_START..N first, an invariant nine separate C files
+       have no way to enforce or even check against each other. ASCII's
+       equivalent path (append_project_probe_scene_markup() ->
+       parse_chtm()) already ignores the declared number entirely and
+       lets chtpm_parser assign real sequential nav by parse order --
+       this counter does the same for GL, so the two renderers can no
+       longer independently drift (exactly the failure class fixed for
+       chrome icons on 2026-07-06 and the launcher row on 2026-07-11).
+       The file's own nav=N is now read only as a boolean "does this
+       object want a nav slot" signal (matches count_scene_nav_controls()'s
+       existing ">0" check one function up), never as the assigned value. */
+    int next_scene_nav = CHROME_CONTENT_START;
 
     if (!objects || !object_id || !window || !window_chain) {
         return;
@@ -2238,8 +2473,8 @@ static void append_project_scene_objects(FILE *objects, int *object_id, const Wi
         if (line_kvp_value(line, "border", value, sizeof(value))) snprintf(border, sizeof(border), "%s", value);
         if (line_kvp_value(line, "action", value, sizeof(value))) snprintf(action, sizeof(action), "%s", value);
         if (line_kvp_value(line, "label", value, sizeof(value))) snprintf(label, sizeof(label), "%s", value);
-        if (line_kvp_value(line, "nav", value, sizeof(value))) {
-            nav = atoi(value);
+        if (line_kvp_value(line, "nav", value, sizeof(value)) && atoi(value) > 0) {
+            nav = next_scene_nav++;
         }
         if (nav > 0) {
             nav_selected = (g_active_gui_index == nav);
@@ -2446,9 +2681,54 @@ static void build_desktop_shell_markup(char *out, size_t size, Window *window) {
     appendf(raw, sizeof(raw), "-+               |<br/>");
 
     if (window && !active_window_is_terminal(window)) {
-        int project_line_count = append_project_probe_body(raw, sizeof(raw), window);
+        int project_line_count = render_project_layout_body(raw, sizeof(raw), window);
         if (project_line_count == 0) {
-            project_line_count = append_project_probe_scene_markup(raw, sizeof(raw), window, 14);
+            project_line_count = append_project_probe_body(raw, sizeof(raw), window);
+        }
+        /* 2026-07-11: scene-declared controls (a project's own
+           session/scene.objects.pdl -- arrows/buttons like
+           piececraft-wraith's Up/Down/Left/Right/mode/debug/camera
+           controls) were previously gated behind `project_line_count == 0`,
+           so any project whose wraith_body.txt already returned non-empty
+           content (piececraft's map display always does) never got its
+           scene controls rendered in ASCII at all: GL read
+           scene.objects.pdl directly (18 real buttons), ASCII showed 0,
+           and the periodic GL<->ASCII active-index sync kept snapping
+           GL's larger, correct nav count back down to ASCII's
+           wrongly-empty one -- confirmed live as the root cause of
+           arrow-key navigation appearing to cap out partway through
+           piececraft's control list.
+
+           Fix is conditional, NOT unconditional: some projects (web-cam,
+           chtmgl-video-isolate, screen-record -- confirmed via grep) hand-
+           author real `<button>` lines directly into wraith_body.txt for
+           the SAME actions their scene.objects.pdl also declares (e.g.
+           web-cam's Start/Stop/Fast/Debug/Refresh appear in both files
+           with matching PROJECT_ACTION: targets). For those, appending
+           scene-markup unconditionally would render every control twice.
+           count_embedded_body_nav_slots() already exists and counts real
+           nav-worthy `<`-tag chunks in wraith_body.txt (same criterion
+           emit_embedded_line_objects() uses) -- only fall back to scene
+           markup when the body contributed zero of its own, i.e. exactly
+           piececraft-wraith's situation (plain map/HUD text, no buttons)
+           and five siblings in the same boat (wraith-browser, chtmgl-wraith,
+           wraith-ed, fs, wraith-3d-cube -- confirmed via grep, all have
+           scene.objects.pdl controls but zero `<`-lines in their body).
+           max_lines raised 14 -> 40 to match project_probe_body_lines()'s
+           own precedent -- 14 silently cut off piececraft's last 7
+           controls (camera left/right/up/down, POV 1/2/3) even when this
+           path did run. */
+        {
+            char scene_body_path[MAX_PATH];
+            char scene_body_project_dir[MAX_PATH];
+            int body_own_nav_slots = -1;
+            if (project_dir_for_window(window, scene_body_project_dir, sizeof(scene_body_project_dir))) {
+                snprintf(scene_body_path, sizeof(scene_body_path), "%s/session/wraith_body.txt", scene_body_project_dir);
+                body_own_nav_slots = count_embedded_body_nav_slots(scene_body_path);
+            }
+            if (body_own_nav_slots == 0) {
+                project_line_count += append_project_probe_scene_markup(raw, sizeof(raw), window, 40);
+            }
         }
         if (project_line_count == 0) {
             appendf(raw, sizeof(raw), "| |  Project: %-70.70s |<br visibility=\"${desktop_active_window_body_visible}\" />", window->project_id);
@@ -2771,7 +3051,20 @@ static void write_semantic_projection_files(void) {
         } else {
             discover_launcher_projects();
             for (li = 0; li < g_launcher_count; li++) {
-                int nav_idx = 5 + li;
+                /* CHROME_CONTENT_START, not a hardcoded 5 -- this was still
+                   the literal from before CHROME_ICON_COUNT went 3->4
+                   (2fix.txt, 2026-07-06 bump), missed in that pass because
+                   it lives in GL's launcher-row OBJECT emission, not one of
+                   the nine per-project scene.objects.pdl generators that
+                   were audited. Confirmed live via
+                   session/rgb/current_frame.receipt.pdl (2026-07-11):
+                   launcher row's first real item was nav=5, colliding with
+                   chrome's own last icon (the '&' window-geom icon, also
+                   nav=5 with 4 chrome icons) -- the direct cause of
+                   "index counts off" / "GL nav skips settings" reported
+                   live, since the collision breaks the nav-cycle sequence
+                   starting from this exact point. */
+                int nav_idx = CHROME_CONTENT_START + li;
                 fprintf(objects, "OBJECT | %04d | tag=panel id=launcher_row_%s role=launcher_row x=%d y=%d w=30 h=1 z=18 focused=%s parent_id=%s container_id=%s source_ref=semantic:launcher_row ancestor_chain=%s>launcher_row_%s clip_chain=%s fg=#E8F1F2 bg=#162534 border=#162534 label= action= src=\n",
                     object_id++,
                     g_launchers[li].id_prefix,
@@ -4106,18 +4399,68 @@ static void route_command(const char *cmd) {
         trigger_render();
         return;
     }
-    if (strncmp(cmd, "SETTINGS_PAGE:", 14) == 0) {
+    if (strncmp(cmd, "SETTINGS_PAGE:", 14) == 0 || strncmp(cmd, "PROJECT_PAGE:", 13) == 0) {
+        /* 2026-07-11: SETTINGS_PAGE: used to hardcode
+           projects/wraith-alpha/wraith-projects/settings/session/state_changed.txt
+           as the page-tracking file, regardless of which window was
+           actually active -- meaning this multi-page mechanism only ever
+           worked for settings, even though nothing about the logic below
+           is settings-specific. Generalized to write to whichever
+           project is CURRENTLY ACTIVE's own session/state_changed.txt
+           (active_project_dir(), the same resolver every other
+           project-scoped handler in this function already uses), so any
+           project with its own multi-page ops (settings, and now
+           wrai-text-editor's editor/file_menu/file_browser pages) gets
+           this for free. PROJECT_PAGE: is the new, honestly-named prefix
+           for this generic use; SETTINGS_PAGE: is kept as a working
+           alias so settings' own existing layouts (which already emit
+           SETTINGS_PAGE:) don't need to change. */
         char page_name[256];
         char page_file[MAX_PATH];
+        char active_dir[MAX_PATH];
         FILE *f;
-        strncpy(page_name, cmd + 14, sizeof(page_name) - 1);
+        int prefix_len = (strncmp(cmd, "SETTINGS_PAGE:", 14) == 0) ? 14 : 13;
+        strncpy(page_name, cmd + prefix_len, sizeof(page_name) - 1);
         page_name[sizeof(page_name) - 1] = '\0';
-        snprintf(page_file, sizeof(page_file), "%s/projects/wraith-alpha/wraith-projects/settings/session/state_changed.txt", g_project_root);
+        if (!active_project_dir(active_dir, sizeof(active_dir))) {
+            return;
+        }
+        snprintf(page_file, sizeof(page_file), "%s/session/state_changed.txt", active_dir);
         f = fopen(page_file, "a");
         if (f) {
             fprintf(f, "%s\n", page_name);
             fclose(f);
         }
+        /* 2026-07-11: this used to rely on settings_manager.c's own
+           persistent polling loop noticing state_changed.txt's growth
+           on its own timer (up to 50ms later) to actually recompute
+           gui_state.txt/wraith_body.txt for the new page -- that loop
+           has been removed (settings_manager.c is now init-only,
+           matching every other correctly-structured project). Call the
+           ops synchronously here instead, same as the KEY:/PROJECT_ACTION:
+           handlers above already do -- no more race, no more lag. */
+        run_active_project_input_op();
+        /* 2026-07-11: this handler was the ONE branch in route_command()
+           that called trigger_render() without update_state() first --
+           every other branch (KEY:, PROJECT_ACTION:, mouse handling,
+           etc.) calls update_state() to re-project the active window's
+           freshly-written wraith_body.txt into alpha_state.txt /
+           desktop_ui_state.txt (the files chtpm_parser's ASCII composer
+           actually reads), THEN trigger_render() to ping the marker
+           files telling chtpm_parser to redraw. Without it,
+           run_active_project_input_op() above correctly updated
+           settings' own gui_state.txt/wraith_body.txt (confirmed live
+           via file mtimes), but the composed frame source chtpm_parser
+           reads was never refreshed, so trigger_render()'s marker ping
+           caused a redraw of the STALE, pre-transition frame. The very
+           next MOUSE_MOVE (which does call update_state()) would finally
+           pick up the already-correct state and "catch it up" -- exactly
+           matching the observed symptom: Enter presses did nothing, and
+           only a subsequent mouse click/move produced the page
+           transition. Confirmed via alpha_manager.log/gui_state.txt
+           timestamps: state was correct at T, but the composed frame
+           only updated at T+mouse-event. */
+        update_state(0);
         trigger_render();
         return;
     }
@@ -4511,14 +4854,42 @@ static void sync_active_gui_index_from_display(void) {
      * comment and export_active_index() in wraith_parser_alpha.c
      * (2fix-july6.txt, bug 3). Defaults to 0 (not typing) if the file is
      * missing/unreadable, which is the safe fallback (shows ">" not "^"). */
-    g_active_gui_is_typing = 0;
-    snprintf(path, sizeof(path), "%s/pieces/display/active_gui_is_typing.txt", g_project_root);
-    f = fopen(path, "r");
-    if (f) {
-        if (fgets(line, sizeof(line), f)) {
-            g_active_gui_is_typing = (atoi(line) != 0);
+    {
+        int previous_is_typing = g_active_gui_is_typing;
+        g_active_gui_is_typing = 0;
+        snprintf(path, sizeof(path), "%s/pieces/display/active_gui_is_typing.txt", g_project_root);
+        f = fopen(path, "r");
+        if (f) {
+            if (fgets(line, sizeof(line), f)) {
+                g_active_gui_is_typing = (atoi(line) != 0);
+            }
+            fclose(f);
         }
-        fclose(f);
+        /* 2026-07-11: this function is called every ~16ms from main()'s
+           loop, unconditionally, NOT just on a keypress -- so
+           g_active_gui_is_typing itself does refresh promptly after
+           chtpm_parser.c (a separate process) writes the file on
+           activating a cli_io field. But nothing else in this codebase
+           re-renders just because a value changed in memory -- every
+           render is triggered by an explicit update_state()+
+           trigger_render() call inside some event handler (route_input(),
+           route_command(), etc.). Confirmed live: activating a cli_io
+           field in GL left the ">" glyph showing until the NEXT keypress
+           (the first digit typed) happened to also trigger a render,
+           because THAT keypress's handler called update_state() for an
+           unrelated reason and incidentally picked up the by-then-fresh
+           g_active_gui_is_typing along with it -- there was nothing
+           forcing a render at the moment the value actually changed.
+           Trigger one here, explicitly, the moment this poll notices the
+           value flipped either direction (entering OR leaving typing
+           mode) -- matches this file's own established precedent of
+           polling a marker/state file and rendering on change (e.g. the
+           main loop's frame_changed.txt growth check), just applied to
+           this specific piece of state too. */
+        if (g_active_gui_is_typing != previous_is_typing) {
+            update_state(0);
+            trigger_render();
+        }
     }
 }
 
@@ -4621,7 +4992,27 @@ static void route_input(int key) {
         return;
     }
 
-    if (key >= '0' && key <= '9') {
+    /* 2026-07-11: every branch below that reinterprets a raw key as a
+       nav command (digit-jump, arrow up/down, Enter-dispatch) must NOT
+       run while a cli_io field is genuinely ACTIVE and accepting
+       keystrokes (g_active_gui_is_typing) -- confirmed live: typing a
+       numeric value into a GL cli_io field made the ">" nav selector
+       jump around with every digit, because this function had no
+       equivalent of chtpm_parser.c's own active_index-gated dispatch
+       (that file's process_key() checks active_index != -1 FIRST and
+       routes straight to el->input_buffer for a cli_io element, never
+       falling into its own digit-accumulator nav-jump logic at all --
+       see its "Active mode" branch). This function had no analogous
+       gate, so EVERY digit typed into ANY cli_io field, in GL, also
+       unconditionally moved g_active_gui_index -- purely a GL-side
+       symptom, since ASCII's dispatch was already correctly scoped.
+       When typing, fall through to the safe "any other key" branch
+       below (already correct: it re-renders without reinterpreting the
+       key, letting chtpm_parser.c's own private input_buffer state
+       machine -- which reads the SAME shared keyboard history this
+       process appends to -- be the one that actually decides what a
+       digit or Enter means while a field is active). */
+    if (!g_active_gui_is_typing && key >= '0' && key <= '9') {
         int digit = key - '0';
         int candidate = (g_digit_accum * 10) + digit;
         if (candidate > 0 && candidate <= g_max_index) {
@@ -4635,19 +5026,19 @@ static void route_input(int key) {
         } else {
             g_digit_accum = 0;
         }
-    } else if (key == 1002) {
+    } else if (!g_active_gui_is_typing && key == 1002) {
         g_digit_accum = 0;
         if (g_active_gui_index > 1) {
             g_active_gui_index--;
             changed = 1;
         }
-    } else if (key == 1003) {
+    } else if (!g_active_gui_is_typing && key == 1003) {
         g_digit_accum = 0;
         if (g_active_gui_index < g_max_index) {
             g_active_gui_index++;
             changed = 1;
         }
-    } else if (key == 10 || key == 13) {
+    } else if (!g_active_gui_is_typing && (key == 10 || key == 13)) {
         sync_active_gui_index_from_display();
         if (g_digit_accum > 0 && g_digit_accum <= g_max_index) {
             g_active_gui_index = g_digit_accum;
@@ -4662,6 +5053,44 @@ static void route_input(int key) {
             return;
         }
         return;
+    } else if (g_active_gui_is_typing && (key == 10 || key == 13)) {
+        /* 2026-07-12 (agy-vs-wrai.txt bug #7): Enter pressed WHILE a
+           cli_io field is actively typing had no working path to reach
+           any embedded Wraith project at all. chtpm_parser.c's own raw-
+           key relay (inject_raw_key(13), fired by its generic cli_io
+           Enter-handling) writes to whatever the OUTER shell layout's
+           own <interact src="..."> declares -- confirmed live via
+           debug.txt: projects/wraith-alpha/session/history.txt (the
+           desktop shell's own history), NOT the embedded project's own
+           session/history.txt, because chtpm_parser only recognizes an
+           <interact> tag from the layout it's directly parsing, not
+           from a project's substituted/embedded markup. Separately,
+           THIS function's own Enter-dispatch branch above is correctly
+           gated behind !g_active_gui_is_typing (added earlier the same
+           session specifically so digit/arrow keys don't fight cli_io
+           typing) -- but that gate caught Enter too, so it fell all the
+           way to the generic "any other key" branch below, which only
+           re-renders and never forwards anything. Net effect: a typed
+           value got saved into gui_state.txt correctly (visible on
+           screen), but nothing ever acted on it -- confirmed live as
+           the reason Save-As's Enter-to-confirm didn't work in
+           wrai-text-editor (agy-text-editor is unaffected: it's reached
+           via chtpm_parser's OWN current_layout directly, so its
+           <interact> tag IS the one chtpm_parser recognizes, and its
+           own main loop's bare-number fallback catches the raw 13
+           chtpm_parser writes to the file agy actually watches).
+           Fix: forward Enter specifically (never digits/arrows -- this
+           is a narrow exception, not a reopening of the gate removed
+           above) to the active project via the same
+           append_project_history()+run_active_project_input_op() shape
+           the is_map_control branch already uses, so it arrives as a
+           real "KEY_PRESSED: 13" line any project's own ops can act on
+           exactly like it already does for is_map_control-mode keys. */
+        char key_buf[32];
+        snprintf(key_buf, sizeof(key_buf), "%d", key);
+        append_project_history("KEY_PRESSED", key_buf);
+        run_active_project_input_op();
+        changed = 1;
     } else {
         g_digit_accum = 0;
         /* Any other key -- overwhelmingly, in practice, the printable
@@ -4716,6 +5145,7 @@ int main(void) {
     atexit(cleanup_runtime);
     enable_mouse_mode();
     bootstrap_fresh_session();
+    publish_chrome_reserved_nav_count();
 
     snprintf(keyboard_hist_path, sizeof(keyboard_hist_path), "%s/pieces/keyboard/history.txt", g_project_root);
     snprintf(project_hist_path, sizeof(project_hist_path), "%s/projects/wraith-alpha/session/history.txt", g_project_root);

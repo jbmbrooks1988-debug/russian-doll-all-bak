@@ -244,50 +244,6 @@ separate loading convention. Wraith itself does not yet read the
 worth knowing if this ever gets refactored toward the more literal
 HTML/`<script>` model the "browser" long-term direction implies.
 
-## Window Geometry Note (added 2026-07-05)
-
-Real implementation work has started confirming a piece of this doc's
-core claim -- that host differences (Wraith-hosted window vs. a future
-`0x-pet` filesystem-style picker) should be about discovery/default
-behavior over one shared contract, never a second data format.
-
-`project.pdl` just gained real evidence of this: as of the window-first
-editor push tracked in `x0.short-term-vision/todo-j5.txt`, every
-project's window position/size is being added as a plain `WINDOW`
-section on that SAME `project.pdl` file (`window_x`/`window_y`/
-`window_width`/`window_height`), read back via the exact same generic
-`read_pdl_value(path, key, ...)` helper in `wraith-alpha_manager.c`
-already used for `project_id`/`entry_layout`/`title` -- not a new
-parsing contract, not a second config file, just more keys on the
-artifact that was already sovereign.
-
-Two consequences worth recording here specifically, not just in the
-`todo-j5.txt` build log:
-
-- **`project.pdl` is proving out as more than launch/identity
-  metadata.** It's becoming the place UI/host-level facts about a
-  project live too (where its window sits, how big it is), which is
-  exactly the shape "the enclosure is the sovereign artifact" implies
-  once you take it seriously -- geometry is just another fact about the
-  project, not a separate runtime-specific concern.
-- **The planned `project-settings` project (see `todo-j5.txt` Path 2)
-  is a concrete, near-term instance of the `0x-pet` filesystem-style
-  selection pattern already described above in this doc** -- it crawls
-  for every project's `project.pdl` (not a hardcoded registry, matching
-  "Key precedent: controllers should be discoverable, not welded into
-  one path" above) and edits each one's `WINDOW` section directly,
-  fully nav/`<cli_io>`-driven, no mouse required. That is "enclosure
-  selected from a broader directory, navigated filesystem-style" applied
-  to configuration instead of launch -- the same host-vs-artifact split
-  this doc argues for, just showing up in a smaller, nearer-term feature
-  before the full `0x-pet` program exists.
-
-This does not change any recommendation above (Wraith shell/fs work
-still comes first, `0x-pet-wraith` as a dedicated program is still
-future-track) -- it's recorded here because it's real, currently-landing
-proof that the "one artifact, multiple front doors" model holds up
-under actual implementation, not just planning.
-
 ## Bottom Line
 Yes, the idea is coherent.
 

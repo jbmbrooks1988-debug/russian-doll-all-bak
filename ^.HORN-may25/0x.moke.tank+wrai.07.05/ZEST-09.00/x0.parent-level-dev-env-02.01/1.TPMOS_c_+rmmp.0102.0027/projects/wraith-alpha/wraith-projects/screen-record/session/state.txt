@@ -6,4 +6,4 @@ audio_mode=video_only
 poster_loaded=0
 poster_width=0
 poster_height=0
-history_cursor=63
+history_cursor=0

@@ -28,6 +28,28 @@ static void path_join(char *out, size_t out_sz, const char *root, const char *re
     snprintf(out, out_sz, "%s/%s", root, rel);
 }
 
+/* 2026-07-11: reads CHROME_CONTENT_START's live value, published by
+ * wraith-alpha_manager.c (see that file's publish_chrome_reserved_nav_count(),
+ * added same day) to pieces/display/chrome_reserved_nav_count.txt, instead
+ * of hardcoding this project's own guess about where its nav range may
+ * safely start. This ops binary is fork+exec'd by
+ * wraith-alpha_manager.c's run_active_project_input_op() WITHOUT a chdir(),
+ * so it inherits the manager's own cwd -- the relative path below is
+ * correct without combining it with `root` (which is this PROJECT's own
+ * dir, not the repo root). Falls back to the literal this file always used
+ * before if the manager hasn't published yet. */
+static int read_chrome_content_start(int fallback) {
+    FILE *f = fopen("pieces/display/chrome_reserved_nav_count.txt", "r");
+    int value;
+    if (!f) return fallback;
+    if (fscanf(f, "%d", &value) != 1 || value <= 0) {
+        fclose(f);
+        return fallback;
+    }
+    fclose(f);
+    return value;
+}
+
 static void trim_newline(char *s) {
     if (!s) return;
     s[strcspn(s, "\r\n")] = '\0';
@@ -281,6 +303,7 @@ static void write_body(const char *root, const CubeState *state) {
 static void write_scene(const char *root, const CubeState *state) {
     char path[MAX_PATH_LEN];
     FILE *f;
+    int nav_base = read_chrome_content_start(6);
     (void)root;
     path_join(path, sizeof(path), root, "session/scene.objects.pdl");
     f = fopen(path, "w");
@@ -288,7 +311,7 @@ static void write_scene(const char *root, const CubeState *state) {
     fprintf(f, "# Project-owned Wraith scene records.\n");
     fprintf(f, "# Loaded by wraith-alpha manager; converted by wraith_rgb_daemon later.\n");
     fprintf(f, "# Format is intentionally flat and auditable.\n");
-    fprintf(f, "OBJECT tag=control id=control_map role=window_toolbar_item x=35 y=5 w=24 h=1 z=26 nav=6 source=semantic:window_toolbar fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=INTERACT target_surface=game_map label=Control_Map\n");
+    fprintf(f, "OBJECT tag=control id=control_map role=window_toolbar_item x=35 y=5 w=24 h=1 z=26 nav=%d source=semantic:window_toolbar fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=INTERACT target_surface=game_map label=Control_Map\n", nav_base + 0);
     fprintf(f, "OBJECT tag=surface id=game_map role=game_map x=35 y=6 w=32 h=14 z=16 nav=0 source=semantic:game_map_surface fg=#E8F1F2 bg=#0B1118 border=#7EDFF2 action=- label=\n");
     fprintf(f, "OBJECT tag=model id=cube_probe role=zslice_piece x=35 y=6 w=32 h=14 z=23 source=projects/wraith-alpha/wraith-projects/wraith-3d-cube/pieces/cube_probe/artifact.txt fg=#24C94A bg=#0B1118 border=#FFD166 action=- label=PIECE_MODEL:source=pieces/cube_probe/artifact.txt;rot=%d,%d,%d;camera=%d,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f;selected=true\n",
         state->rot_x, state->rot_y, state->rot_z,

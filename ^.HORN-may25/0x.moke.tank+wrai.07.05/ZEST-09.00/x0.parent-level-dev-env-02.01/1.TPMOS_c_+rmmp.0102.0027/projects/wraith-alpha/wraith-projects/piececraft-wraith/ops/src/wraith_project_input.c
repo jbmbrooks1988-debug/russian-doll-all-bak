@@ -40,6 +40,33 @@ static void trim_newline(char *s) {
     s[strcspn(s, "\r\n")] = '\0';
 }
 
+/* 2026-07-11: reads CHROME_CONTENT_START's live value, published by
+ * wraith-alpha_manager.c (see that file's publish_chrome_reserved_nav_count(),
+ * added same day) to pieces/display/chrome_reserved_nav_count.txt, instead
+ * of hardcoding this project's own guess about where its nav range may
+ * safely start. This ops binary is fork+exec'd by
+ * wraith-alpha_manager.c's run_active_project_input_op() WITHOUT a chdir(),
+ * so it inherits the manager's own cwd (confirmed: the manager itself opens
+ * plenty of its own paths as plain "pieces/..." relative strings, e.g.
+ * truncate_file("pieces/display/frame_changed.txt") in bootstrap_fresh_session()) --
+ * the relative path below is correct without combining it with `root`
+ * (which is this PROJECT's own dir, not the repo root). Falls back to the
+ * literal this file always used before if the manager hasn't published yet
+ * (e.g. this op running standalone/before the manager's first frame) --
+ * matching WRAITH_RGB_ARCHITECTURE.md's flagged-but-undone follow-up:
+ * "if it's not in a file, it's a lie" instead of nine files guessing. */
+static int read_chrome_content_start(int fallback) {
+    FILE *f = fopen("pieces/display/chrome_reserved_nav_count.txt", "r");
+    int value;
+    if (!f) return fallback;
+    if (fscanf(f, "%d", &value) != 1 || value <= 0) {
+        fclose(f);
+        return fallback;
+    }
+    fclose(f);
+    return value;
+}
+
 static void set_defaults(GameState *st) {
     memset(st, 0, sizeof(*st));
     st->xel_x = 4;
@@ -214,10 +241,46 @@ static void render_body(const char *root, const GameState *st) {
 static void save_state(const char *root, const GameState *st) {
     char state_path[MAX_PATH_LEN], state_tmp[MAX_PATH_LEN], body_path[MAX_PATH_LEN], line[512];
     FILE *f, *body_f;
+    int is_map_control = 1;
 
     path_join(state_path, sizeof(state_path), root, "session/state.txt");
     path_join(body_path, sizeof(body_path), root, "session/wraith_body.txt");
     snprintf(state_tmp, sizeof(state_tmp), "%s.tmp", state_path);
+
+    /* 2026-07-11: this used to hardcode "is_map_control=1" unconditionally
+       on every keypress. is_map_control is a shared field: the desktop
+       (wraith-alpha_manager.c's set_project_map_control_in_dir(), fired
+       by the Control_Map button's onClick=INTERACT / by ESC) is the real
+       owner of this toggle and writes 0 or 1 into this SAME state.txt.
+       Because this op runs synchronously after every keypress
+       (run_active_project_input_op()) and always wrote the literal 1
+       here, it silently stomped the desktop's own ESC-driven
+       is_map_control=0 back to 1 on the very next keystroke -- so ESC
+       appeared to work for exactly one tick before the trap re-armed
+       itself. Confirmed live: wraith-alpha_manager.c's route_input()
+       forwards EVERY key (including arrows) as raw map input and skips
+       normal nav-index advancement whenever is_map_control reads true
+       (see that function's own early-return branch), so a permanently
+       re-asserted 1 made UI nav (arrows/digit-jump) look "stuck" the
+       whole time this window was focused. Fix: read the CURRENT value
+       out of the existing state.txt first (matching the desktop's own
+       read-modify-write pattern in set_project_map_control_in_dir()) and
+       preserve it, instead of hardcoding the literal. Defaults to 1 only
+       when the file doesn't exist yet (first run), matching prior
+       first-open behavior. */
+    {
+        FILE *existing = fopen(state_path, "r");
+        if (existing) {
+            char existing_line[256];
+            while (fgets(existing_line, sizeof(existing_line), existing)) {
+                if (strncmp(existing_line, "is_map_control=", 15) == 0) {
+                    is_map_control = atoi(existing_line + 15);
+                    break;
+                }
+            }
+            fclose(existing);
+        }
+    }
 
     /* Atomic write — see render_body()'s comment for why this matters:
        this is the exact file Wraith's read_project_map_control() re-reads
@@ -227,7 +290,7 @@ static void save_state(const char *root, const GameState *st) {
     if (!f) return;
     fprintf(f, "project_id=wraith-alpha/wraith-projects/piececraft-wraith\n");
     fprintf(f, "reference_project=projects/piececraft-3d\n");
-    fprintf(f, "is_map_control=1\n");
+    fprintf(f, "is_map_control=%d\n", is_map_control);
     fprintf(f, "active_z=%d\n", st->xel_z);
     fprintf(f, "xel_x=%d\n", st->xel_x);
     fprintf(f, "xel_y=%d\n", st->xel_y);
@@ -268,6 +331,7 @@ static void save_state(const char *root, const GameState *st) {
 static void write_scene(const char *root, const GameState *st) {
     char path[MAX_PATH_LEN], tmp_path[MAX_PATH_LEN];
     FILE *f;
+    int nav_base = read_chrome_content_start(6);
     path_join(path, sizeof(path), root, "session/scene.objects.pdl");
     snprintf(tmp_path, sizeof(tmp_path), "%s.tmp", path);
     f = fopen(tmp_path, "w");
@@ -275,7 +339,7 @@ static void write_scene(const char *root, const GameState *st) {
 
     fprintf(f, "# Project-owned Wraith scene records.\n");
     fprintf(f, "# Piececraft world standard: maps/map_01_z*.txt + assets/tiles/registry.txt + tile extrude fields.\n");
-    fprintf(f, "OBJECT tag=control id=control_map role=window_toolbar_item x=35 y=5 w=26 h=1 z=26 nav=6 source=semantic:window_toolbar fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=INTERACT target_surface=game_map label=Control_Map\n");
+    fprintf(f, "OBJECT tag=control id=control_map role=window_toolbar_item x=35 y=5 w=26 h=1 z=26 nav=%d source=semantic:window_toolbar fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=INTERACT target_surface=game_map label=Control_Map\n", nav_base + 0);
     fprintf(f, "OBJECT tag=surface id=game_map role=game_map x=35 y=6 w=48 h=14 z=16 nav=0 source=semantic:game_map_surface fg=#E8F1F2 bg=#0B1118 border=#7EDFF2 action=- label=\n");
     fprintf(f, "OBJECT tag=model id=piececraft_map_01 role=tile_zmap x=35 y=6 w=48 h=14 z=23 "
                "source=projects/wraith-alpha/wraith-projects/piececraft-wraith/maps/%s_z%d.txt "
@@ -285,14 +349,14 @@ static void write_scene(const char *root, const GameState *st) {
             st->pet_x, st->pet_y,
             st->display_mode == 0 ? "2d" : "3d",
             st->camera_mode, st->cam_pan_x, st->cam_pan_y, st->cam_pan_z, st->cam_yaw, st->cam_pitch);
-    fprintf(f, "OBJECT tag=control id=btn_up role=game_button x=84 y=6 w=14 h=1 z=25 nav=7 source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:1002 label=[Up]\n");
-    fprintf(f, "OBJECT tag=control id=btn_down role=game_button x=84 y=7 w=14 h=1 z=25 nav=8 source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:1003 label=[Down]\n");
-    fprintf(f, "OBJECT tag=control id=btn_left role=game_button x=84 y=8 w=14 h=1 z=25 nav=9 source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:1000 label=[Left]\n");
-    fprintf(f, "OBJECT tag=control id=btn_right role=game_button x=84 y=9 w=14 h=1 z=25 nav=10 source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:1001 label=[Right]\n");
-    fprintf(f, "OBJECT tag=control id=btn_ascend role=game_button x=84 y=10 w=14 h=1 z=25 nav=11 source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:101 label=[E] Z-Level Up\n");
-    fprintf(f, "OBJECT tag=control id=btn_descend role=game_button x=84 y=11 w=14 h=1 z=25 nav=12 source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:113 label=[Q] Z-Level Dn\n");
-    fprintf(f, "OBJECT tag=control id=btn_mode role=game_button x=84 y=12 w=14 h=1 z=25 nav=13 source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:56 label=[8] 2D/3D\n");
-    fprintf(f, "OBJECT tag=control id=btn_debug role=game_button x=84 y=13 w=14 h=1 z=25 nav=14 source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:57 label=[9] Debug\n");
+    fprintf(f, "OBJECT tag=control id=btn_up role=game_button x=84 y=6 w=14 h=1 z=25 nav=%d source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:1002 label=[Up]\n", nav_base + 1);
+    fprintf(f, "OBJECT tag=control id=btn_down role=game_button x=84 y=7 w=14 h=1 z=25 nav=%d source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:1003 label=[Down]\n", nav_base + 2);
+    fprintf(f, "OBJECT tag=control id=btn_left role=game_button x=84 y=8 w=14 h=1 z=25 nav=%d source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:1000 label=[Left]\n", nav_base + 3);
+    fprintf(f, "OBJECT tag=control id=btn_right role=game_button x=84 y=9 w=14 h=1 z=25 nav=%d source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:1001 label=[Right]\n", nav_base + 4);
+    fprintf(f, "OBJECT tag=control id=btn_ascend role=game_button x=84 y=10 w=14 h=1 z=25 nav=%d source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:101 label=[E] Z-Level Up\n", nav_base + 5);
+    fprintf(f, "OBJECT tag=control id=btn_descend role=game_button x=84 y=11 w=14 h=1 z=25 nav=%d source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:113 label=[Q] Z-Level Dn\n", nav_base + 6);
+    fprintf(f, "OBJECT tag=control id=btn_mode role=game_button x=84 y=12 w=14 h=1 z=25 nav=%d source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:56 label=[8] 2D/3D\n", nav_base + 7);
+    fprintf(f, "OBJECT tag=control id=btn_debug role=game_button x=84 y=13 w=14 h=1 z=25 nav=%d source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:57 label=[9] Debug\n", nav_base + 8);
     fprintf(f, "OBJECT tag=text id=coords_hud role=game_hud x=84 y=15 w=22 h=1 z=25 nav=0 "
                "source=- fg=#FFD166 bg=#0B1118 border=#0B1118 action=- "
                "label=(%d,%d,%d) %s\n",
@@ -309,15 +373,15 @@ static void write_scene(const char *root, const GameState *st) {
     fprintf(f, "OBJECT tag=text id=cam_hud role=game_hud x=84 y=18 w=22 h=1 z=25 nav=0 "
                "source=- fg=#7EDFF2 bg=#0B1118 border=#0B1118 action=- "
                "label=Camera: POV%d\n", st->camera_mode);
-    fprintf(f, "OBJECT tag=control id=btn_cam_fwd role=game_button x=84 y=19 w=14 h=1 z=25 nav=15 source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:119 label=[W] Cam Fwd\n");
-    fprintf(f, "OBJECT tag=control id=btn_cam_back role=game_button x=84 y=20 w=14 h=1 z=25 nav=16 source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:115 label=[S] Cam Back\n");
-    fprintf(f, "OBJECT tag=control id=btn_cam_left role=game_button x=84 y=21 w=14 h=1 z=25 nav=17 source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:97 label=[A] Cam Left\n");
-    fprintf(f, "OBJECT tag=control id=btn_cam_right role=game_button x=84 y=22 w=14 h=1 z=25 nav=18 source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:100 label=[D] Cam Right\n");
-    fprintf(f, "OBJECT tag=control id=btn_cam_up role=game_button x=84 y=23 w=14 h=1 z=25 nav=19 source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:120 label=[X] Cam Up\n");
-    fprintf(f, "OBJECT tag=control id=btn_cam_down role=game_button x=84 y=24 w=14 h=1 z=25 nav=20 source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:122 label=[Z] Cam Down\n");
-    fprintf(f, "OBJECT tag=control id=btn_pov1 role=game_button x=84 y=25 w=14 h=1 z=25 nav=21 source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:49 label=[1] POV-1\n");
-    fprintf(f, "OBJECT tag=control id=btn_pov2 role=game_button x=84 y=26 w=14 h=1 z=25 nav=22 source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:50 label=[2] POV-2\n");
-    fprintf(f, "OBJECT tag=control id=btn_pov3 role=game_button x=84 y=27 w=14 h=1 z=25 nav=23 source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:51 label=[3] POV-3\n");
+    fprintf(f, "OBJECT tag=control id=btn_cam_fwd role=game_button x=84 y=19 w=14 h=1 z=25 nav=%d source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:119 label=[W] Cam Fwd\n", nav_base + 9);
+    fprintf(f, "OBJECT tag=control id=btn_cam_back role=game_button x=84 y=20 w=14 h=1 z=25 nav=%d source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:115 label=[S] Cam Back\n", nav_base + 10);
+    fprintf(f, "OBJECT tag=control id=btn_cam_left role=game_button x=84 y=21 w=14 h=1 z=25 nav=%d source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:97 label=[A] Cam Left\n", nav_base + 11);
+    fprintf(f, "OBJECT tag=control id=btn_cam_right role=game_button x=84 y=22 w=14 h=1 z=25 nav=%d source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:100 label=[D] Cam Right\n", nav_base + 12);
+    fprintf(f, "OBJECT tag=control id=btn_cam_up role=game_button x=84 y=23 w=14 h=1 z=25 nav=%d source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:120 label=[X] Cam Up\n", nav_base + 13);
+    fprintf(f, "OBJECT tag=control id=btn_cam_down role=game_button x=84 y=24 w=14 h=1 z=25 nav=%d source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:122 label=[Z] Cam Down\n", nav_base + 14);
+    fprintf(f, "OBJECT tag=control id=btn_pov1 role=game_button x=84 y=25 w=14 h=1 z=25 nav=%d source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:49 label=[1] POV-1\n", nav_base + 15);
+    fprintf(f, "OBJECT tag=control id=btn_pov2 role=game_button x=84 y=26 w=14 h=1 z=25 nav=%d source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:50 label=[2] POV-2\n", nav_base + 16);
+    fprintf(f, "OBJECT tag=control id=btn_pov3 role=game_button x=84 y=27 w=14 h=1 z=25 nav=%d source=- fg=#E8F1F2 bg=#122333 border=#7EDFF2 action=KEY:51 label=[3] POV-3\n", nav_base + 17);
 
     fclose(f);
     rename(tmp_path, path);

@@ -482,3 +482,142 @@ If a change touches path resolution, state rewriting, loader mapping, or event p
 - Symptom: Hotkeys "work" but target the wrong piece (or nothing).
 - RULE: Ops must use argv[1] as the piece ID, defaulting to xlector/selector only if missing.
 - Rule: Ops and PDL readers MUST use recursive path resolution (find_piece_state_recursive) to support canonical world/map nesting.
+
+56) WRAITH "TWO RENDER PATHS" MISREAD (AGENT-CONFUSION CLASS, NOT A CODE BUG)
+- SYMPTOM: A new Wraith-hosted project's embedded desktop window shows plain,
+  unframed text with no nav buttons, while its `layouts/<project>.chtpm` file
+  (with `<button>` tags and `${var}` placeholders) looks correct but never
+  appears to render.
+- WRONG DIAGNOSIS (an agent's own real mistake, corrected same session): concluding
+  Wraith has two structurally separate, competing rendering pipelines — an
+  "embedded path" (`session/wraith_body.txt`, allegedly plain-text-only) vs. a
+  "standalone path" (`layouts/*.chtpm`, real substitution) — and that a project
+  must pick one or bridge them with an `href` pop-out button. This framing is
+  wrong and wastes a full research cycle.
+- CORRECT MODEL: it is the SAME render pipeline as any TPM project (see
+  `^.chtpm-faq/CHTPM_TPM_DOX+1.md`'s "Module -> ops -> render op produces
+  artifact -> parser composes frame"). `session/wraith_body.txt` **is** that
+  artifact — the project's own hand-rendered copy of what its layout shows,
+  with `${var}`s already resolved to literal values by the project's own ops
+  (not by a generic parser re-opening the `.chtpm` file). `layouts/<project>.chtpm`
+  remains the authoritative structural spec (box framing, button placement,
+  nav order) that the ops's hand-rendered output should match.
+- KEY MECHANIC: a `wraith_body.txt` line whose first character is `<` is
+  appended verbatim by `wraith-alpha_manager.c`'s `append_project_probe_body()`
+  (confirmed ~line 1645) and parsed downstream as real `<text>`/`<button>`/
+  `<cli_io>` markup — genuine nav-indexed, clickable elements. A line NOT
+  starting with `<` is wrapped in a fixed plain-text border and can never
+  become a button (ties into Pitfall #26).
+- RULE: to get a project's real layout structure (box frame, INTERACT
+  button, numbered nav) showing inside its embedded desktop window, the
+  ops must emit the same `<text>`/`<button>` tags the layout would contain,
+  values already substituted, as `<`-prefixed lines directly into
+  `session/wraith_body.txt`. Do not treat this as a workaround or a
+  second competing system — it is the render step, performed by project
+  code instead of the generic parser, same as any TPM render-op artifact.
+- REFERENCE: `settings_manager.c`'s own header comment documents this
+  explicitly — settings substitutes `${settings_menu_markup}` into
+  `settings.chtpm` via the generic href path, AND separately ships a
+  hand-written `session/wraith_body.txt` with equivalent `<button>`/
+  `<cli_io>` markup so the same menu renders correctly when opened
+  embedded from the desktop launcher instead.
+
+57) ASCII KEYBOARD COMMAND RELAY -- HISTORY PATH DRIFT (SILENT DEAD LETTERBOX)
+- SYMPTOM: a project's onClick command (any prefix requiring the full
+  chtpm_parser.c -> inject_command() -> history-file -> wraith-alpha_manager.c
+  poll -> route_command() round trip) works instantly via GL mouse click but
+  does nothing -- or only "catches up" seconds later, coinciding with an
+  unrelated later mouse event -- when activated via ASCII keyboard Enter.
+- ROOT CAUSE: `chtpm_parser.c`'s `resolve_project_history_path()` built
+  `projects/%s/history.txt` from `project_id` unconditionally.
+  `wraith-alpha_manager.c`'s `main()` loop, however, only ever polls the
+  ONE fixed path `projects/wraith-alpha/session/history.txt` for
+  "COMMAND: " lines (see `process_history_file()` call sites). For the
+  wraith-alpha desktop shell itself, and for every embedded window it
+  hosts (whose `project_id` is the nested
+  "wraith-alpha/wraith-projects/<id>" form -- see Pitfall #31's own fix),
+  the built path was missing the "session/" segment (and, for nested ids,
+  had extra segments too), producing a file NOTHING ever polls. Commands
+  written there (`inject_command()`/`inject_raw_key()`, e.g. SETTINGS_PAGE:,
+  KEY:n nudge buttons, PROJECT_ACTION:) vanish silently -- no error, no log,
+  just never routed. GL mouse clicks are unaffected because GL calls
+  `route_command()` directly in-process, never touching this file relay,
+  which is exactly why "it works with mouse but not keyboard" is the
+  tell-tale symptom of this specific pitfall (do not misdiagnose as a
+  render-trigger/marker-file timing bug -- the render pipeline itself is
+  fine; the command never arrives for it to render).
+- FIX: `resolve_project_history_path()` must special-case any project_id
+  equal to `wraith-alpha` or starting with `wraith-alpha/` to route to
+  `projects/wraith-alpha/session/history.txt` (the one path the shell's
+  poll loop actually reads), leaving the legacy `projects/<id>/history.txt`
+  convention untouched for standalone top-level projects (op-ed, yahoo,
+  mouse-test, etc.) that run outside the wraith-alpha shell with their own
+  manager/poll loop.
+- RULE: whenever a NEW round-trip command path is introduced (a new onClick
+  prefix, a new project feature needing keyboard-driven cross-process
+  dispatch), verify with `grep` that the exact file `inject_command()`/
+  `inject_raw_key()` writes to is the SAME literal path the consuming
+  poll loop stats/reads -- string-build the path from both ends and diff
+  them by hand. Do not assume symmetry; this bug shipped invisibly because
+  every write appeared to "succeed" (fopen/fprintf never failed) and every
+  poll loop iteration also ran without error -- they were just never
+  talking about the same file.
+- CORRECTION (same day, confirmed live): the fix above is real and worth
+  keeping (it's still the correct behavior for `resolve_project_history_path()`
+  generically), but for the wraith-alpha desktop shell specifically it
+  turned out NOT to be the active code path for this exact symptom --
+  `inject_command()`'s PRIORITY 1 branch (`interact_history_path`, set
+  from the outer KPI/desktop layout's `<interact>` tag) already pointed
+  at `projects/wraith-alpha/session/history.txt` and fired first. Live
+  `alpha_manager.log`/`gui_state.txt` mtimes proved the command WAS
+  received and route_command() DID run within the same second as the
+  Enter press -- the round trip was never broken for this case. See
+  Pitfall #58 for the actual root cause of "Enter does nothing, mouse
+  catches it up." Lesson: a plausible, evidence-consistent theory (path
+  mismatch fits "keyboard silently fails, mouse works") can still be
+  wrong about WHICH file/branch is live -- re-verify with fresh log
+  timestamps after each fix attempt instead of declaring done once the
+  fix compiles and matches the symptom on paper.
+
+58) SETTINGS_PAGE: HANDLER MISSING update_state() (STALE COMPOSED FRAME,
+    NOT A ROUTING FAILURE)
+- SYMPTOM: identical to Pitfall #57's -- ASCII keyboard Enter on a
+  SETTINGS_PAGE:-onClick button appears to do nothing; the transition
+  only appears after a later, unrelated mouse move/click. This is the
+  ACTUAL root cause of that symptom (Pitfall #57's history-path theory,
+  while a real bug in its own right, was not what was happening live).
+- ROOT CAUSE: in `wraith-alpha_manager.c`'s `route_command()`, every
+  other branch that changes what should appear on screen calls
+  `update_state(...)` THEN `trigger_render()` as a pair -- `update_state()`
+  (via `write_projection()`) re-projects the active window's current
+  `wraith_body.txt`/`gui_state.txt` into `alpha_state.txt` /
+  `desktop_ui_state.txt`, the actual files chtpm_parser's ASCII composer
+  reads to build the "WRAITH DESKTOP GUI" frame; `trigger_render()` only
+  pings the marker files (`frame_changed.txt`, `state_changed.txt`) that
+  tell chtpm_parser's main loop to redraw NOW, from whatever is currently
+  in those projection files. The `SETTINGS_PAGE:` handler called
+  `run_active_project_input_op()` (correctly updating settings' own
+  `gui_state.txt`/`wraith_body.txt` -- confirmed via file mtimes landing
+  within the same second as the keypress) then jumped straight to
+  `trigger_render()`, skipping `update_state()`. So the marker ping fired
+  and chtpm_parser dutifully redrew -- the STALE pre-transition
+  projection, because it was never regenerated. The very next mouse
+  event's handler DOES call `update_state()`, which finally re-projects
+  the (already correct, already-written) settings state, producing the
+  transition the user sees -- coincidentally, right after the mouse
+  event. Confirmed live via `alpha_manager.log` + `gui_state.txt` mtimes:
+  state was correct at time T (right after the Enter-triggered
+  `Command received: SETTINGS_PAGE:...` log line); the visible frame only
+  updated at T+(next mouse event).
+- FIX: add `update_state(0);` before `trigger_render();` in the
+  `SETTINGS_PAGE:` branch, matching the `KEY:`/`PROJECT_ACTION:` pattern
+  immediately above it in the same function.
+- RULE: `trigger_render()` alone NEVER refreshes what gets rendered --
+  it only asks chtpm_parser to redraw sooner. Any `route_command()`
+  branch (or future one) that changes state visible in the ASCII/GL
+  frame must call `update_state()` (or whatever recomputes the
+  projection files) BEFORE `trigger_render()`, not just after some other
+  side-effecting call. When adding a new command branch, diff it against
+  a working sibling branch (KEY:/PROJECT_ACTION:) line-by-line for this
+  exact pairing rather than assuming "it writes state somewhere, calling
+  trigger_render() must be enough."

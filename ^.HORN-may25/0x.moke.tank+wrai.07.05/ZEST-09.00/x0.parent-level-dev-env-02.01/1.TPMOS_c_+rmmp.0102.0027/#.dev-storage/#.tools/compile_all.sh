@@ -276,7 +276,7 @@ compile_op "projects/wraith-alpha/manager/wraith-alpha_manager.c" "projects/wrai
 compile_source "projects/wraith-alpha/ops/font-gen-op.c" "projects/wraith-alpha/ops/+x/font-gen-op.+x"
 compile_op "projects/wraith-alpha/ops/wraith_parser_alpha.c" "projects/wraith-alpha/ops/+x/wraith_parser_alpha.+x"
 compile_gl "projects/wraith-alpha/ops/wraith_gl.c" "projects/wraith-alpha/ops/+x/wraith_gl.+x" "$GL_LIBS"
-compile_op "projects/wraith-alpha/plugins/wraith_rgb_daemon.c" "projects/wraith-alpha/plugins/+x/wraith_rgb_daemon.+x"
+compile_source "projects/wraith-alpha/plugins/wraith_rgb_daemon.c" "projects/wraith-alpha/plugins/+x/wraith_rgb_daemon.+x"
 echo ""
 
 echo "=== 4c. NESTED WRAITH PROJECTS ==="
