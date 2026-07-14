@@ -1,0 +1,68 @@
+
+--- FRAME at 2026-07-14 09:41:11 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                          P E T S                           |
+|                                                            |
+|> 🐛 egg_1  Caterpillar  HP:20/20 MP:10/10  [enter to open|
+|                                                            |
+|    Back                                                    |
+|                                                            |
+|  Opened egg_1 in a new window.                             |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-14 09:41:11 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                          P E T S                           |
+|                                                            |
+|> 🐛 egg_1  Caterpillar  HP:20/20 MP:10/10  [enter to open|
+|                                                            |
+|    Back                                                    |
+|                                                            |
+|  Opened egg_1 in a new window.                             |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-14 09:41:13 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                          P E T S                           |
+|                                                            |
+|> 🐛 egg_1  Caterpillar  HP:20/20 MP:10/10  [enter to open|
+|                                                            |
+|    Back                                                    |
+|                                                            |
+|  Opened egg_1 in a new window.                             |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-14 09:41:32 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                          P E T S                           |
+|                                                            |
+|> 🐛 egg_1  Caterpillar  HP:20/20 MP:10/10  [enter to open|
+|                                                            |
+|    Back                                                    |
+|                                                            |
+|  Opened egg_1 in a new window.                             |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+

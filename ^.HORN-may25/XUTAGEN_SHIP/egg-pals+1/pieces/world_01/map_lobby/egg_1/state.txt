@@ -1,0 +1,14 @@
+name=egg_1
+type=pet
+species_id=sp_caterpillar
+species_emoji=🐛
+species_name=Caterpillar
+rarity=1
+serial=1
+owner=user_01
+hatched=1
+hp=20
+hp_max=20
+mp=10
+mp_max=10
+skills=peck

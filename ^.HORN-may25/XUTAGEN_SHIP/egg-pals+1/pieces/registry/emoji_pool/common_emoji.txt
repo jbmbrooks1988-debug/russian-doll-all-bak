@@ -1,0 +1,22 @@
+# egg-pals emoji species pool (global, non-located content)
+# Format: emoji|id|name|rarity(1=common,2=uncommon,3=rare)
+# generate_egg.+x picks a random line, weighted toward rarity 1, as a new
+# egg piece's species. Extend this list freely - it's plain data, no code
+# change needed to add more species.
+🐣|sp_chick|Chick|1
+🐸|sp_frog|Frog|1
+🐢|sp_turtle|Turtle|1
+🐛|sp_caterpillar|Caterpillar|1
+🐌|sp_snail|Snail|1
+🦎|sp_lizard|Lizard|1
+🐹|sp_hamster|Hamster|1
+🐁|sp_mouse|Mouse|1
+🦊|sp_fox|Fox|2
+🐺|sp_wolf|Wolf|2
+🦉|sp_owl|Owl|2
+🐙|sp_octopus|Octopus|2
+🦈|sp_shark|Shark|2
+🐲|sp_dragon_face|Dragon|3
+🦄|sp_unicorn|Unicorn|3
+👻|sp_ghost|Ghost|3
+🔥|sp_flame|Flame|3

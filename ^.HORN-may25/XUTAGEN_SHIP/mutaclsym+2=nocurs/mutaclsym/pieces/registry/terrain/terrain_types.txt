@@ -1,0 +1,5 @@
+# mutaclsym terrain registry (global, non-located content)
+# Format: glyph|id|name|walkable(0/1)
+#|t_wall|Wall|0
+.|t_floor|Floor|1
++|t_door|Door|1

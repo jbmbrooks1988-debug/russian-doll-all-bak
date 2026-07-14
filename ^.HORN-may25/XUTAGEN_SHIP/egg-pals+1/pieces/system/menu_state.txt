@@ -1,0 +1,3 @@
+screen=pets
+cursor=0
+last_message=Opened egg_1 in a new window.
