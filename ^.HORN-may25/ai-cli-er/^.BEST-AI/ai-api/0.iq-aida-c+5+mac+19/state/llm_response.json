@@ -1,0 +1,1 @@
+{"model":"llama3-groq-tool-use:8b","created_at":"2026-07-15T12:42:47.626391267Z","message":{"role":"assistant","content":"{\"response\": \"Hello!\"}"},"done":true,"done_reason":"stop","total_duration":72277396285,"load_duration":4993740925,"prompt_eval_count":326,"prompt_eval_duration":64156814442,"eval_count":8,"eval_duration":2789593971}
