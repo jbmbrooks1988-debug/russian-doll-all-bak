@@ -1,0 +1,4 @@
+screen=main
+cursor=0
+last_message=
+selected_pet=
