@@ -4,3 +4,8 @@ these both bsically work, but im not sure the tools do (probably not; compare 2 
 
 id rewrite them using "ops only" and stic them with pet experiments.
 (after i convert non nav  2use nav. then we can just copy more accurately?)
+
+
+<probably just use the ones from tpmos so the ops can be reused>
+
+<the ones on tpmos dont work either (other than gem) so lets fix that>

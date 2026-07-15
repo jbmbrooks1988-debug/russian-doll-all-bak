@@ -1,0 +1,3 @@
+item_id=knife_steak
+pos_x=8
+pos_y=6

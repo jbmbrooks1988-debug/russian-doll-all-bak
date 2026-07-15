@@ -1,0 +1,26 @@
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ¢   e g g _ 2                     |
+|                                                            |
+|  Turtle  Level 1 (XP 0/20)                                 |
+|  HP:20/20 MP:10/10                                         |
+|  Hunger:100 Energy:94 Poop:1                               |
+|  Skills: peck                                              |
+|  Card: none                                                |
+|  Position: (21,12,0) Facing: right                         |
+|                                                            |
+|    Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|  > Sleep                                                   |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
+|  egg_2 woke up.                                            |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit

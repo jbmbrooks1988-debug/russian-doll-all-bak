@@ -1,0 +1,16 @@
+# mutaclsym furniture registry (global, non-located content)
+# Format: glyph|id|name|walkable(0/1)
+# Furniture is a SEPARATE layer from terrain (pieces/registry/terrain/),
+# same split as real CDDA's furniture_and_terrain: a tile has a terrain
+# glyph (ground/wall) *and* optionally a furniture glyph (what's sitting
+# on that ground) at once. Not wired into map.txt/compose_frame.c/
+# move_player.c yet - see mutaclsym/dox/01-cdda-architecture.md Phase 1.
+# That needs a second per-tile layer in the map format (map.txt is
+# currently terrain-only, single glyph per cell); adding this registry
+# first, data-only, so the wiring step has real content to point at.
+&|f_table|Table|0
+h|f_chair|Chair|1
+b|f_bed|Bed|1
+k|f_counter|Counter|0
+s|f_sink|Sink|0
+c|f_crate|Crate|0

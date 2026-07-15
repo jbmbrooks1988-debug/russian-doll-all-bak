@@ -1,0 +1,369 @@
+wraimoji-j12-root-cause-and-fix-plan.txt — 2026-07-12
+ROOT CAUSE of "no emoji in GL" + technical architectural fix plan,
+superseding wraimoji-j10.txt's Phase 1.A implementation (which was
+never actually followed — see below).
+
+This document exists because: emoji bytes are proven to reach GL's
+frame data correctly (verified in current_frame.objects.pdl — real
+UTF-8 "😀 😅 😆 😇 🚀" sitting in a label= field, uncorrupted), but
+nothing visible renders in the GL window, while ASCII (raw terminal
+UTF-8 passthrough) shows them fine. Root cause is now CONFIRMED via a
+standalone reproduction, not theorized.
+
+═══════════════════════════════════════════════════════════════════════
+PART 1: ROOT CAUSE (confirmed via standalone test, not guessed)
+═══════════════════════════════════════════════════════════════════════
+
+`projects/wraith-alpha/plugins/wraith_rgb_daemon.c`'s emoji code
+(`init_emoji_renderer()` + `render_emoji_to_bitmap()`) uses the WRONG
+FreeType API for Noto Color Emoji, on two separate counts:
+
+1. `init_emoji_renderer()` calls `FT_Set_Pixel_Sizes(emoji_face, 16, 16)`
+   — this is the API for SCALABLE OUTLINE fonts. Noto Color Emoji is
+   NOT one; it's a fixed-size embedded-bitmap font (CBDT/CBLC format).
+   Confirmed live: `face->num_fixed_sizes == 1`, with exactly one
+   available strike at 136x128 pixels. You cannot request an arbitrary
+   pixel size from a font like this via `FT_Set_Pixel_Sizes()` — you
+   must call `FT_Select_Size(face, <strike_index>)` to pick one of its
+   ACTUAL embedded sizes, then downscale the resulting bitmap yourself
+   in your own code afterward.
+
+2. `render_emoji_to_bitmap()` calls `FT_Load_Glyph(emoji_face, glyph_idx,
+   FT_LOAD_RENDER)` — missing `FT_LOAD_COLOR`. Without that flag,
+   FreeType won't attempt to decode the embedded color bitmap layer at
+   all. Combined with bug #1 (no valid fixed size ever selected), this
+   is why a standalone reproduction using the CURRENT code's exact
+   flags fails outright:
+
+     FT_New_Face: err=0 (font loads fine)
+     FT_Set_Pixel_Sizes(16,16); FT_Load_Glyph(..., FT_LOAD_RENDER):
+       FT_Load_Glyph err=36 (FT_Err_Unimplemented_Feature)
+
+   Even adding `FT_LOAD_COLOR` on top of the WRONG size-selection call
+   still fails the same way — `FT_Select_Size()` is not optional here,
+   it's required before `FT_Load_Glyph` can produce anything for a
+   fixed-size color font.
+
+3. Even if both of the above were fixed, `render_emoji_to_bitmap()`'s
+   pixel-copy logic (`memcpy(&out[y*size], &bitmap->buffer[y*pitch],
+   copy_w)`) assumes ONE BYTE PER PIXEL (a grayscale/alpha bitmap).
+   Color bitmap glyphs are `FT_PIXEL_MODE_BGRA` — 4 bytes per pixel
+   (blue, green, red, alpha, in that order). The current code would
+   silently misinterpret 4-byte BGRA data as 1-byte grayscale, reading
+   every 4th byte as if pixels were sequential — garbled at best, blank
+   at worst.
+
+   `FT_Load_Glyph` returning an error is also never checked — the code
+   proceeds to read `emoji_face->glyph->bitmap` regardless, which after
+   a failed load has `width=0, rows=0`, so the copy loop's bounds
+   (`copy_w`/`copy_h`) both become 0 and NOTHING gets written into the
+   output buffer — it stays all-zero from the initial `memset`. In
+   `blit_codepoint()`, every pixel of an all-zero bitmap fails the
+   `if (!emoji_bitmap[...]) continue;` check, so nothing is ever drawn.
+   Net result: no crash, no `[?]` fallback (since `get_emoji_bitmap()`
+   still returns a non-NULL pointer — just to an all-zero buffer, not
+   NULL), just silent, correctly-positioned, empty space. Exactly what
+   was observed.
+
+═══════════════════════════════════════════════════════════════════════
+PART 2: THE PROVEN REFERENCE ALREADY SOLVES THIS — READ IT FIRST
+═══════════════════════════════════════════════════════════════════════
+
+Location: `x0.parent-level-dev-env-02.01/#.emoji-studio-501.02.05t/
+&.emoji-studio-solo.02.01/` — this is the "AUTHORITATIVE reference"
+wraimoji-j10.txt itself already pointed at (its Phase 1.A section, "⭐
+PATTERN REFERENCE"), but the CURRENT wraith_rgb_daemon.c implementation
+never actually followed it — it re-implemented FreeType glyph loading
+from scratch, got the API usage wrong in exactly the ways this
+reference already got right, and skipped the reference's two-stage
+architecture entirely. This plan corrects that gap.
+
+**The reference's actual architecture (verified by reading all four
+relevant files directly, not from memory):**
+
+Stage 1 — OFFLINE, per-emoji, run ONCE per (emoji, resolution) pair,
+NEVER in the interactive render hot path:
+
+  a) `emoji-gen-atlas.c` (112 lines, standalone binary):
+     Takes an emoji symbol string + output PNG path. Does the FreeType
+     work CORRECTLY:
+       - `FT_Init_FreeType` + `FT_New_Face` (same font path)
+       - `if (face->num_fixed_sizes > 0) FT_Select_Size(face, 0); else
+          FT_Set_Pixel_Sizes(face, 0, 64);` — THE fix for bug #1 above.
+       - `FT_Load_Char(face, codepoint, FT_LOAD_RENDER | FT_LOAD_COLOR)`
+         — THE fix for bug #2 above.
+       - Explicitly branches on `slot->bitmap.pixel_mode`: handles
+         `FT_PIXEL_MODE_BGRA` (reads 4 bytes/pixel, reorders B/G/R/A →
+         R/G/B/A) AND `FT_PIXEL_MODE_GRAY` (1 byte/pixel, used as a
+         white glyph with that byte as alpha) — THE fix for bug #3
+         above, done as a real branch instead of an assumption.
+       - Scales/centers the native-resolution bitmap into a fixed
+         64x64 output buffer (baseline-aware vertical centering).
+       - Writes the result as a real PNG via `stb_image_write.h`
+         (`stbi_write_png`) — no FreeType involved in this last step.
+
+  b) `emoji-xtract.c` (123 lines, standalone binary):
+     Takes that PNG (or a multi-emoji "atlas" strip), an index, a
+     target resolution N, and an output path. Uses `stb_image.h`
+     (`stbi_load`) — NOT FreeType — to decode the PNG, crops the
+     emoji's region, area-averages it down to NxN, and writes a dead
+     simple CSV:
+       ```
+       # resolution=N
+       # scale=1.0
+       # transform=0,0,0
+       r,g,b,a
+       <r>,<g>,<b>,<a>   (repeated N*N times, row-major)
+       ```
+
+  This two-binary split matters: FreeType's color-bitmap handling is
+  the fragile, easy-to-get-wrong part (proven above), and it's
+  confined to ONE small, standalone, easily-testable tool
+  (`emoji-gen-atlas`) that runs OFFLINE and produces a plain PNG.
+  Everything downstream (`emoji-xtract`, and the runtime loader below)
+  touches only PNG/CSV data via `stb_image` or plain text parsing —
+  zero FreeType dependency, zero risk of the color-glyph fragility
+  leaking into a hot path.
+
+Stage 2 — RUNTIME, in the interactive host (`emoji-studio_host.c`):
+
+  - `generate_voxel_csv()` (~l.135): checks if
+    `pieces/<emoji_name>/voxels_<res>.csv` already exists
+    (`stat()`); if not, `fork()`+`execl()`s the two Stage-1 binaries in
+    sequence (gen-atlas → xtract) to produce it, ONCE, ever, per
+    (emoji, resolution) pair — cached to disk permanently afterward.
+  - `load_voxels()` (~l.175): the actual per-frame entry point. Early-
+    returns immediately if the currently-selected emoji+resolution
+    hasn't changed since last call (`if (current_res == resolution &&
+    strcmp(active_piece_name, ...) == 0) return;` — an in-memory
+    cache-hit guard, so this is NOT re-parsing the CSV every frame).
+    On a real change, calls `generate_voxel_csv()` if needed, then
+    just `fopen()`s the CSV and `sscanf("%d,%d,%d,%d", ...)`s each
+    row into an `RGBA_Pixel* voxel_data` array. Plain text parsing,
+    no FreeType, no image library.
+  - The render function then draws each `RGBA_Pixel` from `voxel_data`
+    using its OWN real R/G/B/A values (not a single tint color) — this
+    reference renders TRUE COLOR emoji, unlike wraith_rgb_daemon.c's
+    current monochrome-silhouette-in-foreground-color design.
+
+**The one part of the reference that does NOT transplant directly:**
+`draw_cube()` renders each pixel as a literal OpenGL 3D cube via
+immediate-mode `glBegin(GL_QUADS)` — that's specific to emoji-studio's
+own interactive 3D voxel VIEWER UI. `wraith_rgb_daemon.c` is a
+fundamentally different kind of renderer: a headless daemon that
+writes directly into a flat 2D RGBA pixel buffer
+(`unsigned char *buffer`, `WIDTH*HEIGHT*4`) dumped to
+`current_frame.rgba32` — no OpenGL scene, no camera, no 3D at all. The
+REUSABLE part is everything upstream of `draw_cube()`: the two-stage
+extraction pipeline and the CSV-loading/caching pattern. The
+consumption step needs a 2D equivalent, which already exists in
+wraith_rgb_daemon.c's own code — `blit_codepoint()`'s emoji branch,
+just fed by correct data instead of broken live FreeType output.
+
+═══════════════════════════════════════════════════════════════════════
+PART 3: THE FIX — architecture for wraith_rgb_daemon.c
+═══════════════════════════════════════════════════════════════════════
+
+Goal: keep wraith_rgb_daemon.c's EXISTING lazy-load-and-cache shape
+(`get_emoji_bitmap()` / `emoji_cache[]` / `blit_codepoint()`'s dispatch)
+— that part of the original design is architecturally sound and
+matches this codebase's Bible-section-11 "manager orchestrates, Ops
+execute" spirit already. What changes is WHAT `get_emoji_bitmap()`
+actually does on a cache miss: instead of calling the broken
+in-process `render_emoji_to_bitmap()` (live FT_Load_Glyph with wrong
+flags), it should load pre-extracted RGBA pixel data the same way
+`load_voxels()` does — from a small on-disk CSV asset, generating it
+once via the SAME two-stage extraction the reference already proved
+works, reused rather than reimplemented (Bible section 11 REUSE RULE:
+this is exactly what it's for).
+
+**Step 1 — Reuse the extraction tools as shared Ops, don't rewrite
+FreeType logic a third time.**
+
+Bible section 11 (`pieces/system/` convention, matching how
+`pieces/system/file_ops/` was built earlier this session): copy
+`emoji-gen-atlas.c` and `emoji-xtract.c` into a new
+`pieces/system/emoji_extract/` directory (flat, no shared headers,
+each `.c` self-contained — same convention as `file_ops/`), adjusted
+only for path (they currently assume they're run from their own
+directory — `mkdir("pieces", ...)` etc. — needs to take an explicit
+output path, which `emoji-xtract.c` already does via argv; only
+`emoji-gen-atlas.c`'s hardcoded font path needs to optionally read
+from `pieces/config/wraith_debug.conf`'s `[emoji_rendering] font_path`
+key, matching what `wraith_rgb_daemon.c` already does via
+`load_emoji_config()`, instead of the reference's own hardcoded path —
+small, safe change, keeps the tools honoring the SAME config
+wraith_rgb_daemon.c already reads).
+
+Do NOT copy `emoji-studio_host.c` itself — only the two standalone
+extraction binaries are reusable; the host is a full interactive app
+with its own picker UI, camera, and voxel renderer that has nothing to
+do with wraith's needs.
+
+**Step 2 — Storage location and keying scheme.**
+
+New directory: `projects/wraith-alpha/assets/emoji/` (matches the
+existing `projects/wraith-alpha/assets/fonts/ascii/` convention already
+used for the plain ASCII glyph grid — `load_glyphs()` reads from
+`projects/wraith-alpha/assets/fonts/ascii/<charcode>/glyph.txt`).
+
+Key by CODEPOINT HEX, not by emoji NAME (deliberate divergence from
+emoji-studio's own `pieces/<name>/` convention): `assets/emoji/
+1F600/voxels_16.csv`, not `assets/emoji/grinning face/voxels_16.csv`.
+Reasons: (a) wraith_rgb_daemon.c already has the codepoint as a
+`uint32_t` the instant `decode_utf8_codepoint()` runs — zero extra
+lookup needed; (b) avoids depending on `parsed_emojis.txt`'s
+codepoint→name table, one less coupling to the reference project; (c)
+sidesteps filesystem-unfriendly characters in some emoji names (spaces,
+punctuation) that emoji-studio's own directories already contain and
+work around, but there's no reason to inherit that if we don't have to.
+
+**Step 3 — Rewrite `get_emoji_bitmap()`'s miss path.**
+
+Current shape (broken): cache miss → `render_emoji_to_bitmap(codepoint)`
+→ live, in-process, broken `FT_Load_Glyph` call.
+
+New shape: cache miss →
+  1. Build path `projects/wraith-alpha/assets/emoji/<CODEPOINT_HEX>/
+     voxels_<emoji_glyph_size>.csv`.
+  2. `stat()` it. If missing: `fork()`+`execl()` the two Step-1 Ops in
+     sequence (gen-atlas needs the actual UTF-8 emoji bytes, not just
+     the codepoint — re-encode `codepoint` back to UTF-8 first, or
+     thread the original text pointer through instead of just the
+     decoded codepoint; `xtract` takes the resulting PNG + resolution
+     + output CSV path), exactly mirroring `generate_voxel_csv()`'s
+     fork+execl+waitpid shape. This happens AT MOST ONCE per distinct
+     codepoint, ever (subsequent runs hit the `stat()` early-out) —
+     acceptable to block the render loop for this one miss, matching
+     the reference's own behavior (it blocks `display()` too, on
+     first selection of a new emoji).
+  3. `fopen()` the CSV, parse rows exactly like `load_voxels()` does
+     (`sscanf("%d,%d,%d,%d", ...)`), directly into the SAME
+     `EmojiCacheEntry.bitmap` buffer shape already used for
+     LRU-caching in `emoji_cache[]` — no structural change needed
+     there, this session's cache/LRU code stays as-is.
+
+**Step 4 — Decide: keep monochrome-tint, or render true color?**
+
+This is a real, undecided design choice, not a bug — flag it, don't
+silently pick: `blit_codepoint()`'s current emoji branch draws using
+the OBJECT's own foreground color (`rgb[0..2]` passed in) for every
+opaque bitmap pixel — a colored SILHOUETTE, not the emoji's actual
+colors. The new CSV data carries REAL per-pixel RGBA. Two options:
+  (a) Keep monochrome-tint (cheapest change): use only the CSV's alpha
+      channel as the "is this pixel part of the glyph" mask, same as
+      today's single-byte bitmap, discard R/G/B from the CSV. Visually
+      identical to today's design intent, just with correct data
+      instead of broken/blank data.
+  (b) Render true color (matches the reference, richer result): change
+      `blit_codepoint()`'s emoji branch to write the CSV's own R/G/B
+      per pixel (still gated on alpha for transparency), ignoring the
+      passed-in `rgb[]` for emoji specifically. More visually correct
+      emoji, small additional code change (the loop already exists,
+      just source R/G/B from the loaded pixel instead of the
+      parameter).
+  Recommend (b) — it's barely more code, and "colored silhouette
+  emoji" looks wrong/confusing in a way real users will immediately
+  notice, whereas true color is what every other surface (ASCII
+  terminal passthrough included) already shows.
+
+**Step 5 — `emoji_glyph_size` and resolution.**
+
+Config already has `glyph_size=16` — reuse this directly as the `N` in
+`voxels_<N>.csv`, i.e. request 16x16 extracted assets. No need to
+support multiple resolutions per emoji (unlike emoji-studio's own UI,
+which lets a user pick 8/16/32/64 interactively) — wraith's config is
+a single fixed value, so just bake that resolution into the generated
+filename and never regenerate at a different size unless the config
+value itself changes (which would naturally produce a different
+filename, so old assets for a since-changed resolution just become
+unused, harmless — no cleanup logic needed for Phase 1).
+
+═══════════════════════════════════════════════════════════════════════
+PART 4: WHAT TO DELETE / STOP TRUSTING
+═══════════════════════════════════════════════════════════════════════
+
+- `render_emoji_to_bitmap()` in `wraith_rgb_daemon.c`: delete or fully
+  replace per Part 3 Step 3 — its current FreeType calls are simply
+  wrong for this font and cannot be patched with a one-line flag fix
+  (needs `FT_Select_Size` first, which the current function never
+  calls at all — it relies entirely on `init_emoji_renderer()`'s
+  now-also-wrong `FT_Set_Pixel_Sizes` call).
+- `init_emoji_renderer()`: no longer needs to call
+  `FT_Set_Pixel_Sizes()`/keep an `emoji_face`/`ft_lib` open at all in
+  wraith_rgb_daemon.c itself, IF Part 3's approach is adopted — all
+  live FreeType work moves into the reused offline Op
+  (`emoji-gen-atlas`), which opens/closes its OWN short-lived
+  `FT_Library`/`FT_Face` per invocation. `wraith_rgb_daemon.c` itself
+  no longer needs to link FreeType at all for emoji — only `stb_image`-
+  style CSV-adjacent code (or honestly, since the CSV format is plain
+  text, no image library needed there either).
+- `cleanup_emoji()`: shrinks to just freeing `emoji_cache[]`'s
+  malloc'd bitmap buffers — no `FT_Done_Face`/`FT_Done_FreeType` needed
+  once wraith_rgb_daemon.c itself no longer opens FreeType directly.
+- The stale corrected memory note (`emoji-phase1-infrastructure.md`,
+  corrected earlier 2026-07-12 to say Phase 1 was "already wired") was
+  WRONG in a specific way worth calling out: it was wired in the sense
+  of being CALLED from the right places, but the underlying FreeType
+  usage was broken in a way that produced silent blank output, not a
+  crash or an obvious `[?]` fallback — exactly the kind of bug that
+  "compiles clean + gets called" static verification cannot catch,
+  only an actual live look (or, as it turned out, actually reading
+  `current_frame.objects.pdl`'s real data) can. Re-correct that memory
+  once Part 3 is implemented and live-verified.
+
+═══════════════════════════════════════════════════════════════════════
+PART 5: EXECUTION CHECKLIST
+═══════════════════════════════════════════════════════════════════════
+
+  □ Copy `emoji-gen-atlas.c` + `emoji-xtract.c` into
+    `pieces/system/emoji_extract/`, adjust `emoji-gen-atlas.c` to read
+    font_path from `pieces/config/wraith_debug.conf` instead of a
+    hardcoded path. Compile both standalone (Bible section 12: verify
+    each independently via direct CLI invocation BEFORE wiring
+    anything up) — confirm `./emoji-gen-atlas 😀 /tmp/test.png` and
+    `./emoji-xtract /tmp/test.png 0 16 /tmp/test.csv` both work and
+    produce a real, non-empty, non-all-zero CSV (spot check a few rows
+    have `a` > 0) before touching wraith_rgb_daemon.c at all.
+  □ Rewrite `wraith_rgb_daemon.c`'s `get_emoji_bitmap()` miss path per
+    Part 3 Step 3 (fork+exec the two Ops on first-ever miss for a
+    codepoint, then parse the resulting CSV). Remove/replace
+    `render_emoji_to_bitmap()`, simplify `init_emoji_renderer()`/
+    `cleanup_emoji()` per Part 4.
+  □ Decide + implement Part 3 Step 4 (recommend: true color).
+  □ Rebuild, confirm 0 new warnings (baseline: whatever pre-existing
+    warnings exist today, per this session's own convention of
+    comparing warning counts before/after, not assuming zero is
+    required).
+  □ Live-test: run Wraith, open wrai-text-editor's Editor page (GL),
+    confirm the seeded emoji document
+    (`session/document.txt`, "😀 😅 😆 😇 🚀" / "🌍 🐶 🎉 ❤️ ⭐") renders
+    as real (ideally colored) glyphs, not blank space and not `[?]`.
+  □ Confirm the CSV-generation fork+exec only happens ONCE per
+    codepoint (check `projects/wraith-alpha/assets/emoji/<hex>/` gets
+    created and reused on a second render of the same emoji — no
+    repeated fork+exec, matching `stat()`-gated behavior).
+  □ Config-toggle test: set `[emoji_rendering] enabled=0`, confirm
+    fallback to `[?]` still works (this path is untouched by the plan
+    above — `blit_codepoint()`'s `emoji_enabled` check stays as-is).
+  □ Update `jul-12-handoff.txt` and the `emoji-phase1-infrastructure.md`
+    memory once this is live-verified working — both currently say
+    "already wired," which was true of the CALL SITES but not of the
+    underlying correctness. Needs a second correction pass specifically
+    noting "wired AND correct" only after this plan lands.
+
+═══════════════════════════════════════════════════════════════════════
+Why this happened (for the record, not to assign blame — to prevent
+recurrence): wraimoji-j10.txt's Phase 1.A DID point at the right
+reference and DID say "copy emoji-studio_host.c's voxel loading logic
+verbatim," but described the target architecture only at a high level
+(pseudocode using `render_ascii_glyph()`/`render_emoji_voxel_quad()`,
+functions that don't exist in wraith_rgb_daemon.c, and a live
+`FT_Load_Glyph(..., FT_LOAD_RENDER)` call with no mention of
+`FT_LOAD_COLOR` or `FT_Select_Size` at all in its own sample code —
+see wraimoji-j10.txt lines 386-416). Whoever implemented it followed
+the plan doc's OWN pseudocode literally (which was itself incomplete
+on this exact point) rather than actually reading the reference
+implementation's real code first. This plan document exists specifically
+so that doesn't happen twice — Part 2 above quotes the reference's
+actual working code, not a paraphrase of it.

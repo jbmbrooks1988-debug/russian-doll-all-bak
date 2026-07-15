@@ -1,9 +1,0 @@
-119004 orchestrator
-119026 response_handler
-119022 keyboard_input
-119024 joystick_input
-119027 chtpm_parser
-119037 clock_daemon
-119038 renderer
-119039 gl_renderer
-119065 loader_module

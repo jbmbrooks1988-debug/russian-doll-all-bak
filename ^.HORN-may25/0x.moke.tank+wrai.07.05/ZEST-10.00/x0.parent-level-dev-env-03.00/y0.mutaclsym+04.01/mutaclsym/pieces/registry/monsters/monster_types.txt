@@ -1,0 +1,4 @@
+# mutaclsym monster registry (global, non-located content)
+# Format: id|name|glyph|hp|damage
+zombie|Zombie|Z|20|5
+zombie_child|Zombie Child|z|10|3

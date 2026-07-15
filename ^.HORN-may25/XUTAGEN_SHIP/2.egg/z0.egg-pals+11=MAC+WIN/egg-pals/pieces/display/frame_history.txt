@@ -1,0 +1,1688 @@
+
+--- FRAME at 2026-07-15 06:25:36 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                     P R O C E S S E S                      |
+|                                                            |
+|  egg_1    pid:441019   [dead]                              |
+|                                                            |
+|  > Back                                                    |
+|                                                            |
+|  1 window(s) tracked, 0 currently alive.                   |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:36 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|  > User                                                    |
+|    Faucet                                                  |
+|    Store                                                   |
+|    Pets                                                    |
+|    Processes                                               |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:37 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|    User                                                    |
+|  > Faucet                                                  |
+|    Store                                                   |
+|    Pets                                                    |
+|    Processes                                               |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:37 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|    User                                                    |
+|    Faucet                                                  |
+|  > Store                                                   |
+|    Pets                                                    |
+|    Processes                                               |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:38 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|    User                                                    |
+|    Faucet                                                  |
+|    Store                                                   |
+|  > Pets                                                    |
+|    Processes                                               |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:38 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                          P E T S                           |
+|                                                            |
+|> ðŸ› egg_1  Caterpillar  HP:25/25 MP:13/13 Zzz hungry dirt|
+|  ðŸ¢ egg_2  Turtle  HP:20/20 MP:10/10 Zzz hungry dirty  [e|
+|  ðŸ¸ egg_3  Frog  HP:20/20 MP:10/10 hungry dirty  [enter] |
+|  ðŸŒ egg_4  Snail  HP:20/20 MP:10/10 Zzz hungry dirty  [en|
+|  ðŸ£ egg_5  Chick  HP:20/20 MP:10/10 hungry dirty  [enter]|
+|  ðŸ¹ egg_6  Hamster  [unhatched - enter to hatch]         |
+|  ðŸ› egg_7  Caterpillar  [unhatched - enter to hatch]     |
+|  ðŸ egg_8  Mouse  HP:20/20 MP:10/10 dirty  [enter]       |
+|                                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:39 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                          P E T S                           |
+|                                                            |
+|> ðŸ› egg_1  Caterpillar  HP:25/25 MP:13/13 Zzz hungry dirt|
+|  ðŸ¢ egg_2  Turtle  HP:20/20 MP:10/10 Zzz hungry dirty  [e|
+|  ðŸ¸ egg_3  Frog  HP:20/20 MP:10/10 hungry dirty  [enter] |
+|  ðŸŒ egg_4  Snail  HP:20/20 MP:10/10 Zzz hungry dirty  [en|
+|  ðŸ£ egg_5  Chick  HP:20/20 MP:10/10 hungry dirty  [enter]|
+|  ðŸ¹ egg_6  Hamster  [unhatched - enter to hatch]         |
+|  ðŸ› egg_7  Caterpillar  [unhatched - enter to hatch]     |
+|  ðŸ egg_8  Mouse  HP:20/20 MP:10/10 dirty  [enter]       |
+|                                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:39 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                          P E T S                           |
+|                                                            |
+|  ðŸ› egg_1  Caterpillar  HP:25/25 MP:13/13 Zzz hungry dirt|
+|> ðŸ¢ egg_2  Turtle  HP:20/20 MP:10/10 Zzz hungry dirty  [e|
+|  ðŸ¸ egg_3  Frog  HP:20/20 MP:10/10 hungry dirty  [enter] |
+|  ðŸŒ egg_4  Snail  HP:20/20 MP:10/10 Zzz hungry dirty  [en|
+|  ðŸ£ egg_5  Chick  HP:20/20 MP:10/10 hungry dirty  [enter]|
+|  ðŸ¹ egg_6  Hamster  [unhatched - enter to hatch]         |
+|  ðŸ› egg_7  Caterpillar  [unhatched - enter to hatch]     |
+|  ðŸ egg_8  Mouse  HP:20/20 MP:10/10 dirty  [enter]       |
+|                                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:40 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                          P E T S                           |
+|                                                            |
+|  ðŸ› egg_1  Caterpillar  HP:25/25 MP:13/13 Zzz hungry dirt|
+|  ðŸ¢ egg_2  Turtle  HP:20/20 MP:10/10 Zzz hungry dirty  [e|
+|> ðŸ¸ egg_3  Frog  HP:20/20 MP:10/10 hungry dirty  [enter] |
+|  ðŸŒ egg_4  Snail  HP:20/20 MP:10/10 Zzz hungry dirty  [en|
+|  ðŸ£ egg_5  Chick  HP:20/20 MP:10/10 hungry dirty  [enter]|
+|  ðŸ¹ egg_6  Hamster  [unhatched - enter to hatch]         |
+|  ðŸ› egg_7  Caterpillar  [unhatched - enter to hatch]     |
+|  ðŸ egg_8  Mouse  HP:20/20 MP:10/10 dirty  [enter]       |
+|                                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:40 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                          P E T S                           |
+|                                                            |
+|  ðŸ› egg_1  Caterpillar  HP:25/25 MP:13/13 Zzz hungry dirt|
+|  ðŸ¢ egg_2  Turtle  HP:20/20 MP:10/10 Zzz hungry dirty  [e|
+|  ðŸ¸ egg_3  Frog  HP:20/20 MP:10/10 hungry dirty  [enter] |
+|> ðŸŒ egg_4  Snail  HP:20/20 MP:10/10 Zzz hungry dirty  [en|
+|  ðŸ£ egg_5  Chick  HP:20/20 MP:10/10 hungry dirty  [enter]|
+|  ðŸ¹ egg_6  Hamster  [unhatched - enter to hatch]         |
+|  ðŸ› egg_7  Caterpillar  [unhatched - enter to hatch]     |
+|  ðŸ egg_8  Mouse  HP:20/20 MP:10/10 dirty  [enter]       |
+|                                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:41 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                          P E T S                           |
+|                                                            |
+|  ðŸ› egg_1  Caterpillar  HP:25/25 MP:13/13 Zzz hungry dirt|
+|  ðŸ¢ egg_2  Turtle  HP:20/20 MP:10/10 Zzz hungry dirty  [e|
+|  ðŸ¸ egg_3  Frog  HP:20/20 MP:10/10 hungry dirty  [enter] |
+|  ðŸŒ egg_4  Snail  HP:20/20 MP:10/10 Zzz hungry dirty  [en|
+|> ðŸ£ egg_5  Chick  HP:20/20 MP:10/10 hungry dirty  [enter]|
+|  ðŸ¹ egg_6  Hamster  [unhatched - enter to hatch]         |
+|  ðŸ› egg_7  Caterpillar  [unhatched - enter to hatch]     |
+|  ðŸ egg_8  Mouse  HP:20/20 MP:10/10 dirty  [enter]       |
+|                                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:41 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                          P E T S                           |
+|                                                            |
+|  ðŸ› egg_1  Caterpillar  HP:25/25 MP:13/13 Zzz hungry dirt|
+|  ðŸ¢ egg_2  Turtle  HP:20/20 MP:10/10 Zzz hungry dirty  [e|
+|  ðŸ¸ egg_3  Frog  HP:20/20 MP:10/10 hungry dirty  [enter] |
+|  ðŸŒ egg_4  Snail  HP:20/20 MP:10/10 Zzz hungry dirty  [en|
+|  ðŸ£ egg_5  Chick  HP:20/20 MP:10/10 hungry dirty  [enter]|
+|> ðŸ¹ egg_6  Hamster  [unhatched - enter to hatch]         |
+|  ðŸ› egg_7  Caterpillar  [unhatched - enter to hatch]     |
+|  ðŸ egg_8  Mouse  HP:20/20 MP:10/10 dirty  [enter]       |
+|                                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:42 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                          P E T S                           |
+|                                                            |
+|  ðŸ› egg_1  Caterpillar  HP:25/25 MP:13/13 Zzz hungry dirt|
+|  ðŸ¢ egg_2  Turtle  HP:20/20 MP:10/10 Zzz hungry dirty  [e|
+|  ðŸ¸ egg_3  Frog  HP:20/20 MP:10/10 hungry dirty  [enter] |
+|  ðŸŒ egg_4  Snail  HP:20/20 MP:10/10 Zzz hungry dirty  [en|
+|  ðŸ£ egg_5  Chick  HP:20/20 MP:10/10 hungry dirty  [enter]|
+|  ðŸ¹ egg_6  Hamster  [unhatched - enter to hatch]         |
+|> ðŸ› egg_7  Caterpillar  [unhatched - enter to hatch]     |
+|  ðŸ egg_8  Mouse  HP:20/20 MP:10/10 dirty  [enter]       |
+|                                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:42 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                          P E T S                           |
+|                                                            |
+|  ðŸ› egg_1  Caterpillar  HP:25/25 MP:13/13 Zzz hungry dirt|
+|  ðŸ¢ egg_2  Turtle  HP:20/20 MP:10/10 Zzz hungry dirty  [e|
+|  ðŸ¸ egg_3  Frog  HP:20/20 MP:10/10 hungry dirty  [enter] |
+|  ðŸŒ egg_4  Snail  HP:20/20 MP:10/10 Zzz hungry dirty  [en|
+|  ðŸ£ egg_5  Chick  HP:20/20 MP:10/10 hungry dirty  [enter]|
+|  ðŸ¹ egg_6  Hamster  [unhatched - enter to hatch]         |
+|> ðŸ› egg_7  Caterpillar  [unhatched - enter to hatch]     |
+|  ðŸ egg_8  Mouse  HP:20/20 MP:10/10 dirty  [enter]       |
+|                                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:43 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                          P E T S                           |
+|                                                            |
+|  ðŸ› egg_1  Caterpillar  HP:25/25 MP:13/13 Zzz hungry dirt|
+|  ðŸ¢ egg_2  Turtle  HP:20/20 MP:10/10 Zzz hungry dirty  [e|
+|  ðŸ¸ egg_3  Frog  HP:20/20 MP:10/10 hungry dirty  [enter] |
+|  ðŸŒ egg_4  Snail  HP:20/20 MP:10/10 Zzz hungry dirty  [en|
+|  ðŸ£ egg_5  Chick  HP:20/20 MP:10/10 hungry dirty  [enter]|
+|> ðŸ¹ egg_6  Hamster  [unhatched - enter to hatch]         |
+|  ðŸ› egg_7  Caterpillar  [unhatched - enter to hatch]     |
+|  ðŸ egg_8  Mouse  HP:20/20 MP:10/10 dirty  [enter]       |
+|                                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:43 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                          P E T S                           |
+|                                                            |
+|  ðŸ› egg_1  Caterpillar  HP:25/25 MP:13/13 Zzz hungry dirt|
+|  ðŸ¢ egg_2  Turtle  HP:20/20 MP:10/10 Zzz hungry dirty  [e|
+|  ðŸ¸ egg_3  Frog  HP:20/20 MP:10/10 hungry dirty  [enter] |
+|  ðŸŒ egg_4  Snail  HP:20/20 MP:10/10 Zzz hungry dirty  [en|
+|> ðŸ£ egg_5  Chick  HP:20/20 MP:10/10 hungry dirty  [enter]|
+|  ðŸ¹ egg_6  Hamster  [unhatched - enter to hatch]         |
+|  ðŸ› egg_7  Caterpillar  [unhatched - enter to hatch]     |
+|  ðŸ egg_8  Mouse  HP:20/20 MP:10/10 dirty  [enter]       |
+|                                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:43 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                          P E T S                           |
+|                                                            |
+|  ðŸ› egg_1  Caterpillar  HP:25/25 MP:13/13 Zzz hungry dirt|
+|  ðŸ¢ egg_2  Turtle  HP:20/20 MP:10/10 Zzz hungry dirty  [e|
+|  ðŸ¸ egg_3  Frog  HP:20/20 MP:10/10 hungry dirty  [enter] |
+|> ðŸŒ egg_4  Snail  HP:20/20 MP:10/10 Zzz hungry dirty  [en|
+|  ðŸ£ egg_5  Chick  HP:20/20 MP:10/10 hungry dirty  [enter]|
+|  ðŸ¹ egg_6  Hamster  [unhatched - enter to hatch]         |
+|  ðŸ› egg_7  Caterpillar  [unhatched - enter to hatch]     |
+|  ðŸ egg_8  Mouse  HP:20/20 MP:10/10 dirty  [enter]       |
+|                                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:43 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                          P E T S                           |
+|                                                            |
+|  ðŸ› egg_1  Caterpillar  HP:25/25 MP:13/13 Zzz hungry dirt|
+|  ðŸ¢ egg_2  Turtle  HP:20/20 MP:10/10 Zzz hungry dirty  [e|
+|> ðŸ¸ egg_3  Frog  HP:20/20 MP:10/10 hungry dirty  [enter] |
+|  ðŸŒ egg_4  Snail  HP:20/20 MP:10/10 Zzz hungry dirty  [en|
+|  ðŸ£ egg_5  Chick  HP:20/20 MP:10/10 hungry dirty  [enter]|
+|  ðŸ¹ egg_6  Hamster  [unhatched - enter to hatch]         |
+|  ðŸ› egg_7  Caterpillar  [unhatched - enter to hatch]     |
+|  ðŸ egg_8  Mouse  HP:20/20 MP:10/10 dirty  [enter]       |
+|                                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:44 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                          P E T S                           |
+|                                                            |
+|  ðŸ› egg_1  Caterpillar  HP:25/25 MP:13/13 Zzz hungry dirt|
+|> ðŸ¢ egg_2  Turtle  HP:20/20 MP:10/10 Zzz hungry dirty  [e|
+|  ðŸ¸ egg_3  Frog  HP:20/20 MP:10/10 hungry dirty  [enter] |
+|  ðŸŒ egg_4  Snail  HP:20/20 MP:10/10 Zzz hungry dirty  [en|
+|  ðŸ£ egg_5  Chick  HP:20/20 MP:10/10 hungry dirty  [enter]|
+|  ðŸ¹ egg_6  Hamster  [unhatched - enter to hatch]         |
+|  ðŸ› egg_7  Caterpillar  [unhatched - enter to hatch]     |
+|  ðŸ egg_8  Mouse  HP:20/20 MP:10/10 dirty  [enter]       |
+|                                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:44 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ¢   e g g _ 2                     |
+|                                                            |
+|  Turtle  Level 1 (XP 0/20)                                 |
+|  HP:20/20 MP:10/10                                         |
+|  Hunger:100 Energy:100 Poop:1 (asleep)                     |
+|  Skills: peck                                              |
+|  Card: none                                                |
+|  Position: (20,13,0) Facing: left                          |
+|                                                            |
+|  > Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|    Wake                                                    |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:45 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ¢   e g g _ 2                     |
+|                                                            |
+|  Turtle  Level 1 (XP 0/20)                                 |
+|  HP:20/20 MP:10/10                                         |
+|  Hunger:100 Energy:100 Poop:1 (asleep)                     |
+|  Skills: peck                                              |
+|  Card: none                                                |
+|  Position: (20,13,0) Facing: left                          |
+|                                                            |
+|  > Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|    Wake                                                    |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:45 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ¢   e g g _ 2                     |
+|                                                            |
+|  Turtle  Level 1 (XP 0/20)                                 |
+|  HP:20/20 MP:10/10                                         |
+|  Hunger:100 Energy:100 Poop:1 (asleep)                     |
+|  Skills: peck                                              |
+|  Card: none                                                |
+|  Position: (20,13,0) Facing: left                          |
+|                                                            |
+|  > Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|    Wake                                                    |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
+|  Opened egg_2 in a new window.                             |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:47 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ¢   e g g _ 2                     |
+|                                                            |
+|  Turtle  Level 1 (XP 0/20)                                 |
+|  HP:20/20 MP:10/10                                         |
+|  Hunger:100 Energy:100 Poop:1 (asleep)                     |
+|  Skills: peck                                              |
+|  Card: none                                                |
+|  Position: (20,13,0) Facing: left                          |
+|                                                            |
+|    Open Window                                             |
+|  > Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|    Wake                                                    |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:47 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ¢   e g g _ 2                     |
+|                                                            |
+|  Turtle  Level 1 (XP 0/20)                                 |
+|  HP:20/20 MP:10/10                                         |
+|  Hunger:100 Energy:100 Poop:1 (asleep)                     |
+|  Skills: peck                                              |
+|  Card: none                                                |
+|  Position: (20,13,0) Facing: left                          |
+|                                                            |
+|    Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|  > Clean                                                   |
+|    Wake                                                    |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:47 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ¢   e g g _ 2                     |
+|                                                            |
+|  Turtle  Level 1 (XP 0/20)                                 |
+|  HP:20/20 MP:10/10                                         |
+|  Hunger:100 Energy:100 Poop:1 (asleep)                     |
+|  Skills: peck                                              |
+|  Card: none                                                |
+|  Position: (20,13,0) Facing: left                          |
+|                                                            |
+|    Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|  > Wake                                                    |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:47 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ¢   e g g _ 2                     |
+|                                                            |
+|  Turtle  Level 1 (XP 0/20)                                 |
+|  HP:20/20 MP:10/10                                         |
+|  Hunger:100 Energy:100 Poop:1 (asleep)                     |
+|  Skills: peck                                              |
+|  Card: none                                                |
+|  Position: (20,13,0) Facing: left                          |
+|                                                            |
+|    Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|    Wake                                                    |
+|  > Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:48 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ¢   e g g _ 2                     |
+|                                                            |
+|  Turtle  Level 1 (XP 0/20)                                 |
+|  HP:20/20 MP:10/10                                         |
+|  Hunger:100 Energy:100 Poop:1 (asleep)                     |
+|  Skills: peck                                              |
+|  Card: none                                                |
+|  Position: (20,13,0) Facing: left                          |
+|                                                            |
+|    Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|    Wake                                                    |
+|    Train (-20 energy)                                      |
+|  > Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:48 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ¢   e g g _ 2                     |
+|                                                            |
+|  Turtle  Level 1 (XP 0/20)                                 |
+|  HP:20/20 MP:10/10                                         |
+|  Hunger:100 Energy:100 Poop:1 (asleep)                     |
+|  Skills: peck                                              |
+|  Card: none                                                |
+|  Position: (20,13,0) Facing: left                          |
+|                                                            |
+|    Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|    Wake                                                    |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|  > Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:48 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ¢   e g g _ 2                     |
+|                                                            |
+|  Turtle  Level 1 (XP 0/20)                                 |
+|  HP:20/20 MP:10/10                                         |
+|  Hunger:100 Energy:100 Poop:1 (asleep)                     |
+|  Skills: peck                                              |
+|  Card: none                                                |
+|  Position: (20,13,0) Facing: left                          |
+|                                                            |
+|    Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|    Wake                                                    |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|  > Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:48 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ¢   e g g _ 2                     |
+|                                                            |
+|  Turtle  Level 1 (XP 0/20)                                 |
+|  HP:20/20 MP:10/10                                         |
+|  Hunger:100 Energy:100 Poop:1 (asleep)                     |
+|  Skills: peck                                              |
+|  Card: none                                                |
+|  Position: (20,13,0) Facing: left                          |
+|                                                            |
+|    Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|    Wake                                                    |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|  > Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:48 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                          P E T S                           |
+|                                                            |
+|> ðŸ› egg_1  Caterpillar  HP:25/25 MP:13/13 Zzz hungry dirt|
+|  ðŸ¢ egg_2  Turtle  HP:20/20 MP:10/10 Zzz hungry dirty  [e|
+|  ðŸ¸ egg_3  Frog  HP:20/20 MP:10/10 hungry dirty  [enter] |
+|  ðŸŒ egg_4  Snail  HP:20/20 MP:10/10 Zzz hungry dirty  [en|
+|  ðŸ£ egg_5  Chick  HP:20/20 MP:10/10 hungry dirty  [enter]|
+|  ðŸ¹ egg_6  Hamster  [unhatched - enter to hatch]         |
+|  ðŸ› egg_7  Caterpillar  [unhatched - enter to hatch]     |
+|  ðŸ egg_8  Mouse  HP:20/20 MP:10/10 dirty  [enter]       |
+|                                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:50 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                          P E T S                           |
+|                                                            |
+|  ðŸ› egg_1  Caterpillar  HP:25/25 MP:13/13 Zzz hungry dirt|
+|  ðŸ¢ egg_2  Turtle  HP:20/20 MP:10/10 Zzz hungry dirty  [e|
+|  ðŸ¸ egg_3  Frog  HP:20/20 MP:10/10 hungry dirty  [enter] |
+|  ðŸŒ egg_4  Snail  HP:20/20 MP:10/10 Zzz hungry dirty  [en|
+|  ðŸ£ egg_5  Chick  HP:20/20 MP:10/10 hungry dirty  [enter]|
+|  ðŸ¹ egg_6  Hamster  [unhatched - enter to hatch]         |
+|  ðŸ› egg_7  Caterpillar  [unhatched - enter to hatch]     |
+|  ðŸ egg_8  Mouse  HP:20/20 MP:10/10 dirty  [enter]       |
+|                                                            |
+|  > Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:50 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|  > User                                                    |
+|    Faucet                                                  |
+|    Store                                                   |
+|    Pets                                                    |
+|    Processes                                               |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:51 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|    User                                                    |
+|  > Faucet                                                  |
+|    Store                                                   |
+|    Pets                                                    |
+|    Processes                                               |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:51 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|    User                                                    |
+|  > Faucet                                                  |
+|    Store                                                   |
+|    Pets                                                    |
+|    Processes                                               |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:51 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|    User                                                    |
+|    Faucet                                                  |
+|  > Store                                                   |
+|    Pets                                                    |
+|    Processes                                               |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:51 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|    User                                                    |
+|    Faucet                                                  |
+|    Store                                                   |
+|  > Pets                                                    |
+|    Processes                                               |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:52 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|    User                                                    |
+|    Faucet                                                  |
+|    Store                                                   |
+|    Pets                                                    |
+|  > Processes                                               |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:52 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                     P R O C E S S E S                      |
+|                                                            |
+|  egg_2    pid:446862   [alive]                             |
+|                                                            |
+|  > Back                                                    |
+|                                                            |
+|  1 window(s) tracked, 1 currently alive.                   |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:54 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                     P R O C E S S E S                      |
+|                                                            |
+|  egg_2    pid:446862   [alive]                             |
+|                                                            |
+|  > Back                                                    |
+|                                                            |
+|  1 window(s) tracked, 1 currently alive.                   |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:55 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|  > User                                                    |
+|    Faucet                                                  |
+|    Store                                                   |
+|    Pets                                                    |
+|    Processes                                               |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:56 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|    User                                                    |
+|  > Faucet                                                  |
+|    Store                                                   |
+|    Pets                                                    |
+|    Processes                                               |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:57 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|    User                                                    |
+|    Faucet                                                  |
+|  > Store                                                   |
+|    Pets                                                    |
+|    Processes                                               |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:57 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|    User                                                    |
+|    Faucet                                                  |
+|  > Store                                                   |
+|    Pets                                                    |
+|    Processes                                               |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:57 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|    User                                                    |
+|    Faucet                                                  |
+|    Store                                                   |
+|  > Pets                                                    |
+|    Processes                                               |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:58 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                          P E T S                           |
+|                                                            |
+|> ðŸ› egg_1  Caterpillar  HP:25/25 MP:13/13 Zzz hungry dirt|
+|  ðŸ¢ egg_2  Turtle  HP:20/20 MP:10/10 Zzz hungry dirty  [e|
+|  ðŸ¸ egg_3  Frog  HP:20/20 MP:10/10 hungry dirty  [enter] |
+|  ðŸŒ egg_4  Snail  HP:20/20 MP:10/10 Zzz hungry dirty  [en|
+|  ðŸ£ egg_5  Chick  HP:20/20 MP:10/10 hungry dirty  [enter]|
+|  ðŸ¹ egg_6  Hamster  [unhatched - enter to hatch]         |
+|  ðŸ› egg_7  Caterpillar  [unhatched - enter to hatch]     |
+|  ðŸ egg_8  Mouse  HP:20/20 MP:10/10 dirty  [enter]       |
+|                                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:25:59 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ›   e g g _ 1                     |
+|                                                            |
+|  Caterpillar  Level 2 (XP 0/40)                            |
+|  HP:25/25 MP:13/13                                         |
+|  Hunger:100 Energy:100 Poop:3 (asleep)                     |
+|  Skills: peck,scratch                                      |
+|  Card: issued                                              |
+|  Position: (18,1,0) Facing: right                          |
+|                                                            |
+|  > Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|    Wake                                                    |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:26:00 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ›   e g g _ 1                     |
+|                                                            |
+|  Caterpillar  Level 2 (XP 0/40)                            |
+|  HP:25/25 MP:13/13                                         |
+|  Hunger:100 Energy:100 Poop:3 (asleep)                     |
+|  Skills: peck,scratch                                      |
+|  Card: issued                                              |
+|  Position: (18,1,0) Facing: right                          |
+|                                                            |
+|  > Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|    Wake                                                    |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:26:01 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ›   e g g _ 1                     |
+|                                                            |
+|  Caterpillar  Level 2 (XP 0/40)                            |
+|  HP:25/25 MP:13/13                                         |
+|  Hunger:100 Energy:100 Poop:3 (asleep)                     |
+|  Skills: peck,scratch                                      |
+|  Card: issued                                              |
+|  Position: (18,1,0) Facing: right                          |
+|                                                            |
+|  > Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|    Wake                                                    |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
+|  Opened egg_1 in a new window.                             |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:26:03 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ›   e g g _ 1                     |
+|                                                            |
+|  Caterpillar  Level 2 (XP 0/40)                            |
+|  HP:25/25 MP:13/13                                         |
+|  Hunger:100 Energy:100 Poop:3 (asleep)                     |
+|  Skills: peck,scratch                                      |
+|  Card: issued                                              |
+|  Position: (18,1,0) Facing: right                          |
+|                                                            |
+|  > Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|    Wake                                                    |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
+|  Opened egg_1 in a new window.                             |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:26:06 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ›   e g g _ 1                     |
+|                                                            |
+|  Caterpillar  Level 2 (XP 0/40)                            |
+|  HP:25/25 MP:13/13                                         |
+|  Hunger:100 Energy:100 Poop:3 (asleep)                     |
+|  Skills: peck,scratch                                      |
+|  Card: issued                                              |
+|  Position: (18,1,0) Facing: right                          |
+|                                                            |
+|  > Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|    Wake                                                    |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
+|  Opened egg_1 in a new window.                             |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:26:08 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ›   e g g _ 1                     |
+|                                                            |
+|  Caterpillar  Level 2 (XP 0/40)                            |
+|  HP:25/25 MP:13/13                                         |
+|  Hunger:100 Energy:100 Poop:3 (asleep)                     |
+|  Skills: peck,scratch                                      |
+|  Card: issued                                              |
+|  Position: (18,1,0) Facing: right                          |
+|                                                            |
+|    Open Window                                             |
+|  > Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|    Wake                                                    |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:26:08 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ›   e g g _ 1                     |
+|                                                            |
+|  Caterpillar  Level 2 (XP 0/40)                            |
+|  HP:25/25 MP:13/13                                         |
+|  Hunger:100 Energy:100 Poop:3 (asleep)                     |
+|  Skills: peck,scratch                                      |
+|  Card: issued                                              |
+|  Position: (18,1,0) Facing: right                          |
+|                                                            |
+|    Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|  > Clean                                                   |
+|    Wake                                                    |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:26:08 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ›   e g g _ 1                     |
+|                                                            |
+|  Caterpillar  Level 2 (XP 0/40)                            |
+|  HP:25/25 MP:13/13                                         |
+|  Hunger:100 Energy:100 Poop:3 (asleep)                     |
+|  Skills: peck,scratch                                      |
+|  Card: issued                                              |
+|  Position: (18,1,0) Facing: right                          |
+|                                                            |
+|    Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|  > Wake                                                    |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:26:09 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ›   e g g _ 1                     |
+|                                                            |
+|  Caterpillar  Level 2 (XP 0/40)                            |
+|  HP:25/25 MP:13/13                                         |
+|  Hunger:100 Energy:100 Poop:3                              |
+|  Skills: peck,scratch                                      |
+|  Card: issued                                              |
+|  Position: (18,1,0) Facing: right                          |
+|                                                            |
+|    Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|  > Sleep                                                   |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
+|  egg_1 woke up.                                            |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:26:09 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ›   e g g _ 1                     |
+|                                                            |
+|  Caterpillar  Level 2 (XP 0/40)                            |
+|  HP:25/25 MP:13/13                                         |
+|  Hunger:100 Energy:100 Poop:3                              |
+|  Skills: peck,scratch                                      |
+|  Card: issued                                              |
+|  Position: (18,1,0) Facing: right                          |
+|                                                            |
+|    Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|  > Sleep                                                   |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
+|  egg_1 woke up.                                            |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:26:12 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ›   e g g _ 1                     |
+|                                                            |
+|  Caterpillar  Level 2 (XP 0/40)                            |
+|  HP:25/25 MP:13/13                                         |
+|  Hunger:100 Energy:98 Poop:3                               |
+|  Skills: peck,scratch                                      |
+|  Card: issued                                              |
+|  Position: (19,1,0) Facing: right                          |
+|                                                            |
+|    Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|  > Sleep                                                   |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
+|  egg_1 woke up.                                            |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:26:15 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ›   e g g _ 1                     |
+|                                                            |
+|  Caterpillar  Level 2 (XP 0/40)                            |
+|  HP:25/25 MP:13/13                                         |
+|  Hunger:100 Energy:96 Poop:3                               |
+|  Skills: peck,scratch                                      |
+|  Card: issued                                              |
+|  Position: (18,2,0) Facing: left                           |
+|                                                            |
+|    Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|    Sleep                                                   |
+|  > Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:26:15 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ›   e g g _ 1                     |
+|                                                            |
+|  Caterpillar  Level 2 (XP 0/40)                            |
+|  HP:25/25 MP:13/13                                         |
+|  Hunger:100 Energy:96 Poop:3                               |
+|  Skills: peck,scratch                                      |
+|  Card: issued                                              |
+|  Position: (18,2,0) Facing: left                           |
+|                                                            |
+|    Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|    Sleep                                                   |
+|    Train (-20 energy)                                      |
+|  > Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:26:15 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ›   e g g _ 1                     |
+|                                                            |
+|  Caterpillar  Level 2 (XP 0/40)                            |
+|  HP:25/25 MP:13/13                                         |
+|  Hunger:100 Energy:96 Poop:3                               |
+|  Skills: peck,scratch                                      |
+|  Card: issued                                              |
+|  Position: (18,2,0) Facing: left                           |
+|                                                            |
+|    Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|    Sleep                                                   |
+|    Train (-20 energy)                                      |
+|  > Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:26:15 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ›   e g g _ 1                     |
+|                                                            |
+|  Caterpillar  Level 2 (XP 0/40)                            |
+|  HP:25/25 MP:13/13                                         |
+|  Hunger:100 Energy:96 Poop:3                               |
+|  Skills: peck,scratch                                      |
+|  Card: issued                                              |
+|  Position: (18,2,0) Facing: left                           |
+|                                                            |
+|    Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|    Sleep                                                   |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|  > Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:26:16 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ›   e g g _ 1                     |
+|                                                            |
+|  Caterpillar  Level 2 (XP 0/40)                            |
+|  HP:25/25 MP:13/13                                         |
+|  Hunger:100 Energy:94 Poop:3                               |
+|  Skills: peck,scratch                                      |
+|  Card: issued                                              |
+|  Position: (18,2,0) Facing: left                           |
+|                                                            |
+|    Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|    Sleep                                                   |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|  > Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:26:16 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                          P E T S                           |
+|                                                            |
+|> ðŸ› egg_1  Caterpillar  HP:25/25 MP:13/13 hungry dirty  [|
+|  ðŸ¢ egg_2  Turtle  HP:20/20 MP:10/10 Zzz hungry dirty  [e|
+|  ðŸ¸ egg_3  Frog  HP:20/20 MP:10/10 hungry dirty  [enter] |
+|  ðŸŒ egg_4  Snail  HP:20/20 MP:10/10 Zzz hungry dirty  [en|
+|  ðŸ£ egg_5  Chick  HP:20/20 MP:10/10 hungry dirty  [enter]|
+|  ðŸ¹ egg_6  Hamster  [unhatched - enter to hatch]         |
+|  ðŸ› egg_7  Caterpillar  [unhatched - enter to hatch]     |
+|  ðŸ egg_8  Mouse  HP:20/20 MP:10/10 dirty  [enter]       |
+|                                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:26:17 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                          P E T S                           |
+|                                                            |
+|  ðŸ› egg_1  Caterpillar  HP:25/25 MP:13/13 hungry dirty  [|
+|> ðŸ¢ egg_2  Turtle  HP:20/20 MP:10/10 Zzz hungry dirty  [e|
+|  ðŸ¸ egg_3  Frog  HP:20/20 MP:10/10 hungry dirty  [enter] |
+|  ðŸŒ egg_4  Snail  HP:20/20 MP:10/10 Zzz hungry dirty  [en|
+|  ðŸ£ egg_5  Chick  HP:20/20 MP:10/10 hungry dirty  [enter]|
+|  ðŸ¹ egg_6  Hamster  [unhatched - enter to hatch]         |
+|  ðŸ› egg_7  Caterpillar  [unhatched - enter to hatch]     |
+|  ðŸ egg_8  Mouse  HP:20/20 MP:10/10 dirty  [enter]       |
+|                                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:26:17 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ¢   e g g _ 2                     |
+|                                                            |
+|  Turtle  Level 1 (XP 0/20)                                 |
+|  HP:20/20 MP:10/10                                         |
+|  Hunger:100 Energy:100 Poop:1 (asleep)                     |
+|  Skills: peck                                              |
+|  Card: none                                                |
+|  Position: (20,13,0) Facing: left                          |
+|                                                            |
+|  > Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|    Wake                                                    |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:26:18 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ¢   e g g _ 2                     |
+|                                                            |
+|  Turtle  Level 1 (XP 0/20)                                 |
+|  HP:20/20 MP:10/10                                         |
+|  Hunger:100 Energy:100 Poop:1 (asleep)                     |
+|  Skills: peck                                              |
+|  Card: none                                                |
+|  Position: (20,13,0) Facing: left                          |
+|                                                            |
+|    Open Window                                             |
+|  > Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|    Wake                                                    |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:26:18 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ¢   e g g _ 2                     |
+|                                                            |
+|  Turtle  Level 1 (XP 0/20)                                 |
+|  HP:20/20 MP:10/10                                         |
+|  Hunger:100 Energy:100 Poop:1 (asleep)                     |
+|  Skills: peck                                              |
+|  Card: none                                                |
+|  Position: (20,13,0) Facing: left                          |
+|                                                            |
+|    Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|  > Clean                                                   |
+|    Wake                                                    |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:26:18 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ¢   e g g _ 2                     |
+|                                                            |
+|  Turtle  Level 1 (XP 0/20)                                 |
+|  HP:20/20 MP:10/10                                         |
+|  Hunger:100 Energy:100 Poop:1 (asleep)                     |
+|  Skills: peck                                              |
+|  Card: none                                                |
+|  Position: (20,13,0) Facing: left                          |
+|                                                            |
+|    Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|  > Wake                                                    |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:26:18 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ¢   e g g _ 2                     |
+|                                                            |
+|  Turtle  Level 1 (XP 0/20)                                 |
+|  HP:20/20 MP:10/10                                         |
+|  Hunger:100 Energy:100 Poop:1 (asleep)                     |
+|  Skills: peck                                              |
+|  Card: none                                                |
+|  Position: (20,13,0) Facing: left                          |
+|                                                            |
+|    Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|  > Wake                                                    |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:26:19 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ¢   e g g _ 2                     |
+|                                                            |
+|  Turtle  Level 1 (XP 0/20)                                 |
+|  HP:20/20 MP:10/10                                         |
+|  Hunger:100 Energy:100 Poop:1                              |
+|  Skills: peck                                              |
+|  Card: none                                                |
+|  Position: (20,13,0) Facing: left                          |
+|                                                            |
+|    Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|  > Sleep                                                   |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
+|  egg_2 woke up.                                            |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:26:22 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ¢   e g g _ 2                     |
+|                                                            |
+|  Turtle  Level 1 (XP 0/20)                                 |
+|  HP:20/20 MP:10/10                                         |
+|  Hunger:100 Energy:98 Poop:1                               |
+|  Skills: peck                                              |
+|  Card: none                                                |
+|  Position: (21,13,0) Facing: right                         |
+|                                                            |
+|    Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|  > Sleep                                                   |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
+|  egg_2 woke up.                                            |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:26:25 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ¢   e g g _ 2                     |
+|                                                            |
+|  Turtle  Level 1 (XP 0/20)                                 |
+|  HP:20/20 MP:10/10                                         |
+|  Hunger:100 Energy:96 Poop:1                               |
+|  Skills: peck                                              |
+|  Card: none                                                |
+|  Position: (20,12,0) Facing: left                          |
+|                                                            |
+|    Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|  > Sleep                                                   |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
+|  egg_2 woke up.                                            |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+
+
+--- FRAME at 2026-07-15 06:26:28 ---
++============================================================+
+|                                                            |
+|                      E G G - P A L S                       |
+|                                                            |
+|                    ð Ÿ  ¢   e g g _ 2                     |
+|                                                            |
+|  Turtle  Level 1 (XP 0/20)                                 |
+|  HP:20/20 MP:10/10                                         |
+|  Hunger:100 Energy:94 Poop:1                               |
+|  Skills: peck                                              |
+|  Card: none                                                |
+|  Position: (21,12,0) Facing: right                         |
+|                                                            |
+|    Open Window                                             |
+|    Feed (-5 tokens, -30 hunger)                            |
+|    Clean                                                   |
+|  > Sleep                                                   |
+|    Train (-20 energy)                                      |
+|    Export Card                                             |
+|    Destroy Card                                            |
+|    Back                                                    |
+|                                                            |
+|  egg_2 woke up.                                            |
+|                                                            |
++============================================================+
+[wasd/arrows] move  [enter] select  [b] back  [q] quit
+

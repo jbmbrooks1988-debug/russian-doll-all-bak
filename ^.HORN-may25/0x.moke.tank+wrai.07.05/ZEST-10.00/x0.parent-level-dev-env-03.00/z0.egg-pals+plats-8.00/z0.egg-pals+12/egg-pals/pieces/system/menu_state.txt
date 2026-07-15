@@ -1,0 +1,4 @@
+screen=pet_detail
+cursor=5
+last_message=Exported card egg_2-1 -> exports/egg_2-1.png
+selected_pet=egg_2

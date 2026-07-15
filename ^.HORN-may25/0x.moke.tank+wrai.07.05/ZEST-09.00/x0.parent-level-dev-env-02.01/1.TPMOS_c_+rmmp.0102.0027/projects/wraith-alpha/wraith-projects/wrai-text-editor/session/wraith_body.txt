@@ -1,8 +1,0 @@
-<text label="WRAI TEXT EDITOR" /><br/>
-<text label="ACTIVE: test.txt" /><br/>
-<button label="NEW FILE" onClick="PROJECT_ACTION:NEW_FILE" /><br/>
-<button label="SAVE FILE" onClick="PROJECT_ACTION:SAVE" /><br/>
-<button label="SAVE AS..." onClick="PROJECT_ACTION:SAVE_AS" /><br/>
-<button label="LOAD FILE..." onClick="PROJECT_ACTION:LOAD_MENU" /><br/>
-<button label="BACK TO EDITOR" onClick="PROJECT_PAGE:editor" /><br/>
-<text label="Saved to test.txt" /><br/>
