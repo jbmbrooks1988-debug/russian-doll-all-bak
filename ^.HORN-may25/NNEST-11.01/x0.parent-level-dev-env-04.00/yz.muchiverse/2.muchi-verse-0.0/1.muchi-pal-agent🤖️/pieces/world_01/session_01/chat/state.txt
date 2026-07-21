@@ -1,0 +1,13 @@
+current_model_id=random-words
+provider_kind=script
+current_api_url=-
+current_model_name=pieces/registry/wordbanks/sample.txt
+ai_state=IDLE
+input_buffer=
+pending_tool_name=
+pending_tool_args=
+curl_pid=256681
+sys_msg=Models listed above.
+irc_agent_active=no
+irc_agent_room=muchi-test
+irc_agent_user_id=irc-agent-0000

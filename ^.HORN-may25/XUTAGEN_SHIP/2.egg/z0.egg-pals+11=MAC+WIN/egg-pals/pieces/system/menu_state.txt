@@ -1,4 +1,0 @@
-screen=pet_detail
-cursor=3
-last_message=egg_2 woke up.
-selected_pet=egg_2

@@ -1,8 +1,0 @@
-# Custom Operations for mutaclsym's prisc+x program
-# Format: name type handler {description}
-
-out void builtin_out {print register to stdout}
-halt void builtin_halt {stop execution}
-move_player void ops/+x/move_player.+x {apply a keycode to hero position}
-end_turn void ops/+x/end_turn.+x {advance the map turn counter}
-compose_frame void ops/+x/compose_frame.+x {render map+hero+turn into current_frame.txt}

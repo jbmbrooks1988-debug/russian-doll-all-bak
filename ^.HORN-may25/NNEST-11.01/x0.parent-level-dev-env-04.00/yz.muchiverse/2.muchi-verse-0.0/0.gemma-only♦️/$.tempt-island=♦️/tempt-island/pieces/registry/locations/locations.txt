@@ -1,0 +1,9 @@
+# id|name|glyph|x0|y0|x1|y1|activities_csv
+loc_gate|Outer Gate|G|1|1|13|6|act_talk
+loc_lounge|Mirror Lounge|L|15|1|31|6|act_games,act_fmma
+loc_vanity|Vanity Hall|V|33|1|46|6|act_makeover,act_photoshoot
+loc_closet|Infinite Closet|W|48|1|62|6|act_outfit
+loc_cell_you|Your Room|C|1|8|13|13|act_rest
+loc_therapy|Glass Office|Y|15|8|31|13|act_therapy
+loc_dining|Long Table|D|33|8|46|13|act_talk_table,act_fmma
+loc_garden|Night Garden|N|48|8|62|13|act_garden_walk

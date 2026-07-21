@@ -1,0 +1,70 @@
+================================================================================
+ MUCHI-PAL-CHAT   [IDLE]   model: random-words             api: -
+================================================================================
+
+You: hi aida
+
+Aida: running river mountain mountain today friends journey world today walking
+
+You: /model
+
+Aida: running mountain morning hello hello world sunshine garden
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: hi
+
+Aida: river share stories quiet quiet music garden sunshine
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: *
+
+Aida: river river running morning coffee today
+
+[ result]: Models matching "*":
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+[SYS]: Models listed above.
+(type /model <id> to switch models)
+
+| [^] 1. Message: [_]                                     |
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)

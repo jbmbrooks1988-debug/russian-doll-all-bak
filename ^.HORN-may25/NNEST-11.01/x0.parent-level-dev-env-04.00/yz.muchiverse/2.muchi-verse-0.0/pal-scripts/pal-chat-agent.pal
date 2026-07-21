@@ -1,0 +1,24 @@
+# pal-chat-agent.pal - the first real meta-orchestration script (direct
+# user ask, 2026-07-20: "a new dir 'pal-scripts/' and running pal-chat-
+# agent.pal will navigate to and start the muchi-pal-agent, and start
+# the irc-agent-0000 script within the agent" - CHAT-INTEGRATION-
+# ARCHITECTURE.txt sec. 6's own planned "llm scripts/ folder", now
+# real). Deliberately thin: prisc+x bytecode has no session-management
+# opcodes of its own (mkdir/symlink/backgrounding a process aren't
+# things li/beq/j can express), so this script's only real job is
+# `exec`ing the actual orchestration logic, matching this whole
+# family's own op-calls-op convention. See launch_irc_agent.sh's own
+# header comment for what actually happens: launches a real, session-
+# isolated muchi-pal-agent instance (renderer + chtpm_parser_pal only,
+# no keyboard_input - a bot, not a human), then injects "/irc-agent
+# <room>" + Enter into it, same technique this whole project was
+# hand-verified with all session. Set $IRC_ROOM before running this
+# script to pick a room other than the "general" default (exec's own
+# system() call inherits prisc+x's full environment automatically - no
+# pal-level string-passing needed, `exec` can only pass INTEGER args
+# via registers, never arbitrary text, so this is the only clean way
+# to hand a room name through).
+#
+# Usage: IRC_ROOM=<room> ./system/prisc+x pal-chat-agent.pal
+exec ./launch_irc_agent.sh
+halt

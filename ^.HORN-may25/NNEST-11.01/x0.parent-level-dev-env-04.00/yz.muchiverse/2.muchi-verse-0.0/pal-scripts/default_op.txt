@@ -1,0 +1,7 @@
+# Custom Operations for pal-scripts/'s own prisc+x programs
+# Format: name type handler {description}
+# Empty on purpose: pal-chat-agent.pal only uses built-in opcodes
+# (exec, halt) - no custom ops needed. Kept as a real file anyway
+# (matching every other project's own default_op.txt) purely to
+# silence prisc+x's own "[Prisc Error] Could not open ops file"
+# stderr line, which is otherwise harmless but noisy.

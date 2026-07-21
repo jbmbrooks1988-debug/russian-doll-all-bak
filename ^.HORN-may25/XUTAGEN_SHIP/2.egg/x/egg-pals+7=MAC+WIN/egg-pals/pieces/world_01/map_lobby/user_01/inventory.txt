@@ -1,4 +1,0 @@
-egg_1
-egg_2
-egg_3
-egg_4

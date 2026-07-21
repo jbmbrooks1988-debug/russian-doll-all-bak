@@ -1,6 +1,0 @@
-things i would fix old b4 exploring new , 4 sanity . 
-
-
-wraith-fs doesn't load in ascii? (never did . since when ? why? ) 
-
-

@@ -1,0 +1,7 @@
+miner_wallet_id=jb
+running=1
+blocks_mined_this_session=14027
+last_block_index=13999
+last_block_hash=000001177989199b59cafcc200b8f81ff5b16b1938ec8771068a3819cfd1f3dd
+total_supply_minted=81956
+updated_at=1784598073

@@ -1,3 +1,0 @@
-name=user_01
-type=user
-tokens=15

@@ -1,0 +1,50 @@
+user|text||walking is fun
+assistant|text||every Walking is can a Walking Walking a Walking daily every walk and share stories includes is Walking share often life often stories share savory walk <UNK> can walk necessary every <START> includes Walking <UNK> Cereal walk with includes with Cereal do life Stories Cereal can <PAD> breakfast helps breakfast share <START> <PAD> friends friends friends morning Many people do
+user|text||h
+assistant|text||hello mountain world hello sunshine today hello
+user|text||hi
+assistant|text||morning hello breakfast coffee breakfast hello
+user|text||hi 
+assistant|text||walking walking breakfast quiet quiet happy breakfast music
+user|text||hi t
+assistant|text||walking mountain stories garden happy
+user|text||hi th
+assistant|text||friends quiet breakfast hello stories laughter
+user|text||hi the
+assistant|text||today hello happy journey friends sunshine morning garden garden
+user|text||hi ther
+assistant|text||sunshine friends journey music friends today happy quiet stories
+user|text||hi there
+assistant|text||hello sunshine hello garden breakfast happy friends
+user|text||hi there
+assistant|text||music river walking coffee river journey
+user|text||hi there
+assistant|text||breakfast journey garden stories coffee
+user|text||how is the weather today
+assistant|text||thunder thunder breeze gusty drizzle sunshine
+user|text||what time is it
+assistant|text||It is currently Monday, July 20, 2026 at 05:36 AM.
+user|text||just a normal message
+assistant|text||running happy mountain today stories laughter garden walking morning
+user|text||hello from test
+assistant|text||music sunshine stories coffee sunshine breakfast hello hello coffee coffee
+user|text||1
+assistant|text||world coffee running morning world running
+user|text||1/model groq-tool-use-mac
+assistant|text||journey music friends breakfast morning laughter happy
+user|text||hi
+assistant|text||garden walking morning walking hello
+user|text||hi friend
+assistant|text||walking morning friends sunshine mountain hello journey stories garden
+user|text||hi aida
+assistant|text||running river mountain mountain today friends journey world today walking
+user|text||/model
+assistant|text||running mountain morning hello hello world sunshine garden
+tool|text||Available models:\n  - groq-tool-use-mac\n  - gemma-lan\n  - gemini-flash\n  - cpp-llm-mac\n  - iqabod-test\n  - iqabod-daily-life\n  - random-words\n
+tool|text||Available models:\n  - groq-tool-use-mac\n  - gemma-lan\n  - gemini-flash\n  - cpp-llm-mac\n  - iqabod-test\n  - iqabod-daily-life\n  - random-words\n
+user|text||hi
+assistant|text||river share stories quiet quiet music garden sunshine
+tool|text||Available models:\n  - groq-tool-use-mac\n  - gemma-lan\n  - gemini-flash\n  - cpp-llm-mac\n  - iqabod-test\n  - iqabod-daily-life\n  - random-words\n
+user|text||*
+assistant|text||river river running morning coffee today
+tool|text||Models matching "*":\n  - groq-tool-use-mac\n  - gemma-lan\n  - gemini-flash\n  - cpp-llm-mac\n  - iqabod-test\n  - iqabod-daily-life\n  - random-words\n

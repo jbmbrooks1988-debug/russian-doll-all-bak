@@ -1,3 +1,0 @@
-id=world_01
-name=Overworld
-starting_map=map_start

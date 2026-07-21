@@ -1,3 +1,0 @@
-id=world_01
-name=EggPalsWorld
-starting_map=map_lobby

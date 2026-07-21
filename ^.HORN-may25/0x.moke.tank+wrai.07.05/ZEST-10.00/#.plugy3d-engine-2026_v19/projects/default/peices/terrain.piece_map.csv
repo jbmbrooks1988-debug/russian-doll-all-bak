@@ -1,8 +1,0 @@
-id,type,scale_x,scale_y,scale_z,render_style,pos_x,pos_y,pos_z,color,source_file,rotation_x,rotation_y,rotation_z,movable,interactable,health
-grass,terrain,1.0,1.0,1.0,six-faced,0,0,0,green,data/entities/mc_extracted_csvs_8x8/grass/grass.csv,0,0,0,False,False,0
-dirt,terrain,1.0,1.0,1.0,six-faced,1,0,0,brown,data/entities/mc_extracted_csvs_8x8/dirt/dirt.csv,0,0,0,False,False,0
-stone,terrain,1.0,1.0,1.0,six-faced,2,0,0,gray,data/entities/mc_extracted_csvs_8x8/stone/stone.csv,0,0,0,False,False,0
-cobblestone,terrain,1.0,1.0,1.0,six-faced,3,0,0,gray,data/entities/mc_extracted_csvs_8x8/cobblestone/cobblestone.csv,0,0,0,False,False,0
-wood,terrain,1.0,1.0,1.0,six-faced,4,0,0,brown,data/entities/mc_extracted_csvs_8x8/planks/planks.csv,0,0,0,False,False,0
-sand,terrain,1.0,1.0,1.0,six-faced,5,0,0,yellow,data/entities/mc_extracted_csvs_8x8/sand/sand.csv,0,0,0,False,False,0
-gravel,terrain,1.0,1.0,1.0,six-faced,6,0,0,light_gray,data/entities/mc_extracted_csvs_8x8/gravel/gravel.csv,0,0,0,False,False,0

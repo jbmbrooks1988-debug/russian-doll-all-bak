@@ -1,0 +1,331 @@
+HANDOFF — move externally-located pal-family projects into
+yz.muchiverse/2.muchi-verse/, BEFORE starting muchi-pal-llm's chtpm
+refactor. Written 2026-07-20 - read this cold, assume zero memory of
+prior conversation. If you are a fresh agent/session picking this up:
+read this WHOLE file before touching anything, then read !.pal-
+standards.txt (the family's own definitive standards doc, ~2100 lines,
+sec. 23 in particular) and #.dox/PAL-NET-STANDARD.txt before moving
+anything that uses palnet_peer.c or pet_export.c/pet_import.c.
+
+STATUS UPDATE (same day, before quota actually ran out - three of the
+four moves got done): muchi-pal-llm, mutaclsym, and zoo_0000 are ALL
+MOVED, rebuilt clean, and live-verified (op-level smoke tests, not just
+"it compiles"). muchi-pal-llm -> yz.muchiverse/2.muchi-verse/muchi-pal-
+llm/ (zero path fixes needed, grepped clean before and after).
+mutaclsym -> yz.muchiverse/2.muchi-verse/mutaclsym/ (two stale-path doc
+citations fixed in dox/mutaclysm-pal-final-handoff.txt; its own sibling
+platform-vision.txt - a family-wide cross-project vision doc, not
+mutaclsym-specific - moved to this directory's own top level instead of
+staying nested under mutaclsym; the empty y0.mutaclsym+06.01/ wrapper
+directory was removed once genuinely empty). zoo_0000 ->
+yz.muchiverse/2.muchi-verse/zoo_0000/ (a REAL functional break found
+and fixed: it uses pet_export.c/pet_import.c, whose resolve_exchange_
+root() defaults to "one level above project root" - moving zoo_0000
+changed that default to point at a new, empty exchange/ dir instead of
+the real z0.egg-pals+plats-8.01/exchange/ still used by the NOT-yet-
+moved muchi-pals-refx-13.00; fixed by adding an explicit
+`PRISC_EXCHANGE_ROOT` override in zoo_0000's own button.sh, pointing
+back at the old, still-shared location, with a comment explaining this
+is temporary until muchi-pals-refx-13.00 also moves - see sec. 1(d)
+below, still accurate, now marked DONE). shared-ops-manifest.txt's own
+stale example path fixed too.
+
+UPDATE 2: z0.muchi-pals-refx-13.00 ALSO MOVED, same day, after direct
+user confirmation ("its probably a stray process that wasn't killed
+right... move it too"). Correct call - confirmed genuinely stray: no
+pet_export/pet_import or palnet_peer usage anywhere in this project at
+all (grepped clean - that whole cross-project feature isn't wired into
+this side yet either, matching zoo_0000's own pending tasks #7-#9), so
+no PRISC_EXCHANGE_ROOT/PRISC_NET_ROOT consideration was needed here,
+unlike zoo_0000's own real break. Built clean, live-verified
+(`compose_menu.+x` ran and wrote its own view.txt correctly against the
+new location).
+
+REAL GOTCHA HIT DURING THIS MOVE, WORTH KNOWING BEFORE YOU DO ANOTHER
+ONE: after killing the two processes originally found (a bash + a
+qterm), a THIRD, previously-unnoticed leftover `prisc+x` process (a
+child of one of those two, already reparented to init by the time it
+was found - ppid 1 in `ps`) was still running. Its own KERNEL cwd
+correctly followed the `mv` (Linux transparently updates an open
+process's cwd handle when the directory it's in gets renamed/moved on
+the same filesystem) - so a `/proc/$pid/cwd` sweep right after the mv
+looked clean. But this process's own `PRISC_PROJECT_ROOT` had been read
+ONCE at its own startup into a static C string (exactly how every
+op/prisc+x in this family's own `resolve_root()` works - matches
+!.pal-standards.txt's own documented pattern) - that STRING still held
+the OLD absolute path text, completely unaffected by the directory
+rename elsewhere. Every tick, it kept recreating a fresh `pieces/`
+tree (ephemeral UI state only, no real data - confirmed by inspection
+before deleting it) AT THE OLD LOCATION, using that stale string,
+independent of its own correctly-updated kernel cwd. Found by noticing
+a `pieces/` directory had reappeared at the just-emptied old path with
+a timestamp AFTER the move. LESSON: after any `mv` of a live-or-
+recently-live project, re-run the /proc/$pid/cwd sweep A SECOND TIME,
+a few seconds later, specifically watching for anything reappearing at
+the OLD path - a clean sweep immediately after the mv is not
+sufficient proof nothing is still writing there, because a process's
+own cached PRISC_PROJECT_ROOT string (not its kernel cwd) is what
+actually determines where its file I/O lands.
+
+ALL FOUR PROJECTS NAMED IN THIS FILE ARE NOW MOVED, BUILT, AND LIVE-
+VERIFIED. Remaining follow-up, not urgent, named so it isn't lost:
+exchange/ and net/ (both still at z0.egg-pals+plats-8.01/) could now
+move into this directory too, to become real siblings of both zoo_0000
+and muchi-pals-refx-13.00 again - zoo_0000's own PRISC_EXCHANGE_ROOT
+override (button.sh, added this same day) is a deliberate, working,
+temporary shim for as long as they don't; do that cleanup whenever
+convenient, not blocking anything else. z0.my-chara/, z0.user/,
+HANDOFF-TASK-DRAGDROP-2026-07-18.txt, 2do-muchi-pal-refx.txt, and
+tools/ (gen_desktop_grid.c) are still sitting at the old
+z0.egg-pals+plats-8.01/ location too - sec. 1's own notes on each
+still apply (ask before moving/deleting, don't assume).
+
+========================================================================
+0. WHY THIS HAS TO HAPPEN FIRST, IN THIS ORDER
+========================================================================
+The prior session designed CHAT-INTEGRATION-ARCHITECTURE.txt (in
+y0.muchi-pal-llm-00.00/, read it - it documents bringing muchi-pal-llm
+onto real chtpm, a connector to pal-chat-irc, LLM-to-LLM chat, a
+`/model script` option, and meta-orchestration scripts). Direct user
+instruction before that refactor starts: several real pal-family
+projects currently live OUTSIDE yz.muchiverse/2.muchi-verse/ (this
+directory - the one this file is in), at inconsistent, ad-hoc parent
+paths. Move them IN first, fix whatever shared-ops/path assumptions
+break as a result, THEN start the chtpm refactor - don't build new
+cross-project integration (the whole point of the chtpm refactor is
+letting muchi-pal-llm talk to pal-chat-irc) against projects that are
+about to move out from under it.
+
+========================================================================
+1. CONFIRMED INVENTORY - WHAT'S OUTSIDE, WHAT'S ALREADY INSIDE
+========================================================================
+Already correctly inside yz.muchiverse/2.muchi-verse/ (do not move
+these, they're already right - listed so you don't waste time
+re-auditing them): pal-chain, pal-forum, pal-chat-irc, user-pal,
+wsr-pal, muchipal-editor-0.0, piececraft-3d-pal, shared-ops/,
+shared-ops-manifest.txt, sync_shared_op.sh, !.pal-standards.txt,
+#.dox/ (PAL-CHAIN-STANDARD.txt, PAL-FORUM-STANDARD.txt, PAL-CHAT-IRC-
+STANDARD.txt, PAL-NET-STANDARD.txt, USER-PAL-STANDARD.txt all live
+here), net/ (the REAL shared palnet_peer presence directory pal-chain/
+pal-forum/pal-chat-irc's own button.sh scripts already point at via
+`PRISC_NET_ROOT="$SCRIPT_DIR/../net/presence"`), plus several older/
+untouched-this-session projects (fondu-pal, muchi-chatai-desk-pals,
+muchi-civ-pal, muchi-evo-pal, muchimon-pal, muchi-x.com-pal, yahoo-pal,
++.pal-platformer, +.tsots-ai-driven-pal, !.RISCV-PAL-EMU+RGB) - not
+investigated this session, out of scope for this handoff unless you
+find they also live outside and need the same treatment (check `find
+x0.parent-level-dev-env-03.01 -maxdepth 1` yourself to be sure nothing
+new has appeared since this was written).
+
+CONFIRMED OUTSIDE, NEEDS MOVING (all paths relative to
+x0.parent-level-dev-env-03.01/, this file's own great-grandparent):
+
+  (a) y0.muchi-pal-llm-00.00/  ->  yz.muchiverse/2.muchi-verse/muchi-pal-llm/
+      The project CHAT-INTEGRATION-ARCHITECTURE.txt is about to be
+      built against. Grepped clean: no hardcoded absolute-path
+      references in button.sh or any ops/*.c file (checked directly).
+      state.txt's own `current_api_url` field points at IQABOD
+      (#.ref/^.IQABOD-llm-06.00) via a full absolute path - that path
+      does NOT change when muchi-pal-llm itself moves, since IQABOD
+      isn't moving. Lowest-risk of the three moves.
+
+  (b) y0.mutaclsym+06.01/mutaclsym/  ->  yz.muchiverse/2.muchi-verse/mutaclsym/
+      (drop the "+06.01" version-number wrapper directory - move the
+      real project dir directly to be a sibling of pal-chain/pal-forum/
+      etc., matching how every other project in 2.muchi-verse/ sits).
+      Has real chtpm (system/chtpm_parser_pal.c, pieces/chtpm/layouts/
+      game.chtpm/info_test.chtpm) and gl_mirror.c/chtpm_rgb_render.c.
+      No palnet_peer usage found in button.sh (grepped clean) - but
+      CHECK ops/pet_export.c / ops/pet_import.c if mutaclsym has them
+      (it may not - it wasn't a confirmed consumer of those in
+      shared-ops-manifest.txt's own consumer list, only zoo_0000 was) -
+      those use resolve_exchange_root() = "one level above project
+      root," which would change meaning after this move exactly the
+      way palnet_peer's presence root does (sec. 2 below).
+
+  (c) z0.egg-pals+plats-8.01/z0.muchi-pals-refx-13.00/  ->
+      yz.muchiverse/2.muchi-verse/muchi-pals-refx-13.00/ (or a cleaner
+      name if you and the user agree on one when this is picked up -
+      not decided here)
+      CONFIRMED BY THE USER DIRECTLY, THIS SESSION: this is "the real
+      egg pal" - the actual current, active egg-pals project. A
+      DIFFERENT, separately-run agent may be actively working on this
+      project's own refactor RIGHT NOW or in a future session - check
+      `ps aux | grep -i muchi-pals-refx` and check
+      z0.muchi-pals-refx-13.00/dox/ for recent handoff notes BEFORE
+      touching this one. If another agent's own session appears live
+      or was very recently active, STOP and ask the user how to
+      coordinate rather than moving a directory out from under
+      someone else's in-progress work. A session-isolation doc was
+      already written FOR that agent, at z0.muchi-pals-refx-13.00/
+      dox/03-session-isolation.md - read it for that project's own
+      current real file/path shape before assuming anything about it.
+
+  (d) z0.egg-pals+plats-8.01/z0.zoo_0000/  ->
+      yz.muchiverse/2.muchi-verse/zoo_0000/
+      REAL, LIVE presence file found on disk this session:
+      z0.egg-pals+plats-8.01/net/presence/zoo_0000-zoo-2477489.txt -
+      meaning a zoo_0000 process may be (or very recently was) running.
+      CHECK `ps aux | grep zoo_0000` / `ps aux | grep gl_mirror` before
+      moving. zoo_0000's own button.sh has NO PRISC_NET_ROOT override
+      (grepped clean) - its palnet_peer companion (launched by
+      egg_window.c during a drag, per PAL-NET-STANDARD.txt sec. 0)
+      currently defaults to "one level above its own project root,"
+      which today resolves to z0.egg-pals+plats-8.01/net/presence (the
+      file just found). AFTER this move, that SAME default resolution
+      would instead point at yz.muchiverse/2.muchi-verse/net/presence -
+      merging zoo_0000's own presence entries into the SAME pool as
+      pal-chain/pal-forum/pal-chat-irc. This is almost certainly
+      HARMLESS (palnet_peer's own seek_kind matching means a "zoo"/
+      "pet" kind will never cross-connect with "chain_node"/
+      "forum_node"/"irc_node" kinds even sharing one directory - see
+      PAL-NET-STANDARD.txt sec. 1/2), but it IS a real behavior change
+      worth confirming with the user rather than assuming silently -
+      ASK before moving, or explicitly add `PRISC_NET_ROOT=".../
+      z0.egg-pals+plats-8.01/net/presence"` to zoo_0000's own button.sh
+      if the intent is to KEEP it isolated from the muchi-verse
+      presence pool post-move.
+
+  ALSO under z0.egg-pals+plats-8.01/ (NOT independently confirmed as
+  "projects" - investigate before deciding what to do with these,
+  don't assume):
+    - exchange/  - shared pet_export.c/pet_import.c exchange root
+      (resolve_exchange_root() target - "one level above a project's
+      own root," same convention as palnet_peer's presence dir). MUST
+      move alongside whichever of (c)/(d) actually uses it, staying a
+      SIBLING of that project afterward, or pet_export/import breaks.
+      Check zoo_0000/muchi-pals-refx-13.00's own ops for pet_export.c/
+      pet_import.c usage to confirm which of them actually needs this.
+    - tools/ (gen_desktop_grid.c) - a small standalone utility, unclear
+      if anything currently depends on its CURRENT path. Grep both (c)
+      and (d) for references to "tools/" or "gen_desktop_grid" before
+      moving/leaving it.
+    - z0.my-chara/, z0.user/ - look like small personal/scratch data
+      (one file, a dox/ dir), NOT obviously a project. Do not move or
+      delete without asking - could be the user's own real data, not
+      yours to relocate on a guess.
+    - HANDOFF-TASK-DRAGDROP-2026-07-18.txt, 2do-muchi-pal-refx.txt -
+      loose files at z0.egg-pals+plats-8.01/'s own top level, likely
+      real prior handoff/task notes for that sub-family's own drag-
+      and-drop feature work (referenced by the task list this session
+      inherited: "Wire egg_window.c to launch/kill palnet_peer during a
+      drag," "Make zoo_window.c export pets dragged out of zoo bounds,"
+      "Build and live-test the full networked in/out drag flow" - all
+      still PENDING, not done this session, real unfinished work).
+      Read these before deciding whether they move with zoo_0000/
+      muchi-pals-refx-13.00 or stay as z0.egg-pals+plats-8.01-level
+      notes about a multi-project feature spanning both.
+
+NOT in scope, don't move (named so they aren't swept in by mistake):
+  - 1.TPMOS_c_+rmmp.0102.0028/ - the REAL reference codebase every
+    "read directly, not assumed" claim in this whole family's docs
+    points at (real chtpm_parser.c, real p2p-net, real fsm_bot_
+    programmer.txt precedent, etc.). This is upstream/reference
+    material, never a muchi-verse member, never move it.
+  - #.ref/ - houses IQABOD (^.IQABOD-llm-06.00), referenced by
+    muchi-pal-llm via absolute path. A separate ML project, not part
+    of this pal/chtpm family's own project set.
+  - #.emoji-studio-501.02.05t/, #.media-library/ - not investigated
+    this session, no evidence they're part of this move.
+  - x0.moke-pet-project-04.04/ - has its OWN button.sh/pieces/HANDOFF.md
+    - looks like a genuinely separate, older, unrelated project family
+    (different naming convention, never referenced by anything touched
+    this session). UNCLEAR if in scope - ASK THE USER before including
+    or excluding it, don't guess either way.
+
+========================================================================
+2. WHAT BREAKS ON A MOVE, AND HOW TO FIX IT - PER PROJECT CHECKLIST
+========================================================================
+Run this checklist for EACH project moved, not just once overall:
+
+  [ ] Move the directory itself (plain `mv` - this is NOT a git repo,
+      confirmed at session start, no git mv needed, no history to
+      preserve beyond the files themselves).
+  [ ] Grep the moved project's own button.sh + every ops/*.c file for
+      any hardcoded path containing the OLD parent directory name
+      (e.g. "y0.mutaclsym+06.01", "z0.egg-pals+plats-8.01",
+      "y0.muchi-pal-llm-00.00") - fix any found to the new location.
+  [ ] If the project launches palnet_peer.+x (grep button.sh for
+      "palnet_peer"): check whether it needs an explicit
+      `PRISC_NET_ROOT` override (sec. 1(d)'s zoo_0000 case) or should
+      rely on the new default (which will now point at yz.muchiverse/
+      2.muchi-verse/net/presence, the same pool pal-chain/pal-forum/
+      pal-chat-irc already use) - this is a real behavioral decision,
+      not just a path fix. See !.pal-standards.txt's own sec. 23
+      writeup on the PRISC_NET_ROOT bug pal-forum/pal-chat-irc hit for
+      the full mechanism if you need the background.
+  [ ] If the project uses pet_export.c/pet_import.c (grep for
+      "resolve_exchange_root" or "PRISC_EXCHANGE_ROOT"): same
+      consideration for the exchange/ directory (sec. 1's own note).
+  [ ] Update shared-ops-manifest.txt: it has example sync commands with
+      hardcoded OLD paths, at minimum this one confirmed line (search
+      for it, there may be others added since this was written):
+        "bash sync_shared_op.sh chtpm_parser_pal ../../y0.mutaclsym+06.01/mutaclsym/system"
+      should become (once mutaclsym is a direct sibling under
+      2.muchi-verse/, matching pal-chain/pal-forum's own reference
+      shape):
+        "bash sync_shared_op.sh chtpm_parser_pal ../mutaclsym/system"
+  [ ] Rebuild the moved project (`bash scripts/build.sh` or
+      `./button.sh compile`, whichever it uses) from its NEW location -
+      confirms no other stale absolute path broke the build silently.
+  [ ] If the project has its own button.sh `run` action already using
+      session isolation (none of these four are confirmed to yet -
+      that's a SEPARATE, later task, matching pal-chat-irc/pal-forum/
+      pal-chain/user-pal's own precedent, not required just to
+      complete this move) - if it does, verify pieces/sessions/ still
+      resolves correctly relative to the new location (it will, since
+      SCRIPT_DIR is computed dynamically in every button.sh via
+      `cd "$(dirname "$0")" && pwd` - this is location-independent by
+      construction, just confirm no OTHER script hardcodes a session
+      path).
+  [ ] Live-verify the moved project still actually runs (its own
+      basic real interactive test, or whatever the project's own dox
+      says is the minimum smoke test) BEFORE considering that
+      project's move done. Don't just confirm "it compiles."
+
+BEFORE MOVING ANYTHING, for every project in sec. 1: run
+`ps aux | grep -i <project_name_or_binary>` and check for any live
+process with that project's own path in its cwd (readlink -f
+/proc/$pid/cwd) - this whole family's own session-isolation testing
+gotcha (pal-standards.txt sec. 23's own "manual/agent testing gotcha"
+entry) applies here even harder: moving a directory out from under a
+RUNNING process is worse than launching a second process against a
+live one. If anything is running against a project you're about to
+move, either wait for it to exit naturally or ask the user before
+killing it - never assume a live process is safe to kill just because
+it's inconvenient for this move (same standing rule the whole family
+already follows for any destructive-adjacent action).
+
+========================================================================
+3. AFTER THE MOVE IS DONE AND VERIFIED - THEN, AND ONLY THEN
+========================================================================
+Proceed to y0.muchi-pal-llm-00.00's [NEW PATH: yz.muchiverse/
+2.muchi-verse/muchi-pal-llm's] own CHAT-INTEGRATION-ARCHITECTURE.txt,
+starting at its own sec. 7 "BUILD ORDER" step 1 (the chtpm upgrade,
+verified against the existing ollama/gemini/llamacpp/iqabod chat loop
+before any connector/multi-agent work starts). Do not skip ahead to
+sec. 2-6 of that doc before step 1 is done and live-verified, matching
+that doc's own explicit "vertical slice first" build order.
+
+========================================================================
+4. GENERAL REMINDERS FOR WHOEVER PICKS THIS UP COLD
+========================================================================
+- Read !.pal-standards.txt before making any change to shared-ops
+  files or session-isolated button.sh scripts - it has multiple real,
+  live-caught bugs and their fixes documented (session isolation,
+  PRISC_NET_ROOT, the cli_io label/Enter-sends-chat fixes, the 'q'-
+  quits-everything removal, the "always diff before sync_shared_op.sh
+  overwrites a file" rule from a real mistake made this session against
+  wsr-pal's own deliberately-forked keyboard_input.c).
+- This family has NO git - be extra careful with anything destructive
+  (mv without a copy-first safety net, rm -rf, overwriting a file
+  without checking shared-ops-manifest.txt's own "local fork, not
+  synced" notes first).
+- If in doubt about scope (is X part of this move or not), ask rather
+  than guess - this session's own instruction was explicit: "always fix
+  info if u know its wrong in docs" and, separately, real caution was
+  asked for around another agent's own active work (muchi-pals-refx-
+  13.00) and unclear-ownership data (z0.my-chara/z0.user).
+  
+  
+  🤖️🥚️🧟‍♀️️🐞️⛓️

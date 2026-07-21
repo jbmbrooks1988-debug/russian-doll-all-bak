@@ -1,0 +1,1393 @@
+
+--- FRAME at 2026-07-20 23:30:31 ---
+[Map Loading...]
+| [>] 1. Message: []                                        |
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-20 23:30:31 ---
+================================================================================
+ MUCHI-PAL-CHAT   [IDLE]   model: random-words             api: -
+================================================================================
+
+Aida: walking morning friends sunshine mountain hello journey stories garden
+
+You: hi aida
+
+Aida: running river mountain mountain today friends journey world today walking
+
+You: /model
+
+Aida: running mountain morning hello hello world sunshine garden
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: hi
+
+Aida: river share stories quiet quiet music garden sunshine
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: *
+
+Aida: river river running morning coffee today
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+[SYS]: Response received.
+(type /model <id> to switch models)
+
+| [>] 1. Message: []                                        |
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-20 23:30:32 ---
+================================================================================
+ MUCHI-PAL-CHAT   [IDLE]   model: random-words             api: -
+================================================================================
+
+Aida: walking morning friends sunshine mountain hello journey stories garden
+
+You: hi aida
+
+Aida: running river mountain mountain today friends journey world today walking
+
+You: /model
+
+Aida: running mountain morning hello hello world sunshine garden
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: hi
+
+Aida: river share stories quiet quiet music garden sunshine
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: *
+
+Aida: river river running morning coffee today
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+[SYS]: Response received.
+(type /model <id> to switch models)
+
+| [>] 1. Message: []                                        |
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-20 23:30:32 ---
+================================================================================
+ MUCHI-PAL-CHAT   [IDLE]   model: random-words             api: -
+================================================================================
+
+Aida: walking morning friends sunshine mountain hello journey stories garden
+
+You: hi aida
+
+Aida: running river mountain mountain today friends journey world today walking
+
+You: /model
+
+Aida: running mountain morning hello hello world sunshine garden
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: hi
+
+Aida: river share stories quiet quiet music garden sunshine
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: *
+
+Aida: river river running morning coffee today
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+[SYS]: Response received.
+(type /model <id> to switch models)
+
+| [^] 1. Message: [_]                                     |
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-20 23:30:32 ---
+================================================================================
+ MUCHI-PAL-CHAT   [IDLE]   model: random-words             api: -
+================================================================================
+
+Aida: walking morning friends sunshine mountain hello journey stories garden
+
+You: hi aida
+
+Aida: running river mountain mountain today friends journey world today walking
+
+You: /model
+
+Aida: running mountain morning hello hello world sunshine garden
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: hi
+
+Aida: river share stories quiet quiet music garden sunshine
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: *
+
+Aida: river river running morning coffee today
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+[SYS]: Response received.
+(type /model <id> to switch models)
+
+| [^] 1. Message: [/_]                                     |
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-20 23:30:32 ---
+================================================================================
+ MUCHI-PAL-CHAT   [IDLE]   model: random-words             api: -
+================================================================================
+
+Aida: walking morning friends sunshine mountain hello journey stories garden
+
+You: hi aida
+
+Aida: running river mountain mountain today friends journey world today walking
+
+You: /model
+
+Aida: running mountain morning hello hello world sunshine garden
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: hi
+
+Aida: river share stories quiet quiet music garden sunshine
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: *
+
+Aida: river river running morning coffee today
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+[SYS]: Response received.
+(type /model <id> to switch models)
+
+| [^] 1. Message: [/_]                                     |
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-20 23:30:33 ---
+================================================================================
+ MUCHI-PAL-CHAT   [IDLE]   model: random-words             api: -
+================================================================================
+
+Aida: walking morning friends sunshine mountain hello journey stories garden
+
+You: hi aida
+
+Aida: running river mountain mountain today friends journey world today walking
+
+You: /model
+
+Aida: running mountain morning hello hello world sunshine garden
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: hi
+
+Aida: river share stories quiet quiet music garden sunshine
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: *
+
+Aida: river river running morning coffee today
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+[SYS]: Response received.
+(type /model <id> to switch models)
+
+| [^] 1. Message: [/m_]                                     |
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-20 23:30:33 ---
+================================================================================
+ MUCHI-PAL-CHAT   [IDLE]   model: random-words             api: -
+================================================================================
+
+Aida: walking morning friends sunshine mountain hello journey stories garden
+
+You: hi aida
+
+Aida: running river mountain mountain today friends journey world today walking
+
+You: /model
+
+Aida: running mountain morning hello hello world sunshine garden
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: hi
+
+Aida: river share stories quiet quiet music garden sunshine
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: *
+
+Aida: river river running morning coffee today
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+[SYS]: Response received.
+(type /model <id> to switch models)
+
+| [^] 1. Message: [/m_]                                     |
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-20 23:30:33 ---
+================================================================================
+ MUCHI-PAL-CHAT   [IDLE]   model: random-words             api: -
+================================================================================
+
+Aida: walking morning friends sunshine mountain hello journey stories garden
+
+You: hi aida
+
+Aida: running river mountain mountain today friends journey world today walking
+
+You: /model
+
+Aida: running mountain morning hello hello world sunshine garden
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: hi
+
+Aida: river share stories quiet quiet music garden sunshine
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: *
+
+Aida: river river running morning coffee today
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+[SYS]: Response received.
+(type /model <id> to switch models)
+
+| [^] 1. Message: [/mo_]                                     |
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-20 23:30:33 ---
+================================================================================
+ MUCHI-PAL-CHAT   [IDLE]   model: random-words             api: -
+================================================================================
+
+Aida: walking morning friends sunshine mountain hello journey stories garden
+
+You: hi aida
+
+Aida: running river mountain mountain today friends journey world today walking
+
+You: /model
+
+Aida: running mountain morning hello hello world sunshine garden
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: hi
+
+Aida: river share stories quiet quiet music garden sunshine
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: *
+
+Aida: river river running morning coffee today
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+[SYS]: Response received.
+(type /model <id> to switch models)
+
+| [^] 1. Message: [/mo_]                                     |
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-20 23:30:33 ---
+================================================================================
+ MUCHI-PAL-CHAT   [IDLE]   model: random-words             api: -
+================================================================================
+
+Aida: walking morning friends sunshine mountain hello journey stories garden
+
+You: hi aida
+
+Aida: running river mountain mountain today friends journey world today walking
+
+You: /model
+
+Aida: running mountain morning hello hello world sunshine garden
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: hi
+
+Aida: river share stories quiet quiet music garden sunshine
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: *
+
+Aida: river river running morning coffee today
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+[SYS]: Response received.
+(type /model <id> to switch models)
+
+| [^] 1. Message: [/mod_]                                     |
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-20 23:30:33 ---
+================================================================================
+ MUCHI-PAL-CHAT   [IDLE]   model: random-words             api: -
+================================================================================
+
+Aida: walking morning friends sunshine mountain hello journey stories garden
+
+You: hi aida
+
+Aida: running river mountain mountain today friends journey world today walking
+
+You: /model
+
+Aida: running mountain morning hello hello world sunshine garden
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: hi
+
+Aida: river share stories quiet quiet music garden sunshine
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: *
+
+Aida: river river running morning coffee today
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+[SYS]: Response received.
+(type /model <id> to switch models)
+
+| [^] 1. Message: [/mod_]                                     |
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-20 23:30:33 ---
+================================================================================
+ MUCHI-PAL-CHAT   [IDLE]   model: random-words             api: -
+================================================================================
+
+Aida: walking morning friends sunshine mountain hello journey stories garden
+
+You: hi aida
+
+Aida: running river mountain mountain today friends journey world today walking
+
+You: /model
+
+Aida: running mountain morning hello hello world sunshine garden
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: hi
+
+Aida: river share stories quiet quiet music garden sunshine
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: *
+
+Aida: river river running morning coffee today
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+[SYS]: Response received.
+(type /model <id> to switch models)
+
+| [^] 1. Message: [/mode_]                                     |
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-20 23:30:33 ---
+================================================================================
+ MUCHI-PAL-CHAT   [IDLE]   model: random-words             api: -
+================================================================================
+
+Aida: walking morning friends sunshine mountain hello journey stories garden
+
+You: hi aida
+
+Aida: running river mountain mountain today friends journey world today walking
+
+You: /model
+
+Aida: running mountain morning hello hello world sunshine garden
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: hi
+
+Aida: river share stories quiet quiet music garden sunshine
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: *
+
+Aida: river river running morning coffee today
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+[SYS]: Response received.
+(type /model <id> to switch models)
+
+| [^] 1. Message: [/mode_]                                     |
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-20 23:30:33 ---
+
+
+--- FRAME at 2026-07-20 23:30:33 ---
+================================================================================
+ MUCHI-PAL-CHAT   [IDLE]   model: random-words             api: -
+================================================================================
+
+Aida: walking morning friends sunshine mountain hello journey stories garden
+
+You: hi aida
+
+Aida: running river mountain mountain today friends journey world today walking
+
+You: /model
+
+Aida: running mountain morning hello hello world sunshine garden
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: hi
+
+Aida: river share stories quiet quiet music garden sunshine
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: *
+
+Aida: river river running morning coffee today
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+[SYS]: Response received.
+(type /model <id> to switch models)
+
+| [^] 1. Message: [/model_]                                     |
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-20 23:30:34 ---
+================================================================================
+ MUCHI-PAL-CHAT   [IDLE]   model: random-words             api: -
+================================================================================
+
+Aida: walking morning friends sunshine mountain hello journey stories garden
+
+You: hi aida
+
+Aida: running river mountain mountain today friends journey world today walking
+
+You: /model
+
+Aida: running mountain morning hello hello world sunshine garden
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: hi
+
+Aida: river share stories quiet quiet music garden sunshine
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: *
+
+Aida: river river running morning coffee today
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+[SYS]: Response received.
+(type /model <id> to switch models)
+
+| [^] 1. Message: [/model _]                                     |
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-20 23:30:34 ---
+================================================================================
+ MUCHI-PAL-CHAT   [IDLE]   model: random-words             api: -
+================================================================================
+
+Aida: walking morning friends sunshine mountain hello journey stories garden
+
+You: hi aida
+
+Aida: running river mountain mountain today friends journey world today walking
+
+You: /model
+
+Aida: running mountain morning hello hello world sunshine garden
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: hi
+
+Aida: river share stories quiet quiet music garden sunshine
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: *
+
+Aida: river river running morning coffee today
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+[SYS]: Response received.
+(type /model <id> to switch models)
+
+| [^] 1. Message: [/model _]                                     |
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-20 23:30:34 ---
+================================================================================
+ MUCHI-PAL-CHAT   [IDLE]   model: random-words             api: -
+================================================================================
+
+Aida: walking morning friends sunshine mountain hello journey stories garden
+
+You: hi aida
+
+Aida: running river mountain mountain today friends journey world today walking
+
+You: /model
+
+Aida: running mountain morning hello hello world sunshine garden
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: hi
+
+Aida: river share stories quiet quiet music garden sunshine
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: *
+
+Aida: river river running morning coffee today
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+[SYS]: Response received.
+(type /model <id> to switch models)
+
+| [^] 1. Message: [/model _]                                     |
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-20 23:30:34 ---
+================================================================================
+ MUCHI-PAL-CHAT   [IDLE]   model: random-words             api: -
+================================================================================
+
+Aida: walking morning friends sunshine mountain hello journey stories garden
+
+You: hi aida
+
+Aida: running river mountain mountain today friends journey world today walking
+
+You: /model
+
+Aida: running mountain morning hello hello world sunshine garden
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: hi
+
+Aida: river share stories quiet quiet music garden sunshine
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: *
+
+Aida: river river running morning coffee today
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+[SYS]: Response received.
+(type /model <id> to switch models)
+
+| [^] 1. Message: [/model *_]                                     |
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-20 23:30:35 ---
+================================================================================
+ MUCHI-PAL-CHAT   [IDLE]   model: random-words             api: -
+================================================================================
+
+Aida: walking morning friends sunshine mountain hello journey stories garden
+
+You: hi aida
+
+Aida: running river mountain mountain today friends journey world today walking
+
+You: /model
+
+Aida: running mountain morning hello hello world sunshine garden
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: hi
+
+Aida: river share stories quiet quiet music garden sunshine
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: *
+
+Aida: river river running morning coffee today
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+[SYS]: Response received.
+(type /model <id> to switch models)
+
+| [^] 1. Message: [_]                                     |
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-20 23:30:35 ---
+================================================================================
+ MUCHI-PAL-CHAT   [IDLE]   model: random-words             api: -
+================================================================================
+
+You: hi aida
+
+Aida: running river mountain mountain today friends journey world today walking
+
+You: /model
+
+Aida: running mountain morning hello hello world sunshine garden
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: hi
+
+Aida: river share stories quiet quiet music garden sunshine
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: *
+
+Aida: river river running morning coffee today
+
+[ result]: Models matching "*":
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+[SYS]: Models listed above.
+(type /model <id> to switch models)
+
+| [^] 1. Message: [_]                                     |
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-20 23:30:35 ---
+================================================================================
+ MUCHI-PAL-CHAT   [IDLE]   model: random-words             api: -
+================================================================================
+
+You: hi aida
+
+Aida: running river mountain mountain today friends journey world today walking
+
+You: /model
+
+Aida: running mountain morning hello hello world sunshine garden
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: hi
+
+Aida: river share stories quiet quiet music garden sunshine
+
+[ result]: Available models:
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+You: *
+
+Aida: river river running morning coffee today
+
+[ result]: Models matching "*":
+  - groq-tool-use-mac
+  - gemma-lan
+  - gemini-flash
+  - cpp-llm-mac
+  - iqabod-test
+  - iqabod-daily-life
+  - random-words
+
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+[SYS]: Models listed above.
+(type /model <id> to switch models)
+
+| [^] 1. Message: [_]                                     |
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+

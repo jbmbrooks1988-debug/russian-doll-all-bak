@@ -1,0 +1,367 @@
+PAL-CHAIN STANDARD - architecture for a real, local-first ledger +
+currency ("cones") + mining, running over the same PAL-NET p2p network
+(shared-ops/palnet_peer.c). Written 2026-07-19, per direct user
+instruction: "start documenting stds/arch and setting the code
+foundations for pal-chain (allow wallet creation, mining, and sending/
+recieving cones on the pal-net p2p)... try 2 use as much pal and ops
+(and even ops written in pal) so we can reuse this stuff the way we
+desire." This doc is architecture + a v1 scope, not a finished
+implementation - see sec. 7 for what's deliberately not built yet.
+
+REVISED same day, before implementation got far - direct user
+follow-up after being asked "did u test using menu 2 make new wallet/
+open old wallet, with a login, mine against other headless nodes, send
+receive coin?" clarified real requirements the first draft under-
+scoped:
+  - Real login: wallet_id + password (not just picking a wallet_id
+    with no gate).
+  - Real crypto: "sha 256 or even weaker because we will refund users
+    if their coins are stolen" - a real hash, not FNV-1a (sec. 2/3
+    below now use SHA-256 throughout, not the first draft's FNV-1a).
+  - Real scarcity: a 21,000 total cone supply cap via a halving block
+    reward (matches real Bitcoin's own actual mechanism - the REWARD
+    halves periodically, not "difficulty"; difficulty is a different,
+    separate real-Bitcoin concept - see sec. 3's own terminology note).
+  - Real UI: "use chtpm always" - a real .chtpm menu, not a bare CLI,
+    matching wsr-pal's own now-fixed real href-navigation precedent
+    from this same session (sec. 5 is new).
+
+========================================================================
+0. GROUNDING - WHAT ALREADY EXISTS, SO THIS ISN'T REINVENTING BADLY
+========================================================================
+Checked directly before designing anything: every existing "currency"
+in this family (egg-pals-13's own ops/claim_tokens.c "tokens" field,
+wsr-pal's own corp/player "cash" fields across ops/player_trade.c,
+ops/corp_ipo.c, etc.) is a single MUTABLE INTEGER, read-modify-written
+directly, no transaction history, no verification, no network
+consensus, no real crypto at all. pal-chain is a genuine, deliberate
+step up from that pattern - none of those existing ops are touched by
+this doc.
+
+Reuses shared-ops/palnet_peer.c AS-IS, unmodified - a pal-chain node is
+just another palnet_peer instance (own_kind=chain_node), and (already
+confirmed by direct code read, not assumed) palnet_peer's own seek
+logic naturally forms a FULL MESH: its main loop re-runs
+find_seek_candidate() every tick, which explicitly skips peers it's
+already connected to, so a node with seek_kind=chain_node discovers
+and connects to EVERY other chain_node peer it finds over time, not
+just one - exactly what mining against other headless nodes needs, no
+changes to palnet_peer.c required.
+
+Real crypto: checked directly, OpenSSL's libcrypto (SHA256() from
+<openssl/sha.h>) is available and linkable on this system
+(`gcc ... -lcrypto`) - use it directly, do not hand-roll a SHA-256
+implementation (this family avoids heavy dependencies in general - X11/
+GL/GLUT are the only ones used elsewhere - but hand-writing security-
+adjacent hash code instead of using a real, correct, already-available
+library would be the wrong kind of "keep it simple").
+
+========================================================================
+1. WALLET - REAL wallet_id + PASSWORD LOGIN
+========================================================================
+Location: pal-chain/wallets/<wallet_id>/wallet.txt
+wallet_id: a human-readable local identifier chosen at creation
+  (matches this family's own "inspectable state over opaque
+  identifiers" preference) - uniqueness enforced at creation time
+  (refuse if the directory already exists, matching zoo_0000's own
+  startup_new_corp()-style collision-refusal precedent).
+wallet.txt format (plain key=value, matching every other state file):
+    wallet_id=<chosen name>
+    password_hash=<hex SHA-256 of the chosen password>
+    created_at=<unix epoch>
+    cached_balance=<int, in millicones - see sec. 3>
+    last_processed_block=<int index into blockchain.txt this wallet's
+      own balance was last derived through>
+
+Password hash: plain SHA256(password), hex-encoded, NO SALT in v1 -
+a real, named simplification (matches the user's own explicit "sha256
+or even weaker... we will refund users if coins are stolen" - the
+security bar here is "not plaintext," not "withstands a real offline
+attack" - see sec. 7 for the salting gap this leaves open). "Login" =
+prompting for wallet_id + password, hashing the entered password, and
+comparing to the stored password_hash - a real check, not a cosmetic
+one, even though v1's overall threat model stays local-trust-first per
+PAL-NET-STANDARD.txt's own precedent.
+
+Op: ops/chain_create_wallet.c - `chain_create_wallet.+x <wallet_id>
+<password>`. Refuses if the wallet already exists; otherwise creates
+the directory and initial wallet.txt (cached_balance=0,
+last_processed_block=0, password_hash=SHA256(password)).
+Op: ops/chain_login.c - `chain_login.+x <wallet_id> <password>` -
+reads wallet.txt, hashes the entered password, compares to
+password_hash; on success writes pal-chain/net/session.txt
+(wallet_id=..., logged_in_at=...) for the chtpm UI layer (sec. 5) to
+read as "who is currently using this node's own menu" - on failure,
+writes nothing and returns a real nonzero exit code the caller checks.
+
+========================================================================
+2. TRANSACTIONS + BLOCKS - SHA-256 THROUGHOUT
+========================================================================
+A transaction (pipe-delimited, matching PAL-NET's own wire convention):
+    TX|<from_wallet_id>|<to_wallet_id>|<amount_millicones>|<timestamp>|<tx_id>
+tx_id: a locally-generated unique string (e.g. "<from_wallet_id>-
+<timestamp>-<rand>") - enough to de-duplicate a transaction seen twice
+over the mesh (sec. 4's own dedup rule), not a cryptographic id itself
+(the TRANSACTION isn't signed in v1 - sec. 7 - tx_id is purely for
+dedup, not authenticity).
+
+A block (append-only, matching this family's own "if it's not in a
+file, it's a lie" mantra):
+    BLOCK|<block_index>|<prev_block_hash>|<nonce>|<block_hash>|<timestamp>|<miner_wallet_id>|<tx1>;<tx2>;...
+prev_block_hash/block_hash: hex SHA-256 (via OpenSSL's SHA256(), sec. 0
+- NOT the first draft's FNV-1a, upgraded per direct user instruction)
+over the string
+"<block_index>|<prev_block_hash>|<nonce>|<serialized transactions>".
+
+The chain itself: pal-chain/data/blockchain.txt, one BLOCK line
+appended per mined block, NEVER rewritten in place (append-only,
+matching frame_history.txt's own convention) - the canonical, shared
+ledger every node's own local copy should eventually agree on (sec. 4).
+
+========================================================================
+3. MINING - REAL PROOF-OF-WORK, 21,000 CONE SUPPLY CAP, HALVING REWARD
+========================================================================
+TERMINOLOGY NOTE (the user said "halving mining difficulty"; the real,
+correctly-named mechanism that produces a fixed total supply is a
+halving BLOCK REWARD - "difficulty" is a separate real concept
+(adjusting how hard a valid hash is to find, to target a steady block
+time) that does NOT by itself cap total supply. Implementing what
+actually achieves "21,000 total, scarce" is the halving-REWARD
+mechanism below; a real difficulty-adjustment mechanism is a SEPARATE,
+later concern (sec. 7) - flagging the terminology now so a future
+reader doesn't build the wrong one from a misread of the user's own
+shorthand.
+
+Units: all amounts stored/computed as integer MILLICONES (1 cone =
+1000 millicones) - currency math should never use floating point;
+integer smallest-unit storage (matching real Bitcoin's own satoshi
+convention) avoids real rounding-drift bugs entirely.
+
+Supply cap + halving formula: total_supply = 2 * initial_reward *
+halving_period_blocks (a geometric series: reward halves every
+halving_period_blocks blocks, and the sum initial_reward + initial_
+reward/2 + initial_reward/4 + ... over halving_period_blocks blocks
+per epoch converges to exactly 2 * initial_reward * halving_period_
+blocks as the number of halvings -> infinity).
+CONCRETE v1 CONSTANTS (tunable, but real numbers, not placeholders):
+    TOTAL_SUPPLY_MILLICONES = 21,000,000   (21,000 cones)
+    HALVING_PERIOD_BLOCKS   = 1,000
+    INITIAL_REWARD_MILLICONES = TOTAL_SUPPLY_MILLICONES / (2 * HALVING_PERIOD_BLOCKS) = 10,500
+    (blocks 0-999 pay 10,500 millicones each; blocks 1000-1999 pay
+    5,250 each; halves again every HALVING_PERIOD_BLOCKS after that,
+    asymptotically approaching but never exceeding the 21,000,000
+    millicone cap - the real, standard halving-schedule shape, not a
+    hard cutoff at some block number).
+
+Real (toy-scale) proof-of-work: find a nonce such that block_hash's
+own SHA-256 value has at least DIFFICULTY_LEADING_ZERO_BITS leading
+zero bits (the exact same real mechanism every real PoW chain uses,
+just calibrated small - start with DIFFICULTY_LEADING_ZERO_BITS
+tuned so ONE CPU core mines a block in roughly 1-5 real seconds on
+ordinary hardware; a real starting value like 16-20 bits is
+reasonable for SHA-256 on a modern core, calibrate empirically once
+chain_miner.c actually exists, don't guess a final value now).
+
+Op: ops/chain_miner.c - a PERSISTENT process (matches gl_mirror.c/
+chtpm_rgb_render.c's own category): watches pal-chain/data/
+pending_tx.txt (this node's own local mempool), and when non-empty (OR
+even when empty, if this node wants to mine an empty reward-only
+block - a real, valid choice matching real chains, tunable), repeatedly
+tries nonces until block_hash meets DIFFICULTY_LEADING_ZERO_BITS, then
+appends the new block to its own blockchain.txt AND writes it to its
+own outbox.txt (mesh propagation, sec. 4). Credits miner_wallet_id
+(a config value this instance is launched with) the CURRENT halving-
+schedule reward for that block_index (sec. 3's own formula) - refuses
+to mine a NEW block once TOTAL_SUPPLY_MILLICONES has already been
+fully paid out via prior blocks' own rewards (a real, enforced cap,
+not just a documented target).
+
+Balance derivation (why cached_balance exists, sec. 1): a wallet's
+REAL balance is the sum of every TX where it's the receiver (plus any
+block reward where it's the miner_wallet_id) minus every TX where it's
+the sender, across every block up to last_processed_block - replaying
+the WHOLE chain on every check would get slow as blockchain.txt grows,
+so cached_balance + last_processed_block is a real, standard
+optimization (recompute only new blocks since last check), always
+re-derivable from the full chain from block 0 if ever suspected of
+drifting.
+
+Op: ops/chain_send.c - `chain_send.+x <from_wallet_id> <to_wallet_id>
+<amount_millicones>` - checks the sender's own current derived balance
+covers the amount (refuses otherwise), appends a new TX line to
+pending_tx.txt, and writes the same TX line to this node's own
+palnet_peer outbox.txt so it propagates to the mesh for other nodes'
+own miners to include.
+
+========================================================================
+4. NETWORK PROPAGATION + CONSENSUS (v1 SCOPE - see sec. 7)
+========================================================================
+Every pal-chain node runs ONE palnet_peer.+x instance:
+    palnet_peer.+x chain_node pal-chain - pal-chain/net/outbox.txt pal-chain/net/inbox.txt chain_node
+(seek_kind=chain_node - full mesh, sec. 0). A separate small watcher
+op (ops/chain_inbox_watcher.c, named here, see sec. 7 for "not yet
+built") tails inbox.txt and, for each new line, either:
+  - a TX line not already in pending_tx.txt (dedup by tx_id) -> append
+    to pending_tx.txt so THIS node's own miner can include it too;
+  - a BLOCK line whose block_index is exactly this node's own next
+    expected index and whose prev_block_hash matches this node's own
+    latest block_hash, AND whose own claimed block_hash actually
+    satisfies DIFFICULTY_LEADING_ZERO_BITS when independently
+    recomputed (a REAL verification step - never trust a received
+    block's own claimed hash without recomputing it locally) -> accept
+    it, append to blockchain.txt, remove any of its own transactions
+    from pending_tx.txt (already mined by someone else).
+v1 has NO fork-resolution/longest-chain-wins logic (sec. 7).
+
+========================================================================
+5. REAL chtpm UI - "use chtpm always", matching wsr-pal's own real
+   href-navigation precedent from this same session
+========================================================================
+Real, separate .chtpm layout files (pal-chain/pieces/chtpm/layouts/),
+linked via real href buttons (NOT a hand-rolled GOTO:-string dispatch -
+that exact mistake was found and fixed in wsr-pal earlier this same
+session, see pal-standards.txt sec. 18 - do not repeat it here):
+  login.chtpm - the entry layout. A real cli_io text-input flow (TPMOS's
+    own real element, already used by wsr_wizard_input.c's own 5-step
+    prompt sequence in wsr-pal - port that SHAPE, not its specific
+    fields) for wallet_id + password, dispatching to chain_login.+x on
+    submit. A real, hand-authored href button "Create New Wallet" links
+    to signup.chtpm.
+  signup.chtpm - wallet_id + password entry (same cli_io shape),
+    dispatches to chain_create_wallet.+x, then hrefs to login.chtpm on
+    success (a real login is still required after creating a wallet -
+    creating one does not auto-log-in, matching a real app's own
+    convention).
+  wallet_main.chtpm - shown after a successful login (session.txt from
+    sec. 1 names who's logged in). ${piece_methods}-driven (piece.pdl
+    METHOD rows: "Mine", "Send", "Receive", "View Balance", "Logout"),
+    matching pal-standards.txt sec. 12's own "menu content stays data-
+    driven" rule reinforced this same session (do not hardcode this
+    button list - a direct, explicit user correction earlier today
+    about a DIFFERENT project's own menu applies here too).
+  send.chtpm - a real cli_io flow for <to_wallet_id> and <amount>,
+    dispatches to chain_send.+x, hrefs back to wallet_main.chtpm.
+  receive.chtpm - displays this wallet's own wallet_id (what someone
+    else needs to send TO this wallet) plus current balance.
+  mining_status.chtpm - shown while chain_miner.c is running for this
+    wallet, live-updating (matches this session's own established
+    "only re-render on real change" throttle - see pal-standards.txt
+    sec. 19/PAL-NET-STANDARD.txt) hash-rate/blocks-mined display.
+
+Reuse, not reinvent: the actual dispatch mechanism (a module launched
+per screen, KEY:n-driven action buttons via ${piece_methods}, real
+href for screen switching) is the SAME chtpm_parser_pal.c mechanism
+every other pal-native project in this family already uses - pal-chain
+needs its OWN local synced copy of chtpm_parser_pal.c/prisc+x.c/
+keyboard_input.c/renderer.c (per the existing shared-ops-manifest.txt
+model - add pal-chain as a new consumer there once its own button.sh
+exists), not a new UI engine.
+
+========================================================================
+6. WHICH PIECES SHOULD BE REAL PAL SCRIPTS, NOT C - PER DIRECT USER
+   INSTRUCTION, using PAL-VS-C-ARCHITECTURE.txt's own criteria
+========================================================================
+GOOD PAL candidates: balance display (read cached_balance,
+SYS_WRITE_LINE it); the "does sender have enough balance" check inside
+chain_send (a single SYS_GET_KV_INT + comparison) before falling
+through to the C op for the actual multi-field TX line construction.
+BAD candidates, stay C: chain_miner.c's own SHA-256 hash-searching loop
+(prisc+x's own ecall table has no crypto-hash primitive - could be
+added later as a new syscall if this ever matters enough, not needed
+for v1); chain_login.c's own SHA-256 computation (same reason); any op
+that serializes/parses a multi-field TX or BLOCK line.
+Concrete next step, once real ops exist: re-run the SAME survey
+PAL-CONVERSION-CANDIDATES.txt already did for the pet-sim family
+against pal-chain's own real ops.
+
+========================================================================
+7. WHAT THIS DOC DELIBERATELY DOES NOT COVER YET (named gaps)
+========================================================================
+- No salt on password_hash (sec. 1) - a real gap if this is ever
+  exposed beyond a trusted local/LAN context.
+- No transaction signatures - v1 trusts whatever wallet_id a TX claims
+  as sender (a malicious LOCAL process could still forge a TX even
+  with real password-protected login, since the TX itself carries no
+  proof it came from the logged-in wallet specifically) - real
+  signing (sign each TX with a per-wallet keypair, verify on receipt)
+  is the concrete next hardening step, not built in v1.
+- Fork resolution / longest-chain-wins (sec. 4).
+- Real difficulty ADJUSTMENT (sec. 3's own terminology note) - v1 uses
+  one fixed DIFFICULTY_LEADING_ZERO_BITS forever, never adapting to
+  actual network hash rate the way a real chain's difficulty
+  retargeting does.
+- ops/chain_inbox_watcher.c (sec. 4) is named but not yet built - this
+  doc is architecture, not the full v1 implementation.
+- Real mining-difficulty calibration (sec. 3's own "TBD, calibrate
+  empirically" note) - DONE, see sec. 3's own concrete
+  DIFFICULTY_HEX_ZEROS=5 default, calibrated live to ~1-3 sec/block on
+  this hardware after fixing a real snprintf-per-hex-byte perf bug in
+  chain_miner.c's own sha256_hex().
+
+- FREE-TEXT ENTRY THROUGH THE LIVE chtpm UI - DONE (2026-07-19, real
+  cli_io wiring, per direct user instruction: "lets do the real cli_io
+  liek chtpm and wraith are able to use"). Was a real, found-via-live-
+  testing gap: chtpm_parser_pal.c's own "normal nav mode" only ever
+  forwards arrows/digits(as a focus-jump)/Enter to a module - every
+  other key (letters) was silently discarded, so the FIRST design here
+  (a hand-rolled prompt_active/prompt_step wizard in chain_menu_input.c/
+  chain_wizard_input.c, relying on chtpm's interact_relay path) never
+  actually worked live (confirmed: typing a wallet_id never reached
+  chain_wizard_input.c at all). Fixed by replicating wraith-alpha's own
+  real, working pattern instead (researched directly against
+  1.TPMOS_c_+rmmp.0102.0028/.../window-geom.chtpm and
+  chtpm_parser_pal.c's own save_cli_io_gui_state()/
+  read_cli_io_gui_state_value()): login.chtpm/signup.chtpm/
+  send_screen.chtpm now each have real, hand-authored
+  `<cli_io id="..." target_id="...">` elements - chtpm buffers keystrokes
+  for these ENTIRELY inside its own process (no per-keystroke module
+  fork/exec needed, unlike the incompatible onClick="INTERACT" dispatch
+  model), and persists the typed value to
+  projects/pal-chain/manager/gui_state.txt on every keystroke/Enter.
+  chain_wizard_input.c (the old prompt-buffer op) was deleted entirely -
+  chain_menu_input.c's own new LOGIN/SIGNUP/SEND commands just read the
+  already-typed values straight out of gui_state.txt via a new
+  read_gui_state_str() helper, and clear the password key after use.
+  Verified end-to-end via real key injection: created a wallet, logged
+  in, mined, sent cones to another wallet_id - all through the actual
+  live chtpm UI, not a direct op invocation. NOT pal-chain-specific -
+  this is the same real mechanism any free-text field in this family
+  should use going forward, not the retired wizard/prompt_active shape.
+  Named remaining rough edge: a cli_io element whose own `id` contains
+  the substring "password" gets its on-screen buffer auto-masked with
+  '*' by chtpm_parser_pal.c's own pre-existing cli_buffers.txt side
+  channel, but that channel is independent of gui_state.txt - after
+  chain_menu_input.c clears password_input from gui_state.txt
+  post-login, the STALE masked buffer can still visually show on a
+  later screen until the user re-types over it (a real, minor display/
+  storage desync, not a functional bug - re-typing always produces a
+  correct value in both places).
+
+- TWO REAL BUGS FOUND AND FIXED IN SHARED-OPS/ WHILE BUILDING/TESTING
+  THIS (both affect every consumer, not just pal-chain, and were
+  re-synced to mutaclsym/zoo_0000/wsr-pal/muchipal-editor-0.0/
+  egg-pals-13 as part of this same pass):
+  1. shared-ops/palnet_peer.c used to relay only the OUTBOX FILE'S OWN
+     FIRST LINE, matching a "mirror the current single value" consumer
+     (a geometry file, overwritten in place) - completely silent for
+     an APPEND-ONLY consumer like chain_send.c/chain_miner.c (every
+     line after the first was never broadcast). Fixed to tail genuinely
+     NEW lines since the last read (byte-offset tracked), append
+     (never overwrite) received lines to inbox.txt, and replay the full
+     backlog to a newly-connected peer - found and fixed via a real
+     2-node mining test that silently stalled after block 0.
+  2. shared-ops/chtpm_parser_pal.c's href handler (and the
+     LOAD_PROJECT: handler) used to reset current_module_pid/
+     current_module_path directly on every screen transition WITHOUT
+     killing whatever process that pid actually named - for any
+     project whose every screen names the SAME persistent <module>
+     command (this whole family's own href+persistent-module pattern,
+     not unique to pal-chain), every single href click leaked another
+     live instance of that same persistent loop, all racing to write
+     the same state.txt concurrently (confirmed live: exactly this
+     race collapsed chain_menu/state.txt down to a single surviving
+     field after one href click). Fixed by routing both call sites
+     through the already-existing (but previously only-used-on-exit)
+     cleanup_module() - a real kill+reap, not a bare variable reset -
+     and fixing cleanup_module() itself to block on waitpid() instead
+     of WNOHANG (which also left a zombie behind every href click).
