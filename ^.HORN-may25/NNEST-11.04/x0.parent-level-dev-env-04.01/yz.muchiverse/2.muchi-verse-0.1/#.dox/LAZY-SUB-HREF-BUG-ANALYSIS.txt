@@ -1,0 +1,137 @@
+LAZY VARIABLE SUBSTITUTION: HREF BUG AFTER FIX
+================================================
+Date: 2026-07-22
+Status: Working, but hrefs inside ACTIVATE menus don't launch
+
+SYMPTOM
+=======
+Numbering now correct (continuous 1-33), but clicking on buttons with href
+(Buy/Sell, List Futures, Financing, Management, DB Search) doesn't navigate.
+
+Layout has:
+  <button label="Actions [+]" onClick="ACTIVATE">
+      ${piece_methods_compact}
+      <text label="--- Navigation ---" />
+      <button label="Buy/Sell  " href="pieces/chtpm/layouts/wsr_trade_menu.chtpm" />
+      ...
+  </button>
+
+Result: Navigation buttons inside don't launch their href targets.
+
+ROOT CAUSE HYPOTHESIS
+====================
+
+Two possible issues:
+
+A) HREF ATTRIBUTE LOST IN RECURSIVE PARSE
+   When lazy substitution tokenizes the hardcoded buttons inside the layout,
+   parse_attributes() is called to copy href, onClick, etc. from the token.
+
+   Possible problems:
+   - parse_attributes() isn't being called correctly for recursively-parsed elements
+   - The attribute string from tokenizer is malformed or incomplete
+   - href is being copied but not initialized in memset (cleared before parse_attributes)
+
+   Code path:
+   ```c
+   UIElement* el = &elements[element_count++];
+   memset(el, 0, sizeof(UIElement));  // <-- Clears href field
+   strncpy(el->type, st->tag_name, 31);
+   parse_attributes(el, st->attributes);  // <-- Should re-populate href
+   ```
+
+   If parse_attributes() fails or isn't called, href stays empty.
+
+B) HREF HANDLING IN MAIN LOOP
+   The main parse loop (lines 2350+) has special handling for certain tag types.
+   Recursively-parsed buttons might bypass this handling.
+
+   Original code flow:
+   1. Parse tag attributes
+   2. Set parent_index
+   3. Add to parent's children list
+   4. Push to stack if OPEN_TAG
+
+   Recursive code flow (lines 2360-2376):
+   1. Parse tag attributes (same)
+   2. Set parent_index (same)
+   3. Add to parent's children (same)
+   4. Push to stack if OPEN_TAG (same)
+
+   Should be identical, but maybe missing something?
+
+C) NAVIGATION/FOCUS LOGIC
+   When you click an href button, the parser might be checking parent hierarchy.
+   If the button's parent_index is wrong, navigation might fail.
+
+   Check: Do recursively-parsed buttons have correct parent_index?
+   They should: `el->parent_index = (top >= 0) ? stack[top] : -1;`
+
+   But if is_interactive() returns false for some reason, the button
+   might not be registered as clickable.
+
+VERIFICATION STEPS
+==================
+
+1. Add debug output: log href value after parse_attributes()
+   - Check if href is being set correctly for recursive elements
+
+2. Verify is_interactive() returns true for buttons
+   - Check if buttons are registered as clickable
+
+3. Verify parent_index is set correctly
+   - Buttons should have Actions button as parent
+
+4. Check if the button's interactive_idx is being set
+   - If not set, navigation might fail
+
+5. Verify parse_attributes() is being called
+   - Maybe it's not being reached in the recursive parse
+
+MOST LIKELY CULPRIT
+===================
+
+Looking at lines 2360-2376 (recursive parse code):
+
+```c
+if (st->type == TOKEN_OPEN_TAG || st->type == TOKEN_SELFCLOSE_TAG) {
+    UIElement* el = &elements[element_count++];
+    memset(el, 0, sizeof(UIElement));
+    strncpy(el->type, st->tag_name, 31);
+    parse_attributes(el, st->attributes);  // <-- ONLY THIS LINE
+    el->parent_index = (top >= 0) ? stack[top] : -1;
+    ...
+}
+```
+
+The original parse loop (lines 2350+) has MUCH more:
+- Variable substitution in label
+- parse_attributes() call
+- cli_io buffer initialization
+- Many special-case handlers
+
+The recursive code is a MINIMAL subset. It might be missing:
+1. Variable substitution in attributes (e.g., if href contains ${var})
+2. Any post-processing that parse_attributes does
+3. Interactive element registration
+
+HYPOTHESIS: parse_attributes() isn't being passed the token correctly,
+OR parse_attributes() expects preprocessed data that recursive elements lack.
+
+FIX STRATEGY
+============
+
+Option A (Conservative):
+- Copy the FULL element-building code from the original loop
+- Use it for both top-level AND recursive elements
+- Ensure identical processing for all elements
+
+Option B (Surgical):
+- Just copy the original loop's full parse_attributes call
+- Add any missing post-processing (cli_io setup, etc.)
+- Keep recursive code minimal but complete
+
+RECOMMENDATION: Option A
+- Ensures 100% identical behavior
+- No risk of missing some edge case
+- Slightly more code, but cleaner

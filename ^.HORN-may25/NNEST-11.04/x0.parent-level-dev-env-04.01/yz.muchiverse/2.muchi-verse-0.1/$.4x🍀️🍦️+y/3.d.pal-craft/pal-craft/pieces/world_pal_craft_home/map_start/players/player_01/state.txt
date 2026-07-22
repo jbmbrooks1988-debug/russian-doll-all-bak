@@ -1,0 +1,16 @@
+bank_id=player
+name=Player
+glyph=P
+color=white
+category=player
+civ_id=debug
+move_range=1
+attack=0
+defense=1
+pos_x=6
+pos_y=4
+pos_z=0
+map_id=map_start
+hp=100
+orders=none
+decision_mode=0

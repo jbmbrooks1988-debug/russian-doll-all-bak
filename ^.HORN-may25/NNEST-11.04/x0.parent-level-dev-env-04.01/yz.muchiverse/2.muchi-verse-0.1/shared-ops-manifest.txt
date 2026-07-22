@@ -1,0 +1,115 @@
+SHARED-OPS-MANIFEST - registry of canonical "shared op" source locations,
+consumed by sync_shared_op.sh (this same directory). Replaces the OLDER
+model of every project's own build.sh referencing shared-ops/ files
+directly at build time (a live cross-directory dependency - a project
+couldn't be zipped up and shipped on its own without shared-ops/ coming
+along with it). Under THIS model, every project keeps its OWN real,
+local copy of each file it uses (compiled from that local copy, no
+cross-directory build.sh reference at all - fully self-contained/solo
+shippable) - this manifest + the sync script exist ONLY to propagate an
+update to the canonical source out to whichever projects' own local
+copies need it, run explicitly, not automatically at build time.
+
+Format: one entry per line, `<op_name> | <path relative to this file's
+own directory>`. Blank lines and lines starting with # are ignored.
+
+# system-level daemons/VM (compiled to system/<name> in each consumer)
+prisc+x           | shared-ops/prisc+x.c
+keyboard_input     | shared-ops/keyboard_input.c
+chtpm_parser_pal   | shared-ops/chtpm_parser_pal.c
+chtpm_rgb_render   | shared-ops/chtpm_rgb_render.c
+# 2026-07-19: promoted from N independently-drifting per-project copies
+# (confirmed 3 different hand-edited variants before this fix) to a
+# real tracked shared op, same day its own real bug (unconditional
+# screen-clear every frame, real TPMOS's own renderer.c defaults to
+# scrollback-preserving history mode instead) was found+fixed.
+renderer           | shared-ops/renderer.c
+
+# ops (compiled to ops/+x/<name>.+x in each consumer)
+pdl_reader   | shared-ops/pdl_reader.c
+move_entity  | shared-ops/move_entity.c
+xlector_input| shared-ops/xlector_input.c
+pet_export   | shared-ops/pet_export.c
+pet_import   | shared-ops/pet_import.c
+dump_rgb_png | shared-ops/dump_rgb_png.c
+palnet_peer  | shared-ops/palnet_peer.c
+
+# supporting headers (a directory, not a single file - sync_shared_op.sh
+# copies it recursively)
+lib | shared-ops/lib
+
+CONSUMERS AS OF 2026-07-18 (which project's own build.sh referenced
+which entry BEFORE the migration to local copies - kept here as a record
+of what to re-sync if the canonical source changes, not as something a
+build.sh should read):
+  mutaclsym:            prisc+x, keyboard_input, chtpm_parser_pal,
+                         chtpm_rgb_render, dump_rgb_png (+lib), pdl_reader
+  zoo_0000:              prisc+x, keyboard_input, chtpm_parser_pal,
+                         chtpm_rgb_render, xlector_input, move_entity,
+                         pdl_reader, pet_export, pet_import,
+                         dump_rgb_png (+lib)
+  wsr-pal:               prisc+x, chtpm_parser_pal, chtpm_rgb_render,
+                         dump_rgb_png (+lib)
+                         (keyboard_input is wsr-pal's own local fork,
+                         NOT synced from here - see pal-standards.txt
+                         sec. 1c's own "genuinely different, patch
+                         locally" principle)
+  muchipal-editor-0.0:   prisc+x, keyboard_input, chtpm_parser_pal,
+                         pdl_reader
+  egg-pals-13:           chtpm_parser_pal
+                         (prisc+x/keyboard_input are egg-pals' own local
+                         forks - real Win32 support neither shared
+                         version has, see pal-standards.txt sec. 1c)
+  user-pal:             chtpm_parser_pal
+  pal-forum:            chtpm_parser_pal
+
+CONSUMERS AS OF 2026-07-19 (added mid-session, see
+PAL-NET-STANDARD.txt):
+  zoo_0000:              + palnet_peer (companion process to gl_mirror,
+                         launched by button.sh, not compiled into any
+                         GUI process directly)
+  egg-pals-13:           + palnet_peer (companion process launched by
+                         egg_window.c only for the duration of an
+                         active drag gesture)
+
+To re-sync a project after a canonical source change:
+  bash sync_shared_op.sh <op_name> <target_project_dir>
+e.g.: bash sync_shared_op.sh chtpm_parser_pal ../mutaclsym/system
+(mutaclsym moved into this same directory 2026-07-20, along with
+muchi-pal-llm and zoo_0000 - see !.HANDOFF-move-projects-into-
+muchiverse-2026-07-20.txt for the full move record - so every consumer
+listed below is now a direct sibling here, no more ../../ paths needed
+for any of them)
+
+CONSUMERS AS OF 2026-07-19 (pal-chain, added same pass as the
+palnet_peer append-only-relay fix and the chtpm_parser_pal
+module-leak/race fix - see PAL-CHAIN-STANDARD.txt sec. 7 for both):
+  pal-chain:              prisc+x, keyboard_input, chtpm_parser_pal,
+                          chtpm_rgb_render, palnet_peer (persistent
+                          companion, own_kind=chain_node, launched by
+                          button.sh alongside chtpm_parser_pal)
+
+CONSUMER ADDED 2026-07-20 (1.muchi-pal-agent, during its own chtpm
+upgrade - CHAT-INTEGRATION-ARCHITECTURE.txt sec. 1): its own
+system/prisc+x.c had been copied in BEFORE the OP_READ_HISTORY
+literal-path rs1-register fix (see this file's own header comment)
+landed here, so main_loop_chtpm.pal's `read_history <path> x2, x1`
+call was silently stuck re-reading file position 0 forever, causing
+every send after the first Enter to re-fire on a stale/growing
+partial buffer (fragmented "hi t"/"hi th"/"hi the"/... sends).
+Fixed by copying this file's current prisc+x.c straight in (byte-
+identical to pal-chat-irc's own copy, which is why pal-chat-irc never
+showed the symptom) and rebuilding. No local prisc+x.c changes of its
+own, so a plain `cp` was safe here - diffed first per the mandatory
+diff-before-overwrite rule (pal-standards.txt sec. 23).
+  1.muchi-pal-agent:      prisc+x, keyboard_input, chtpm_parser_pal
+
+CONSUMERS ADDED 2026-07-22 (1.wsr-pal moved from 0.gemma-only♦️/101.wsr-pal
+to top-level project; 0.user-pal and 1.pal-forum added to manifest to
+enable chtpm_parser_pal sync; all three now tracked for propagation of
+compact menu variable):
+  1.wsr-pal:              prisc+x, chtpm_parser_pal, chtpm_rgb_render,
+                          dump_rgb_png (+lib)
+                          (keyboard_input is wsr-pal's own local fork)
+  0.user-pal:             chtpm_parser_pal
+  1.pal-forum:            chtpm_parser_pal

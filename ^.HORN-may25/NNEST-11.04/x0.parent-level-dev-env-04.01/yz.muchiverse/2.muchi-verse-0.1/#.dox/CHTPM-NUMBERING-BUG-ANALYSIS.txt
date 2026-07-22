@@ -1,0 +1,199 @@
+CHTPM PARSER: ACTIVATE MENU NUMBERING BUG ANALYSIS
+===================================================
+Date: 2026-07-22
+Issue: When ACTIVATE menu opened, child items numbered 28-33 instead of 1-6 (scoped reset)
+
+SYMPTOM
+=======
+Layout:
+  <button label="Actions [+]" onClick="ACTIVATE">
+      ${piece_methods_compact}
+      <button label="Buy/Sell" href="..." />
+      ...
+  </button>
+
+Display when Actions OPEN:
+  [^] 1. [Actions ]
+      [ ] 28. [File]         <- WRONG (should be 1 or continue from global)
+      [ ] 29. [Game Options]  <- WRONG (should be 2 or continue from global)
+      ...
+      [ ] 31. [Buy/Sell]
+      [ ] 32. [DB Search]
+
+EXPECTED BEHAVIOR
+=================
+Option A (Scoped numbering - original design):
+  [^] 1. [Actions]
+      [ ] 1. [File]
+      [ ] 2. [Game Options]
+      ...
+      [ ] 5. [Buy/Sell]
+      [ ] 6. [DB Search]
+
+Option B (Continuous global numbering - user preference):
+  [^] 1. [Actions]
+      [ ] 2. [File]
+      [ ] 3. [Game Options]
+      ...
+      [ ] 28. [Buy/Sell]
+      [ ] 29. [DB Search]
+
+THE FLOW: How Variables Get Parsed Into Element Tree
+=====================================================
+
+1. parse_chtm() at line 2304:
+   - load_vars() - reads all variables including ${piece_methods_compact}
+   - read_file_to_string(current_layout) - reads .chtpm file as string
+
+2. Line 2317: substitute_vars_naked(content, temp_substituted, MAX_BUFFER)
+   - ${piece_methods_compact} string is REPLACED with actual button XML
+   - Result: the layout now contains literal <button> tags for File, Game Options, etc.
+
+3. Line 2320: Token* tokens = tokenize(temp_substituted, &tc)
+   - Full substituted layout is tokenized into individual tokens
+   - Stack-based tracking ensures nested tags maintain parent-child relationships
+
+4. Lines 2326-2473: Parse tokens into UIElement array
+   - Each OPEN_TAG pushes its element index onto a stack
+   - Each child element reads its parent_index from stack[top]
+   - Each CLOSE_TAG pops from stack
+   - Self-closing tags (like <button .../>) don't push/pop, just read parent
+
+Expected element tree after parsing:
+   Element 0: panel (parent=-1)
+     Element 1: text "==== WALL STREET RAIDER ====" (parent=0)
+     Element 2: text "${game_map}" (parent=0)
+     Element 3: button "Actions [+]" ACTIVATE (parent=0)
+       Element 4: br (parent=3)
+       Element 5: button "File" KEY:1 (parent=3)   <-- CRITICAL
+       Element 6: button "Game Options" KEY:2 (parent=3)   <-- CRITICAL
+       ...
+       Element 28: button "Buy/Sell" href (parent=3)
+       Element 29: button "DB Search" href (parent=3)
+       Element 30: button "Back" BACK (parent=3)
+
+ROOT CAUSE HYPOTHESIS
+====================
+
+When rendering, the parser checks `is_navigable(idx)` to decide numbering:
+
+  bool is_navigable(int idx) {
+      if (active_index != -1 && active_menu_is_ACTIVATE) {
+          if (idx == active_index) return true;
+          if (is_descendant(idx, active_index)) {
+              // check folding...
+              return true;
+          }
+          return false;  // <-- NOT DESCENDANT -> FALSE
+      }
+      // Global mode (menu closed):
+      if (parent has ACTIVATE ancestor) return false;  // <-- Line 2258
+      return true;
+  }
+
+When Actions is OPEN:
+  - active_index = element 3 (Actions button)
+  - When rendering element 5 (File):
+    - is_descendant(5, 3) should return TRUE if parent_index chain: 5 -> 3 -> 0
+    - If TRUE: use scoped counter (1, 2, 3...)
+    - If FALSE: use global counter (28, 29, 30...)
+
+ACTUAL BEHAVIOR shows global counter, so is_navigable() returns FALSE.
+
+This means: is_descendant(5, 3) is returning FALSE even though File SHOULD have parent_index=3.
+
+TWO POSSIBLE ROOT CAUSES
+========================
+
+CAUSE A: Parent_Index Not Set Correctly During Parse
+------------------------------------------------------
+During tokenization of the substituted content, when processing:
+  <button label="Actions [+]" onClick="ACTIVATE">
+      <button label="File  " onClick="KEY:1" />
+      ...
+  </button>
+
+The stack should work like:
+  1. TOKEN_OPEN_TAG "button" (Actions):
+     - Create element (index=3)
+     - parent_index = stack[top] = -1 (root level)
+     - PUSH 3 onto stack -> stack[0]=3, top=0
+
+  2. TOKEN_SELFCLOSE_TAG "button" (File):
+     - Create element (index=5)
+     - parent_index = stack[top] = 3  <-- SHOULD BE 3
+     - Don't push (self-closing)
+
+If parent_index is NOT 3, something went wrong in the tokenization step.
+
+Likely culprit: Token stream incorrectly positioned when File is parsed.
+Check: Is the token for File's opening tag actually IN the right position
+       relative to Actions' tags?
+
+CAUSE B: is_descendant() Logic Broken
+--------------------------------------
+Line 2187-2191:
+
+  bool is_descendant(int child, int ancestor) {
+      if (child < 0 || ancestor < 0) return false;
+      int p = elements[child].parent_index;
+      while (p != -1 && p != ancestor) {
+          p = elements[p].parent_index;
+      }
+      return (p == ancestor);
+  }
+
+If File has parent_index=3 and we call is_descendant(5, 3):
+  - p = elements[5].parent_index = 3
+  - Loop condition: (p != -1 && p != 3) = (3 != -1 && 3 != 3) = FALSE
+  - Skip loop, return (p == ancestor) = (3 == 3) = TRUE
+
+This SHOULD work correctly. But if parent_index was NOT 3, it would fail.
+
+THE FIX
+=======
+
+Step 1: Verify parent_index is set correctly
+  Add assertion/debug output after parse_chtm():
+
+    for (int i = 0; i < element_count; i++) {
+        if (strstr(elements[i].label, "File")) {
+            FILE *f = fopen("debug.txt", "w");
+            fprintf(f, "File element: idx=%d parent_index=%d\n", i, elements[i].parent_index);
+            fclose(f);
+        }
+    }
+
+Step 2: If parent_index IS correct (points to Actions):
+  The bug is in the rendering/numbering logic. Check:
+  - Does the scoped_counter reset when Actions opens? (line 2824)
+  - Does in_active_scope get set correctly? (line 2703)
+  - Does the navigable check pass? (line 2729)
+
+  Likely fix: Ensure scoped counter resets, and the counter increment
+              at line 2730-2731 actually executes.
+
+Step 3: If parent_index is WRONG (not 3):
+  The bug is in the tokenization step. Check:
+  - Is the stack managed correctly during substituted variable parsing?
+  - Are self-closing tags inside open tags being pushed/popped correctly?
+  - Does the substitution produce valid XML that tokenizes as nested?
+
+  Likely fix: Verify token stream includes Actions' OPEN_TAG before File's
+             SELFCLOSE_TAG. Add stack debugging during parse loop.
+
+ALTERNATIVE: SCRAP SCOPED NUMBERING
+====================================
+
+If scoped numbering is the root cause of confusion, the simpler fix:
+  At line 2728-2737, always use global_counter, never reset to scoped:
+
+    if (interactive) {
+        (*p_global_counter)++;
+        display_num = *p_global_counter;
+    }
+
+  Then remove lines that manage scoped_counter inside ACTIVATE menus.
+  This gives continuous numbering: 1, 2, 3... through all nested levels.
+
+  User prefers this (numbering should continue, not reset).

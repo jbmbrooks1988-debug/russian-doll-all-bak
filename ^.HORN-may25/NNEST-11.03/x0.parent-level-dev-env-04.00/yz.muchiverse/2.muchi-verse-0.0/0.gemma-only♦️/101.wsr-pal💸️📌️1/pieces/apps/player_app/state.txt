@@ -1,3 +1,0 @@
-module_path=system/prisc+x pal/main_loop_chtpm.pal
-project_id=wsr-pal
-active_target_id=wsr_main_menu
