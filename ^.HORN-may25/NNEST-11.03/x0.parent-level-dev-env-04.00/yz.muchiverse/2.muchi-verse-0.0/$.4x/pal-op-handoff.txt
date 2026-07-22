@@ -1,0 +1,462 @@
+PAL-OP-HANDOFF.txt
+Written 2026-07-21 - cold-start handoff for whoever picks up muchipal-editor
+(pal-op, the $.4x family's cross-project browser+editor) next, and for
+whoever wires it into the broader muchi-verse family (pal-agent, pal-scripts
+meta-orchestration, SCALE_BANK). Read this alongside:
+  - $.4x/2.muchipal-editor-0.0/dox/MUCHIPAL-EDITOR-DESIGN.txt (the
+    project's own design doc - 3 updates deep now, has the full blow-by-
+    blow of every fix/feature and why)
+  - !.pal-standards.txt (sec. 28/30/31/32 - the NAV/ACTIVE/possession model
+    this whole $.4x family uses, for context on what pal-op deliberately
+    does NOT adopt, and why)
+  - yz.muchiverse/$.zest-er-summary-FIN❤️‍🔥️+.txt (the OTHER family - pal-
+    agent/pal-chat-irc/pal-scripts/SCALE_BANK - this doc's sec. 3 below is
+    the integration bridge between that world and this one)
+
+================================================================================
+1. WHAT PAL-OP IS, IN ONE SENTENCE
+================================================================================
+A cross-project browser+editor: pick a real, live $.4x/mutaclsym-family
+project from a registry, browse its pieces read-only, edit its terrain map,
+place real spawned instances (units/anglers/players/entities) from that
+project's own bank, author simple canned events, and launch that project's
+own real game session - all from one chtpm-based tool, built on top of the
+same prisc+x/pal engine every other project in this family shares.
+
+================================================================================
+2. WHAT IS DONE (verified, working, built this session)
+================================================================================
+2.1 Fixed the broken foundation
+  - pieces/registry/known_projects.txt was pointing at two dead, pre-
+    reorganization absolute paths. Rebuilt with real, live rows for
+    mutaclsym + all 4 current $.4x game projects (civ-pal, angler-empires,
+    pal-craft, muchimon-pal).
+  - ops/register_project.c (NEW) - a one-shot CLI op,
+    `register_project.+x <root_path> [display_name]`, that AUTO-DETECTS a
+    project's map_rel_path (prefers a non-"_template" world dir),
+    registry_format/registry_rel_path (pipe vs equals, by checking which
+    file actually exists), and (added later, see 2.3) bank_rel_path/
+    instance_dir/spawn_op_rel_path/has_civ_id - never guessed from
+    convention, always read from real files. Verified byte-for-byte
+    against pal-craft's own hand-authored registry row.
+
+2.2 Camera + GL window + emoji toggle (direct user ask: "is pal-editor using
+    gl window? have its camera fixed? have interact mode etc?")
+  - Camera: compose_title_frame.c's map_edit view had NO scrolling at all
+    (always row/col 0, hard-clipped at the box edge) - a real, live bug,
+    since pal-craft's own map is already wider than the box. Fixed with the
+    same cam_x/cam_y clamp formula the 4 game projects' own compose_
+    frame.c uses.
+  - GL window: added from scratch - ops/compose_rgb_frame.c (a deliberately
+    LEAN flat-2D version, NOT a port of the 4 game projects' own copies,
+    which carry full 3D-voxel-raymarch machinery this editor never needs)
+    + system/gl_mirror.c (copied verbatim from muchimon-pal - generic GL/
+    GLUT infra) + font assets (pieces/registry/fonts/ascii/). Wired into
+    pal/main_loop.pal, default_op.txt, scripts/build.sh, button.sh.
+  - Interact mode: pal-op already HAD a real NAV(project_browser)/
+    ACTIVE(map_edit_input) split via editor_state.txt's own `screen`
+    field - just unlabeled. Added the family's [NAV]/[ACTIVE] bracket
+    marker to both renderers' footers for visual consistency - no new
+    behavior, pure labeling.
+  - Emoji toggle ('e' key, emoji_mode field): BOTH halves done. GL half -
+    glyph_rgb_top() picks rgb_top vs rgb_top_emoji. ASCII half (the harder
+    one - real unicode glyphs are multi-byte, needed a variable-width row
+    buffer instead of the fixed-width char grid every other row uses) -
+    glyph_unicode_lookup() + a dedicated non-line()-routed row emitter.
+    CAUGHT A REAL BUG while verifying: glyph_rgb_top()'s own comment-skip
+    check (line[0]=='#') was ALSO filtering out the real Wall row (glyph
+    IS '#') - same "#-as-glyph-vs-comment" bug class already fixed
+    elsewhere in this family, an independent unfixed copy of it here.
+    Fixed, reverified with exact pixel-value diffs (not just "non-blank").
+
+2.3 Instance/bank placement (sec. 3.2 of the design doc)
+  - known_projects.txt schema extended: bank_rel_path|instance_dir|
+    spawn_op_rel_path|has_civ_id, auto-detected by register_project.c
+    (finds the project's own *_bank.txt, derives instance_dir via English
+    pluralization with the one real exception needed - entity->entities -
+    and has_civ_id by grepping the spawn op's own Usage: line).
+  - map_edit_input.c gained a 'b' toggle (terrain<->bank arm_mode). In
+    bank mode, digits arm a bank row; Enter shells out to that project's
+    OWN spawn_<kind>.+x (PRISC_PROJECT_ROOT set to the TARGET project,
+    not this editor) with a freshly-generated next instance_id, creating
+    a REAL instance directory at the cursor position - reusing each
+    project's own proven spawn machinery, not a reimplementation.
+  - Live-verified against pal-craft: spawned player_02 at (10,8), confirmed
+    the real directory existed, cleaned it back up.
+
+2.4 Playable project
+  - project_menu gained a 3rd option, "Play Project" - shells out to the
+    target project's own real `./button.sh run`, blocking (the editor
+    genuinely pauses while the game plays, resumes on exit).
+
+2.5 Event editor (op-ed's own Phase A - "an Op Selection builder... rather
+    than the author hand-writing PRISC assembly" - scaled to fit this
+    engine)
+  - 'v' toggles terrain<->event arm_mode. Event catalog is a FIXED,
+    editor-side list of 3 canned ops (message/teleport/spawn) chosen by
+    digit - deliberately NOT free-text, since this whole prisc+x/pal stack
+    has never built a text-entry keyboard anywhere in the family.
+  - Enter writes/updates a real row (x|y|op_id) in the TARGET project's
+    own pieces/<world_dir>/map_start/events.txt. Rendered as a bracketed
+    '!' in ASCII, a small inset magenta square in GL, both overlaid
+    regardless of underlying terrain.
+  - Live-verified against pal-craft: placed row landed exactly at the
+    right tile, both renderers show the marker correctly, cleaned up.
+  - EXPLICITLY NOT DONE (see sec. 3 below): no game project's own
+    choice.c/move_player.c reads events.txt back or triggers anything at
+    runtime yet. This is placement/authoring only.
+
+================================================================================
+3. WHAT IS YET TO DO
+================================================================================
+3.1 Runtime event triggering (the biggest real gap) - CORRECTED
+    ARCHITECTURE + a ready-to-implement plan (2026-07-21, direct user
+    correction: "do u understand that rpgmaker events are meant to be
+    built 'ON PAL' (that pal will be invisible to the average player)?")
+
+  THE CORRECTION: an earlier draft of this section (and of common-ops-
+  catalog.txt sec. 5) described a "dispatch_event.c" as something baked
+  INTO each project's own move_player.c - a C function call added to
+  existing movement logic. That's the wrong shape. RPG Maker's own events
+  are invisible to the player precisely because they're a separate
+  authoring/runtime layer the ENGINE runs on its own tick - not hand-
+  written game logic threaded through the player's own movement code.
+  The correct equivalent in this family is a STANDALONE OP, registered in
+  default_op.txt and called as its own line in main_loop.pal, the exact
+  same shape angler-empires' own tick_jobs.c already uses (called right
+  after end_turn, every turn, self-filtering, invisible to the player -
+  they just see a job get done, never "a tick_jobs op ran"). Event
+  dispatch should be architected the SAME way: a new line in main_loop.pal
+  right after move_player, not a function bolted inside move_player.c
+  itself. This keeps the "one verb, one binary" convention intact and
+  means the event catalog can grow without ever recompiling move_player.c
+  - which IS what "built on pal, invisible to the player" concretely
+  means in this engine: the player experiences the effect (teleported,
+  saw a message), never the mechanism (a specific op ran this tick).
+
+  READY-TO-IMPLEMENT PLAN for muchimon-pal (the chosen first project, per
+  common-ops-catalog.txt sec. 5's own build order - it already has
+  message_log.txt and a proven capture/attack dispatch pattern in
+  choice.c to model this against):
+
+  1. NEW FILE: ops/dispatch_event.c (muchimon-pal's own copy - no shared
+     header, matching every other op in this family). Confirmed real
+     field names to read (from pieces/world_muchimon_home/map_start/
+     hero/state.txt, read live this session, not guessed):
+       interact_mode   (0 = NAV, 1 = ACTIVE)
+       possessed_id    ("none" or a real entities/<id> instance)
+       xlector_pos_x / xlector_pos_y
+       pos_x / pos_y   (hero's OWN position - used only when nothing else
+                        applies, matching choice.c's own established
+                        3-way dispatch_id resolution: hero -> possessed
+                        piece if any -> xlector, see !.pal-standards.txt
+                        sec. 28/30's own citation of this exact pattern)
+     Resolve CURRENT mover position the SAME way choice.c's own
+     dispatch_id already does (interact_mode==0 -> hero's pos_x/pos_y;
+     possessed_id != "none" -> that instance's OWN pos_x/pos_y, read
+     fresh from entities/<possessed_id>/state.txt; else -> xlector_pos_x/
+     y). Reusing this exact resolution (not inventing a new one) is what
+     makes the event fire regardless of whether the player is free-
+     roaming the xlector or currently possessing a captured muchimon/
+     trainer - both should be able to trigger a floor event.
+  2. Read pieces/world_muchimon_home/map_start/events.txt (the exact file
+     pal-op's own map_edit_input.c already writes - no format change
+     needed). If a row's x|y matches the resolved mover position, act:
+       message  -> append the canned "Welcome!" text to
+                   pieces/world_muchimon_home/map_start/message_log.txt
+                   (the exact file/append convention every project
+                   already uses for its own message log - see
+                   compose_frame.c's own message_log.txt read for the
+                   existing format to match).
+       teleport -> rewrite the mover's OWN pos_x/pos_y fields to (0,0)
+                   directly in whichever state.txt actually owns that
+                   field (hero/state.txt, or entities/<possessed_id>/
+                   state.txt if something is possessed) - same file this
+                   op already just read the position FROM.
+       spawn    -> system() call to ops/+x/spawn_entity.+x with bank_id
+                   "sparkit" (bank row #1, matching pal-op's own canned
+                   "Spawn bank row #1" label), a freshly generated
+                   instance_id (same next-free-id convention pal-op's own
+                   map_edit_input.c already uses), at the resolved
+                   position.
+     No match -> no-op, cheap tick-driven check, same "runs every tick,
+     self-filters" shape as tick_jobs.c/check_response.c.
+  3. Register in default_op.txt:
+       dispatch_event void ops/+x/dispatch_event.+x {check current
+       world's events.txt for the mover's position, apply message/
+       teleport/spawn if one matches}
+  4. Wire into pal/main_loop.pal - ONE new line, right after move_player
+     (mirroring angler-empires' own `tick_jobs` line placed right after
+     `end_turn`):
+       loop:
+       read_history x2, x1
+       beq x2, x0, no_key
+       beq x2, x9, quit
+       move_player x2
+       dispatch_event          <- NEW, added here
+       choice x2
+       end_turn
+       compose_frame
+       compose_rgb_frame
+       hit_frame
+       no_key:
+  5. Rebuild (scripts/build.sh already compiles every ops/*.c
+     independently - just add dispatch_event.c to that file's own op
+     list, same one-line-per-binary pattern every entry there already
+     follows).
+  6. TEST PLAN before calling this done: place a "teleport" event via
+     pal-op onto a real, reachable floor tile in muchimon-pal's own live
+     map (NOT a scratch copy this time - the point is proving the real
+     runtime path), then walk the possessed player onto that tile through
+     the REAL running prisc+x/pal loop (not a direct op invocation - see
+     !.pal-standards.txt's own testing-methodology lesson on why direct
+     invocation alone doesn't prove the real loop dispatches correctly),
+     and confirm pos_x/pos_y actually changed. Then repeat for "message"
+     (confirm message_log.txt gained a line) and "spawn" (confirm a new
+     entities/<id> instance directory exists). Clean up any test rows/
+     instances from the real project afterward, per the design doc's own
+     sec. 6 safety rule.
+  7. ONCE THIS WORKS in muchimon-pal: copy dispatch_event.c into civ-pal/
+     angler-empires/pal-craft (adjusting only the position-resolution
+     block per each project's own actual state field names - angler-
+     empires notably has NO free-possession/direct-movement concept at
+     all per sec. 32's own DF correction, so its own dispatch_event.c
+     would resolve position from whichever angler is currently focused,
+     not a moved piece - a real, project-specific adaptation, not a
+     verbatim copy) - same "prove once, then spread" discipline as every
+     other pattern in this family.
+
+  DONE (2026-07-21, same session, right after this plan was written).
+  ops/dispatch_event.c built exactly as planned above - registered in
+  default_op.txt, wired as a new line in pal/main_loop.pal right after
+  move_player, added to scripts/build.sh, builds clean (one warning was
+  introduced by this new file, fixed immediately - a snprintf truncation
+  warning, same narrow #pragma suppression pattern used everywhere else
+  in this family).
+  ALL THREE op types verified against muchimon-pal's own REAL project
+  state (not a scratch copy, per this section's own test plan):
+    - message: dispatch_event.+x invoked directly with a real "message"
+      row at entity_01's actual possessed position (7,6) - message_log.
+      txt gained "Welcome!".
+    - teleport: same real row, op_id=teleport - entity_01's own pos_x/
+      pos_y actually rewrote from (7,6) to (0,0), confirmed by reading
+      its real state.txt.
+    - spawn: same shape - a real entity_03 instance directory was
+      created via spawn_entity.+x, confirmed to exist on disk.
+  THEN, per this section's own step 6 (direct invocation alone doesn't
+  prove the real loop dispatches correctly - !.pal-standards.txt's own
+  testing-methodology lesson): restored entity_01 to its real starting
+  position (7,6), placed a real "teleport" event at (6,6) - one tile
+  away - launched the REAL system/prisc+x pal/main_loop.pal process
+  (title sentinel 999 injected first, then keycode 1000/ARROW_LEFT into
+  the real pieces/apps/player_app/history.txt, with real sleeps between
+  each), and confirmed entity_01 actually moved (7,6)->(6,6) via the
+  arrow key AND dispatch_event fired that same tick, landing it at
+  (0,0) - proving the full real chain: real keypress -> real prisc+x
+  loop -> move_player -> dispatch_event -> state mutation, not just "the
+  C logic is correct in isolation."
+  Cleaned up every test artifact afterward (removed the test events.txt,
+  restored entity_01's state.txt to its original (7,6), restored
+  message_log.txt from a pre-test backup, removed the spawned entity_03,
+  truncated history.txt) - the real project is back to its pre-test
+  state, per the design doc's own sec. 6 safety rule.
+  REMAINING (not done, still real gaps): steps 7 above (porting to civ-
+  pal/angler-empires/pal-craft) - not started. angler-empires in
+  particular needs its own position-resolution block per sec. 32's own
+  DF-focus-only correction, not a verbatim copy.
+
+3.2 Argument entry for events - CORRECTED PRIORITY ORDER (2026-07-21, per
+    #.rpgmv-events-menu/EVENT-CATALOG-COMPARISON.txt - a real, overdue
+    comparison against RPG Maker MV's own actual ~70-command Event
+    Commands menu and Scratch's 10 essential blocks, both of which were
+    sitting in that directory, unread, when the 3-op catalog was built).
+  This used to just say "argument entry is a real gap, teleport target
+  entry is a scoped next step" with no real ordering. The comparison
+  changes that: RPG Maker's own "Control Switches.../Control Variables..."
+  commands are the LOAD-BEARING primitive almost every other real event
+  type sits on top of (branches, shop unlocks, quest flags, choice
+  outcomes are all built on a switch/variable write in a real RPG Maker
+  project) - NOT a 4th peer alongside message/teleport/spawn, but
+  conceptually op #1, even though it wasn't built first here. Corrected
+  build order for whoever picks this up:
+    1. A generic "write key=value into project state" event op (Control
+       Switches/Variables' own equivalent) - build this BEFORE anything
+       else below, even though it wasn't built first historically.
+    2. Numeric argument entry (a "digit-accumulator enters a number"
+       input mode, reusing project_browser.c's own digit_accum field/
+       pattern) - unlocks real teleport-target x/y entry AND RPG Maker's
+       own Input Number/Select Item commands at once, one primitive,
+       three features.
+    3. Control Self Switch equivalent (trivial once events.txt gets a 4th
+       field) - per-instance state, e.g. "this door is already open."
+    4. An Erase Event / "delete this instance" op_id - cheap, muchimon-
+       pal's own choice.c already has the exact primitive (deletes a
+       fainted entity outright), just needs exposing as an event.
+    5. Change Actor Stat (HP/etc.) - same events.txt row shape as spawn,
+       writes into an existing instance's state.txt instead of creating
+       one.
+    6. Show Choices... (a real menu-building primitive) - do this AFTER
+       1-2 exist, since in a real RPG Maker project, choices are usually
+       used to SET a switch/variable, not stand alone.
+  Free text (custom messages, as opposed to numbers) still genuinely
+  needs a new input primitive this whole family has never built - don't
+  attempt it as a side effect of any of the above; it's a separate,
+  larger, later thing.
+  See EVENT-CATALOG-COMPARISON.txt's own sec. 3 for the full reasoning,
+  including which RPG Maker categories are correctly OUT of scope
+  entirely (Party/Shop/Battle/Vehicles/Screen/Audio - all assume game
+  systems no $.4x project has yet, not a pal-op gap).
+
+3.3 Z-layer map support (sec. 3.3 of the design doc, still not started)
+  pal-craft's own map format already has real Z-layers (map_z<N>.txt,
+  ported from piececraft-wraith). pal-op only knows a single map.txt per
+  project. Concrete shape already sketched in the design doc: a "%Z%"
+  token convention in known_projects.txt's map_rel_path + a layer-switch
+  key in map_edit_input.c.
+
+3.4 "equals" registry format is second-class
+  Both the terrain legend and the GL/emoji color lookups only handle
+  "pipe" format fully; "equals" format (piececraft-3d-pal's own shape)
+  gets a legend id but no real color/emoji support. Not urgent unless
+  piececraft-3d-pal (or something using that format) actually resurfaces
+  in this family again.
+
+3.5 civ_id chooser for bank placement
+  Placed instances that need a civ_id get a fixed "editor" placeholder
+  (civ-pal/pal-craft/muchimon-pal's own spawn ops all take one). A real
+  "Choose Civ" sub-screen is a small, real, separate follow-up.
+
+3.6 Sync gap - shared-ops/prisc+x.c fixes not yet in pal-op's own copy
+  CONCRETE AND CHEAP - do this soon. shared-ops/prisc+x.c (the canonical
+  VM) got two register-default-sentinel bug fixes this past muchi-verse
+  session (OP_READ_HISTORY's literal-path parsing, OP_EXEC's rs1/rs2
+  defaulting to a real register index 0 instead of a "not given" -1
+  sentinel - see zest-er-summary-FIN's own sec. 1/2 for the full story).
+  pal-op's own system/prisc+x.c still has the OLD, unfixed OP_EXEC code
+  (confirmed via diff - 33 lines, purely additive, no conflicts). Since
+  this project deliberately keeps a LOCAL copy rather than a live shared
+  reference (same "self-contained, solo-shippable" doctrine as every
+  project in this family), someone needs to actually re-copy shared-ops/
+  prisc+x.c in and rebuild - a five-minute, zero-risk task that's simply
+  never been done for this project yet.
+
+3.7 Undo (named since 0.HANDOFF-2026-07-16.md, still not addressed)
+
+3.8 Sovereign Architecture / Context Switch (op-ed's own real doctrine -
+    copy a project into a working buffer before editing, rather than
+    editing its real files in place) - still not built; the "test wrote a
+    stray tile into a live project" risk from sec. 6 of the design doc is
+    still live and will remain live until this exists.
+
+3.9 Naming cleanup - the outer directory is still "2.muchipal-editor-0.0"
+    (a "-0.0" suffix none of the other $.4x projects kept after their own
+    renames this session). Purely cosmetic, cheap, not urgent.
+
+================================================================================
+4. HOW THIS INTEGRATES WITH PAL-AGENT AND THE OTHER MUCHI-VERSE VISIONS
+================================================================================
+(Read yz.muchiverse/$.zest-er-summary-FIN❤️‍🔥️+.txt in full before acting on
+this section - it is the authoritative source for everything summarized
+below, this is only the bridge between that world and pal-op specifically.)
+
+4.1 pal-agent can ALREADY drive pal-op today, with zero new connector code
+  muchi-pal-agent's own tool-calling layer (file_ops.c, edit_file.c,
+  cmd_exec.c, list_dir.c, search_in_files.c - all "provider-agnostic,
+  already proven," per zest-er-summary sec. 4.1) is exactly the shape
+  needed to operate pal-op RIGHT NOW, because almost every pal-op action
+  is already a single, self-contained CLI exec:
+    - register_project.c takes its args directly (root_path, display_name)
+      - trivially one cmd_exec.c call, no state-file dance needed at all.
+    - map_edit_input.c/compose_title_frame.c/compose_rgb_frame.c all read
+      pieces/system/editor_state.txt and take one keycode argument - an
+      agent (or a thin wrapper script) can write cursor_x/cursor_y/
+      armed_idx/arm_mode into editor_state.txt directly (file_ops.c can
+      already do this - it's a plain key=value text file, same as every
+      other piece of state in this whole family), then exec
+      map_edit_input.+x with the right keycode (13 for Enter, 'b'/98 or
+      'v'/118 to switch modes, '1'-'9' to arm) to actually place terrain/
+      an instance/an event.
+    - Reading pal-op's own output is just as direct: file_ops.c reading
+      pieces/display/current_frame.txt gives an agent the exact same
+      ASCII view a human sees.
+  CONCRETE NEXT STEP if this integration is wanted: write a thin
+  TOOL:-convention wrapper specifically for pal-op (matching sec. 4.1's
+  own gemma "TOOL: <verb> <args>" pattern exactly) - e.g.
+    TOOL: pal_edit_terrain <glyph_idx> <x> <y>
+    TOOL: pal_edit_place_bank <bank_idx> <x> <y>
+    TOOL: pal_edit_place_event <op_id> <x> <y>
+    TOOL: pal_edit_register_project <path>
+  where the parser translates each verb into exactly the
+  editor_state.txt-write + exec sequence above. This is a NEW parser +
+  4 short case branches, reusing cmd_exec.c/file_ops.c's own execution
+  layer untouched - same "only the parsing layer is new" principle
+  zest-er-summary's own sec. 4.1 already establishes for gemma's tool
+  calling, applied to a new verb set instead of a new model.
+
+4.2 The not-yet-built "ui_drive connector" is the other half - PLAYING,
+    not just authoring
+  CHAT-INTEGRATION-ARCHITECTURE.txt's own sec. 2 (per zest-er-summary)
+  describes a generic connector (session launch/inject-key/read-frame/
+  kill ops) for driving a live, continuously-running chtpm session from
+  outside it - DESIGNED, NOT built yet; irc-agent-0000 used a simpler
+  direct_ops path instead because it didn't need this. pal-op's own new
+  "Play Project" launcher (sec. 2.4 above) is exactly the hook point
+  where this connector WOULD attach once built: an agent could launch a
+  project via pal-op, then use inject-key/read-frame to actually watch
+  and react to a live playthrough - the same shape irc-agent-0000 already
+  proves works for pal-chat-irc, just applied to a $.4x game session
+  instead of a chat room. Don't build this FOR pal-op specifically -
+  build the generic connector once (as zest-er-summary's own sec. 2
+  already scopes it), and pal-op's Play Project button becomes one of
+  several places it plugs in.
+
+4.3 pal-scripts/ meta-orchestration is the natural home for an agent-driven
+    launcher
+  pal-scripts/pal-chat-agent.pal + launch_irc_agent.sh (a thin .pal that
+  execs into a launcher shell script, which starts a project in a
+  session-isolated, keyboard-input-less mode - renderer + prisc+x only,
+  no human at the keyboard - then injects keys via the same file-
+  injection technique used everywhere in this family) is the exact
+  precedent for a future pal-scripts/pal-edit-agent.pal: launch pal-op
+  headless, inject registration/placement keys the same way, no new
+  launch mechanism needed - just a new script following the proven
+  shape.
+
+4.4 pal-op is already a conformant citizen of the registry+switch/bank
+    convention
+  known_projects.txt IS the same "one file, many rows, pipe-delimited"
+  BANK shape as model_list.txt/trigger_list.txt/the npc_bank idea (zest-
+  er-summary sec. 4.4/4.6) - nothing to change here. register_project.c
+  is the equivalent of switch_model.c: it's the op that adds a new row
+  to the bank. This alignment happened naturally (both families evolved
+  the same pattern independently, for the same reasons) rather than by
+  deliberate cross-reference - worth knowing so nobody "fixes" pal-op's
+  registry into some other shape without realizing it already matches.
+
+4.5 SCALE_BANK - a real future consideration for event triggering (3.1
+    above), not for pal-op itself
+  Once runtime event triggering (sec. 3.1) exists, an event's own
+  fidelity is exactly a (entity_type=event, domain=trigger_behavior,
+  scale_level) SCALE_BANK key (zest-er-summary sec. 4.6) - e.g. "message"
+  could stay a flat log-append forever (small scale is always enough),
+  while "spawn" might eventually want a large-scale tier (a real cutscene
+  sequence, multiple spawns, a camera pan) versus today's small-scale
+  single spawn. Flagging this now so whoever eventually builds 3.1 knows
+  the SCALE_BANK pattern exists and fits - but per that section's own
+  "prove one thing before generalizing" discipline, do NOT build a
+  SCALE_BANK abstraction before runtime triggering itself is even proven
+  once. This is a note for later, not a task for now.
+
+================================================================================
+5. IF YOU ONLY REMEMBER TWO THINGS FROM THIS DOCUMENT
+================================================================================
+1. pal-op can already be driven by pal-agent's EXISTING tool ops today -
+   no new connector is required for authoring (placing terrain/instances/
+   events, registering projects). The only genuinely new engineering is a
+   thin TOOL:-verb parser mapping pal-op-specific verbs onto the same
+   editor_state.txt-write + exec pattern already used by a human at the
+   keyboard.
+2. The single highest-value, lowest-effort thing left undone is sec. 3.6 -
+   re-syncing shared-ops/prisc+x.c's two already-proven VM bug fixes into
+   pal-op's own local copy. It is a five-minute, zero-risk task that has
+   simply never been done for this specific project yet.

@@ -1,0 +1,7 @@
+# possession config - !.pal-standards.txt sec. 31.4/32
+# muchimon-pal uses FREE possession by design (MUCHIMON-DESIGN.txt sec.
+# 8.1, direct user input $.4x/!.tpmuchi-pal.txt) - NOT fixed-to-one,
+# unlike a typical single-avatar Pokemon clone. Enter-to-possess works
+# on the player's own character, any captured trainer, or muchimon.
+mode=free
+fixed_target_id=none

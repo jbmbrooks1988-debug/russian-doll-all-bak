@@ -1,0 +1,321 @@
+ANGLER EXPANSES - DESIGN DOCUMENT (draft 3, revised)
+CORRECTION added 2026-07-21, during first real coding pass: draft 2's
+sec. 1/3 still carried over the mansion-sim's own is_player=1 "you move
+one hero directly" model (a pc_you bank row). Direct user catch: "the
+player doesn't control any of the anglers, they just use a picker
+cursor" - this is Dwarf Fortress, no directly-moved character exists at
+all. Real, proven prior art for the correct model already exists in
+this machine's own history: 1.TPMOS_c_+rmmp.0102.0028/projects/fuzz-op/
+pieces/xlector (type=xlector, a free-roaming cursor PIECE with methods
+scan/collect/place/inventory issued AT the cursor's own position, never
+tied to a controllable character). This project's own hero/state.txt
+ALREADY has the matching mechanism built and confirmed working before
+this session (xlector_pos_x/xlector_pos_y + interact_mode, dox 04's
+"interact mode") - the fix is to drive angler-expanses' whole
+designate/select/job UI through THAT existing cursor, not to add a
+directly-moved angler. angler_bank.txt was corrected the same session
+(pc_you row replaced with a 7th labor role, ang_leader, is_player=0
+like every other row) and pieces/world_angler_home_template/map_start/
+anglers/ now holds all 7 as AI-driven instances, live-verified via
+New Game correctly propagating all 7 into a fresh world. Sec. 1/3 below
+are NOT yet rewritten to formally describe the cursor-driven control
+scheme in full (job designation via the xlector cursor, angler
+selection/inspection via the same cursor) - that's the next real design
+increment, flagged here rather than silently left implied.
+Written 2026-07-21, REVISED same day after re-reading
+yz.muchiverse/$.zest-er-summary-FIN.txt (the family's own standing-
+conventions doc) - draft 1 invented one-off mechanisms (a flat job queue,
+an unstated "simulate everyone every turn" assumption) instead of reusing
+the family's own proven patterns. This draft replaces sec. 3-5 of draft 1
+with the REGISTRY + SWITCH + SELF-CONTAINED OPS pattern, the NPC
+BANK-vs-INSTANCE-DIR split, and SCALE_BANK - all three used verbatim
+elsewhere in this family (model_list.txt/switch_model.c, the npc_bank
+idea in zest-er-summary sec. 4.4, SCALE_BANK in sec. 4.6) rather than
+reinvented here. If a future doc in this family diverges from this
+pattern, that's the thing to question, not this doc.
+
+Renaming "angler-empires" -> "angler-expanses", reskinning the existing
+PRISC (ops+pieces+pal) mansion-sim engine into an ASCII Dwarf Fortress-
+style colony sim, per PAL-NET-STANDARD's own family conventions
+(project.pdl-driven, flat text pieces/ files as the only source of truth,
+ops as small single-purpose C binaries, pal as the turn/script glue).
+
+========================================================================
+0. WHAT STAYS, WHAT CHANGES (grounded in the real current codebase)
+========================================================================
+Current engine (read in full before writing this doc): system/ (renderer,
+keyboard_input, prisc+x, gl_mirror), ops/ (move_player, end_turn,
+compose_frame, compose_rgb_frame, compose_title_frame, title_input, talk,
+choice, pickup, drop, activity, scene_reader, pdl_reader, save_game),
+pieces/registry/ (terrain_types.txt, furniture_types.txt, items.txt,
+monster_types.txt, characters.txt, activities.txt, locations.txt,
+emoji_assets/), pieces/world_angler_home[_template]/map_start/ (map.txt,
+state.txt, hero, monsters, furniture.txt, items, transitions.txt).
+
+KEEP AS-IS (engine is genre-agnostic, do not rewrite):
+- The whole render/input/turn loop (prisc+x, renderer, keyboard_input,
+  move_player, end_turn, compose_frame/compose_rgb_frame).
+- The registry pattern (glyph|id|name|...|unicode|rgb_top_emoji rows) -
+  same file shapes, new rows.
+- The pieces/<world_name>/map_start/{map.txt,state.txt,hero,monsters,
+  furniture.txt,items,transitions.txt} directory shape - one world dir
+  per "island" (planet), unchanged structure.
+- pickup/drop/activity/talk/choice/scene_reader ops - all still needed
+  (dwarves pick up ore, talk to other dwarves, choose build orders).
+- save_game, title_input, compose_title_frame - unchanged.
+
+RENAME (mechanical, sec. 2 below):
+- world_angler_home[_template] -> world_<planet_id> per planet.
+- Any "tempt"/"Angler Empires" string in code comments, README, project.pdl,
+  button.sh -> "angler"/"Angler Expanses".
+
+NEW CONTENT / NEW MECHANIC (this is the actual design work):
+- 7 planets (1 home + 6 enemy), each an island-shaped map, each with its
+  own 7-person tribe.
+- Fortress-building: designate/dig/build orders queued by the player,
+  executed over turns by dwarf (angler) AI, same decision_mode
+  per-instance-state convention monster_types.txt already documents.
+- Multi-world state: which planet is "active" (rendered), persistent
+  state for the other 6 while off-screen.
+
+========================================================================
+1. THEME MAPPING
+========================================================================
+Dwarf Fortress concept          Angler Expanses concept
+-----------------------------   -----------------------------------------
+Dwarf                           Angler (playable alien species)
+Fortress                        Expanse (the colony structure)
+Embark site / world map         7 planets in one system; each planet =
+                                 one island-shaped map (matches the
+                                 existing map.txt island-room-block style
+                                 exactly - no map-format change needed)
+7 starting dwarves               7 starting anglers on the home planet
+Other civs (goblins, elves,      6 other tribes, one full tribe of 7 per
+kobolds...)                      other planet, NPC-controlled, hostile-
+                                  by-default (enemy factions)
+Migrants / population growth     Deferred to a later phase (sec. 6) -
+                                  start with the fixed 7-per-tribe roster,
+                                  same as characters.txt's fixed roster
+                                  today
+Mining/digging, stockpiles,      "Building the Expanse": designate tiles
+workshops, build orders          -> queue jobs -> anglers execute over
+                                  turns (sec. 4)
+Strange moods / artifacts        Deferred (sec. 6)
+Adventure mode                   Not in scope - this project is fortress-
+                                  mode only
+
+Visual identity: anglers keep the same glyph-per-character convention
+(characters.txt) but use a distinct glyph range/color per tribe so 7
+tribes of 7 are visually distinguishable on their own island and (later)
+in any cross-planet view. Suggested: home tribe magenta/cyan (matches
+existing pc_you/yh_01_leader palette), 6 enemy tribes each get one fixed
+color from terrain_types.txt-adjacent palette (red, yellow, green, blue,
+white, black-on-bright).
+
+========================================================================
+2. RENAME PLAN (mechanical pass, do BEFORE any new mechanic work)
+========================================================================
+Order matters - directories before content, so nothing references a
+path that's already moved out from under it.
+
+  1. Directories:
+     pieces/world_angler_home_template -> pieces/world_angler_home_template
+     pieces/world_angler_home          -> pieces/world_angler_home
+     (6 more world_<planet_id> dirs get created fresh in sec. 3/5, not
+     renamed from anything - they don't exist yet)
+
+  2. project.pdl, button.sh, README.md, dox/*.txt: replace literal
+     "angler-empires"/"angler_empires"/"Angler Empires" with
+     "angler-expanses"/"world_angler_home"/"Angler Expanses" as
+     appropriate per-occurrence (grep first, don't blind sed - a couple
+     of hits may be genuinely generic "island" language worth keeping
+     as-is if it's describing the map SHAPE rather than naming the
+     project).
+
+  3. Any op or system file with a hardcoded "world_angler_home" path
+     literal (grep ops/*.c system/*.c for it) gets updated to read the
+     active world's own directory name from state rather than a literal,
+     if it isn't already parameterized - this is also a prerequisite for
+     sec. 5's multi-planet switching, so do it carefully once here
+     rather than twice.
+
+  4. pieces/registry/characters/characters.txt: RETIRED, not edited in
+     place - replaced by pieces/registry/anglers/angler_bank.txt (sec.
+     3's bank/instance-dir split; a straight 1:1 row-format edit would
+     have been wrong here since the bank needs a tribe_id column
+     characters.txt never had). Any op that currently reads
+     characters.txt (grep for it) gets repointed at angler_bank.txt.
+     Old rows deleted, not commented out - this file is content, not
+     code, matching the family's "if it's not in a file, it's a lie"
+     convention (nothing should read a stale row).
+
+  5. locations.txt / activities.txt / map.txt (home world): reskin
+     mansion rooms (Mirror Lounge, Vanity Hall, Glass Office, Night
+     Garden, etc.) into expanse rooms/zones (sec. 4). Same file, same
+     column shapes, new content.
+
+  6. terrain_types.txt: keep all existing rows (walls/floor/grass/dirt/
+     water/tree/stairs are all still physically meaningful on an alien
+     planet), ADD planet-surface rows as needed (sec. 5) - do not delete
+     existing rows, they're reused as-is.
+
+Verification after rename: `./button.sh compile && ./button.sh check` on
+whatever the renamed project root ends up being, plus a grep for
+"tempt" across the whole tree to confirm zero stray references before
+moving to new-mechanic work.
+
+========================================================================
+3. THE ANGLERS - NPC BANK (types) vs. PIECE DIR (living instances)
+========================================================================
+Per zest-er-summary sec. 4.4: don't give every one of the 49 (7 tribes x
+7) anglers a full stateful piece dir by default - that's the mistake the
+"bank vs instance dir" split exists to prevent. ONE FILE, MANY ROWS for
+TYPES/TEMPLATES; a real per-instance piece dir ONLY for a specific,
+stateful, LIVING individual that accumulates real history over time.
+
+  pieces/registry/anglers/angler_bank.txt (the bank - replaces
+  characters.txt's role as the source of angler TEMPLATES):
+    id|name|glyph|color|role|default_outfit|tribe_id
+    role: same Dwarf-Fortress-labor-role list as draft 1 (miner,
+    builder, forager/angler-proper, defender, crafter, scholar/medic).
+    tribe_id: which of the 7 tribes (angler_home + 6 enemy tribe ids,
+    sec. 5) this row belongs to.
+
+  Per-tribe roster = 7 bank rows sharing one tribe_id. Home tribe's 7
+  rows are the starting colony; the player's own row keeps is_player=1
+  (still a column, matches characters.txt today).
+
+  A LIVING INSTANCE (a specific angler that's actually spawned into a
+  world_<planet_id>/map_start) gets a piece dir ONLY because it needs
+  real mutable state over time (hp, current job assignment, inventory,
+  position, decision_mode - same per-instance-state convention
+  monster_types.txt's own header comment already documents for
+  monsters): pieces/world_<planet_id>/map_start/anglers/<instance_id>/
+  state.txt, mirroring hero/ and monsters/'s existing directory shape
+  exactly - no new directory convention invented, this is the same
+  pattern move_player.c/tick-monster ops already read/write.
+
+  Concretely: angler_bank.txt says WHO CAN EXIST (7 roles x 7 tribes,
+  49 rows, static content); world_angler_home/map_start/anglers/*/
+  state.txt says WHO ACTUALLY IS, right now, on this planet, with what
+  hp/job/position (dynamic, mutated every turn). Same split as
+  model_list.txt (bank) vs. state.txt's current_model_id (active
+  instance) elsewhere in this family - not new machinery.
+
+Exact names/flavor TBD with user - this doc fixes the bank/instance
+split and role list, not final names.
+
+========================================================================
+4. BUILDING THE EXPANSE - REGISTRY + SWITCH + SELF-CONTAINED OPS
+========================================================================
+Goal: Dwarf-Fortress-style "designate an area/tile -> a job gets queued
+-> an idle angler walks there and executes it over N turns -> the tile/
+piece changes state." Per zest-er-summary sec. 5 ("every sub-ask reduces
+to the SAME three ingredients... a registry, a switch op, small self-
+contained ops") this is not a new mechanism to invent - it's the exact
+model_list.txt/switch_model.c shape applied to jobs instead of AI
+providers.
+
+  New registry: pieces/registry/jobs/job_types.txt (the bank - names
+  swappable job behaviors, exactly like model_list.txt names swappable
+  provider_kinds):
+    id|name|glyph_while_pending|turns_to_complete|requires_role|
+    result_terrain_or_furniture_id
+    (mirrors terrain_types.txt/monster_types.txt/angler_bank.txt's own
+    pipe-delimited registry shape - no new file format invented)
+
+  New op: ops/designate.c - the "switch" op (matches switch_model.c's
+  own shape: look up a job_types.txt id, write a handful of state.txt
+  fields, done). Player marks a tile/region for a job id, which writes
+  a pending-job entry as its own small piece with its own state.txt
+  (job_id, target_x, target_y, turns_remaining, assigned_angler_id) -
+  same "each pending job is its own stateful piece" pattern as an
+  angler instance (sec. 3) or a monster instance.
+
+  New op: ops/tick_jobs.c - a TICK-DRIVEN poll (same shape as
+  irc_agent_poll.c/check_response.c: cheap no-op check first, real
+  work only when a pending job actually exists), called from end_turn.
+  Assigns an idle angler instance whose bank role matches
+  requires_role, advances turns_remaining, and on completion mutates
+  map.txt/furniture.txt exactly the way pickup/drop already mutate
+  items - no new mutation mechanism, reuse the existing terrain/
+  furniture write path. Compose ops stay untouched (sec. 20's ONE
+  VISIBLE FRAME WRITER RULE, per PAL-NET-STANDARD sec. 6's own
+  documented gotcha: tick_jobs.c must re-run compose_frame after a
+  real change, pinging frame_changed.txt alone is NOT enough).
+
+  Angler idle-labor AI reuses move_player.c's existing decision_mode-
+  driven pathing (tier-0 "always chase" vs tier-1 "weighted", the same
+  per-instance state.txt field monster_types.txt documents) applied to
+  "walk to nearest pending job matching my own bank role" instead of
+  "walk to nearest player" - no new pathfinding invented.
+
+Exact job list (dig, build wall, build furniture, stockpile management)
+is a second pass once the rename + bank + one working job_types.txt row
+(recommend: dig, only mutates terrain walkable/glyph, smallest slice)
+is proven end-to-end - same "prove one thing before generalizing"
+discipline as everywhere else in this family.
+
+========================================================================
+5. 7 PLANETS / 6 ENEMY TRIBES + SCALE_BANK FOR SIMULATION FIDELITY
+========================================================================
+Each planet = one world dir (pieces/world_<planet_id>/map_start/...),
+same directory shape as today's single world. Home planet is
+pieces/world_angler_home (sec. 2). The 6 enemy planets get their own
+world_<planet_id> dirs, each with its own map.txt (island shape, reuse
+terrain_types.txt rows), its own 7-row slice of angler_bank.txt (all
+is_player=0, tribe_id = that planet), and its own spawned angler
+instances (sec. 3).
+
+Switching the RENDERED/active planet: pieces/system/active_planet.txt
+(matches pieces/system/title_state.txt's existing one-line-state-file
+convention exactly), read by compose_frame to decide which
+world_<planet_id>/map_start it composes from - not a new mechanism.
+Traveling between planets (ship? portal? instant "embark elsewhere"?)
+is NOT decided in this doc - next conversation, per user's own framing.
+
+SCALE_BANK - how deeply to simulate OFF-SCREEN tribes (zest-er-summary
+sec. 4.6, applied here directly rather than inventing a bespoke "cheap
+mode" flag): simulation fidelity is a property of (entity_type, domain)
+pairs, not one global on/off switch. A pipe-delimited bank, same shape
+as sec. 4's job bank:
+    entity_type|domain|scale_level|module_id
+    tribe|labor_jobs|large|tick_jobs_full     (active/rendered planet)
+    tribe|labor_jobs|small|tick_jobs_abstract (off-screen planets - job
+                                                 counters advance on a
+                                                 coarse tick, no real
+                                                 per-angler pathing)
+    tribe|combat|small|none                   (no inter-tribe combat
+                                                 yet - sec. 6 deferred)
+    tribe|population|small|static_seven        (fixed 7-per-tribe, no
+                                                 growth/death sim yet)
+A per-game config (or simply: "large for whichever tribe_id matches
+active_planet.txt, small for the other 6") picks the active scale_level
+per row - same registry-vs-active-selection split as model_list.txt vs.
+state.txt's current_model_id. This directly replaces draft 1's vague
+"recommend enemy tribes advance only when active, not decided" note
+with the family's own actual mechanism for exactly this decision -
+still not fully decided WHICH module_id each cheap row should point to
+yet, but the SHAPE of the decision is now fixed, matching every other
+fidelity choice in this family.
+
+========================================================================
+6. EXPLICITLY DEFERRED (not in this pass)
+========================================================================
+- Migrants/population growth beyond the fixed 7 per tribe.
+- Strange moods, artifacts, named-item lore.
+- Inter-planet combat/raids, diplomacy.
+- Any GL/RGB-mirror-specific new assets beyond adding rgb_top_emoji
+  rows for new terrain (the toggle mechanism itself needs no changes).
+- Adventure-mode-equivalent (single-angler-away-from-colony) play.
+
+========================================================================
+7. NEXT STEPS
+========================================================================
+1. User confirms/edits sec. 1 theme mapping + sec. 3 roster shape.
+2. Execute sec. 2 rename plan mechanically (directories, project.pdl,
+   button.sh, README, registry content) - verify with
+   ./button.sh compile && ./button.sh check and a repo-wide grep for
+   "tempt".
+3. THEN chat about where to start coding on sec. 4/5 (this doc
+   deliberately stops short of picking that starting point).

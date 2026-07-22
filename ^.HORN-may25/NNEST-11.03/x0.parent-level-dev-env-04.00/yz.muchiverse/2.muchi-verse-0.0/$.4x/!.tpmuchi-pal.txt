@@ -1,0 +1,42 @@
+
+
+
+tell it we want to make some modifications 2 muchimon . 
+
+there is a main 'playable' character , but we will use a 'xelector'
+because other players will be selectable and even playable instead of main character
+when "captured" 
+
+(muchimon are kept in 
+
+,for battles, the battle will occur on the map, as a tactics style game. 
+
+
+for random battles, the enemy will appear in "tall grass" 
+
+
+for battles, enemy will deploy the muchimon once the battle is initiated
+
+additionally the trainers also have personal health, skills
+and can choose to engage in battle as well , and can also be "captured"
+
+player will have a muchimon in "muchiboxes" 
+
+which can hold many items/entities/muchimon, and have their own dropdown menu (which may contain more muchiboxes
+or entities who are holding their own muchiboxes with things inside.
+
+entities who player has already captured maybe made to follow character (as caterpillar
+follow party mechanics" or 'placed' on the board. and left there , 
+and or set on "auto mode" where it will make its own choices . 
+
+
+during "wild battles , user can deploy more than one entity 
+these can be controlled manually or be set to "auto mode" 
+where they will do 1 act per turn (as all entities) 
+
+(a turn will pass each turn) 
+
+(there will be day night cycle where time passes each turn that passes) 
+
+
+

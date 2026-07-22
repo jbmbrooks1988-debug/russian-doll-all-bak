@@ -1,4 +1,0 @@
-width=65
-height=15
-turn=17
-name=map_start

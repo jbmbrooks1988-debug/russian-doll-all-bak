@@ -1,0 +1,4 @@
+width=65
+height=15
+turn=28
+name=map_start

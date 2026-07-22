@@ -1,0 +1,266 @@
+$.4X FAMILY - HANDOFF DOCUMENT
+Written 2026-07-21. Cold-start handoff - assume the reader (agent or
+human) has ZERO memory of the conversation that produced this. Read
+yz.muchiverse/$.zest-er-summary-FIN❤️‍🔥️+.txt FIRST if you haven't
+already - every design doc in this directory leans on its standing
+conventions (registry+switch+self-contained ops, bank-vs-instance-dir,
+SCALE_BANK) without re-explaining them each time.
+
+STALE NOTICE (added later the same day): this doc's own sec. 2 "NOT
+DONE" list and sec. 3 "next tasks" are now OUT OF DATE - a very long
+same-day continuation of this session actually built the instance
+machinery, the interact/possession system, a real job-AI system, and
+much more. For CURRENT status, read (in this order): !.pal-standards.txt
+sec. 28/30/31/32, then $.4x/handoff-possession-4x.txt, then
+$.4x/session-handoff.txt (the most current one). This file is kept for
+its own still-accurate sec. 0/1 (directory layout, per-project "why it
+exists" summaries) - just don't trust its own "not done yet" framing.
+
+========================================================================
+0. WHAT $.4x/ IS
+========================================================================
+Four sibling game projects, each a reskin of the SAME base engine
+(the "tempt-island" PRISC/ops/pieces/pal mansion-sim, itself GCC C11,
+no ncurses, no C++ - system/prisc+x + ops/*.c + pieces/*.txt as state).
+Moved into this one directory together (2026-07-21, this session) so
+they're visibly associated - they were previously scattered as loose
+numbered siblings (4.muchi-civ-pal, 4.muchimon-pal, 3.d.pal-craft,
+$.angler-empires) directly under 2.muchi-verse-0.0/.
+
+  $.4x/
+    $.angler-empires/angler-empires/   - ASCII Dwarf-Fortress-style
+                                          colony sim, 7 alien "angler"
+                                          tribes on 7 planets
+    civ-pal/civ-pal/      - Civilization-style 4X, solar-
+                                          system map, multi-city civs
+    4.muchimon-pal/muchimon-pal/       - Pokemon Red/Blue-style
+                                          monster-collecting RPG
+    3.d.pal-craft/pal-craft/        - Minecraft-style voxel
+                                          builder (Z-layered maps)
+
+Each project's own design doc lives in its dox/ dir:
+  $.angler-empires/angler-empires/dox/ANGLER-EXPANSES-DESIGN.txt
+  civ-pal/civ-pal/dox/MUCHI-CIV-DESIGN.txt
+  4.muchimon-pal/muchimon-pal/dox/MUCHIMON-DESIGN.txt
+  3.d.pal-craft/pal-craft/dox/PAL-CRAFT-DESIGN.txt
+READ THE RELEVANT ONE IN FULL before touching that project's code -
+this handoff summarizes, it does not replace them.
+
+NOTE ON NAMING: the angler project's own directory is named
+"angler-empires" (both the outer $.4x/ subdir and the inner project
+dir) even though its design doc is titled ANGLER-EXPANSES-DESIGN.txt
+and its own body text still says "angler-expanses" throughout - the
+doc was written against an earlier folder name before an external
+rename (outside this session) changed it to "angler-empires". This is
+a REAL, currently-unresolved naming inconsistency, not a typo to
+silently "fix" by guessing - confirm with the user which name
+("angler-expanses" or "angler-empires") is actually intended before
+either renaming the directory again or bulk-editing the doc's own
+prose, then make the doc and the directory agree.
+
+========================================================================
+1. WHY THESE FOUR PROJECTS EXIST (one paragraph each)
+========================================================================
+angler-empires: player controls 7 alien "anglers" (Dwarf Fortress's 7
+starting dwarves, reskinned) building an "Expanse" (fortress) on a home
+planet, while 6 other planets each hold a rival 7-alien tribe (NPC,
+hostile). New mechanic: designate/build jobs executed by idle-labor AI.
+
+muchi-civ-pal: Civilization-style 4X, explicitly NOT a single continent
+- a SOLAR SYSTEM map where each PLANET is itself an embark/city site
+(direct user correction during design: "not a world map a solar system
+map"). Multiple cities per civ, spread across multiple planets, plus a
+tech tree.
+
+muchimon-pal: Pokemon Red/Blue clone - overworld towns/routes (near-
+identical fit to the existing mansion-room engine), wild encounters via
+tall-grass tiles, a new turn-based battle mode, a 6-slot player party of
+caught, individually-stateful muchimon.
+
+pal-craft: Minecraft-style voxel builder. The one project needing a
+REAL engine gap filled (today's engine has exactly one flat 2D map.txt,
+no Z-concept) - solved by porting the ALREADY-PROVEN Z-layer map format
+from a DIFFERENT real project in this machine's own history,
+piececraft-wraith (1.TPMOS_c_+rmmp.0102.0028/projects/wraith-alpha/
+wraith-projects/piececraft-wraith) - one flat text grid file per Z-
+level (map_01_z0.txt, z1.txt, z2.txt...) plus per-tile extrude/solid/
+rgb_side properties, NOT a new voxel format invented from scratch.
+
+========================================================================
+2. STATE AS OF THIS HANDOFF - WHAT'S ACTUALLY DONE
+========================================================================
+DONE:
+  - All four design docs written (sec. 0's list), each independently
+    grounded in the family's real standing conventions - not ad-hoc
+    per-project mechanics. angler-empires' own doc was REVISED once
+    already (draft 1 -> draft 2) specifically to replace invented
+    mechanisms with the family's real registry+switch+bank pattern
+    after the zest-er-summary doc was re-read mid-session - if a
+    similar gap is ever found in the OTHER three docs, they should get
+    the same treatment (they were written WITH the pattern in mind
+    from the start, so this is a lower-probability gap, not a known one).
+  - 4.muchimon-pal was EMPTY before this session - the tempt-island
+    engine scaffold was copied in fresh (from 3.d.pal-craft/tempt-
+    island, an untouched copy) as part of writing its design doc. This
+    is the ONLY one of the four where the base engine copy itself is
+    new work done this session; the other three already had their own
+    engine copies before this session started.
+  - All four moved into this single $.4x/ directory (this session,
+    just now) - a pure directory move, mv only, no file contents
+    touched by the move itself. Verified no stale absolute-path
+    references to the old locations exist anywhere under $.4x/ (grepped
+    for the old muchi-verse-0.0/4.*, muchi-verse-0.0/3.d.*, muchi-
+    verse-0.0/$.angler* path fragments post-move, zero hits) - safe to
+    build/run from the new location without a path-reference cleanup
+    pass first.
+
+NOT DONE (this is most of the real work - see sec. 3):
+  - NONE of the four projects' own RENAME PLANS (each doc's own sec. 2)
+    have been executed yet. Every project still internally says
+    "tempt-island"/"world_tempt_island" everywhere (project.pdl,
+    button.sh, README.md, pieces/world_tempt_island[_template]/, code
+    comments) - the design docs describe what to rename TO, but no
+    renaming has actually happened in any of the four yet.
+  - NO new mechanic code exists yet in any of the four (no job system,
+    no tech tree, no Z-layer maps, no battle mode) - every "new op"/
+    "new registry" named in every design doc is still just a plan.
+  - NO instance-dir/bank-split code exists yet anywhere (see sec. 3.1 -
+    this is the user's own explicitly next-requested task).
+
+========================================================================
+3. NEXT TASKS, IN THE ORDER THE USER ASKED FOR THEM
+========================================================================
+The user's own framing for this handoff: "create the code to do
+instances, and begin coding." Read as two concrete asks:
+
+------------------------------------------------------------------------
+3.1 BUILD THE INSTANCE MACHINERY (do this FIRST, it's shared
+    infrastructure all four projects' own new mechanics depend on)
+------------------------------------------------------------------------
+Every one of the four design docs independently specifies the SAME
+bank-vs-instance-dir split (angler_bank.txt/unit_bank.txt/monster_
+types.txt-as-species-bank + a per-instance piece dir under state.txt) -
+this is not four separate features, it's ONE reusable pattern that
+needs building once, then applied four times with different bank
+content. Concretely, for whichever project is picked first (see 3.2):
+
+  1. Write the project's own BANK file (angler_bank.txt / unit_bank.txt
+     / monster_types.txt-extended / the block/species bank that
+     project's own doc names) - a static pipe-delimited registry, no
+     code yet, just the data file with a handful of real rows (not a
+     placeholder - real content the user has approved, since every doc
+     ends with "TBD with user" on final names/values; get that
+     confirmed before or while writing the bank).
+  2. Write ONE new op that SPAWNS a living instance from a bank row:
+     reads a bank id, creates pieces/world_<x>/map_start/<kind>/
+     <instance_id>/state.txt (or the project-specific instance-dir
+     path its own doc names in sec. 3/4) with the bank's own default
+     fields copied in as STARTING state (hp, position, etc.) - same
+     shape as how monster_types.txt's existing hp column already
+     doubles as a spawned instance's starting max_hp today (see that
+     file's own header comment, already true in the CURRENT engine,
+     not new) - this op is mostly a generalization of a pattern that
+     partially already exists for monsters, not built from zero.
+  3. Confirm every OTHER op that needs to read a living instance's
+     state (move_player.c for position, compose_frame.c for rendering,
+     a future tick_jobs.c-equivalent for AI) reads from the INSTANCE
+     dir, never the bank file directly for anything that can change at
+     runtime - the bank is read-only template data once the game is
+     running; grep for this before assuming it, don't guess.
+  4. Verify end-to-end with the SAME direct-binary-invocation method
+     already proven throughout this family (see PAL-craft's own dox 04
+     status doc, sec. 5's "Testing Notes" for the exact worked example:
+     export PRISC_PROJECT_ROOT, call ops/+x/<op>.+x directly, inspect
+     the resulting state.txt file by hand) BEFORE wiring it into the
+     real keypress-driven game loop.
+
+  Once this is proven for ONE project, porting it to the other three
+  is mostly "same op shape, different bank content, different instance
+  path" - the pattern, not four separate implementations, per this
+  family's own "prove one thing, then reuse the pattern" discipline
+  (see zest-er-summary sec. 5's own "if you only remember one thing").
+
+------------------------------------------------------------------------
+3.2 WHICH PROJECT TO START CODING ON FIRST - NOT DECIDED, ASK
+------------------------------------------------------------------------
+None of the four design docs picked a starting project over the
+others, and this handoff doesn't either - that's a real open decision
+for whoever picks this up, best resolved by asking the user directly
+rather than guessing. Considerations to surface if asked:
+  - angler-empires and muchimon-pal are the SMALLEST new-mechanic
+    lifts (angler-empires: one job type end-to-end per its own doc
+    sec. 4; muchimon-pal: one wild species + one battle, no catching,
+    per its own doc sec. 7) - lowest risk/fastest first working slice.
+  - muchi-civ-pal's smallest slice (one civ, one planet, one city, no
+    tech) is still bigger than the above two, since it also needs the
+    system_map/active_planet.txt tier that angler-empires explicitly
+    deferred - defer starting here unless the user specifically wants
+    the 4X mechanics first.
+  - pal-craft has the biggest real engine gap (Z-layer maps don't exist
+    at all yet) - recommend NOT starting here first unless the user
+    specifically wants the 3D/voxel work prioritized, since 3.1's
+    instance machinery isn't even this project's main blocker (its own
+    doc sec. 1's Z-layer map port is the real prerequisite, a separate
+    piece of work from instances).
+
+------------------------------------------------------------------------
+3.3 THE RENAME PASSES (each project's own doc sec. 2) - MECHANICAL,
+    DO BEFORE THAT PROJECT'S OWN NEW-MECHANIC CODE, NOT BEFORE 3.1
+------------------------------------------------------------------------
+3.1's instance machinery can honestly be prototyped against the
+CURRENT "tempt-island"-named files (world_tempt_island/, etc.) without
+waiting for the rename - the rename is cosmetic/organizational, not a
+technical blocker for 3.1. Recommend: do 3.1's proof-of-concept first
+against whichever project's current (un-renamed) state, THEN run that
+project's own rename pass (doc sec. 2) once the pattern is proven, so
+the rename touches real, working new code rather than being redone
+twice. This is a recommendation, not a rule from the original docs -
+flag it to the user if they'd rather rename first for cleanliness.
+
+========================================================================
+4. STANDING GOTCHAS THAT APPLY TO ALL FOUR PROJECTS (from the base
+   engine + this family's own history - not new to this session)
+========================================================================
+  - PRISC_PROJECT_ROOT is cached at process startup, not re-read live -
+    after ANY directory move/rename (including the $.4x/ move just
+    done), sweep for orphaned processes by real /proc/$pid/cwd (not by
+    name) before assuming a stale process isn't still writing to an
+    old path. Nothing was running during this session's move, but this
+    is a real, previously-reproduced bug elsewhere in this family - do
+    the sweep as a habit, not just when something looks wrong.
+  - ONE VISIBLE FRAME WRITER RULE: no op writes pieces/display/
+    current_frame.txt directly except compose_frame.c's own step - a
+    new op writes its own view/state, then pings frame_changed.txt (or
+    calls compose_frame.c directly if it needs an immediate re-render,
+    per PAL-NET-STANDARD sec. 6's own documented "pinging the marker
+    alone is not enough" bug class).
+  - APPEND, DON'T REORDER pipe-delimited registry columns - every new
+    column added to an existing registry (terrain_types.txt,
+    monster_types.txt, characters.txt) must go at the END, since ops
+    read these files by fixed column index; a reorder silently breaks
+    every existing reader. Every design doc in this directory already
+    states this per-file; it's restated here because it applies to
+    ALL of them uniformly.
+  - DESIGN-DOC-FIRST held for all four so far - keep holding it for
+    3.1/3.2's actual code: if the instance-machinery op's exact
+    calling convention isn't obvious from a design doc alone, write a
+    short note (even a comment block) before coding it, don't
+    freehand a shape and hope it matches what four documents implied.
+  - Session isolation / kill-by-cwd / register-sentinel-bug-class -
+    all still apply if/when any of these projects grows a persistent
+    background poll process (tick_jobs.c-equivalent, battle-mode
+    ticker, etc.) - re-read zest-er-summary sec. 6's own "standing
+    conventions that apply everywhere" block before building one,
+    not summarized again here to avoid drift from the source.
+
+========================================================================
+5. FIRST CONCRETE STEP FOR WHOEVER PICKS THIS UP
+========================================================================
+Ask the user: (a) which of the four projects to start coding on first
+(sec. 3.2), (b) resolve the angler-expanses/angler-empires naming
+inconsistency (sec. 0's note) one way or the other, (c) confirm the
+chosen project's bank file's real starting content (names/roles/stats -
+every doc left this "TBD with user"). Then build 3.1's instance
+machinery against that one project, verified end-to-end via direct
+binary invocation, before writing any second feature or touching a
+second project.

@@ -1,0 +1,6 @@
+# possession config - !.pal-standards.txt sec. 31.4/32
+# pal-craft is single-avatar (Minecraft-style) - mode=fixed, locked to
+# the one spawned player instance. Flip to mode=free to debug the full
+# swap-possession machinery with zero code changes.
+mode=fixed
+fixed_target_id=player_01

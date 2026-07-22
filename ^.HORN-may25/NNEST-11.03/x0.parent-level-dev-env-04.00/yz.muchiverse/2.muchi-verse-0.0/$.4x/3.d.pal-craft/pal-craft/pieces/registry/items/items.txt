@@ -1,0 +1,9 @@
+# id|name|category|glyph|weight|power|unicode
+# Format updated to include unicode emoji support (ASCII<->emoji toggle)
+heels_pink|Pink Heels|armor|[|200|2|👠️
+pvc_dress|PVC Dress|armor|[|400|3|👗️
+camera_pro|Pro Camera|tool|;|800|0|📷️
+prop_mic|Microphone|tool|;|100|0|🎤️
+snack_cookie|Cookie|food|*|50|5|🍪️
+water_bottle|Water|drink|!|500|10|💧️
+phone|Phone|tool|;|100|0|📱️

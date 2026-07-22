@@ -1,0 +1,321 @@
+INTERACT-VS-XELECTOR FIX - HANDOFF (my mistakes, documented for Opus)
+Written 2026-07-21 by the agent that got this wrong three times in a
+row on civ-pal ($.4x/civ-pal/civ-pal). User is handing this off to
+Opus rather than letting me keep guessing. This doc is a confession +
+evidence log, not a design doc I'm confident in - treat every "I
+believe" below as unverified, and treat the DIRECT QUOTES from the
+user as the only ground truth.
+
+========================================================================
+0. WHAT THE USER ACTUALLY ASKED FOR, IN ORDER (verbatim, so nothing
+   gets lost in my own paraphrasing)
+========================================================================
+Quote 1 (opening this sub-thread, after I'd built a "possession" model
+with no real NAV/ACTIVE distinction and no visible mode marker):
+  "wait, this is how civilizations control system works too. lets move
+  to civilization after documentation, and i will test that one, since
+  im more familiar with it, to see if its on track"
+
+Quote 2 (after testing found NO real interact-mode nav at all):
+  "civ still isn't renamed. rename that to civ-pal and any other
+  reanme. also its still not using 'xelector mode' , did u know that?"
+
+Quote 3 (pointed me at the real reference material):
+  "i think you understand the meaning of interact mode. interact mode,
+  should absolutely be here. it allows selection of the game map . (the
+  fact is that if we dont have 'interact' mode , it was a mistake, that
+  we will correct in all of our games , including the template) here is
+  the actual intended behavior for xelector :
+  $.4x/!.interact-vs-xelector.txt ; study it, compare it with its
+  corresponding code if u need to, and update our pal-standards
+  document to verbosely support and explain this behavior (after
+  updating and providing in code). update our code to implement it"
+
+Quote 4 (after I built a first "possession" implementation - possessed_
+id field, Enter-to-possess, a relinquish key - and started testing):
+  "no, ineteract mode is toggleable. but it should be permanant. match
+  fuzz up. cursor is always active but can 'posses/control' certain
+  entities (like pet, but not zombie) did u see that in the frame
+  history i showed u?" - followed by a SECOND, much longer paste of the
+  SAME transcript file's own frame-by-frame content (the pet_01
+  possess/release sequence), ending with:
+  "; see xelector moves onto pet, enter selects 2 control pet, xelector
+  moves pet, '9' relinquishes control of pet back to xelector. and
+  pressing 'esc' de-activates interact mode, allowing nav of indexes.
+  do u get it now?"
+
+Quote 5 (after I built interact_mode=1-permanent-default + a possession
+redirect in move_player.c + relinquish-via-'i'/ESC in choice.c, and
+started live-testing with raw op invocations):
+  "i ran a test. i still dont see the interact nav, that is dead wrong.
+  it should be something like this (if it starts auto active): ... like
+  in example [!.interact-vs-xelector.txt] , see? when escape was
+  pressed it went to [>]1. and allow index nav to be navigated till re
+  activated with enter key. interact and xelector mode are completely
+  seperate designs. are u still confused?"
+
+Quote 6 (after I asked 2 clarifying questions via AskUserQuestion -
+answers: "Start NAV, Enter to activate" / "Digits dispatch methods
+too" - and then started implementing a NAV-vs-ACTIVE two-state design
+with a synthetic single "Game Map" NAV item):
+  "youve still done it wrong tho. your misunderstanding. interact mode
+  isn't an 'i' selectable. its another indexed nav #1. there are other
+  nav options on menu. if interact mode is clicked interact mode is
+  made active, player can control map (either xelector or pet depending
+  on which was active before interact mode was escaped), if its
+  'escaped' user no longer has control of xelector or pet in map at
+  all, and only has control of nav. this model is fully apperant in
+  fuzz-op, u didn't investigate and mirror it enough to do this
+  correctly. document your repeated mistakes against what i said and
+  any investigatory proof in interact-fix-j21.txt, and i will hand this
+  off to opus to fix"
+
+========================================================================
+1. THE REFERENCE MATERIAL I WAS GIVEN (read it in full before touching
+   code - I clearly didn't read/model it carefully enough)
+========================================================================
+$.4x/!.interact-vs-xelector.txt - a RAW, un-annotated frame-by-frame
+capture (3325 lines, no narrative text anywhere in it - confirmed by
+grep, see sec. 3 below) of a real, live fuzz-op session
+(1.TPMOS_c_+rmmp.0102.0028/projects/fuzz-op). This is EVIDENCE, not a
+spec - the actual spec has to be reverse-engineered from what the
+frames show, and I did this badly, more than once.
+
+Also directly relevant, NOT fully re-read by me this session (flagged
+as a real gap, not just the transcript):
+  1.TPMOS_c_+rmmp.0102.0028/projects/fuzz-op/manager/fuzz-op_manager.c
+  1.TPMOS_c_+rmmp.0102.0028/projects/fuzz-op/pieces/xlector/piece.pdl
+    (I DID read this one - see sec. 2.1)
+  1.TPMOS_c_+rmmp.0102.0028/projects/fuzz-op/layouts/fuzz-op.chtpm
+  Whatever real "outer nav menu" component renders the "[>] 1. [Control
+    Map]" row and any SIBLING numbered rows next to it - I never found
+    or read this. This is almost certainly where "there are other nav
+    options on menu" (quote 6) lives, and I never located it.
+
+========================================================================
+2. WHAT I ACTUALLY FOUND IN THE EVIDENCE (real, re-checkable facts -
+   distinguished below from my own wrong inferences)
+========================================================================
+
+2.1 fuzz-op/pieces/xlector/piece.pdl (real file, read in full):
+    METHOD | move       | void
+    METHOD | select     | void
+    METHOD | scan       | pieces/apps/playrm/ops/+x/scan_op.+x xlector
+    METHOD | collect    | pieces/apps/playrm/ops/+x/collect_op.+x xlector
+    METHOD | place      | pieces/apps/playrm/ops/+x/place_op.+x xlector
+    METHOD | inventory  | pieces/apps/playrm/ops/+x/inventory_op.+x xlector
+    METHOD | toggle_emoji | echo "toggled"
+    METHOD | toggle_clock | projects/fuzz-op/ops/+x/toggle_clock_op.+x
+    METHOD | end_turn     | projects/fuzz-op/ops/+x/end_turn_op.+x
+    METHOD | file         | projects/fuzz-op/ops/+x/open_file_menu_op.+x
+  xlector is a REAL, standalone piece with its own piece.pdl and its
+  own METHOD table - confirmed fact, not inferred.
+
+2.2 The transcript's own literal frame markers, confirmed by direct
+    grep/read (see sec. 3 for the grep methodology):
+  - "[>] 1. [Control Map]" appears at the very START of a fuzz-op
+    session, alongside prompt "Nav > _" and "[ACTIVE]: xlector".
+  - Arrow presses while marker is still "[>]" DO change the rendered
+    map (dog glyphs move) - I ASSUMED this was autonomous NPC ticking,
+    NOT verified. Could equally mean xlector (or something) IS already
+    controllable in some sense even at "[>]"/Nav state - I never
+    confirmed which.
+  - At some point the marker flips to "[^] 1. [Control Map]" and the
+    prompt changes to "Active [^]: _ (ESC to exit)" - I ASSUMED this
+    happens on an Enter press, but I never isolated the EXACT frame
+    transition or confirmed no other key could have caused it (the
+    transcript is dense enough that I skimmed rather than traced every
+    single frame-to-frame key delta).
+  - While "[^]"/Active, a numbered method list (2.scan 3.collect
+    4.place 5.inventory 6.toggle_emoji 7.toggle_clock 8.end_turn
+    9.file) is shown alongside "[ACTIVE]: xlector".
+  - Cursor moves onto a pet glyph; Enter is pressed; next frame shows a
+    momentary BLANK/loading frame ("[RESP]: " empty, "[ACTIVE]: "
+    empty, "[No Methods]"), then a frame with "[RESP]: Selected
+    pet_01.", "[ACTIVE]: pet_01", and a DIFFERENT method list (2.feed
+    3.play 4.sleep 5.end_turn 6.toggle_emoji - fewer items, pet-
+    specific).
+  - Arrow presses while "[ACTIVE]: pet_01" move the PET on the map
+    (confirmed: the pet glyph's own position changes frame to frame).
+  - Key '9' is pressed while "[ACTIVE]: pet_01" (with "Active [^]: 9"
+    shown as a pending/previewed digit first) - next frame:
+    "[RESP]: Returned to Xlector.", "[ACTIVE]: xlector", method list
+    reverts to xlector's own 8-item list.
+  - LATER in the SAME transcript (the very tail, lines ~3200-3324, only
+    read by me AFTER the user's quote-4 paste forced me to look at the
+    end): "[RESP]: Returned to Xlector." appears repeatedly while
+    "[ACTIVE]: xlector" and marker is "[^]" with prompt "Active [^]: _
+    (ESC to exit)" - meaning "Returned to Xlector" can apparently
+    happen MULTIPLE times / persist across several frames, and the
+    session eventually shows marker flip back to "[>]" with prompt
+    "Nav > _" shortly before the transcript ends in "Terminated".
+  - I DID NOT carefully trace the EXACT keys that caused the final
+    [^]->[>] transition at the very end, nor confirm whether possession
+    state (which piece was last active) was preserved or reset across
+    that transition - user's quote 6 explicitly says it should be
+    PRESERVED ("control map (either xelector or pet depending on which
+    was active before interact mode was escaped)"), which is NEW
+    information I did not extract from the transcript myself and
+    should have looked for.
+
+2.3 What quote 6 states OUTRIGHT that I had WRONG and must not
+    re-derive incorrectly again:
+  - "interact mode isn't an 'i' selectable" - I bound entering/toggling
+    interact mode to a literal 'i'/'I' keypress (matching this
+    project's OWN pre-existing, unrelated toggle convention from before
+    this whole correction thread started) instead of it being a real,
+    numbered NAV MENU ITEM the player reaches by digit/Enter like any
+    other menu row.
+  - "its another indexed nav #1. there are other nav options on menu."
+    - I assumed (my own 2nd wrong build) a SYNTHETIC single-item NAV
+    list ("1. Game Map") existed purely to gate entering interact mode.
+    The user says there are OTHER nav options too - plural, real,
+    unenumerated by me. I do not know what they are. I never found the
+    real menu-rendering code that would show me.
+  - "if interact mode is clicked interact mode is made active, player
+    can control map (either xelector or pet depending on which was
+    active before interact mode was escaped)" - POSSESSION STATE
+    PERSISTS ACROSS AN ESCAPE/RE-ENTER CYCLE. My 2nd build (and my 1st)
+    both either reset to xlector on ESC or conflated relinquish with
+    ESC entirely. Both are wrong per this quote.
+  - "if its 'escaped' user no longer has control of xelector or pet in
+    map at all, and only has control of nav" - confirms ESC from
+    ACTIVE fully suspends ALL map control (arrows do nothing to
+    xlector OR a possessed pet) until interact mode is re-entered -
+    this part I had roughly right in my LAST build (move_player.c only
+    moves things when interact_mode==1), but I never got the
+    persistence-of-possession half right, and I never made interact
+    mode itself a real nav-menu row instead of a bound key.
+
+========================================================================
+3. HOW I INVESTIGATED (so Opus can judge how much to trust/re-verify
+   this doc, and where I cut corners)
+========================================================================
+- Confirmed the transcript file itself has NO narrative/explanation
+  text anywhere - `grep -n "^[A-Z=-]\{5,\}\|SUMMARY\|CONCLUSION\|..."`
+  across all 3325 lines matched nothing outside frame boilerplate. It
+  is 100% raw frame dumps. This part of my investigation was real and
+  thorough.
+- Read `pieces/xlector/piece.pdl` in full (sec. 2.1) - real, thorough.
+- Read the file in two large chunks via the Read tool (offset-based
+  pagination) PLUS the user's own second, manual paste of an
+  OVERLAPPING second capture of the same scenario (quote 4's paste) -
+  but I skimmed rather than traced every single key->frame delta line
+  by line, which is exactly how I missed the "[>]" vs "[^]" marker
+  distinction being THE actual mode indicator on my first pass, and
+  missed the persistence-of-possession behavior entirely until the
+  user stated it outright in quote 6.
+- Did NOT read fuzz-op_manager.c, fuzz-op.chtpm, or any of the
+  scan_op.c/collect_op.c/place_op.c/inventory_op.c/open_file_menu_op.c
+  files that piece.pdl's own METHOD table points at. These almost
+  certainly contain the REAL, authoritative logic for exactly this
+  mode transition, and I built three successive guesses instead of
+  reading the source that actually implements it. This is the single
+  biggest investigative gap and should be Opus's first move.
+- Did NOT find or read whatever chtpm layout / manager code renders
+  the OUTER "[>] 1. [Control Map]" numbered row and decides what other
+  rows exist alongside it (quote 6's "other nav options on menu").
+
+========================================================================
+4. CURRENT STATE OF THE CODE (as of this doc - my 2nd/3rd wrong
+   attempt, NOT reverted, left in place for Opus to look at/replace)
+========================================================================
+All in $.4x/civ-pal/civ-pal/:
+
+  pieces/registry/units/unit_bank.txt - unrelated to this bug, fine
+    (settler/worker/warrior bank, sec. 3 of MUCHI-CIV-DESIGN.txt).
+  ops/spawn_unit.c - unrelated to this bug, fine (bank-vs-instance
+    split, live-verified working). LAST edit added a "release" METHOD
+    row to spawned units' own piece.pdl (part of my WRONG 3rd attempt -
+    "release" was meant to be a numbered-dispatch relinquish method;
+    may or may not survive a correct rebuild, Opus's call).
+  pieces/world_muchi_civ_home_template/map_start/xlector/piece.pdl -
+    NEW this session (my 3rd wrong attempt) - a real piece.pdl for
+    xlector (move/end_turn/scan), modeled on fuzz-op's own file (sec.
+    2.1) but with collect/place/inventory/toggle_emoji/toggle_clock/
+    file all DROPPED (no civ-pal equivalent exists yet) - probably fine
+    to keep/extend, the SHAPE is grounded in a real read even if the
+    surrounding dispatch logic around it is wrong.
+  pieces/world_muchi_civ_home_template/map_start/hero/state.txt -
+    changed THIS SESSION multiple times, currently: interact_mode=0
+    (my LAST edit, reverting an earlier interact_mode=1-permanent
+    attempt), action_cursor=2, possessed_id=none (new field, my 3rd
+    attempt). Needs re-review against whatever the correct model turns
+    out to be - I do not trust my own current values.
+  ops/move_player.c - has a NEW block (my 2nd attempt) that redirects
+    arrow movement to a possessed unit's own state.txt when
+    interact_mode==1 && possessed_id!="none", walkable-checked, sitting
+    ABOVE the pre-existing free-cursor xlector movement block. This
+    part is PROBABLY structurally close to correct (matches "arrows
+    move whichever is active, xlector or pet" - transcript-confirmed,
+    sec. 2.2) but has NOT been re-verified against the corrected
+    NAV/ACTIVE-as-real-nav-item model, and does not yet know about
+    persistence-across-ESC at all (nothing in move_player.c reads/
+    writes any concept of "what was active before the last escape").
+  ops/choice.c - the actual mess. Current header comment (lines ~58-98)
+    is STALE/WRONG (still describes an earlier "supersedes an earlier
+    toggle" narrative that predates even my OWN latest wrong build -
+    needs a full rewrite, not a patch). Current main() logic (~line
+    400-770):
+    - is_interact_toggle ('i'/'I', line ~483/600): WRONG per quote 6 -
+      interact mode must NOT be a bound key at all, it must be reached
+      via the real numbered nav menu.
+    - is_escape (line ~501/628): partially relinquishes possession
+      AND/OR exits interact_mode in a way that does NOT match "escaped
+      = lose ALL map control, re-entering resumes whichever was active
+      before" (quote 6) - no persistence mechanism exists.
+    - The interact_mode&&unpossessed branch (line ~651) and the
+      is_digit||is_enter branch (line ~665) were my LAST (uncommitted-
+      to-being-correct, mid-edit when interrupted) attempt at a NAV-vs-
+      ACTIVE split using a SYNTHETIC single "Game Map" nav item -
+      directly contradicted by quote 6 ("there are other nav options on
+      menu" - plural, real, not synthesized by me).
+    - load_method_names()/pdl_reader.+x dispatch-by-piece_id plumbing
+      (parameterized away from a hardcoded "hero" literal this session)
+      is probably REUSABLE regardless of how the mode-switching gets
+      fixed - the piece_id-generalization itself isn't what's wrong,
+      only the branching logic around WHEN interact mode activates/
+      deactivates and WHAT persists.
+  ops/pdl_reader.c - resolve_piece_pdl_path() gained a fallback check
+    for world_*/map_*/units/<piece_id>/piece.pdl (one level deeper than
+    the original flat <piece_id>/piece.pdl lookup) - this is a real,
+    probably-correct, probably-keep-it fix independent of the mode bug
+    (needed so a possessed unit's own METHOD table can be found at
+    all), not implicated in the mistakes above.
+
+None of this was reverted - left in place, warts and all, so Opus can
+see exactly what exists rather than starting from a clean slate that
+hides what was already (wrongly) tried.
+
+========================================================================
+5. WHAT I THINK OPUS SHOULD DO FIRST (a recommendation, not a plan I'm
+   confident enough in to execute myself after 3 wrong attempts)
+========================================================================
+1. Read fuzz-op_manager.c and fuzz-op.chtpm in full BEFORE writing or
+   reading any more of the frame transcript - the transcript is
+   evidence of behavior, the manager/layout files are the actual
+   SPECIFICATION of that behavior. I never did this and it shows.
+2. Specifically look for: what decides the OUTER nav menu's row count/
+   content (quote 6's "other nav options on menu"), what specific key
+   or dispatch causes "[>]"->"[^]" (I assumed Enter, never confirmed),
+   and what state (if any) fuzz-op itself persists to remember "which
+   piece was active before the last escape" (quote 6's persistence
+   requirement) - grep for anything like "last_active"/"resume"/
+   "previous_target" in fuzz-op's own C files before assuming a new
+   field name.
+3. Only THEN design civ-pal's own adaptation (civ-pal has no multi-
+   project outer chtpm host the way fuzz-op does, so SOME translation
+   is unavoidable - but it should be translation of a confirmed real
+   mechanism, not a 4th guess).
+4. This same fix, once actually correct on civ-pal, still needs
+   porting to angler-empires (which currently has its OWN separate,
+   also-wrong interact_mode=1-permanent-default hack from earlier in
+   this session, and its own angler_bank.txt/spawn_angler.c instance
+   machinery that's otherwise fine and unrelated to this bug) - not
+   started, not blocking civ-pal's own fix.
+5. !.pal-standards.txt was NEVER actually updated with the "verbosely
+   support and explain this behavior" section quote 3 asked for -
+   flagged as still outstanding, deliberately not attempted until the
+   underlying model itself is confirmed correct (writing a standards
+   doc for a mechanism I still don't understand correctly would just
+   enshrine a 4th wrong version).

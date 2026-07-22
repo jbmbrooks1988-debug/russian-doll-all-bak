@@ -1,0 +1,14 @@
+SECTION      | KEY                | VALUE
+----------------------------------------
+META         | piece_id           | xlector
+META         | version            | 1.0
+
+STATE        | name                 | Xlector
+STATE        | type                 | xlector
+
+METHOD       | move                 | void
+METHOD       | end_turn             | void
+METHOD       | scan                 | ops/+x/choice.+x
+METHOD       | designate_dig        | ops/+x/designate.+x
+
+RESPONSE     | default              | *xlector waits*

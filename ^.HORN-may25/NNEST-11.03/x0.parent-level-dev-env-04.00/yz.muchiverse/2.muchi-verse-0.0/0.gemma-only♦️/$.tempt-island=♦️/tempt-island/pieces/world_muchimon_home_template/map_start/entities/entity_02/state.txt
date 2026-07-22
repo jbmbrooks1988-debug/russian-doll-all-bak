@@ -1,0 +1,16 @@
+bank_id=trainer
+name=Trainer
+glyph=T
+color=red
+category=trainer
+civ_id=debug
+move_range=1
+attack=2
+defense=1
+pos_x=6
+pos_y=6
+pos_z=0
+map_id=map_start
+hp=100
+orders=none
+decision_mode=0

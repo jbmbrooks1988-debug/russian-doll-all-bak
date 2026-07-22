@@ -1,0 +1,283 @@
+MUCHI-CIV-PAL - DESIGN DOCUMENT (draft 2, revised)
+STATUS UPDATE 2026-07-21 (first real coding pass, foundations laid):
+  - Rename executed: pieces/world_tempt_island[_template] ->
+    pieces/world_muchi_civ_home[_template], repo-wide "tempt-island"/
+    "TEMPT ISLAND"/etc swept to "muchi-civ"/"MUCHI CIV" in every active
+    file (dox/ left untouched, historical). Verified live: title screen
+    renders "MUCHI CIV", New Game (title_input.+x, Enter at cursor=1)
+    correctly resets the live world from the template, byte-identical.
+  - Instance machinery built: pieces/registry/units/unit_bank.txt (3
+    starter unit TYPES - settler/worker/warrior, no tribe/civ column,
+    see that file's own header) + ops/spawn_unit.c (bank-vs-instance-
+    dir split, sec. 3 below) - live-verified: spawn success, bad-id
+    rejection (exit 2), duplicate-instance rejection (exit 3), and a
+    full New Game propagation check (3 starting units correctly carried
+    from template into a fresh live world).
+  - CONTROL MODEL CORRECTED to match: direct user note this session,
+    "this is how civilization's own control system works too" (said
+    about angler-empires' own identical correction) - NO unit here is
+    ever a directly-moved, permanently-attached "player hero." The
+    player SELECTS a unit/city with the same free-roaming cursor
+    mechanism already proven in the sibling angler-empires project
+    (this project's own hero/state.txt already has the matching
+    xlector_pos_x/xlector_pos_y + interact_mode fields, real prior art:
+    1.TPMOS_c_+rmmp.0102.0028/projects/fuzz-op/pieces/xlector) and
+    issues orders to whichever unit/city is currently selected -
+    unit_bank.txt was written this way from the start (no is_player-
+    style column at all), so no correction was needed to the bank
+    itself, only to this framing note. Sec. 1/3 below are NOT yet
+    rewritten to formally describe cursor-driven selection/orders in
+    full - flagged as the next real design increment, not silently
+    left implied.
+  - NOT yet done: cities (locations.txt-as-city rows + city piece dirs,
+    sec. 3), tech tree (sec. 4), the solar-system tier (sec. 5) - all
+    still just design, no code yet. Recommended next slice per this
+    doc's own sec. 8: found ONE city with the settler, prove
+    production/growth end-to-end, before touching tech or the system
+    map.
+Written 2026-07-21. Renaming "muchi-civ" -> "muchi-civ", reskinning the
+existing PRISC (ops+pieces+pal) mansion-sim engine into a Civilization-
+style 4X: multiple cities per civ, tech, on a SOLAR SYSTEM map (planets
+are the "map tiles"/embark sites, not a single continent - direct user
+correction: "not a world map a solar system map").
+
+Written per yz.muchiverse/$.zest-er-summary-FIN.txt's own standing
+conventions - reuses the REGISTRY + SWITCH + SELF-CONTAINED OPS pattern,
+the BANK-vs-INSTANCE-DIR split, and SCALE_BANK throughout, same as
+angler-expanses/dox/ANGLER-EXPANSES-DESIGN.txt (draft 2, sibling project,
+read first if this doc is unclear anywhere - identical engine, identical
+family conventions, different content). Nothing below invents a new
+mechanism where an existing family pattern already fits.
+
+========================================================================
+0. WHAT STAYS, WHAT CHANGES
+========================================================================
+KEEP AS-IS: the whole render/input/turn loop (prisc+x, renderer,
+keyboard_input, move_player, end_turn, compose_frame/compose_rgb_frame),
+the registry file pattern (glyph|id|name|...|unicode|rgb_top_emoji),
+pickup/drop/activity/talk/choice/scene_reader ops, save_game,
+title_input, compose_title_frame.
+
+RENAME (mechanical, sec. 2): pieces/world_muchi_civ_home[_template] ->
+pieces/world_<planet_id> per planet (same directory shape angler-
+expanses already establishes - this project reuses THAT convention
+directly, not a separate one). project.pdl/button.sh/README/comments
+swept for "tempt"/"Muchi Civ" -> "muchi-civ"/"Muchi Civ".
+
+NEW CONTENT / NEW MECHANIC:
+- A solar system map: N planets, each an embark/city site (like Civ's
+  own map tiles), NOT one continuous world map - direct user framing.
+- Multiple CITIES per civ, spread across multiple planets a civ
+  controls - the actual 4X difference from angler-expanses' one-
+  expanse-per-tribe model.
+- A tech tree (civ-wide, unlocks buildings/units/city actions).
+- Multiple civs (player + AI), each able to found/grow/lose cities.
+
+========================================================================
+1. THEME MAPPING
+========================================================================
+Civilization concept              Muchi Civ concept
+---------------------------------  -----------------------------------
+World map (tile grid of terrain)   Solar system map: each planet is
+                                    itself an embark site (island-
+                                    shaped map.txt, same format
+                                    angler-expanses/terrain_types.txt
+                                    already uses) - the SYSTEM is the
+                                    strategic map, the PLANET is the
+                                    local map, same two-tier split Civ
+                                    itself has (world map / city-work
+                                    tiles), just planet-scale instead
+                                    of tile-scale for tier 2.
+City (Settler founds, grows,       City = a location/zone within a
+produces, has a tile-work radius)  planet's own map.txt (reuses
+                                    locations.txt's id|name|glyph|
+                                    x0|y0|x1|y1|activities_csv shape
+                                    exactly - a city IS a location row,
+                                    same as angler-expanses' rooms).
+                                    A civ can found multiple cities,
+                                    on multiple planets it controls.
+Civilization (player or AI,        A "tribe" in angler-expanses'
+owns cities/units/tech)            vocabulary, generalized: owns 1+
+                                    planets, 1+ cities per planet,
+                                    its own tech state, its own unit
+                                    roster (bank, sec. 3).
+Units (settlers, workers,          Same per-instance piece-dir pattern
+warriors, later eras)              as angler-expanses' anglers (sec. 3
+                                    below) - a bank of unit TYPES, a
+                                    piece dir per living unit INSTANCE.
+Tech tree                          civ_tech_bank.txt (sec. 4) - a
+                                    registry of tech ids with
+                                    prerequisites and unlock effects,
+                                    civ-owned progress tracked per-civ
+                                    in that civ's own state.
+Turns (every civ acts, then        end_turn.c already exists and
+turn advances)                     already generalizes to "every
+                                    active agent gets a turn" - reused
+                                    unchanged, extended to iterate
+                                    civs/cities/units instead of just
+                                    hero+monsters.
+
+========================================================================
+2. RENAME PLAN (mechanical, do BEFORE new-mechanic work)
+========================================================================
+Same order-matters discipline as angler-expanses sec. 2:
+  1. pieces/world_muchi_civ_home_template -> pieces/world_<planet_id>_template
+     pieces/world_muchi_civ_home          -> the FIRST real planet's own
+     world dir (id TBD with user, e.g. world_sol_home)
+  2. project.pdl/button.sh/README.md/dox/*.txt: "muchi-civ"/
+     "muchi_civ"/"Muchi Civ" -> "muchi-civ"/"world_<planet_id>"/
+     "Muchi Civ" (grep first, don't blind sed).
+  3. Any op/system file with a hardcoded "world_muchi_civ_home" path
+     literal gets parameterized to read the active planet id from
+     state (sec. 5's active_planet.txt, identical mechanism to angler-
+     expanses - if angler-expanses lands this first, port the fix
+     rather than re-deriving it).
+  4. characters.txt retired in favor of a unit/citizen bank (sec. 3) -
+     same reasoning as angler-expanses sec. 2 step 4 (a straight
+     column-for-column edit is wrong once civ_id/city ownership
+     columns are needed that characters.txt never had).
+  5. terrain_types.txt: keep all rows, add solar-system-appropriate
+     rows as needed (space/vacuum/asteroid tiles for the system-map
+     tier, if that tier ever gets its own glyph grid rather than being
+     an abstract planet-to-planet graph - NOT decided yet, sec. 5).
+
+Verification: ./button.sh compile && ./button.sh check, plus a repo-
+wide grep for "tempt" before moving to new-mechanic work.
+
+========================================================================
+3. UNITS & CITIZENS - BANK (types) vs. PIECE DIR (living instances)
+========================================================================
+Same split as angler-expanses sec. 3, applied to Civ's own unit/citizen
+concept instead of anglers - not a new mechanism.
+
+  pieces/registry/units/unit_bank.txt (types/templates):
+    id|name|glyph|color|category|move_range|attack|defense|
+    required_tech|build_cost
+    category: settler|worker|military|(future eras add rows, not new
+    columns - same "add a new base per new kind as needed" precedent
+    PAL-NET-STANDARD sec. 3 uses for port bases).
+
+  A LIVING unit instance (spawned, has real position/hp/orders) gets a
+  piece dir: pieces/world_<planet_id>/map_start/units/<instance_id>/
+  state.txt (unit_type_id, civ_id, hp, x, y, orders, decision_mode -
+  same per-instance-state convention monster_types.txt documents).
+
+  Cities are NOT bank rows (a city isn't a type, it's a specific
+  place) - a city is a locations.txt row (sec. 1) PLUS its own
+  piece dir for mutable city state: pieces/world_<planet_id>/
+  map_start/cities/<city_id>/state.txt (owning civ_id, population,
+  production_queue, built_buildings_csv, current_tech_progress if
+  tech is tracked per-city rather than per-civ - TBD, sec. 4 assumes
+  per-civ for now, simpler).
+
+========================================================================
+4. TECH TREE - REGISTRY + SWITCH, NOT A NEW MECHANISM
+========================================================================
+  pieces/registry/tech/civ_tech_bank.txt (the bank):
+    id|name|prereq_ids_csv|turns_to_research|unlocks_unit_ids_csv|
+    unlocks_building_ids_csv
+    (same pipe-delimited shape as job_types.txt in angler-expanses
+    sec. 4 - a tech is just another swappable "unlock" entry, same
+    registry idea as model_list.txt naming swappable AI providers).
+
+  Per-civ ACTIVE research state (not a bank row - this is the "which
+  option is currently selected" half, same split as state.txt's
+  current_model_id elsewhere): pieces/world_<planet_id>/map_start/
+  civs/<civ_id>/state.txt gets current_tech_id + tech_turns_progress
+  fields (civ state may end up living in ONE place shared across that
+  civ's own planets rather than duplicated per-planet - TBD once
+  sec. 5's system-vs-planet split is settled, flagged not decided).
+
+  New op: ops/tick_research.c - tick-driven poll (cheap no-op unless a
+  civ has an active current_tech_id), advances tech_turns_progress,
+  on completion unlocks unit_bank.txt rows gated by required_tech and
+  appends to that civ's own available-buildings list. Same shape as
+  angler-expanses' tick_jobs.c - a poll op, not a per-keypress mutation
+  (matches PIECECRAFT-WRAITH-ARCHITECTURE.md sec. 1's own "never put
+  per-keypress state mutation in a background/poll process, mutation
+  belongs in the synchronous hot-path op" rule, applied here as "tech
+  progress advances on end_turn's own tick, not on arbitrary keypresses").
+
+========================================================================
+5. SOLAR SYSTEM MAP - THE ACTUAL NEW TIER (not in angler-expanses)
+========================================================================
+Angler-expanses has 7 planets but no strategic "map between them" -
+travel is explicitly deferred there. Muchi-civ NEEDS a real system-
+level map since multiple civs contend for multiple planets - this is
+the one genuinely new tier this project adds beyond angler-expanses'
+pattern.
+
+  pieces/registry/system/planet_bank.txt (which planets exist, static
+  template data): id|name|glyph|orbit_slot|size|starting_resources_csv
+  (orbit_slot is a simple integer ring position, not real orbital
+  mechanics - matches this family's "don't pre-design fields for a
+  project that doesn't exist yet" PAL-NET-STANDARD sec. 5 precedent;
+  real orbital movement is not in scope).
+
+  Per-planet OWNERSHIP/dynamic state (which civ controls it, if any):
+  pieces/system/system_map/<planet_id>_owner.txt (one small state
+  file per planet, same shape as pieces/system/active_planet.txt/
+  title_state.txt's existing one-fact-per-file convention - not a
+  single big system file, so ownership changes never risk a partial-
+  write race across multiple planets at once).
+
+  Active/rendered planet: pieces/system/active_planet.txt, identical
+  mechanism to angler-expanses sec. 5 - if that project builds this
+  first, port it here rather than re-deriving.
+
+  Movement BETWEEN planets (a ship/unit's own inter-planet travel) is
+  the one piece of real new engine work neither angler-expanses nor
+  the current 2D engine has any pattern for yet (angler-expanses
+  explicitly deferred this too) - flagged for a follow-up design pass,
+  not decided in this doc. Recommend starting with the SIMPLEST version
+  that's provably not wrong (a fixed travel_turns cost per planet pair,
+  stored as a small pieces/registry/system/travel_costs.txt table) over
+  inventing real pathing/orbital mechanics prematurely.
+
+========================================================================
+6. SCALE_BANK - PER-CIV, PER-PLANET SIMULATION FIDELITY
+========================================================================
+Same fidelity-per-(entity_type, domain) idea as angler-expanses sec. 5,
+applied to a bigger space here (many civs, many planets, many cities -
+simulating everything at full fidelity every turn is real waste):
+    entity_type|domain|scale_level|module_id
+    civ|city_management|large|tick_cities_full   (player's own civ,
+                                                    and whichever AI
+                                                    civ's planet is
+                                                    active/rendered)
+    civ|city_management|small|tick_cities_abstract (other AI civs -
+                                                    production/growth
+                                                    advance on a coarse
+                                                    tick, no per-tile
+                                                    work simulated)
+    civ|diplomacy|small|none                     (deferred, sec. 7)
+    civ|combat|small|abstract_resolve             (deferred detail,
+                                                    sec. 7 - a coarse
+                                                    win/loss roll, not
+                                                    real unit-vs-unit
+                                                    combat resolution,
+                                                    until that's built)
+Same registry-vs-active-selection split as elsewhere in this family -
+not fully decided which module_id each row should point to yet, but
+the SHAPE is fixed, matching every other fidelity choice in this
+family (zest-er-summary sec. 4.6).
+
+========================================================================
+7. EXPLICITLY DEFERRED
+========================================================================
+- Real orbital mechanics / continuous travel time.
+- Diplomacy between civs.
+- Detailed unit-vs-unit combat resolution (abstract roll only, for now).
+- Culture/religion/wonder-style Civ systems beyond tech.
+- Any GL/RGB-mirror-specific new assets.
+
+========================================================================
+8. NEXT STEPS
+========================================================================
+1. User confirms/edits sec. 1 theme mapping, sec. 3 unit categories,
+   sec. 5's system-map shape (orbit_slot fields, travel_costs.txt).
+2. Execute sec. 2 rename mechanically, verify with compile+check+grep.
+3. THEN chat about where to start coding - this doc deliberately does
+   not pick a starting slice (recommend, for discussion: one civ, one
+   planet, one city, no tech yet - prove city founding/production end-
+   to-end before adding a second civ or the system-map tier).

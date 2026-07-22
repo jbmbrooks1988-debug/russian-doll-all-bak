@@ -1,0 +1,6 @@
+# job bank - ANGLER-EXPANSES-DESIGN.txt sec. 4 (registry+switch+ops
+# pattern, same pipe-delimited shape as every other registry in this
+# family). One row per job type; ops/designate.c/ops/tick_jobs.c read
+# this, never hardcode job behavior per-type.
+# Format: id|name|glyph_while_pending|turns_to_complete|requires_role|result_terrain_id
+dig|Dig|d|3|miner|t_floor

@@ -1,0 +1,46 @@
+# pal-craft R5 main loop - title + gameplay with digit nav + RGB
+# x1 = history read cursor
+# x2 = last key
+# x8 = 999 (sentinel for title->gameplay transition)
+# x9 = 'q' (113)
+
+li x1, 0
+li x8, 999
+li x9, 113
+
+compose_title_frame
+hit_frame
+
+title_loop:
+read_history x2, x1
+beq x2, x0, title_no_key
+beq x2, x9, quit
+beq x2, x8, game_start
+title_input x2
+compose_title_frame
+hit_frame
+title_no_key:
+sleep 30000
+j title_loop
+
+game_start:
+compose_frame
+compose_rgb_frame
+hit_frame
+
+loop:
+read_history x2, x1
+beq x2, x0, no_key
+beq x2, x9, quit
+move_player x2
+choice x2
+end_turn
+compose_frame
+compose_rgb_frame
+hit_frame
+no_key:
+sleep 30000
+j loop
+
+quit:
+halt

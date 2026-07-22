@@ -1,0 +1,3 @@
+# possession config - !.pal-standards.txt sec. 31.4
+mode=free
+fixed_target_id=none

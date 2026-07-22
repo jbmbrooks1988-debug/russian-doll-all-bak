@@ -1,0 +1,16 @@
+SECTION      | KEY                | VALUE
+----------------------------------------
+META         | piece_id           | angler_02
+META         | version            | 1.0
+
+STATE        | name                 | Grubb
+STATE        | pos_x                | 6
+STATE        | pos_y                | 5
+STATE        | map_id               | map_start
+
+METHOD       | move                 | ops/+x/move_player.+x
+METHOD       | end_turn             | ops/+x/end_turn.+x
+METHOD       | activity             | ops/+x/activity.+x
+METHOD       | talk                 | ops/+x/talk.+x
+
+RESPONSE     | default              | *waiting...*

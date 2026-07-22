@@ -1,0 +1,8 @@
+# id|name|glyph|color|is_player|group|role|default_outfit|spawn_x|spawn_y|home_location
+pc_you|you|@|magenta|1|||outfit_pink_pvc|4|4|
+npc_emma_wood|Emma Wood|E|magenta|0||||38|4|loc_vanity
+npc_emma_oberlin|Emma Oberlin|O|white|0||||54|11|loc_garden
+npc_taylor_smyth|Taylor Smyth|T|yellow|0||||38|11|loc_dining
+npc_millicent_black|Millicent Black|M|red|0||||40|10|loc_dining
+yh_01_leader|Hae-rin|H|cyan|0|yuhog|||22|4|loc_lounge
+yh_04_therapist|Dr. Yuna Choi|Y|green|0|yuhog|therapist||22|11|loc_therapy

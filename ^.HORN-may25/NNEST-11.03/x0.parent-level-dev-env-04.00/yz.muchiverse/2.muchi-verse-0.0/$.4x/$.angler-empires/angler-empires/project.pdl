@@ -1,0 +1,15 @@
+SECTION      | KEY                | VALUE
+----------------------------------------
+META         | project_id         | angler-empires
+META         | version            | 0.1
+META         | author              | uhogs
+
+STATE        | starting_world     | world_angler_home
+STATE        | starting_map       | map_start
+STATE        | player_piece       | hero
+STATE        | title              | ANGLER EMPIRES
+
+EVENT_IN     | project_start      | void
+
+RESPONSE     | project_start      | angler-empires initialized.
+RESPONSE     | default            | *waiting...*

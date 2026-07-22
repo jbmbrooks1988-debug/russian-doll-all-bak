@@ -1,0 +1,90 @@
+# mutaclsym interact-turn dispatch - CHTPM-MODULE VARIANT, PERSISTENT
+# (pal-standards.txt sec. 0-CORRECTED, 2026-07-19 - supersedes this
+# file's own prior "ONE-SHOT, SYNCHRONOUS" header, which matched the
+# now-reverted sec. 0/0.1 "run_module_synchronous()" design). Two
+# independent agents re-checked sec. 0's own central claim ("real chtpm
+# invokes an op synchronously per keypress, no second independently-
+# polling process") against the actual reference source and found it
+# false: real fuzz-op_manager.c IS launched as a genuinely PERSISTENT
+# daemon (orchestrator.c's launch_and_register("manager", ...)), running
+# its OWN independent poll loop over its own input history file, fully
+# decoupled from chtpm_parser.c's own separate poll loop. This file is
+# that same shape - a persistent `<module>` process, launched once via
+# launch_module() (liveness-guarded: current_module_pid > 0, NOT
+# path-only - see chtpm_parser_pal.c's launch_module() "CORRECTED
+# ENTRY" comment), looping on its own independent timer and reaped via
+# the main loop's own `waitpid(current_module_pid, &status, WNOHANG)`
+# poll - never blocked on, never re-forked per keypress.
+#
+# Dispatch is decoupled via the interact_relay.txt relay file, not a
+# synchronous fork/exec/wait:
+#   1. launch_module() forks this once, at layout-parse time. x1=0,
+#      interact_relay.txt is empty/stale at that point, so the FIRST
+#      read_history tick here just populates the initial
+#      view.txt/current_frame.txt before any key is ever pressed, then
+#      falls straight into its own loop like any other tick.
+#   2. chtpm_parser_pal.c's own process_key() INTERACT branch writes
+#      each engaged key via plain, fire-and-forget inject_raw_key(eff)
+#      (matching real chtpm_parser.c's own INTERACT branch byte-for-
+#      byte - no fork, no wait, from that function at all) into
+#      whatever file the layout's own <interact src="..."> names -
+#      pieces/apps/player_app/interact_relay.txt for this project. This
+#      loop's own next tick (~30ms later) picks it up on its own,
+#      independent poll.
+#
+# WHY interact_relay.txt, NOT history.txt LIKE fuzz-op's <interact> TAG:
+# real TPMOS's own raw keyboard capture (pieces/system/input_dispatcher/
+# plugins/keyboard_input.c) writes ONLY to pieces/keyboard/history.txt -
+# chtpm_parser.c is the SOLE writer of whatever file a project's own
+# <interact src="..."> names (fuzz-op uses history.txt safely for
+# exactly this reason: nothing else ever writes there). This family's
+# shared-ops/keyboard_input.c is NOT single-purpose the same way - it
+# ALSO writes every raw keystroke directly and unconditionally to
+# pieces/apps/player_app/history.txt (append_key(), for the sake of
+# projects whose own regular non-chtpm "run" mode still reads that file
+# via prisc+x's read_history op). interact_relay.txt is never touched
+# by keyboard_input.c - only chtpm_parser_pal's own inject_raw_key()
+# (via the <interact src> path) writes to it, restoring the
+# single-writer guarantee fuzz-op gets for free from real TPMOS's own
+# narrower raw-capture design.
+#
+# chtpm_parser_pal's own menu nav (arrows/digits/Enter before "Control
+# Hero" is engaged, and ESC to return to it afterward) is unaffected by
+# any of the above either way - it's driven entirely by chtpm_parser_pal
+# reading pieces/keyboard/history.txt directly inside its own process_key(),
+# never by this file's own read_history line.
+#
+# No 'q'-halts-the-module quit path (real main_loop.pal's own
+# `beq x2, x9, quit`) - none is needed: quitting the WHOLE session is
+# chtpm's own job (top-level 'q', or system/keyboard_input's own
+# unconditional exit-on-'q'), not this loop's. This process is
+# terminated by chtpm_parser_pal.c's own cleanup_module()
+# (SIGTERM + waitpid) on layout/module transitions, and reaped
+# non-blockingly (WNOHANG) by its own main loop otherwise - never by
+# this file halting itself.
+#
+# compose_rgb_frame: does nothing and returns immediately in chtpm mode
+# (render_mode==0 - chtpm_rgb_render.c's own text rasterization of
+# current_frame.txt is the whole picture) or writes a separate
+# map-sized 3D overlay file (render_mode==1) that chtpm_rgb_render.c
+# composites in - never touches rgb_frame.raw directly either way, so
+# it cannot conflict with that daemon's own output.
+li x1, 0
+
+compose_frame
+compose_rgb_frame
+hit_frame
+
+loop:
+read_history pieces/apps/player_app/interact_relay.txt x2, x1
+beq x2, x0, no_key
+move_player x2
+choice x2
+end_turn
+tick_monsters
+compose_frame
+compose_rgb_frame
+hit_frame
+no_key:
+sleep 30000
+j loop

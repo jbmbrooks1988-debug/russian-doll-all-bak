@@ -1,0 +1,16 @@
+# entity bank - muchimon-pal uses FREE possession (MUCHIMON-DESIGN.txt
+# sec. 8.1, !.pal-standards.txt sec. 31.4/32) - xlector can possess the
+# player's own character, any captured trainer, or any captured
+# muchimon. This is a starter bank (player character + one test
+# trainer) - real species/move rows (design doc sec. 3) not built yet.
+# id|name|glyph|color|category|move_range|attack|defense|required_tech|build_cost
+player|Player|P|white|player|1|0|1|none|0
+trainer|Trainer|T|red|trainer|1|2|1|none|0
+# Real muchimon species (design doc sec. 1/8) - category=muchimon marks
+# them as wild-encounterable/capturable (ops/wild_encounter.c, ops/
+# choice.c's own "capture" special case). move_range/attack/defense
+# columns reused as-is, same shape as any other entity - a muchimon is
+# not a structurally different kind of instance, just a different
+# category value.
+sparkit|Sparkit|s|yellow|muchimon|1|3|1|none|0
+leafling|Leafling|l|green|muchimon|1|2|2|none|0

@@ -1,0 +1,15 @@
+SECTION      | KEY                | VALUE
+----------------------------------------
+META         | project_id         | muchimon-pal
+META         | version            | 0.1
+META         | author              | uhogs
+
+STATE        | starting_world     | world_muchimon_home
+STATE        | starting_map       | map_start
+STATE        | player_piece       | hero
+STATE        | title              | MUCHIMON
+
+EVENT_IN     | project_start      | void
+
+RESPONSE     | project_start      | muchimon-pal initialized.
+RESPONSE     | default            | *waiting...*

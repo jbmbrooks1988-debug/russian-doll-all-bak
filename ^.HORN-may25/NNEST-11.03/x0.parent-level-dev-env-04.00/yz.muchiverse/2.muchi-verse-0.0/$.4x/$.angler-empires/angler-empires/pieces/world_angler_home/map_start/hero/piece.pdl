@@ -1,0 +1,20 @@
+SECTION      | KEY                | VALUE
+----------------------------------------
+META         | piece_id           | hero
+META         | version            | 1.0
+
+STATE        | name                 | hero
+STATE        | pos_x                | 4
+STATE        | pos_y                | 4
+STATE        | map_id               | map_start
+
+METHOD       | move                 | ops/+x/move_player.+x
+METHOD       | end_turn             | ops/+x/end_turn.+x
+METHOD       | interact             | ops/+x/choice.+x
+METHOD       | activity             | ops/+x/activity.+x
+METHOD       | talk                 | ops/+x/talk.+x
+METHOD       | scene                | ops/+x/scene_reader.+x
+METHOD       | pickup               | ops/+x/pickup.+x
+METHOD       | drop                 | ops/+x/drop.+x
+
+RESPONSE     | default              | *waiting...*
