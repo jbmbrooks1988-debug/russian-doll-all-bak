@@ -311,7 +311,11 @@ static long g_outbox_offset = 0;
 static int read_outbox_new_lines(char out_lines[][MAX_LINE], int max_lines) {
     FILE *f = fopen(g_outbox_path, "r");
     if (!f) return 0;
-    if (fseek(f, g_outbox_offset, SEEK_SET) != 0) { fclose(f); return 0; }
+    if (fseek(f, g_outbox_offset, SEEK_SET) != 0) {
+        /* outbox was likely truncated (size guard rotation) - reset and reread from start */
+        g_outbox_offset = 0;
+        if (fseek(f, 0, SEEK_SET) != 0) { fclose(f); return 0; }
+    }
 
     int n = 0;
     long consumed = g_outbox_offset;

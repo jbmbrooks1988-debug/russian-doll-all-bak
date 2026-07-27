@@ -74,6 +74,12 @@ int main(int argc, char **argv) {
     mkdir(net_dir, 0755);
     char outbox_path[PATH_BUF];
     snprintf(outbox_path, sizeof(outbox_path), "%s/net/outbox.txt", project_root);
+    {   struct stat ob_st;
+        if (stat(outbox_path, &ob_st) == 0 && ob_st.st_size > 10 * 1024 * 1024) {
+            FILE *zf = fopen(outbox_path, "w");
+            if (zf) fclose(zf);
+        }
+    }
     FILE *of = fopen(outbox_path, "a");
     if (of) { fprintf(of, "%s\n", line); fclose(of); }
 
