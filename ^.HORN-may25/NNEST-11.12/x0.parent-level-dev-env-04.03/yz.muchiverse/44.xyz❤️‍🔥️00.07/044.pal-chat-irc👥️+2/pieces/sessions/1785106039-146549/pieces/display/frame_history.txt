@@ -1,0 +1,36 @@
+
+--- FRAME at 2026-07-26 15:47:21 ---
+[Map Loading...]
+| [>] 1. User ID: []                                        |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 15:47:21 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [>] 1. User ID: []                                        |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+

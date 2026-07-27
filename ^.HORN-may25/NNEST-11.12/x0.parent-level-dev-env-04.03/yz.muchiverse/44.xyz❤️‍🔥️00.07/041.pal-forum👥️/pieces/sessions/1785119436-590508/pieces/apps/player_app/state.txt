@@ -1,0 +1,3 @@
+project_id=pal-forum
+active_target_id=follow
+logged_in=true

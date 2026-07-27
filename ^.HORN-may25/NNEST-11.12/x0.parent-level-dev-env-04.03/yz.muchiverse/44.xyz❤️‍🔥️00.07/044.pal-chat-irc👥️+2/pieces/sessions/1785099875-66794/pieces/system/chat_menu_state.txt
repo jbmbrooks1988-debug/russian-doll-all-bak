@@ -1,0 +1,2 @@
+last_message=Posted to guest.
+current_room=guest

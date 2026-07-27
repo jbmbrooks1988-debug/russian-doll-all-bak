@@ -1,0 +1,3 @@
+user_id_input=alice
+display_name_input=Alice
+room_choices=<button label="guest" onClick="KEY:100" /><br/><button label="j26" onClick="KEY:101" /><br/><button label="lobby" onClick="KEY:102" /><br/><button label="muchi-test" onClick="KEY:103" /><br/><button label="t1" onClick="KEY:104" /><br/><button label="test-1" onClick="KEY:105" /><br/>

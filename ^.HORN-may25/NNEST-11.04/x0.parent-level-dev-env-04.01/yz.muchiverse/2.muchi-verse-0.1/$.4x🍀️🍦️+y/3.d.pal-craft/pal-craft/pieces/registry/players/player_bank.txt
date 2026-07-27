@@ -1,5 +1,0 @@
-# player bank - pal-craft is single-avatar, mode=fixed (!.pal-standards.txt
-# sec. 31.4/32) - one real row, one real spawned instance, possessed_id
-# force-clamped to it. Format matches civ-pal's own unit_bank.txt shape.
-# id|name|glyph|color|category|move_range|attack|defense|required_tech|build_cost
-player|Player|P|white|player|1|0|1|none|0

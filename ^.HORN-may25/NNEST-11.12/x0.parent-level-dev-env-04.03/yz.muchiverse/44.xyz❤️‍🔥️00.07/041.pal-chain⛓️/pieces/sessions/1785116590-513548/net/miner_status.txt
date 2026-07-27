@@ -1,0 +1,7 @@
+miner_wallet_id=walletA_513501
+running=1
+blocks_mined_this_session=1023223
+last_block_index=0
+last_block_hash=05c5b3431c2916f373ade1c040e4d3c269d4c0127243e1bd6bbfc19301561baf
+total_supply_minted=10500
+updated_at=1785116737

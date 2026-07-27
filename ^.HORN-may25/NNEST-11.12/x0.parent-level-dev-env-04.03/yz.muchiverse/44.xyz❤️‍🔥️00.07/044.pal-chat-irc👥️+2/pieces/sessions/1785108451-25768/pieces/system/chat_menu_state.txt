@@ -1,0 +1,2 @@
+last_message=Posted to lobby.
+current_room=lobby

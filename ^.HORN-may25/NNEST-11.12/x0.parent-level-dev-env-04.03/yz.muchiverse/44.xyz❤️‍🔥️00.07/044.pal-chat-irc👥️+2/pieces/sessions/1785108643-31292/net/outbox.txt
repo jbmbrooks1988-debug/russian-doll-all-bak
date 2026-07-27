@@ -1,0 +1,1 @@
+MSG|1785108671-0-35063|uxtest_31259|alice_31259|1785108671|hello bob, this is a real typed message

@@ -1,0 +1,7 @@
+144832 orchestrator
+145009 ./system/renderer
+145010 ./system/keyboard_input
+145013 ./system/chtpm_parser_pal
+145014 ./system/chtpm_rgb_render
+145017 ops/+x/palnet_peer.+x
+145020 ops/+x/chat_inbox_watcher.+x

@@ -1,0 +1,1263 @@
+
+--- FRAME at 2026-07-26 15:14:01 ---
+[Map Loading...]
+| [>] 1. User ID: []                                        |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 15:14:01 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [>] 1. User ID: []                                        |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 15:14:05 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [^] 1. User ID: [_]                                     |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 15:14:06 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [^] 1. User ID: [t_]                                     |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 15:14:06 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [^] 1. User ID: [te_]                                     |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 15:14:06 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [^] 1. User ID: [tes_]                                     |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 15:14:06 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [^] 1. User ID: [test_]                                     |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 15:14:09 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [^] 1. User ID: [tes_]                                     |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 15:14:09 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [^] 1. User ID: [te_]                                     |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 15:14:09 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [^] 1. User ID: [t_]                                     |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 15:14:09 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [^] 1. User ID: [_]                                     |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 15:14:10 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [^] 1. User ID: [j_]                                     |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 15:14:10 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [^] 1. User ID: [j2_]                                     |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 15:14:11 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [^] 1. User ID: [j26_]                                     |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 15:14:13 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [>] 1. User ID: [j26]                                        |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 15:14:14 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [j26]                                        |
+| [>] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 15:14:15 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [j26]                                        |
+| [^] 2. Display Name (new accounts only): [_]                                     |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 15:14:15 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [j26]                                        |
+| [^] 2. Display Name (new accounts only): [j_]                                     |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 15:14:15 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [j26]                                        |
+| [^] 2. Display Name (new accounts only): [jb_]                                     |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 15:14:16 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [j26]                                        |
+| [^] 2. Display Name (new accounts only): [j_]                                     |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 15:14:16 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [j26]                                        |
+| [^] 2. Display Name (new accounts only): [j2_]                                     |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 15:14:16 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [j26]                                        |
+| [^] 2. Display Name (new accounts only): [j26_]                                     |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 15:14:17 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [j26]                                        |
+| [>] 2. Display Name (new accounts only): [j26]                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 15:14:18 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [j26]                                        |
+| [ ] 2. Display Name (new accounts only): [j26]                                        |
+[>] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 15:14:18 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Account created - logged in as j26. Click Continue.       |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [j26]                                        |
+| [ ] 2. Display Name (new accounts only): [j26]                                        |
+[>] 3. [Create Account]
+[ ] 4. [Log In]
+[ ] 5. [Continue to Rooms]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 15:14:19 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Account created - logged in as j26. Click Continue.       |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [j26]                                        |
+| [ ] 2. Display Name (new accounts only): [j26]                                        |
+[ ] 3. [Create Account]
+[>] 4. [Log In]
+[ ] 5. [Continue to Rooms]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 15:14:19 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Account created - logged in as j26. Click Continue.       |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [j26]                                        |
+| [ ] 2. Display Name (new accounts only): [j26]                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+[>] 5. [Continue to Rooms]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 15:14:22 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: j26                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Account created - logged in as j26. Click Continue.       |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: []                                        |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [muchi-test]
+[>] 5. [t1]
+[ ] 6. [test-1]
+
+[ ] 7. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 15:14:22 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: j26                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: []                                        |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [muchi-test]
+[>] 5. [t1]
+[ ] 6. [test-1]
+
+[ ] 7. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 15:14:23 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: j26                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: []                                        |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[>] 4. [muchi-test]
+[ ] 5. [t1]
+[ ] 6. [test-1]
+
+[ ] 7. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 15:14:23 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: j26                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: []                                        |
+[ ] 2. [Join / Create Room]
+[>] 3. [guest]
+[ ] 4. [muchi-test]
+[ ] 5. [t1]
+[ ] 6. [test-1]
+
+[ ] 7. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 15:14:23 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: j26                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: []                                        |
+[>] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [muchi-test]
+[ ] 5. [t1]
+[ ] 6. [test-1]
+
+[ ] 7. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 15:14:24 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: j26                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [>] 1. Room Name: []                                        |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [muchi-test]
+[ ] 5. [t1]
+[ ] 6. [test-1]
+
+[ ] 7. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 15:14:26 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: j26                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Room Name: [_]                                     |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [muchi-test]
+[ ] 5. [t1]
+[ ] 6. [test-1]
+
+[ ] 7. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 15:14:27 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: j26                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Room Name: [j_]                                     |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [muchi-test]
+[ ] 5. [t1]
+[ ] 6. [test-1]
+
+[ ] 7. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 15:14:27 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: j26                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Room Name: [j2_]                                     |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [muchi-test]
+[ ] 5. [t1]
+[ ] 6. [test-1]
+
+[ ] 7. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 15:14:28 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: j26                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Room Name: [j26_]                                     |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [muchi-test]
+[ ] 5. [t1]
+[ ] 6. [test-1]
+
+[ ] 7. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 15:14:28 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: j26                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [>] 1. Room Name: [j26]                                        |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [muchi-test]
+[ ] 5. [t1]
+[ ] 6. [test-1]
+
+[ ] 7. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 15:14:29 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: j26                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: [j26]                                        |
+[>] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [muchi-test]
+[ ] 5. [t1]
+[ ] 6. [test-1]
+
+[ ] 7. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 15:14:29 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: j26                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Room 'j26' ready - click Enter Room.                      |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: [j26]                                        |
+[>] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [muchi-test]
+[ ] 5. [t1]
+[ ] 6. [test-1]
+[ ] 7. [Enter Room]
+[ ] 8. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 15:14:30 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: j26                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Room 'j26' ready - click Enter Room.                      |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: [j26]                                        |
+[ ] 2. [Join / Create Room]
+[>] 3. [guest]
+[ ] 4. [muchi-test]
+[ ] 5. [t1]
+[ ] 6. [test-1]
+[ ] 7. [Enter Room]
+[ ] 8. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 15:14:30 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: j26                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Room 'j26' ready - click Enter Room.                      |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: [j26]                                        |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[>] 4. [muchi-test]
+[ ] 5. [t1]
+[ ] 6. [test-1]
+[ ] 7. [Enter Room]
+[ ] 8. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 15:14:31 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: j26                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Room 'j26' ready - click Enter Room.                      |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: [j26]                                        |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [muchi-test]
+[>] 5. [t1]
+[ ] 6. [test-1]
+[ ] 7. [Enter Room]
+[ ] 8. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 15:14:31 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: j26                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Room 'j26' ready - click Enter Room.                      |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: [j26]                                        |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [muchi-test]
+[ ] 5. [t1]
+[>] 6. [test-1]
+[ ] 7. [Enter Room]
+[ ] 8. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 15:14:34 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: j26                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Room 'j26' ready - click Enter Room.                      |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: [j26]                                        |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [muchi-test]
+[ ] 5. [t1]
+[ ] 6. [test-1]
+[>] 7. [Enter Room]
+[ ] 8. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 15:14:34 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: j26                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Room 'j26' ready - click Enter Room.                      |
+|                                                            |
++============================================================+
+
+| [>] 1. Message: []                                        |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 15:14:34 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: j26 (as j26)                                        |
++============================================================+
+|  (no messages yet)                                         |
+|                                                            |
+|  Room 'j26' ready - click Enter Room.                      |
+|                                                            |
++============================================================+
+
+| [>] 1. Message: []                                        |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 15:14:36 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: j26 (as j26)                                        |
++============================================================+
+|  (no messages yet)                                         |
+|                                                            |
+|  Room 'j26' ready - click Enter Room.                      |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 15:14:36 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: j26 (as j26)                                        |
++============================================================+
+|  (no messages yet)                                         |
+|                                                            |
+|  Room 'j26' ready - click Enter Room.                      |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [h_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 15:14:36 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: j26 (as j26)                                        |
++============================================================+
+|  (no messages yet)                                         |
+|                                                            |
+|  Room 'j26' ready - click Enter Room.                      |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [hi_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 15:14:37 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: j26 (as j26)                                        |
++============================================================+
+|  (no messages yet)                                         |
+|                                                            |
+|  Room 'j26' ready - click Enter Room.                      |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 15:14:37 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: j26 (as j26)                                        |
++============================================================+
+|  <j26> hi                                                  |
+|                                                            |
+|  Posted to j26.                                            |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+

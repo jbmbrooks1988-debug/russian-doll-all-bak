@@ -1,0 +1,1514 @@
+
+--- FRAME at 2026-07-26 16:27:32 ---
+[Map Loading...]
+| [>] 1. User ID: []                                        |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:27:32 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [>] 1. User ID: []                                        |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:27:43 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [^] 1. User ID: [_]                                     |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:27:43 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [^] 1. User ID: [b_]                                     |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:27:44 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [^] 1. User ID: [bo_]                                     |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:27:44 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [^] 1. User ID: [bob_]                                     |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:27:44 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [>] 1. User ID: [bob]                                        |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:27:44 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [bob]                                        |
+| [>] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > 2_
+
+
+--- FRAME at 2026-07-26 16:27:44 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [bob]                                        |
+| [^] 2. Display Name (new accounts only): [_]                                     |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:27:45 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [bob]                                        |
+| [^] 2. Display Name (new accounts only): [B_]                                     |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:27:45 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [bob]                                        |
+| [^] 2. Display Name (new accounts only): [Bo_]                                     |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:27:45 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [bob]                                        |
+| [^] 2. Display Name (new accounts only): [Bob_]                                     |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:27:45 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [bob]                                        |
+| [>] 2. Display Name (new accounts only): [Bob]                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:27:45 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [bob]                                        |
+| [ ] 2. Display Name (new accounts only): [Bob]                                        |
+[>] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > 3_
+
+
+--- FRAME at 2026-07-26 16:27:45 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [bob]                                        |
+| [ ] 2. Display Name (new accounts only): [Bob]                                        |
+[>] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:27:45 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Account created - logged in as bob. Click Continue.       |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [bob]                                        |
+| [ ] 2. Display Name (new accounts only): [Bob]                                        |
+[>] 3. [Create Account]
+[ ] 4. [Log In]
+[ ] 5. [Continue to Rooms]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:27:46 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Account created - logged in as bob. Click Continue.       |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [bob]                                        |
+| [ ] 2. Display Name (new accounts only): [Bob]                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+[>] 5. [Continue to Rooms]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > 5_
+
+
+--- FRAME at 2026-07-26 16:27:47 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Account created - logged in as bob. Click Continue.       |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: []                                        |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [j26]
+[>] 5. [lobby]
+[ ] 6. [muchi-test]
+[ ] 7. [t1]
+[ ] 8. [test-1]
+
+[ ] 9. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:27:47 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: bob                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: []                                        |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [j26]
+[>] 5. [lobby]
+[ ] 6. [muchi-test]
+[ ] 7. [t1]
+[ ] 8. [test-1]
+
+[ ] 9. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:27:48 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: bob                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Room 'lobby' ready - click Enter Room.                    |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: []                                        |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [j26]
+[>] 5. [lobby]
+[ ] 6. [muchi-test]
+[ ] 7. [t1]
+[ ] 8. [test-1]
+[ ] 9. [Enter Room]
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:27:49 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: bob                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Room 'lobby' ready - click Enter Room.                    |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: []                                        |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [j26]
+[ ] 5. [lobby]
+[>] 6. [muchi-test]
+[ ] 7. [t1]
+[ ] 8. [test-1]
+[ ] 9. [Enter Room]
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:27:49 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: bob                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Room 'lobby' ready - click Enter Room.                    |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: []                                        |
+[>] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [j26]
+[ ] 5. [lobby]
+[ ] 6. [muchi-test]
+[ ] 7. [t1]
+[ ] 8. [test-1]
+[ ] 9. [Enter Room]
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > 2_
+
+
+--- FRAME at 2026-07-26 16:27:49 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: bob                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Room 'lobby' ready - click Enter Room.                    |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: []                                        |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [j26]
+[>] 5. [lobby]
+[ ] 6. [muchi-test]
+[ ] 7. [t1]
+[ ] 8. [test-1]
+[ ] 9. [Enter Room]
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > 5_
+
+
+--- FRAME at 2026-07-26 16:27:49 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: bob                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Room 'lobby' ready - click Enter Room.                    |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: []                                        |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [j26]
+[ ] 5. [lobby]
+[>] 6. [muchi-test]
+[ ] 7. [t1]
+[ ] 8. [test-1]
+[ ] 9. [Enter Room]
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > 6_
+
+
+--- FRAME at 2026-07-26 16:27:49 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: bob                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Room 'lobby' ready - click Enter Room.                    |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: []                                        |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [j26]
+[>] 5. [lobby]
+[ ] 6. [muchi-test]
+[ ] 7. [t1]
+[ ] 8. [test-1]
+[ ] 9. [Enter Room]
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > 5_
+
+
+--- FRAME at 2026-07-26 16:27:49 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: bob                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Room 'lobby' ready - click Enter Room.                    |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: []                                        |
+[>] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [j26]
+[ ] 5. [lobby]
+[ ] 6. [muchi-test]
+[ ] 7. [t1]
+[ ] 8. [test-1]
+[ ] 9. [Enter Room]
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > 2_
+
+
+--- FRAME at 2026-07-26 16:27:49 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: bob                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Room 'lobby' ready - click Enter Room.                    |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: []                                        |
+[>] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [j26]
+[ ] 5. [lobby]
+[ ] 6. [muchi-test]
+[ ] 7. [t1]
+[ ] 8. [test-1]
+[ ] 9. [Enter Room]
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:27:50 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: bob                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Room 'lobby' ready - click Enter Room.                    |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: []                                        |
+[>] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [j26]
+[ ] 5. [lobby]
+[ ] 6. [muchi-test]
+[ ] 7. [t1]
+[ ] 8. [test-1]
+[ ] 9. [Enter Room]
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > 2_
+
+
+--- FRAME at 2026-07-26 16:27:50 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: bob                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Room 'lobby' ready - click Enter Room.                    |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: []                                        |
+[>] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [j26]
+[ ] 5. [lobby]
+[ ] 6. [muchi-test]
+[ ] 7. [t1]
+[ ] 8. [test-1]
+[ ] 9. [Enter Room]
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:27:50 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: bob                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: []                                        |
+[>] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [j26]
+[ ] 5. [lobby]
+[ ] 6. [muchi-test]
+[ ] 7. [t1]
+[ ] 8. [test-1]
+[ ] 9. [Enter Room]
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:27:51 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: bob                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: []                                        |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [j26]
+[ ] 5. [lobby]
+[ ] 6. [muchi-test]
+[ ] 7. [t1]
+[ ] 8. [test-1]
+[>] 9. [Enter Room]
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > 9_
+
+
+--- FRAME at 2026-07-26 16:27:51 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: bob                                         |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [>] 1. Message: []                                        |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:27:51 ---
+
+| [>] 1. Message: []                                        |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:27:51 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [>] 1. Message: []                                        |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:27:59 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:27:59 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [h_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:00 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [hi_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:00 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [hi _]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:00 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [hi a_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:00 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [hi al_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:00 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [hi ali_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:00 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [hi alic_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:00 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [hi alice_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:00 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [hi alice,_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:00 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [hi alice, _]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:00 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [hi alice, r_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:00 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [hi alice, re_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:00 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [hi alice, rep_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:01 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [hi alice, repl_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:01 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [hi alice, reply_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:01 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [hi alice, replyi_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:01 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [hi alice, replyin_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:01 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [hi alice, replying_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:01 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [hi alice, replying _]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:01 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [hi alice, replying f_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:01 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [hi alice, replying fo_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:01 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [hi alice, replying for_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:01 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [hi alice, replying for _]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:01 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [hi alice, replying for r_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:01 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [hi alice, replying for re_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:02 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [hi alice, replying for rea_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:02 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [hi alice, replying for real_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:02 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:28:02 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: lobby (as bob)                                      |
++============================================================+
+|  <userA> hello from real session A                         |
+|  <userA> second message - proving live push to an idle sess|
+|  <bob> hi alice, replying for real                         |
+|                                                            |
+|  Posted to lobby.                                          |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+

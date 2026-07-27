@@ -1,0 +1,7 @@
+31359 orchestrator
+31538 ./system/renderer
+31539 ./system/keyboard_input
+31540 ./system/chtpm_parser_pal
+31541 ./system/chtpm_rgb_render
+31542 ops/+x/palnet_peer.+x
+31546 ops/+x/chat_inbox_watcher.+x

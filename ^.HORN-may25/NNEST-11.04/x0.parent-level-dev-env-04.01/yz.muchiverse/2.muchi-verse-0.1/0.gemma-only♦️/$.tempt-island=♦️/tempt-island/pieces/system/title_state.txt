@@ -1,2 +1,0 @@
-cursor=1
-digit_accum=0

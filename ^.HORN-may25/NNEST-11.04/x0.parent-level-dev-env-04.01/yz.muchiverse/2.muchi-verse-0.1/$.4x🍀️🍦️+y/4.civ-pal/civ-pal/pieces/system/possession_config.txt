@@ -1,9 +1,0 @@
-# possession config - !.pal-standards.txt sec. 31.4
-# mode=free   : Enter-to-possess works on any real instance at the cursor
-# mode=fixed  : possessed_id is force-clamped to fixed_target_id every
-#               tick (self-healing) - relinquish/re-possess become
-#               structural no-ops without any code branch existing for
-#               it. Flip to "free" any time to debug with zero code
-#               changes.
-mode=free
-fixed_target_id=none

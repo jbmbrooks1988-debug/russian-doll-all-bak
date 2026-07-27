@@ -1,0 +1,13 @@
+SECTION      | KEY                | VALUE
+----------------------------------------
+META         | piece_id           | pets
+META         | version            | 1.0
+
+METHOD       | Open Window                            | OPEN_WINDOW
+METHOD       | Feed (-5 tokens, -30 hunger)           | FEED_PET
+METHOD       | Clean                                  | CLEAN_PET
+METHOD       | Wake                                   | TOGGLE_SLEEP
+METHOD       | Train (-20 energy)                     | TRAIN_PET
+METHOD       | Export Card                            | EXPORT_CARD
+METHOD       | Destroy Card                           | DESTROY_CARD
+METHOD       | Back to List                           | DESELECT_PET

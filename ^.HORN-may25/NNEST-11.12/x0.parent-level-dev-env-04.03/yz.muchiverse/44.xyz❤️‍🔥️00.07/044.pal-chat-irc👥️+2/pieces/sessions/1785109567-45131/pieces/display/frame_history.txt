@@ -1,0 +1,2246 @@
+
+--- FRAME at 2026-07-26 16:46:09 ---
+[Map Loading...]
+| [>] 1. User ID: []                                        |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:46:09 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [>] 1. User ID: []                                        |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:46:21 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [>] 1. User ID: []                                        |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > 1_
+
+
+--- FRAME at 2026-07-26 16:46:21 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [^] 1. User ID: [_]                                     |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:22 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [^] 1. User ID: [h_]                                     |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:22 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [^] 1. User ID: [hb_]                                     |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:22 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [^] 1. User ID: [hbo_]                                     |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:22 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [^] 1. User ID: [hbob_]                                     |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:22 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [^] 1. User ID: [hbob__]                                     |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:22 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [^] 1. User ID: [hbob_4_]                                     |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:22 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [^] 1. User ID: [hbob_44_]                                     |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:22 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [^] 1. User ID: [hbob_449_]                                     |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:22 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [^] 1. User ID: [hbob_4499_]                                     |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:22 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [^] 1. User ID: [hbob_44998_]                                     |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:23 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [>] 1. User ID: [hbob_44998]                                        |
+| [ ] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:46:23 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [hbob_44998]                                        |
+| [>] 2. Display Name (new accounts only): []                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > 2_
+
+
+--- FRAME at 2026-07-26 16:46:23 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [hbob_44998]                                        |
+| [^] 2. Display Name (new accounts only): [_]                                     |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:23 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [hbob_44998]                                        |
+| [^] 2. Display Name (new accounts only): [H_]                                     |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:23 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [hbob_44998]                                        |
+| [^] 2. Display Name (new accounts only): [HB_]                                     |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:23 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [hbob_44998]                                        |
+| [^] 2. Display Name (new accounts only): [HBo_]                                     |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:23 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [hbob_44998]                                        |
+| [^] 2. Display Name (new accounts only): [HBob_]                                     |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:24 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [hbob_44998]                                        |
+| [>] 2. Display Name (new accounts only): [HBob]                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:46:24 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [hbob_44998]                                        |
+| [ ] 2. Display Name (new accounts only): [HBob]                                        |
+[>] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > 3_
+
+
+--- FRAME at 2026-07-26 16:46:24 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [hbob_44998]                                        |
+| [ ] 2. Display Name (new accounts only): [HBob]                                        |
+[>] 3. [Create Account]
+[ ] 4. [Log In]
+
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:46:24 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Account created - logged in as hbob_44998. Click Continue.|
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [hbob_44998]                                        |
+| [ ] 2. Display Name (new accounts only): [HBob]                                        |
+[>] 3. [Create Account]
+[ ] 4. [Log In]
+[ ] 5. [Continue to Rooms]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:46:25 ---
++============================================================+
+|  P A L - C H A T - I R C   [login]                         |
++============================================================+
+|                                                            |
+|  Welcome to pal-chat-irc.                                  |
+|  Create an account, or log in with an existing user ID.    |
+|                                                            |
+|  Account created - logged in as hbob_44998. Click Continue.|
+|                                                            |
++============================================================+
+
+| [ ] 1. User ID: [hbob_44998]                                        |
+| [ ] 2. Display Name (new accounts only): [HBob]                                        |
+[ ] 3. [Create Account]
+[ ] 4. [Log In]
+[>] 5. [Continue to Rooms]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > 5_
+
+
+--- FRAME at 2026-07-26 16:46:25 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Account created - logged in as hbob_44998. Click Continue.|
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: []                                        |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[>] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:46:25 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: []                                        |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[>] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:46:26 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [>] 1. Room Name: []                                        |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[ ] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > 1_
+
+
+--- FRAME at 2026-07-26 16:46:27 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Room Name: [_]                                     |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[ ] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:27 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Room Name: [h_]                                     |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[ ] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:27 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Room Name: [ha_]                                     |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[ ] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:27 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Room Name: [har_]                                     |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[ ] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:27 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Room Name: [harn_]                                     |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[ ] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:27 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Room Name: [harne_]                                     |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[ ] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:27 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Room Name: [harnes_]                                     |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[ ] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:27 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Room Name: [harness_]                                     |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[ ] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:28 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Room Name: [harness__]                                     |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[ ] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:28 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Room Name: [harness_r_]                                     |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[ ] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:28 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Room Name: [harness_ro_]                                     |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[ ] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:28 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Room Name: [harness_roo_]                                     |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[ ] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:28 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Room Name: [harness_room_]                                     |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[ ] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:28 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Room Name: [harness_room__]                                     |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[ ] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:28 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Room Name: [harness_room_4_]                                     |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[ ] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:28 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Room Name: [harness_room_44_]                                     |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[ ] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:28 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Room Name: [harness_room_449_]                                     |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[ ] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:28 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Room Name: [harness_room_4499_]                                     |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[ ] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:28 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [^] 1. Room Name: [harness_room_44998_]                                     |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[ ] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:29 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [>] 1. Room Name: [harness_room_44998]                                        |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[ ] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:46:29 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: [harness_room_44998]                                        |
+[>] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[ ] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > 2_
+
+
+--- FRAME at 2026-07-26 16:46:29 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Enter a room name, then click Join / Create Room.         |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: [harness_room_44998]                                        |
+[>] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[ ] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+
+[ ] 10. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:46:29 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: [harness_room_44998]                                        |
+[>] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[ ] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+[ ] 10. [Enter Room]
+[ ] 11. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:46:30 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [>] 1. Room Name: [harness_room_44998]                                        |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[ ] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+[ ] 10. [Enter Room]
+[ ] 11. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > 1_
+
+
+--- FRAME at 2026-07-26 16:46:30 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [ ] 1. Room Name: [harness_room_44998]                                        |
+[ ] 2. [Join / Create Room]
+[ ] 3. [guest]
+[ ] 4. [harness_room_44998]
+[ ] 5. [j26]
+[ ] 6. [lobby]
+[ ] 7. [muchi-test]
+[ ] 8. [t1]
+[ ] 9. [test-1]
+[>] 10. [Enter Room]
+[ ] 11. [Back to Login]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > 10_
+
+
+--- FRAME at 2026-07-26 16:46:30 ---
++============================================================+
+|  P A L - C H A T - I R C   [room_list]                     |
++============================================================+
+|                                                            |
+|  Logged in as: hbob_44998                                  |
+|                                                            |
+|  Enter a room name to join or create it, then              |
+|  click Enter Room.                                         |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [>] 1. Message: []                                        |
+[ ] 2. [Join / Create Room]
+[ ] 3. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:46:30 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  (no messages yet)                                         |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [>] 1. Message: []                                        |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:46:36 ---
+
+| [>] 1. Message: []                                        |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:46:36 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [>] 1. Message: []                                        |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-26 16:46:38 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:38 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [r_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:38 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [re_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:38 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [rep_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:38 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [repl_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:39 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [reply_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:39 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [reply _]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:39 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [reply v_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:39 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [reply vi_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:39 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [reply via_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:39 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [reply via _]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:39 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [reply via t_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:39 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [reply via th_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:39 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [reply via the_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:39 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [reply via the _]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:39 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [reply via the o_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:39 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [reply via the op_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:39 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [reply via the ops_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:40 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [reply via the ops-_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:40 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [reply via the ops-b_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:40 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [reply via the ops-ba_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:40 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [reply via the ops-bas_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:40 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [reply via the ops-base_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:40 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [reply via the ops-based_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:40 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [reply via the ops-based _]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:40 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [reply via the ops-based h_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:40 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [reply via the ops-based ha_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:40 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [reply via the ops-based har_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:40 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [reply via the ops-based harn_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:40 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [reply via the ops-based harne_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:41 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [reply via the ops-based harnes_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:41 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [reply via the ops-based harness_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:41 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|                                                            |
+|  Room 'harness_room_44998' ready - click Enter Room.       |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-07-26 16:46:41 ---
++============================================================+
+|  P A L - C H A T - I R C   [room]                          |
++============================================================+
+|                                                            |
+|  Room: harness_room_44998 (as hbob_44998)                  |
++============================================================+
+|  <halice_44998> hello from the ops-based test harness      |
+|  <hbob_44998> reply via the ops-based harness              |
+|                                                            |
+|  Posted to harness_room_44998.                             |
+|                                                            |
++============================================================+
+
+| [^] 1. Message: [_]                                     |
+[No Methods][ ] 2. [Leave Room]
+ (Ctrl+C to quit)
+
++=========================================================+
+Active [^]:  (ESC to exit)
+

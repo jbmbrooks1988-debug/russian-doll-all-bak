@@ -1,6 +1,0 @@
-kind=zoo
-project_id=zoo_0000
-host=127.0.0.1
-port=9900
-pid=2477489
-last_seen=1784452774

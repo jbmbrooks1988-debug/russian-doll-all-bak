@@ -1,0 +1,7 @@
+36905 orchestrator
+37035 ./system/renderer
+37036 ./system/keyboard_input
+37038 ./system/chtpm_parser_pal
+37039 ./system/chtpm_rgb_render
+37046 ops/+x/palnet_peer.+x
+37050 ops/+x/chat_inbox_watcher.+x

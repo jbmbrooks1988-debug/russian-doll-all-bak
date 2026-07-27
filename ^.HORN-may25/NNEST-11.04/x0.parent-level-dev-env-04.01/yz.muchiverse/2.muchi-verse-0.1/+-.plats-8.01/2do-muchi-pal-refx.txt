@@ -1,9 +1,0 @@
-z0.egg-pals+13-og/ was the old project. it works great
-
-but its not the in the chtpm-pal standard we are using for "muchi-verse"
-
-also its called "egg-pals, lets call the new version "muchi-pals." to differentiate , 
-
-finally . u can just do the new refactor fresh in  : /home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-10.18/x0.parent-level-dev-env-03.01/z0.egg-pals+plats-8.01/z0.muchi-pals-refx-13.00
-
-using "pal-chain" project as an example of a pal-verse project that currently works
