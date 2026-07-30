@@ -16,7 +16,7 @@
  * to stop polling.
  *
  * NOT switched onto shared-ops/keyboard_input.c (see this family's own
- * pal-standards.txt §1c on when NOT to force-share): that file
+ * xyzos-standards.txt §1c on when NOT to force-share): that file
  * normalizes Ctrl+C/ETX to 'q' before appending, and quits on 'q';
  * this file appends the raw ETX byte (3) and quits directly on 3 - a
  * real, existing behavioral difference (wsr-pal's own pal script
@@ -101,7 +101,7 @@ static int read_key(void) {
     char c;
     int nread;
     while ((nread = read(STDIN_FILENO, &c, 1)) != 1) {
-        /* PAL-PITFALLS #22 (2026-07-26): nread==0 (EOF/no data) has no
+        /* XYZOS-PITFALLS #22 (2026-07-26): nread==0 (EOF/no data) has no
          * natural throttle here on a non-tty stdin - a real terminal's
          * VMIN=0/VTIME=1 (set in enable_raw_mode()) makes read() block
          * ~100ms before returning 0, but tcsetattr() silently fails on a

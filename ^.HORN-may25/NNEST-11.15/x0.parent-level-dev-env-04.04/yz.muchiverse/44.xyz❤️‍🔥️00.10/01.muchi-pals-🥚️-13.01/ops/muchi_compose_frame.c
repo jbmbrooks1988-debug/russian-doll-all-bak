@@ -10,7 +10,7 @@
  * surrounding informational text (tokens, a selected pet's live stats,
  * the process list).
  *
- * ONE VISIBLE FRAME WRITER RULE (pal-standards.txt sec.20): writes ONLY
+ * ONE VISIBLE FRAME WRITER RULE (xyzos-standards.txt sec.20): writes ONLY
  * view.txt, NEVER pieces/display/current_frame.txt directly -
  * chtpm_parser_pal.c's own compose_frame() is the sole writer of that
  * file. Pings pieces/display/frame_changed.txt afterward - the real

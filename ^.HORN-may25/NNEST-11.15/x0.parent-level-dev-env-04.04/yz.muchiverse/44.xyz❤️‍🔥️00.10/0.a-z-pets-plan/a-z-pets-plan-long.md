@@ -724,4 +724,4 @@ block: "Set entity property"
 - `002.zoo__🦓️🐒️0000/02.z00.play-plan🗓️.txt` - Original zoo vision
 - `044.pal-chat-irc👥️+2/test-harness-same/` - Test harness reference implementation
 - `#.haiku+/!.local-ux-testing-ai.txt` - Key-injection interaction model
-- `#.haiku+/!.pal-pitfalls+1.txt` - Test-related pitfalls (20/21/22)
+- `#.haiku+/!.xyzos-pitfalls+1.txt` - Test-related pitfalls (20/21/22)

@@ -27,7 +27,7 @@
  * family.
  *
  * Self-contained: own root resolution, own constants, no shared headers.
- * Exits (and restores the terminal) on Ctrl+C ONLY (pal-standards.txt
+ * Exits (and restores the terminal) on Ctrl+C ONLY (xyzos-standards.txt
  * sec. 23's own pitfall entry - 'q' used to also quit, which meant
  * typing an ordinary 'q' anywhere killed the session; removed
  * 2026-07-20). Drops a byte in pieces/system/quit_flag.txt on exit so
@@ -121,7 +121,7 @@ static int read_key(void) {
         if (nread == -1 && errno != EAGAIN) return -1;
         /* START_BUTTON handoff: check between VTIME sleeps. */
         if (handoff_or_quit_requested()) return -2;
-        /* PAL-PITFALLS #22 (2026-07-26): nread==0 (EOF/no data) has no
+        /* XYZOS-PITFALLS #22 (2026-07-26): nread==0 (EOF/no data) has no
          * natural throttle here on a non-tty stdin - a real terminal's
          * VMIN=0/VTIME=1 (set in enable_raw_mode()) makes read() block
          * ~100ms before returning 0, but tcsetattr() silently fails on a
@@ -222,7 +222,7 @@ int main(void) {
     /* 'q'-QUITS-EVERYTHING REMOVED (direct user correction, 2026-07-20:
      * "none of these projects should be using 'Q' TO QUIT. that was
      * really dumb. we use ctrl-c or would add a quit button, so not to
-     * interfere with keyboard" - pal-standards.txt sec. 23's own
+     * interfere with keyboard" - xyzos-standards.txt sec. 23's own
      * pitfall entry has the full writeup). The old code remapped
      * Ctrl+C (byte 3/ETX - arrives as plain data here, not a real
      * SIGINT, since enable_raw_mode() clears ISIG) to a literal 'q'

@@ -3,7 +3,7 @@
 # navigation + ${piece_methods} KEY:n dispatch + real <cli_io> free
 # text, NO onClick="INTERACT", no map. Runs forever (matching real
 # fuzz-op_manager.c's own persistent-daemon precedent - see
-# pal-standards.txt sec. 0-CORRECTED), surviving every href screen
+# xyzos-standards.txt sec. 0-CORRECTED), surviving every href screen
 # switch via chtpm_parser_pal.c's own liveness-based launch_module()
 # guard.
 #

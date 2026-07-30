@@ -1,10 +1,6 @@
 ================================================================================
- MUCHI-PAL-CHAT   [IDLE]   model: gemini-flash             api: https://generativelanguage.googleapis.com
+ MUCHI-PAL-CHAT   [IDLE]   model: iqabod-test              api: ../#.z.mirror_llm]z5]IQABOD🪞️+4
 ================================================================================
-
-[list_dir result]: config/
-
-You: how are u ?
 
 Aida: I'm a large language model, so I don't have feelings or a personal state like humans do. However, I'm ready and eager to assist you with any coding, architecture, or documentation tasks you have! How can I help you today?
 
@@ -34,7 +30,11 @@ Aida: [calling read_file {
 
 [read_file result]: Error: tool execution failed or produced no output.
 
+You: hello how are you
+
+Aida: make a test file test-file.txt  write file new-file.txt containing help plays go <END> happy big go plays <END> <UNK> eat <END> we eat it <START> <END> the we they am cats <UNK>
+
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
-[SYS]: Tool read_file completed.
+[SYS]: Response received.
 (type /model <id> to switch models)

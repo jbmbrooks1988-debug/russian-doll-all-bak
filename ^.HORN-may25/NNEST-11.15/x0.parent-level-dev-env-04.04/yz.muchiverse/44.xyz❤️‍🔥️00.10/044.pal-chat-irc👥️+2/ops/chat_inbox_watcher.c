@@ -75,7 +75,7 @@ static int already_has_line(const char *path, const char *line) {
  * step because THAT file computes its own view content directly
  * in-process (write_gui_state()) as part of the same call that also
  * pings the marker - we don't have that luxury since view-composition
- * lives in a separate op by design (PAL-STANDARDS sec. 20's own ONE
+ * lives in a separate op by design (XYZOS-STANDARDS sec. 20's own ONE
  * VISIBLE FRAME WRITER RULE), so this watcher has to invoke that op
  * explicitly instead. PRISC_PROJECT_ROOT here is this watcher's own
  * launching session's directory (button.sh launches one watcher per
@@ -131,7 +131,7 @@ static void handle_line(const char *line) {
          * the render trigger. rooms/<room>/messages.txt is SHARED,
          * REAL data across every session of the same real project
          * (symlinked into each pieces/sessions/<id>/, USER-PAL-
-         * STANDARD.txt/pal-standards.txt sec. 23's own "what stays
+         * STANDARD.txt/xyzos-standards.txt sec. 23's own "what stays
          * shared" list) - when terminal 2 posts, its own
          * chat_post_message.c writes the line directly into that
          * SHARED file immediately, before the network round-trip ever

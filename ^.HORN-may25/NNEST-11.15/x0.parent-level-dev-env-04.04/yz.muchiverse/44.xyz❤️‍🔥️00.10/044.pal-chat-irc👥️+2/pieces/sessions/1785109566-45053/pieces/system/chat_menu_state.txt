@@ -1,2 +1,0 @@
-last_message=Posted to harness_room_44998.
-current_room=harness_room_44998

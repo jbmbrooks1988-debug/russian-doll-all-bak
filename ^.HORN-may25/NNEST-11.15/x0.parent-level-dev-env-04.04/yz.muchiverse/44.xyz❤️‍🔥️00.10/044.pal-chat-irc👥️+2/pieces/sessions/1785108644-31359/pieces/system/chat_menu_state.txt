@@ -1,2 +1,0 @@
-last_message=Room 'uxtest_31259' ready - click Enter Room.
-current_room=uxtest_31259

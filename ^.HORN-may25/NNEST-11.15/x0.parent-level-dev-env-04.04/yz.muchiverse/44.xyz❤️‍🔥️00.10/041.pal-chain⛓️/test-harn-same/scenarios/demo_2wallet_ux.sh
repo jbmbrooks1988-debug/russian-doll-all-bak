@@ -10,7 +10,7 @@
 # invocation). Uses CHAIN_DIFFICULTY_HEX_ZEROS=1 (chain_miner.c's own
 # documented override, no code change needed) so mining resolves in
 # well under a second instead of the ~1M-try default difficulty -
-# see #.haiku+/!.pal-pitfalls+1.txt for why a fresh wallet can't send
+# see #.haiku+/!.xyzos-pitfalls+1.txt for why a fresh wallet can't send
 # anything without this (starts at 0 balance, no faucet/genesis grant).
 set -u
 HARNESS_DIR="$(cd "$(dirname "$0")/.." && pwd)"

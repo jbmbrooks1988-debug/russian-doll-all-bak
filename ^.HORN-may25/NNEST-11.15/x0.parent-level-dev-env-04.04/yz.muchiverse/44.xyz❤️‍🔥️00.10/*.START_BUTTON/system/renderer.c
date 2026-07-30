@@ -171,7 +171,7 @@ int main(void) {
      * keypress happened to grow frame_changed.txt too.
      *
      * CORRECTION (found live via a brief black-flash regression in
-     * mutaclsym after pal-standards.txt sec. 0's own synchronous-
+     * mutaclsym after xyzos-standards.txt sec. 0's own synchronous-
      * dispatch fix - pieces/apps/player_app/state_changed.txt was the
      * WRONG marker to add here): that file is grown by a PROJECT'S OWN
      * compose op BEFORE chtpm has actually reloaded/recomposed anything

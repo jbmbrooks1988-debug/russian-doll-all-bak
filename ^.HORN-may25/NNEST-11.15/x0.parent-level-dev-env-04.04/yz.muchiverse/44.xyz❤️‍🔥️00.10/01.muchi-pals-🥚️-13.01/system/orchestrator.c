@@ -45,7 +45,7 @@
  *
  * Everything else (fork/exec only, no system(); 3-layer cascading kill;
  * file-backed PID tracking under flock) follows Bible §3 / the family
- * pal-standards the same way mutaclsym's own orchestrator does.
+ * xyzos-standards the same way mutaclsym's own orchestrator does.
  */
 #include <stdio.h>
 #include <stdlib.h>

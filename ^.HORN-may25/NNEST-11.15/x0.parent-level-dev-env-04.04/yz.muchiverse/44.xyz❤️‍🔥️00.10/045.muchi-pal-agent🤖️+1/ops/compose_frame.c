@@ -10,7 +10,7 @@
  * that's now chtpm_parser_pal.c's own job (chat.chtpm's real
  * <cli_io>), so that whole block is gone, along with the input_buffer
  * read. ALSO: this op used to write pieces/display/current_frame.txt
- * DIRECTLY - a real violation of pal-standards.txt sec. 20's own ONE
+ * DIRECTLY - a real violation of xyzos-standards.txt sec. 20's own ONE
  * VISIBLE FRAME WRITER RULE now that chtpm_parser_pal.c's own internal
  * compose_frame() is the sole legitimate writer of that file (a second
  * writer races it - confirmed, live, as real flicker/bugs in three
@@ -294,7 +294,7 @@ int main(void) {
     pad_frame_to_screen(view_path);
     append_frame_history(view_path);
 
-    /* pal-standards.txt sec. 20's own render-trigger marker: pieces/display/
+    /* xyzos-standards.txt sec. 20's own render-trigger marker: pieces/display/
      * frame_changed.txt is the one chtpm_parser_pal.c's main loop actually
      * polls (display_frame_ch) - see this file's own header comment. */
     char marker_path[PATH_BUF];

@@ -1537,7 +1537,7 @@ void inject_raw_key(int code) {
     }
 }
 
-/* PAL-STANDARDS sec. 0 (FOUNDATIONAL CORRECTION - SYNCHRONOUS INTERACT
+/* XYZOS-STANDARDS sec. 0 (FOUNDATIONAL CORRECTION - SYNCHRONOUS INTERACT
  * DISPATCH): real/classic chtpm invokes an op SYNCHRONOUSLY per
  * keypress (fork/exec/waitpid, done and finished before the next
  * render - confirmed via direct read of real fuzz-op_manager.c's own
@@ -1550,7 +1550,7 @@ void inject_raw_key(int code) {
  * nor is the deviation deliberate ... never assume we meant to deviate
  * from classic chtpm standards other than 2 use more pal." That
  * unsynchronized, two-process design is the root cause of an entire
- * class of races documented elsewhere in pal-standards.txt (sec. 16.3,
+ * class of races documented elsewhere in xyzos-standards.txt (sec. 16.3,
  * 17) - dispatch and render were never actually causally ordered, only
  * eventually-consistent across two independently-timed poll loops.
  *
@@ -1608,7 +1608,7 @@ void run_module_synchronous(int key) {
     /* Windows: _spawnl with _P_WAIT blocks until the child exits, the
      * direct synchronous equivalent of fork+execv+waitpid above -
      * matching this family's own documented Process Management Parity
-     * convention (pal-standards.txt's own cross-platform section). */
+     * convention (xyzos-standards.txt's own cross-platform section). */
     _spawnv(_P_WAIT, args[0], (const char* const*)args);
 #endif
 
@@ -1687,7 +1687,7 @@ void launch_module(const char* launch_str) {
         }
     }
 
-    /* CORRECTED ENTRY (pal-standards.txt sec. 18/19 - the original
+    /* CORRECTED ENTRY (xyzos-standards.txt sec. 18/19 - the original
      * version of this guard, written same session as the sec. 0
      * synchronous-dispatch fix, was itself an unintentional reinvention,
      * caught by directly comparing against real classic chtpm_parser.c
@@ -2163,7 +2163,7 @@ void parse_attributes(UIElement* el, const char* attr_str) {
         while (*pos && isspace((unsigned char)*pos)) { pos++; } if (!*pos) break;
         char* name_start = pos; while (*pos && *pos != '=' && !isspace((unsigned char)*pos)) { pos++; }
         /* HEAP-BUFFER-OVERFLOW FIX (2026-07-26, found via AddressSanitizer
-         * on 041.pal-chain's copy, see #.haiku+/!.pal-pitfalls+1.txt): the
+         * on 041.pal-chain's copy, see #.haiku+/!.xyzos-pitfalls+1.txt): the
          * original `while (*(++pos) && isspace(*pos));` unconditionally
          * advances pos PAST the just-written null terminator before ever
          * checking it - when the attribute name runs all the way to the
@@ -3470,7 +3470,7 @@ void process_key(int key) {
             else if (key >= JOY_BUTTON_0 && key <= JOY_BUTTON_8) eff = 2000 + (key - JOY_BUTTON_0);
             /* REVERTED (real bug, live-caught 2026-07-19, cross-checked
              * agent-to-agent - see yz.muchiverse/2.muchi-verse/
-             * agent-b-notepad.txt): a prior "PAL-STANDARDS sec. 0"
+             * agent-b-notepad.txt): a prior "XYZOS-STANDARDS sec. 0"
              * pass replaced this with a blocking run_module_synchronous()
              * call, on the claim that real chtpm/fuzz-op dispatches
              * INTERACT keys via a synchronous fork+exec+waitpid FROM
@@ -3496,7 +3496,47 @@ void process_key(int key) {
              * to navigate" GUI the instant a player pressed any key
              * after engaging an INTERACT button. Reverted to match
              * real chtpm_parser.c exactly. */
-            inject_raw_key(eff);
+            /* DOUBLE-DELIVERY FIX (real bug, human-caught 2026-07-30,
+             * 102.agy-txt live typing: "testing" landed as
+             * "tteessttiinngg" - every character exactly duplicated).
+             * Root cause, confirmed by direct source read + a live
+             * single-write isolation test (one manual append to
+             * interact_relay.txt produced exactly one character in
+             * editor_buffer.txt - the read side, agy_edit_key.c's main
+             * loop, was innocent): TWO independent capture paths each
+             * deliver the SAME physical keystroke into interact_relay.txt
+             * whenever a real gl_mirror window is open - (1) gl_mirror.c's
+             * own keyboard()/special_keyboard() GLUT callbacks append
+             * directly (append_key(), see that file), and (2) THIS
+             * function, reached via system/keyboard_input.c's terminal
+             * raw-stdin capture -> pieces/keyboard/history.txt ->
+             * process_key() -> this inject_raw_key(eff) forward. Both
+             * fire for one keypress, both write the same code.
+             * gl_mirror.c already has the intended fix mechanism, just
+             * never wired up on the reader side: pieces/system/
+             * gl_focus.lock, written by gl_mirror's own update_focus_
+             * lock() while it is alive, with a header comment stating
+             * "any cooperating standalone input reader... should back
+             * off rather than also writing to the shared history file."
+             * Confirmed live that no reader anywhere actually checked
+             * it (grep for gl_focus/focus_lock in this file and in
+             * keyboard_input.c both came back empty before this fix).
+             * This is the missing check - skip THIS forward, and only
+             * this forward (button navigation via pieces/keyboard/
+             * history.txt is a completely separate branch of
+             * process_key(), untouched, so nav keys still work
+             * identically whether or not GL is active) - when the lock
+             * is held, since gl_mirror is already delivering eff
+             * directly. NO_GL/headless sessions never see this lock
+             * file at all, so inject_raw_key(eff) still fires exactly
+             * as before for that case - the only case where it is the
+             * sole delivery path for typed text. */
+            {
+                char *lock_path = build_path_malloc("pieces/system/gl_focus.lock");
+                int gl_owns_input = (lock_path && access(lock_path, F_OK) == 0);
+                free(lock_path);
+                if (!gl_owns_input) inject_raw_key(eff);
+            }
             if (key >= 32 && key <= 126) { nav_buffer[0] = (char)key; nav_buffer[1] = 0; } else if (key == 10 || key == 13) strcpy(nav_buffer, "ENTER");
             clear_nav_on_next = true;
         }

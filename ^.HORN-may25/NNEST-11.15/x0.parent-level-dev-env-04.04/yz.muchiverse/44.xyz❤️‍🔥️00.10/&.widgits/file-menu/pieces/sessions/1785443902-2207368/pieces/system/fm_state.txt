@@ -1,0 +1,7 @@
+mode=main_menu
+cursor_pos=1
+path_buffer=test-2.txt
+browse_mode=save_as
+browse_dir=/tmp/.text-editor-xyz-editor-1785443902-2207303
+search_text=
+status_line=

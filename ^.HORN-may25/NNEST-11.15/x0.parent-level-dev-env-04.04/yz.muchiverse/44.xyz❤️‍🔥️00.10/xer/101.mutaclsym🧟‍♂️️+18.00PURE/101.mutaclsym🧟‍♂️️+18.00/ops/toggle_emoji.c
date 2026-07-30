@@ -2,7 +2,7 @@
  * Standalone equivalent of choice.c's own inline 'e'/'E' handler
  * (flips hero/state.txt's emoji_mode). Exists as a real, numbered
  * hero/piece.pdl METHOD row so the chtpm-level ${piece_methods} nav
- * (arrows select a number, Enter dispatches - see pal-standards.txt
+ * (arrows select a number, Enter dispatches - see xyzos-standards.txt
  * §12) can reach it exactly like fuzz-op's own numbered hotkeys,
  * instead of only being reachable via the raw 'e' keypress choice.c
  * still ALSO handles directly (both paths kept - matches real

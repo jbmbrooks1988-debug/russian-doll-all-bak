@@ -26,7 +26,7 @@
  * VISIBLE FRAME WRITER RULE"). Fixed by making this op write ONLY
  * view.txt - chtpm_parser_pal.c's own compose_frame() is now the sole
  * writer of pieces/display/current_frame.txt, exactly as those two
- * rules require. See PAL-STANDARDS-PITFALLS.txt sec. 1 for this
+ * rules require. See XYZOS-STANDARDS-PITFALLS.txt sec. 1 for this
  * project family's own copy of the relevant rules, added alongside
  * this fix.
  *

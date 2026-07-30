@@ -31,6 +31,15 @@ if [ -d "$WSR" ]; then
     chmod +x system/*
     echo "copied from wsr-pal"
 
+    # Generic on-demand emoji asset generator (PITFALL 57/!.pal-2do.txt
+    # 2DO 1 real fix, 2026-07-30) — see 102.editor-📄️00.00/scripts/
+    # build.sh's own identical addition for the full rationale.
+    mkdir -p ops/+x
+    cp "$WSR/ops/+x/emoji_gen_atlas.+x" ops/+x/emoji_gen_atlas.+x 2>/dev/null || true
+    cp "$WSR/ops/+x/emoji_xtract.+x" ops/+x/emoji_xtract.+x 2>/dev/null || true
+    chmod +x ops/+x/emoji_gen_atlas.+x ops/+x/emoji_xtract.+x 2>/dev/null || true
+    echo "copied emoji_gen_atlas.+x + emoji_xtract.+x from wsr-pal"
+
     # Copy font glyph registry (local to this widget)
     echo "--- Copying font glyph registry ---"
     mkdir -p "$SCRIPT_DIR/pieces/registry/fonts/ascii"

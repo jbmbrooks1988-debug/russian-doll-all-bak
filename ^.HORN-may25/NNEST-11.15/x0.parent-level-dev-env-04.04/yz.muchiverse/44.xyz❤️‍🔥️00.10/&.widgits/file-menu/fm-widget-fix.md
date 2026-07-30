@@ -223,7 +223,7 @@ Current architecture uses `house_root.txt` + `focus.txt` scanning for discovery.
 Found in:
 - `❤️‍🔥️.XYZOS_README.md` line 322: "Widgets are tools that command focused programs"
 - `&.widgits/file-menu/widget+plan.txt` lines 17-20: "Widgets send commands into a focused running program through a file-mediated bus"
-- Section 37 of `.pal-standards+1.txt`: widget cmd bus (inbox/status/discovery via `widget_bridge.txt`)
+- Section 37 of `.xyzos-standards+1.txt`: widget cmd bus (inbox/status/discovery via `widget_bridge.txt`)
 
 The mechanism:
 1. Editor writes house root → `pieces/system/house_root.txt`

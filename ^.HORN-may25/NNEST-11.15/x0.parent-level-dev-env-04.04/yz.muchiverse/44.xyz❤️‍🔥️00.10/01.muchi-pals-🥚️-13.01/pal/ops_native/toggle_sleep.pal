@@ -1,6 +1,6 @@
 # toggle_sleep.pal - real pal-native rebuild of ops/toggle_sleep.c's own
 # core mutation (flip a pet's asleep flag). This is the worked example
-# of pal-standards.txt sec.21.2's active-target indirection pattern:
+# of xyzos-standards.txt sec.21.2's active-target indirection pattern:
 # ops/muchi_menu_input.c (the C dispatcher) already knows which real
 # pet is selected - it copies just that pet's "asleep" key into the
 # fixed, well-known pieces/system/active_target.txt BEFORE launching

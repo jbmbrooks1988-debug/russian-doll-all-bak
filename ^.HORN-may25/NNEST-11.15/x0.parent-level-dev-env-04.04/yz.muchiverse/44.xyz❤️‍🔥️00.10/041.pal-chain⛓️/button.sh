@@ -29,7 +29,7 @@ case "$ACTION" in
             echo "Compiling orchestrator..."
             gcc -o "$SCRIPT_DIR/system/orchestrator" "$SCRIPT_DIR/system/orchestrator.c" 2>/dev/null
         fi
-        # SESSION ISOLATION (pal-standards.txt sec. 23) - backported
+        # SESSION ISOLATION (xyzos-standards.txt sec. 23) - backported
         # from pal-forum's own proven "run" action (built first there,
         # live-verified, then pal-chat-irc built session-isolated from
         # day one - this is the same pattern applied a third time, no
@@ -84,7 +84,7 @@ EOSTATE
         export PRISC_PROJECT_ROOT="$SESSION_DIR"
         export PRISC_PROJECT_ID="pal-chain"
         # REAL BUG, LIVE-CAUGHT while building pal-chat-irc (2026-07-20,
-        # PAL-NET-STANDARD.txt sec. 1/pal-standards.txt sec. 23's own
+        # PAL-NET-STANDARD.txt sec. 1/xyzos-standards.txt sec. 23's own
         # writeup): palnet_peer.c's own resolve_presence_root() defaults
         # to "one level above PRISC_PROJECT_ROOT" - wrong once that's a
         # SESSION_DIR, silently resolving to a directory private to this

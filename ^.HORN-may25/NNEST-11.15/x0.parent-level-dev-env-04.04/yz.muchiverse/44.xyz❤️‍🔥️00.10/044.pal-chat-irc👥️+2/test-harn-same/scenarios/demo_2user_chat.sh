@@ -8,7 +8,7 @@
 # Proves: two real users, via real signup/login/room-join/typed-message
 # flow (not direct op-level posting), each see the OTHER's message live
 # with zero action taken on their own side - the actual thing that was
-# found broken in #.haiku+/!.pal-pitfalls+1.txt PITFALL 20.
+# found broken in #.haiku+/!.xyzos-pitfalls+1.txt PITFALL 20.
 set -u
 HARNESS_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 PROJECT_DIR="$(cd "$HARNESS_DIR/.." && pwd)"

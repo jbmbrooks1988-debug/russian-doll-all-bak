@@ -87,7 +87,7 @@ EOSTATE
                 "FILE MENU" pieces/system/widget_cmds/inbox.txt >/dev/null 2>&1 || true
         fi
         # THREE-LAYER RACE FIX (re-applied 2026-07-30 — see
-        # !.pal-pitfalls+1.txt PITFALL 54 and this project's own
+        # !.xyzos-pitfalls+1.txt PITFALL 54 and this project's own
         # widget-bug-fix-j29.txt under @.apps/text-editor-xyz/: this
         # exact wait step was documented as already fixed here once,
         # found MISSING again this session — regression, cause not yet

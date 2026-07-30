@@ -62,6 +62,32 @@ static void resolve_root(void) {
     if (env && env[0]) snprintf(project_root, sizeof(project_root), "%s", env);
 }
 
+/* Real, live-caught bug (2026-07-30, same day as PITFALL 60's own
+ * first fix): button.sh always sets PRISC_PROJECT_ROOT to the SESSION
+ * directory (SESSION_DIR="$SCRIPT_DIR/pieces/sessions/$SESSION_ID",
+ * confirmed by direct read of button.sh) for every real run, not the
+ * true top-level project directory - two extra path levels deeper than
+ * where this project's own sibling projects (like IQABOD) actually
+ * live. A cross-project relative path resolved against the raw
+ * project_root (as PITFALL 60's own first pass did) works when invoked
+ * directly from the top-level project dir (a manual CLI test, exactly
+ * how that first fix was verified) but silently resolves to the WRONG,
+ * nonexistent location for every REAL run through the actual app -
+ * caught by test-harn-same/scenarios/demo_iqabod_chat.sh, a proper
+ * level-2 harness scenario, after the CLI-only verification had
+ * already reported success. Strips a trailing "/pieces/sessions/<id>"
+ * suffix (button.sh's own exact, fixed session-dir shape) to recover
+ * the true top-level project root before resolving any CROSS-PROJECT
+ * relative reference - in-project paths should keep using project_root
+ * directly (unaffected, session-local data legitimately lives under
+ * the session dir). out_sz must be at least MAX_PATH. */
+static void derive_true_project_root(char *out, size_t out_sz) {
+    snprintf(out, out_sz, "%s", project_root);
+    const char *marker = "/pieces/sessions/";
+    char *hit = strstr(out, marker);
+    if (hit) *hit = '\0';
+}
+
 static char *read_full_file(const char *path) {
     FILE *f = fopen(path, "r");
     if (!f) return NULL;
@@ -871,7 +897,43 @@ int main(void) {
          * must chdir() there since main_orchestrator.c resolves
          * config.txt/curriculum paths/./+x/generation_module.+x all
          * relative to CWD, with no root-resolution of its own), and
-         * model_name is the curriculum file path relative to that root. */
+         * model_name is the curriculum file path relative to that root.
+         *
+         * api_url is resolved relative to THIS project's own
+         * project_root when it doesn't start with '/' - real fix for a
+         * real, confirmed-dead bug (2026-07-30): model_list.txt used to
+         * hardcode api_url as an ABSOLUTE path from a prior top-level
+         * house reorg (.../ZEST-10.00/.../^.IQABOD-llm-06.00) that no
+         * longer exists at all - every iqabod call failed at this
+         * chdir() (silently, straight to _exit(127), no error surfaced
+         * anywhere a human would see it) until this was caught and
+         * fixed. IQABOD lives as a SIBLING of this project under the
+         * same house root (both directly under 44.xyz.../), so a path
+         * relative to project_root (e.g. "../#.z.mirror_llm]z5]
+         * IQABOD🪞️+4") survives the NEXT house-wide rename too, since
+         * sibling projects move together as a unit - an absolute path
+         * does not survive that, confirmed by this exact incident.
+         * Absolute paths (starting with '/') are still honored as-is
+         * for backward compatibility / manual overrides. See
+         * !.xyzos-standards+1.txt's own "relative paths house-wide"
+         * section and !.xyzos-pitfalls+1.txt for the full incident.
+         *
+         * Resolved against derive_true_project_root(), NOT raw
+         * project_root directly - see that function's own header
+         * comment for the second, real bug a level-2 harness caught
+         * the SAME day as the first fix: raw project_root is the
+         * SESSION dir for every actual run, two levels deeper than
+         * where sibling projects live, so resolving against it
+         * directly silently landed on a nonexistent path again despite
+         * looking correct in a manual CLI-only test. */
+        char true_root[MAX_PATH];
+        derive_true_project_root(true_root, sizeof(true_root));
+        char resolved_root[PATH_BUF];
+        if (api_url[0] == '/') {
+            snprintf(resolved_root, sizeof(resolved_root), "%s", api_url);
+        } else {
+            snprintf(resolved_root, sizeof(resolved_root), "%s/%s", true_root, api_url);
+        }
         fclose(pf);
         char *prompt_text = build_iqabod_prompt(log_path);
 
@@ -896,9 +958,9 @@ int main(void) {
             if (outfd >= 0) dup2(outfd, STDOUT_FILENO);
             if (devnull >= 0 && devnull > STDERR_FILENO) close(devnull);
             if (outfd >= 0 && outfd > STDERR_FILENO) close(outfd);
-            if (chdir(api_url) != 0) _exit(127);
+            if (chdir(resolved_root) != 0) _exit(127);
             char *orch_path = NULL;
-            if (asprintf(&orch_path, "%s/+x/main_orchestrator.+x", api_url) == -1) _exit(127);
+            if (asprintf(&orch_path, "%s/+x/main_orchestrator.+x", resolved_root) == -1) _exit(127);
             /* Passed as a single raw execl() argv element, NOT through a
              * shell - unlike main_orchestrator.c's own internal re-exec
              * of generation_module.+x (via system(), which embeds this

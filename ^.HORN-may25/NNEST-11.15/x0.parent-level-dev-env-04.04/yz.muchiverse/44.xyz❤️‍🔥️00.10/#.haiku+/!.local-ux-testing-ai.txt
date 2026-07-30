@@ -20,7 +20,7 @@ calling ops/+x/chat_post_message.+x and friends DIRECTLY (correct argv,
 correct env), and separately by simulating two independent nodes
 talking over real TCP. Both passed. A report was written saying the
 multi-user chat "works." It didn't - the REAL orchestrator-launched
-palnet_peer was completely broken (PITFALL 20 in !.pal-pitfalls+1.txt),
+palnet_peer was completely broken (PITFALL 20 in !.xyzos-pitfalls+1.txt),
 and neither test caught it because neither one went through the actual
 code path a real user's `./button.sh run` hits, NOR through the actual
 keyboard/menu UX a real user drives. Op-level and isolated-node tests
@@ -205,7 +205,7 @@ running or if multiple accumulate across a testing session.
 
 1. system/keyboard_input.c used to busy-spin at ~100% CPU with no real
    tty (exactly the headless case you're in) - ROOT-CAUSED AND FIXED
-   directory-wide, see !.pal-pitfalls+1.txt PITFALL 22. If you're
+   directory-wide, see !.xyzos-pitfalls+1.txt PITFALL 22. If you're
    working in a project/checkout from BEFORE 2026-07-26, check whether
    its copy has the fix (`grep usleep system/keyboard_input.c`) - if
    not, apply the same one-line fix before doing any headless testing,
@@ -224,7 +224,7 @@ running or if multiple accumulate across a testing session.
         observed to leave palnet_peer/chat_inbox_watcher alive even
         after being hardened to kill by PID directly - the root cause
         was never fully nailed down (see PITFALL 21 update in
-        pal-pitfalls). The only 100%-reliable pattern found: call
+        xyzos-pitfalls). The only 100%-reliable pattern found: call
         kill_all.sh, verify independently, and if anything survived,
         kill -9 it by PID yourself, from OUTSIDE kill_all.sh's own
         process tree.

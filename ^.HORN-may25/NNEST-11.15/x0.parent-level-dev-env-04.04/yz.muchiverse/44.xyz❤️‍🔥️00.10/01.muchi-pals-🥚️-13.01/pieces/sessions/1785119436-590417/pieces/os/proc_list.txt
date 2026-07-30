@@ -1,3 +1,0 @@
-590440 orchestrator
-590447 ./system/renderer
-590448 ./system/chtpm_parser_pal

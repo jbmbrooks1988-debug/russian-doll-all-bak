@@ -1,4 +1,0 @@
-user_id_input=hi
-display_name_input=hi
-room_choices=<button label="guest" onClick="KEY:100" /><br/><button label="muchi-test" onClick="KEY:101" /><br/><button label="t1" onClick="KEY:102" /><br/><button label="test-1" onClick="KEY:103" /><br/>
-message_text_input=

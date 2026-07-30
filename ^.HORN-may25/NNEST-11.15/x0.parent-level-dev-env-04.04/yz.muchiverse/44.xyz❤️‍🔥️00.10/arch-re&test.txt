@@ -210,7 +210,7 @@ palnet_peer saw argc=3, printed its own usage message into a log file
 nobody checked, and exited immediately. Confirmed via
 /tmp/pal_chat_irc_palnet_peer.log literally containing that usage text.
 
-Root cause + fix + directory-wide scope: see #.haiku+/!.pal-pitfalls+1.txt
+Root cause + fix + directory-wide scope: see #.haiku+/!.xyzos-pitfalls+1.txt
 PITFALL 20/21. Fixed via a new launch_argv_redirect() (real argv[] +
 execv(), mirroring 041.pal-chain's own orchestrator.c pattern).
 
@@ -282,7 +282,7 @@ needed), a REAL send transaction, and the recipient's balance actually
 updating - all via real key injection.
 
 Real bugs found and fixed building this test (all documented in
-!.pal-pitfalls+1.txt and this project's own test-harn-same/scenarios/
+!.xyzos-pitfalls+1.txt and this project's own test-harn-same/scenarios/
 comments):
   - a cli_io field re-activated with existing content APPENDS instead
     of replacing on retype - fixed with a clear-with-backspace-first
@@ -386,7 +386,7 @@ entry point through REAL key injection and produces timestamped proof/
 folders on every run.
 
 Standing lesson for future work in this family (also written to
-#.haiku+/!.local-ux-testing-ai.txt and !.pal-pitfalls+1.txt): direct op
+#.haiku+/!.local-ux-testing-ai.txt and !.xyzos-pitfalls+1.txt): direct op
 invocation and isolated-node network simulation are valuable for
 narrowing down a bug fast once you suspect one, but neither is a
 substitute for one real pass through the actual `./button.sh run` entry

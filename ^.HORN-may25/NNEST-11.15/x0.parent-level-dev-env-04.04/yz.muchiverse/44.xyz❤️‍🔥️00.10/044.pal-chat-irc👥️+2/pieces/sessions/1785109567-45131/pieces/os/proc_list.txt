@@ -1,7 +1,0 @@
-45131 orchestrator
-45300 ./system/renderer
-45301 ./system/keyboard_input
-45302 ./system/chtpm_parser_pal
-45304 ./system/chtpm_rgb_render
-45311 ops/+x/palnet_peer.+x
-45313 ops/+x/chat_inbox_watcher.+x

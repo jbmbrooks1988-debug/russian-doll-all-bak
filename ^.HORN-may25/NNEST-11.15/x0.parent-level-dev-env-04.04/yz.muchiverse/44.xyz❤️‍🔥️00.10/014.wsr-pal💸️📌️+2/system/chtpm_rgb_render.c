@@ -281,6 +281,28 @@ static void load_emoji_colors(void) {
     load_emoji_assets_from("pieces/registry/monsters/monster_types.txt", 6, 5);
     add_hardcoded_emoji_color("🧑", "hero", 255, 255, 0);
     add_hardcoded_emoji_color("🎯", "xlector", 0, 255, 255);
+    /* REMOVED 2026-07-30 (same day added): the 3 stopgap entries for
+     * 😅/😆/🐧 (PITFALL 57's own first pass) gave a real, accurate
+     * COLOR but never a real SHAPE — their asset_id values pointed at
+     * emoji_assets/ folders that were never actually generated, so
+     * load_emoji_voxels() always failed closed and only the flat color
+     * block ever rendered. Confirmed live, directly reported: "first 2
+     * weren't [showing], last 2 were" — the "first 2" were exactly
+     * these 2 stopgap entries (😅/😆; the seed buffer never actually
+     * contained 🐧 at all — a misread earlier in the same session, see
+     * the git history/pitfall text for that correction), the "last 2"
+     * (😇, and a freshly-typed 🦄 with zero prior registry presence)
+     * both went through the NEW generic on-demand path below (this
+     * function's own hardcoded list was never consulted for them) and
+     * got REAL FreeType-rendered voxel art automatically. Leaving the
+     * stopgap entries in would have made 😅/😆 PERMANENTLY worse than
+     * every other emoji in this house (color-only forever, since a
+     * hand-curated table hit short-circuits the generic path entirely
+     * — see match_emoji_color()'s own doc comment) — removed so they
+     * fall through to the same real generator everything else now
+     * uses, matching PITFALL 57's own 2026-07-30 UPDATE section. hero/
+     * xlector above are unaffected (real, intentional game-tile color
+     * overrides, not a "we haven't generated real art yet" stopgap). */
 }
 
 /* Longest-match-first lookup at text position p - some registry
@@ -459,6 +481,115 @@ static int utf8_seq_len(unsigned char lead) {
     return 1;
 }
 
+/* GENERIC ON-DEMAND EMOJI GENERATION (2026-07-30, real fix for
+ * !.pal-2do.txt 2DO 1 / PITFALL 57's own stopgap) — closes the gap
+ * that pitfall's own stopgap explicitly left open: a hand-picked flat
+ * color per emoji does not scale, the next new emoji anyone uses hits
+ * the identical "meaningless colored block" bug again. The real,
+ * generic, working generator already existed in this house
+ * (#.emoji-studio-501.02.05t/&.emoji-studio-solo.02.01/emoji-gen-
+ * atlas.c + emoji-xtract.c — real FreeType, real NotoColorEmoji.ttf,
+ * genuinely any emoji, no hand-curated list at all) — it had simply
+ * never been propagated here. Copied verbatim (own header/authorship
+ * kept in those files) into ops/emoji_gen_atlas.c + ops/emoji_xtract.c,
+ * compiled as ops/+x/emoji_gen_atlas.+x + ops/+x/emoji_xtract.+x.
+ *
+ * ANY codepoint not already in emoji_colors[] (from the 4 hand-curated
+ * registries or add_hardcoded_emoji_color()) now gets its own real
+ * voxel asset generated ONCE — on first use, in this exact process —
+ * then cached BOTH on disk (pieces/registry/emoji_assets/<HEX>/
+ * voxels_16.csv persists for every future run, matching wraith-alpha's
+ * own hex-codepoint naming convention exactly, ported here so a future
+ * consumer of either project's own assets can share them) AND in this
+ * process's own emoji_colors[] table (so later frames in the SAME run
+ * hit the table directly, never re-checking the filesystem or
+ * re-shelling-out per frame — blit_text() runs every render, this
+ * matters). The hand-curated tables are checked FIRST and still win
+ * (a game legitimately wanting a non-natural color for a tile) — this
+ * is a fallback for everything else, not a replacement for any of it.
+ *
+ * verified live before wiring in: emoji_gen_atlas.+x "🦄"
+ * /tmp/x.png && emoji_xtract.+x /tmp/x.png 0 16 /tmp/x.csv produced a
+ * real 64x64 RGBA PNG and a real voxel CSV with 138/256 non-transparent
+ * pixels - a genuine, recognizable shape, not empty. */
+static int decode_utf8_codepoint(const char *str, unsigned int *codepoint) {
+    const unsigned char *s = (const unsigned char *)str;
+    if (s[0] < 0x80) { *codepoint = s[0]; return 1; }
+    if ((s[0] & 0xE0) == 0xC0 && (s[1] & 0xC0) == 0x80) {
+        *codepoint = ((s[0] & 0x1F) << 6) | (s[1] & 0x3F); return 2;
+    }
+    if ((s[0] & 0xF0) == 0xE0 && (s[1] & 0xC0) == 0x80 && (s[2] & 0xC0) == 0x80) {
+        *codepoint = ((s[0] & 0x0F) << 12) | ((s[1] & 0x3F) << 6) | (s[2] & 0x3F); return 3;
+    }
+    if ((s[0] & 0xF8) == 0xF0 && (s[1] & 0xC0) == 0x80 && (s[2] & 0xC0) == 0x80 && (s[3] & 0xC0) == 0x80) {
+        *codepoint = ((s[0] & 0x07) << 18) | ((s[1] & 0x3F) << 12) | ((s[2] & 0x3F) << 6) | (s[3] & 0x3F); return 4;
+    }
+    *codepoint = 0xFFFD; return 1;
+}
+
+/* Shells out to the two generator ops if pieces/registry/emoji_assets/
+ * <hex_id>/voxels_16.csv doesn't already exist. Returns 1 if the asset
+ * exists (just-generated or already there), 0 on failure (caller
+ * falls back to utf8_hash_color() same as before - fails closed, never
+ * blocks rendering). Generation is real disk I/O + a real font-rasterize
+ * call - deliberately gated behind the existence check so it only ever
+ * runs ONCE per emoji, not once per frame. */
+/* utf8_bytes/utf8_len bound the call to EXACTLY this one codepoint's
+ * own bytes - the caller (blit_text()) points into the middle of the
+ * full remaining line, not a per-glyph-isolated string, so passing
+ * that pointer straight through to a shell command would embed
+ * whatever text happens to follow (confirmed live: hex=1F605 in "hi
+ * 😅 😆 😇" received the ENTIRE remainder "😅 😆 😇 ..." as argv[1]).
+ * emoji_gen_atlas.c's own decode_utf8() only reads the leading
+ * codepoint regardless, so this was never the cause of a wrong
+ * result here - but an unbounded remainder is still fragile (any
+ * later single-quote in the buffer would break out of this
+ * function's own shell-quoting), so copy just the real bytes into a
+ * bounded, NUL-terminated local buffer before it ever reaches a
+ * system() call. */
+static int ensure_emoji_asset_generated(const char *hex_id, const char *utf8_bytes, int utf8_len) {
+    char csv_path[PATH_BUF], dir_path[PATH_BUF], tmp_png[PATH_BUF], cmd[PATH_BUF * 3];
+    char glyph_buf[8];
+    snprintf(glyph_buf, sizeof(glyph_buf), "%.*s", utf8_len, utf8_bytes);
+    snprintf(dir_path, sizeof(dir_path), "%s/pieces/registry/emoji_assets/%s", project_root, hex_id);
+    snprintf(csv_path, sizeof(csv_path), "%s/voxels_16.csv", dir_path);
+
+    struct stat st;
+    if (stat(csv_path, &st) == 0) return 1; /* already generated, real cache hit */
+
+    snprintf(cmd, sizeof(cmd), "mkdir -p '%s'", dir_path);
+    if (system(cmd) != 0) return 0;
+
+    snprintf(tmp_png, sizeof(tmp_png), "/tmp/emoji_gen_%s_%d.png", hex_id, (int)getpid());
+    snprintf(cmd, sizeof(cmd), "'%s/ops/+x/emoji_gen_atlas.+x' '%s' '%s' >/dev/null 2>&1",
+             project_root, glyph_buf, tmp_png);
+    int rc1 = system(cmd);
+
+    snprintf(cmd, sizeof(cmd), "'%s/ops/+x/emoji_xtract.+x' '%s' 0 16 '%s' >/dev/null 2>&1",
+             project_root, tmp_png, csv_path);
+    int rc2 = system(cmd);
+
+    unlink(tmp_png);
+
+    return (rc1 == 0 && rc2 == 0 && stat(csv_path, &st) == 0) ? 1 : 0;
+}
+
+/* Grows emoji_colors[] AT RUNTIME (unlike load_emoji_colors()'s own
+ * startup-only population) — a newly-generated emoji becomes a normal
+ * table hit for every subsequent frame in this same process. Neutral
+ * backdrop color (matches load_emoji_assets_from()'s own existing
+ * convention for items/monsters, which also have no curated
+ * rgb_top_emoji field) - the real voxel art carries the actual visual,
+ * this is only the fallback shown at fully-transparent voxel pixels. */
+static void add_dynamic_emoji_color(const char *bytes, int len, const char *asset_id) {
+    if (emoji_color_count >= MAX_EMOJI_COLORS) return;
+    EmojiColor *e = &emoji_colors[emoji_color_count++];
+    snprintf(e->bytes, sizeof(e->bytes), "%.*s", len, bytes);
+    e->len = len;
+    e->r = 60; e->g = 60; e->b = 60;
+    snprintf(e->asset_id, sizeof(e->asset_id), "%s", asset_id);
+}
+
 /* Deterministic color from a UTF-8 sequence's own bytes (same FNV-1a
  * shape as checksum_buffer() below) - not a real per-tile color chart
  * (this file has none), but two different emoji reliably get two
@@ -496,6 +627,36 @@ static void blit_text(unsigned char fb[FRAME_H][FRAME_W][4], int px, int py, con
     while (*p && x_px < FRAME_W) {
         unsigned char lead = (unsigned char)*p;
         if (lead >= 0x80) {
+            /* Skip invisible Unicode formatting codepoints WITHOUT
+             * drawing a tile or advancing x_px - real, user-reported
+             * bug ("weird wide spaces before and after each emoji" in
+             * file-menu's own path display, but NOT in editor's own
+             * test content). Root cause: this house's own directory
+             * tree names every path-segment emoji with an explicit
+             * trailing VARIATION SELECTOR-16 (U+FE0F) - e.g. "🤖"
+             * (U+1F916) is actually stored as "🤖️" = U+1F916 + U+FE0F,
+             * confirmed via direct byte inspection - while editor's
+             * own seed-buffer test emoji (😅/😆/😇/🦄) were typed bare,
+             * no VS16 suffix. This loop decodes ONE CODEPOINT at a
+             * time, not one grapheme cluster, so before this fix VS16
+             * fell through to the exact same generic-emoji path as any
+             * real glyph: FreeType has no visible glyph for a pure
+             * formatting character, so it got its own blank/junk 16px
+             * tile rendered right after every real emoji that used
+             * one - reading as a wide gap. ZERO WIDTH JOINER (U+200D,
+             * the "❤️‍🔥️" heart-on-fire path segment's own glue
+             * codepoint) gets the same treatment for the same reason -
+             * skipped rather than composed into one combined glyph
+             * (this file has no glyph-composition capability; skipping
+             * it still renders heart + fire as two adjacent real tiles
+             * with no extra junk between them, which is the actual bug
+             * being fixed here, not full ZWJ-sequence rendering). */
+            unsigned int cp_peek = 0;
+            int peek_len = decode_utf8_codepoint(p, &cp_peek);
+            if (cp_peek == 0xFE0E || cp_peek == 0xFE0F || cp_peek == 0x200D) {
+                p += peek_len;
+                continue;
+            }
             unsigned char tr, tg, tb;
             const char *asset_id = NULL;
             int matched_len = match_emoji_color(p, &tr, &tg, &tb, &asset_id);
@@ -510,6 +671,27 @@ static void blit_text(unsigned char fb[FRAME_H][FRAME_W][4], int px, int py, con
                 continue;
             }
             int seqlen = utf8_seq_len(lead);
+            /* GENERIC ON-DEMAND PATH (see ensure_emoji_asset_generated()'s
+             * own header comment) - tried before the arbitrary hash-color
+             * fallback. Real disk I/O (stat) + a real font-rasterize
+             * subprocess on first encounter only; every subsequent match
+             * hits match_emoji_color()'s own table above via
+             * add_dynamic_emoji_color(), same as any hand-curated entry. */
+            unsigned int codepoint = 0;
+            decode_utf8_codepoint(p, &codepoint);
+            char hex_id[16];
+            snprintf(hex_id, sizeof(hex_id), "%X", codepoint);
+            if (ensure_emoji_asset_generated(hex_id, p, seqlen)) {
+                add_dynamic_emoji_color(p, seqlen, hex_id);
+                blit_solid_block(fb, x_px, py, VOXEL_PX, 60, 60, 60);
+                unsigned char voxels[VOXEL_PX][VOXEL_PX][4];
+                if (load_emoji_voxels(hex_id, voxels)) {
+                    blit_emoji_tile(fb, x_px, py, voxels);
+                }
+                p += seqlen;
+                x_px += VOXEL_PX;
+                continue;
+            }
             utf8_hash_color(p, seqlen, &tr, &tg, &tb);
             blit_solid_block(fb, x_px, py, VOXEL_PX, tr, tg, tb);
             p += seqlen;

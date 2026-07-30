@@ -43,7 +43,7 @@ case "$ACTION" in
 
     kill|k|stop)
         # Same defense-in-depth pattern as the parent project's own
-        # button.sh kill - see #.haiku+/!.pal-pitfalls+1.txt PITFALL
+        # button.sh kill - see #.haiku+/!.xyzos-pitfalls+1.txt PITFALL
         # 20/21/22 for why a single call to kill_all.sh is not trusted
         # on its own in this project.
         bash "$PROJECT_DIR/pieces/os/kill_all.sh" >/dev/null 2>&1

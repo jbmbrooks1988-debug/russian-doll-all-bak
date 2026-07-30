@@ -25,8 +25,24 @@ case "$ACTION" in
         SESSION_DIR="$SCRIPT_DIR/pieces/sessions/$SESSION_ID"
         mkdir -p "$SESSION_DIR/pieces/system" "$SESSION_DIR/pieces/display" \
                  "$SESSION_DIR/pieces/apps/player_app" "$SESSION_DIR/pieces/keyboard" \
-                 "$SESSION_DIR/projects/agy-editor/manager" \
-                 "$SESSION_DIR/docs"
+                 "$SESSION_DIR/projects/agy-editor/manager"
+        # docs/ deliberately NOT in the mkdir -p list above (PITFALL 62,
+        # 2026-07-30, found via 102.agy-txt's own real save/load testing
+        # this session, then confirmed to affect this project's own
+        # button.sh too, unnoticed until now): `mkdir -p` pre-creating
+        # SESSION_DIR/docs as a REAL directory means the `ln -sfn`
+        # below does NOT replace it with a symlink - `ln` treats an
+        # EXISTING directory target as "put the symlink INSIDE it",
+        # landing a nested SESSION_DIR/docs/docs -> real docs/ symlink
+        # one level deeper than intended. Every SAVE_AS using a
+        # relative "docs/..." path (do_save_to()'s own plain fopen(path,
+        # "w"), cwd = SESSION_DIR) silently wrote into the wrong,
+        # ephemeral SESSION_DIR/docs/ instead of the durable house-level
+        # docs/ - never caught because this project's own real harness
+        # (test-harn-ed-app) always used absolute save paths, which
+        # never touch this code path at all. Removing docs/ from mkdir
+        # -p lets `ln -sfn` create the symlink directly at
+        # SESSION_DIR/docs as originally intended.
 
         ln -sfn "$SCRIPT_DIR/system" "$SESSION_DIR/system"
         ln -sfn "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"

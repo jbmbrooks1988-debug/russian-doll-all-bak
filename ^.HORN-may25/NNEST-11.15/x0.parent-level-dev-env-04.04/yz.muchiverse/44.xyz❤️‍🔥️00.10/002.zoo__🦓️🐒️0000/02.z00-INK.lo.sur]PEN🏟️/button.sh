@@ -85,7 +85,7 @@ case "$ACTION" in
         ;;
     chtpm|menu)
         # Real interact+module pattern (see chtpm-to-pal-layout-plan.txt
-        # §8 and pal-standards.txt §7) - a SEPARATE entry point from
+        # §8 and xyzos-standards.txt §7) - a SEPARATE entry point from
         # "run" above, not a replacement (least-impact: "run" is
         # already-proven real gameplay, untouched). pieces/chtpm/layouts/
         # zoo.chtpm's own <module>${module_path}</module> tag makes
@@ -231,7 +231,7 @@ EOSTATE
         echo "  run, r, start       - Run the sandbox (keyboard_input + prisc+x + renderer)"
         echo "  chtpm, menu         - Real chtpm menu shell around the SAME game loop,"
         echo "                        via the interact+module pattern (see"
-        echo "                        chtpm-to-pal-layout-plan.txt §8 / pal-standards.txt §7)"
+        echo "                        chtpm-to-pal-layout-plan.txt §8 / xyzos-standards.txt §7)"
         echo "  window, win <id>    - Launch a real desktop GL window for a piece"
         echo "                        (drag-to-grid-snap, see dox/xlector-standard.md /"
         echo "                        dox/pet-import-export-standard.md)"

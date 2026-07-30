@@ -188,11 +188,11 @@ static int list_rooms(char names[][128], int max_rooms) {
 
 /* DIRECT USER REQUEST, 2026-07-20: "occupied rooms should show as a
  * choice to join" - real chtpm buttons, not a hardcoded/hand-drawn
- * list (pal-standards.txt sec. 12/13's own "must stay ${piece_methods}-
+ * list (xyzos-standards.txt sec. 12/13's own "must stay ${piece_methods}-
  * driven, never hardcode buttons" rule). Since these buttons are NOT
  * piece.pdl METHOD rows (the room count is dynamic, piece.pdl is a
  * static file), this follows the OTHER established real convention
- * for dynamic button lists in this family (pal-standards.txt sec. 13,
+ * for dynamic button lists in this family (xyzos-standards.txt sec. 13,
  * the groq-ollama/mutaclsym precedent): build real
  * `<button onClick="KEY:n">` markup directly and write it into
  * gui_state.txt as a named var (${room_choices}, referenced directly
@@ -334,7 +334,7 @@ static void run_capture(const char *cmd, char *message, size_t message_sz) {
  * through the piece.pdl/${piece_methods} numbered-item table -
  * room/piece.pdl has NO "Post Message" METHOD row at all anymore
  * (direct user correction: "just remove it from pdl" - the numbered,
- * CLICKABLE menu must stay piece.pdl-driven per pal-standards.txt
+ * CLICKABLE menu must stay piece.pdl-driven per xyzos-standards.txt
  * sec. 12, but a keyboard shortcut that isn't part of that numbered
  * menu is a different thing, same as 'q'). */
 static void handle_post_message(char *message, size_t message_sz) {

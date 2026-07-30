@@ -5,7 +5,7 @@
  * the surrounding chrome + current_login.txt status.
  *
  * Writes ONLY view.txt, never pieces/display/current_frame.txt
- * directly (PAL-STANDARDS sec. 20 - ONE VISIBLE FRAME WRITER RULE).
+ * directly (XYZOS-STANDARDS sec. 20 - ONE VISIBLE FRAME WRITER RULE).
  * Pings pieces/display/frame_changed.txt, the real render-trigger
  * marker.
  *

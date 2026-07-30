@@ -261,6 +261,25 @@ static void insert_char(char ch) {
     set_cursor(cur + 1);
 }
 
+/* Insert a whole string at cursor — real UTF-8 bytes, no per-char
+ * validation. See PASTE mode's own comment in main() for why this is
+ * a genuinely separate mechanism from insert_char()'s one-keystroke-
+ * per-int model, not a relaxation of it. */
+static void insert_string(const char *s) {
+    size_t slen = strlen(s);
+    if (slen == 0) return;
+    char buf[MAX_BUF];
+    size_t blen = read_buffer(buf, sizeof(buf));
+    if (blen + slen + 1 >= sizeof(buf)) return;
+    int cur = get_cursor(blen);
+    memmove(buf + cur + slen, buf + cur, blen - (size_t)cur);
+    memcpy(buf + cur, s, slen);
+    blen += slen;
+    buf[blen] = '\0';
+    write_buffer(buf, blen);
+    set_cursor(cur + (int)slen);
+}
+
 static void do_backspace(void) {
     char buf[MAX_BUF];
     size_t blen = read_buffer(buf, sizeof(buf));
@@ -334,6 +353,27 @@ static int is_interact_typing(void) {
 int main(int argc, char **argv) {
     if (argc < 2) return 1;
     resolve_root();
+
+    /* PASTE mode (2026-07-30) — see fm_menu_input.c's own identical
+     * addition for the full rationale: a real keypress is one int,
+     * matching a physical keyboard's one-scancode-per-keystroke model
+     * (key >= 32 && key <= 126 below can only ever be single-byte
+     * ASCII, same as a real keyboard sends one scancode per press).
+     * An emoji/multi-byte UTF-8 character was never one keystroke
+     * either. This house's own directory tree has emoji path segments
+     * that could never be typed character-by-character through
+     * INTERACT for exactly this reason. PASTE takes the whole string
+     * as one argv and inserts it verbatim (real UTF-8 bytes, no
+     * per-character validation) at the cursor — only valid while
+     * INTERACT is actually engaged (same real gate insert_char()'s
+     * own call site already enforces), a no-op otherwise. */
+    if (argc >= 3 && strcmp(argv[1], "PASTE") == 0) {
+        if (is_interact_typing()) {
+            insert_string(argv[2]);
+            bump_screen();
+        }
+        return 0;
+    }
 
     int key = atoi(argv[1]);
     if (key == 0) {

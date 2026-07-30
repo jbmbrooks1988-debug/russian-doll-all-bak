@@ -31,7 +31,7 @@ Also planned:
 User filesystem (xyzfs) is the durable home for **both** editor docs and
 mutaclysm save slots — not only install-tree pieces/saves/.
 
-UI law: pal-standards §35 (GL primary), §36 (harness placement).
+UI law: xyzos-standards §35 (GL primary), §36 (harness placement).
 Cmd-bus proof already green: %.harnesses/file-menu+editor/
 
 ================================================================================

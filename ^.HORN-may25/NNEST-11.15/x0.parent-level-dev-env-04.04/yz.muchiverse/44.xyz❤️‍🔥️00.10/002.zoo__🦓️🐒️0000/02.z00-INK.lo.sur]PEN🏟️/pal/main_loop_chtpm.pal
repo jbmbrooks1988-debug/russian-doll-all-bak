@@ -1,7 +1,7 @@
 # zoo_0000 interact-turn dispatch - CHTPM-MODULE VARIANT, PERSISTENT
 # LOOP.
 #
-# REVERTED BACK TO PERSISTENT (2026-07-19, see pal-standards.txt sec.
+# REVERTED BACK TO PERSISTENT (2026-07-19, see xyzos-standards.txt sec.
 # 0-CORRECTED and yz.muchiverse/2.muchi-verse/agent-b-notepad.txt for
 # the full investigation): this file's own one-shot conversion (paired
 # with chtpm_parser_pal.c's own then-new run_module_synchronous() - a

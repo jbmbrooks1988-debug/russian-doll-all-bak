@@ -64,7 +64,7 @@ sleep 0.2
 
 echo ""
 echo "Checking for residual processes..."
-# PAL-PITFALLS #20/21 (2026-07-26): this check used to omit
+# XYZOS-PITFALLS #20/21 (2026-07-26): this check used to omit
 # palnet_peer/chat_inbox_watcher entirely, so it could print "All
 # terminated" while those two daemons were still alive and burning CPU -
 # they ARE targeted above (Layer 1b) but that kill was never verified.

@@ -15,7 +15,7 @@
  * it - every existing pal script's own `read_history xD, xS` (no
  * path) is untouched, byte-for-byte the same parse path as before.
  * This file is NOT switched onto shared-ops/prisc+x.c (see
- * pal-standards.txt §1c on when NOT to force-share): it has genuine,
+ * xyzos-standards.txt §1c on when NOT to force-share): it has genuine,
  * real Windows/MinGW support and documented ftell()-on-text-mode bug
  * fixes the shared version doesn't have - patched locally instead,
  * same "genuinely different, patch locally" precedent already used
@@ -686,7 +686,7 @@ static void win_run_close(FILE *pf, HANDLE proc) {
  * function for the full design rationale - direct user instruction,
  * "implement the ecall or w/e riscv uses for syscalls"). egg-pals
  * keeps its own local prisc+x.c (real Windows/MinGW support the
- * shared copy doesn't have - see pal-standards.txt §1c), so this had
+ * shared copy doesn't have - see xyzos-standards.txt §1c), so this had
  * to be applied here separately rather than inherited for free; kept
  * byte-identical in shape to the shared version's own copy. */
 #define SYS_OPEN       1  /* ecall "path", x15=1, x13=mode(0=r,1=w,2=a) -> x12=fd or -1 */

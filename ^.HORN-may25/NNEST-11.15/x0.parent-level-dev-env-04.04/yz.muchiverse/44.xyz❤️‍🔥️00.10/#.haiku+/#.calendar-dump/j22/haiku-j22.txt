@@ -32,7 +32,7 @@ REGISTRIES & CONFIGURATION (HIGH CONFIDENCE)
 DESIGN DOCS & DOCUMENTATION (HIGH CONFIDENCE)
   - Reading architecture docs (CHAT-INTEGRATION-ARCHITECTURE.txt,
     PAL-NET-STANDARD.txt, GRAND-ARCHITECTURE.md)
-  - Understanding the standing conventions (!.pal-standards.txt)
+  - Understanding the standing conventions (!.xyzos-standards.txt)
   - Writing new design docs or updating existing ones
   - These are safe, non-executable, and guide everything else
 
@@ -100,7 +100,7 @@ SYNCING SHARED FILES (MEDIUM CONFIDENCE)
 PROCESS LIFECYCLE & KILL PATTERNS (MEDIUM CONFIDENCE)
   - Standing rule: kill by /proc/$pid/cwd, never by argv
   - Reason: argv text is identical across sessions, cwd is session-specific
-  - pal-standards.txt sec. 23 has the exact pattern
+  - xyzos-standards.txt sec. 23 has the exact pattern
   - I understand the rule, but implementing it correctly is tricky
   - Question: is there already a helper function for this, or do ops implement
     it themselves?

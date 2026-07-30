@@ -746,7 +746,7 @@ xvfb-run -s "-screen 0 640x768x24" bash button.sh run-widget
 │   └── home/runtime/                   # 📋 Ledger location
 │       └── ledger.txt
 │
-└── #.haiku+/!.pal-standards+1.txt      # 📖 Standards
+└── #.haiku+/!.xyzos-standards+1.txt      # 📖 Standards
     └── §35.5 — House runtime ledger
 ```
 
@@ -758,7 +758,7 @@ xvfb-run -s "-screen 0 640x768x24" bash button.sh run-widget
 | `&.widgits/WIDGIT_BIBLE.md` | 📖 This document — architecture, pitfalls, HOW TO |
 | `&.widgits/file-menu/fm-widget-fix.md` | 📝 Sprint doc — everything that broke and why |
 | `&.widgits/file-menu/house-ledger-arch.md` | 📋 Ledger architecture design |
-| `#.haiku+/!.pal-standards+1.txt` | 📖 House standards (incl. §35 GL, §35.5 ledger) |
+| `#.haiku+/!.xyzos-standards+1.txt` | 📖 House standards (incl. §35 GL, §35.5 ledger) |
 
 ---
 

@@ -1,8 +1,0 @@
-89011 orchestrator
-89096 ./system/renderer
-89097 ./system/keyboard_input
-89098 ./system/chtpm_parser_pal
-89099 ./system/chtpm_rgb_render
-89104 ./system/gl_mirror
-89107 ops/+x/palnet_peer.+x
-89110 ops/+x/chat_inbox_watcher.+x

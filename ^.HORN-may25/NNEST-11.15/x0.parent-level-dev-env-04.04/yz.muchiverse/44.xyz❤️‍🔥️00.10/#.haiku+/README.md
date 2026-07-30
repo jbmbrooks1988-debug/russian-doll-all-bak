@@ -66,7 +66,7 @@ Files Haiku owns and updates. You can read these if curious, but they're Haiku's
 ## Files Not Here (But Related)
 
 - **zest-er-summary.txt** — Full session context from the previous build. Haiku reads this once per session if recent. Lives in parent directory (2.muchi-verse-0.0/).
-- **!.pal-standards.txt** — Running rulebook for the entire ecosystem. Haiku reads this for any project-specific work. Lives in parent directory.
+- **!.xyzos-standards.txt** — Running rulebook for the entire ecosystem. Haiku reads this for any project-specific work. Lives in parent directory.
 - **CURRENT_SESSION_PRIORITIES.txt** — You could also keep this in the parent directory if you prefer. Haiku will look for it here FIRST, then in parent if not found.
 
 ---

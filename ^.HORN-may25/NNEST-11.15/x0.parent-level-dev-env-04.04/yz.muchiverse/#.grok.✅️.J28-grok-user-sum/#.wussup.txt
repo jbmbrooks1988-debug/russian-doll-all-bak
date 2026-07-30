@@ -1,5 +1,9 @@
 opencode --continue   <- works. 
 
+
+📆️
+extrude emojis "backwards" maaybe b4 u push forward more or add ".config option"
+
 📆️opencode limits ran out for 16hours... 
 
 /home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST-11.14/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.10/&.widgits/file-menu/fm-widget-fix.md

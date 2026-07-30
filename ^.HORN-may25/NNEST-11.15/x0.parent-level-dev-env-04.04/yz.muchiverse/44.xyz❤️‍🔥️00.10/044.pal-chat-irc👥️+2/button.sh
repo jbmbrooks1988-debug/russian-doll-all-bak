@@ -34,7 +34,7 @@ case "$ACTION" in
             echo "Compiling orchestrator..."
             gcc -o system/orchestrator system/orchestrator.c 2>/dev/null
         fi
-        # SESSION ISOLATION (pal-standards.txt sec. 23)
+        # SESSION ISOLATION (xyzos-standards.txt sec. 23)
         SESSION_ID="$(date +%s)-$$"
         SESSION_DIR="$SCRIPT_DIR/pieces/sessions/$SESSION_ID"
         mkdir -p "$SESSION_DIR/pieces/system" "$SESSION_DIR/pieces/display" \
@@ -105,7 +105,7 @@ EOSTATE
         pkill -f "ops/\+x/palnet_peer" 2>/dev/null
         pkill -f "ops/\+x/chat_inbox_watcher" 2>/dev/null
         bash "$SCRIPT_DIR/pieces/os/kill_all.sh"
-        # PAL-PITFALLS #20/21 (2026-07-26): kill_all.sh's own kill of
+        # XYZOS-PITFALLS #20/21 (2026-07-26): kill_all.sh's own kill of
         # ops/+x/palnet_peer and ops/+x/chat_inbox_watcher has been
         # observed to be unreliable (pgrep finds them, kill -9 by PID is
         # sent, they're still alive moments later - not root-caused).

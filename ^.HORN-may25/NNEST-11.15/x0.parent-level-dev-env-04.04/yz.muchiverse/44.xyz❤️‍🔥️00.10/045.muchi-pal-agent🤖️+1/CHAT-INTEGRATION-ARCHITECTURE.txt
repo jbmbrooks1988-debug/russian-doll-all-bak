@@ -9,7 +9,7 @@ handoff.txt, ROADMAP-models.txt, main_loop.pal, project.pdl,
 default_op.txt, state.txt, piece.pdl in full, plus yz.muchiverse/
 2.muchi-verse/pal-chat-irc's own real, live-tested implementation
 (#.dox/PAL-CHAT-IRC-STANDARD.txt, its own button.sh/ops/chtpm layouts)
-and !.pal-standards.txt's session-isolation sections (23/26/27) - all
+and !.xyzos-standards.txt's session-isolation sections (23/26/27) - all
 read directly the same day pal-chat-irc was built and session-isolated,
 not secondhand.
 
@@ -55,7 +55,7 @@ mutaclsym happens to use it) already supports free-text input as a
 built-in element type. It does - real `<cli_io>` (live per-keystroke
 gui_state sync, Enter-to-submit) is exactly the mechanism this same
 session built/fixed on pal-chain, pal-forum, and pal-chat-irc (see
-!.pal-standards.txt's own cli_io section). `buffer_key.c` is a hand-
+!.xyzos-standards.txt's own cli_io section). `buffer_key.c` is a hand-
 rolled parallel to a feature the engine already had - a real gap in
 the original research, not a deliberate, well-founded architectural
 choice. This predates every real-chtpm convention this family has
@@ -73,7 +73,7 @@ stay ops, provider_kind branching stays exactly as proven in send_
 message.c/check_response.c), a swap of the INPUT/RENDER layer only:
 
   - `system/chtpm_parser_pal.c` synced in from shared-ops (sec. 24 of
-    !.pal-standards.txt's own "local copy per project" convention -
+    !.xyzos-standards.txt's own "local copy per project" convention -
     same sync_shared_op.sh mechanism every other project uses).
   - `pieces/chtpm/layouts/chat.chtpm` - ONE screen (this project has no
     login/multi-screen structure today and doesn't need one yet): a
@@ -83,7 +83,7 @@ message.c/check_response.c), a swap of the INPUT/RENDER layer only:
     keystroke live sync, Enter-to-submit (chtpm_parser_pal.c's own
     "Trigger the Send action by dispatching KEY:13", the exact
     mechanism pal-chat-irc's own room.chtpm now uses for Enter-sends-
-    chat, PAL-NET-STANDARD.txt-adjacent - see !.pal-standards.txt's
+    chat, PAL-NET-STANDARD.txt-adjacent - see !.xyzos-standards.txt's
     cli_io section for the full trace of how KEY:13 reaches an op).
     `buffer_key.c` is DELETED, not kept alongside - it becomes dead
     code the instant real cli_io does the same job natively.
@@ -103,7 +103,7 @@ message.c/check_response.c), a swap of the INPUT/RENDER layer only:
     same way pal-chat-irc's chat_menu_input.c does (see that project's
     own header comment on the ENTER-SENDS-CHAT mechanism for the
     exact, already-proven wiring to copy).
-  - Session isolation (pal-standards.txt sec. 23) applies here too,
+  - Session isolation (xyzos-standards.txt sec. 23) applies here too,
     from day one, matching pal-chat-irc's own precedent - button.sh's
     `run` action gets the same pieces/sessions/<id>/ treatment, with
     state.txt/context_log.txt as the REAL, persistent, symlinked-in
@@ -200,7 +200,7 @@ nothing here is pal-chat-irc-specific by construction):
 Read directly (not assumed): pal-chat-irc's own login.chtpm (user_id_
 input, display_name_input cli_io fields, SIGNUP/LOGIN METHODs),
 room_list.chtpm (room_name_input cli_io, JOIN_ROOM METHOD, plus the
-dynamic ${room_choices} button list - !.pal-standards.txt sec. 13's
+dynamic ${room_choices} button list - !.xyzos-standards.txt sec. 13's
 own dynamic-button convention, added same day this doc was written),
 room.chtpm (message_input cli_io, Enter-sends-chat, no separate Post
 Message button per direct user correction - see chat_menu_input.c's
@@ -402,7 +402,7 @@ engine).
 Each orchestration script's real job, concretely:
   1. Launch N muchi-pal-agent sessions (sec. 1's session isolation makes
      this safe - each gets its own pieces/sessions/<id>/, no shared-
-     file contamination, matching pal-standards.txt sec. 23's own
+     file contamination, matching xyzos-standards.txt sec. 23's own
      "manual/agent testing gotcha" writeup - an orchestration script
      IS exactly the kind of thing that writeup warns must set up real,
      distinct sessions, never launch a second instance against a

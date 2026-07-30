@@ -8,9 +8,61 @@ launcher for the two — see PART 0, a major finding from the same day
 this handoff was first drafted). It does not belong filed under either
 individual project.
 Supersedes: FIX-NAV-HANDOFF.txt (deleted — that bug is fixed, see
-!.pal-pitfalls+1.txt PITFALL 50/51; file-menu's own nav now works
+!.xyzos-pitfalls+1.txt PITFALL 50/51; file-menu's own nav now works
 standalone, verified live: cursor_pos moved 1->2->5 across repeated
 real key injections).
+================================================================================
+
+START HERE (read this block before touching anything below)
+================================================================================
+
+1. NEVER background any of these launchers with a trailing `&` from an
+   interactive shell. `./button.sh run &` SIGTTIN-stops the ENTIRE
+   daemon stack the instant keyboard_input touches the controlling
+   terminal — silent, no error, `ps aux` shows every process in state
+   T (stopped), and it looks EXACTLY like "GL never launched." This
+   cost real time this session before being root-caused. Run these in
+   the foreground. Full account: !.xyzos-pitfalls+1.txt PITFALL 53.
+
+2. Before any test run, kill stale state first:
+     sh "$HOUSE/EMERGENCY_KILL.sh"
+   As of 2026-07-30 this actually works (PITFALL 55 — the OLD version
+   used pkill -x, which the kernel's own 15-char /proc/comm truncation
+   made permanently unable to kill chtpm_parser_pal or
+   chtpm_rgb_render, silently, while still printing "All project
+   processes terminated."). Without this, repeated test runs pile up
+   — this session found THREE live file-menu sessions simultaneously,
+   each with chtpm_rgb_render pegged at 50%+ CPU for 10+ minutes,
+   because nothing had been cleaning up between attempts.
+
+3. Quick verification checklist ($HOUSE = the 44.xyz.../ directory this
+   file's own path already sits under — same dir EMERGENCY_KILL.sh
+   lives in at the top level. Literal commands, run in this order,
+   each in the FOREGROUND per item 1 above — run one, Ctrl+C or let it
+   sit a few seconds, confirm what you see, THEN move to the next):
+
+     sh "$HOUSE/EMERGENCY_KILL.sh"                    # clean slate
+     cd "$HOUSE/@.apps/text-editor-xyz" && bash button.sh run
+       # expect: TWO GL windows (editor's own + file-menu's own),
+       # both showing real rendered content, neither black. This is
+       # the ONE path that has a known race-condition history
+       # (PITFALL 54) — if either window is black, that regressed
+       # again; re-check the wait-for-current_frame.txt step in both
+       # &.widgits/file-menu/button.sh and 102.editor-📄️00.00/
+       # button.sh before doing anything else.
+     # separately, confirm standalone paths still work (PART 3.2):
+     sh "$HOUSE/EMERGENCY_KILL.sh"
+     cd "$HOUSE/102.editor-📄️00.00" && bash button.sh run
+     sh "$HOUSE/EMERGENCY_KILL.sh"
+     cd "$HOUSE/&.widgits/file-menu" && bash button.sh run
+
+4. Work-item dependency note (PART 3): 3.0 is DONE. 3.1 (auto-spawn-
+   on-demand) is NOT built yet and 3.3's own standalone-editor test
+   variant depends on it existing (3.3 step 2 explicitly assumes 3.1's
+   spawn code path fires) — build 3.1 before attempting that half of
+   3.3. The combined-launcher variant of 3.3 does NOT depend on 3.1
+   (PART 0's launcher already starts both).
+
 ================================================================================
 
 GOAL
@@ -21,7 +73,7 @@ not one faked via the other:
   1. AUTO-SPAWN ON DEMAND: user hits FILE in an editor session that was
      started standalone (102.editor-📄️00.00/button.sh run, no widget
      yet running); if no file-menu widget is already up, editor starts
-     one itself (pal-standards §35.2's own canonical design — NOT YET
+     one itself (xyzos-standards §35.2's own canonical design — NOT YET
      BUILT, see PART 3.1).
   2. LAUNCH-TOGETHER (ALREADY EXISTS — see PART 0): this directory's
      own button.sh already starts editor + file-menu together as one
@@ -73,7 +125,7 @@ own G0-G1 phases, which this handoff's own earlier draft incorrectly
 called "100% proposal-only, zero built." That characterization is
 WRONG and is corrected in PART 4 below.
 
-THAT PRIOR FIX APPEARS TO HAVE REGRESSED (see !.pal-pitfalls+1.txt
+THAT PRIOR FIX APPEARS TO HAVE REGRESSED (see !.xyzos-pitfalls+1.txt
 PITFALL 54 for the full writeup, not re-derived here): widget-bug-
 fix-j29.txt documents a three-layer race condition in chtpm_rgb_
 render's startup ordering relative to chtpm_parser_pal (the renderer's
@@ -103,7 +155,7 @@ wiring this session had copied the same broken ordering, since it was
 written against the currently-broken file-menu/button.sh as the
 reference rather than the documented fixed version). User-confirmed
 live: GL window renders real content on repeated runs after the fix.
-See !.pal-pitfalls+1.txt PITFALL 54's own 2026-07-30 update for the
+See !.xyzos-pitfalls+1.txt PITFALL 54's own 2026-07-30 update for the
 full account. STILL OPEN: re-verifying specifically through
 `@.apps/text-editor-xyz/button.sh run` (the combined launcher itself
 was never directly re-tested this session, only each project
@@ -151,16 +203,16 @@ instruction this session: fix the STANDARD, not just this one harness
 prescribes, no shortcuts.
 
 ================================================================================
-PART 2 — DONE: pal-standards §36.6 (black-box harness rigor) — ADDED
+PART 2 — DONE: xyzos-standards §36.6 (black-box harness rigor) — ADDED
 ================================================================================
 
-§36 in !.pal-standards+1.txt already existed ("36. WHERE HARNESSES
+§36 in !.xyzos-standards+1.txt already existed ("36. WHERE HARNESSES
 LIVE — PER-PROJECT vs CROSS-PROJECT", 2026-07-27) — it governs harness
 LOCATION, not testing RIGOR, and its own 36.4 already had a one-line
 "real key path when testing GUI" bullet that %.harnesses/file-menu+
 editor/ still slipped past. Added a new subsection 36.6 (after the
 existing 36.5 checklist, before SEE ALSO) — ALREADY APPLIED to
-!.pal-standards+1.txt this session, not just drafted. Read it there for
+!.xyzos-standards+1.txt this session, not just drafted. Read it there for
 the full text; summary:
 
   - Codifies _.0.aigent-testing-k3.txt's 3-level matrix (module/op,
@@ -197,7 +249,7 @@ PART 3 — CONCRETE WORK ITEMS (still open)
 3.0 RE-VERIFY / RE-FIX the PART 0 race-condition regression FIRST
 --------------------------------------------------------------------
 DONE 2026-07-30 — see PART 0's own STATUS update and
-!.pal-pitfalls+1.txt PITFALL 54's own 2026-07-30 update for the full
+!.xyzos-pitfalls+1.txt PITFALL 54's own 2026-07-30 update for the full
 account. Remaining: one explicit pass through
 `@.apps/text-editor-xyz/button.sh run` itself (the combined launcher
 wasn't directly re-tested this session, only each project standalone)
@@ -242,6 +294,39 @@ this as an explicit regression check in the new harness (3.3).
 
 3.3 LEVEL-2 HARNESS (the actual proof)
 -----------------------------------------
+DONE 2026-07-30 — built at @.apps/text-editor-xyz/test-harn-ed-app/
+(the combined-launcher variant below; the standalone-editor variant
+still depends on 3.1, not yet built). `./button.sh demo-load` /
+`demo-save` / `demo` — modular, each independently runnable, real key
+injection through real running processes (interact_relay.txt directly
+for file-menu's own buttonless layout — the real channel for that
+architecture, see PITFALL 56 — and pieces/keyboard/history.txt for
+editor's own real <button onClick="INTERACT">). Both PASS, re-verified
+clean after fixes. Full account: !.xyzos-pitfalls+1.txt PITFALL 56/58,
+test-harn-ed-app/README.txt, and
+test-harn-ed-app/FRAME_REPORT_20260730-0222_editor-widget-load-save.txt
+(the mandatory §36.6 evidence report). A human-facing summary lives at
+@.apps/text-editor-xyz/USER_GUIDE.txt.
+
+BIGGEST FINDING FROM BUILDING THIS: it caught PITFALL 58 — file-menu's
+own REAL menu-driven LOAD/SAVE/SAVE_AS/NEW/PING had been silently
+broken (wrong wdir passed to fm_enqueue_cmd.+x) since that code was
+written. The pre-existing level-1 harness (demo_load_save.sh, still at
+%.harnesses/file-menu+editor/, kept per §36.6 as a legitimate
+supplement) could not have caught this even in principle — it calls
+fm_enqueue_cmd.+x directly with the correct path, bypassing the exact
+buggy function. This is the concrete, real-world justification for
+§36.6 existing at all, not a hypothetical.
+
+The plan below is kept as the original design record; the two items
+still genuinely open are (a) the standalone-editor variant (blocked on
+3.1's own auto-spawn), and (b) 3.4's README correction for
+%.harnesses/file-menu+editor/ itself.
+
+------------------------------------------------------------------------
+ORIGINAL PLAN (historical — see DONE status above for what actually
+shipped and where it differs)
+------------------------------------------------------------------------
 Model directly on 044.pal-chat-irc👥️+2/testing/test_real_ux_2users.sh
 — the concrete "real entry point, not op-level" pattern already proven
 to work in this house.
@@ -336,6 +421,17 @@ combined launcher automatically (symlinked, not copied):
     SIGTTIN-stops the entire daemon stack the instant keyboard_input
     touches the controlling terminal — not a code bug, a usage
     pitfall; run these launchers in the foreground.
+  - @.apps/text-editor-xyz/button.sh: this combined launcher originally
+    only ever opened ONE GL window (file-menu's own, step 8) — editor's
+    own daemons (step 7) were ASCII-renderer + chtpm_parser_pal only,
+    gl_mirror/chtpm_rgb_render never wired in for the editor side at
+    all. Added editor's own GL/RGB launch (step 7b), same wait-for-
+    frame race fix as PITFALL 54, PIDs threaded into the cleanup trap.
+    Both windows now open; NOTE both will show the same hardcoded
+    gl_mirror window title ("wsr-pal RGB mirror" — not configurable
+    per-project in the current binary) — a real, pre-existing, NOT
+    fixed here limitation (see GL_CHROME_WIDGETS_PROPOSAL.md's own
+    gl_title config field, listed as future work).
 
 ================================================================================
 KEY FILES
@@ -369,13 +465,19 @@ KEY FILES
   %.harnesses/file-menu+editor/README.txt             (correct claims —
                                                         PART 3.4)
   044.pal-chat-irc👥️+2/testing/test_real_ux_2users.sh (pattern to copy)
-  #.haiku+/!.pal-standards+1.txt                       (§36.6 already
+  #.haiku+/!.xyzos-standards+1.txt                       (§36.6 already
                                                         added — PART 2)
   #.haiku+/tpmos-re-dox/_.0.aigent-testing-k3.txt      (source of the
                                                         §36.6 requirements)
-  #.haiku+/!.pal-pitfalls+1.txt                        (PITFALL 50-54,
+  #.haiku+/!.xyzos-pitfalls+1.txt                        (PITFALL 50-55,
                                                         all from this
                                                         session)
+  EMERGENCY_KILL.sh                                    (house root —
+                                                        fixed 2026-07-30,
+                                                        PITFALL 55; use
+                                                        between test
+                                                        runs, see START
+                                                        HERE above)
 
 ================================================================================
 END OF HANDOFF

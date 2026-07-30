@@ -630,7 +630,7 @@ knows these are planned, not forgotten:
   uncollided movement, `ops/move_player.c`/`ops/choice.c`), examine-at-
   a-distance (`examine_at()`), thrown-weapon combat targeting
   (`throw_at()`), and a real v1 of possession (`try_possess_at()`,
-  piece.pdl-driven `possessable` STATE field) - see pal-standards.txt
+  piece.pdl-driven `possessable` STATE field) - see xyzos-standards.txt
   §14 for the full research writeup and what's still real, deferred
   work: the FULL generic multi-entity possession mechanism (movement/
   dispatch genericized to take a piece_id, a real standalone xlector
@@ -638,7 +638,7 @@ knows these are planned, not forgotten:
   target to exercise it against until a second player-controllable
   piece exists - see the very next line.
 - **Pet/companion management** — also the real, natural next
-  possession target once built (see pal-standards.txt §14's own "NOT
+  possession target once built (see xyzos-standards.txt §14's own "NOT
   YET BUILT" list) - a companion piece with its own `possessable`
   STATE field, exercising the full generic possession mechanism for
   real instead of only ever having hero to test it against.

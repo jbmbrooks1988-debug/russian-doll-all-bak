@@ -33,6 +33,18 @@ if [ -d "$WSR" ]; then
     chmod +x system/chtpm_rgb_render system/gl_mirror 2>/dev/null || true
     echo "copied chtpm_rgb_render + gl_mirror from wsr-pal"
 
+    # Generic on-demand emoji asset generator (PITFALL 57/!.pal-2do.txt
+    # 2DO 1 real fix, 2026-07-30) — chtpm_rgb_render.c's own
+    # ensure_emoji_asset_generated() shells out to these two ops,
+    # resolved relative to THIS project's own PRISC_PROJECT_ROOT, so
+    # each project needs its own copy (matching the chtpm_rgb_render/
+    # gl_mirror pattern above exactly).
+    mkdir -p ops/+x
+    cp "$WSR/ops/+x/emoji_gen_atlas.+x" ops/+x/emoji_gen_atlas.+x 2>/dev/null || true
+    cp "$WSR/ops/+x/emoji_xtract.+x" ops/+x/emoji_xtract.+x 2>/dev/null || true
+    chmod +x ops/+x/emoji_gen_atlas.+x ops/+x/emoji_xtract.+x 2>/dev/null || true
+    echo "copied emoji_gen_atlas.+x + emoji_xtract.+x from wsr-pal"
+
     # Font glyph registry — REQUIRED for chtpm_rgb_render, project-local
     # by design, never shared/symlinked from wsr-pal directly (see
     # &.widgits/file-menu/fm-widget-fix.md's own "Missing font glyph

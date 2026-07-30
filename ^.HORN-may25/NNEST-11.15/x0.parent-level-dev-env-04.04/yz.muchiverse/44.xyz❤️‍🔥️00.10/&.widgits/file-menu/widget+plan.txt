@@ -2,7 +2,7 @@
 # House: 44.xyz  |  First widget: &.widgits/file-menu
 # Primary consumer: 102.editor (AGY buffer / file_path)
 # Pattern kin: #.drag-drop-test (file-mediated IPC), mutaclsym GL mirror
-# UI LAW: pal-standards §35 — GL PRIMARY, ASCII SECONDARY
+# UI LAW: xyzos-standards §35 — GL PRIMARY, ASCII SECONDARY
 # Status: PLAN — revised 2026-07-27 (GL-first widgets, no second TTY)
 # Date: 2026-07-27
 
@@ -36,7 +36,7 @@ First host: **102.editor**.
 Every future program should support the same **app vs widget** profiles
 so any app can open any widget-capable project as a GL window.
 
-See: #.haiku+/!.pal-standards+1.txt §35, PITFALL 49.
+See: #.haiku+/!.xyzos-standards+1.txt §35, PITFALL 49.
 
 ================================================================================
 1. LAUNCH PROFILES (ALL PROGRAMS, GOING FORWARD)
@@ -237,15 +237,15 @@ ASCII-only remains valid for harness-only CI (display=:none).
     (widget owns the cross-story). If many hosts appear later, promote
     to house-level #.file-menu-integration-test/ like #.drag-drop-test.
 
-  Law for agents: pal-standards §36.
+  Law for agents: xyzos-standards §36.
 
 ================================================================================
 11. DOC POINTERS FOR AGENTS
 ================================================================================
 
-  #.haiku+/!.pal-standards+1.txt  §35 GL primary / widget profile
-  #.haiku+/!.pal-pitfalls+1.txt   PITFALL 49
-  #.haiku+/!.pal-standards+1.txt  §11 RGB, §20 one frame writer, §34 idle
+  #.haiku+/!.xyzos-standards+1.txt  §35 GL primary / widget profile
+  #.haiku+/!.xyzos-pitfalls+1.txt   PITFALL 49
+  #.haiku+/!.xyzos-standards+1.txt  §11 RGB, §20 one frame writer, §34 idle
   this file                       product + phases + KPIs
 
 ================================================================================

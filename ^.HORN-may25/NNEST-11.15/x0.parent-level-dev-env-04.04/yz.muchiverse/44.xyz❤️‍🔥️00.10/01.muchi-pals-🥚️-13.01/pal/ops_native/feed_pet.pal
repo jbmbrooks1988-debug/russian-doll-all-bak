@@ -2,7 +2,7 @@
 # mutation: deduct FEED_COST(5) tokens from the fixed user_01 target,
 # lower the active-target pet's hunger by HUNGER_RELIEF(30) clamped to
 # >=0. Two real, named things the dispatcher (ops/muchi_menu_input.c)
-# must do first, same division of labor as coin_flip.pal (pal-standards
+# must do first, same division of labor as coin_flip.pal (xyzos-standards
 # .txt sec.21.3/21.5):
 #   1. PRECONDITION GATE: verify tokens >= 5 in C before ever launching
 #      this script (this ISA has no >= against an unbounded value - see
@@ -10,7 +10,7 @@
 #      with the same message the C original gave otherwise.
 #   2. COPY IN/OUT: the pet's own "hunger" key into/out of
 #      pieces/system/active_target.txt, per the active-target pattern
-#      (pal-standards.txt sec.21.2) - user_01's own tokens need no such
+#      (xyzos-standards.txt sec.21.2) - user_01's own tokens need no such
 #      indirection (fixed, singular target, same as claim_tokens.pal).
 #
 # hunger is clamped [0,100] everywhere else in this project

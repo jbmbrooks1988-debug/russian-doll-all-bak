@@ -4,7 +4,7 @@
 # -> chat_inbox_watcher -> trigger_render() chain).
 #
 # WHY THIS SCRIPT EXISTS: this exact chain was found COMPLETELY BROKEN
-# on 2026-07-26 (see #.haiku+/!.pal-pitfalls+1.txt PITFALL 20) - the
+# on 2026-07-26 (see #.haiku+/!.xyzos-pitfalls+1.txt PITFALL 20) - the
 # orchestrator's launch_redirect() call for palnet_peer collapsed 5
 # required args into 1 string, so palnet_peer exited on its own usage
 # message every single time, silently, into a log file nobody checked.

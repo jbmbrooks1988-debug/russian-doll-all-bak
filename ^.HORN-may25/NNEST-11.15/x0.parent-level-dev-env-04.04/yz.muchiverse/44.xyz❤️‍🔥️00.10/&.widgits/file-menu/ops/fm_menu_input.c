@@ -73,12 +73,33 @@ static int has_focus(char *session_root, size_t sr_sz) {
     return 1;
 }
 
+/* BUG FIX (2026-07-30, PITFALL 58): both functions below used to pass
+ * bare `project_root` as fm_enqueue_cmd.+x's own <widget_state_dir>
+ * argument. fm_enqueue_cmd.c reads focus from "%s/focus.txt" against
+ * THAT argument — but the real focus.txt lives at
+ * "%s/pieces/system/focus.txt" (see has_focus() a few lines above in
+ * this SAME file, and fm_set_focus.c's own real writer, which is
+ * always invoked by button.sh as
+ * `fm_set_focus.+x "$SESSION_DIR/pieces/system" "$FOCUS_SESSION"` —
+ * i.e. the "pieces/system" suffix is supplied by the CALLER, not
+ * fm_set_focus.c itself). Passing bare project_root here meant
+ * fm_enqueue_cmd.+x looked in the wrong directory, found no focus.txt,
+ * and silently exited 1 (stderr routed to /dev/null the whole way up
+ * this call chain) — every real menu-driven NEW/SAVE/SAVE_AS/LOAD/PING
+ * has been silently doing nothing since this code was written. Never
+ * caught before because %.harnesses/file-menu+editor's own level-1
+ * harness called fm_enqueue_cmd.+x DIRECTLY with the correct
+ * wdir/pieces/system argument, bypassing this exact function (and bug)
+ * entirely — the exact failure mode §36.6 exists to catch. */
+#define FM_WIDGET_STATE_SUBDIR "pieces/system"
+
 static void enqueue_cmd(const char *cmd) {
-    char cmd_path[PATH_BUF];
+    char cmd_path[PATH_BUF], wdir[PATH_BUF];
     snprintf(cmd_path, sizeof(cmd_path), "%s/ops/+x/fm_enqueue_cmd.+x", project_root);
+    snprintf(wdir, sizeof(wdir), "%s/%s", project_root, FM_WIDGET_STATE_SUBDIR);
     pid_t pid = fork();
     if (pid == 0) {
-        char *args[] = { cmd_path, project_root, (char *)cmd, NULL };
+        char *args[] = { cmd_path, wdir, (char *)cmd, NULL };
         execvp(args[0], args);
         _exit(1);
     }
@@ -86,11 +107,12 @@ static void enqueue_cmd(const char *cmd) {
 }
 
 static void enqueue_cmd_with_path(const char *cmd, const char *path_arg) {
-    char cmd_path[PATH_BUF];
+    char cmd_path[PATH_BUF], wdir[PATH_BUF];
     snprintf(cmd_path, sizeof(cmd_path), "%s/ops/+x/fm_enqueue_cmd.+x", project_root);
+    snprintf(wdir, sizeof(wdir), "%s/%s", project_root, FM_WIDGET_STATE_SUBDIR);
     pid_t pid = fork();
     if (pid == 0) {
-        char *args[] = { cmd_path, project_root, (char *)cmd, (char *)path_arg, NULL };
+        char *args[] = { cmd_path, wdir, (char *)cmd, (char *)path_arg, NULL };
         execvp(args[0], args);
         _exit(1);
     }
@@ -467,22 +489,68 @@ static void handle_peer_list(const char *fm_path, int key) {
     write_kv(fm_path, "cursor_pos", buf);
 }
 
-int main(int argc, char **argv) {
-    int key = (argc > 1) ? atoi(argv[1]) : 0;
+/* PASTE mode (2026-07-30): a real keypress is one int, matching a
+ * physical keyboard's one-scancode-per-keystroke model — the FILE/
+ * SEARCH field's own typing path (key >= 32 && key <= 126 above) can
+ * only ever accept single-byte ASCII, same as a real keyboard sends
+ * one scancode per press. An emoji/multi-byte UTF-8 character was
+ * never one keystroke either — on a real system it arrives via IME
+ * composition or a paste action, not a bare keycode. This project's
+ * own house directory tree has emoji path segments
+ * (🤖️🪤️🏠️, 🥡️🪜️, ❤️‍🔥️, ...) that could never be typed character-by-
+ * character through the FILE field for exactly this reason (confirmed
+ * live: iterating a UTF-8 string one "keycode" at a time drops every
+ * multi-byte sequence). PASTE is a genuinely separate mechanism from
+ * keystroke simulation — it takes the full string as one argv,
+ * appends it whole (real UTF-8 bytes, no per-character validation),
+ * to whichever field is currently selected. Only valid in
+ * file_browser mode (SEARCH/FILE fields); a no-op otherwise. */
+static void handle_paste(const char *fm_path, const char *text) {
+    char mode[64];
+    read_kv(fm_path, "mode", mode, sizeof(mode));
+    if (strcmp(mode, "file_browser") != 0) return;
 
+    char cursor_str[64];
+    int cursor_pos = 0;
+    read_kv(fm_path, "cursor_pos", cursor_str, sizeof(cursor_str));
+    if (cursor_str[0]) cursor_pos = atoi(cursor_str);
+
+    if (cursor_pos == 0) {
+        char search_text[MAX_LINE];
+        read_kv(fm_path, "search_text", search_text, sizeof(search_text));
+        size_t len = strlen(search_text);
+        snprintf(search_text + len, sizeof(search_text) - len, "%s", text);
+        write_kv(fm_path, "search_text", search_text);
+    } else if (cursor_pos == 1) {
+        char path_buffer[MAX_LINE];
+        read_kv(fm_path, "path_buffer", path_buffer, sizeof(path_buffer));
+        size_t len = strlen(path_buffer);
+        snprintf(path_buffer + len, sizeof(path_buffer) - len, "%s", text);
+        write_kv(fm_path, "path_buffer", path_buffer);
+    }
+}
+
+int main(int argc, char **argv) {
     resolve_root();
 
-    if (key != 0) {
-        char fm_path[PATH_BUF], mode[64];
+    if (argc >= 3 && strcmp(argv[1], "PASTE") == 0) {
+        char fm_path[PATH_BUF];
         snprintf(fm_path, sizeof(fm_path), "%s/pieces/system/fm_state.txt", project_root);
-        read_kv(fm_path, "mode", mode, sizeof(mode));
+        handle_paste(fm_path, argv[2]);
+    } else {
+        int key = (argc > 1) ? atoi(argv[1]) : 0;
+        if (key != 0) {
+            char fm_path[PATH_BUF], mode[64];
+            snprintf(fm_path, sizeof(fm_path), "%s/pieces/system/fm_state.txt", project_root);
+            read_kv(fm_path, "mode", mode, sizeof(mode));
 
-        if (strcmp(mode, "main_menu") == 0 || !mode[0]) {
-            handle_main_menu(fm_path, key);
-        } else if (strcmp(mode, "file_browser") == 0) {
-            handle_file_browser(fm_path, key);
-        } else if (strcmp(mode, "peer_list") == 0) {
-            handle_peer_list(fm_path, key);
+            if (strcmp(mode, "main_menu") == 0 || !mode[0]) {
+                handle_main_menu(fm_path, key);
+            } else if (strcmp(mode, "file_browser") == 0) {
+                handle_file_browser(fm_path, key);
+            } else if (strcmp(mode, "peer_list") == 0) {
+                handle_peer_list(fm_path, key);
+            }
         }
     }
 

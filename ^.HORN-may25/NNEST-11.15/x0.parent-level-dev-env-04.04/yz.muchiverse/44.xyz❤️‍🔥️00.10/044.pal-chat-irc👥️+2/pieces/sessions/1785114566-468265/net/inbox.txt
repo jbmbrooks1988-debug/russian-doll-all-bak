@@ -1,2 +1,0 @@
-pal-chat-irc-irc_node-468457|MSG|1785114601-0-472267|harness_room_468200|hbob_468200|1785114601|reply via the ops-based harness
-pal-chat-irc-irc_node-468457|MSG|1785114601-0-472267|harness_room_468200|hbob_468200|1785114601|reply via the ops-based harness

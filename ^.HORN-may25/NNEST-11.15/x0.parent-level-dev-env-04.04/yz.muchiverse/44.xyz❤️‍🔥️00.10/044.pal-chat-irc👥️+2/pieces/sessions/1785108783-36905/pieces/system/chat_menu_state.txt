@@ -1,2 +1,0 @@
-last_message=Posted to uxtest_36868.
-current_room=uxtest_36868

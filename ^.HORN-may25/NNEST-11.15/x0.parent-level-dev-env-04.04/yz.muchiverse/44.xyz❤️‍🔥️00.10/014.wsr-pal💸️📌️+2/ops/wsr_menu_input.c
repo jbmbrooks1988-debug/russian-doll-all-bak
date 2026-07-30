@@ -1,7 +1,7 @@
 /* wsr_menu_input - piece.pdl METHOD-table-driven ACTION dispatch for
  * whichever wsr-pal screen is currently showing.
  *
- * REWRITTEN (pal-standards.txt sec. 18): screen SWITCHING is no longer
+ * REWRITTEN (xyzos-standards.txt sec. 18): screen SWITCHING is no longer
  * this op's job at all. Each wsr-pal screen (wsr_main_menu,
  * wsr_trade_menu, etc.) is now its own real `.chtpm` layout file, and
  * moving between them is a real `<button href="...">` - chtpm's own
@@ -16,7 +16,7 @@
  * WHICH SCREEN IS CURRENT is no longer tracked as separate mutable
  * state that something has to remember to keep in sync (the exact
  * class of bug that caused this rewrite in the first place - see
- * pal-standards.txt sec. 18's own account of the piece.pdl format
+ * xyzos-standards.txt sec. 18's own account of the piece.pdl format
  * drift). It's derived fresh, every call, straight from
  * `pieces/display/current_layout.txt` - a real, existing chtpm export
  * (`parse_chtm()`'s own "EXPORT CURRENT LAYOUT FOR MODULE HEARTBEAT"

@@ -8,7 +8,7 @@
  * the timestamped "[ts] KEY_PRESSED: N" format some other TPMOS
  * subsystems use).
  *
- * NOT switched onto shared-ops/keyboard_input.c (see pal-standards.txt
+ * NOT switched onto shared-ops/keyboard_input.c (see xyzos-standards.txt
  * §1c on when NOT to force-share): this file has genuine, real Win32
  * Console API support the shared version doesn't have - patched here
  * locally instead, same precedent already used for wsr-pal's own
@@ -228,7 +228,7 @@ static int read_key(void) {
     int nread;
     while ((nread = read(STDIN_FILENO, &c, 1)) != 1) {
         if (nread == -1 && errno != EAGAIN) return -1;
-        /* PAL-PITFALLS #22 (2026-07-26): nread==0 (EOF/no data) has no
+        /* XYZOS-PITFALLS #22 (2026-07-26): nread==0 (EOF/no data) has no
          * natural throttle here on a non-tty stdin - a real terminal's
          * VMIN=0/VTIME=1 (set in enable_raw_mode()) makes read() block
          * ~100ms before returning 0, but tcsetattr() silently fails on a

@@ -49,7 +49,7 @@ no_key:
 
 **IMPORTANT:** The instruction to call ops is `exec`, NOT `op`.
 `op` doesn't exist in prisc+x and will silently do nothing.
-See `!.pal-pitfalls+1.txt` pitfall #13.
+See `!.xyzos-pitfalls+1.txt` pitfall #13.
 
 This is a persistent loop that polls for input, dispatches actions,
 and sleeps — exactly what a C game manager does, but as a text script.
@@ -418,7 +418,7 @@ my-project/
 
 ## References
 
-- `#.haiku+/!.pal-standards.txt` — full PAL standards (3360 lines)
+- `#.haiku+/!.xyzos-standards.txt` — full PAL standards (3360 lines)
 - `45.muchi-pal-agent🤖️/pal/main_loop_chtpm.pal` — working PAL script example
 - `45.muchi-pal-agent🤖️/button.sh` — full launch script with session isolation
 - `x0.moke-pet-project-04.04/` — canonical reference for render pipeline

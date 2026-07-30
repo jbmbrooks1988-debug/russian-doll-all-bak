@@ -2,7 +2,7 @@
  * whichever muchi-pals screen is currently showing, modeled directly on
  * pal-chain's own ops/chain_menu_input.c (real, live-verified precedent
  * for this whole family's href+${piece_methods} chtpm standard - see
- * pal-standards.txt sec.6/12/16/18). Screen SWITCHING (main<->faucet<->
+ * xyzos-standards.txt sec.6/12/16/18). Screen SWITCHING (main<->faucet<->
  * store<->pets<->processes<->user) is a real chtpm <button href="...">,
  * handled entirely by chtpm_parser_pal.c - never this op's job (sec.18).
  * "Which screen is current" is derived fresh every call from
@@ -10,7 +10,7 @@
  * state, exactly like chain_menu_input.c's own get_current_piece_id().
  *
  * PETS SCREEN IS ONE FILE, NOT TWO (a real, considered choice, not an
- * oversight): pal-standards.txt sec.13 (variable-length submenus) says
+ * oversight): xyzos-standards.txt sec.13 (variable-length submenus) says
  * a dynamic-length list/detail flow is an op-driven CONTENT SWAP within
  * one screen, and sec.18 forbids simulating a screen change via op-side
  * state instead of a real href. Both together rule out a separate
@@ -27,7 +27,7 @@
  * itself ("Back to Main") is the one static escape hatch back to main
  * regardless of which of the two states is showing.
  *
- * ACTIVE-TARGET INDIRECTION (pal-standards.txt sec.21): per-pet real
+ * ACTIVE-TARGET INDIRECTION (xyzos-standards.txt sec.21): per-pet real
  * pal ops (toggle_sleep.pal/clean_pet.pal/feed_pet.pal) can't receive
  * "which pet" as an argument - prisc+x's own main() has no argv-into-a-
  * launched-script mechanism. This op copies the selected pet's own
@@ -156,7 +156,7 @@ static void append_ledger(const char *piece_id, const char *key, const char *val
     fclose(f);
 }
 
-/* ---- active-target indirection (pal-standards.txt sec.21.2) ---- */
+/* ---- active-target indirection (xyzos-standards.txt sec.21.2) ---- */
 
 static void active_target_path(char *out, size_t out_sz) {
     snprintf(out, out_sz, "%s/pieces/system/active_target.txt", project_root);
@@ -194,7 +194,7 @@ static void active_target_clear(void) {
 /* Runs a real pal-native op (pal/ops_native/<name>.pal) via
  * system/prisc+x, synchronously - same "dispatch, run to completion,
  * then compose" shape every other op call in this family already uses
- * (pal-standards.txt sec.0-CORRECTED). PRISC_PROJECT_ROOT is already in
+ * (xyzos-standards.txt sec.0-CORRECTED). PRISC_PROJECT_ROOT is already in
  * this process's own environment (set by button.sh), inherited by the
  * child automatically - no need to re-pass it. */
 static void run_pal_op(const char *pal_relpath) {
@@ -478,7 +478,7 @@ static int load_menu_items(const char *piece_id, MenuItem *items, int max_items)
 }
 
 /* ---- pets screen: piece.pdl is GENERATED, not hand-authored (see this
- * file's own top-of-file comment for the full why - pal-standards.txt
+ * file's own top-of-file comment for the full why - xyzos-standards.txt
  * sec.13/18) ---- */
 
 static void pets_state_path(char *out, size_t out_sz) {
@@ -609,7 +609,7 @@ int main(int argc, char **argv) {
     MenuItem items[MAX_MENU_ITEMS];
     int item_count = load_menu_items(active_piece, items, MAX_MENU_ITEMS);
 
-    /* pal-standards.txt sec.16.2/16.2a: real chtpm_parser_pal.c's own
+    /* xyzos-standards.txt sec.16.2/16.2a: real chtpm_parser_pal.c's own
      * load_dynamic_methods() starts method_idx at 2 (confirmed by
      * direct read, system/chtpm_parser_pal.c ~line 1003 - unconditional
      * for any non-"loader" active_id, regardless of layout content), so
@@ -649,7 +649,7 @@ int main(int argc, char **argv) {
             /* Randomness generated HERE, in C, and handed to the pal
              * script through the same active_target.txt scratch file
              * every other value crosses this boundary through - no new
-             * ecall syscall needed (pal-standards.txt sec.21.5, revised
+             * ecall syscall needed (xyzos-standards.txt sec.21.5, revised
              * after direct feedback that a plain C-generated value
              * handed through the existing file mechanism is simpler
              * than growing the VM). */

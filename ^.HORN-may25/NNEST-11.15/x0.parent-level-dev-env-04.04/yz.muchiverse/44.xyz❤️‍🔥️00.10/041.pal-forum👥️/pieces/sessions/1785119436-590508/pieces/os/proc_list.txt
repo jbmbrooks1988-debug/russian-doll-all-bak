@@ -1,6 +1,0 @@
-590528 orchestrator
-590533 ./system/renderer
-590536 ./system/chtpm_parser_pal
-590537 ./system/chtpm_rgb_render
-590544 ./ops/+x/palnet_peer.+x
-590547 ./ops/+x/forum_inbox_watcher.+x

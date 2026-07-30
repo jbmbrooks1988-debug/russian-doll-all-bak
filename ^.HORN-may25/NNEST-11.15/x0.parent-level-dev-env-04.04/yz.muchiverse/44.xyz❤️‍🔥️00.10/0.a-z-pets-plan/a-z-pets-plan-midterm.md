@@ -38,7 +38,7 @@ no orchestrator yet, writes into a plain `users/<id>/` folder
 Source of truth for this slice: **this midterm doc + live code under
 `0.user-pal/00.login-signup/`**. `#.haiku+` is useful for UX-injection
 rules (`!.local-ux-testing-ai.txt`, testing methodology) and for the
-identity model (pal-standards §26 / USER-PAL-STANDARD), but its
+identity model (xyzos-standards §26 / USER-PAL-STANDARD), but its
 session priorities (Gemma scaffolding etc.) are stale.
 
 **Do now (done this session):**

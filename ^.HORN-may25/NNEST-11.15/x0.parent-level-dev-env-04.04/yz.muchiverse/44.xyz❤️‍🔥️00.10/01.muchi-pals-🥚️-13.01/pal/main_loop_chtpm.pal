@@ -1,7 +1,7 @@
 # main_loop_chtpm.pal - muchi-pals CHTPM-MODULE VARIANT, modeled
 # directly on pal-chain's own pal/main_loop_chtpm.pal (real, live-
 # verified precedent for this whole family's href+${piece_methods}
-# chtpm standard - see pal-standards.txt sec.6/12/16/18/19). ONE
+# chtpm standard - see xyzos-standards.txt sec.6/12/16/18/19). ONE
 # persistent process, shared identically by EVERY .chtpm layout's own
 # <module> tag - screen switching is chtpm's own real href job, never
 # this script's (sec.18); this script never restarts across a
@@ -9,7 +9,7 @@
 # launch_module() guard keeps it that way (sec.19). Supersedes this
 # project's own earlier interact+module/"Control Pets" version (sec.16
 # retired that pattern for pure discrete-menu games like this one, in
-# favor of ${piece_methods} - see pal-standards.txt sec.0-CORRECTED
+# favor of ${piece_methods} - see xyzos-standards.txt sec.0-CORRECTED
 # item 3 and sec.16 for why <module>/<interact> themselves still stay).
 #
 #   - read_history reads pieces/apps/player_app/interact_relay.txt via

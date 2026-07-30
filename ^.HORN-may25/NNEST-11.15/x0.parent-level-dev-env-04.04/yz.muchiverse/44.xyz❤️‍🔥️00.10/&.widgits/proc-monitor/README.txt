@@ -9,5 +9,5 @@ User can:
   - maybe open/raise GL window later
 
 Full plan: &.widgits/WIDGETS_ROADMAP.txt §PROC
-Standards: XYZOS_README.md, pal-standards §35–36
+Standards: XYZOS_README.md, xyzos-standards §35–36
 Harness (later): %.harnesses/proc-monitor+runtime/ or multi with file-menu

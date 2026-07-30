@@ -1574,7 +1574,7 @@ void inject_raw_key(int code) {
     }
 }
 
-/* PAL-STANDARDS sec. 0 (FOUNDATIONAL CORRECTION - SYNCHRONOUS INTERACT
+/* XYZOS-STANDARDS sec. 0 (FOUNDATIONAL CORRECTION - SYNCHRONOUS INTERACT
  * DISPATCH): real/classic chtpm invokes an op SYNCHRONOUSLY per
  * keypress (fork/exec/waitpid, done and finished before the next
  * render - confirmed via direct read of real fuzz-op_manager.c's own
@@ -1587,7 +1587,7 @@ void inject_raw_key(int code) {
  * nor is the deviation deliberate ... never assume we meant to deviate
  * from classic chtpm standards other than 2 use more pal." That
  * unsynchronized, two-process design is the root cause of an entire
- * class of races documented elsewhere in pal-standards.txt (sec. 16.3,
+ * class of races documented elsewhere in xyzos-standards.txt (sec. 16.3,
  * 17) - dispatch and render were never actually causally ordered, only
  * eventually-consistent across two independently-timed poll loops.
  *
@@ -1645,7 +1645,7 @@ void run_module_synchronous(int key) {
     /* Windows: _spawnl with _P_WAIT blocks until the child exits, the
      * direct synchronous equivalent of fork+execv+waitpid above -
      * matching this family's own documented Process Management Parity
-     * convention (pal-standards.txt's own cross-platform section). */
+     * convention (xyzos-standards.txt's own cross-platform section). */
     _spawnv(_P_WAIT, args[0], (const char* const*)args);
 #endif
 
@@ -1724,7 +1724,7 @@ void launch_module(const char* launch_str) {
         }
     }
 
-    /* CORRECTED ENTRY (pal-standards.txt sec. 18/19 - the original
+    /* CORRECTED ENTRY (xyzos-standards.txt sec. 18/19 - the original
      * version of this guard, written same session as the sec. 0
      * synchronous-dispatch fix, was itself an unintentional reinvention,
      * caught by directly comparing against real classic chtpm_parser.c
@@ -2200,7 +2200,7 @@ void parse_attributes(UIElement* el, const char* attr_str) {
         while (*pos && isspace((unsigned char)*pos)) { pos++; } if (!*pos) break;
         char* name_start = pos; while (*pos && *pos != '=' && !isspace((unsigned char)*pos)) { pos++; }
         /* HEAP-BUFFER-OVERFLOW FIX (2026-07-26, found via AddressSanitizer,
-         * see #.haiku+/!.pal-pitfalls+1.txt): the original
+         * see #.haiku+/!.xyzos-pitfalls+1.txt): the original
          * `while (*(++pos) && isspace(*pos));` unconditionally advances pos
          * PAST the just-written null terminator before ever checking it -
          * when the attribute name runs all the way to the end of the
@@ -3509,7 +3509,7 @@ void process_key(int key) {
             else if (key >= JOY_BUTTON_0 && key <= JOY_BUTTON_8) eff = 2000 + (key - JOY_BUTTON_0);
             /* REVERTED (real bug, live-caught 2026-07-19, cross-checked
              * agent-to-agent - see yz.muchiverse/2.muchi-verse/
-             * agent-b-notepad.txt): a prior "PAL-STANDARDS sec. 0"
+             * agent-b-notepad.txt): a prior "XYZOS-STANDARDS sec. 0"
              * pass replaced this with a blocking run_module_synchronous()
              * call, on the claim that real chtpm/fuzz-op dispatches
              * INTERACT keys via a synchronous fork+exec+waitpid FROM

@@ -13,7 +13,7 @@ case "$ACTION" in
         ;;
     run|r|start)
         cd "$SCRIPT_DIR"
-        # SESSION ISOLATION (pal-standards.txt sec. 23, USER-PAL-STANDARD.txt
+        # SESSION ISOLATION (xyzos-standards.txt sec. 23, USER-PAL-STANDARD.txt
         # sec. 3) - every "run" gets a private, throwaway directory for
         # its own ephemeral UI state (keyboard history, interact_relay,
         # gui_state), deleted on exit.

@@ -6,7 +6,7 @@ Before answering ANY question or starting ANY work:
 
 PRIORITY (always read):
 1. Read #.haiku/for-user/user.txt — know who this person is
-2. Read !.pal-standards.txt (parent dir, 2.muchi-verse-0.0/) — THE running rulebook for all projects
+2. Read !.xyzos-standards.txt (parent dir, 2.muchi-verse-0.0/) — THE running rulebook for all projects
 3. Read #.haiku/for-user/CURRENT_SESSION_PRIORITIES.txt — what they're focusing on RIGHT NOW
 
 REFERENCE (always available, check if relevant):
@@ -63,7 +63,7 @@ To test without a real UI:
 
 **On any work involving C ops:**
 - Read the op's own header comment FIRST (don't assume what it does)
-- Check pal-standards.txt sec. 23 for kill patterns (match the cwd-match-then-kill pattern used everywhere)
+- Check xyzos-standards.txt sec. 23 for kill patterns (match the cwd-match-then-kill pattern used everywhere)
 - Verify the op doesn't write to display/current_frame.txt (only chtpm does that)
 
 **On any work involving .pal scripts:**
@@ -168,7 +168,7 @@ Only hand off when the core work is reasoning that spans too much context, not w
 - Small context window: load the context files FIRST, don't rely on me remembering things
 - Slower reasoning: for hard design problems, ask the user to clarify or propose a direction
 - Less reliable at novel problems: verify by running code, don't trust reasoning alone
-- Will miss subtle gotchas: read pal-standards.txt every time you work on something new, don't skip "because it looks small"
+- Will miss subtle gotchas: read xyzos-standards.txt every time you work on something new, don't skip "because it looks small"
 - Can't hold entire codebase in mind: use grep, use Explore agent for codebase search, don't try to reason about unknown files
 
 ## TWELFTH: Your Job on Cold Start

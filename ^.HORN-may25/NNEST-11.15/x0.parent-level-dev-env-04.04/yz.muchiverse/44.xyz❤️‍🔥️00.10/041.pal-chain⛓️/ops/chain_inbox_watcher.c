@@ -209,7 +209,7 @@ static void handle_tx_line(const char *line) {
     if (pending_contains(tx_id) || chain_contains(tx_id)) {
         /* Already applied - possibly by a sibling SESSION of this same
          * real project writing the SAME shared data/ files directly
-         * (pal-standards.txt sec. 23's own "what stays shared" list) -
+         * (xyzos-standards.txt sec. 23's own "what stays shared" list) -
          * see chat_inbox_watcher.c's own identical fix/comment for the
          * live-caught bug this addresses: "already in the file" is not
          * the same question as "did THIS session already render it." */

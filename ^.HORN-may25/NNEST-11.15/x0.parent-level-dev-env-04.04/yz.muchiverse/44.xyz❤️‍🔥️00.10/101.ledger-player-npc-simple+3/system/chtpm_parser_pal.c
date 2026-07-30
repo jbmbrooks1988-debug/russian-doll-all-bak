@@ -1495,7 +1495,7 @@ void inject_raw_key(int code) {
     }
 }
 
-/* PAL-STANDARDS sec. 0-CORRECTED (2026-07-19): the old
+/* XYZOS-STANDARDS sec. 0-CORRECTED (2026-07-19): the old
  * run_module_synchronous() function that lived here (a blocking
  * fork/exec/waitpid on current_module_path, called from process_key()'s
  * own INTERACT branch) was reverted the same day it was written - it
@@ -1582,7 +1582,7 @@ void launch_module(const char* launch_str) {
         }
     }
 
-    /* CORRECTED ENTRY (pal-standards.txt sec. 18/19 - the original
+    /* CORRECTED ENTRY (xyzos-standards.txt sec. 18/19 - the original
      * version of this guard, written same session as the sec. 0
      * synchronous-dispatch fix, was itself an unintentional reinvention,
      * caught by directly comparing against real classic chtpm_parser.c
@@ -1980,7 +1980,7 @@ void parse_attributes(UIElement* el, const char* attr_str) {
         while (*pos && isspace((unsigned char)*pos)) { pos++; } if (!*pos) break;
         char* name_start = pos; while (*pos && *pos != '=' && !isspace((unsigned char)*pos)) { pos++; }
         /* HEAP-BUFFER-OVERFLOW FIX (2026-07-26, found via AddressSanitizer
-         * on 041.pal-chain's copy, see #.haiku+/!.pal-pitfalls+1.txt): the
+         * on 041.pal-chain's copy, see #.haiku+/!.xyzos-pitfalls+1.txt): the
          * original `while (*(++pos) && isspace(*pos));` unconditionally
          * advances pos PAST the just-written null terminator before ever
          * checking it - when the attribute name runs all the way to the
@@ -3211,7 +3211,7 @@ void process_key(int key) {
             else if (key >= JOY_BUTTON_0 && key <= JOY_BUTTON_8) eff = 2000 + (key - JOY_BUTTON_0);
             /* REVERTED (real bug, live-caught 2026-07-19, cross-checked
              * agent-to-agent - see yz.muchiverse/2.muchi-verse/
-             * agent-b-notepad.txt): a prior "PAL-STANDARDS sec. 0"
+             * agent-b-notepad.txt): a prior "XYZOS-STANDARDS sec. 0"
              * pass replaced this with a blocking run_module_synchronous()
              * call, on the claim that real chtpm/fuzz-op dispatches
              * INTERACT keys via a synchronous fork+exec+waitpid FROM

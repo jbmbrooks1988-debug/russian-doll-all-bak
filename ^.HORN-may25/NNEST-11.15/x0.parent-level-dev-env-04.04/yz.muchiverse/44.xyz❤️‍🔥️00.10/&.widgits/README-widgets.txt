@@ -30,4 +30,4 @@ Dev status:
   GL_CHROME_WIDGETS_PROPOSAL.md  (not code)
   ../ARCHI_TEST_SUM-J28.txt §10 coding-complete stamp
 
-Standards: ❤️.XYZOS_README.md , #.haiku+/!.pal-standards+1.txt §35–36
+Standards: ❤️.XYZOS_README.md , #.haiku+/!.xyzos-standards+1.txt §35–36

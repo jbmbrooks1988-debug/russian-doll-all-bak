@@ -1,4 +1,4 @@
-PAL-STANDARDS+1 — additions established 2026-07-28 session
+XYZOS-STANDARDS+1 — additions established 2026-07-28 session
 ========================================================================
 App + widget architecture, launch profiles, file-mediated IPC between
 separate programs, gl_window as primary surface, and the widget cmd bus.

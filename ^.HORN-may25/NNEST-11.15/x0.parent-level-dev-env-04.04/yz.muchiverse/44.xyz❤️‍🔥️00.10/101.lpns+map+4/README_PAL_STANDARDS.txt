@@ -5,7 +5,7 @@
 ARCHITECTURE OVERVIEW
 ================================================================================
 
-This +3 version follows the muchiverse pal-standards.txt exactly:
+This +3 version follows the muchiverse xyzos-standards.txt exactly:
 
 ✓ PERSISTENT MODULE PROCESS
   - prisc+x running pal/main_loop_chtpm.pal (not one-shot script)

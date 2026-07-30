@@ -1,7 +1,0 @@
-144769 orchestrator
-144888 ./system/renderer
-144891 ./system/keyboard_input
-144892 ./system/chtpm_parser_pal
-144893 ./system/chtpm_rgb_render
-144898 ops/+x/palnet_peer.+x
-144901 ops/+x/chat_inbox_watcher.+x

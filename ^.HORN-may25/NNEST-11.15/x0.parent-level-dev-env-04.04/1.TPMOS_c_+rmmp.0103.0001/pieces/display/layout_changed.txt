@@ -1,0 +1,2 @@
+projects/agy-text-editor/layouts/file_browser.chtpm
+projects/agy-text-editor/layouts/file_browser.chtpm

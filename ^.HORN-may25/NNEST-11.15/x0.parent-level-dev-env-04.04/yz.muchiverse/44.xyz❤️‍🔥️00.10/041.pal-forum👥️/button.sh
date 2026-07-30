@@ -27,7 +27,7 @@ case "$ACTION" in
             echo "Compiling orchestrator..."
             gcc -o system/orchestrator system/orchestrator.c 2>/dev/null
         fi
-        # SESSION ISOLATION (see pal-standards.txt sec. 23) - real fix
+        # SESSION ISOLATION (see xyzos-standards.txt sec. 23) - real fix
         # for a real, live-caught bug: two concurrent invocations of
         # "run" (an agent testing + a real user, or two of either) used
         # to share ONE fixed set of ephemeral UI/input state files
@@ -189,7 +189,7 @@ EOSTATE
         pkill -f "ops/\+x/palnet_peer" 2>/dev/null
         pkill -f "ops/\+x/forum_inbox_watcher" 2>/dev/null
         bash "$SCRIPT_DIR/pieces/os/kill_all.sh"
-        # See #.haiku+/!.pal-pitfalls+1.txt PITFALL 20/21 - verify
+        # See #.haiku+/!.xyzos-pitfalls+1.txt PITFALL 20/21 - verify
         # independently rather than trusting kill_all.sh's own message.
         sleep 0.5
         STRAGGLERS=$(pgrep -f "ops/\+x/(palnet_peer|forum_inbox_watcher)" 2>/dev/null)

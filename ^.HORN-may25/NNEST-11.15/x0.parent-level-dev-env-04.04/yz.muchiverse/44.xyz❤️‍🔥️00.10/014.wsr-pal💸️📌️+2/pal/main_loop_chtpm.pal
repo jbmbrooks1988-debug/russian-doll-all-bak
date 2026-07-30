@@ -1,5 +1,5 @@
 # wsr-pal main_loop.pal - CHTPM-MODULE VARIANT (see
-# chtpm-to-pal-layout-plan.txt §8 and pal-standards.txt §7, and this
+# chtpm-to-pal-layout-plan.txt §8 and xyzos-standards.txt §7, and this
 # family's own real precedent in egg-pals' pal/main_loop_chtpm.pal,
 # modeled on directly - wsr-pal has no map/movement concept, same
 # shape as egg-pals, NOT mutaclsym's own movement-plus-menu variant).

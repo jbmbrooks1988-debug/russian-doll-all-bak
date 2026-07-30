@@ -4,13 +4,13 @@
 #
 # Status: muchi-pals is egg-pals renamed and rebuilt onto this family's
 # real chtpm-native standard (href navigation + ${piece_methods} action
-# dispatch, pal-standards.txt sec.6/12/16/18/19) - `./button.sh run`
+# dispatch, xyzos-standards.txt sec.6/12/16/18/19) - `./button.sh run`
 # launches straight into pieces/chtpm/layouts/main.chtpm, dispatched by
 # ops/muchi_menu_input.c + rendered by ops/muchi_compose_frame.c, both
 # invoked from the single persistent pal/main_loop_chtpm.pal module every
 # screen shares. Where feasible, per-instance action logic (claim tokens,
 # coin flip, toggle sleep, clean, feed) now runs as real pal/ecall
-# bytecode (pal/ops_native/*.pal) instead of C - see pal-standards.txt
+# bytecode (pal/ops_native/*.pal) instead of C - see xyzos-standards.txt
 # sec.21 for the active-target indirection pattern that makes a pal op
 # addressable to "whichever pet is currently selected" despite prisc+x
 # having no argv-into-a-launched-script mechanism yet. The original
@@ -84,7 +84,7 @@ case "$ACTION" in
         cat "pieces/world_01/map_lobby/user_01/inventory.txt"
         ;;
     run|r|start|chtpm|menu)
-        # Real href + ${piece_methods} chtpm-native flow (pal-standards.txt
+        # Real href + ${piece_methods} chtpm-native flow (xyzos-standards.txt
         # sec.6/12/16/18/19) - this IS the primary way to play muchi-pals
         # now, same shape as pal-chain's/wsr-pal's own real button.sh "run"
         # action, matching real chtpm/wraith-alpha precedent directly
@@ -150,7 +150,7 @@ case "$ACTION" in
         : > pieces/keyboard/history.txt
         : > pieces/display/pending_command.txt
         : > pieces/display/muchi_screen_changed.txt
-        # pal-standards.txt sec.16.4: navigation-position state must be
+        # xyzos-standards.txt sec.16.4: navigation-position state must be
         # reset on EVERY launch, never just a separate "new game" action -
         # these are pure session/UI-position files, never real game
         # progress (tokens/pet stats live in pieces/world_01/ instead,
@@ -159,7 +159,7 @@ case "$ACTION" in
         : > pieces/system/last_message.txt
         : > pieces/system/active_target.txt
         : > projects/muchi-pals/manager/gui_state.txt
-        # REAL BUG FIX (pal-standards.txt sec.8.7 / this file's own prior
+        # REAL BUG FIX (xyzos-standards.txt sec.8.7 / this file's own prior
         # "chtpm" action already had this): system/renderer.c's own loop
         # is `while (!quit_requested())`, checking whether
         # pieces/system/quit_flag.txt is non-empty - written by
@@ -168,7 +168,7 @@ case "$ACTION" in
         # the NEXT launch's own renderer sees quit_requested()==true
         # before its own loop even starts - one frame prints, then exits.
         : > pieces/system/quit_flag.txt
-        # pal-standards.txt sec.16.1: project_id/active_target_id must be
+        # xyzos-standards.txt sec.16.1: project_id/active_target_id must be
         # seeded before the FIRST frame, not just on the first keypress,
         # or ${piece_methods} renders empty on first launch.
         cat > pieces/apps/player_app/state.txt << 'EOSTATE'

@@ -13,7 +13,7 @@
 # other project in this family. Real <cli_io> (chat.chtpm) now owns
 # typing/backspace/live-echo natively.
 #
-# SESSION ISOLATION FROM THIS SAME PASS (pal-standards.txt sec. 23) -
+# SESSION ISOLATION FROM THIS SAME PASS (xyzos-standards.txt sec. 23) -
 # copied from pal-forum's own proven "run" action shape, not re-
 # designed. SHARED (symlinked, never copied): system/ops/pal/pieces-
 # chtpm/default_op.txt/pieces-registry (static, read-only).
@@ -142,7 +142,7 @@ EOSTATE
         pkill -f "system/chtpm_parser_pal" 2>/dev/null
         pkill -f "path_nav_manager\.\+x" 2>/dev/null
         bash "$SCRIPT_DIR/pieces/os/kill_all.sh"
-        # See #.haiku+/!.pal-pitfalls+1.txt PITFALL 20/21/23 - verify
+        # See #.haiku+/!.xyzos-pitfalls+1.txt PITFALL 20/21/23 - verify
         # independently rather than trusting kill_all.sh's own message
         # (an unescaped + in its own pattern was silently killing
         # nothing for path_nav_manager until fixed this session).

@@ -1,2 +1,0 @@
-user_id_input=alice
-display_name_input=Alice0hello bob, this is a real typed message

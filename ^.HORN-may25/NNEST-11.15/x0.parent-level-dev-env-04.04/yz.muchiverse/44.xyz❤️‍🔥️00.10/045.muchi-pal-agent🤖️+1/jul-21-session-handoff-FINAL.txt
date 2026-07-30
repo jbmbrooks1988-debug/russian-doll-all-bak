@@ -2,8 +2,8 @@ JUL-21 SESSION HANDOFF - FINAL (COLD-START, ASSUME ZERO MEMORY)
 ================================================================================
 Written 2026-07-21 by Sonnet, session closing per direct user request.
 Follows the family's own standing handoff template (see $.zest-er-summary-
-FIN❤️‍🔥️+.txt sec. 7, one level up in yz.muchiverse/). Read !.pal-standards.
-txt sec. 33 and !.pal-pitfalls.txt sec. P1 alongside this - those hold the
+FIN❤️‍🔥️+.txt sec. 7, one level up in yz.muchiverse/). Read !.xyzos-standards.
+txt sec. 33 and !.xyzos-pitfalls.txt sec. P1 alongside this - those hold the
 durable, family-wide rule versions of everything below; this file is the
 muchi-pal-agent-specific chronological account.
 
@@ -72,7 +72,7 @@ BUG 3 fixed, a single session could still show "Thinking..." frozen
 indefinitely while the real answer was already correct on disk (only
 visible after a full quit+restart). Root cause, found by reading gem-dev
 _manager.c's main loop and pal-chat-irc's chat_inbox_watcher.c directly
-(NOT by theorizing - see !.pal-standards.txt sec. 33.0): both references
+(NOT by theorizing - see !.xyzos-standards.txt sec. 33.0): both references
 have the SAME process that detects completion also trigger the render
 itself, synchronously, right there - never just ping a marker and trust
 a separate, later poll to notice. check_response.c only did the latter.
@@ -113,10 +113,10 @@ main_loop_chtpm.pal now force-renders once per second (~10 idle ticks)
 regardless of state change, so the counter actually visibly ticks.
 
 DOCS: split the family-wide lessons between two files per direct
-request ("i want to seperate this between !.pal-standards.txt and
-!.pal-pitfalls.txt so one will be good for onboarding and one for
-debugging") - !.pal-standards.txt sec. 33 has the terse, prescriptive
-rule list; !.pal-pitfalls.txt (NEW FILE) sec. P1 has the full live-
+request ("i want to seperate this between !.xyzos-standards.txt and
+!.xyzos-pitfalls.txt so one will be good for onboarding and one for
+debugging") - !.xyzos-standards.txt sec. 33 has the terse, prescriptive
+rule list; !.xyzos-pitfalls.txt (NEW FILE) sec. P1 has the full live-
 caught narrative/evidence behind each one. Corrected the superseded
 gemma-tool-use plan in $.zest-er-summary-FIN❤️‍🔥️+.txt sec. 4.1 (see BUG
 2 above).
@@ -192,7 +192,7 @@ NOT YET VERIFIED / STILL BROKEN, next agent should start here:
 ================================================================================
 3. STANDING CONVENTIONS / GOTCHAS A NEWCOMER TO THIS PROJECT MUST KNOW
 ================================================================================
-  - Read !.pal-standards.txt sec. 33 and !.pal-pitfalls.txt sec. P1
+  - Read !.xyzos-standards.txt sec. 33 and !.xyzos-pitfalls.txt sec. P1
     FIRST - they're the durable version of everything in section 1
     above.
   - world_01/session_01/chat/ is now session-private (copied, not

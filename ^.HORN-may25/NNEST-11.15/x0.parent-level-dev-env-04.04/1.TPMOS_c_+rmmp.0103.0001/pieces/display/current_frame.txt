@@ -1,19 +1,33 @@
-╔══════════════ F I L E   M E N U ════════════╗
+╔══════════════ FILE BROWSER ════════════════╗
+║  MODE: SAVE FILE AS                         ║
+║  DIR: projects/agy-text-editor            ║
+║ SEARCH: | [ ] 1. []                                                 |
+║ FILE:   | [^] 2. [hi_]                                              |
 ║                                             ║
 ║ ACTIVE: projects/agy-text-editor/pieces/document.txt
 ║                                             ║
-║  FILE: projects/agy-text-editor/pieces/do ║
+║  SUGGESTIONS:                               ║
+║  [ ] 3. [...ditor/pieces/document.txt]    ║
 ║                                             ║
-║  [>] 1. [NEW FILE]                       ║
-║  [ ] 2. [SAVE FILE]                      ║
-║  [ ] 3. [SAVE AS...]                     ║
-║  [ ] 4. [LOAD FILE...]                   ║
-║  [ ] 5. [BACK TO EDITOR]                 ║
+╠════════════ DIRECTORY CONTENTS ═════════════╣
+║  [ ] 4. [<- BACK]                         ║
+║  [ ] 5. [[DIR] layouts/]                  ║
+║  [ ] 6. [[DIR] manager/]                  ║
+║  [ ] 7. [[DIR] pieces/]                   ║
+║  [ ] 8. [[FIL] file-op-dox.txt (2KB)]     ║
+║  [ ] 9. [[FIL] hi.txt (26B)]              ║
+║  [ ] 10. [[FIL] project.pdl (575B)]       ║
+║  [ ] 11. [...pipeline-study+.txt (2KB)]   ║
+║  [ ] 12. [[FIL] t (26B)]                  ║
 ║                                             ║
 ╠═════════════════════════════════════════════╣
-| ║  Ready.                                   ║         |
+║  [ ] 13. [SAVE FILE]                      ║
+║  [ ] 14. [CANCEL]                         ║
+║                                             ║
+╠═════════════════════════════════════════════╣
+| ║  Enter Save-As path.                      ║         |
 
 ╚═════════════════════════════════════════════╝
 
 +=========================================================+
-Nav > _
+Active [^]:  (ESC to exit)

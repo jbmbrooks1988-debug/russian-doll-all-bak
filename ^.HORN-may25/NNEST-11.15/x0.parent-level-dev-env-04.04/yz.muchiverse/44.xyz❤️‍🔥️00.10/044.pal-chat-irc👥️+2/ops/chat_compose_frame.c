@@ -5,7 +5,7 @@
  * that menu itself, only the surrounding chrome + live data.
  *
  * Writes ONLY view.txt, never pieces/display/current_frame.txt
- * directly (PAL-STANDARDS sec. 20 - ONE VISIBLE FRAME WRITER RULE).
+ * directly (XYZOS-STANDARDS sec. 20 - ONE VISIBLE FRAME WRITER RULE).
  * Pings pieces/display/frame_changed.txt, the real render-trigger
  * marker.
  *
@@ -129,7 +129,7 @@ static void current_room(char *out, size_t out_sz) {
 }
 
 /* Shows the last `max_lines` messages of a room's own log, newest
- * last (real terminal scrollback shape, matches pal-standards.txt
+ * last (real terminal scrollback shape, matches xyzos-standards.txt
  * sec. 25's own default renderer behavior this project inherits
  * unmodified). */
 static void show_recent_messages(const char *path, int max_lines) {

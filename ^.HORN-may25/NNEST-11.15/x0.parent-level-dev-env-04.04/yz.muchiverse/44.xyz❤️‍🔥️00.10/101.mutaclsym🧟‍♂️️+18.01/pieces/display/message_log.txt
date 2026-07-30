@@ -974,3 +974,5 @@ Zombie Child hits you for 3!
 Zombie Child hits you for 3!
 Zombie Child hits you for 3!
 Xlector menu: Event/Copy/Paste/Delete/Exit
+Zombie Child hits you for 3!
+You hit the Zombie Child with your fists for 2.

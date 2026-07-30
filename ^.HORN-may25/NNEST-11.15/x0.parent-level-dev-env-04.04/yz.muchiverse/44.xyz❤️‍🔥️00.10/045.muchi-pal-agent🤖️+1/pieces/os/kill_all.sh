@@ -22,7 +22,7 @@ surgical_kill "chtpm_rgb_render"
 surgical_kill "gl_mirror"
 
 # Layer 1b: Kill manager ops.
-# ROOT-CAUSED 2026-07-26 (see #.haiku+/!.pal-pitfalls+1.txt): the +
+# ROOT-CAUSED 2026-07-26 (see #.haiku+/!.xyzos-pitfalls+1.txt): the +
 # MUST be escaped - pgrep/pkill treat an unescaped + as an extended-
 # regex quantifier ("one or more of the preceding char"), not a
 # literal plus, so "manager/+x/..." never matched the real literal

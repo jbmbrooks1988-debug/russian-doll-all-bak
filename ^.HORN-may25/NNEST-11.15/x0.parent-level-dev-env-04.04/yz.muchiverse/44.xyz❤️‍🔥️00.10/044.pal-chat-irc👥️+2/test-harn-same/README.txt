@@ -90,7 +90,7 @@ should:
   5. trap cleanup EXIT that calls `bash test-harn-same/button.sh kill` and
      is not fooled by its "clean" message - that message is itself only
      as reliable as kill_all.sh's own verification, which has known
-     gaps (PITFALL 20/21/22 in #.haiku+/!.pal-pitfalls+1.txt). Always
+     gaps (PITFALL 20/21/22 in #.haiku+/!.xyzos-pitfalls+1.txt). Always
      independently re-check with `ps aux | grep` if this matters to you.
 
 ================================================================================
@@ -99,7 +99,7 @@ KNOWN LIMITATION: NOT (currently) A REAL .pal SCENARIO
 
 The parent app's own scenarios are expressed as .pal scripts run through
 system/prisc+x (register machine + `exec`/`sleep` opcodes - see PITFALL
-13 in pal-pitfalls for the `exec` vs `op` gotcha). This harness's
+13 in xyzos-pitfalls for the `exec` vs `op` gotcha). This harness's
 scenarios are plain bash instead, for one concrete, checked reason:
 prisc+x's own `exec` opcode parses its arguments with
 `sscanf(args, "%255s %255s %255s")` - i.e. WHITESPACE-DELIMITED, max 3
@@ -126,7 +126,7 @@ SEE ALSO
 #.haiku+/!.local-ux-testing-ai.txt   - the full interaction model (Enter to
                                         activate, ESC vs Enter-to-send,
                                         multi-digit nav) these ops encode
-#.haiku+/!.pal-pitfalls+1.txt        - PITFALL 20 (orchestrator launch bug
+#.haiku+/!.xyzos-pitfalls+1.txt        - PITFALL 20 (orchestrator launch bug
                                         this whole testing effort found),
                                         21 (why op-level/isolated-node tests
                                         aren't a substitute for this), 22

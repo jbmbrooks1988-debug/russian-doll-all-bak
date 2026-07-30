@@ -10,7 +10,7 @@
 #
 # CPU SAFETY: this script is intentionally short-lived and ALWAYS cleans
 # up via trap, verified independently (not trusted from exit codes) -
-# see #.haiku+/!.pal-pitfalls+1.txt PITFALL 20/21/22 for why that
+# see #.haiku+/!.xyzos-pitfalls+1.txt PITFALL 20/21/22 for why that
 # matters here specifically (a real, now-fixed CPU-spin bug in
 # system/keyboard_input.c, and kill_all.sh's own unreliable one-shot
 # completion). Run this under `timeout` yourself if you want an extra

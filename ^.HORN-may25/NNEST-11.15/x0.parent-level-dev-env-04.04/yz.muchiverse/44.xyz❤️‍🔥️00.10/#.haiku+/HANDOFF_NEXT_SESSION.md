@@ -40,7 +40,7 @@
    - Ensures only 1 frame visible at a time during scrollback
    - Detect terminal height: LINES env, ioctl TIOCGWINSZ, or default 24
    - Implemented in compose_frame.c (pad_frame_to_screen function)
-   - **Added to pal-standards.txt section 30** as UI convention
+   - **Added to xyzos-standards.txt section 30** as UI convention
 
 5. **Session isolation fix** ✅
    - button.sh now explicitly rm -rf and recreates debug/ per session
@@ -48,7 +48,7 @@
 
 6. **Documentation** ✅
    - USER-TEST.md created (short, practical guide for testing muchi-pal-agent)
-   - Frame height padding documented in pal-standards.txt (section 30)
+   - Frame height padding documented in xyzos-standards.txt (section 30)
    - Rendering flicker pattern added to gotchas_by_project.txt
    - Wildcard completion handoff written for Sonnet (wildcard-completion-handoff.md)
 
@@ -58,7 +58,7 @@
 - `1.muchi-pal-agent🤖️/pal/main_loop_chtpm.pal` - fixed rendering flicker (render only on work)
 - `1.muchi-pal-agent🤖️/button.sh` - fixed session isolation, blanket symlinks refactor
 - `1.muchi-pal-agent🤖️/USER-TEST.md` - user testing guide
-- `!.pal-standards.txt` - added section 30 (frame height padding)
+- `!.xyzos-standards.txt` - added section 30 (frame height padding)
 - `#.haiku/for-agent/gotchas_by_project.txt` - added rendering flicker pattern
 - `#.haiku/sonnet/wildcard-completion-handoff.md` - handoff for /model * completion
 
@@ -107,7 +107,7 @@
 ```
 1. Read #.haiku/for-user/user.txt (your role, preferences)
 2. Read #.haiku/for-user/CURRENT_SESSION_PRIORITIES.txt (what we're doing)
-3. Read !.pal-standards.txt sections 30 (frame padding)
+3. Read !.xyzos-standards.txt sections 30 (frame padding)
 4. Read #.haiku/for-agent/gotchas_by_project.txt (new rendering flicker pattern)
 5. Then proceed with Section 4.1 (Gemma scaffolding)
 ```
@@ -141,7 +141,7 @@ Pending: Sonnet's wildcard completion work (independent, doesn't block Section 4
 - **Time:** ~4 hours (estimate)
 - **Bugs fixed:** 3 (rendering flicker, session frame carryover, no frame padding)
 - **Features added:** 3 (frame history, /model listing, frame padding)
-- **Documentation added:** 1 section (pal-standards), 2 gotchas notes, 1 user guide
+- **Documentation added:** 1 section (xyzos-standards), 2 gotchas notes, 1 user guide
 - **Handoffs written:** 1 (Sonnet wildcard completion)
 
 Good luck with Section 4.1! The groundwork is solid.

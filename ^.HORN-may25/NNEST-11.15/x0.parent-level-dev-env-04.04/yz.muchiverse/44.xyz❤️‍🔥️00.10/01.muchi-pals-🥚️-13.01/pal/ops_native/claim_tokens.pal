@@ -5,9 +5,9 @@
 # has always been single-user in practice (owner defaults to "user_01"
 # internally even in the C version, per dox/01-architecture.md's own
 # note on this) and prisc+x's own main() has no argv-into-a-launched-
-# script mechanism yet (pal-standards.txt sec.21.1) - so this needs no
+# script mechanism yet (xyzos-standards.txt sec.21.1) - so this needs no
 # indirection at all, unlike a genuinely per-instance op (toggle_sleep,
-# clean_pet, feed_pet - see pal-standards.txt sec.21.2).
+# clean_pet, feed_pet - see xyzos-standards.txt sec.21.2).
 #
 # Called by ops/muchi_menu_input.c via `system/prisc+x
 # pal/ops_native/claim_tokens.pal` - the dispatcher reads tokens

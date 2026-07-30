@@ -1,7 +1,7 @@
 # coin_flip.pal - real pal-native rebuild of ops/coin_flip.c's own core
 # mutation (stake 10, double-or-nothing). Two real, named things the
 # dispatcher (ops/muchi_menu_input.c) must do BEFORE launching this
-# script, neither of which this ISA can do itself (pal-standards.txt
+# script, neither of which this ISA can do itself (xyzos-standards.txt
 # sec.21.3/21.5):
 #   1. PRECONDITION GATE: verify tokens >= 10 in C first and refuse to
 #      even launch this script otherwise (printing the same "need 10
@@ -14,7 +14,7 @@
 #      ops/coin_flip.c always used) and write it into
 #      pieces/system/active_target.txt's own "heads" key (0 or 1)
 #      BEFORE launching - ecall has no randomness primitive, and
-#      deliberately isn't getting one just for this (pal-standards.txt
+#      deliberately isn't getting one just for this (xyzos-standards.txt
 #      sec.21.5 - a direct, considered choice, not an oversight).
 # This script itself only does what's genuinely pal-shaped: read the
 # pre-seeded coin result and the current balance, branch on it, write

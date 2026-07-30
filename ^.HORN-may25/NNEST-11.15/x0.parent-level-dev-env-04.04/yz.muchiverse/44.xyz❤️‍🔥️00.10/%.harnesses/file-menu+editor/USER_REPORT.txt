@@ -9,7 +9,7 @@ Location: %.harnesses/file-menu+editor/
 1. Why this harness exists (not inside one project)
 --------------------------------------------------------------------------------
 
-This is a **cross-project** harness (pal-standards §36):
+This is a **cross-project** harness (xyzos-standards §36):
 
   Project A: 102.editor-…          (host — buffer + widget cmd consumer)
   Project B: &.widgits/file-menu   (widget — focus + enqueue cmds)
@@ -158,7 +158,7 @@ Widget-side narrative (same development period):
 Plans / standards:
 
   &.widgits/file-menu/widget+plan.txt
-  #.haiku+/!.pal-standards+1.txt  §35 (GL primary), §36 (harness placement)
+  #.haiku+/!.xyzos-standards+1.txt  §35 (GL primary), §36 (harness placement)
 
 --------------------------------------------------------------------------------
 8. One-line status

@@ -19,22 +19,27 @@
 # header comment for which proven TPMOS fix each one ports).
 #
 # For provider_kind=iqabod, the same two fields are reused for different
-# meanings (no schema change): api_url = IQABOD's own project root
-# (absolute path - it's a separate project, not shelled to over a
-# network), model_name = curriculum file path relative to that root
-# (e.g. curriculum/guess_the_word/guess_the_word.txt). See
+# meanings (no schema change): api_url = IQABOD's own project root,
+# RELATIVE TO THIS PROJECT'S OWN project_root (not absolute - see
+# send_message.c's own iqabod-branch header comment for the real,
+# confirmed-dead-path incident this fixed, 2026-07-30, and
+# !.xyzos-standards+1.txt's own "relative paths house-wide" section).
+# IQABOD lives as a sibling of this project under the same house root,
+# hence "../<iqabod dir>". model_name = curriculum file path relative
+# to THAT root (e.g. curriculum/guess_the_word/guess_the_word.txt). See
 # ROADMAP-models.txt §4 for why the example curricula shipped with
 # IQABOD are narrow game/test corpora, not general conversation - expect
 # mostly <UNK> output against them until a real conversational curriculum
-# is trained.
+# is trained. Only curricula with a real trained .weights file (verified
+# by direct listing, 2026-07-30) are wired below - guess_the_word has
+# one, guess_the_letter does not (untrained, would produce pure noise).
 
 groq-tool-use-mac|ollama|http://10.0.0.144:11434|llama3-groq-tool-use:8b
 gemma-lan|gemma|http://10.0.0.144:11434|gemma3:270m
 gemma-local|gemma|http://localhost:11434|gemma3:270m
 gemini-flash|gemini|https://generativelanguage.googleapis.com|gemini-2.5-flash
 cpp-llm-mac|llamacpp|http://10.0.0.144:8080|unused
-iqabod-test|iqabod|/home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-10.00/x0.parent-level-dev-env-03.00/#.ref/^.IQABOD-llm-06.00|curriculum/test/test.txt
-iqabod-daily-life|iqabod|/home/no/Desktop/🤖️🪤️🏠️/🚽️🧻️/🚽️🥡️-00.00/ZEST-10.00/x0.parent-level-dev-env-03.00/#.ref/^.IQABOD-llm-06.00|curriculum/daily_life/daily_life.txt
+iqabod-test|iqabod|../#.z.mirror_llm]z5]IQABOD🪞️+4|curriculum/guess_the_word/guess_the_word.txt
 #
 # provider_kind=script - NEW, 2026-07-20: no API, no network, no
 # external process at all - picks 5-10 random words from a plain

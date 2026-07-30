@@ -6,7 +6,7 @@
  *
  * Writes ONLY view.txt, never pieces/display/current_frame.txt
  * directly - chtpm_parser_pal.c's own compose_frame() is the sole
- * writer of that file (PAL-STANDARDS sec. 20 - a direct second writer
+ * writer of that file (XYZOS-STANDARDS sec. 20 - a direct second writer
  * here would race it and flicker, confirmed live in pal-chain). Pings
  * pieces/display/frame_changed.txt (the real render-trigger marker,
  * not state_changed.txt - sec. 20's own account of that exact bug).

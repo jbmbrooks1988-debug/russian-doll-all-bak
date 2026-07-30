@@ -1,7 +1,7 @@
 #!/bin/bash
 # button.sh - text-editor-xyz app launcher
 #
-# Architecture (per pal-standards §36):
+# Architecture (per xyzos-standards §36):
 #   Editor and file-menu widget are SEPARATE PROGRAMS, each with their
 #   own session directory, system binaries, ops, and PAL loops.
 #   They communicate via file-mediated widget cmd bus (inbox/status).
@@ -35,6 +35,12 @@ run_app() {
     ln -sfn "$EDITOR_DIR/pal" "$EDITOR_SESSION/pal"
     ln -sfn "$EDITOR_DIR/default_op.txt" "$EDITOR_SESSION/default_op.txt"
     ln -sfn "$EDITOR_DIR/pieces/chtpm" "$EDITOR_SESSION/pieces/chtpm"
+    # Required for chtpm_rgb_render to find glyph data (PITFALL 52) —
+    # without this every character renders invisible (checksummed but
+    # visually blank GL window). This launcher builds its own separate
+    # editor session rather than delegating to 102.editor's own
+    # button.sh, so it needs this symlink added independently.
+    ln -sfn "$EDITOR_DIR/pieces/registry" "$EDITOR_SESSION/pieces/registry" 2>/dev/null || true
     ln -sfn "$EDITOR_DIR/projects/agy-editor/pieces" "$EDITOR_SESSION/projects/agy-editor/pieces"
     ln -sfn "$EDITOR_DIR/docs" "$EDITOR_SESSION/docs"
 
@@ -93,6 +99,33 @@ EOSTATE
     ./system/chtpm_parser_pal pieces/chtpm/layouts/editor.chtpm >/dev/null 2>&1 &
     CHTPM_PID=$!
 
+    # ── 7b. Editor's OWN GL/RGB window (§35 GL-primary) — this
+    #       launcher previously only ever opened file-menu's widget
+    #       window (step 8 below), never editor's own. Same generic
+    #       pipeline, same wait-for-frame race fix already applied to
+    #       102.editor-📄️00.00/button.sh and &.widgits/file-menu/
+    #       button.sh (PITFALL 54) — chtpm_rgb_render's own initial
+    #       render + baseline pulse-size read must happen AFTER
+    #       chtpm_parser_pal's first compose, or rgb_frame.raw gets
+    #       stuck permanently all-black.
+    EDITOR_GL_PID=""
+    EDITOR_RGB_PID=""
+    if [ -z "$NO_GL" ] && [ -n "$DISPLAY" ]; then
+        waited=0
+        while [ ! -s pieces/display/current_frame.txt ] && [ "$waited" -lt 20 ]; do
+            sleep 0.1
+            waited=$((waited + 1))
+        done
+        if [ -x ./system/gl_mirror ]; then
+            ./system/gl_mirror >/dev/null 2>&1 &
+            EDITOR_GL_PID=$!
+        fi
+        if [ -x ./system/chtpm_rgb_render ]; then
+            ./system/chtpm_rgb_render >/dev/null 2>&1 &
+            EDITOR_RGB_PID=$!
+        fi
+    fi
+
     # ── 7. Start widget cmd drainer (background) ──
     WIDGET_CMDS_PID=""
     if [ -x "$EDITOR_DIR/ops/+x/editor_widget_cmds.+x" ]; then
@@ -134,6 +167,7 @@ EOSTATE
                 "text-editor-xyz" pieces/system/widget_cmds/inbox.txt >/dev/null 2>&1 || true
         fi
         kill "$WIDGET_CMDS_PID" "$RENDERER_PID" "$CHTPM_PID" 2>/dev/null || true
+        kill "$EDITOR_GL_PID" "$EDITOR_RGB_PID" 2>/dev/null || true
         kill "$WIDGET_PID" 2>/dev/null || true
         kill_own_module
         mkdir -p "$SCRIPT_DIR/sessions"
@@ -161,6 +195,9 @@ case "$ACTION" in
                  system/chtpm_parser_pal; do
             [ -x "$EDITOR_DIR/$b" ] && echo "OK   $b" || echo "MISS $b"
         done
+        for b in system/gl_mirror system/chtpm_rgb_render; do
+            [ -x "$EDITOR_DIR/$b" ] && echo "OK   $b (editor's own GL window)" || echo "OPTIONAL-MISS $b"
+        done
         for b in ops/+x/editor_menu_input.+x ops/+x/editor_compose_frame.+x \
                  ops/+x/editor_widget_cmds.+x; do
             [ -x "$EDITOR_DIR/$b" ] && echo "OK   $b" || echo "MISS $b"
@@ -187,17 +224,20 @@ case "$ACTION" in
         pkill -f "system/renderer" 2>/dev/null
         pkill -f "system/prisc\+x" 2>/dev/null
         pkill -f "system/chtpm_parser_pal" 2>/dev/null
+        pkill -f "system/gl_mirror" 2>/dev/null
+        pkill -f "system/chtpm_rgb_render" 2>/dev/null
         rm -rf /tmp/.text-editor-xyz-* 2>/dev/null
         echo "done"
         ;;
     help|h|-h|--help)
-        echo "text-editor-xyz — Text editor with file-menu widget GL window"
+        echo "text-editor-xyz — Text editor + file-menu widget, each with its own GL window"
         echo ""
-        echo "Architecture (pal-standards §36):"
+        echo "Architecture (xyzos-standards §36):"
         echo "  Editor and file-menu widget are SEPARATE PROGRAMS."
-        echo "  Editor: foreground (owns TTY, INTERACT canvas)."
-        echo "  Widget: background (GL window, no TTY)."
+        echo "  Editor: foreground (owns TTY, INTERACT canvas, own GL window if DISPLAY set)."
+        echo "  Widget: background (own GL window, no TTY)."
         echo "  Communication: file-mediated widget cmd bus (inbox.txt)."
+        echo "  NO_GL=1 forces ASCII-only for both (headless/harness use)."
         echo ""
         echo "Usage: ./button.sh <action>"
         echo "  compile      - Check dependencies"

@@ -21,7 +21,7 @@ surgical_kill() {
             local cwd
             cwd="$(readlink -f "/proc/$pid/cwd" 2>/dev/null)"
             # REAL BUG, LIVE-CAUGHT (2026-07-26, see pal-chain's own
-            # identical fix + #.haiku+/!.pal-pitfalls+1.txt): once this
+            # identical fix + #.haiku+/!.xyzos-pitfalls+1.txt): once this
             # session's own directory has been `rm -rf`'d, a process
             # that still has it open as cwd shows up here as
             # "$SESSION_DIR (deleted)" - a byte-for-byte compare then
@@ -48,7 +48,7 @@ surgical_kill "renderer" "system/renderer"
 surgical_kill "keyboard_input" "system/keyboard_input"
 surgical_kill "chtpm_parser_pal" "system/chtpm_parser_pal"
 surgical_kill "chtpm_rgb_render" "system/chtpm_rgb_render"
-# ROOT-CAUSED 2026-07-26 (see #.haiku+/!.pal-pitfalls+1.txt): + must be
+# ROOT-CAUSED 2026-07-26 (see #.haiku+/!.xyzos-pitfalls+1.txt): + must be
 # escaped - pgrep/pkill treat an unescaped + as an extended-regex
 # quantifier, so "ops/+x/..." never matched the real literal path at
 # all, silently killing nothing every run.

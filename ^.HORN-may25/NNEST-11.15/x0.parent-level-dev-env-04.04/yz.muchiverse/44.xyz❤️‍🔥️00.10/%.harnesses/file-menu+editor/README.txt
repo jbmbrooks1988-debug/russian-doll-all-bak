@@ -4,7 +4,7 @@
 Proves: &.widgits/file-menu ops × 102.editor widget cmd bus
 (LOAD / SAVE_AS / NEW without a second human terminal).
 
-House law: pal-standards §36 (cross-project harness under %.harnesses/).
+House law: xyzos-standards §36 (cross-project harness under %.harnesses/).
 
 Layout
 ------

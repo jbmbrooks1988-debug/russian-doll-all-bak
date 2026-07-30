@@ -297,7 +297,7 @@ int main(void) {
     fclose(out);
 
     /* CHTPM VIEW BRIDGE (see chtpm-to-pal-layout-plan.txt §8 and
-     * pal-standards.txt §7 for the why): a chtpm layout's own
+     * xyzos-standards.txt §7 for the why): a chtpm layout's own
      * `${game_map}` var is populated by load_vars()'s real, unmodified
      * GENERIC VIEW LOADING logic, which checks
      * pieces/apps/player_app/view.txt as one of its own candidate
@@ -336,7 +336,7 @@ int main(void) {
      * redraw (compose_frame() is what actually re-reads view.txt and
      * writes current_frame.txt, and only frame_changed.txt growth calls
      * it). Fixed to ping the actual render-trigger marker - see
-     * pal-standards.txt sec. 20 / pal-chain's own identical fix for the
+     * xyzos-standards.txt sec. 20 / pal-chain's own identical fix for the
      * full account. compose_frame() itself calls load_vars() as its own
      * first line, so no separate state_changed.txt ping is needed. */
     {

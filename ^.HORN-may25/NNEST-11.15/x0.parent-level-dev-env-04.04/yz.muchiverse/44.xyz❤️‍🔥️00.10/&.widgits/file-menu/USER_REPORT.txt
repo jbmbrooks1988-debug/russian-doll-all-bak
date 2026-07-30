@@ -16,7 +16,7 @@ the editor’s typing canvas. It **sends file commands** (NEW / SAVE /
 SAVE_AS / LOAD) to a **focused running program** over a file-mediated
 command bus (same idea as drag-drop exchange files, not sockets).
 
-Product direction (see widget+plan.txt + pal-standards §35):
+Product direction (see widget+plan.txt + xyzos-standards §35):
 
   - User UI is **GL-primary** (widget window), not a second terminal.
   - Editor FILE menu should eventually **spawn this widget** as
@@ -125,8 +125,8 @@ Fixture used:
 
   widget+plan.txt                 full phases / KPIs / GL law
   file-flow.txt                   target UI frames
-  #.haiku+/!.pal-standards+1.txt  §35 GL primary, §36 harness placement
-  #.haiku+/!.pal-pitfalls+1.txt   PITFALL 48 idle spam, 49 no second TTY
+  #.haiku+/!.xyzos-standards+1.txt  §35 GL primary, §36 harness placement
+  #.haiku+/!.xyzos-pitfalls+1.txt   PITFALL 48 idle spam, 49 no second TTY
   %.harnesses/file-menu+editor/USER_REPORT.txt  (sibling copy of this story)
 
 --------------------------------------------------------------------------------

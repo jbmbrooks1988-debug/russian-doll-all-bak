@@ -44,7 +44,7 @@ static int read_kv_int(const char *path, const char *key, int def) {
  * pieces/display/current_layout.txt export (parse_chtm()'s own "EXPORT
  * CURRENT LAYOUT FOR MODULE HEARTBEAT" write, confirmed by direct read
  * of chtpm_parser_pal.c - fires on the very first launch AND every real
- * `href` transition alike, see pal-standards.txt sec. 18) rather than a
+ * `href` transition alike, see xyzos-standards.txt sec. 18) rather than a
  * separately-maintained active_menu_piece field that something has to
  * remember to keep in sync - the exact class of bug that motivated this
  * rewrite. Matches wsr_menu_input.c's own identical helper (duplicated,
@@ -93,12 +93,12 @@ static void read_kv_str(const char *path, const char *key, char *out, size_t out
     fclose(f);
 }
 
-/* PAL-STANDARDS §16.3 (ONE WRITER RULE): chtpm_parser_pal is now the
+/* XYZOS-STANDARDS §16.3 (ONE WRITER RULE): chtpm_parser_pal is now the
  * SOLE writer of pieces/display/current_frame.txt (this project's own
  * "run" action fully consolidated onto the chtpm flow).
  *
  * CORRECTION (found by directly comparing against mutaclsym's own
- * compose_frame.c, which does NOT show this lag - see pal-standards.txt
+ * compose_frame.c, which does NOT show this lag - see xyzos-standards.txt
  * §16.3, corrected): writing ONLY view.txt and waiting for chtpm's own
  * separate state_changed.txt-triggered reload to pick it up (a
  * different process, its own poll cycle) introduces a real, perceptible
@@ -265,7 +265,7 @@ static void compose_wizard_frame(const char *menu_state_path, FILE *out, const c
 }
 
 /* CHTPM VIEW BRIDGE (see chtpm-to-pal-layout-plan.txt §8 and
- * pal-standards.txt §7/!.wsr-pal-refactor.txt §2 for the why): a real
+ * xyzos-standards.txt §7/!.wsr-pal-refactor.txt §2 for the why): a real
  * .chtpm menu shell's own `${game_map}` var is populated by load_vars()'s
  * real, unmodified GENERIC VIEW LOADING logic, which checks
  * pieces/apps/player_app/view.txt as one of its own candidate paths -
@@ -341,7 +341,7 @@ int main(void) {
      * hand-drawn "[>] N. [label]" text block) is gone entirely: chtpm's
      * own ${piece_methods} placeholder (wsr.chtpm) renders that same
      * METHOD table as real, clickable buttons now (§16 of
-     * pal-standards.txt) - drawing it here too would be a visible
+     * xyzos-standards.txt) - drawing it here too would be a visible
      * duplicate, and this op has no other use for that data. */
 
     g_out = fopen(out_path, "w");

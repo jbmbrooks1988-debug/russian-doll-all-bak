@@ -119,7 +119,7 @@ static pid_t launch(const char *path, const char *arg1, const char *arg2) {
     return pid;
 }
 
-/* === LAUNCH WITH OUTPUT REDIRECT, ARBITRARY ARGV (PAL-PITFALLS #20) ===
+/* === LAUNCH WITH OUTPUT REDIRECT, ARBITRARY ARGV (XYZOS-PITFALLS #20) ===
  * launch_redirect() below only supports a FIXED 2-slot execl() - fine for
  * chat_inbox_watcher (no args) but silently wrong for palnet_peer, which
  * needs 5-6 real argv slots (own_kind, project_id, piece_id, outbox_file,

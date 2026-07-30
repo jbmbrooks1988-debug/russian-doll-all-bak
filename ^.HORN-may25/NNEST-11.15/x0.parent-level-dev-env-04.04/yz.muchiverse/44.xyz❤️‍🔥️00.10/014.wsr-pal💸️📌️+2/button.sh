@@ -89,7 +89,7 @@ case "$ACTION" in
             exit 1
         fi
         # wsr_menu_input.c derives "which screen" from
-        # pieces/display/current_layout.txt (pal-standards.txt §18), not
+        # pieces/display/current_layout.txt (xyzos-standards.txt §18), not
         # from any field this action sets directly - force it to name
         # wsr_main_menu here so a direct, non-chtpm CLI invocation
         # resolves the same piece.pdl new_game_row was just computed

@@ -1,4 +1,0 @@
-[Strategy A] Detected tool: list_dir
-[Strategy A] Detected tool: list_dir
-[Strategy A] Detected tool: speak
-[Strategy A] Detected tool: list_dir

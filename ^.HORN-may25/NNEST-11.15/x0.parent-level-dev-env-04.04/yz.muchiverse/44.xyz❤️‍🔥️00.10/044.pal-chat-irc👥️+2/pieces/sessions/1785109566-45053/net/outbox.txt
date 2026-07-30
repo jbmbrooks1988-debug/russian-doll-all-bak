@@ -1,1 +1,0 @@
-MSG|1785109595-0-48651|harness_room_44998|halice_44998|1785109595|hello from the ops-based test harness

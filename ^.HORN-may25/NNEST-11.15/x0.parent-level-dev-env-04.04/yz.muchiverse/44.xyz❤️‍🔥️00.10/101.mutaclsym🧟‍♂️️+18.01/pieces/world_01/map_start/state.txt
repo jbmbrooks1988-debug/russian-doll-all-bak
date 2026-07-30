@@ -1,4 +1,4 @@
 id=map_start
 width=40
 height=16
-turn=2881
+turn=2887

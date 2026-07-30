@@ -1,2 +1,0 @@
-last_message=Posted to j26.
-current_room=j26

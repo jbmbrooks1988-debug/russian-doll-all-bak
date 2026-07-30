@@ -28,7 +28,7 @@ This file lives under **`%.harnesses/`** because the *proof* of these features i
 
 | Doc | Rule |
 |-----|------|
-| `#.haiku+/!.pal-standards+1.txt` **§35** | **GL is primary**; ASCII secondary; widgets = `run-widget` (GL on, ASCII off) |
+| `#.haiku+/!.xyzos-standards+1.txt` **§35** | **GL is primary**; ASCII secondary; widgets = `run-widget` (GL on, ASCII off) |
 | **§36** | Per-project harness vs **`%.harnesses/<pair>/`** for multi-project |
 | Pitfall **48** | Idle must not spam frames |
 | Pitfall **49** | Do not require a second human terminal for widgets |

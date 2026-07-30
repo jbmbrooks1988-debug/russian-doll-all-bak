@@ -1,0 +1,8 @@
+<panel time_reactive="true">
+    <module>system/prisc+x pal/main_loop_chtpm.pal</module>
+    <interact src="pieces/apps/player_app/interact_relay.txt" />
+    <text label="${game_map}" /><br/>
+    <button label="TYPE PATH (INTERACT)" onClick="INTERACT" id="path_field" /><br/>
+    <button label="SAVE" onClick="KEY:1" /><br/>
+    <button label="CANCEL" href="pieces/chtpm/layouts/file_menu.chtpm" /><br/>
+</panel>

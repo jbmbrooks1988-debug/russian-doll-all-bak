@@ -5,7 +5,7 @@
 ### Priority 0: Foundation (Don't Move, Don't Touch Unless Fixing)
 - **shared-ops/** — Canonical copies of all shared code (prisc+x.c, chtpm_parser_pal.c, keyboard_input.c, palnet_peer.c)
 - **shared-ops-manifest.txt** — Which project synced which file; "don't sync from here" exceptions
-- **!.pal-standards.txt** — THE running rulebook; every real gotcha found across every project lives here; READ THIS FIRST, ALWAYS
+- **!.xyzos-standards.txt** — THE running rulebook; every real gotcha found across every project lives here; READ THIS FIRST, ALWAYS
 - **#.dox/** — Family-wide design docs (USER-PAL-STANDARD.txt, PAL-CHAT-IRC-STANDARD.txt, PAL-FORUM-STANDARD.txt, PAL-CHAIN-STANDARD.txt, PAL-NET-STANDARD.txt)
 - **#.haiku/** — Haiku agent context (user.txt, agent.txt, sonnet-handoff.txt, this file)
 - **pal-scripts/** — Meta-orchestration layer (pal-chat-agent.pal, launch_irc_agent.sh); session-isolated instance launching

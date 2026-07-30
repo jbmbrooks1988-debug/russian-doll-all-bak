@@ -334,7 +334,7 @@ int main(void) {
     fclose(out);
 
     /* CHTPM VIEW BRIDGE (see chtpm-to-pal-layout-plan.txt §8 and
-     * pal-standards.txt §7 for the why - same addition already made to
+     * xyzos-standards.txt §7 for the why - same addition already made to
      * zoo_0000's and mutaclsym's own compose_frame.c): a chtpm layout's
      * own `${game_map}` var is populated by load_vars()'s real,
      * unmodified GENERIC VIEW LOADING logic, which checks

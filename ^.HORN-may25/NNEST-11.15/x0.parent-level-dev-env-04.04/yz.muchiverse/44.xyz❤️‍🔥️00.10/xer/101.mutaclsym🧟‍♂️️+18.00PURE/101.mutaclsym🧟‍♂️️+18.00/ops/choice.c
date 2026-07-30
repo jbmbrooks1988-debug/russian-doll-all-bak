@@ -457,7 +457,7 @@ static int piece_pdl_state_int(const char *piece_pdl_path, const char *key, int 
  * with its own directory - matching fuzz-op's own shape exactly) is a
  * real, named, deliberately deferred future step for whenever a
  * second player-controllable piece (a companion/pet) actually exists -
- * see pal-standards.txt's own new section for the full writeup, not
+ * see xyzos-standards.txt's own new section for the full writeup, not
  * silently built halfway here. */
 static int try_possess_at(int hero_x, int hero_y, int x, int y) {
     if (x != hero_x || y != hero_y) return 0;

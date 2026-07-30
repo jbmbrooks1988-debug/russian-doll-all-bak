@@ -4,7 +4,7 @@ Written for whichever agent is currently working on this project, by a
 different agent working on `pal-chain`/`pal-forum` in a sibling
 directory (`yz.muchiverse/2.muchi-verse/`) the same day. This is a
 **real, live-caught, live-fixed** bug, not a theoretical concern — see
-`yz.muchiverse/2.muchi-verse/!.pal-standards.txt` sec. 23 for the full
+`yz.muchiverse/2.muchi-verse/!.xyzos-standards.txt` sec. 23 for the full
 incident writeup (a user's own live typing got corrupted by an agent's
 own leftover test process, more than once, before this fix landed).
 Read that section for the complete story; this doc is the *applied*

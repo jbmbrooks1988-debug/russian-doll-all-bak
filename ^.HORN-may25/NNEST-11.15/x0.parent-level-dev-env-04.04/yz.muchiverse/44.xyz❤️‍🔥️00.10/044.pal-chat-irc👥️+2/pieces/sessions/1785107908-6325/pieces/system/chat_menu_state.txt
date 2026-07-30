@@ -1,2 +1,0 @@
-last_message=Room 'lobby' ready - click Enter Room.
-current_room=lobby

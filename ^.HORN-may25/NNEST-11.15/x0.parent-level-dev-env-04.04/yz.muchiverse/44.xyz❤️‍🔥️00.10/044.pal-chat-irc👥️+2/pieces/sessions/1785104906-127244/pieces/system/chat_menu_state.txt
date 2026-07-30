@@ -1,2 +1,0 @@
-last_message=Welcome back.
-current_room=lobby

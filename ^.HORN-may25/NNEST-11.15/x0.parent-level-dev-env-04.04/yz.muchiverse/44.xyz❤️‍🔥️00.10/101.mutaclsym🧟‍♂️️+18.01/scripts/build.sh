@@ -69,6 +69,15 @@ echo "   main_loop.pal or default_op.txt - run manually to see the RGB"
 echo "   mirror's actual pixels as a real PNG, since this agent has no"
 echo "   way to view the live GLUT window itself)"
 $CC $CFLAGS -I"ops/lib" -o ops/+x/dump_rgb_png.+x ops/dump_rgb_png.c -lm
+
+echo "-- emoji_gen_atlas / emoji_xtract (local copies, own source - same"
+echo "   'solo shippable' convention as everything else in this file, NOT"
+echo "   a shared-ops reference; ported from #.emoji-studio-501.02.05t/"
+echo "   &.emoji-studio-solo.02.01/'s own generic FreeType pipeline, see"
+echo "   compose_rgb_frame.c's own ensure_emoji_asset_ready() header"
+echo "   comment for why this project needs its own copy on-demand)"
+$CC $CFLAGS -I"ops/lib" -I/usr/include/freetype2 -o ops/+x/emoji_gen_atlas.+x ops/emoji_gen_atlas.c -lfreetype -lm
+$CC $CFLAGS -I"ops/lib" -o ops/+x/emoji_xtract.+x ops/emoji_xtract.c -lm
 $CC $CFLAGS -o ops/+x/pickup.+x ops/pickup.c
 $CC $CFLAGS -o ops/+x/drop.+x ops/drop.c
 $CC $CFLAGS -o ops/+x/eat.+x ops/eat.c
