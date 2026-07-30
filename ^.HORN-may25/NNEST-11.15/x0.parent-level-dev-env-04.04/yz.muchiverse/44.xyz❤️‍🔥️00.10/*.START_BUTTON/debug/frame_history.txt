@@ -1,0 +1,236 @@
+
+--- FRAME at 2026-07-29 21:08:48 ---
+╔═════════════════════════════════════════════════════════╗
+║   H O U S E   L O A D E R                               ║
+╠═════════════════════════════════════════════════════════╣
+║  Pre-screen — pick a category:                        ║
+║                                                         ║
+║    System     house programs under ./                   ║
+║    Widgets    &.widgits/ installed widgets              ║
+║    Apps       @.apps/ installed apps                    ║
+║    App Store  @.app-store/ available packages           ║
+║                                                         ║
+║  Pick a category (System / Widgets / Apps / App Store). ║
+╚═════════════════════════════════════════════════════════╝
+
+[>] 1. [System]
+[ ] 2. [Widgets]
+[ ] 3. [Apps]
+[ ] 4. [App Store]
+ Ctrl+C quit | Enter opens category
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-29 21:08:48 ---
+╔═════════════════════════════════════════════════════════╗
+║   H O U S E   L O A D E R                               ║
+╠═════════════════════════════════════════════════════════╣
+║  Pre-screen — pick a category:                        ║
+║                                                         ║
+║    System     house programs under ./                   ║
+║    Widgets    &.widgits/ installed widgets              ║
+║    Apps       @.apps/ installed apps                    ║
+║    App Store  @.app-store/ available packages           ║
+║                                                         ║
+║  Pick a category (System / Widgets / Apps / App Store). ║
+╚═════════════════════════════════════════════════════════╝
+
+[>] 1. [System]
+[ ] 2. [Widgets]
+[ ] 3. [Apps]
+[ ] 4. [App Store]
+ Ctrl+C quit | Enter opens category
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-29 21:08:50 ---
+╔═════════════════════════════════════════════════════════╗
+║   H O U S E   L O A D E R                               ║
+╠═════════════════════════════════════════════════════════╣
+║  Pre-screen — pick a category:                        ║
+║                                                         ║
+║    System     house programs under ./                   ║
+║    Widgets    &.widgits/ installed widgets              ║
+║    Apps       @.apps/ installed apps                    ║
+║    App Store  @.app-store/ available packages           ║
+║                                                         ║
+║  Pick a category (System / Widgets / Apps / App Store). ║
+╚═════════════════════════════════════════════════════════╝
+
+[ ] 1. [System]
+[ ] 2. [Widgets]
+[>] 3. [Apps]
+[ ] 4. [App Store]
+ Ctrl+C quit | Enter opens category
+
++=========================================================+
+Nav > 3_
+
+
+--- FRAME at 2026-07-29 21:08:50 ---
+╔═════════════════════════════════════════════════════════╗
+║   H O U S E   L O A D E R                               ║
+╠═════════════════════════════════════════════════════════╣
+║  Pre-screen — pick a category:                        ║
+║                                                         ║
+║    System     house programs under ./                   ║
+║    Widgets    &.widgits/ installed widgets              ║
+║    Apps       @.apps/ installed apps                    ║
+║    App Store  @.app-store/ available packages           ║
+║                                                         ║
+║  Pick a category (System / Widgets / Apps / App Store). ║
+╚═════════════════════════════════════════════════════════╝
+
+[ ] 1. [System]
+[ ] 2. [Widgets]
+[>] 3. [Apps]
+[ ] 4. [App Store]
+ Ctrl+C quit | Enter opens category
+
++=========================================================+
+Nav > 3_
+
+
+--- FRAME at 2026-07-29 21:08:50 ---
+╔═════════════════════════════════════════════════════════╗
+║   A P P S                                               ║
+╠═════════════════════════════════════════════════════════╣
+║  Select an entry below (numbered methods).              ║
+║                                                         ║
+║  Pick a category (System / Widgets / Apps / App Store). ║
+╚═════════════════════════════════════════════════════════╝
+
+[>] 1. [text-editor-xyz]
+[ ] 2. [Refresh list]
+[ ] 3. [Back to categories]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-29 21:08:50 ---
+╔═════════════════════════════════════════════════════════╗
+║   A P P S                                               ║
+╠═════════════════════════════════════════════════════════╣
+║  Select an entry below (numbered methods).              ║
+║                                                         ║
+║  Pick a category (System / Widgets / Apps / App Store). ║
+╚═════════════════════════════════════════════════════════╝
+
+[>] 1. [text-editor-xyz]
+[ ] 2. [Refresh list]
+[ ] 3. [Back to categories]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-29 21:08:51 ---
+╔═════════════════════════════════════════════════════════╗
+║   A P P S                                               ║
+╠═════════════════════════════════════════════════════════╣
+║  Select an entry below (numbered methods).              ║
+║                                                         ║
+║  Pick a category (System / Widgets / Apps / App Store). ║
+╚═════════════════════════════════════════════════════════╝
+
+[>] 1. [text-editor-xyz]
+[ ] 2. [Refresh list]
+[ ] 3. [Back to categories]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-29 21:08:51 ---
+╔═════════════════════════════════════════════════════════╗
+║   A P P S                                               ║
+╠═════════════════════════════════════════════════════════╣
+║  Select an entry below (numbered methods).              ║
+║                                                         ║
+║  Launching text-editor-xyz (same terminal)...           ║
+╚═════════════════════════════════════════════════════════╝
+
+[>] 1. [text-editor-xyz]
+[ ] 2. [Refresh list]
+[ ] 3. [Back to categories]
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-29 21:19:45 ---
+╔═════════════════════════════════════════════════════════╗
+║   H O U S E   L O A D E R                               ║
+╠═════════════════════════════════════════════════════════╣
+║  Pre-screen — pick a category:                        ║
+║                                                         ║
+║    System     house programs under ./                   ║
+║    Widgets    &.widgits/ installed widgets              ║
+║    Apps       @.apps/ installed apps                    ║
+║    App Store  @.app-store/ available packages           ║
+║                                                         ║
+║  Pick a category (System / Widgets / Apps / App Store). ║
+╚═════════════════════════════════════════════════════════╝
+
+[>] 1. [System]
+[ ] 2. [Widgets]
+[ ] 3. [Apps]
+[ ] 4. [App Store]
+ Ctrl+C quit | Enter opens category
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-29 21:19:45 ---
+╔═════════════════════════════════════════════════════════╗
+║   H O U S E   L O A D E R                               ║
+╠═════════════════════════════════════════════════════════╣
+║  Pre-screen — pick a category:                        ║
+║                                                         ║
+║    System     house programs under ./                   ║
+║    Widgets    &.widgits/ installed widgets              ║
+║    Apps       @.apps/ installed apps                    ║
+║    App Store  @.app-store/ available packages           ║
+║                                                         ║
+║  Pick a category (System / Widgets / Apps / App Store). ║
+╚═════════════════════════════════════════════════════════╝
+
+[>] 1. [System]
+[ ] 2. [Widgets]
+[ ] 3. [Apps]
+[ ] 4. [App Store]
+ Ctrl+C quit | Enter opens category
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-07-29 21:19:45 ---
+╔═════════════════════════════════════════════════════════╗
+║   H O U S E   L O A D E R                               ║
+╠═════════════════════════════════════════════════════════╣
+║  Pre-screen — pick a category:                        ║
+║                                                         ║
+║    System     house programs under ./                   ║
+║    Widgets    &.widgits/ installed widgets              ║
+║    Apps       @.apps/ installed apps                    ║
+║    App Store  @.app-store/ available packages           ║
+║                                                         ║
+║  Pick a category (System / Widgets / Apps / App Store). ║
+╚═════════════════════════════════════════════════════════╝
+
+[>] 1. [System]
+[ ] 2. [Widgets]
+[ ] 3. [Apps]
+[ ] 4. [App Store]
+ Ctrl+C quit | Enter opens category
+
++=========================================================+
+Nav > _
+

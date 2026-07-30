@@ -1,0 +1,19 @@
+╔══════════════ F I L E   M E N U ════════════╗
+║                                             ║
+║ ACTIVE: projects/agy-text-editor/pieces/document.txt
+║                                             ║
+║  FILE: projects/agy-text-editor/pieces/do ║
+║                                             ║
+║  [>] 1. [NEW FILE]                       ║
+║  [ ] 2. [SAVE FILE]                      ║
+║  [ ] 3. [SAVE AS...]                     ║
+║  [ ] 4. [LOAD FILE...]                   ║
+║  [ ] 5. [BACK TO EDITOR]                 ║
+║                                             ║
+╠═════════════════════════════════════════════╣
+| ║  Ready.                                   ║         |
+
+╚═════════════════════════════════════════════╝
+
++=========================================================+
+Nav > _

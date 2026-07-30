@@ -1,0 +1,12 @@
+[2026-07-28 00:14:09] ProcessEvent: 632c9c02-7298-48ea-a399-1a0af3a77326 window_opened | Trigger: egg_window
+[2026-07-28 00:23:52] ProcessEvent: afdfbcb9-62f5-4558-9503-f482328306f9 window_opened | Trigger: egg_window
+[2026-07-28 00:26:35] ProcessEvent: f093b6e2-a500-4079-bbc5-24cc6cc621a6 window_opened | Trigger: egg_window
+[2026-07-28 00:30:25] ProcessEvent: 632c9c02-7298-48ea-a399-1a0af3a77326 window_opened | Trigger: egg_window
+[2026-07-28 00:31:00] ProcessEvent: c81ec5b8-df2e-46f3-a64b-7c89de47ed36 window_opened | Trigger: egg_window
+[2026-07-28 00:59:20] ProcessEvent: 958a86a5-d111-4d3d-b808-7d5dd5f83f12 window_opened | Trigger: egg_window
+[2026-07-28 01:08:18] ProcessEvent: a97baaeb-9214-4b3c-97b4-ff97574223f9 window_opened | Trigger: egg_window
+[2026-07-28 01:08:36] ProcessEvent: 02fa9e2d-7658-4fe5-8b5b-ed8537168019 window_opened | Trigger: egg_window
+[2026-07-28 01:11:28] ProcessEvent: 63bd3690-a607-4caf-b426-ef179b76f05e window_opened | Trigger: egg_window
+[2026-07-28 01:31:20] ProcessEvent: ca605d5f-3ff4-4724-8e2a-e69231540485 window_opened | Trigger: egg_window
+[2026-07-28 01:39:31] ProcessEvent: ae96e28e-9e34-4315-8867-1d5008685092 window_opened | Trigger: egg_window
+[2026-07-28 01:56:32] ProcessEvent: ae96e28e-9e34-4315-8867-1d5008685092 window_opened | Trigger: egg_window

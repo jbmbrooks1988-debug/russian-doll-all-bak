@@ -1,0 +1,13 @@
+SECTION      | KEY                | VALUE
+----------------------------------------
+META         | piece_id           | xyzfs_session
+META         | version            | 1.0
+
+STATE        | mode                 | logged_in
+STATE        | user_id              | asw_a_2131489
+STATE        | user_uuid            | e8bf229a-62d3-4d6f-810e-e2aaf031cd73
+STATE        | display_name         | Alice
+STATE        | xyzfs_path           | xyzfs/users/e8bf229a-62d3-4d6f-810e-e2aaf031cd73
+STATE        | logged_in_at         | 1785274320
+STATE        | active_avatar_uuid   | e39710b2-bd42-4d4f-9f7d-2fb3c8385b03
+STATE        | active_avatar_path   | xyzfs/users/e8bf229a-62d3-4d6f-810e-e2aaf031cd73/home/avatars/e39710b2-bd42-4d4f-9f7d-2fb3c8385b03

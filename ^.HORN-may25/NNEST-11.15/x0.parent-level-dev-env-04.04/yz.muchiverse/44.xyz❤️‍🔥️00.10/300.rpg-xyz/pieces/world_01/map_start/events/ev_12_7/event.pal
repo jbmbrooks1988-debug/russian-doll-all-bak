@@ -1,0 +1,3 @@
+show_text The crystal hums. A distant clank echoes...
+set_switch door_open 1
+ret

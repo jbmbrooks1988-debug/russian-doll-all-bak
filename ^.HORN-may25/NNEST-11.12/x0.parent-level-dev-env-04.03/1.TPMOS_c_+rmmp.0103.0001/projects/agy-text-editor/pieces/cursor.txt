@@ -1,2 +1,0 @@
-cursor_x=1
-cursor_y=2

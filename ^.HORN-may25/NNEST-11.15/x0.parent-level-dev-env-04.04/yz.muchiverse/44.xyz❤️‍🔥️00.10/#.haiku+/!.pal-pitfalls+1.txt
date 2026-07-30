@@ -1,0 +1,1318 @@
+========================================================================
+PAL-PITFALLS - Common mistakes and gotchas encountered during
+01.lpns+map+4 development. Read this BEFORE modifying any pal project.
+Add pitfalls as they are discovered, do not remove existing entries.
+========================================================================
+
+========================================================================
+PITFALL 1: system() in orchestrator causes zombie processes
+========================================================================
+
+SYMPTOM: After Ctrl+C, processes continue running, consuming CPU.
+ROOT CAUSE: orchestrator.c used system() for compile_binaries(),
+mkdir, and initial compose. system() spawns a shell which spawns
+the actual command - the shell process may not be reaped properly,
+and signals don't propagate correctly through the shell layer.
+
+FIX: Replace ALL system() calls with fork/exec/waitpid (Bible §3).
+Each helper function: fork() → freopen(/dev/null) → execl() → _exit(1).
+Parent: waitpid(pid, &status, 0) to reap.
+
+FILES: system/orchestrator.c:compile_single(), ensure_directories(),
+       initial_compose()
+
+========================================================================
+PITFALL 2: kill_all_tracked() misses child-of-child processes
+========================================================================
+
+SYMPTOM: game_manager's child ops (game_turn_input, game_compose_frame)
+continue running after orchestrator exits.
+ROOT CAUSE: game_manager forks ops via run_op(), but those PIDs are
+never logged to proc_list.txt. If game_manager is killed mid-op,
+the op becomes orphaned.
+
+FIX: 3-layer cascading kill:
+  Layer 1: kill(0, SIGTERM) to entire process group
+  Layer 2: File-backed PID sweep (proc_list.txt)
+  Layer 3: kill_all.sh nuclear option (pkill by pattern)
+
+The process group kill (Layer 1) catches most orphans. The nuclear
+option (Layer 3) catches everything else by matching binary names.
+
+FILES: system/orchestrator.c:kill_process_group(), kill_all_tracked(),
+       run_final_kill_sweep()
+
+========================================================================
+PITFALL 3: sscanf overwrites search variable in config lookups
+========================================================================
+
+SYMPTOM: NPC moves alice instead of itself. Bot1 (player 2) moves
+alice (player 1) to a new position, then bot2 also moves alice, etc.
+ROOT CAUSE: sscanf(line, "player_%d_name=%49s", &current_player, ...)
+was using &current_player as the index variable. When sscanf found
+player_2_name, it wrote 2 into current_player, overwriting the
+original value (which was tracking which player to search for).
+
+FIX: Use a temp variable for sscanf:
+  int pidx;
+  if (sscanf(line, "player_%d_name=%49s", &pidx, player_name) == 2
+      && pidx == current_player) break;
+
+The && pidx == current_player check ensures we only use the result
+when the index matches the player we're looking for.
+
+FILES: ops/game_turn_input.c:44-45, 59-60, 68-69
+
+========================================================================
+PITFALL 4: compose_frame writing to frame_changed.txt causes infinite loop
+========================================================================
+
+SYMPTOM: Renderer flickers, CPU spikes, frame never stabilizes.
+ROOT CAUSE: chtpm_parser_pal's compose_frame() was writing to
+frame_changed.txt (the same file the renderer watches). Parser's
+main loop detected growth → dirty=1 → called compose_frame() again
+→ wrote to frame_changed.txt again → infinite loop.
+
+FIX: compose_frame() writes to renderer_pulse.txt (NOT frame_changed.txt).
+game_compose_frame.c writes to frame_changed.txt (game state changes).
+Renderer watches BOTH files:
+  - frame_changed.txt growth → immediate render
+  - renderer_pulse.txt growth → wait for current_frame.txt to stabilize,
+    then render
+
+The two-file pattern prevents the infinite loop while still triggering
+renders for both game state changes and parser recomposition.
+
+FILES: system/renderer.c:96-113, ops/game_compose_frame.c:126-130
+
+========================================================================
+PITFALL 5: Stale keyboard/history.txt replays old keys on startup
+========================================================================
+
+SYMPTOM: Keys from previous session fire immediately on launch.
+ROOT CAUSE: chtpm_parser_pal reads keyboard/history.txt from byte 0
+on fresh launch. If the file wasn't cleared, old KEY_PRESSED: lines
+replay into the new session.
+
+FIX: button.sh or orchestrator MUST clear on launch:
+  : > pieces/keyboard/history.txt
+
+This is orthogonal to interact_relay.txt - both files must be cleared.
+
+FILES: system/orchestrator.c:155-156, button.sh
+
+========================================================================
+PITFALL 6: quit_flag.txt left non-empty from previous session
+========================================================================
+
+SYMPTOM: Renderer prints exactly one frame then exits. Everything
+else keeps running but nothing is displayed.
+ROOT CAUSE: keyboard_input writes "1" to quit_flag.txt on 'q' press.
+If the session wasn't cleaned up properly, this file stays non-empty.
+Next launch's renderer sees quit_requested()==true before loop starts.
+
+FIX: orchestrator MUST clear on launch:
+  FILE *qf = fopen("pieces/system/quit_flag.txt", "w");
+  if (qf) fclose(qf);
+
+Also clear in button.sh kill action.
+
+FILES: system/orchestrator.c:160-161, button.sh
+
+========================================================================
+PITFALL 7: pulse_frame_marker() dead code causes confusion
+========================================================================
+
+SYMPTOM: Agent adds another pulse_frame_marker() call, causing
+double-render or infinite loop.
+ROOT CAUSE: game_manager.c still has pulse_frame_marker() function
+definition (line 39) even though execute_action() no longer calls it.
+game_compose_frame.c already writes to frame_changed.txt.
+
+FIX: Remove the dead function. It serves no purpose and confuses
+future agents who think it's part of the render pipeline.
+
+FILES: system/game_manager.c:39-42 (dead code, should be removed)
+
+========================================================================
+PITFALL 8: PAL layout <module> tag must have exact binary path
+========================================================================
+
+SYMPTOM: Parser fails to launch module, no game manager running.
+ROOT CAUSE: <module> tag content is split on spaces by launch_module().
+If the path is wrong or missing, execv() fails silently (_exit(1)).
+
+FIX: PAL layout must use:
+  <module>system/prisc+x pal/main_loop_chtpm.pal</module>
+
+C layout must use:
+  <module>system/game_manager</module>
+
+Parser's launch_module() at line 1625-1631:
+  char* token = strtok(full_cmd, " ");
+  while (token && arg_count < 15) {
+      args[arg_count++] = (arg_count == 0) ?
+          build_path_malloc(token) : strdup(token);
+      token = strtok(NULL, " ");
+  }
+
+The first token gets build_path_malloc() (resolves relative to project root).
+Subsequent tokens are passed as-is (argv to the binary).
+
+FILES: system/chtpm_parser_pal.c:1621-1638
+
+========================================================================
+PITFALL 9: interact_relay.txt must be truncated after read
+========================================================================
+
+SYMPTOM: Same keycode dispatches multiple times, actions repeat.
+ROOT CAUSE: game_manager reads interact_relay.txt but doesn't truncate
+it. Next poll reads the same keys again.
+
+FIX: After reading, truncate the file:
+  FILE *trunc = fopen("pieces/apps/player_app/interact_relay.txt", "w");
+  if (trunc) fclose(trunc);
+  last_relay_pos = 0;
+
+Must reset last_relay_pos to 0 after truncation.
+
+FILES: system/game_manager.c:147-149
+
+========================================================================
+PITFALL 10: PAL script must not have its own quit path
+========================================================================
+
+SYMPTOM: Module dies on 'q' press, parser keeps relaying keys into
+empty relay file, system appears frozen.
+ROOT CAUSE: PAL script had `beq x2, x9, quit` (checking for 'q' key).
+In INTERACT mode, ALL keys pass through including 'q'. Module halts,
+parser doesn't notice.
+
+FIX: Remove quit path from main_loop_chtpm.pal entirely.
+Quitting is parser's job (top-level 'q' or keyboard_input's exit).
+Module never owns the quit decision.
+
+FILES: pal/main_loop_chtpm.pal (no quit/exit instruction)
+
+========================================================================
+PITFALL 11: button.sh --pal flag must set env var before exec
+========================================================================
+
+SYMPTOM: Orchestrator ignores --pal flag, always uses C layout.
+ROOT CAUSE: button.sh parsed arguments incorrectly, or PAL_LAYOUT
+wasn't exported before exec.
+
+FIX: button.sh must:
+  1. Parse --pal flag in argument loop
+  2. export PAL_LAYOUT="..." before exec
+  3. Orchestrator reads getenv("PAL_LAYOUT")
+
+  for arg in "$@"; do
+      case "$arg" in
+          --pal) PAL_MODE=1 ;;
+      esac
+  done
+  if [ "$PAL_MODE" -eq 1 ]; then
+      export PAL_LAYOUT="pieces/chtpm/layouts/..._pal.chtpm"
+  fi
+  exec "$SCRIPT_DIR/system/orchestrator"
+
+FILES: button.sh, system/orchestrator.c:172-180
+
+========================================================================
+PITFALL 12: game_compose_frame writes view.txt, not current_frame.txt
+========================================================================
+
+SYMPTOM: ${game_map} variable is empty in rendered frame.
+ROOT CAUSE: Agent expected game_compose_frame to write directly to
+current_frame.txt (the renderer's input). But chtpm_parser_pal owns
+current_frame.txt - writing to it from an op clobbers chrome.
+
+FIX: game_compose_frame writes to pieces/apps/player_app/view.txt.
+Parser reads view.txt via load_vars(), substitutes into ${game_map}
+in the layout, then writes the composed result to current_frame.txt.
+
+The chain: view.txt → parser load_vars() → ${game_map} → current_frame.txt
+
+FILES: ops/game_compose_frame.c:85-123
+
+========================================================================
+PITFALL 13: PAL "op" keyword doesn't exist - use "exec" instead
+========================================================================
+
+SYMPTOM: PAL script runs but nothing happens when keys are pressed.
+No actions dispatched, no state changes, ledger stays empty.
+ROOT CAUSE: Used `op game_turn_input x10` syntax in PAL script.
+The PAL instruction is `exec`, not `op`. prisc+x doesn't have an
+`op` instruction at all.
+
+FIX: Use `exec ./ops/game_turn_input x10` (not `op`).
+
+The `exec` instruction:
+  - Takes a literal path as first argument
+  - Optionally takes registers as arguments (their int values are
+    passed as string arguments to the command)
+  - Runs the command via system() (yes, this is inside prisc+x.c
+    itself - the exec op is the ONE place system() is acceptable,
+    matching real TPMOS precedent)
+
+Correct syntax:
+  exec ./ops/game_turn_input x10    # runs: ./ops/game_turn_input <value_of_x10>
+  exec ./ops/game_compose_frame     # runs: ./ops/game_compose_frame
+
+Wrong syntax (does nothing):
+  op game_turn_input x10            # parse error or silent no-op
+  op game_compose_frame
+
+FILES: system/prisc+x.c:1033-1046 (OP_EXEC handler)
+
+========================================================================
+PITFALL 14: compose_rgb_frame non-atomic write causes RGB flicker
+========================================================================
+
+SYMPTOM: RGB/GL window briefly flashes black on every frame update.
+ROOT CAUSE: compose_rgb_frame.c wrote rgb_frame.raw (and
+rgb_frame_3d_overlay.raw) via plain fopen("wb"), which TRUNCATES the
+file to 0 bytes before any new content is written. A reader
+(chtpm_rgb_render or gl_mirror) that opens the file during that
+truncate→write window sees an empty/partial buffer = black frame.
+
+FIX: Write to a .tmp file, then rename() over the real path. POSIX
+rename() onto the same filesystem is atomic - any reader sees either
+the complete OLD file or the complete NEW one, never a partial one.
+Matches chtpm_rgb_render.c's own write_file_atomic() pattern (see
+that file's own header comment at line 539-554 for the full
+writeup of this exact race class).
+
+  char tmp[PATH_BUF + 4];
+  snprintf(tmp, sizeof(tmp), "%s.tmp", real_path);
+  FILE *f = fopen(tmp, "wb");
+  fwrite(data, 1, len, f);
+  fclose(f);
+  rename(tmp, real_path);
+
+FILES: ops/compose_rgb_frame.c (overlay write + frame write)
+
+========================================================================
+PITFALL 15: ONE WRITER RULE VIOLATION — compose_frame writes current_frame.txt
+=======================================================================
+DATE: 2026-07-25
+SEVERITY: HIGH (causes visible flicker in both ASCII and RGB)
+SOURCE: PMO Pitfall #17 + #36 from PITFALLS_ACTIVE_2026-03-18.txt
+PROJECTS: mutaclsym, potentially any project with game_compose_frame
+
+SYMPTOM: Persistent flickering in both ASCII and RGB frames, even after
+atomic-write fix for rgb_frame.raw.
+
+ROOT CAUSE: TWO writers fighting over current_frame.txt:
+  1. compose_frame.c wrote directly to pieces/display/current_frame.txt
+  2. chtpm_parser_pal.c also writes current_frame.txt (via layout compose)
+Dual-writer race.
+
+FIX: compose_frame writes to view.txt, NOT current_frame.txt.
+Parser reads view.txt -> ${game_map} -> writes current_frame.txt.
+
+FILES: ops/compose_frame.c (out_path -> view.txt)
+
+=======================================================================
+PITFALL 16: RGB 3D CAMERA ANCHOR MISSING
+=======================================================================
+DATE: 2026-07-25
+SEVERITY: MEDIUM (camera doesn't follow xlector in 3D mode)
+
+ROOT CAUSE: chtpm 3D path passes (px, py) to render_3d_view() always.
+Non-chtpm 2D path has correct anchor at lines 1615-1616.
+
+FIX: anchor_x = (interact_mode == 1) ? xlector_x : px in chtpm 3D path.
+
+FILES: ops/compose_rgb_frame.c (chtpm 3D path ~line 1435)
+
+=======================================================================
+PITFALL 17: move_player EXIT CODES — xlector vs hero signaling
+=======================================================================
+DATE: 2026-07-25
+SEVERITY: HIGH (causes turn spam)
+
+ROOT CAUSE: move_player returned 0 for ALL actions. game_dispatch
+treated all exit 0 as "hero acted".
+
+FIX: exit 0 = hero acted, exit 2 = xlector moved (free action).
+game_dispatch gates end_turn on hero_moved only.
+
+FILES: ops/game_dispatch.c, ops/move_player.c
+
+=======================================================================
+PITFALL 18: PARSER non-atomic current_frame.txt write (ASCII flicker)
+=======================================================================
+DATE: 2026-07-25
+SEVERITY: HIGH (causes visible ASCII frame flicker)
+SOURCE: Same class as compose_rgb_frame.c's own flicker (PITFALL 14)
+
+SYMPTOM: ASCII frame flickers despite compose_frame writing to view.txt.
+Renderer reads current_frame.txt between parser's fopen("w") truncation
+and fwrite completion = empty/partial frame visible.
+
+ROOT CAUSE: chtpm_parser_pal.c line 2716-2717 writes current_frame.txt
+with plain fopen("w") + fprintf. fopen("w") truncates to 0 bytes BEFORE
+any content is written. The renderer (running concurrently) reads the
+file during this window and sees an empty frame.
+
+FIX: same atomic write pattern as compose_rgb_frame.c:
+  1. Write to current_frame.txt.tmp
+  2. rename(tmp, current_frame.txt)
+
+POSIX rename() on the same filesystem is atomic - the reader sees
+either the complete OLD or complete NEW file, never a partial one.
+
+FILES: system/chtpm_parser_pal.c (compose_frame function ~line 2716)
+
+=======================================================================
+PITFALL 19: compose_frame.c view.txt non-atomic write (ASCII flicker)
+=======================================================================
+DATE: 2026-07-25
+SEVERITY: HIGH (causes visible ASCII frame flicker)
+SOURCE: Same class as compose_rgb_frame.c (PITFALL 14) and parser
+(PITFALL 18)
+
+SYMPTOM: ASCII frame flickers even though parser's current_frame.txt
+write is atomic. The flicker source is one step earlier: compose_frame
+(ops binary) writes view.txt with fopen("w"), which truncates to 0
+bytes BEFORE writing. Parser reads view.txt during this window via
+${game_map} substitution and gets a partial/empty frame.
+
+ROOT CAUSE: compose_frame.c line 1069 uses fopen(out_path, "w") to
+write view.txt. fopen("w") sets file size to 0 before any bytes are
+written. The parser's compose_frame() reads view.txt to populate
+${game_map} — if it reads during the truncation window, it gets
+empty/partial content.
+
+FIX: atomic write (tmp+rename) for view.txt:
+  1. Write framebuf to view.txt.tmp
+  2. rename(view.txt.tmp, view.txt)
+
+Also removed the duplicate VIEW BRIDGE write (same path, same buffer,
+was writing view.txt twice per frame — the second write re-truncated
+the file the first had just completed).
+
+FILES: ops/compose_frame.c (~line 1063-1090)
+
+=======================================================================
+PITFALL 20: launch_redirect()'s FIXED 2-ARG execl() silently truncates a
+multi-arg child's real argv - process "starts" but exits on its own
+usage message
+=======================================================================
+DATE: 2026-07-26
+SEVERITY: HIGH (kills P2P entirely, but LOOKS like it half-works)
+PROJECT: 044.pal-chat-irc
+
+SYMPTOM: Two users in the same room, on two concurrent local sessions of
+the SAME project, do not see each other's messages update live. The
+first joiner sitting idle never sees a second joiner's message appear -
+only re-renders when the first joiner does something themselves (their
+own keypress causes their own recompose, which then happens to pick up
+the already-shared room file).
+
+ROOT CAUSE: system/orchestrator.c's launch_redirect(path, arg1, arg2,
+logfile) only supports a FIXED 2-argv-slot execl() call. But the actual
+call site needed 5 real args for palnet_peer (own_kind, project_id,
+piece_id, outbox_file, inbox_file[, seek_kind]):
+
+  launch_redirect("ops/+x/palnet_peer.+x",
+                  "irc_node", "pal-chat-irc - net/outbox.txt net/inbox.txt irc_node",
+                  logfile);
+
+execl() does NOT shell-split arg2 - palnet_peer received it as ONE
+literal argv[2] string, saw argc=3 instead of the required 6, and
+exited immediately printing its own "Usage: ..." message straight into
+the (rarely-checked) log file. Net result: palnet_peer never actually
+ran, net/inbox.txt on every session stayed permanently empty, and
+net/presence/ stayed empty too - the entire P2P layer was silently dead
+from the very first `./button.sh run`.
+
+WHY THIS WENT UNNOTICED: rooms/<room>/messages.txt and (after the
+master-ledger pass) data/master_ledger.txt are REAL, SHARED files
+(symlinked into every session of the same local project) - so any
+session that recomposes ITS OWN view for ANY reason (its own keypress,
+its own post) reads the already-correct shared file directly, with zero
+help from P2P. This gives strong false-positive confidence that
+messaging/networking works, when actually the ONLY thing making it look
+that way is direct filesystem sharing between same-machine sessions -
+the mechanism that's supposed to proactively notify an IDLE session
+(palnet_peer -> net/inbox.txt -> chat_inbox_watcher -> trigger_render())
+was never running at all.
+
+FIX: added a proper argv-array launcher (mirrors 041.pal-chain's own
+orchestrator.c launch(path, argv[], argc) which already did this
+correctly via execv()):
+
+  static pid_t launch_argv_redirect(const char *path, const char **argv,
+                                     int argc, const char *logfile) {
+      ...
+      char *args[16];
+      args[0] = (char *)path;
+      for (i = 0; i < argc && i < 14; i++) args[i + 1] = (char *)argv[i];
+      args[i + 1] = NULL;
+      execv(path, args);
+      ...
+  }
+
+Call site fixed to pass real separate argv slots:
+  const char *pn_args[] = { "irc_node", "pal-chat-irc", "-",
+                             "net/outbox.txt", "net/inbox.txt", "irc_node" };
+  launch_argv_redirect("ops/+x/palnet_peer.+x", pn_args, 6, logfile);
+
+VERIFIED LIVE (not just read): before the fix, /tmp/pal_chat_irc_palnet_peer.log
+contained palnet_peer's own usage-error text and net/presence/ was empty
+for both sessions. After the fix, presence files appeared with two
+DISTINCT ports (9950/9951) and a real message posted from session A
+appeared in session B's own net/inbox.txt within seconds.
+
+CHECK YOUR OWN PROJECT: any orchestrator.c using a fixed-arg launch()/
+launch_redirect() helper is only ever correct for children that need
+<= that many args. If a call site's arg2 (or similar) contains embedded
+spaces representing MULTIPLE logical tokens, that's the smell - it means
+someone is passing a whole argv as one string to a function that can't
+split it. grep every orchestrator.c in this family for this pattern.
+
+FILES: 044.pal-chat-irc/system/orchestrator.c (launch_argv_redirect added,
+       palnet_peer call site fixed)
+
+=======================================================================
+PITFALL 21: TESTING VIA DIRECT OP INVOCATION OR ISOLATED-NODE NETWORK
+SIMULATION DOES NOT PROVE THE REAL LOCAL MULTI-SESSION UX WORKS
+=======================================================================
+DATE: 2026-07-26
+SEVERITY: HIGH (false "PASS" verdict on a completely broken feature)
+PROJECT: 044.pal-chat-irc (applies to any project with an orchestrator +
+P2P daemon + shared local session state)
+
+SYMPTOM: An agent tests P2P/multi-session chat by directly invoking
+ops/+x/palnet_peer.+x and ops/+x/chat_inbox_watcher.+x by hand with
+correctly-formed argv, across two INDEPENDENT project copies simulating
+two separate machines. Everything passes - distinct ports, message
+propagation, dedup, replay. A written test report says "SAFE TO
+PROCEED." The user then runs the ACTUAL entry point real users use
+(`./button.sh run` x2, same real project, real symlinked sessions) and
+the feature is completely broken (see PITFALL 20).
+
+ROOT CAUSE: Testing ops directly bypasses the orchestrator's own launch
+code entirely - the exact code path PITFALL 20's bug lived in. A
+synthetic two-independent-node test also can't be fooled by the
+shared-symlinked-file false-positive described in PITFALL 20, so it
+proved the network protocol logic works while proving NOTHING about
+whether the real project ever actually launches that logic correctly
+for a real local user. Two structurally different kinds of "the P2P
+layer works" claims got conflated: "the ops, given correct args, do the
+right thing" (true, and was genuinely tested) vs. "the real button.sh
+run entry point actually launches those ops with correct args for a
+real local multi-session user" (false, and was NOT tested until the
+user pushed back and asked directly).
+
+FIX / STANDING RULE: for any feature involving an orchestrator-launched
+daemon (P2P, watchers, background tick processes), at least ONE test
+pass MUST go through the actual user entry point (`./button.sh run`,
+twice concurrently for multi-session features) before writing "SAFE TO
+PROCEED" or "PASS" in a test report - not a headless op-level
+substitute, no matter how thorough the op-level coverage is. Op-level
+and isolated-node tests are still valuable (they prove the underlying
+logic is sound and isolate the SPECIFIC bug faster once you know
+something's wrong) but they are a SUPPLEMENT to, never a REPLACEMENT
+for, one real end-to-end run through the actual launcher path.
+
+RELATED, ALSO DISCOVERED THIS SESSION: don't hand-edit a state file
+(current_layout.txt, chat_menu_state.txt, etc.) that a LIVE persistent
+pal module also owns and actively re-syncs - the module's own next idle
+loop tick will silently overwrite your edit back to whatever IT thinks
+the state is (it never learned about the manual edit; it has no idea a
+human/agent intervened). To move a live session into a given
+screen/room/state for testing, drive it through REAL key injection
+(pieces/keyboard/history.txt, [TIMESTAMP] KEY_PRESSED: <code> format per
+_.0.aigent-testing-k3.txt) so the state change happens through the
+module's own real code path, not around it.
+
+ALSO OBSERVED THIS SESSION (worth a quick mention for future agents):
+system/keyboard_input.c busy-spins near 100% CPU per session in a
+headless/no-/dev/tty environment (API sandbox) rather than blocking
+cleanly - two concurrent test sessions pegged ~93% CPU EACH. Kill test
+sessions immediately after use in such environments, don't leave them
+running "for later." Also: `./button.sh kill` / kill_all.sh did not
+always complete in a single invocation under that CPU load in this
+environment (observed exit code 144 twice) - always verify with a
+`ps aux | grep` afterward rather than trusting the exit code alone; a
+manual `kill -9 <pid>` follow-up closed the gap both times it happened.
+
+FILES: 044.pal-chat-irc/system/keyboard_input.c (CPU-spin - ROOT-CAUSED
+       AND FIXED, see PITFALL 22 below),
+       044.pal-chat-irc/pieces/os/kill_all.sh (unreliable single-shot
+       completion under CPU load, NOT fully root-caused - mitigated via
+       an outer verify+retry pattern, see standing rule above)
+
+=======================================================================
+PITFALL 22: keyboard_input.c's read_key() busy-spins at ~100% CPU with
+no /dev/tty (headless/API-sandbox testing) - ROOT-CAUSED AND FIXED,
+directory-wide (10 project copies)
+=======================================================================
+DATE: 2026-07-26
+SEVERITY: HIGH (pegs a full CPU core per session indefinitely, no
+natural ceiling - compounds fast with 2+ concurrent test sessions)
+
+SYMPTOM: `./system/keyboard_input` shows ~93-100% CPU in `ps aux`,
+indefinitely, for every headless/backgrounded test session launched via
+`./button.sh run`. Confirmed live: two concurrent sessions each pegged
+a separate core at ~99-100% for the full 3+ minutes they were left
+running.
+
+ROOT CAUSE (system/keyboard_input.c's read_key()):
+
+  static int read_key(void) {
+      char c;
+      int nread;
+      while ((nread = read(STDIN_FILENO, &c, 1)) != 1) {
+          if (nread == -1 && errno != EAGAIN) return -1;
+      }
+      ...
+  }
+
+  enable_raw_mode() sets VMIN=0/VTIME=1 on stdin so a REAL terminal's
+  read() blocks up to ~100ms before returning 0 when nothing's typed -
+  the loop above is meant to be naturally throttled by that. But
+  tcsetattr() SILENTLY FAILS (return value never checked) when stdin
+  isn't a real tty - which is exactly what a headless/API-sandbox test
+  run looks like (backgrounded via `&`, stdin redirected from
+  /dev/null or a closed pipe). On a non-tty fd, read() returns 0
+  INSTANTLY every single call, forever - the while loop's only
+  condition for continuing IS "did I get exactly 1 byte", so it spins
+  as fast as the CPU allows with zero blocking, zero sleep, zero upper
+  bound.
+
+FIX: add a short usleep() on the nread==0/retry path:
+
+  while ((nread = read(STDIN_FILENO, &c, 1)) != 1) {
+      if (nread == -1 && errno != EAGAIN) return -1;
+      usleep(20000);  /* caps the spin; negligible cost on a real
+                          terminal where this path is already rare and
+                          already throttled by VTIME */
+  }
+
+  Verified live: CPU usage for system/keyboard_input dropped from
+  ~99-100% to ~0.1% after rebuilding with this fix, same test session
+  shape (button.sh run --pal, backgrounded, no tty).
+
+DIRECTORY-WIDE SCOPE: this file is described in its OWN header comment
+as a "SHARED OP" independently copied (not symlinked) into every
+project in this family. Found the IDENTICAL unfixed pattern in 9 other
+copies (014.wsr-pal, 041.pal-chain, 041.pal-forum, 045.muchi-pal-agent,
+01.muchi-pals, 101.lpns+map+4, 101.mutaclsym, 002.zoo, 0.user-pal) and
+applied the SAME fix to all of them - do not assume fixing your one
+project's copy is enough; grep the whole tree
+(`find <root> -iname keyboard_input.c`) and check every hit.
+INTERESTING PRECEDENT MISSED: 101.ledger-player-npc-simple+3's own copy
+ALREADY had a bare `usleep(10000)` here with no comment - meaning this
+exact bug was found and partially fixed once before, in one project,
+and never propagated or written down anywhere until now. Write pitfalls
+down BEFORE fixes get lost in a single project's diff.
+
+STANDING RULE: when testing ANY of these projects headlessly (no real
+terminal), assume this fix needs to be in place, or that keyboard_input
+itself should simply be skipped/killed immediately after launch if the
+project's own binary predates this fix and can't be rebuilt - check
+`ps aux` CPU% for it within a few seconds of any headless launch and
+kill/rebuild rather than letting it run.
+
+FILES: system/keyboard_input.c in all 11 copies across the muchiverse
+       tree (see DIRECTORY-WIDE SCOPE above for the full list)
+
+=======================================================================
+PITFALL 23: parse_attributes() 1-byte heap-buffer-overflow -> silent
+malloc corruption -> chtpm_parser_pal dies a few frames after startup
+(directory-wide, all 11 copies)
+=======================================================================
+DATE: 2026-07-26
+SEVERITY: CRITICAL (silently kills the whole UI stack; was previously
+misdiagnosed as an orchestrator/palnet_peer "hang")
+PROJECT FOUND: 041.pal-chain (root-caused via AddressSanitizer)
+
+SYMPTOM: `./button.sh run` appears to "hang" - keyboard_input blocks in
+the foreground as expected (see PITFALL 21's headless-testing note),
+but chtpm_parser_pal ALSO silently disappears from `ps aux` within a
+couple seconds of startup, so nothing ever renders. A prior session's
+own smoke test reported this as an unexplained hang and gave up. It is
+NOT a hang - the parser crashes.
+
+ROOT CAUSE (system/chtpm_parser_pal.c, parse_attributes(), scanning an
+attribute name):
+
+  char* name_start = pos; while (*pos && *pos != '=' && !isspace(*pos)) pos++;
+  char saved = *pos; *pos = '\0'; while (*(++pos) && isspace(*pos));
+
+When the attribute name runs all the way to the end of the strdup'd
+attribute string (saved == '\0' - i.e. pos was ALREADY at the buffer's
+own null terminator), `while (*(++pos) && ...)` unconditionally
+increments pos PAST that terminator BEFORE ever checking it - a 1-byte
+READ past the end of the heap allocation. Confirmed via AddressSanitizer:
+
+  ERROR: AddressSanitizer: heap-buffer-overflow ... READ of size 1
+  #0 parse_attributes system/chtpm_parser_pal.c:2202
+  #1 parse_chtm system/chtpm_parser_pal.c:2474
+  0x... is located 0 bytes to the right of 508-byte region
+  allocated by strdup() at system/chtpm_parser_pal.c:2197
+
+That single out-of-bounds read corrupts glibc's own malloc bookkeeping
+for the adjacent heap chunk (undefined behavior, not merely a harmless
+stray read) - the NEXT malloc/free call downstream then aborts with:
+
+  malloc(): invalid next size (unsorted)
+
+...which is why the crash appears to happen "a few frames later" with
+no obvious connection to the actual bug, and why it looked like a hang
+from the outside (no core dump inspected, no ASan run) rather than a
+crash.
+
+FIX: only advance past the terminator if there's a real character to
+skip:
+
+  char saved = *pos; *pos = '\0';
+  if (saved) { pos++; while (*pos && isspace((unsigned char)*pos)) pos++; }
+
+VERIFIED LIVE: before the fix, ASan caught the overflow every run and
+the plain (non-ASan) binary aborted with the malloc corruption message
+within ~1-2 seconds of `./button.sh run`. After the fix: full daemon
+stack (orchestrator, renderer, chtpm_parser_pal, keyboard_input,
+prisc+x, palnet_peer) launched and stayed alive/stable for 10+ seconds
+straight with real frame content rendering, verified via direct process
+inspection, not just a log message.
+
+DIRECTORY-WIDE SCOPE: chtpm_parser_pal.c is a "SHARED OP" independently
+copied (not symlinked) into 11 projects across this tree - found and
+fixed the IDENTICAL bug in ALL of them (including 044.pal-chat-irc's
+own copy, which had simply never triggered it - a dormant time bomb
+depending on the exact shape of whatever CHTPM layout XML a given
+project happens to load first). grep every copy for
+`while (\*(\+\+pos) && isspace` before trusting any of them are safe.
+
+DEBUGGING METHOD WORTH REMEMBERING: when a persistent daemon
+mysteriously "disappears" from `ps aux` shortly after launch with no
+obvious cause, don't assume a hang or an orchestrator/launch-arg bug
+(PITFALL 20's class) without checking first - recompile the exact
+binary with `-fsanitize=address -g` and run it directly (bypass the
+orchestrator's fork/exec, run it standalone against a hand-built
+session directory with correct symlinks) to get an exact file:line
+crash location in seconds, instead of guessing from process-list
+absence or grepping for suspicious code. A plain (non-ASan) run's own
+"malloc(): invalid next size" message just means "somewhere upstream
+overflowed a heap buffer" - it points at neither the actual overflow
+site nor even reliably at the correct function.
+
+ALSO WORTH REMEMBERING: when checking whether a project's own daemons
+are alive via `ps aux | grep`, match on the process/binary name alone
+(`system/renderer`, `ops/\+x/palnet_peer`, etc.), NEVER require the
+project's own absolute path as part of the same match - children
+launched via a relative execv() path (`execv("./system/renderer", ...)`
+from a cwd-changed parent) show up in `ps aux` as `./system/renderer`
+with NO absolute path prefix at all. A grep requiring both produces a
+false "nothing is running" reading even when the full stack is alive
+and healthy - this exact mistake was made twice this session (once in
+testing/test_multiuser_p2p.sh's cleanup check, once while manually
+investigating this very pitfall) before being caught both times by an
+independent broader recheck.
+
+FILES: system/chtpm_parser_pal.c in all 11 copies across the muchiverse
+       tree (014.wsr-pal, 041.pal-chain, 041.pal-forum, 045.muchi-pal-
+       agent, 01.muchi-pals, 044.pal-chat-irc, 101.lpns+map+4,
+       101.mutaclsym, 101.ledger-player-npc-simple, 002.zoo,
+       0.user-pal/00.login-signup)
+
+
+=======================================================================
+PITFALL: DNA / palette pickers MUST be numbered nav rows — not a/d scrollers
+=======================================================================
+DATE: 2026-07-27
+PROJECT: 0.user-pal/01.avatar-creation
+
+WRONG: a single <scroller> strip like `SKIN: 👨 [👨🏻] 👨🏼 …` with a/d (or
+INTERACT lock) to cycle. User tries to "select" a skin and either
+navigates away (w/s/digits swallowed or strip steals focus) or has no
+per-option index to jump to. Deviated from std chtpm menu pattern.
+
+RIGHT (std): under a [+]/[-] fold, inject one <button> per option so
+the parser assigns real navigable indexes:
+
+  [ ] 7. [+] Skin  👨🏻
+  (Enter open)
+  [ ] 7. [-] Skin  👨🏻
+  [>] 8. [👨🏻]          ← KEY:301 applies skin index 1
+  [ ] 9. 👨🏼
+  …
+
+Implementation notes for avatar-creation:
+  - compose writes dna_opts_skin=… markup into gui_state (lazy XML sub)
+  - each button onClick="KEY:300+idx" (gender 310+, hair 320+, …)
+  - avatar_menu_input maps those key codes → cycle_dna.+x <uuid> <field> <idx>
+  - fold [+]/[-] only hides/shows children; no ACTIVATE trap, no a/d strip
+
+ALSO: do not put onClick="ACTIVATE" on DNA folds if children need global
+numbered nav — ACTIVATE scopes navigability and INTERACT-on-child was
+broken via send_command("INTERACT") (not a real command verb).
+
+FILES: ops/avatar_compose_frame.c, ops/avatar_menu_input.c,
+       pieces/chtpm/layouts/avatar_manage.chtpm, customize.chtpm
+
+========================================================================
+PITFALL 48: Idle menu_input (key 0) MUST NOT unconditional bump_screen /
+            hit_frame — causes multi-frame-per-second spam (unlike
+            mutaclsym, which only composes when input/state changed)
+========================================================================
+
+SYMPTOM: Terminal floods with `--- FRAME UPDATE at ... ---` markers even
+when the user is idle. `pieces/display/frame_history.txt` grows to
+megabytes in minutes. CPU sits high; scrollback becomes unusable.
+
+ROOT CAUSE: House pal loops (login, START_BUTTON, forum-family) look like:
+
+  loop:
+    menu_input 0          # idle catch-up every ~30ms
+    read_history ...
+    ...
+    compose_frame
+    hit_frame
+
+If `menu_input` key==0 always grows `*_screen_changed.txt` (or always
+calls compose), the main loop takes the "render" branch on every sleep
+tick — not only when something changed. mutaclsym avoids this: its
+dispatch only composes after real keys / turn work.
+
+LIVE EXAMPLE (user-pal login, 2026-07-27):
+  userpal_menu_input key 0 did regenerate_login_pdl() then
+  bump_screen() unconditionally → ~33 recomposes/sec with no new
+  accounts and no keypresses.
+
+FIX:
+  1. Idle path may recompute catalogs, but pulse/recompose ONLY when
+     the resulting view/catalog fingerprint actually differs
+     (hash piece.pdl, compare last_message, compare layout, etc.).
+  2. Real actions (KEY:n, RUN:, login success, href) still bump.
+  3. Prefer mutaclsym shape when possible: compose only after input
+     processing that changed state.
+
+AUDIT: system/renderer.c appends every painted frame to
+  pieces/display/frame_history.txt (cleared at renderer process start /
+  each new session). Use that file to prove spam vs calm paint rates.
+  START_BUTTON also dual-writes install debug/frame_history.txt via
+  PRISC_FRAME_HISTORY (cleared each `./button.sh run`).
+
+FILES: 0.user-pal/00.login-signup/ops/userpal_menu_input.c,
+       *.START_BUTTON/ops/start_menu_input.c (idle already gated),
+       pal/main_loop_chtpm.pal family, system/renderer.c
+
+SEE ALSO: pal-standards sec. 20 (ONE VISIBLE FRAME WRITER), sec. below
+on frame_history audit logs.
+
+========================================================================
+PITFALL 49: Treating ASCII/terminal as primary and widgets as
+            "open another terminal" — WRONG. GL is primary; widgets
+            are GL-only spawn profiles (2026-07-27)
+========================================================================
+
+SYMPTOM: Plans and agents add Step 2 "optional GL" for widgets, or tell
+users to open a second terminal for file-menu while the editor runs.
+Product feels like a dev console farm, not an OS of windows.
+
+ROOT CAUSE: Early house scaffolds (login, START_BUTTON, editor Phase 1)
+shipped terminal-first because harnesses and agents are text-native.
+That is a **dev convenience**, not the product architecture.
+
+LAW (pal-standards sec. 35):
+  - GL / RGB window = primary user surface
+  - ASCII renderer = secondary (harness, headless, debug)
+  - Widget launch profile = GL on, ASCII off (no second TTY)
+  - App opens widget by spawning run-widget, not by asking for a shell
+
+FIX:
+  - button.sh: `run` (app) vs `run-widget` (GL-only)
+  - ascii renderer stdout → /dev/null or skip process when widget
+  - editor FILE menu → spawn &.widgits/file-menu as widget
+  - update plans: GL is Step 1 for widgets, not Step 2
+
+SEE: pal-standards §35, &.widgits/file-menu/widget+plan.txt
+
+=======================================================================
+PITFALL 50: prisc+x custom-op dispatch (exec_custom_op's popen()/
+            system() calls) interpolates the project path UNQUOTED —
+            any project living under a directory name containing a
+            shell metacharacter silently loses EVERY custom op,
+            forever, with zero error visible to the caller
+=======================================================================
+DATE: 2026-07-29
+SEVERITY: CRITICAL (every op, every project, under the affected path —
+           not a bug in the project's own code at all)
+PROJECT FOUND: &.widgits/file-menu (this whole tree — event-editor,
+           map-picker, tile-picker, proc-monitor — lives one directory
+           deeper than every other project, inside a folder literally
+           named "&.widgits" per PITFALL 49's own house convention)
+
+SYMPTOM: file-menu's nav pickers rendered fine ([>]/[ ] showed cursor
+position), arrow keys were correctly defined, but cursor_pos in
+fm_state.txt NEVER moved no matter what was injected. The marker file
+(pieces/display/fm_screen_changed.txt) that fm_menu_input.c touches on
+every call stayed at 0 bytes forever — looked exactly like "the PAL
+module never runs" or "read_history is broken." Spent a long time
+chasing that hypothesis (checking <module> tag parsing, read_history's
+literal-path form, the main_loop_chtpm.pal control flow byte-for-byte
+against working siblings) before finding the real cause.
+
+ROOT CAUSE (system/prisc+x.c, exec_custom_op()): every `void ops/+x/*`
+custom op (fm_menu_input, fm_compose_frame, chain_menu_input, etc.) is
+dispatched by building a shell command string with asprintf() and
+running it through popen()/system():
+
+  char *full_script_path; // = PRISC_PROJECT_ROOT + "/" + handler path
+  asprintf(&cmd, "%s %d", full_script_path, regs[i->rs1]);
+  FILE *pipe = popen(cmd, "r");   // full_script_path is NEVER quoted
+
+PRISC_PROJECT_ROOT for file-menu resolves to a path containing a bare,
+unquoted "&" (".../44.xyz.../&.widgits/file-menu/..."). /bin/sh treats
+an unquoted "&" as "background the previous command, then run the
+rest" — it silently SPLITS the exec path in two:
+
+  sh: 1: .widgits/file-menu/.../fm_menu_input.+x: not found
+  sh: 1: /home/no/Desktop/.../44.xyz.../: Permission denied
+
+Confirmed by manually reproducing the exact popen() string with sh -c
+outside prisc+x entirely — same two errors, byte for byte. Neither
+error is printed anywhere the caller sees by default: chtpm_parser_pal
+forks prisc+x with stdout redirected to /dev/null in every button.sh
+(`>/dev/null 2>&1 &`), so the "not found"/"Permission denied" lines
+vanish silently. Every custom op call becomes a complete, silent no-op:
+the op's own binary never runs, so it never touches ITS OWN marker
+file either — from the PAL loop's side, this is indistinguishable from
+"the marker-diff gate is broken" or "the module isn't executing at
+all," which is exactly the wrong trail this was chased down first.
+
+WHY THIS AFFECTS THE WHOLE &.widgits/ FAMILY, NOT JUST file-menu: any
+project under a path containing a shell metachar (&, ;, |, $, `, (),
+unescaped spaces already handled by real dirs elsewhere in this tree
+via quoting THAT never existed here) hits the identical silent failure
+for EVERY custom op it defines, unconditionally — this is a property
+of the path, not of any individual project's own PAL script or op
+code. event-editor, map-picker, tile-picker, proc-monitor all sit at
+the exact same "&.widgits/<name>" depth and are exposed identically
+until the shared prisc+x binary is rebuilt from the fixed source.
+
+FIX: quote the resolved path before it ever reaches popen()/system().
+Added a small shell_quote() helper (single-quote wrap, with the
+standard '\'' escape for any literal single quotes already present)
+in system/prisc+x.c, applied to full_script_path at all three
+cmd-building call sites inside exec_custom_op() (the layout_op branch,
+the literal-arg branch, and the register-value branch):
+
+  static char *shell_quote(const char *in) {
+      size_t len = strlen(in);
+      char *out = malloc(len * 4 + 3);
+      char *o = out; *o++ = '\'';
+      for (size_t k = 0; k < len; k++) {
+          if (in[k] == '\'') { *o++='\''; *o++='\\'; *o++='\''; *o++='\''; }
+          else *o++ = in[k];
+      }
+      *o++ = '\''; *o = '\0';
+      return out;
+  }
+  ...
+  char *quoted_script_path = shell_quote(full_script_path);
+  asprintf(&cmd, "%s %d", quoted_script_path, regs[i->rs1]);
+
+No-op for every path that never had a metacharacter in it (every
+non-widget project) — this is purely additive safety, not a behavior
+change for anything that currently works.
+
+VERIFIED LIVE: after rebuilding system/prisc+x from the patched source
+and pulling it into file-menu via its own build.sh (which copies the
+compiled binary from 014.wsr-pal, the canonical shared-ops source),
+fm_screen_changed.txt started growing every idle tick as expected, and
+a real ARROW_DOWN injected through the standard pipeline (see PITFALL
+51 below for why the FIRST injection attempt looked broken too) moved
+cursor_pos 1 -> 2 -> 5 across repeated key presses, matching every
+other working project's own nav behavior exactly.
+
+STANDING RULE: system/prisc+x.c is this family's own shared VM (see
+that file's own top-of-file comment: "genuine fixes belong here
+directly, not worked around elsewhere") — this fix belongs in the
+canonical 014.wsr-pal copy, not file-menu's own local binary, so every
+build.sh across the tree that re-copies from wsr-pal picks it up
+automatically. Rebuild wsr-pal's system/prisc+x, then re-run any other
+widget's own `./button.sh compile` (or equivalent build.sh) to pick up
+the fixed binary — do not assume the fix "traveled" just because the
+source file did.
+
+FILES: 014.wsr-pal💸️📌️+2/system/prisc+x.c (exec_custom_op, canonical
+       fix — shared by every project that copies its prisc+x binary
+       from here via build.sh)
+
+=======================================================================
+PITFALL 51: PITFALL 22's keyboard_input.c fix only throttled the EOF
+            (nread==0) retry path — the hard-error (nread==-1, real
+            errno) path still returns instantly with ZERO sleep,
+            reproducing the exact same 100% CPU spin PITFALL 22
+            already claimed was fixed
+=======================================================================
+DATE: 2026-07-29
+SEVERITY: HIGH (same blast radius as PITFALL 22 — one pegged CPU core
+           per headless test session — plus it actively misled
+           debugging by mimicking an "already fixed, known" bug)
+
+SYMPTOM: system/keyboard_input showed ~99% CPU in `ps aux` during a
+headless test run, identical to PITFALL 22's own symptom, DESPITE that
+project's copy of keyboard_input.c already containing PITFALL 22's own
+documented fix (`usleep(20000)` inside the retry loop). Wasted time
+re-diagnosing a "known, already-fixed" bug before noticing the fix was
+incomplete, not absent.
+
+ROOT CAUSE (system/keyboard_input.c, read_key()) — the exact code
+PITFALL 22 left behind:
+
+  while ((nread = read(STDIN_FILENO, &c, 1)) != 1) {
+      if (nread == -1 && errno != EAGAIN) return -1;
+      usleep(20000);
+  }
+
+This throttles the nread==0 (EOF) case correctly — PITFALL 22's own
+fix works exactly as documented for THAT path. But the hard-error
+branch (`nread == -1 && errno != EAGAIN`) executes `return -1` on the
+SAME line, before ever reaching the usleep() below it. In this specific
+sandboxed test environment, read(STDIN_FILENO, ...) on a backgrounded
+process's stdin returned a real error (not EAGAIN, not a clean 0/EOF)
+on every single call — so read_key() returned -1 immediately, and
+main()'s own `if (key == -1) continue;` looped straight back into
+read_key() with no sleep anywhere in the cycle. Same 100% CPU spin,
+different trigger condition than the one PITFALL 22 root-caused.
+
+FIX: move the usleep() ahead of the error check so EVERY non-1 read
+result gets throttled before the function can return, regardless of
+which branch put it there:
+
+  while ((nread = read(STDIN_FILENO, &c, 1)) != 1) {
+      usleep(20000);
+      if (nread == -1 && errno != EAGAIN) return -1;
+  }
+
+Preserves the existing contract (still returns -1 upward on a real
+hard error, main() still treats that as a harmless no-op tick) while
+capping the retry rate on EVERY path that can loop, not just the one
+PITFALL 22 happened to hit first.
+
+VERIFIED LIVE: system/keyboard_input CPU usage dropped to ~0.0% in the
+same headless test session shape (button.sh run-app, backgrounded, no
+controlling tty) that showed ~99% before this follow-up fix.
+
+STANDING RULE: when a "known, already-fixed" pitfall's symptom
+resurfaces, read the CURRENT code before assuming the fix regressed or
+was never applied — check whether the ORIGINAL fix actually covers
+every branch that can reach the buggy loop, not just the one branch it
+was written against. PITFALL 22's own fix was correct for the
+condition it was diagnosed from (nread==0 on a plain /dev/null-style
+stdin) but incomplete for a different failure mode of the same
+underlying "no real tty" environment (a hard read() error instead of a
+clean EOF) — same root symptom, same file, same loop, genuinely
+different code path through it.
+
+FILES: 014.wsr-pal💸️📌️+2/system/keyboard_input.c (read_key() — same
+       "shared, independently-copied" scope note as PITFALL 22 itself;
+       re-check the other copies listed there if this resurfaces
+       elsewhere)
+
+=======================================================================
+PITFALL 52: Wiring GL/RGB into a NEW project without copying the font
+            glyph registry produces a technically-correct, checksum-
+            matching, but VISUALLY BLANK/BLACK GL window — a known
+            bug (fm-widget-fix.md) recurring because it was never
+            promoted into this file
+=======================================================================
+DATE: 2026-07-29
+SEVERITY: MEDIUM (window opens, pipeline runs, everything LOOKS wired
+           correctly by every file-level check — the failure is
+           invisible except by actually looking at the window)
+PROJECT: 102.editor-📄️00.00 (adding §35 GL/RGB parity with
+          &.widgits/file-menu for the first time)
+
+SYMPTOM: Added chtpm_rgb_render + gl_mirror to a project that never had
+them (editor), copying the binaries and the button.sh launch
+conditional from file-menu's own working pattern. Every file-level
+check passed: chtpm_rgb_render produced rgb_frame.raw at the correct
+size (640x768x4 = 1,966,080 bytes), and gl_mirror's own
+gl_display.receipt.txt checksum matched rgb_frame.receipt.txt's
+checksum exactly — the documented proof method from fm-widget-fix.md
+for "GL actually consumed the right frame." By that evidence alone this
+looked done. It was not: the actual content in the frame's non-glyph
+regions being non-zero doesn't mean the TEXT itself renders visibly.
+
+ROOT CAUSE: chtpm_rgb_render loads ASCII font glyphs from
+pieces/registry/fonts/ascii/<code>/glyph.txt, resolved relative to
+PRISC_PROJECT_ROOT (the SESSION dir, symlinked back to the project
+root) — NOT from a shared/central location, NOT from 014.wsr-pal at
+runtime. This is a project-LOCAL requirement, by design (see
+fm-widget-fix.md's own "Lesson: Every project/widget that uses
+chtpm_rgb_render must have pieces/registry/fonts/ascii/<code>/
+glyph.txt in its own directory tree. Glyphs are project-local, not
+shared from wsr."). editor never had a pieces/registry/ directory at
+all, and its button.sh never symlinked one into the session dir. Every
+character in current_frame.txt rendered as invisible pixels — a
+checksummed, correctly-sized, but visually blank/black frame.
+
+WHY THIS ALMOST SHIPPED UNCAUGHT: fm-widget-fix.md already documents
+this EXACT root cause, discovered once already for file-menu — but it
+lives only in that one project-local sprint doc, never in the shared
+!.pal-pitfalls+1.txt every future agent is told to read "BEFORE
+modifying any pal project." A second agent (this session) re-wired the
+identical GL/RGB pipeline into a second project and walked straight
+into the identical, already-solved bug, because the fix's location
+made it invisible to anyone not specifically told to go read
+file-menu's own internal fix-log first.
+
+FIX (mirrors fm-widget-fix.md's own fix #3, applied here to editor):
+  1. scripts/build.sh: copy pieces/registry/fonts/ascii/<code>/
+     glyph.txt for every code from 014.wsr-pal into the project's OWN
+     pieces/registry/fonts/ascii/ tree (95 glyphs as of this session).
+  2. button.sh: symlink $SESSION_DIR/pieces/registry ->
+     $SCRIPT_DIR/pieces/registry alongside the project's other session
+     symlinks (chtpm layouts, ops, pal, etc.).
+
+VERIFIED LIVE: before the fix, rgb_frame.raw's non-zero byte count was
+in the single digits (essentially a blank/black frame with checksum
+noise, not real glyph content) on at least one capture. After copying
+the 95-glyph registry and re-testing, non-zero byte count rose to
+~79,000 and the receipt checksums still matched — same proof method,
+now backed by an actual visible frame (confirmed by the user directly
+viewing the GL window, not just file checks).
+
+STANDING RULE: ANY project adding chtpm_rgb_render for the first time
+MUST copy the font glyph registry as part of that same change — it is
+not optional, and its absence produces NO error anywhere (not in
+stdout, not in a receipt file, not in a checksum) — only a blank
+window a human has to actually look at to notice. Checksum-matching
+receipts prove the PIPELINE moved bytes correctly; they do NOT prove
+the bytes are visually meaningful. Grep any new GL/RGB integration for
+a pieces/registry/fonts/ascii/ directory before declaring it done.
+
+FILES: 102.editor-📄️00.00/scripts/build.sh (glyph copy step added),
+       102.editor-📄️00.00/button.sh (registry symlink added)
+SEE ALSO: &.widgits/file-menu/fm-widget-fix.md (original discovery,
+       never promoted here until now)
+
+=======================================================================
+PITFALL 53: Backgrounding `button.sh run` with a trailing `&` from an
+            interactive job-control shell SIGTTIN-stops the ENTIRE
+            daemon stack (GL included) the instant keyboard_input
+            touches the controlling terminal — silent, no error, looks
+            exactly like "GL never launched"
+=======================================================================
+DATE: 2026-07-29
+SEVERITY: HIGH (total, silent failure of the whole running stack —
+           easily misdiagnosed as a GL/DISPLAY/rendering bug, which is
+           exactly what happened this session before the real cause
+           was found)
+PROJECT: 102.editor-📄️00.00 (discovered while testing the PITFALL 52
+          fix; applies to EVERY project using this button.sh shape —
+          file-menu included — not something the GL/RGB work
+          introduced)
+
+SYMPTOM: User ran `./button.sh run &` (backgrounded from their own
+interactive terminal) expecting the same GL window that had just been
+verified working moments earlier via an agent-run background test. No
+GL window appeared at all. `ps aux` on that exact process group showed
+EVERY daemon in the stack (system/renderer, system/chtpm_parser_pal,
+system/chtpm_rgb_render, system/prisc+x) in STATE T (stopped) — not
+running, not crashed, not exited: paused mid-execution, indefinitely,
+consuming zero CPU, with no error output anywhere because nothing
+actually failed — the kernel suspended the whole group.
+
+ROOT CAUSE: every button.sh run action in this family ends with a
+FOREGROUND, blocking call: `./system/keyboard_input`. That binary
+calls tcgetattr()/tcsetattr() directly on STDIN_FILENO to enter raw
+terminal mode - real, direct controlling-terminal I/O. When the WHOLE
+button.sh invocation is backgrounded with a trailing `&` in a shell
+with normal job control enabled, that shell's own job-control layer is
+still watching the terminal on behalf of ITS foreground job (the shell
+prompt itself). The instant a BACKGROUND job's process attempts to
+read from (or, depending on shell/tty settings, write to) the
+controlling terminal, the kernel's own tty line discipline sends
+SIGTTIN (or SIGTTOU) to that process'S ENTIRE PROCESS GROUP - not just
+keyboard_input, everything forked earlier in the same button.sh run
+that hasn't since called setsid()/setpgid() to detach - the ASCII
+renderer, chtpm_parser_pal, chtpm_rgb_render, and prisc+x/PAL loop, all
+stopped together, at whatever point each happened to be in mid-loop.
+gl_mirror's own absence from that stopped-process list (rather than
+also showing up stopped) suggests the group-stop can land before or
+around the GL launch point depending on exact timing - either way the
+net effect for a user watching the screen is identical: no window,
+zero error, the process silently going nowhere the moment `&` was
+used.
+
+This is NOT a bug introduced by wiring GL into editor (PITFALL 52's own
+work) - &.widgits/file-menu/button.sh's `run` action ends in the exact
+same foreground `./system/keyboard_input` call and would exhibit the
+identical stop if launched the same way. It surfaced here because this
+was the first time in this session someone actually tried `&`-
+backgrounding one of these launchers from a real interactive shell
+while also expecting its GL window to appear.
+
+FIX (workaround, not a code change - see STANDING RULE): do not
+background `button.sh run` (or run-app/run-widget) with a trailing `&`
+from an interactive shell that has job control enabled. Run it in the
+foreground directly; the GL window (a separate X11 client/process) and
+the terminal-blocking keyboard_input coexist fine as long as the whole
+invocation itself stays foreground in its own shell.
+
+If a TRUE background/headless launch is genuinely needed (agent
+testing, CI, a supervised daemon), the correct fix is on the launcher
+side, not the caller side: either (a) redirect keyboard_input's own
+stdin from something that isn't the controlling tty (`</dev/null` or
+a pty allocated for that purpose) so it never attempts real terminal
+I/O in the first place, or (b) have the backgrounding shell explicitly
+disown the job / run it via `setsid ./button.sh run &` so the new
+process group has no controlling terminal to trap against at all. This
+handoff/pitfall does NOT implement either of those - flagging the
+mechanism for whoever needs a genuine headless-launch mode next,
+rather than guessing at a fix nobody asked for yet.
+
+VERIFIED LIVE: same `./button.sh run` command, same session, no `&` -
+ran in the plain foreground - GL window appeared correctly, confirmed
+directly by the user looking at their own screen (not just file/
+checksum evidence, matching the STANDING RULE PITFALL 52 itself just
+established: a human has to actually look).
+
+STANDING RULE: when a headless/agent-driven test genuinely needs a
+project's daemon stack running unattended (the k3/§36.6 black-box
+testing style), do NOT reach for `./button.sh run &` as the obvious
+option - it is the one invocation shape most likely to silently stop
+itself in exactly this way the moment keyboard_input executes. Prefer
+launching the individual pipeline binaries directly (as fm-widget-
+fix.md's own "Standalone rendering test" procedure already does:
+compose -> chtpm_parser_pal -> chtpm_rgb_render -> gl_mirror, each
+started explicitly, keyboard_input omitted entirely) when the goal is
+unattended verification rather than real interactive use.
+
+FILES: none changed - this is a shell/job-control interaction, not a
+       code bug; documented here so the NEXT agent debugging "GL/
+       daemon silently doesn't start" checks `ps aux` STATE column
+       (T = stopped) before assuming a rendering, DISPLAY, or config
+       bug
+
+=======================================================================
+PITFALL 54: A previously-fixed, previously-VERIFIED three-layer race
+            condition (chtpm_rgb_render's initial render vs
+            chtpm_parser_pal's first compose) had regressed out of
+            &.widgits/file-menu/button.sh and was never present in
+            102.editor-📄️00.00/button.sh's new GL/RGB wiring either —
+            RE-FIXED IN BOTH, 2026-07-30
+=======================================================================
+DATE: 2026-07-29 (regression found) / 2026-07-30 (re-confirmed live +
+re-fixed in both projects); original bug/fix dated 2026-07-29 per
+@.apps/text-editor-xyz/widget-bug-fix-j29.txt (discovered, not
+authored, this session)
+SEVERITY: HIGH (blank/all-black GL window — the exact symptom class
+           debugged at length this session for two OTHER, genuinely
+           separate causes first, PITFALL 52/53 — all three now
+           reconciled: registry, job-control backgrounding, and this
+           race condition were three distinct bugs producing an
+           identical-looking symptom, fixed one at a time)
+
+SYMPTOM (per the discovered doc, not independently reproduced this
+session): GL window shows correctly when file-menu is launched
+standalone (`&.widgits/file-menu/button.sh r`), but comes up solid
+black when launched together with editor via
+`@.apps/text-editor-xyz/button.sh run` — same files, same checksums
+computed correctly, but rgb_frame.raw itself contains all-black pixel
+data (0/491520 non-black), because chtpm_rgb_render's very FIRST
+synchronous render ran before chtpm_parser_pal had written
+current_frame.txt at all, and then a second race (pulse size already
+matching by the time the renderer starts its poll loop) meant it never
+re-rendered afterward either — stuck black forever, not transiently.
+
+ROOT CAUSE OF THE RACE (already root-caused in the discovered doc, not
+re-derived this session): chtpm_rgb_render's startup order was
+gl_mirror -> chtpm_rgb_render -> chtpm_parser_pal, i.e. the renderer's
+own one-shot initial render + its baseline pulse-size read both happen
+BEFORE the parser has ever run compose_frame() once — a pure ordering
+bug, made far more likely to actually trigger under an app-launched
+combined session (5+ concurrent daemons = wider scheduler preemption
+window per that doc's own "Layer 3") than standalone (1-2 daemons).
+
+DOCUMENTED FIX (per that doc's own "THE FIX" + "FILES CHANGED"
+sections): reorder to chtpm_parser_pal FIRST, poll (up to ~2s) for
+current_frame.txt to actually exist, THEN gl_mirror, THEN
+chtpm_rgb_render — so the renderer's own initial render and baseline
+pulse-size read both happen strictly after the first real compose.
+Explicitly listed as applied to "&.widgits/file-menu/button.sh —
+startup order (parser first + wait)", with "REMAINING ISSUES: None
+found" as of that doc's own last line.
+
+THE REGRESSION (found this session, not yet root-caused): the CURRENT
+&.widgits/file-menu/button.sh does NOT have this ordering. It still
+starts `./system/renderer &` then `./system/chtpm_parser_pal ...`
+immediately after, then conditionally `gl_mirror`/`chtpm_rgb_render`
+inside the widget-profile block — no poll-for-current_frame.txt step
+anywhere, matching the doc's own documented "OLD ORDER (broken)"
+almost exactly, not the fixed one. Not yet determined whether: (a) the
+fix was applied to a different file/location than file-menu's real
+button.sh despite what the doc's FILES CHANGED section says, (b) a
+later, unrelated edit to file-menu/button.sh was made from a
+pre-fix base and silently dropped the reordering, or (c) the doc's own
+verification was against a temporarily-patched copy that was never
+actually committed back to the tracked file. None of these have been
+checked yet — flagging the discrepancy, not resolving it.
+
+WHY THIS WASN'T CAUGHT DURING THIS SESSION'S OWN GL/RGB WORK (PITFALL
+52/53): every live test this session ran EITHER file-menu alone or
+editor alone directly via each project's own button.sh — never through
+@.apps/text-editor-xyz/button.sh, the actual combined "app" launcher
+that runs both concurrently. Low-contention single-project testing is
+exactly the condition under which this doc's own Layer 3 analysis says
+the race is LEAST likely to trigger — a clean single-project test
+proves relatively little about the higher-contention combined-launch
+path, similar in spirit to PITFALL 21's own "op-level test proves
+nothing about the real multi-process path" lesson.
+
+STANDING RULE: before considering any editor<->file-menu GL/RGB work
+"done," it must be verified through `@.apps/text-editor-xyz/button.sh
+run` specifically (the actual combined launcher), not just each
+project's own standalone button.sh — this is the one invocation shape
+known to have hit a real, previously-fixed-then-apparently-regressed
+race condition. Do not assume "works standalone" implies "works
+combined."
+
+UPDATE (2026-07-30) — RE-CONFIRMED LIVE AND RE-FIXED: the race does
+still reproduce today, and NOT only under the combined-launcher's
+extra CPU contention as first suspected — it reproduced running
+102.editor-📄️00.00/button.sh run completely standalone, foreground,
+no combined launcher involved at all (single-project, low-daemon-count
+— exactly the condition earlier assumed to make it "unlikely"). This
+narrows the earlier "why wasn't this caught" theory: contention makes
+it MORE likely, but it is not required to trigger it — a handful of
+processes competing for scheduling on one core was already enough.
+Re-applied the documented reorder (chtpm_parser_pal already started
+first in both projects; added the missing "poll up to 2s for
+pieces/display/current_frame.txt to exist" step before launching
+gl_mirror/chtpm_rgb_render) to BOTH:
+  - 102.editor-📄️00.00/button.sh (never had this fix — new GL/RGB
+    wiring this session, PITFALL 52, inherited the same bug pattern by
+    copying the already-broken current file-menu/button.sh as the
+    reference instead of the documented fixed version)
+  - &.widgits/file-menu/button.sh (the actual regression this pitfall
+    entry first flagged)
+User-confirmed live: GL window renders real content (not black) on
+repeated real runs after the fix, using the same foreground
+`./button.sh run` invocation that reproduced the bug moments earlier.
+
+FILES: 102.editor-📄️00.00/button.sh (fix applied — wait-for-frame
+       step added before GL launch),
+       &.widgits/file-menu/button.sh (fix re-applied — same wait step
+       added; this is the file this pitfall entry originally flagged
+       as regressed)
+SEE ALSO: @.apps/text-editor-xyz/widget-bug-fix-j29.txt (original
+       investigation + fix writeup, discovered not authored this
+       session); &.widgits/file-menu/fm-font-pitfall.txt referenced
+       therein as an earlier, insufficient attempt at the same bug
+
+=======================================================================
+END OF PAL-PITFALLS
+Add new pitfalls above this line as they are discovered.
+========================================================================

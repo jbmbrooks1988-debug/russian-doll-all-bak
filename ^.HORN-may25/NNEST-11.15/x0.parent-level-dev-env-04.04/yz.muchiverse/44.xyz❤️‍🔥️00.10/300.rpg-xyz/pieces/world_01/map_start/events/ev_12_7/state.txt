@@ -1,0 +1,6 @@
+name=crystal_switch
+trigger=action
+x=12
+y=7
+sprite=S
+map=map_start

@@ -1,0 +1,22 @@
+
+cdda+ battle front (against ai 4 now, but that spins up harnesses for the ai ; ie lobby .game modes
+also will allow online login)
+
+
+
+<that should be an early and quick one, once we have 
+
+
+
+
+-----------------------------------------
+app, could open a bunch of widgets and a project/sys, and be an entirely diffent app; get it? its good!
+<it may have a toolbar for itself.
+dont make apps, till u have run the project with widgets and literally want a quicker way 2 open it. 
+then u can register it in "app store" and user can "install it" 
+(their profile should remember they installed it. this is testing pretending were in prod
+u can also add cloud / billing / ai usage/ premium accounts/ customer service chat etc, in user
+
+
+
+-----------------------------------------------------------------
