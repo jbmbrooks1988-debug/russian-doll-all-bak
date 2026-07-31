@@ -975,3 +975,7 @@ Zombie Child hits you for 3!
 Zombie Child hits you for 3!
 Xlector menu: Event/Copy/Paste/Delete/Exit
 You can't go that way.
+Save failed.
+Save failed.
+Load failed.
+Load failed.

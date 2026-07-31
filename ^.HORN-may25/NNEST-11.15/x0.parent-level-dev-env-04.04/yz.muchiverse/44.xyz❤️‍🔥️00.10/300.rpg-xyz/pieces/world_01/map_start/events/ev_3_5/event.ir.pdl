@@ -1,6 +1,0 @@
-NODE    | id=1 type=show_text | text=Halt! Who goes there?
-NODE    | id=2 type=if_switch | switch=door_open value=1
-NODE    | id=3 type=show_text | text=Oh, it's you. Pass through.
-NODE    | id=4 type=end       |
-NODE    | id=5 type=show_text | text=Find the crystal switch to open the gate.
-NODE    | id=6 type=ret       |

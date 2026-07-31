@@ -1,5 +1,5 @@
 <panel time_reactive="true">
-    <module>system/prisc+x pal/main_loop_chtpm.pal</module>
+    <module>system/prisc+x pal/room_list_module.pal</module>
     <interact src="pieces/apps/player_app/interact_relay.txt" />
     <text label="${game_map}" /><br/>
     <cli_io id="room_name_input" label="Room Name" target_id="room_name_input" /><br/>

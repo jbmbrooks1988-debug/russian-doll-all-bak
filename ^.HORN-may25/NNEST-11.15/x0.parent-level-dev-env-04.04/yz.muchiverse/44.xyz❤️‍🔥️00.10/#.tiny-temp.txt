@@ -1,0 +1,8 @@
+4 projects had real code edited:
+
+1. 102.agy-txt — file browser rebuild (new manager, multiple .chtpm layouts, 5 bugs fixed)
+2. &.widgits/file-menu — same rebuild pattern (5 .chtpm files, 5-6 bugs fixed)
+3. 014.wsr-pal💸️📌️+2 — the shared system engine (prisc+x.c new opcode, chtpm_parser_pal.c house-wide focus-reset fix)
+4. 041.pal-chain⛓️ — chain_send.c + chain_compose_frame.c (wallet ID truncation fix) + its test script assertion updated
+
+Everything else this session (pal-forum, pal-chat-irc, login-signup, avatar-creation, muchi-pals, muchi-pal-agent, 002.zoo, mutaclysm/rpg-xyz/rtp-xyz) was either just rebuilt/recompiled with zero source changes, or investigated and left untouched because nothing was actually broken.

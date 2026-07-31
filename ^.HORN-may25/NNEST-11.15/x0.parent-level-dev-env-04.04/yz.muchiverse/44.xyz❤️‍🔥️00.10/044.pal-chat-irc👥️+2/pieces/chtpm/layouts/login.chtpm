@@ -1,5 +1,5 @@
 <panel time_reactive="true">
-    <module>system/prisc+x pal/main_loop_chtpm.pal</module>
+    <module>system/prisc+x pal/login_module.pal</module>
     <interact src="pieces/apps/player_app/interact_relay.txt" />
     <text label="${game_map}" /><br/>
     <cli_io id="user_id_input" label="User ID" target_id="user_id_input" /><br/>

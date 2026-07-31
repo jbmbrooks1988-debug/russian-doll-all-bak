@@ -25,3 +25,9 @@ MSG|1785110060-0-53923|guest|hi1|1785110060|hi1-j26
 MSG|1785110093-0-58107|guest|hi2|1785110093|hi2-j26
 MSG|1785114595-0-471513|harness_room_468200|halice_468200|1785114595|hello from the ops-based test harness
 MSG|1785114601-0-472267|harness_room_468200|hbob_468200|1785114601|reply via the ops-based harness
+MSG|1785473922-0-1135960|harness_room_1132237|halice_1132237|1785473922|hello from the ops-based test harness
+MSG|1785473928-0-1136727|harness_room_1132237|hbob_1132237|1785473928|reply via the ops-based harness
+MSG|1785476756-0-1170335|p2p_test_room_1169816|testUserA|1785476756|p2p regression probe message
+MSG|1785485476-0-1690534|harness_room_1686816|halice_1686816|1785485476|hello from the ops-based test harness
+MSG|1785485482-0-1691296|harness_room_1686816|hbob_1686816|1785485482|reply via the ops-based harness
+MSG|1785485509-0-1692428|p2p_test_room_1691904|testUserA|1785485509|p2p regression probe message

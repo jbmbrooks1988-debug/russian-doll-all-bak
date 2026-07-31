@@ -131,7 +131,7 @@ void handle_sigint(int sig) {
 #define MEM_SIZE 4096
 #define STRING_POOL_START 0xF00
 
-typedef enum { OP_ADDI, OP_BEQ, OP_LW, OP_SW, OP_JALR, OP_J, OP_HALT, OP_CUSTOM, OP_READ_HISTORY, OP_EXEC, OP_HIT_FRAME, OP_READ_STATE, OP_READ_ACTIVE_TARGET, OP_READ_ENV_KEY, OP_SLEEP, OP_READ_LAYOUT, OP_READ_POS, OP_ECALL } OpBase;
+typedef enum { OP_ADDI, OP_BEQ, OP_LW, OP_SW, OP_JALR, OP_J, OP_HALT, OP_CUSTOM, OP_READ_HISTORY, OP_EXEC, OP_HIT_FRAME, OP_READ_STATE, OP_READ_ACTIVE_TARGET, OP_READ_ENV_KEY, OP_SLEEP, OP_READ_LAYOUT, OP_READ_POS, OP_ECALL, OP_READ_HISTORY_STR } OpBase;
 
 typedef struct {
     OpBase op;
@@ -464,6 +464,58 @@ void parse_line(char *line, int pass) {
                  * never for incremental tailing. Use the 3-arg form
                  * above for anything that needs to advance a cursor. */
                 else if (sscanf(args, "%255s %255s", arg1, arg2) == 2) {
+                    snprintf(i->literal_arg, sizeof(i->literal_arg), "%s", arg1);
+                    if (sscanf(arg2, "r%d", &i->rd) != 1) sscanf(arg2, "x%d", &i->rd);
+                } else if (sscanf(args, "%255s", arg1) == 1) {
+                    if (sscanf(arg1, "r%d", &i->rd) != 1 && sscanf(arg1, "x%d", &i->rd) != 1) {
+                        snprintf(i->literal_arg, sizeof(i->literal_arg), "%s", arg1);
+                    }
+                }
+            }
+        } else if (strcmp(part, "read_history_str") == 0) {
+            /* read_history_str rd, rs1, [literal_path] - Tier 2 real
+             * string-command relay (jul30-house-refactor.txt §5a Path
+             * B, refactor-list-j30.txt Tier 2): identical arg shape to
+             * read_history above (rd=found-flag, rs1=position register,
+             * optional literal path), reusing that op's own real,
+             * already-fixed 3-arg-literal-path parsing exactly (same
+             * real bug that op's own header comment documents - a
+             * bare 1-register fallback would silently pin the position
+             * register to x0, permanently broken for incremental
+             * reads - not repeated here). PRISC's own register file is
+             * INTEGER-ONLY by design (confirmed, jul30-house-
+             * refactor.txt §5a's own feasibility note) - this op
+             * cannot return an arbitrary string in rd the way read_
+             * history returns an int key. Instead (see OP_READ_HISTORY_
+             * STR's own runtime handler below): reads the FULL LINE at
+             * the given position (not fscanf("%d")), writes it verbatim
+             * to a real, documented side-channel file
+             * (pieces/system/prisc_str_relay.txt) any real op can read
+             * directly (matching how ops already read fm_state.txt/
+             * gui_state.txt themselves - no new convention invented),
+             * and sets rd=1 if a real line was found, 0 otherwise - the
+             * SAME "was there something new" boolean signal shape
+             * read_history's own rd already uses, just now also valid
+             * for a line that isn't a bare integer. */
+            i->op = OP_READ_HISTORY_STR;
+            char *args = strstr(original, part) + strlen(part);
+            while (*args == ' ' || *args == '\t') args++;
+            char arg1[256] = "", arg2[256] = "";
+            if (sscanf(args, "r%d, r%d", &i->rd, &i->rs1) == 2 || sscanf(args, "x%d, x%d", &i->rd, &i->rs1) == 2) {
+                /* read_history_str rd, rs1 */
+            } else if (sscanf(args, "r%d, x%d", &i->rd, &i->rs1) == 2 || sscanf(args, "x%d, r%d", &i->rd, &i->rs1) == 2) {
+                /* mixed */
+            } else {
+                int rd_lit = -1, rs1_lit = -1;
+                char path_tok[256] = "";
+                if (sscanf(args, "%255s r%d, r%d", path_tok, &rd_lit, &rs1_lit) == 3 ||
+                    sscanf(args, "%255s x%d, x%d", path_tok, &rd_lit, &rs1_lit) == 3 ||
+                    sscanf(args, "%255s r%d, x%d", path_tok, &rd_lit, &rs1_lit) == 3 ||
+                    sscanf(args, "%255s x%d, r%d", path_tok, &rd_lit, &rs1_lit) == 3) {
+                    snprintf(i->literal_arg, sizeof(i->literal_arg), "%s", path_tok);
+                    i->rd = rd_lit;
+                    i->rs1 = rs1_lit;
+                } else if (sscanf(args, "%255s %255s", arg1, arg2) == 2) {
                     snprintf(i->literal_arg, sizeof(i->literal_arg), "%s", arg1);
                     if (sscanf(arg2, "r%d", &i->rd) != 1) sscanf(arg2, "x%d", &i->rd);
                 } else if (sscanf(args, "%255s", arg1) == 1) {
@@ -995,6 +1047,50 @@ int main(int argc, char **argv) {
                 if (fscanf(hf, "%d", &key) == 1) {
                     regs[i.rd] = key;
                     regs[i.rs1] = ftell(hf);
+                } else {
+                    regs[i.rd] = 0;
+                }
+                fclose(hf);
+            } else regs[i.rd] = 0;
+            free(path);
+        } else if (i.op == OP_READ_HISTORY_STR) {
+            /* Tier 2 real string-command relay (see this op's own
+             * parser-side comment above for the full account). Reads
+             * the FULL LINE at the given position (a real string
+             * command, e.g. "SET_LOAD_ACTION" or "LOAD:<path>" - not a
+             * bare int), writes it verbatim to a real, documented
+             * side-channel file any real op can read directly, and
+             * sets rd=1 if a real non-empty line was found this call,
+             * 0 otherwise - same boolean-signal shape read_history's
+             * own rd already uses. */
+            char *path = NULL;
+            if (strlen(i.literal_arg) > 0) path = strdup(i.literal_arg);
+            else {
+                char *proj_root = getenv("PRISC_PROJECT_ROOT");
+                if (proj_root) {
+                    if (asprintf(&path, "%s/pieces/apps/player_app/history.txt", proj_root) < 0) path = NULL;
+                } else path = strdup("pieces/apps/player_app/history.txt");
+            }
+            FILE *hf = path ? fopen(path, "r") : NULL;
+            if (hf) {
+                fseek(hf, regs[i.rs1], SEEK_SET);
+                char line[1024];
+                if (fgets(line, sizeof(line), hf)) {
+                    line[strcspn(line, "\r\n")] = '\0';
+                    regs[i.rs1] = ftell(hf);
+                    if (line[0] != '\0') {
+                        char *relay_path = NULL;
+                        char *proj_root = getenv("PRISC_PROJECT_ROOT");
+                        if (proj_root) {
+                            if (asprintf(&relay_path, "%s/pieces/system/prisc_str_relay.txt", proj_root) < 0) relay_path = NULL;
+                        } else relay_path = strdup("pieces/system/prisc_str_relay.txt");
+                        FILE *rf = relay_path ? fopen(relay_path, "w") : NULL;
+                        if (rf) { fputs(line, rf); fputc('\n', rf); fclose(rf); regs[i.rd] = 1; }
+                        else regs[i.rd] = 0;
+                        free(relay_path);
+                    } else {
+                        regs[i.rd] = 0;
+                    }
                 } else {
                     regs[i.rd] = 0;
                 }

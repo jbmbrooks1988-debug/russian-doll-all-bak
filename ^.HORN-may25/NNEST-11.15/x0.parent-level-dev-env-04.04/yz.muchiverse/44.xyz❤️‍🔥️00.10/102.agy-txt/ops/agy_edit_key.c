@@ -382,49 +382,6 @@ static void read_current_layout(char *out, size_t out_sz) {
     fclose(f);
 }
 
-static size_t read_path_buffer(char *out, size_t out_sz) {
-    char path[PATH_BUF];
-    snprintf(path, sizeof(path), "%s/pieces/system/agy_path_buffer.txt", project_root);
-    out[0] = '\0';
-    FILE *f = fopen(path, "r");
-    if (!f) return 0;
-    size_t n = fread(out, 1, out_sz - 1, f);
-    out[n] = '\0';
-    n = strcspn(out, "\r\n");
-    out[n] = '\0';
-    fclose(f);
-    return n;
-}
-
-static void write_path_buffer(const char *s, size_t n) {
-    char path[PATH_BUF];
-    snprintf(path, sizeof(path), "%s/pieces/system/agy_path_buffer.txt", project_root);
-    FILE *f = fopen(path, "w");
-    if (!f) return;
-    if (n > 0) fwrite(s, 1, n, f);
-    fclose(f);
-}
-
-/* Same one-string-at-a-time insert as insert_string(), targeting the
- * path buffer instead of editor_buffer.txt - path typing has no
- * multi-line/cursor-position model, always appends at the end. */
-static void insert_path_string(const char *s) {
-    char buf[MAX_BUF];
-    size_t blen = read_path_buffer(buf, sizeof(buf));
-    size_t slen = strlen(s);
-    if (blen + slen + 1 >= sizeof(buf)) return;
-    memcpy(buf + blen, s, slen);
-    blen += slen;
-    write_path_buffer(buf, blen);
-}
-
-static void path_backspace(void) {
-    char buf[MAX_BUF];
-    size_t blen = read_path_buffer(buf, sizeof(buf));
-    if (blen == 0) return;
-    write_path_buffer(buf, blen - 1);
-}
-
 /* Appends one command line to the local inbox, then immediately runs
  * agy_widget_cmds.+x to drain it - same real op agy_edit_key's own
  * idle branch already calls every tick, just triggered right away
@@ -455,36 +412,6 @@ static int dispatch_file_menu(int key) {
     return 0;
 }
 
-/* file_browser_save.chtpm / file_browser_load.chtpm: KEY:1=confirm
- * (SAVE_AS:<path> or LOAD:<path>, decided by which layout is active -
- * two separate layouts instead of one layout + a mode flag, since a
- * chtpm button can only carry ONE action (href OR onClick), so there's
- * no single button that could both set a mode AND navigate in one
- * click - see PLAN.md §4 Phase T4 for why this shape was chosen). */
-static int dispatch_file_browser(const char *layout, int key) {
-    int is_save = (strstr(layout, "file_browser_save.chtpm") != NULL);
-    int is_load = (strstr(layout, "file_browser_load.chtpm") != NULL);
-    if (!is_save && !is_load) return 0;
-
-    if (key == '1') {
-        char path[MAX_BUF];
-        size_t plen = read_path_buffer(path, sizeof(path));
-        if (plen == 0) {
-            set_message("No path typed yet.");
-            bump_screen();
-            return 1;
-        }
-        char cmd_line[PATH_BUF + 16];
-        snprintf(cmd_line, sizeof(cmd_line), "%s:%s", is_save ? "SAVE_AS" : "LOAD", path);
-        enqueue_and_drain(cmd_line);
-        write_path_buffer("", 0);
-        bump_screen();
-        return 1;
-    }
-    return 1; /* claimed this layout even for keys it doesn't use, so
-                 editor dispatch below never sees file_browser keys */
-}
-
 int main(int argc, char **argv) {
     if (argc < 2) return 1;
     resolve_root();
@@ -501,22 +428,24 @@ int main(int argc, char **argv) {
      * as one argv and inserts it verbatim (real UTF-8 bytes, no
      * per-character validation) at the cursor — only valid while
      * INTERACT is actually engaged (same real gate insert_char()'s
-     * own call site already enforces), a no-op otherwise. */
+     * own call site already enforces), a no-op otherwise.
+     * file_browser_save.chtpm/file_browser_load.chtpm no longer route
+     * through this binary at all (PITFALL 65 rebuild) - they declare
+     * <module>manager/+x/agy_browser_manager.+x</module> instead, a
+     * separate native manager (see manager/agy_browser_manager.c). */
     char layout[256];
     read_current_layout(layout, sizeof(layout));
-    int on_browser = (strstr(layout, "file_browser_save.chtpm") != NULL) ||
-                      (strstr(layout, "file_browser_load.chtpm") != NULL);
 
     if (argc >= 3 && strcmp(argv[1], "PASTE") == 0) {
         if (is_interact_typing()) {
-            if (on_browser) insert_path_string(argv[2]);
-            else insert_string(argv[2]);
+            insert_string(argv[2]);
             bump_screen();
         }
         return 0;
     }
 
     int key = atoi(argv[1]);
+
     if (key == 0) {
         /* idle: drain widget cmd inbox (LOAD/SAVE/NEW) - covers the
          * case a command got enqueued but the immediate drain in
@@ -532,17 +461,16 @@ int main(int argc, char **argv) {
 
     int typing = is_interact_typing();
 
-    /* Phase T4 (PLAN.md §4): file_menu.chtpm / file_browser_*.chtpm
-     * each get their own dispatch, checked BEFORE the editor's own
-     * piece.pdl-driven method dispatch below - same "branch on which
-     * layout is active" shape the TPMOS reference's own process_key()
-     * uses (PLAN.md §1), just one real op instead of a custom daemon. */
+    /* Phase T4 (PLAN.md §4): file_menu.chtpm gets its own dispatch,
+     * checked BEFORE the editor's own piece.pdl-driven method dispatch
+     * below - same "branch on which layout is active" shape the TPMOS
+     * reference's own process_key() uses (PLAN.md §1), just one real
+     * op instead of a custom daemon. file_browser_*.chtpm's own
+     * dispatch is handled entirely above, before this point is ever
+     * reached. */
     if (!typing) {
         if (strstr(layout, "file_menu.chtpm") != NULL) {
             if (dispatch_file_menu(key)) return 0;
-        }
-        if (on_browser) {
-            if (dispatch_file_browser(layout, key)) return 0;
         }
     }
 
@@ -572,29 +500,25 @@ int main(int argc, char **argv) {
         return 0;
     }
 
-    /* INTERACT canvas keys - path buffer when on a file_browser
-     * layout, editor_buffer.txt otherwise (T3's own real editing,
-     * unchanged). */
+    /* INTERACT canvas keys - editor_buffer.txt (T3's own real editing;
+     * this point is only ever reached for editor.chtpm). */
     if (key >= 32 && key <= 126) {
-        if (on_browser) insert_path_string((char[]){(char)key, '\0'});
-        else insert_char((char)key);
+        insert_char((char)key);
         bump_screen();
         return 0;
     }
     if (key == 127 || key == 8) {
-        if (on_browser) path_backspace();
-        else do_backspace();
+        do_backspace();
         bump_screen();
         return 0;
     }
     if (key == 10 || key == 13) {
-        if (!on_browser) insert_char('\n'); /* paths don't take newlines */
+        insert_char('\n');
         bump_screen();
         return 0;
     }
     /* arrows: left/right char, up/down line (same column) - editor
-     * canvas only, path buffer has no cursor/line model */
-    if (on_browser) return 0;
+     * canvas only. */
     if (key == 1000) { move_cursor(-1); bump_screen(); return 0; }      /* LEFT */
     if (key == 1001) { move_cursor(+1); bump_screen(); return 0; }      /* RIGHT */
     if (key == 1002) { move_cursor_line(-1); bump_screen(); return 0; } /* UP */

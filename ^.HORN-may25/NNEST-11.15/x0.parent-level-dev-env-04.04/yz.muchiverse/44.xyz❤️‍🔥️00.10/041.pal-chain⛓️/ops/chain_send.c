@@ -118,6 +118,15 @@ int main(int argc, char **argv) {
     FILE *of = fopen(outbox_path, "a");
     if (of) { fprintf(of, "%s\n", tx_line); fclose(of); }
 
-    printf("Sent %ld millicones from %s to %s (tx_id=%s).\n", amount, from, to, tx_id);
+    /* REAL BUG, LIVE-CAUGHT: this used to also repeat "from %s" and the
+     * full tx_id in the confirmation text. chain_compose_frame.c renders
+     * this inside a fixed BOX_W=60 box, and the sender wallet is already
+     * shown on its own "Wallet: ..." line right above - the old, longer
+     * message silently lost characters off the recipient wallet ID once
+     * both wallet IDs got long enough (see proof/harness-20260730-215522/
+     * walletA_send_result.txt). tx_id is still recorded in full in
+     * pending_tx.txt/outbox.txt - it never needed to be in the rendered
+     * confirmation line. */
+    printf("Sent %ld millicones to %s.\n", amount, to);
     return 0;
 }

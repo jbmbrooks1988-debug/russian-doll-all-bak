@@ -569,7 +569,7 @@ int main(int argc, char **argv) {
         /* Attack, don't move - matches tick_monsters.c's own
          * move-or-attack logic in reverse. */
         char monster_type[64], name[64];
-        read_str_field(monster_state_path, "monster_type", monster_type, sizeof(monster_type), "zombie");
+        read_str_field(monster_state_path, "monster_type", monster_type, sizeof(monster_type), "slime");
         monster_name(monster_type, name, sizeof(name));
 
         char inventory_dir[PATH_BUF];

@@ -28,6 +28,8 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <libgen.h>
+#include <limits.h>
 #include <time.h>
 
 #define MAX_LINE 4096
@@ -85,6 +87,87 @@ static void write_kv(const char *path, const char *key, const char *value) {
     }
     if (!found) fprintf(f, "%s=%s\n", key, value);
     fclose(f);
+}
+
+/* resolve_xyzfs_home/resolve_save_path (2026-07-30, save-bug.txt's own
+ * §4 sketch, now implemented per direct instruction, copied verbatim
+ * from 102.editor-📄️00.00/ops/editor_widget_cmds.c - same shape as
+ * this file's own header comment describes for the rest of it): the
+ * user's own xyzfs home is the real, hard jail boundary for saved
+ * documents - "they shouldn't be able to navigate into the actual
+ * linux file system... they should have a default 'documents'
+ * folder... where the document will save as default." Same 2-hop
+ * resolution chain &.widgits/file-menu/ops/ledger_append.c's own
+ * resolve_ledger_path() already uses (house_root.txt -> current_
+ * login.txt's current_xyzfs), stopping at .../home instead of
+ * .../home/runtime - not a new mechanism, the same real, already-
+ * proven one. */
+static int resolve_xyzfs_home(char *out, size_t out_sz) {
+    char house_root_path[PATH_BUF];
+    snprintf(house_root_path, sizeof(house_root_path), "%s/pieces/system/house_root.txt", project_root);
+    char house_root[MAX_PATH] = "";
+    FILE *f = fopen(house_root_path, "r");
+    if (!f) return 0;
+    if (!fgets(house_root, sizeof(house_root), f)) { fclose(f); return 0; }
+    fclose(f);
+    house_root[strcspn(house_root, "\r\n")] = '\0';
+    if (!house_root[0]) return 0;
+
+    char login_path[PATH_BUF];
+    snprintf(login_path, sizeof(login_path), "%s/0.user-pal👤️/00.login-signup/current_login.txt", house_root);
+    char xyzfs[MAX_PATH] = "";
+    read_kv(login_path, "current_xyzfs", xyzfs, sizeof(xyzfs));
+    if (!xyzfs[0]) return 0;
+
+    snprintf(out, out_sz, "%s/%s/home", house_root, xyzfs);
+    return 1;
+}
+
+/* resolve_save_path(raw, out, out_sz) - real containment, not just a
+ * default location. A bare filename resolves under <xyzfs_home>/
+ * documents/. A leading "/" is STILL relative to <xyzfs_home> - there
+ * is no way to express a literal host-absolute path through this input
+ * at all. After building the candidate, mkdir -p's the parent (a save
+ * target usually doesn't exist yet) then realpath()s BOTH the parent
+ * and <xyzfs_home> and verifies the former is really, canonically
+ * inside the latter before returning success - catches `../../../etc/
+ * passwd`-shaped escapes for real (realpath resolves every `..`
+ * component), not by pattern-matching the string. Returns 0 on any
+ * failure (missing resolution chain, or a real escape attempt) - the
+ * caller must treat 0 as a real error, never fall through to writing
+ * somewhere unverified. */
+static int resolve_save_path(const char *raw, char *out, size_t out_sz) {
+    char xyzfs_home[PATH_BUF];
+    if (!resolve_xyzfs_home(xyzfs_home, sizeof(xyzfs_home))) return 0;
+    if (!raw[0]) return 0;
+
+    char candidate[PATH_BUF];
+    if (raw[0] == '/')
+        snprintf(candidate, sizeof(candidate), "%s%s", xyzfs_home, raw);
+    else
+        snprintf(candidate, sizeof(candidate), "%s/documents/%s", xyzfs_home, raw);
+
+    char dir_copy[PATH_BUF], base_copy[PATH_BUF];
+    snprintf(dir_copy, sizeof(dir_copy), "%s", candidate);
+    snprintf(base_copy, sizeof(base_copy), "%s", candidate);
+    char *dir_part = dirname(dir_copy);
+    char *base_part = basename(base_copy);
+    if (!base_part[0] || strcmp(base_part, "/") == 0 || strcmp(base_part, ".") == 0) return 0;
+
+    char mkcmd[PATH_BUF + 32];
+    snprintf(mkcmd, sizeof(mkcmd), "mkdir -p '%s'", dir_part);
+    { int _rc = system(mkcmd); (void)_rc; }
+
+    char resolved_dir[PATH_MAX], resolved_home[PATH_MAX];
+    if (!realpath(dir_part, resolved_dir)) return 0;
+    if (!realpath(xyzfs_home, resolved_home)) return 0;
+
+    size_t home_len = strlen(resolved_home);
+    if (strncmp(resolved_dir, resolved_home, home_len) != 0) return 0;
+    if (resolved_dir[home_len] != '\0' && resolved_dir[home_len] != '/') return 0;
+
+    snprintf(out, out_sz, "%s/%s", resolved_dir, base_part);
+    return 1;
 }
 
 static void set_status(const char *cmd, const char *result, const char *msg) {
@@ -195,7 +278,7 @@ static int do_new(void) {
     write_buffer("", 0);
     char st[PATH_BUF];
     snprintf(st, sizeof(st), "%s/pieces/system/editor_state.txt", project_root);
-    write_kv(st, "file_path", "docs/untitled.txt");
+    write_kv(st, "file_path", "untitled.txt");
     write_kv(st, "cursor_pos", "0");
     write_kv(st, "last_message", "NEW FILE via widget cmd");
     set_status("NEW", "ok", "buffer cleared");
@@ -222,21 +305,43 @@ static int process_line(char *line) {
             set_status("SAVE", "error", "no file_path — use SAVE_AS");
             return -1;
         }
-        /* relative paths under project_root */
-        char full[PATH_BUF];
-        if (fp[0] == '/') snprintf(full, sizeof(full), "%s", fp);
-        else snprintf(full, sizeof(full), "%s/%s", project_root, fp);
-        return do_save_to(full);
+        /* An already-absolute file_path means a prior SAVE_AS already
+         * resolved (and jail-verified, see resolve_save_path()) this
+         * exact target - reuse it as-is, re-resolving would be
+         * redundant. Anything else (still the "untitled.txt" default,
+         * or any other non-absolute leftover) goes through the SAME
+         * real jail resolution SAVE_AS uses below - a brand-new file's
+         * first real SAVE must land in the user's xyzfs documents/
+         * too, not fall back to the old ephemeral-session-relative
+         * behavior (save-bug.txt §4 item 4). */
+        if (fp[0] == '/') return do_save_to(fp);
+        char resolved[PATH_BUF];
+        if (!resolve_save_path(fp, resolved, sizeof(resolved))) {
+            set_status("SAVE", "error", "cannot resolve save path");
+            return -1;
+        }
+        return do_save_to(resolved);
     }
     if (strncmp(line, "SAVE_AS:", 8) == 0) {
         const char *p = line + 8;
         if (!p[0]) { set_status("SAVE_AS", "error", "empty path"); return -1; }
-        return do_save_to(p);
+        char resolved[PATH_BUF];
+        if (!resolve_save_path(p, resolved, sizeof(resolved))) {
+            set_status("SAVE_AS", "error", "cannot resolve save path (outside user's xyzfs home?)");
+            return -1;
+        }
+        return do_save_to(resolved);
     }
     if (strncmp(line, "LOAD:", 5) == 0) {
         const char *p = line + 5;
         if (!p[0]) { set_status("LOAD", "error", "empty path"); return -1; }
-        return do_load(p);
+        if (p[0] == '/') return do_load(p);
+        char resolved[PATH_BUF];
+        if (!resolve_save_path(p, resolved, sizeof(resolved))) {
+            set_status("LOAD", "error", "cannot resolve load path (outside user's xyzfs home?)");
+            return -1;
+        }
+        return do_load(resolved);
     }
     set_status(line, "error", "unknown command");
     return -1;

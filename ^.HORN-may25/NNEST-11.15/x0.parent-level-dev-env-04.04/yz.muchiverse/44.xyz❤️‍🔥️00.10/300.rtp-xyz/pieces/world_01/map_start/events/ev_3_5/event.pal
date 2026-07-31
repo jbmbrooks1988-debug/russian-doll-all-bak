@@ -1,7 +1,0 @@
-show_text Halt! Who goes there?
-if_switch door_open 1
-  show_text Oh, it's you. Pass through.
-  end
-end
-show_text Find the crystal switch to open the gate.
-ret

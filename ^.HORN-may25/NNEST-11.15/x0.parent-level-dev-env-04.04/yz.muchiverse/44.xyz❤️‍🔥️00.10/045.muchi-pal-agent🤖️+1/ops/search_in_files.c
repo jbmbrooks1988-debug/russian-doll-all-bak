@@ -33,7 +33,7 @@ void walk_dir(const char* path, const char* query) {
             continue;
         }
         struct stat st;
-        if (stat(full_path, &st) == 0) {
+        if (lstat(full_path, &st) == 0) {
             if (S_ISDIR(st.st_mode)) walk_dir(full_path, query);
             else if (S_ISREG(st.st_mode)) search_in_file(full_path, query);
         }
@@ -46,6 +46,11 @@ int main(int argc, char* argv[]) {
     if (argc < 2) { fprintf(stderr, "Usage: search_in_files <query> [path]\n"); return 1; }
     const char* query = argv[1];
     const char* path = (argc > 2) ? argv[2] : ".";
-    walk_dir(path, query);
+    struct stat st;
+    if (stat(path, &st) == 0 && S_ISREG(st.st_mode)) {
+        search_in_file(path, query);
+    } else {
+        walk_dir(path, query);
+    }
     return 0;
 }

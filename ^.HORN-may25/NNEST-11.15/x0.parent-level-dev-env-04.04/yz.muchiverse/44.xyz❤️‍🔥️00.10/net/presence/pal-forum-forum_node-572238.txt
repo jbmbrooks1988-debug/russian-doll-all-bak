@@ -1,7 +1,0 @@
-kind=forum_node
-project_id=pal-forum
-piece_id=
-host=127.0.0.1
-port=9950
-pid=572238
-last_seen=1785118833

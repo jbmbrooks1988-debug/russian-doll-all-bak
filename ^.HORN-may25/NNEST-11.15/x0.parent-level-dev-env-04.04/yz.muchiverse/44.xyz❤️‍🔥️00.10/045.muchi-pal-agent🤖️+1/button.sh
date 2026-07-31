@@ -32,12 +32,53 @@
 # terminal sends SIGHUP, which the EXIT/INT/TERM trap below never
 # caught) both polled and mutated the same file, producing the exact
 # same assistant reply logged twice for one turn. world_01 is now
-# COPIED into $SESSION_DIR per run (private, exclusive - see below),
-# seeded from the last run's own copy for conversation continuity, and
-# copied back out on exit so history still persists across runs -
-# continuity and exclusivity are separate concerns, this gets both.
+# COPIED into $SESSION_DIR per run (private, exclusive - see below).
+#
+# CORRECTED 2026-07-31 (2&3-jul31-sprint): the OLD copy of this comment
+# claimed world_01 is "seeded from the last run's own copy... and copied
+# back out on exit so history still persists across runs" - no such copy-
+# back exists anywhere in this project (sessions are wiped by
+# reap_stale_sessions on every launch), so world_01 state is NOT
+# conversation-continuous across runs. The one thing that DOES persist
+# is the user's last chosen model, via the top-level last_model.txt
+# (switch_model.c writes it; apply_last_model below stamps it into each
+# fresh session's state.txt at boot).
 PAL_MODE=0
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+# set_state_field FILE KEY VALUE - idempotently set one key=value line in a
+# flat text file. Used to stamp the fresh session's state.txt with the
+# remembered model at boot. sed delimiter is '|' so '/' inside api_url
+# values never interferes; model ids/urls contain no '&' or '\', which are
+# the only other sed-replacement-special characters.
+set_state_field() {
+    local file="$1" key="$2" value="$3"
+    if [ -f "$file" ] && grep -q "^${key}=" "$file"; then
+        sed -i "s|^${key}=.*|${key}=${value}|" "$file"
+    else
+        echo "${key}=${value}" >> "$file"
+    fi
+}
+
+# apply_last_model SESSION_STATE - stamp the fresh session's state.txt with
+# the user's last chosen model, read from the persistent TOP-LEVEL
+# last_model.txt (written by switch_model.c on every successful /model).
+# Falls back to the template default (gemma-lan) when the file is
+# missing/empty or the id is no longer in the model registry.
+apply_last_model() {
+    local state="$1" last_id last_line
+    [ -f "$SCRIPT_DIR/last_model.txt" ] || return 0
+    last_id="$(tr -d ' \n' < "$SCRIPT_DIR/last_model.txt")"
+    [ -n "$last_id" ] || return 0
+    last_line="$(grep "^${last_id}|" "$SCRIPT_DIR/pieces/registry/models/model_list.txt" 2>/dev/null | head -1)"
+    [ -n "$last_line" ] || return 0
+    local id pk url mn
+    IFS='|' read -r id pk url mn <<< "$last_line"
+    set_state_field "$state" current_model_id "$last_id"
+    set_state_field "$state" provider_kind "$pk"
+    set_state_field "$state" current_api_url "$url"
+    set_state_field "$state" current_model_name "$mn"
+}
 
 # Parse --pal flag from any position, find the action verb
 ACTION="help"
@@ -89,6 +130,15 @@ case "$ACTION" in
             cp -r "$SCRIPT_DIR/pieces/world_01/." "$SESSION_DIR/pieces/world_01/"
         fi
         mkdir -p "$SESSION_DIR/pieces/world_01/session_01/chat"
+
+        # 2026-07-31 (2&3-jul31-sprint): persist + restore the user's last
+        # chosen model. touch() (NOT truncate) so the file keeps whatever
+        # switch_model.c last wrote, and GUARANTEES the blanket top-level
+        # symlink loop below symlinks it into the session (so switch_model's
+        # <session>/last_model.txt fopen reaches the real file). Stamp the
+        # fresh session's state.txt from it right after the world_01 copy.
+        touch "$SCRIPT_DIR/last_model.txt"
+        apply_last_model "$SESSION_DIR/pieces/world_01/session_01/chat/state.txt"
 
         # Blanket-symlink every top-level project entry into the session
         for entry in "$SCRIPT_DIR"/*; do

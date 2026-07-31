@@ -316,7 +316,7 @@ static void run_spawners(const char *map_dir, const char *monsters_dir, int hero
         }
 
         int need = 4 - alive;
-        static const char *spawn_types[2] = { "zombie", "zombie_child" };
+        static const char *spawn_types[2] = { "slime", "slime_pup" };
         for (int i = 0; i < need; i++) {
             int fx = -1, fy = -1;
             for (int y = ry0 + 1; y < ry1 && fx < 0; y++) {
@@ -454,7 +454,7 @@ int main(void) {
         snprintf(state_path, sizeof(state_path), "%s/%s/state.txt", monsters_dir, names[i]);
 #pragma GCC diagnostic pop
         char monster_type[64];
-        read_kv_str(state_path, "monster_type", monster_type, sizeof(monster_type), "zombie");
+        read_kv_str(state_path, "monster_type", monster_type, sizeof(monster_type), "slime");
         int decision_mode = read_kv_int(state_path, "decision_mode", 0);
 
         int dx = (hero_x > mx[i]) - (hero_x < mx[i]);

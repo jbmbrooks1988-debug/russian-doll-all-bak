@@ -1,4 +1,0 @@
-last_cmd=IDLE
-result=ok
-message=no inbox
-at=1785445973

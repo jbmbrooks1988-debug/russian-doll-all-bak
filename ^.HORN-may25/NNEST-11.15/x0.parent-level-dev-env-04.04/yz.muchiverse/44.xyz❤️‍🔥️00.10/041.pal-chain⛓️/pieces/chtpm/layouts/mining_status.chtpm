@@ -1,5 +1,5 @@
 <panel time_reactive="true">
-    <module>system/prisc+x pal/main_loop_chtpm.pal</module>
+    <module>system/prisc+x pal/mining_status_module.pal</module>
     <interact src="pieces/apps/player_app/interact_relay.txt" />
     <text label="+============================================================+" /><br/>
     <text label="|                    M I N I N G   S T A T U S                |" /><br/>

@@ -42,8 +42,20 @@ mkdir -p "$PROOF"
 echo "=== agy-txt: real edit -> save -> new -> load, via real key injection ==="
 
 MARKER="AGY-HARNESS-MARKER-$$-$(date +%s)"
-SAVE_PATH="docs/harness_$$.txt"
-rm -f "$AGY_DIR/$SAVE_PATH"
+# BARE relative filename, not "docs/..." (2026-07-30, save-bug.txt's
+# own fix, direct instruction, applied to agy_widget_cmds.c the same
+# way as editor_widget_cmds.c - PITFALL 62's own docs/ symlink is
+# superseded by the same real xyzfs-home jail every project's SAVE_AS
+# now uses: a bare name resolves under <xyzfs_home>/documents/, never
+# the project's own local docs/ folder). Resolve that same real
+# location here for the assertion below, via the identical 2-hop chain
+# resolve_save_path() itself uses.
+SAVE_NAME="harness_$$.txt"
+LOGIN_FILE="$HOUSE/0.user-pal👤️/00.login-signup/current_login.txt"
+XYZFS="$(grep '^current_xyzfs=' "$LOGIN_FILE" | head -1 | cut -d= -f2-)"
+SAVE_PATH="$SAVE_NAME"
+REAL_SAVE_TARGET_XYZFS="$HOUSE/$XYZFS/home/documents/$SAVE_NAME"
+rm -f "$REAL_SAVE_TARGET_XYZFS"
 
 stop_app
 start_app
@@ -88,27 +100,64 @@ sleep 0.3
     && pass "navigated to file_browser_save.chtpm" || fail "did not land on file_browser_save.chtpm"
 
 # --- Real path typing + real SAVE ---
-jump_to "$SESS" 1                 # TYPE PATH (INTERACT)
+# REAL FIX (2026-07-31, found while testing an unrelated per-screen
+# module split - this bug pre-dates that work, confirmed by
+# reproducing identically on the fully-reverted original code): this
+# used to jump_to item 1 (assumed "path field"), paste, Esc, then
+# jump_to item 2 (assumed "SAVE"). That's stale - direct read of the
+# real current layout (file_browser_save.chtpm) and the real manager
+# (agy_browser_manager.c's own active_gui_index()==2 comment) confirms
+# item 1 is SEARCH, item 2 is the real FILE field, and pressing Enter
+# WHILE the FILE field is actively engaged (agi==2) dispatches
+# "confirm" directly - no separate SAVE button click needed, and no
+# fragile "guess the dynamic item number of SAVE FILE among however
+# many real directory entries exist right now" required either.
+jump_to "$SESS" 2                 # FILE field (real item 2, not 1)
 inject_key "$SESS" 13
-wait_for_typing "$SESS" 30 || { fail "INTERACT never engaged on path field (save)"; exit 1; }
-ag_paste "$SESS" "$SAVE_PATH"
+wait_for_typing "$SESS" 30 || { fail "INTERACT never engaged on FILE field (save)"; exit 1; }
+# REAL FIX (2026-07-31): ag_paste (agy_edit_key.+x PASTE) was built for
+# the OLD editor/path-typing convention and never updated to know about
+# the REBUILT browser's own real <cli_io id="file_path_input"> field -
+# it silently no-ops here (FILE field stayed empty in the frame, proof
+# 02_after_save_frame.txt showed "[_]" and "Type path or browse to a
+# file" unchanged). Real per-keystroke typing into pieces/keyboard/
+# history.txt (the same channel jump_to's own digit-nav already uses)
+# is what chtpm_parser_pal.c's own real <cli_io> typing logic actually
+# consumes - ported tk_type_text.c from the pal-chain family's own
+# proven, project-agnostic version of this exact primitive.
+"$HARNESS_DIR/ops/+x/tk_type_text.+x" "$SESS" "$SAVE_PATH"
 sleep 0.3
+inject_key "$SESS" 13             # real Enter-on-FILE-field confirm, not Esc+jump
+sleep 1
+# REAL FIX (2026-07-31): confirm() dispatches the save on the manager
+# side, but does NOT exit the real <cli_io> field's own engaged/typing
+# state at the chtpm_parser_pal.c level - live-caught: the very next
+# digit keystroke (meant for CANCEL's own focus-jump) landed as a
+# literal typed character in the still-open FILE field instead of real
+# navigation, re-triggering SAVE with a garbage one-character filename.
+# Explicit Esc here to really exit typing mode before any further nav.
 inject_key "$SESS" 27
 sleep 0.3
-jump_to "$SESS" 2                 # SAVE
-inject_key "$SESS" 13
-sleep 2
 cp "$SESS/pieces/display/current_frame.txt" "$PROOF/02_after_save_frame.txt"
 
-REAL_SAVE_TARGET="$AGY_DIR/$SAVE_PATH"
+REAL_SAVE_TARGET="$REAL_SAVE_TARGET_XYZFS"
 if [ -f "$REAL_SAVE_TARGET" ] && grep -qF "$MARKER" "$REAL_SAVE_TARGET"; then
-    pass "real file with the real marker landed at the DURABLE path ($SAVE_PATH) — PITFALL 62's own regression covered"
+    pass "real file with the real marker landed at the REAL xyzfs documents/ location ($REAL_SAVE_TARGET) — save-bug.txt's own fix"
 else
     fail "no real file (with marker) found at $REAL_SAVE_TARGET after SAVE"
 fi
 
 # --- Navigate back to FILE MENU, real NEW (clears the buffer) ---
-jump_to "$SESS" 3                 # CANCEL (file_browser_save's own item 3) -> back to file_menu
+# REAL FIX (2026-07-31, same bug class as the SAVE fix above): item 3
+# is the directory "<- BACK" (go up a folder), NOT this widget's own
+# CANCEL-to-file_menu button - that button's real item number is
+# DYNAMIC (shifts with however many real directory entries currently
+# exist). Find it by real label text instead of guessing a fixed digit
+# - see ops/tk_focus_item.c (ported from the pal-chain family's own
+# proven, project-agnostic version of this exact primitive).
+cp "$SESS/pieces/display/current_frame.txt" "$PROOF/02b_before_cancel_frame.txt"
+"$HARNESS_DIR/ops/+x/tk_focus_item.+x" "$SESS" "$PROOF/02b_before_cancel_frame.txt" "CANCEL" >/dev/null \
+    || fail "CANCEL button not found in the real frame (see 02b_before_cancel_frame.txt)"
 inject_key "$SESS" 13
 sleep 0.3
 jump_to "$SESS" 1                 # NEW FILE
@@ -127,15 +176,14 @@ sleep 0.3
 [ "$(current_layout_of "$SESS")" = "pieces/chtpm/layouts/file_browser_load.chtpm" ] \
     && pass "navigated to file_browser_load.chtpm" || fail "did not land on file_browser_load.chtpm"
 
-jump_to "$SESS" 1                 # TYPE PATH (INTERACT)
+# Same real fix as the SAVE flow above: item 1 is SEARCH, item 2 is
+# the real FILE field, and Enter-while-engaged confirms directly.
+jump_to "$SESS" 2                 # FILE field (real item 2, not 1)
 inject_key "$SESS" 13
-wait_for_typing "$SESS" 30 || { fail "INTERACT never engaged on path field (load)"; exit 1; }
-ag_paste "$SESS" "$SAVE_PATH"
+wait_for_typing "$SESS" 30 || { fail "INTERACT never engaged on FILE field (load)"; exit 1; }
+"$HARNESS_DIR/ops/+x/tk_type_text.+x" "$SESS" "$SAVE_PATH"
 sleep 0.3
-inject_key "$SESS" 27
-sleep 0.3
-jump_to "$SESS" 2                 # LOAD
-inject_key "$SESS" 13
+inject_key "$SESS" 13             # real Enter-on-FILE-field confirm, not Esc+jump
 sleep 2
 cp "$SESS/pieces/display/current_frame.txt" "$PROOF/03_after_load_frame.txt"
 cp "$SESS/pieces/system/editor_buffer.txt" "$PROOF/04_buffer_after_load.txt" 2>/dev/null

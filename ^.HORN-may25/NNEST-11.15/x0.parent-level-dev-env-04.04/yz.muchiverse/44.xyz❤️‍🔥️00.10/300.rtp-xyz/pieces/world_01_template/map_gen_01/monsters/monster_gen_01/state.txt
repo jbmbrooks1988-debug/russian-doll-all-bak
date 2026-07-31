@@ -1,4 +1,4 @@
-monster_type=zombie
+monster_type=slime
 pos_x=32
 pos_y=30
 hp=20

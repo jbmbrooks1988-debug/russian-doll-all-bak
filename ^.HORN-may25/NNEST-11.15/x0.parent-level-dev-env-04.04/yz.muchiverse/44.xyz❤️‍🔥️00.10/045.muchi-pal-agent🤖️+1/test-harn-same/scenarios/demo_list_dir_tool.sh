@@ -115,6 +115,36 @@ else
 fi
 check "$FRAME" "list_dir result" "strategy_execute_a.+x pre-executed the real list_dir.+x binary and its real result was logged + rendered, synchronously, before send_message's own (separate, optional) LLM call ever started"
 
+# KPI #2 (2&3-jul31-sprint I.4) - the regression that actually bit the user:
+# the 270M gemma model used to answer ordinary questions with hallucinated
+# "TOOL: read file ..." lines because build_gemma_request() replayed old
+# assistant|tool_call turns as literal "assistant: TOOL: X {args}" text.
+# Fixed 2026-07-31 by (a) skipping tool_call turns in that prompt builder and
+# (b) model_after_tool=no (default) skipping the LLM call entirely after a
+# pre-run tool. Assert the gemma-hallucination pattern specifically - the
+# historical gemini-style "Aida: [calling X {" lines in the copied template
+# are a different, legitimate format and stay (user chose leave-history-alone).
+echo "--- KPI #2: last 12 frame lines must contain no 'TOOL: <tool> <args>' hallucination ---"
+LAST_12=$(tail -12 "$FRAME")
+if echo "$LAST_12" | grep -qE "TOOL: (read|write|list|run|search|speak)"; then
+    fail "KPI#2: gemma 'TOOL:' hallucination present in the last 12 frame lines"
+else
+    pass "KPI#2: no gemma 'TOOL:' hallucination in the last 12 frame lines"
+fi
+
+# KPI #3 (2&3-jul31-sprint I.5) - display order: the tool result must render
+# AFTER the user message that triggered it, not above it. Fixed 2026-07-31 via
+# the tool_result.pending handshake: strategy_execute_a stashes the result,
+# send_message flushes it into context_log right after the user turn.
+echo "--- KPI #3: tool result must render below the triggering user message ---"
+USER_LINE=$(grep -n "You: ${MESSAGE}" "$FRAME" | tail -1 | cut -d: -f1)
+RESULT_LINE=$(grep -n "list_dir result" "$FRAME" | tail -1 | cut -d: -f1)
+if [ -n "$USER_LINE" ] && [ -n "$RESULT_LINE" ] && [ "$RESULT_LINE" -gt "$USER_LINE" ]; then
+    pass "KPI#3: list_dir result (line $RESULT_LINE) renders after the user message (line $USER_LINE)"
+else
+    fail "KPI#3: tool result not after user message (user='$USER_LINE' result='$RESULT_LINE')"
+fi
+
 echo
 echo "=== proof saved to: $PROOF_DIR ==="
 if [ "$FAIL" = "1" ]; then echo "=== OVERALL: FAIL ==="; exit 1

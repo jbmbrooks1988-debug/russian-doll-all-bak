@@ -27,7 +27,7 @@
 
 echo "EMERGENCY KILL..."
 
-NAMES='orchestrator keyboard_input chtpm_parser_pal chtpm_rgb_render gl_mirror egg_window avatar_window renderer prisc\+x'
+NAMES='orchestrator keyboard_input chtpm_parser_pal chtpm_rgb_render gl_mirror egg_window avatar_window renderer prisc\+x agy_browser_manager'
 
 pat() {
     # $1 = bare name (unescaped except prisc+x's own literal backslash

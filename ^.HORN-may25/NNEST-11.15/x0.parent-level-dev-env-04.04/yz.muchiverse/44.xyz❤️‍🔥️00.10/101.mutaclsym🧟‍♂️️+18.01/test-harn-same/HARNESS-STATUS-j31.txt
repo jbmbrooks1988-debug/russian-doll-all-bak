@@ -1,0 +1,120 @@
+================================================================================
+HARNESS-STATUS-j31.txt - test-harn-same/ (mutaclsym): honest status as
+of 2026-07-31, for whoever picks this up next. This project's first
+real K3-style harness, built the same day as its Phase 2 per-screen
+module split (see ../phase2-module-split-report.txt for that half).
+================================================================================
+
+## WHAT'S GREEN AND RELIABLE
+
+- button.sh compile/demo/kill all work.
+- Real href navigation (game.chtpm -> info_test.chtpm -> back on
+  "Back to Game") in scenarios/demo_module_split_smoke.sh: PASSES
+  reliably, every run, including inside the full script.
+- The real CONTROL MODEL for hero movement has been fully ground-
+  truthed via careful, isolated, manual step-by-step testing (typing
+  each tk_inject_key.+x / tk_focus_item.+x command one at a time in an
+  interactive shell, checking hero/state.txt after each one) - see the
+  scenario script's own header comment for the full writeup. Confirmed
+  live, repeatedly, manually:
+    1. Focus "Control Hero" (item 1), Enter -> its onClick="INTERACT"
+       sets hero/state.txt's interact_mode=1 directly (does NOT reset
+       the xlector cursor to the hero's position - cursor starts at
+       (0,0) regardless of hero's own position).
+    2. interact_mode=1 + possessed_id="none" (default) -> ARROW keys
+       (codes 1000/1001/1002/1003 = LEFT/RIGHT/UP/DOWN, from
+       system/keyboard_input.c) move a free, uncollided xlector cursor.
+       WASD does nothing here - move_player.c's own header comment
+       says w/a/s/d/q/e/r/t/c/v/f are camera_control.c's own keys,
+       entirely separate. An EARLIER version of this scenario used a
+       WASD 'd' keypress to test movement - that was simply wrong,
+       not a real bug, and is why the original harness attempt always
+       failed regardless of hero hp/aliveness.
+    3. Enter, with the cursor exactly on the hero's own tile, calls
+       try_possess_at() in ops/choice.c, setting possessed_id="hero".
+    4. Once possessed, ARROW keys move the HERO itself (confirmed:
+       pos_x changed 4->5 after a real ARROW_RIGHT while possessed).
+- A real state reset was added (rm -rf pieces/world_01 && cp -r
+  pieces/world_01_template pieces/world_01, at the top of the
+  scenario, before launching) - mirrors ops/title_input.c's own real
+  "new game" reset_world() exactly, not a harness-only invention. This
+  fixes the ORIGINAL failure mode from before this doc (hero left at
+  hp=0/dead from a previous run's combat, since mutaclsym runs
+  IN-PLACE with no pieces/sessions/<id>/ isolation - state persists
+  across runs unless explicitly reset).
+
+## WHAT'S STILL RED, AND NOT YET UNDERSTOOD
+
+Despite the control model above being fully correct and manually
+verified to work every single time when each key is typed one at a
+time in an interactive shell with real waiting between steps, the
+SAME exact sequence, run automatically inside demo_module_split_
+smoke.sh (a plain bash script, no different execution model on paper -
+same tk_inject_key.+x / tk_focus_item.+x binaries, same project dir,
+same fresh-reset launch), reliably FAILS at the very first step:
+hero/state.txt's interact_mode never becomes "1" after focusing
+"Control Hero" and sending Enter, even after:
+  - Increasing the settle time after focus (0.3s -> 1.5s -> polling
+    up to 5s for the field to appear).
+  - Confirming (via a manual, out-of-script test with the identical
+    launch sequence) that the exact same commands DO work when typed
+    directly.
+This is a real, reproducible, NOT-YET-EXPLAINED discrepancy between
+"commands typed one at a time in an interactive shell" and "the same
+commands run from inside a bash script file" - not a logic error in
+the control-model understanding (that part is solid, see above), and
+not a simple missing-sleep issue (a 5-second poll should have caught
+any reasonable settle delay). Whatever is different about the script
+execution context is the open question - possibly something about how
+stdin/stdout/process groups are inherited differently when the
+launcher line (`NO_GL=1 PAL_MODE=1 setsid bash button.sh run > ...
+</dev/null & disown`) runs from inside a script vs a live shell, but
+this was NOT confirmed, only suspected. Do not assume it's a sleep
+problem again without first checking whether the game process is
+still genuinely alive and whether pieces/keyboard/history.txt and
+pieces/apps/player_app/interact_relay.txt are actually receiving and
+being drained of the injected keys at each step, inside an actual
+script run (not a manual one) - that live comparison was the next
+step in progress when this doc was written, not yet done.
+
+## A SEPARATE, ALSO-UNRESOLVED FINDING: rapid-burst key doubling
+
+Independent of the above: sending several raw ARROW keys back-to-back
+with only ~0.6s between each (via a plain bash for-loop calling
+tk_inject_key.+x) was observed, TWICE, from a confirmed-fresh cursor
+each time, to double the real resulting displacement (4x ARROW_RIGHT +
+4x ARROW_DOWN landed the xlector cursor at +8/+8, not +4/+4). The SAME
+keys sent one at a time with a full 1-second wait between each landed
+correctly, every time, with zero exceptions, in manual testing. Root
+cause not chased down - plausibly a race in the history.txt ->
+interact_relay.txt relay/consume cycle under rapid injection (a real,
+separate concern from the game's own control-model logic, and
+possibly related in spirit to - but NOT the same mechanism as - the
+GL-mode doubling bug documented in #.haiku+/double-wr-grok-j31.txt,
+which was about gl_mirror.c's own direct interact_relay.txt write, not
+about the keyboard/history.txt relay path this project actually uses).
+Worth a dedicated, separate investigation if it turns out to matter
+for real (non-test) play - a real player's own natural typing/
+keypress rate is very unlikely to hit whatever tight window causes
+this, so it may not be worth chasing unless it recurs.
+
+## WHAT TO DO NEXT
+
+1. Reproduce the script-vs-manual discrepancy in isolation - write the
+   SHORTEST possible bash script that does exactly the launch +
+   focus + Enter sequence (no scenario framework, no cleanup trap, no
+   other steps) and see if IT also fails. If it does, the difference
+   is something about script execution itself (worth understanding).
+   If it does NOT, something else in demo_module_split_smoke.sh's own
+   surrounding code (the trap, the earlier href-nav-unrelated
+   variables, PROOF_DIR handling, etc.) is interfering - bisect from
+   there.
+2. Once the movement half is genuinely green (not just manually
+   verified), update #.haiku+/refactor-list-j30.txt's own mutaclsym
+   entry and this project's own phase2-module-split-report.txt to
+   reflect a fully-passing harness, not "navigation passes, movement
+   known-issue."
+3. Only after that: consider whether test-harn-same/ is worth copying
+   to 300.rpg-xyz / 300.rtp-xyz (mutaclsym's own confirmed-identical
+   copies, which currently have no harness at all).
+================================================================================

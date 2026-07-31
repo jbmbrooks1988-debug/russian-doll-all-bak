@@ -102,6 +102,21 @@ int main(int argc, char **argv) {
         char msg[MAX_FIELD + 32];
         snprintf(msg, sizeof(msg), "Switched to %s", want);
         write_state_field(state_path, "sys_msg", msg);
+
+        /* 2026-07-31 (2&3-jul31-sprint): REMEMBER the user's last chosen
+         * model across runs. button.sh run has no copy-back of world_01
+         * (sessions are wiped by reap_stale_sessions on every launch), so
+         * state.txt alone can never persist this - write the id to the
+         * top-level last_model.txt instead. In a real session project_root
+         * is the session dir, and last_model.txt is SYMLINKED into it from
+         * the real project root (button.sh's blanket top-level symlink
+         * loop, guaranteed present because button.sh run touches the real
+         * file first) - so this fopen writes the REAL file, which survives
+         * session recreation and is read back by button.sh run at boot. */
+        char last_path[PATH_BUF];
+        snprintf(last_path, sizeof(last_path), "%s/last_model.txt", project_root);
+        FILE *lf = fopen(last_path, "w");
+        if (lf) { fprintf(lf, "%s\n", want); fclose(lf); }
     } else {
         char msg[MAX_FIELD + 32];
         snprintf(msg, sizeof(msg), "Unknown model: %s", want);

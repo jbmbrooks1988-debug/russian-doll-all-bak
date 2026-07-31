@@ -450,15 +450,30 @@ static void build_gemma_request(FILE *pf, const char *log_path, const char *mode
                 continue;
             }
 
+            /* 2&3-jul31-sprint (jul-31 fix): skip stale model-driven
+             * assistant|tool_call turns HERE - prompt-build only, the
+             * persisted context_log template is never touched. Replaying
+             * them to gemma3:270m as literal "assistant: TOOL: X {args}"
+             * text taught the model to answer ordinary questions with
+             * "TOOL: read file ..." lines (live-caught 2026-07-31:
+             * llm_response.json contained exactly that). gemma_strategy
+             * + strategy_execute_a handle all tool execution
+             * deterministically before this call, and the persona
+             * (prompt_keyword.txt) says "you never call tools yourself" -
+             * for this 270M model a tool_call in history is pure noise.
+             * Skipped BEFORE the comma placement below so no dangling
+             * "{}," breaks the JSON. The matching tool|* result turns
+             * stay: result-in-context is the whole design. */
+            if (strcmp(role, "assistant") == 0 && strcmp(kind, "tool_call") == 0) {
+                free(content);
+                continue;
+            }
+
             if (!first) fputs(",", pf);
             first = 0;
 
             if (strcmp(role, "user") == 0) {
                 fputs("{\"role\":\"user\",\"content\":\"", pf);
-                json_escaped(pf, content);
-                fputs("\"}", pf);
-            } else if (strcmp(role, "assistant") == 0 && strcmp(kind, "tool_call") == 0) {
-                fprintf(pf, "{\"role\":\"assistant\",\"content\":\"TOOL: %s ", tool_name);
                 json_escaped(pf, content);
                 fputs("\"}", pf);
             } else if (strcmp(role, "assistant") == 0) {
@@ -627,6 +642,37 @@ static int run_script_capture(const char *script_path, const char *arg, char *ou
     return 0;
 }
 
+/* 2&3-jul31-sprint (jul-31 fix): flushes strategy_execute_a.c's stashed
+ * tool_result.pending into context_log as a real tool|result turn, AFTER
+ * the user's message that triggered it (strategy_execute_a runs before
+ * this op, so appending directly there placed the result above the
+ * user's message - see the demo_list_dir_tool harness + 2&3-jul31-sprint.md).
+ * Pending file layout (written by strategy_execute_a.c): line 1 = tool
+ * name, remainder = raw result (pipe-escaped here by append_log_turn).
+ * Returns 1 if a pending result was flushed this turn. */
+static int flush_pending_tool_result(const char *state_path, const char *log_path) {
+    char pending_path[PATH_BUF];
+    snprintf(pending_path, sizeof(pending_path), "%s/pieces/world_01/session_01/chat/tool_result.pending", project_root);
+    FILE *pf = fopen(pending_path, "r");
+    if (!pf) return 0;
+
+    char *buf = malloc(MAX_BUFFER + 1);
+    if (!buf) { fclose(pf); return 0; }
+    size_t n = fread(buf, 1, MAX_BUFFER, pf);
+    buf[n] = '\0';
+    fclose(pf);
+
+    char *first_nl = strchr(buf, '\n');
+    if (!first_nl) { free(buf); return 0; }
+    *first_nl = '\0';
+    append_log_turn(log_path, "tool", "result", buf, first_nl + 1);
+    free(buf);
+
+    remove(pending_path);
+    write_state_field(state_path, "tool_result_pending", "0");
+    return 1;
+}
+
 int main(void) {
     resolve_root();
 
@@ -750,6 +796,23 @@ int main(void) {
     char thinking_start_str[32];
     snprintf(thinking_start_str, sizeof(thinking_start_str), "%ld", (long)time(NULL));
     write_state_field(state_path, "thinking_start", thinking_start_str);
+
+    /* 2&3-jul31-sprint (jul-31 fix): if strategy_execute_a stashed a
+     * tool result this same turn, flush it into context_log right after
+     * the user's message (so the listing renders BELOW "You: ...", not
+     * above it), and - unless model_after_tool=yes - skip the LLM call
+     * entirely: the tool already answered deterministically, no 270M
+     * model needed to (mis)echo "TOOL: ..." back at us. Toggle lives in
+     * state.txt; default =no when absent. */
+    if (flush_pending_tool_result(state_path, log_path)) {
+        char mat[16] = "no";
+        read_state_field(state_path, "model_after_tool", mat, sizeof(mat));
+        if (strcmp(mat, "yes") != 0) {
+            write_state_field(state_path, "ai_state", "IDLE");
+            write_state_field(state_path, "sys_msg", "Tool result shown.");
+            return 0;
+        }
+    }
 
     char provider_kind[MAX_FIELD], api_url[MAX_FIELD], model_name[MAX_FIELD];
     read_state_field(state_path, "provider_kind", provider_kind, sizeof(provider_kind));

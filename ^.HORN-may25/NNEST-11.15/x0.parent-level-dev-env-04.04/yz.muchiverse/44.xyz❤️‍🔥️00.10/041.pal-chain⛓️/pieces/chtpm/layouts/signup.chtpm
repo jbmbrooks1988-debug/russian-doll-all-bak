@@ -1,5 +1,5 @@
 <panel time_reactive="true">
-    <module>system/prisc+x pal/main_loop_chtpm.pal</module>
+    <module>system/prisc+x pal/signup_module.pal</module>
     <interact src="pieces/apps/player_app/interact_relay.txt" />
     <text label="+============================================================+" /><br/>
     <text label="|                    C R E A T E   W A L L E T                |" /><br/>

@@ -1,5 +1,5 @@
 <panel time_reactive="true">
-    <module>${module_path}</module>
+    <module>system/prisc+x pal/game_module.pal</module>
     <interact src="pieces/apps/player_app/interact_relay.txt" />
     <text label="+============================================================+" /><br/>
     <text label="|                     M U T A C L S X M                     |" /><br/>
@@ -37,6 +37,7 @@
         <text label="  [e] toggles ASCII/emoji display any time." /><br/>
         <text label="  [q] quits." /><br/>
     </button><br/>
+    <button label="Save / Load" href="pieces/chtpm/layouts/project_menu.chtpm" /><br/>
     <button label="Info (href test)" href="pieces/chtpm/layouts/info_test.chtpm" /><br/>
     <text label="+============================================================+" /><br/>
     <text label="${game_map}" /><br/>

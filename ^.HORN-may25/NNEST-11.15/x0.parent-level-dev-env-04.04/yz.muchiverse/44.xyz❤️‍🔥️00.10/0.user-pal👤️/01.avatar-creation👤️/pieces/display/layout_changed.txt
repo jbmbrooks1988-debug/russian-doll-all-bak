@@ -15,3 +15,7 @@ pieces/chtpm/layouts/avatar_manage.chtpm
 pieces/chtpm/layouts/avatars.chtpm
 pieces/chtpm/layouts/avatar_manage.chtpm
 pieces/chtpm/layouts/avatars.chtpm
+pieces/chtpm/layouts/avatar_manage.chtpm
+pieces/chtpm/layouts/avatars.chtpm
+pieces/chtpm/layouts/avatar_manage.chtpm
+pieces/chtpm/layouts/avatars.chtpm

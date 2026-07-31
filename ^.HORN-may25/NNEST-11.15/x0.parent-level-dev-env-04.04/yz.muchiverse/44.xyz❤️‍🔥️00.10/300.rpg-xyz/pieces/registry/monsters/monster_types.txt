@@ -17,5 +17,5 @@
 # comment for the full reasoning. No rgb_top_emoji here either, same
 # "monsters never had a registry rgb_top to begin with" reason as
 # items.txt.
-zombie|Zombie|Z|20|5|🧟
-zombie_child|Zombie Child|z|10|3|🧟
+slime|Slime|S|20|5|🟢
+slime_pup|Slime Pup|q|10|3|🟩

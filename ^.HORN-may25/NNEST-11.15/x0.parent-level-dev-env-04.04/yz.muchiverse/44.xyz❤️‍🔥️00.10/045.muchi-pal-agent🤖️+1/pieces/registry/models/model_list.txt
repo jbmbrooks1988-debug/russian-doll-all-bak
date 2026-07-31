@@ -13,6 +13,17 @@
 # ollama is strictly better for this workload, not just a policy
 # preference - see the "no parallel/no localhost" memory note.
 #
+# BOOT DEFAULT AS OF 2026-07-31 (direct user request, 2&3-jul31-sprint):
+# gemma-lan is now the first-boot default model (world_01 template
+# state.txt), and the user's last chosen model is remembered across runs
+# via the top-level last_model.txt (written by switch_model.c, stamped
+# into each fresh session by button.sh run's apply_last_model). The "not
+# for tool-calling" caveat above is moot for CHAT: all tool execution is
+# handled deterministically by gemma_strategy.c + strategy_execute_a.c
+# BEFORE any LLM call, so the 270M model never has to emit a tool call
+# itself (and with model_after_tool=no it isn't even called after a
+# pre-run tool).
+#
 # provider_kind must be exactly one of: ollama, gemini, llamacpp, iqabod -
 # these are the only four send_message.c/check_response.c know how to
 # build a request for / parse a response from (see send_message.c's own

@@ -144,6 +144,48 @@ FILES: 045.muchi-pal-agent🤖️+1/ops/check_response.c (add the prescribed
        repro steps already written)
 
 ========================================================================
+TODO 4 (FIXED 2026-07-31): gemma "TOOL: ..." hallucination after typing
+"dir list" + tool result rendered above the user message
+=======================================================================
+SYMPTOM (user report): typing "dir list" produced a frame where Aida
+"answered" with `TOOL: read file jul-21.txt` instead of a clean listing.
+
+ROOT CAUSE, PART 1: build_gemma_request() (ops/send_message.c) replayed
+old persisted `assistant|tool_call` turns to gemma3:270m as literal
+"assistant: TOOL: X {args}" text. The model imitated that format in its
+reply. Live-caught: llm_response.json contained exactly
+`"TOOL: read file jul-21.txt"`.
+
+ROOT CAUSE, PART 2 (cosmetic): strategy_execute_a ran BEFORE send_message
+appends the user's own message, so its tool|result append rendered ABOVE
+the "You: ..." line that triggered it.
+
+FIX (per explicit user decisions, all harness-proven):
+  - build_gemma_request() now SKIPS assistant|tool_call turns at
+    prompt-build time only (before comma placement, no dangling "{}," in
+    the JSON). Persisted context_log template untouched (user chose
+    filter-not-purge). tool|* result turns still fed as TOOL_RESULT.
+  - New state.txt toggle model_after_tool=no (default): when strategy A
+    just pre-ran a tool, send_message flushes the result then returns
+    IDLE WITHOUT calling any LLM ("Tool result shown."). Set
+    model_after_tool=yes to re-enable model commentary after tool runs.
+  - Display order fixed via tool_result.pending handshake:
+    strategy_execute_a stashes (tool name + raw result), send_message
+    flushes it into context_log right after the user turn, deletes the
+    file. tool_result_pending= is the handshake field.
+  - Old check_response.c PENDING_PERM → execute_tool.c/deny_tool.c flow
+    and text_to_pal_prompt.c's llamacpp replay: LEFT AS-IS (user chose).
+
+VERIFIED: demo_list_dir_tool.sh OVERALL PASS with two NEW assertions
+(KPI#2: no `TOOL: (read|write|list|run|search|speak)` in last 12 frame
+lines; KPI#3: result line number > user message line number). Proof:
+045.muchi-pal-agent🤖️+1/proof/harness-20260731-113214/. Full narrative +
+plan in #.haiku+/30.jul-30-handoff/2&3-jul31-sprint.md §6b.
+
+FILES: ops/send_message.c, ops/strategy_execute_a.c,
+       test-harn-same/scenarios/demo_list_dir_tool.sh.
+
+=======================================================================
 RECOMMENDED ORDER
 ========================================================================
 1. TODO 1 (model_list.txt fix) - DONE 2026-07-30, verified live.
@@ -155,7 +197,22 @@ RECOMMENDED ORDER
    uncertainty ("is iqabod even reaching the binary at all") is
    resolved - a freeze investigation won't be confused by an unrelated
    dead-path failure anymore.
+5. TODO 4 (gemma TOOL: hallucination + display order) - DONE 2026-07-31,
+   harness-proven (proof/harness-20260731-113214/). Remaining open item:
+   user's own eyes-on test (sprint doc KPI I.6).
+ 6. TODO 5 (gemma agentic tools: write/edit/read/run/search) - DONE 2026-07-31.
+    Design: 5.tool-scaffold-gemma-agentic.md. H1 + H2 harnesses all 8 KPIs
+    PASS (proof/harness-20260731-114822/, -114843/); list_dir/iqabod/
+    model_remember regression green. User's own test: user-walkthru.md
+    (sprint doc A.5). Install (Phase II) unblocked.
+ 7. TODO 6 (install v1: ~/xyzos bootstrap) - DONE 2026-07-31 (harness-proven).
+    Design APPROVED: 3.harness-install-xyzos~/4.install-v1-xyzfs-layout.md
+    (Option B layout, home-🏠️ label, paths.pdl pointer, dev tree untouched).
+    Installer packaged at x0.parent-level-dev-env-04.04/xyz-installer-dev/
+    (pointers.pdl; planned move ~/xyz-installer-dev/). KPI#4 + KPI#5 PASS
+    (%.harnesses/install-xyzos/proof/kpi4-20260731-124331/,
+     -kpi5-20260731-124349/). Open: II.5 user's own install + signup.
 
-========================================================================
-END OF TODO
-========================================================================
+ ========================================================================
+ END OF TODO
+ ========================================================================

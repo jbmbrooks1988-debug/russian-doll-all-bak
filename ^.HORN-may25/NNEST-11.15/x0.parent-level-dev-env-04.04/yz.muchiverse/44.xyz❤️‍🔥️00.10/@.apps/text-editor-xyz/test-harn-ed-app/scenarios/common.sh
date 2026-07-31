@@ -2,33 +2,26 @@
 # common.sh - shared setup/teardown/injection helpers for
 # test-harn-ed-app scenarios (source, don't execute directly).
 #
-# LEVEL-2 (§36.6) BY CONSTRUCTION, WITH A REAL CORRECTION FOUND WHILE
-# BUILDING THIS HARNESS (2026-07-30): §36.6 originally said key
-# injection must ALWAYS go through pieces/keyboard/history.txt, never
-# a direct write to interact_relay.txt. That is correct for
-# chtpm-NATIVE button layouts (102.editor's own layout has a real
-# <button onClick="INTERACT"> - confirmed live, keyboard/history.txt
-# injection correctly flips active_gui_is_typing.txt). It is WRONG as
-# a blanket rule for &.widgits/file-menu's own layout (and the same
-# "dumb ASCII text menu, PAL-native" architecture used by mutaclsym/
-# muchi-pals/pal-chain): that layout has ZERO <button>/<canvas>/
-# <cli_io>/<scroller> elements (chtpm_parser_pal.c's own
-# is_interactive() gates on exactly those four types), so
-# chtpm_parser_pal's process_key() literally has nothing to navigate -
-# confirmed live by direct source read (is_navigable() -> is_interactive()
-# -> false for every element in this layout) AND by testing: injecting
-# into keyboard/history.txt for 30+ seconds produced zero movement,
-# while a direct bare-decimal write into interact_relay.txt (the EXACT
-# format & mechanism gl_mirror.c's own append_key() uses for a real
-# live GL keypress - see that file's own "Forward to PAL loop's
-# interact_relay.txt in bare decimal format" comment) moved cursor_pos
-# immediately. For this architecture, interact_relay.txt IS the real,
-# only input channel - writing to it directly, in gl_mirror's own
-# format, is not a shortcut around the real path, it reproduces the
-# real path exactly (a live keypress never touches keyboard/history.txt
-# at all for this layout shape - only chtpm-native button layouts
-# populate that file's relay use). See !.xyzos-standards+1.txt §36.6's
-# own 2026-07-30 correction for the permanent record.
+# LEVEL-2 (§36.6) BY CONSTRUCTION.
+#
+# ARCHITECTURE CHANGE, 2026-07-30 (editor-widget-app-refactor-j30.txt /
+# PITFALL 65 fix): &.widgits/file-menu's own layout is NO LONGER the
+# "dumb ASCII text menu, PAL-native, buttonless" shape the note below
+# used to document - it now has REAL <button>/<cli_io> elements
+# (chtpm_parser_pal.c's own is_interactive() gates on exactly those,
+# plus <canvas>/<scroller>), matching 102.editor's own shape. This
+# means the ORIGINAL §36.6 rule is correct again for file-menu too:
+# real key injection goes through pieces/keyboard/history.txt (fm_
+# inject_key()/fm_inject_string() below), which chtpm_parser_pal's own
+# real nav/focus/digit-jump/Enter-activate logic processes - a real
+# button activation (onClick="KEY:n") is what THEN relays a bare
+# integer into interact_relay.txt for fm_menu_input.c to read, not
+# something a test should write there directly anymore. The OLD
+# fm_relay_key()/fm_paste() functions (direct interact_relay.txt
+# writes, bypassing chtpm_parser_pal's own nav entirely) matched the
+# OLD hand-drawn-marker architecture exactly - they are WRONG for the
+# rebuilt layout (would skip real focus/highlighting the parser now
+# owns) and have been removed rather than kept as a stale shortcut.
 set -u
 
 HARNESS="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -73,57 +66,36 @@ inject_repeat() {
     for (( i=0; i<n; i++ )); do inject_key "$hist" "$code"; sleep 0.05; done
 }
 
-# --- file-menu's own relay (buttonless layout — see header comment) --
+# --- file-menu's own real key injection (2026-07-30 rebuild - see
+# this file's own header comment: real chtpm-native buttons/cli_io
+# now, same channel/format as inject_key()/inject_string() above, just
+# targeting the file-menu session's own pieces/keyboard/history.txt
+# instead of the editor's) -------------------------------------------
 
-# fm_relay_key <fm_session> <keycode> - bare decimal, gl_mirror.c's
-# own exact append_key() format/target for a real live GL keypress.
-fm_relay_key() {
+# fm_inject_key <fm_session> <keycode>
+fm_inject_key() {
     local session="$1" code="$2"
-    echo "$code" >> "$session/pieces/apps/player_app/interact_relay.txt"
+    inject_key "$session/pieces/keyboard/history.txt" "$code"
 }
 
-# fm_relay_string <fm_session> <string> - one line per character.
-# See inject_string's own comment above — same 16.7ms-per-key PAL loop
-# constraint applies identically here (confirmed live for this exact
-# function too, same failure/fix shape).
-fm_relay_string() {
-    local session="$1" str="$2" i ch code
-    for (( i=0; i<${#str}; i++ )); do
-        ch="${str:$i:1}"
-        code=$(printf '%d' "'$ch")
-        fm_relay_key "$session" "$code"
-        sleep 0.05
-    done
+# fm_inject_string <fm_session> <string> - real per-character typing,
+# only valid while a real <cli_io> is actively engaged (Enter-focused),
+# same real gate chtpm_parser_pal.c's own cli_io input_buffer handling
+# enforces. No PASTE-mode equivalent exists anymore for file-menu's own
+# cli_io fields (fm_menu_input.c no longer owns their content at all -
+# chtpm_parser_pal does, natively) - emoji/multi-byte path segments
+# still can't be typed character-by-character through this for the
+# same real reason PASTE existed originally; that's a known, real,
+# unresolved gap for THIS specific case, not silently worked around.
+fm_inject_string() {
+    local session="$1" str="$2"
+    inject_string "$session/pieces/keyboard/history.txt" "$str"
 }
 
-# fm_relay_repeat <fm_session> <keycode> <count>
-fm_relay_repeat() {
-    local session="$1" code="$2" n="$3" i
-    for (( i=0; i<n; i++ )); do fm_relay_key "$session" "$code"; sleep 0.05; done
-}
-
-# --- PASTE mode (2026-07-30) ------------------------------------------
-#
-# A real keypress is one int, matching a physical keyboard's one-
-# scancode-per-keystroke model — the FILE field's own typing path
-# (fm_menu_input.c) and INTERACT's own typing path (editor_menu_
-# input.c) both only accept single-byte ASCII for exactly that reason.
-# This house's own directory tree has emoji path segments
-# (🤖️🪤️🏠️, 🥡️🪜️, ❤️‍🔥️, ...) that can never be typed character-by-
-# character through either — confirmed live: iterating a UTF-8 string
-# one keycode at a time drops every multi-byte sequence. PASTE is a
-# real, separate mechanism (not a relaxation of the keystroke-by-
-# keystroke path, which stays exactly as strict as a real keyboard) —
-# both ops now accept `<op> PASTE "<string>"` as a direct, whole-string
-# insert. This is the SAME op binary real production code will use
-# once wired to an actual paste trigger (Ctrl+V/clipboard) — calling
-# it directly here exercises the real capability, not a bypass of it.
-
-# fm_paste <fm_session> <string> - appends to whichever field (SEARCH/
-# FILE) is currently selected, via the real fm_menu_input.+x op.
-fm_paste() {
-    local session="$1" text="$2"
-    PRISC_PROJECT_ROOT="$session" "$FM_DIR/ops/+x/fm_menu_input.+x" PASTE "$text" >/dev/null 2>&1
+# fm_inject_repeat <fm_session> <keycode> <count>
+fm_inject_repeat() {
+    local session="$1" code="$2" n="$3"
+    inject_repeat "$session/pieces/keyboard/history.txt" "$code" "$n"
 }
 
 # ed_paste <editor_session> <string> - inserts at cursor, via the real

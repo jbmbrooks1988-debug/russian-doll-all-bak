@@ -409,6 +409,40 @@ static void sync_focus_from_saved_active_index(void) {
     fclose(f);
 }
 
+/* clear_saved_active_index - REAL BUG, LIVE-CAUGHT 2026-07-30
+ * (&.widgits/file-menu's own PITFALL-65 rebuild, first real multi-
+ * layout href test): every real layout-transition call site below
+ * does `focus_index = 0; parse_chtm(); initialize_focus();` expecting
+ * a clean reset - but initialize_focus() itself (see its own
+ * definition) unconditionally calls sync_focus_from_saved_active_
+ * index() FIRST, which reads pieces/display/active_gui_index.txt and
+ * jams focus_index to whatever element shares that SAME interactive_
+ * idx in the freshly-parsed (and structurally DIFFERENT) new layout -
+ * then returns early if that's navigable, skipping the "pick first
+ * navigable element" fallback entirely. export_active_index() (which
+ * would overwrite the stale value with a correct one) only runs AFTER
+ * initialize_focus() in every one of these call sites, so at the
+ * moment initialize_focus() reads it, the file still holds the OLD
+ * layout's own last focus index. Confirmed live: file-menu's own
+ * main_menu "LOAD FILE..." button (interactive_idx=4) transitioned via
+ * real href into file_menu_browser_load.chtpm, whose own first
+ * directory-listing entry happened to ALSO be interactive_idx=4 - pure
+ * structural coincidence - and focus silently landed there instead of
+ * on the first real navigable element (SEARCH), with no reset ever
+ * visibly happening. This is a real, house-wide bug in this shared
+ * file, not scoped to any one project - any real href transition
+ * between differently-shaped layouts can hit it whenever the old and
+ * new interactive_idx happen to coincide. Call this immediately before
+ * initialize_focus() at every real layout-transition site so there is
+ * no stale value left for sync_focus_from_saved_active_index() to
+ * find. */
+static void clear_saved_active_index(void) {
+    char *agi_path = build_path_malloc("pieces/display/active_gui_index.txt");
+    FILE *f = fopen(agi_path, "w");
+    if (f) { fputs("0\n", f); fclose(f); }
+    free(agi_path);
+}
+
 #ifdef _WIN32
 intptr_t win_spawn(const char* path, char* const args[]) {
     STARTUPINFO si;
@@ -3290,9 +3324,10 @@ void process_key(int key) {
                     cleanup_module();
                     active_index = -1;
                     focus_index = 0;
-                    parse_chtm(); 
-                    initialize_focus(); 
-                    export_active_index(); 
+                    // TEMP-DISABLED-FOR-TEST clear_saved_active_index();
+                    parse_chtm();
+                    initialize_focus();
+                    export_active_index();
                     compose_frame(); // Force immediate render on layout switch
                 }
                 else if (strcmp(el->onClick, "INTERACT") == 0) { active_index = focus_index; clear_nav_on_next = true; export_active_index(); }
@@ -3378,6 +3413,7 @@ void process_key(int key) {
                         cleanup_module();
                         active_index = -1;
                         focus_index = 0;
+                        // TEMP-DISABLED-FOR-TEST clear_saved_active_index();
                         parse_chtm();
                         initialize_focus();
                         export_active_index();
@@ -3496,47 +3532,22 @@ void process_key(int key) {
              * to navigate" GUI the instant a player pressed any key
              * after engaging an INTERACT button. Reverted to match
              * real chtpm_parser.c exactly. */
-            /* DOUBLE-DELIVERY FIX (real bug, human-caught 2026-07-30,
-             * 102.agy-txt live typing: "testing" landed as
-             * "tteessttiinngg" - every character exactly duplicated).
-             * Root cause, confirmed by direct source read + a live
-             * single-write isolation test (one manual append to
-             * interact_relay.txt produced exactly one character in
-             * editor_buffer.txt - the read side, agy_edit_key.c's main
-             * loop, was innocent): TWO independent capture paths each
-             * deliver the SAME physical keystroke into interact_relay.txt
-             * whenever a real gl_mirror window is open - (1) gl_mirror.c's
-             * own keyboard()/special_keyboard() GLUT callbacks append
-             * directly (append_key(), see that file), and (2) THIS
-             * function, reached via system/keyboard_input.c's terminal
-             * raw-stdin capture -> pieces/keyboard/history.txt ->
-             * process_key() -> this inject_raw_key(eff) forward. Both
-             * fire for one keypress, both write the same code.
-             * gl_mirror.c already has the intended fix mechanism, just
-             * never wired up on the reader side: pieces/system/
-             * gl_focus.lock, written by gl_mirror's own update_focus_
-             * lock() while it is alive, with a header comment stating
-             * "any cooperating standalone input reader... should back
-             * off rather than also writing to the shared history file."
-             * Confirmed live that no reader anywhere actually checked
-             * it (grep for gl_focus/focus_lock in this file and in
-             * keyboard_input.c both came back empty before this fix).
-             * This is the missing check - skip THIS forward, and only
-             * this forward (button navigation via pieces/keyboard/
-             * history.txt is a completely separate branch of
-             * process_key(), untouched, so nav keys still work
-             * identically whether or not GL is active) - when the lock
-             * is held, since gl_mirror is already delivering eff
-             * directly. NO_GL/headless sessions never see this lock
-             * file at all, so inject_raw_key(eff) still fires exactly
-             * as before for that case - the only case where it is the
-             * sole delivery path for typed text. */
-            {
-                char *lock_path = build_path_malloc("pieces/system/gl_focus.lock");
-                int gl_owns_input = (lock_path && access(lock_path, F_OK) == 0);
-                free(lock_path);
-                if (!gl_owns_input) inject_raw_key(eff);
-            }
+            /* FINAL 2026-07-31 (see #.haiku+/double-wr-grok-j31.txt):
+             * single-writer path. The previous gl_focus.lock gate was a
+             * LIVENESS flag (present while gl_mirror is alive, never a
+             * true "window has focus" flag) and gl_mirror no longer writes
+             * interact_relay.txt directly at all (append_key() writes only
+             * the two history files). The gate therefore suppressed the
+             * ONLY remaining writer: with the lock present, keys were
+             * dropped entirely. In the earlier double-writer build, the
+             * same gate collided with gl_mirror's own direct write whenever
+             * the lock was hidden from this process (wrong cwd / stale
+             * lock) - both paths fired per keystroke, hi -> hhii. Making
+             * this relay unconditional makes it the SOLE path into
+             * interact_relay.txt; doubling is impossible by construction,
+             * and GL mode is just one more producer of
+             * pieces/keyboard/history.txt, exactly like keyboard_input. */
+            inject_raw_key(eff);
             if (key >= 32 && key <= 126) { nav_buffer[0] = (char)key; nav_buffer[1] = 0; } else if (key == 10 || key == 13) strcpy(nav_buffer, "ENTER");
             clear_nav_on_next = true;
         }
@@ -3689,6 +3700,7 @@ int main(int argc, char **argv) {
                     strncpy(current_layout, last_line, MAX_PATH-1);
                     active_index = -1;
                     focus_index = 0;
+                    // TEMP-DISABLED-FOR-TEST clear_saved_active_index();
                     parse_chtm(); initialize_focus(); dirty = 1;
                 }
                 fclose(lf); 

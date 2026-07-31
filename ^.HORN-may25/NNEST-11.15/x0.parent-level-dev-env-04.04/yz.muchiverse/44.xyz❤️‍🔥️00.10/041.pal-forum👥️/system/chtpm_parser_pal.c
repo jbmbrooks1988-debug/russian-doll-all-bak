@@ -496,6 +496,24 @@ char* trim_pmo(char *str) {
     return str;
 }
 
+/* clear_saved_active_index - PORTED 2026-07-31 (PITFALL 66) from the
+ * real, house-wide fix in 014.wsr-pal's own chtpm_parser_pal.c. This
+ * local copy never had it - every real layout-transition call site
+ * below does `focus_index = 0; parse_chtm(); initialize_focus();`
+ * expecting a clean reset, but initialize_focus() unconditionally
+ * calls sync_focus_from_saved_active_index() FIRST, which reads
+ * pieces/display/active_gui_index.txt and jams focus_index to
+ * whatever element shares that SAME interactive_idx in the freshly-
+ * parsed (and structurally DIFFERENT) new layout. Call this
+ * immediately before parse_chtm() at every real layout-transition
+ * site. */
+static void clear_saved_active_index(void) {
+    char *agi_path = build_path_malloc("pieces/display/active_gui_index.txt");
+    FILE *f = fopen(agi_path, "w");
+    if (f) { fputs("0\n", f); fclose(f); }
+    free(agi_path);
+}
+
 char* build_path_malloc(const char* rel) {
     char* p = NULL;
     if (asprintf(&p, "%s/%s", project_root_path, rel) == -1) return NULL;
@@ -1224,8 +1242,6 @@ void load_vars() {
     if (is_modern_layout(current_layout)) {
         load_state_file("pieces/apps/player_app/state.txt", NULL);
         load_state_file("pieces/apps/player_app/manager/state.txt", NULL);
-        printf("DEBUG: Loaded directory_listing: %s\n", get_var("directory_listing"));
-        printf("DEBUG: Loaded last_key: %s\n", get_var("last_key"));
     } else {
         load_state_file("pieces/apps/fuzzpet_app/manager/state.txt", NULL);
     }
@@ -1967,6 +1983,7 @@ void handle_launch_command(const char* cmd) {
         strncpy(current_layout, app_name, MAX_PATH-1);
         active_index = -1;
         focus_index = 0;
+        clear_saved_active_index();
         parse_chtm();
         initialize_focus();
         compose_frame();
@@ -1993,6 +2010,7 @@ void handle_launch_command(const char* cmd) {
                         strncpy(current_layout, "pieces/apps/gl_os/layouts/desktop.chtpm", MAX_PATH-1);
                         active_index = -1;
                         focus_index = 0;
+                        clear_saved_active_index();
                         parse_chtm();
                         initialize_focus();
 #ifndef _WIN32
@@ -2082,6 +2100,7 @@ void send_command(const char* cmd) {
         cleanup_module();
         active_index = -1;
         focus_index = 0;
+        clear_saved_active_index();
         parse_chtm();
         initialize_focus();
         export_active_index();
@@ -3327,6 +3346,7 @@ void process_key(int key) {
                     cleanup_module();
                     active_index = -1;
                     focus_index = 0;
+                    clear_saved_active_index();
                     parse_chtm(); 
                     initialize_focus(); 
                     export_active_index(); 
@@ -3408,6 +3428,7 @@ void process_key(int key) {
                         cleanup_module();
                         active_index = -1;
                         focus_index = 0;
+                        clear_saved_active_index();
                         parse_chtm();
                         initialize_focus();
                         export_active_index();
@@ -3637,6 +3658,7 @@ int main(int argc, char **argv) {
                 strncpy(last_active_id, new_active_id, 63);
                 active_index = -1;
                 focus_index = 0;
+                clear_saved_active_index();
                 parse_chtm();
                 initialize_focus();
             } else {
@@ -3679,6 +3701,7 @@ int main(int argc, char **argv) {
                     strncpy(current_layout, last_line, MAX_PATH-1);
                     active_index = -1;
                     focus_index = 0;
+                    clear_saved_active_index();
                     parse_chtm(); initialize_focus(); dirty = 1;
                 }
                 fclose(lf); 

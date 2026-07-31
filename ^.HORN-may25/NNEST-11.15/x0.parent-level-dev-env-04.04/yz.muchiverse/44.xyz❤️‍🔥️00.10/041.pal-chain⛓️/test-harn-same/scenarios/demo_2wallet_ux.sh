@@ -162,7 +162,13 @@ fill_field "$SESS_A" "$FRAME_A" "Amount" "1"
 focus "$SESS_A" "$FRAME_A" "Send Cones"; key "$SESS_A" 13
 sleep 1
 cp "$FRAME_A" "$PROOF_DIR/walletA_send_result.txt"
-check "$FRAME_A" "Sent 1 millicones from $WALLET_A to $WALLET_B" "wallet A sent 1 real millicone to wallet B via real keystrokes (typed recipient+amount, real chain_send.c wrote a real pending transaction)"
+# NOTE: chain_send.c's confirmation used to also repeat "from $WALLET_A"
+# and a full tx_id - that made this line silently overflow the frame's
+# fixed BOX_W=60 box and truncate the recipient wallet ID (real bug,
+# fixed 2026-07-30 - see chain_send.c and chain_compose_frame.c). The
+# sender wallet is already shown on its own "Wallet: ..." line above,
+# so it was dropped from the confirmation text.
+check "$FRAME_A" "Sent 1 millicones to $WALLET_B" "wallet A sent 1 real millicone to wallet B via real keystrokes (typed recipient+amount, real chain_send.c wrote a real pending transaction)"
 
 echo "--- waiting for the pending transaction to be mined into a real block (polling wallet B's real balance, up to 10s) ---"
 RECEIVED=0

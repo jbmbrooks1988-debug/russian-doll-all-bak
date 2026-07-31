@@ -28,6 +28,11 @@ gcc $CFLAGS -o "ops/+x/agy_compose_stub.+x" "ops/agy_compose_stub.c"
 gcc $CFLAGS -o "ops/+x/agy_edit_key.+x" "ops/agy_edit_key.c"
 gcc $CFLAGS -o "ops/+x/agy_compose_view.+x" "ops/agy_compose_view.c"
 gcc $CFLAGS -o "ops/+x/agy_widget_cmds.+x" "ops/agy_widget_cmds.c"
+gcc $CFLAGS -o "ops/+x/agy_scan_dir.+x" "ops/agy_scan_dir.c"
+
+echo "--- Building agy-txt's real native browser manager (PITFALL 65 rebuild) ---"
+mkdir -p manager/+x
+gcc $CFLAGS -pthread -o "manager/+x/agy_browser_manager.+x" "manager/agy_browser_manager.c"
 
 echo "--- Copying GL/RGB system binaries (§35 GL-primary) ---"
 if [ -d "$WSR" ]; then

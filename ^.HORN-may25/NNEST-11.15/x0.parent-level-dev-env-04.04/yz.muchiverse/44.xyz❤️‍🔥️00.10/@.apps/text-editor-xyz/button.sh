@@ -24,6 +24,47 @@ SESSION_ID="$(date +%s)-$$"
 EDITOR_SESSION="/tmp/.text-editor-xyz-editor-$SESSION_ID"
 
 run_app() {
+    # REAL BUG, LIVE-CAUGHT 2026-07-31: this function never killed
+    # anything before building a fresh session - a stale agy_browser_
+    # manager.+x from a PRIOR session (this same "kill" action below was
+    # ALSO missing this daemon from its own pkill list until this same
+    # fix) kept running indefinitely, sharing the SAME real docs/
+    # symlink every session uses, and produced real, confusing symptoms
+    # in a fresh session: typed text not persisting, LOAD/SAVE AS
+    # screens not responding to nav past a certain point. A defensive
+    # kill here means every launch starts clean regardless of whether a
+    # prior session was ever properly torn down.
+    # REAL BUG, LIVE-CAUGHT 2026-07-31 (found immediately after the fix
+    # above): a bare `pkill; sleep 0.2` does NOT prove anything actually
+    # died - pkill only sends the signal and returns immediately, it
+    # never waits for the target to exit. A threaded daemon like
+    # agy_browser_manager.+x can outlive a flat 0.2s sleep, giving a
+    # real window where the OLD process and the brand-new session's own
+    # freshly-launched process are BOTH alive and BOTH consuming the
+    # same real keystrokes - confirmed live: typed characters landed
+    # doubled in the editor buffer ("hi" -> "hhii") right after this
+    # exact fix was added. Poll until genuinely dead instead of guessing
+    # a fixed delay is long enough.
+    PKILL_PATTERNS='system/keyboard_input system/renderer system/prisc\+x system/chtpm_parser_pal system/gl_mirror system/chtpm_rgb_render manager/\+x/agy_browser_manager\.\+x'
+    for pat in $PKILL_PATTERNS; do
+        pkill -f "$pat" 2>/dev/null
+    done
+    waited=0
+    while [ "$waited" -lt 30 ]; do
+        still_alive=0
+        for pat in $PKILL_PATTERNS; do
+            pgrep -f "$pat" >/dev/null 2>&1 && still_alive=1
+        done
+        [ "$still_alive" = "0" ] && break
+        sleep 0.1
+        waited=$((waited + 1))
+    done
+    if [ "$still_alive" = "1" ]; then
+        for pat in $PKILL_PATTERNS; do
+            pkill -9 -f "$pat" 2>/dev/null
+        done
+        sleep 0.2
+    fi
     # ── 1. Create EDITOR session directory ──
     mkdir -p "$EDITOR_SESSION/pieces/system" "$EDITOR_SESSION/pieces/display" \
              "$EDITOR_SESSION/pieces/apps/player_app" "$EDITOR_SESSION/pieces/keyboard" \
@@ -170,6 +211,22 @@ EOSTATE
         kill "$EDITOR_GL_PID" "$EDITOR_RGB_PID" 2>/dev/null || true
         kill "$WIDGET_PID" 2>/dev/null || true
         kill_own_module
+        # REAL BUG, LIVE-CAUGHT 2026-07-31: this Ctrl+C/exit trap only
+        # ever killed the EDITOR's own prisc+x (by cwd match) - it never
+        # touched agy_browser_manager.+x at all (spawned by either the
+        # editor's own or file-menu's own browser screens), and killing
+        # $WIDGET_PID (the wrapper `bash file-menu/button.sh` process)
+        # does NOT cascade to file-menu's own real child stack (its own
+        # renderer/chtpm_parser_pal/keyboard_input/prisc+x, running
+        # under a DIFFERENT session dir this trap's own cwd check never
+        # matches). Confirmed live: real orphaned processes from a
+        # normal Ctrl+C exit kept running and corrupting later sessions
+        # via the shared docs/ symlink. Broad pkill here (not cwd-
+        # scoped) matches this house's own EMERGENCY_KILL.sh/button.sh
+        # kill convention elsewhere - reusing file-menu's own real kill
+        # action for its half rather than reimplementing it.
+        pkill -f "manager/\+x/agy_browser_manager\.\+x" 2>/dev/null || true
+        [ -n "${FM_DIR:-}" ] && [ -x "$FM_DIR/button.sh" ] && bash "$FM_DIR/button.sh" kill >/dev/null 2>&1 || true
         mkdir -p "$SCRIPT_DIR/sessions"
         if [ -f pieces/system/editor_buffer.txt ]; then
             cp pieces/system/editor_buffer.txt "$SCRIPT_DIR/sessions/autosave.txt" 2>/dev/null || true
@@ -226,6 +283,7 @@ case "$ACTION" in
         pkill -f "system/chtpm_parser_pal" 2>/dev/null
         pkill -f "system/gl_mirror" 2>/dev/null
         pkill -f "system/chtpm_rgb_render" 2>/dev/null
+        pkill -f "manager/\+x/agy_browser_manager\.\+x" 2>/dev/null
         rm -rf /tmp/.text-editor-xyz-* 2>/dev/null
         echo "done"
         ;;

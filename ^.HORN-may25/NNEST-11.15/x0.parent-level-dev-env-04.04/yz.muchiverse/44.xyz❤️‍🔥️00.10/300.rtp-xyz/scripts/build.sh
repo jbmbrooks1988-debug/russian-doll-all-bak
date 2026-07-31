@@ -84,4 +84,12 @@ $CC $CFLAGS -o ops/+x/choice.+x ops/choice.c
 $CC $CFLAGS -o ops/+x/game_dispatch.+x ops/game_dispatch.c
 $CC $CFLAGS -o ops/+x/generate_map.+x ops/generate_map.c
 
+echo "-- rtp_manager (PERSISTENT daemon, project_menu.chtpm's own"
+echo "   <module> - real save/load, modeled on slop-ed-dev_manager.c's"
+echo "   real pattern, see dox/rtp-xyz-architecture.md §2/§7 and this"
+echo "   file's own header comment. -Wno-unused-result"
+echo "   -Wno-stringop-truncation -Wno-format-truncation REQUIRED for"
+echo "   zero warnings, same as chtpm_parser_pal.c above.)"
+$CC $CFLAGS -Wno-unused-result -Wno-stringop-truncation -Wno-format-truncation -o manager/+x/rtp_manager.+x manager/rtp_manager.c
+
 echo "build ok"

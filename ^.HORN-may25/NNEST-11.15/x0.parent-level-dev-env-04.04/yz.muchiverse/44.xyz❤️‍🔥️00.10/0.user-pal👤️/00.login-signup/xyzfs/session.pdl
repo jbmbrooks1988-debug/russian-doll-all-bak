@@ -4,10 +4,10 @@ META         | piece_id           | xyzfs_session
 META         | version            | 1.0
 
 STATE        | mode                 | logged_in
-STATE        | user_id              | asw_a_2131489
-STATE        | user_uuid            | e8bf229a-62d3-4d6f-810e-e2aaf031cd73
-STATE        | display_name         | Alice
-STATE        | xyzfs_path           | xyzfs/users/e8bf229a-62d3-4d6f-810e-e2aaf031cd73
-STATE        | logged_in_at         | 1785274320
-STATE        | active_avatar_uuid   | e39710b2-bd42-4d4f-9f7d-2fb3c8385b03
-STATE        | active_avatar_path   | xyzfs/users/e8bf229a-62d3-4d6f-810e-e2aaf031cd73/home/avatars/e39710b2-bd42-4d4f-9f7d-2fb3c8385b03
+STATE        | user_id              | afx_3265291
+STATE        | user_uuid            | c757e9bd-75e5-4e21-84ec-8b65b58e1d07
+STATE        | display_name         | FxTest
+STATE        | xyzfs_path           | xyzfs/users/c757e9bd-75e5-4e21-84ec-8b65b58e1d07
+STATE        | logged_in_at         | 1785496512
+STATE        | active_avatar_uuid   | 9bcba485-a86d-4125-8343-b8962fd7d352
+STATE        | active_avatar_path   | xyzfs/users/c757e9bd-75e5-4e21-84ec-8b65b58e1d07/home/avatars/9bcba485-a86d-4125-8343-b8962fd7d352

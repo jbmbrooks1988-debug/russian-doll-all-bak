@@ -16,6 +16,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <ctype.h>
+#include <time.h>
+#include <sys/wait.h>
 
 #define MAX_PATH 4096
 #define PATH_BUF (MAX_PATH + 256)
@@ -151,6 +153,272 @@ static char *extract_argument_after(const char *msg, const char *keyword) {
     return result;
 }
 
+/* --- 5.tool-scaffold-gemma-agentic helpers (2026-07-31) ---
+ * Deterministic natural-language → argv parsing for the agentic tools.
+ * Rules from the design doc: filenames = first whitespace token after the
+ * file-phrase; content = everything after the content-phrase; quotes
+ * stripped when the whole argument is quoted. All paths are session-scoped
+ * (the dispatcher chdir's to project_root before executing). */
+
+static void trim_ws(char *s) {
+    char *start = s;
+    while (*start && isspace((unsigned char)*start)) start++;
+    if (start != s) memmove(s, start, strlen(start) + 1);
+    size_t len = strlen(s);
+    while (len > 0 && isspace((unsigned char)s[len - 1])) s[--len] = '\0';
+}
+
+static void strip_outer_quotes(char *s) {
+    size_t len = strlen(s);
+    if (len >= 2 && ((s[0] == '"' && s[len - 1] == '"') ||
+                     (s[0] == '\'' && s[len - 1] == '\''))) {
+        memmove(s, s + 1, len - 2);
+        s[len - 2] = '\0';
+    }
+}
+
+static int first_token(char **cursor, char *out, size_t out_sz) {
+    char *p = *cursor;
+    while (*p && isspace((unsigned char)*p)) p++;
+    if (!*p) return 0;
+    char *end = p;
+    while (*end && !isspace((unsigned char)*end)) end++;
+    size_t len = end - p;
+    if (len >= out_sz) len = out_sz - 1;
+    memcpy(out, p, len);
+    out[len] = '\0';
+    *cursor = end;
+    return 1;
+}
+
+static char *run_capture(const char **argv) {
+    int pipefd[2];
+    if (pipe(pipefd) != 0) return strdup("Error: pipe failed");
+    pid_t pid = fork();
+    if (pid == -1) {
+        close(pipefd[0]); close(pipefd[1]);
+        return strdup("Error: fork failed");
+    }
+    if (pid == 0) {
+        dup2(pipefd[1], STDOUT_FILENO);
+        dup2(pipefd[1], STDERR_FILENO);
+        close(pipefd[0]); close(pipefd[1]);
+        execvp(argv[0], (char * const *)argv);
+        perror("execvp");
+        _exit(127);
+    }
+    close(pipefd[1]);
+    char *buf = malloc(4096 + 1);
+    size_t n = 0;
+    while (n < 4096) {
+        ssize_t r = read(pipefd[0], buf + n, 4096 - n);
+        if (r <= 0) break;
+        n += r;
+    }
+    close(pipefd[0]);
+    waitpid(pid, NULL, 0);
+    buf[n] = '\0';
+    if (n >= 4096) {
+        static const char note[] = " ...(output truncated at 4KB)";
+        size_t nl = strlen(note);
+        if (nl < n) {
+            memcpy(buf + n - nl - 1, note, nl);
+            buf[n - 1] = '\0';
+        }
+    }
+    return buf;
+}
+
+/* write_file: "create file hello.py containing print('hello world')" */
+static int parse_write_file(const char *msg, char *file, size_t fsz,
+                            char *content, size_t csz) {
+    const char *file_phrases[] = {"write file", "create file", "save file",
+                                  "make a file", NULL};
+    const char *bare_kws[] = {"write", "create", "save", NULL};
+    const char *start = NULL;
+    for (int i = 0; file_phrases[i]; i++) {
+        char *h = strcasestr(msg, file_phrases[i]);
+        if (h) { start = h + strlen(file_phrases[i]); break; }
+    }
+    if (!start) {
+        for (int i = 0; bare_kws[i]; i++) {
+            char *h = strcasestr(msg, bare_kws[i]);
+            if (h) { start = h + strlen(bare_kws[i]); break; }
+        }
+    }
+    if (!start) return 0;
+    char *p = (char *)start;
+    if (!first_token(&p, file, fsz)) return 0;
+
+    const char *content_phrases[] = {"containing", "that says", " with ",
+                                     " as ", " =", ":", NULL};
+    const char *best = NULL;
+    size_t best_len = 0;
+    for (int i = 0; content_phrases[i]; i++) {
+        char *h = strcasestr(p, content_phrases[i]);
+        if (h && (!best || h < best)) {
+            best = h;
+            best_len = strlen(content_phrases[i]);
+        }
+    }
+    if (best) {
+        char *c = (char *)best + best_len;
+        trim_ws(c);
+        strip_outer_quotes(c);
+        snprintf(content, csz, "%s", c);
+    } else {
+        content[0] = '\0';
+    }
+    return 1;
+}
+
+/* edit_file: "edit hello.py replace print('hi') with print('hello world')" */
+static int parse_edit_file(const char *msg, char *file, size_t fsz,
+                           char *search, size_t ssz, char *replace, size_t rsz) {
+    char *p = NULL;
+    {
+        char *h = strcasestr(msg, "edit");
+        if (h) p = h + 4;
+    }
+    if (!p) {
+        char *h = strcasestr(msg, "modify");
+        if (h) p = h + 6;
+    }
+    if (!p) return 0;
+    if (!first_token(&p, file, fsz)) return 0;
+
+    const char *ops[] = {"replace", "change", NULL};
+    char *so = NULL;
+    for (int i = 0; ops[i]; i++) {
+        char *h = strcasestr(p, ops[i]);
+        if (h && (!so || h < so)) so = h;
+    }
+    if (!so) return 0;
+    size_t so_len = strlen(ops[0]);
+    if (strncasecmp(so, "change", 6) == 0) so_len = 6;
+    char *sc = so + so_len;
+    trim_ws(sc);
+
+    char *ws = strcasestr(sc, " with ");
+    if (!ws) ws = strcasestr(sc, " to ");
+    if (ws) {
+        *ws = '\0';
+        trim_ws(sc);
+        strip_outer_quotes(sc);
+        snprintf(search, ssz, "%s", sc);
+        char *rp = ws + (strncasecmp(ws, " with ", 6) == 0 ? 6 : 3);
+        trim_ws(rp);
+        strip_outer_quotes(rp);
+        snprintf(replace, rsz, "%s", rp);
+    } else {
+        trim_ws(sc);
+        strip_outer_quotes(sc);
+        snprintf(search, ssz, "%s", sc);
+        replace[0] = '\0';
+    }
+    return 1;
+}
+
+/* append: "append to book.txt the line ..." or "append <content> to <file>" */
+static int parse_append(const char *msg, char *file, size_t fsz,
+                        char *content, size_t csz) {
+    char *ap = strcasestr(msg, "append");
+    if (!ap) return 0;
+    char *p = ap + 6;
+    while (*p && isspace((unsigned char)*p)) p++;
+
+    if (strncasecmp(p, "to ", 3) == 0) {
+        char *fp = p + 3;
+        if (!first_token(&fp, file, fsz)) return 0;
+        char *line = strcasestr(fp, "the line");
+        if (line) {
+            char *c = line + 8;
+            trim_ws(c);
+            strip_outer_quotes(c);
+            snprintf(content, csz, "%s", c);
+        } else {
+            char *text = strcasestr(fp, "the text");
+            if (text) {
+                char *c = text + 8;
+                trim_ws(c);
+                strip_outer_quotes(c);
+                snprintf(content, csz, "%s", c);
+            } else {
+                trim_ws(fp);
+                strip_outer_quotes(fp);
+                snprintf(content, csz, "%s", fp);
+            }
+        }
+    } else {
+        char *to = strcasestr(p, " to ");
+        if (!to) return 0;
+        *to = '\0';
+        trim_ws(p);
+        strip_outer_quotes(p);
+        snprintf(content, csz, "%s", p);
+        char *fp = to + 4;
+        if (!first_token(&fp, file, fsz)) return 0;
+    }
+    return 1;
+}
+
+/* read_file: path after "read file"/"open"/"cat"/"view" */
+static int parse_read_file(const char *msg, char *file, size_t fsz) {
+    const char *phrases[] = {"read file", "open file", "cat file", "view file",
+                             "read", "open", "cat", "view", "display", NULL};
+    const char *best = NULL;
+    size_t best_len = 0;
+    for (int i = 0; phrases[i]; i++) {
+        char *h = strcasestr(msg, phrases[i]);
+        if (h && (!best || h < best || (h == best && strlen(phrases[i]) > best_len))) {
+            best = h;
+            best_len = strlen(phrases[i]);
+        }
+    }
+    if (!best) return 0;
+    char *p = (char *)best + best_len;
+    if (!first_token(&p, file, fsz)) return 0;
+    strip_outer_quotes(file);
+    return 1;
+}
+
+/* search: "search for <query> in <dir>" / "grep <query>" */
+static void parse_search(const char *msg, char *query, size_t qsz,
+                         char *target, size_t tsz) {
+    const char *phrases[] = {"search for", "search in", "grep for", "grep",
+                             "find", "search", NULL};
+    const char *best = NULL;
+    size_t best_len = 0;
+    for (int i = 0; phrases[i]; i++) {
+        char *h = strcasestr(msg, phrases[i]);
+        if (h && (!best || h < best || (h == best && strlen(phrases[i]) > best_len))) {
+            best = h;
+            best_len = strlen(phrases[i]);
+        }
+    }
+    if (!best) {
+        query[0] = '\0';
+        target[0] = '\0';
+        return;
+    }
+    char *p = (char *)best + best_len;
+    char *in = strcasestr(p, " in ");
+    if (in) {
+        *in = '\0';
+        trim_ws(p);
+        strip_outer_quotes(p);
+        snprintf(query, qsz, "%s", p);
+        char *tp = in + 4;
+        if (!first_token(&tp, target, tsz)) target[0] = '\0';
+        strip_outer_quotes(target);
+    } else {
+        trim_ws(p);
+        strip_outer_quotes(p);
+        snprintf(query, qsz, "%s", p);
+        target[0] = '\0';
+    }
+}
+
 int main(void) {
     resolve_root();
 
@@ -210,6 +478,14 @@ int main(void) {
 
     char *result = NULL;
 
+    /* Session-scoped file work: ops taking relative paths (file_ops,
+     * edit_file, search_in_files) plus popen'd shell commands resolve
+     * against the session dir (PRISC_PROJECT_ROOT), not the launcher's
+     * CWD - so pin CWD here so "create file hello.py" lands in the
+     * session. All state/log paths above/below are absolute (project_root)
+     * and unaffected by this. */
+    chdir(project_root);
+
     if (strcmp(detected_tool, "list_dir") == 0) {
         char cmd[MAX_CMD];
         snprintf(cmd, sizeof(cmd), "PRISC_PROJECT_ROOT='%s' '%s/ops/+x/list_dir.+x'", project_root, project_root);
@@ -224,24 +500,59 @@ int main(void) {
             result = strdup("Error listing files");
         }
     } else if (strcmp(detected_tool, "read_file") == 0) {
-        char *path = extract_argument_after(user_message, "read");
-        if (path && strlen(path) > 0) {
-            char cmd[MAX_CMD];
-            snprintf(cmd, sizeof(cmd), "cat '%s' 2>&1 | head -50", path);
-            FILE *pipe = popen(cmd, "r");
-            if (pipe) {
-                char buf[4096] = "";
-                size_t n = fread(buf, 1, sizeof(buf) - 1, pipe);
-                buf[n] = '\0';
-                pclose(pipe);
-                result = strdup(buf);
+        char file[512];
+        if (parse_read_file(user_message, file, sizeof(file))) {
+            char tool_path[PATH_BUF];
+            snprintf(tool_path, sizeof(tool_path), "%s/ops/+x/file_ops.+x", project_root);
+            const char *argv[] = { tool_path, "read", file, NULL };
+            result = run_capture(argv);
+        } else {
+            result = strdup("Missing filename");
+        }
+    } else if (strcmp(detected_tool, "write_file") == 0) {
+        char file[512], content[2048];
+        if (parse_write_file(user_message, file, sizeof(file), content, sizeof(content))) {
+            char tool_path[PATH_BUF];
+            snprintf(tool_path, sizeof(tool_path), "%s/ops/+x/file_ops.+x", project_root);
+            const char *argv[] = { tool_path, "write", file, content, NULL };
+            result = run_capture(argv);
+        } else {
+            result = strdup("Missing filename");
+        }
+    } else if (strcmp(detected_tool, "edit_file") == 0) {
+        if (strcasestr(user_message, "append")) {
+            char file[512], content[2048];
+            if (parse_append(user_message, file, sizeof(file), content, sizeof(content))) {
+                FILE *af = fopen(file, "a");
+                if (af) {
+                    fprintf(af, "\n%s", content);
+                    fclose(af);
+                    char out[512];
+                    snprintf(out, sizeof(out), "Appended %zu bytes to %s", strlen(content), file);
+                    result = strdup(out);
+                } else {
+                    result = strdup("Error: cannot append to file");
+                }
             } else {
-                result = strdup("Error reading file");
+                result = strdup("Missing filename for append");
+            }
+        } else {
+            char file[512], search[1024], replace[2048];
+            if (parse_edit_file(user_message, file, sizeof(file), search, sizeof(search), replace, sizeof(replace))) {
+                char tool_path[PATH_BUF];
+                snprintf(tool_path, sizeof(tool_path), "%s/ops/+x/edit_file.+x", project_root);
+                const char *argv[] = { tool_path, file, search, replace, NULL };
+                result = run_capture(argv);
+            } else {
+                result = strdup("Missing edit arguments");
             }
         }
-        free(path);
     } else if (strcmp(detected_tool, "exec_cmd") == 0) {
         char *cmd_str = extract_argument_after(user_message, "run");
+        if (!cmd_str[0]) {
+            free(cmd_str);
+            cmd_str = extract_argument_after(user_message, "execute");
+        }
         if (cmd_str && strlen(cmd_str) > 0) {
             FILE *pipe = popen(cmd_str, "r");
             if (pipe) {
@@ -273,10 +584,17 @@ int main(void) {
         }
         free(text);
     } else if (strcmp(detected_tool, "search_in_files") == 0) {
-        char *query = extract_argument_after(user_message, "search");
-        if (query && strlen(query) > 0) {
+        char query[1024] = "", target[512] = "";
+        parse_search(user_message, query, sizeof(query), target, sizeof(target));
+        if (!query[0]) {
+            result = strdup("Missing search query");
+        } else {
             char cmd[MAX_CMD];
-            snprintf(cmd, sizeof(cmd), "grep -r '%s' . 2>/dev/null | head -20", query);
+            if (target[0]) {
+                snprintf(cmd, sizeof(cmd), "cd '%s' && '%s/ops/+x/search_in_files.+x' '%s' '%s' 2>&1 | head -20", project_root, project_root, query, target);
+            } else {
+                snprintf(cmd, sizeof(cmd), "cd '%s' && '%s/ops/+x/search_in_files.+x' '%s' . 2>&1 | head -20", project_root, project_root, query);
+            }
             FILE *pipe = popen(cmd, "r");
             if (pipe) {
                 char buf[4096] = "";
@@ -288,11 +606,28 @@ int main(void) {
                 result = strdup("Error: search failed");
             }
         }
-        free(query);
     }
 
     if (result && strlen(result) > 0) {
-        append_log_turn(log_path, "tool", "result", detected_tool, result);
+        /* 2&3-jul31-sprint (jul-31 fix): do NOT append tool|result to
+         * context_log here - this op runs BEFORE send_message appends
+         * the user's own message, so doing so rendered the listing ABOVE
+         * the "You: ..." line that triggered it (read as "the tool
+         * didn't answer"). Stash the raw result in a pending file
+         * instead; send_message flushes it into context_log right AFTER
+         * the user turn, then skips the LLM call entirely unless
+         * model_after_tool=yes (default no). Pending file layout:
+         * line 1 = tool name, remainder = raw result (un-escaped;
+         * send_message's append_log_turn pipe-escapes on flush). */
+        char pending_path[PATH_BUF];
+        snprintf(pending_path, sizeof(pending_path), "%s/pieces/world_01/session_01/chat/tool_result.pending", project_root);
+        FILE *pf = fopen(pending_path, "w");
+        if (pf) {
+            fprintf(pf, "%s\n", detected_tool);
+            fwrite(result, 1, strlen(result), pf);
+            fclose(pf);
+            write_state_field("tool_result_pending", "1");
+        }
         char msg[256];
         snprintf(msg, sizeof(msg), "[Tool: %s] %zu bytes", detected_tool, strlen(result));
         write_state_field("sys_msg", msg);

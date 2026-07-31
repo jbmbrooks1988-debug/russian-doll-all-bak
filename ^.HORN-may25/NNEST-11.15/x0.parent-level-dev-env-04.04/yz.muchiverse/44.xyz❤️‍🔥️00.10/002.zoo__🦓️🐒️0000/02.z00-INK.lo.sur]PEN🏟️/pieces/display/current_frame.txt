@@ -1,9 +1,3 @@
-+============================================================+
-|                       Z O O _ 0 0 0 0                     |
-+============================================================+
-[^] 1. [Control Zoo]
-[ ] 2. [Feed]  [ ] 3. [Pet]  [ ] 4. [Play]  [ ] 5. [Export]
-+============================================================+
 ZOO_0000   active: xlector
 🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱
 🧱🟫🐱🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🧱
@@ -24,9 +18,3 @@ Mochi was imported from the exchange.
 A pet enjoys the attention.
 A pet enjoys the attention.
 [wasd/arrows] Move  [enter] Select/Act  [9] Release to xlector  [e] Emoji
-
-+============================================================+
- [enter] Control Zoo  [esc, while controlling] Back to Menu  [q] Quit
-
-+=========================================================+
-Active [^]:  (ESC to exit)

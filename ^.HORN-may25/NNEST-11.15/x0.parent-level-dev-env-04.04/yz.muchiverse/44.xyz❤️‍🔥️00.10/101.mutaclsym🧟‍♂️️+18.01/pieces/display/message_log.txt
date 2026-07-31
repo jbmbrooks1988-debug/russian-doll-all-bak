@@ -976,3 +976,8 @@ Zombie Child hits you for 3!
 Xlector menu: Event/Copy/Paste/Delete/Exit
 Zombie Child hits you for 3!
 You hit the Zombie Child with your fists for 2.
+You take control of hero.
+Saved (save_2, turn 0).
+You see nothing here.
+Saved (save_3, turn 0).
+Saved (save_4, turn 0).

@@ -28,14 +28,21 @@ echo "=== demo_load: LOAD via real key injection ==="
 # Unique fixture content so a false-positive (stale buffer, wrong
 # file) is impossible to mistake for a real pass.
 #
-# Fixture lives under $HARNESS itself (this house's own directory tree
-# has emoji path segments — 🤖️🪤️🏠️, 🥡️🪜️, ❤️‍🔥️ — that used to be
-# untypeable through the FILE field one keycode at a time; fixed via
-# fm_menu_input.c's own new PASTE mode, see common.sh's header and
-# PITFALL 56, so the real project path is used here unmodified).
+# Fixture placed directly under the REAL xyzfs documents/ location
+# (2026-07-30, save-bug.txt's own fix, direct instruction: LOAD is now
+# jailed to the user's own xyzfs home the same way SAVE_AS is - a
+# leading "/" resolves relative to THAT root, never the real host
+# filesystem, so an absolute host fixture path like the old
+# $HARNESS/fixtures/... would no longer be reachable at all). A BARE
+# filename is what a real user LOAD flow actually types/pastes, so
+# that's what this harness pastes too - matching demo_save.sh's own
+# identical fix.
 MARKER="HARNESS-LOAD-MARKER-$$-$(date +%s)"
-FIXTURE="$HARNESS/fixtures/load_target_$$.txt"
-mkdir -p "$HARNESS/fixtures"
+LOGIN_FILE="$HOUSE/0.user-pal👤️/00.login-signup/current_login.txt"
+XYZFS="$(grep '^current_xyzfs=' "$LOGIN_FILE" | head -1 | cut -d= -f2-)"
+FIXTURE_NAME="load_target_$$.txt"
+FIXTURE="$HOUSE/$XYZFS/home/documents/$FIXTURE_NAME"
+mkdir -p "$HOUSE/$XYZFS/home/documents"
 printf '%s\nsecond line of the fixture\n' "$MARKER" > "$FIXTURE"
 cp "$FIXTURE" "$PROOF/00_fixture.txt"
 
@@ -47,43 +54,55 @@ FM_SESSION="$(find_fm_session)" || { fail "file-menu session never appeared"; ex
 echo "EDITOR_SESSION=$EDITOR_SESSION" | tee -a "$PROOF/01_sessions.txt"
 echo "FM_SESSION=$FM_SESSION" | tee -a "$PROOF/01_sessions.txt"
 
-# file-menu's own layout is buttonless (a "dumb ASCII text menu", the
-# same PAL-native architecture as mutaclsym/muchi-pals/pal-chain) —
-# chtpm_parser_pal's own is_interactive() gate (button/canvas/cli_io/
-# scroller only) means it has NOTHING to navigate for this layout;
-# confirmed live that keyboard/history.txt injection produces zero
-# movement here. interact_relay.txt IS the real input channel for
-# this architecture — gl_mirror.c's own append_key() writes here,
-# bare decimal, for a real live GL keypress; fm_relay_key reproduces
-# that exact mechanism, not a shortcut around it. See common.sh's own
-# header comment and !.xyzos-standards+1.txt §36.6 for the full account.
-wait_for_path "$FM_SESSION/pieces/apps/player_app/interact_relay.txt" 50 \
-    || { fail "file-menu interact_relay.txt never appeared"; exit 1; }
+# 2026-07-30 rebuild (PITFALL 65 fix): file-menu's own layout now has
+# REAL chtpm-native <button>/<cli_io> elements - real key injection
+# goes through pieces/keyboard/history.txt (fm_inject_key/fm_inject_
+# string, common.sh), the same real channel chtpm_parser_pal.c's own
+# nav/focus/digit-jump/Enter-activate logic reads directly, matching
+# 102.editor's own layout exactly. interact_relay.txt is now purely
+# the OUTPUT channel a real button activation (or a real cli_io
+# "Send" - see fm_menu_input.c's own active_gui_index() header
+# comment) relays a synthetic value into - not something a test
+# writes to directly anymore.
+FM_HIST="$FM_SESSION/pieces/keyboard/history.txt"
+wait_for_path "$FM_HIST" 50 || { fail "file-menu keyboard/history.txt never appeared"; exit 1; }
 
-# Real file-menu menu nav: '4' = LOAD (direct numeric select, matches
-# handle_main_menu's own key>=49&&key<=54 branch in fm_menu_input.c).
-fm_relay_key "$FM_SESSION" 52
+# Real digit-jump to LOAD FILE... (real chtpm digit-jump, JUMP-ONLY -
+# a separate real Enter activates it), a real href into
+# file_menu_browser_load.chtpm.
+fm_inject_key "$FM_SESSION" 52
 sleep 0.3
-# ARROW_DOWN once: cursor_pos 0 (SEARCH) -> 1 (FILE field).
-fm_relay_key "$FM_SESSION" 1003
+fm_inject_key "$FM_SESSION" 13
+sleep 0.8
+
+# Real nav to the FILE cli_io: SEARCH is the first navigable element
+# in the fresh file_menu_browser_load.chtpm structure (real, clean
+# focus reset on every href transition - chtpm_parser_pal.c's own
+# clear_saved_active_index() fix, 2026-07-30), one DOWN reaches FILE,
+# Enter engages it for real per-character typing.
+fm_inject_key "$FM_SESSION" 1003
 sleep 0.2
-# PASTE the fixture's absolute path into the FILE field — real UTF-8,
-# whole string, via fm_menu_input.c's own new PASTE mode (PITFALL 56).
-fm_paste "$FM_SESSION" "$FIXTURE"
-sleep 0.2
-# ARROW_DOWN bounded-many times clamps at cancel_idx (max_idx) —
-# entry-count-agnostic, no need to know how many dir entries exist.
-fm_relay_repeat "$FM_SESSION" 1003 30
-sleep 0.2
-# One ARROW_UP steps back from cancel_idx to confirm_idx.
-fm_relay_key "$FM_SESSION" 1002
-sleep 0.2
-# Enter at confirm_idx -> enqueue_cmd_with_path("LOAD", path_buffer).
-fm_relay_key "$FM_SESSION" 13
+fm_inject_key "$FM_SESSION" 13
+sleep 0.3
+# Real per-character typing of the fixture's BARE FILENAME (not an
+# absolute path - a bare name resolves under the default browse_dir,
+# the real xyzfs documents/ folder). No PASTE mode exists for cli_io
+# fields anymore (fm_menu_input.c no longer owns their content at all -
+# chtpm_parser_pal does, natively); real per-character injection is
+# the only mechanism now, matching a real user's own typing exactly.
+fm_inject_string "$FM_SESSION" "$FIXTURE_NAME"
+sleep 0.3
+# Real Enter directly on the FILE field submits (real chtpm cli_io
+# "Send" relay, 2026-07-30 - matches TPMOS's own Enter-on-file_path_
+# input=SET_LOAD_ACTION convention) - no separate CONFIRM button
+# activation needed.
+fm_inject_key "$FM_SESSION" 13
 sleep 0.3
 
-echo "--- relayed key sequence (file-menu, via interact_relay.txt) ---" | tee -a "$PROOF/02_injected_keys.txt"
-tail -n 60 "$FM_SESSION/pieces/apps/player_app/interact_relay.txt" >> "$PROOF/02_injected_keys.txt"
+echo "--- injected key sequence (file-menu, via keyboard/history.txt) ---" | tee -a "$PROOF/02_injected_keys.txt"
+tail -n 60 "$FM_HIST" >> "$PROOF/02_injected_keys.txt"
+echo "--- relayed KEY:n/Send activations (file-menu, via interact_relay.txt) ---" | tee -a "$PROOF/02_injected_keys.txt"
+tail -n 20 "$FM_SESSION/pieces/apps/player_app/interact_relay.txt" >> "$PROOF/02_injected_keys.txt"
 
 # editor_widget_cmds's own background drain loop (started by this
 # app's button.sh, step 6/97 of @.apps/text-editor-xyz/button.sh)

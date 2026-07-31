@@ -1,2 +1,2 @@
-active_menu_piece=wallet_main
-last_message=walletB_565875 balance: 1 millicones (0.001 cones).
+active_menu_piece=login
+last_message=Enter a wallet ID and password, then click Log In.

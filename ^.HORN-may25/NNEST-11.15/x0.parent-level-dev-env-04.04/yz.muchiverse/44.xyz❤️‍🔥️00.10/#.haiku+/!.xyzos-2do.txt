@@ -111,6 +111,21 @@ indicator — must be read and written down BEFORE a PASTE-only-proven
 harness is trusted as "done." Proving output DATA matches the
 reference is a real, necessary check; it is not the same claim as
 proving the INTERACTION matches, and nothing else in this house's
+
+**UPDATE, same day (§39, PITFALL 64) — NON-NEGOTIABLE, per direct
+instruction**: §38's own fix STILL missed two more real bugs, found by
+a human the same day the fix was verified — selecting a real listed
+file required an unsignaled second Enter to load (every harness always
+typed/pasted a path, never once selected from the real listing), and a
+digit keypress activated a main-menu option in the same keystroke
+instead of only navigating to it (every harness always sent Enter
+right after the digit, never checked state between the two
+separately). §39 is now the MANDATORY checklist this produced — real
+listed-entry selection, real digit-jump-vs-activate assertions, a real
+on-disk file-existence check after any save, and a real jail-escape
+attempt where a containment boundary exists. Every harness testing
+save/load-shaped user interaction in rpg-xyz/rtp-xyz MUST follow §39,
+not just §38 — read both, not just the first one you find.
 tooling checks the second claim for you.
 
 --------------------------------------------------------------------------------

@@ -256,6 +256,31 @@ void resync_render_markers(void) {
     if (stat(layout_ch, &st) == 0) last_layout_file_size = st.st_size;
     free(layout_ch);
 }
+
+/* clear_saved_active_index - PORTED 2026-07-30 from the real, house-
+ * wide fix in 014.wsr-pal's own chtpm_parser_pal.c (found+fixed during
+ * &.widgits/file-menu's own PITFALL-65 rebuild, see that file's own
+ * header comment on this same function for the full original writeup).
+ * This local copy never had the fix - confirmed live here too: every
+ * real layout-transition call site below does `focus_index = 0;
+ * parse_chtm(); initialize_focus();` expecting a clean reset, but
+ * initialize_focus() itself unconditionally calls sync_focus_from_
+ * saved_active_index() FIRST, which reads pieces/display/
+ * active_gui_index.txt and jams focus_index to whatever element shares
+ * that SAME interactive_idx in the freshly-parsed (and structurally
+ * DIFFERENT) new layout - a pure structural coincidence, not a real
+ * restore. Confirmed live in THIS project: selecting egg_7 from the
+ * pets list (interactive_idx 7) landed focus on "7. Destroy Card" in
+ * the freshly-entered pet-action submenu instead of the first real
+ * navigable item. Call this immediately before parse_chtm() at every
+ * real layout-transition site so there is no stale value left for
+ * sync_focus_from_saved_active_index() to find. */
+static void clear_saved_active_index(void) {
+    char *agi_path = build_path_malloc("pieces/display/active_gui_index.txt");
+    FILE *f = fopen(agi_path, "w");
+    if (f) { fputs("0\n", f); fclose(f); }
+    free(agi_path);
+}
 #ifdef _WIN32
 intptr_t current_module_pid = -1;
 #else
@@ -1292,8 +1317,6 @@ void load_vars() {
     if (is_modern_layout(current_layout)) {
         load_state_file("pieces/apps/player_app/state.txt", NULL);
         load_state_file("pieces/apps/player_app/manager/state.txt", NULL);
-        printf("DEBUG: Loaded directory_listing: %s\n", get_var("directory_listing"));
-        printf("DEBUG: Loaded last_key: %s\n", get_var("last_key"));
     } else {
         load_state_file("pieces/apps/fuzzpet_app/manager/state.txt", NULL);
     }
@@ -1500,6 +1523,17 @@ void load_vars() {
             }
             set_var("game_map", map_buf);
             set_var("desktop_view", map_buf);
+            /* REAL BUG, LIVE-CAUGHT 2026-07-30/31: ops/muchi_compose_
+             * frame.c was deliberately renamed to write ${panel_content}
+             * instead of ${game_map} (its own header comment: "game_map"
+             * misleadingly implied movement this pure-menu project has
+             * none of), and every layout here was updated to match - but
+             * this engine was never updated, so panel_content substituted
+             * to nothing on every screen (Tokens, pet stats, process
+             * list - all silently blank). Additive fix: keep game_map/
+             * desktop_view too, in case anything else still expects
+             * those names. */
+            set_var("panel_content", map_buf);
             fclose(vf); free(map_buf);
         }
         free(view_path);
@@ -1507,6 +1541,7 @@ void load_vars() {
  else {
         set_var("game_map", "[Map Loading...]");
             set_var("desktop_view", "[Desktop Loading...]");
+            set_var("panel_content", "");
     }
 
     /* WRAITH-ALPHA: project-specific runtime debug overlay.
@@ -2030,6 +2065,7 @@ void handle_launch_command(const char* cmd) {
         strncpy(current_layout, app_name, MAX_PATH-1);
         active_index = -1;
         focus_index = 0;
+        clear_saved_active_index();
         parse_chtm();
         initialize_focus();
         /* NO EAGER compose_frame() - see the href handler's own identical
@@ -2060,6 +2096,7 @@ void handle_launch_command(const char* cmd) {
                         strncpy(current_layout, "pieces/apps/gl_os/layouts/desktop.chtpm", MAX_PATH-1);
                         active_index = -1;
                         focus_index = 0;
+                        clear_saved_active_index();
                         parse_chtm();
                         initialize_focus();
 #ifndef _WIN32
@@ -2155,6 +2192,7 @@ void send_command(const char* cmd) {
         cleanup_module();
         active_index = -1;
         focus_index = 0;
+        clear_saved_active_index();
         parse_chtm();
         initialize_focus();
         export_active_index();
@@ -3407,6 +3445,7 @@ void process_key(int key) {
                     cleanup_module();
                     active_index = -1;
                     focus_index = 0;
+                    clear_saved_active_index();
                     parse_chtm();
                     initialize_focus();
                     export_active_index();
@@ -3550,6 +3589,7 @@ void process_key(int key) {
                         cleanup_module();
                         active_index = -1;
                         focus_index = 0;
+                        clear_saved_active_index();
                         parse_chtm();
                         initialize_focus();
                         export_active_index();
@@ -3791,6 +3831,7 @@ int main(int argc, char **argv) {
                 strncpy(last_active_id, new_active_id, 63);
                 active_index = -1;
                 focus_index = 0;
+                clear_saved_active_index();
                 parse_chtm();
                 initialize_focus();
             } else {
@@ -3833,6 +3874,7 @@ int main(int argc, char **argv) {
                     strncpy(current_layout, last_line, MAX_PATH-1);
                     active_index = -1;
                     focus_index = 0;
+                    clear_saved_active_index();
                     parse_chtm(); initialize_focus(); dirty = 1;
                 }
                 fclose(lf); 

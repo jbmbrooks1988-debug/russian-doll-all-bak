@@ -9,7 +9,7 @@ STATE        | user_id              |
 STATE        | user_uuid            | 
 STATE        | display_name         | Guest
 STATE        | xyzfs_path           | 
-STATE        | logged_in_at         | 1785198664
+STATE        | logged_in_at         | 1785474235
 STATE        | active_avatar_uuid   | 
 STATE        | active_avatar_path   | 
 

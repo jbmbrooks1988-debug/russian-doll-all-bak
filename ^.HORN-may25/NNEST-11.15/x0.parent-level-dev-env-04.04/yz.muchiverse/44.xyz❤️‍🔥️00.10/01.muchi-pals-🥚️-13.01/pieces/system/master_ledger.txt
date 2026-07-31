@@ -25007,3 +25007,5 @@
 [2026-07-28 22:16:43] StateChange: egg_4 tick hunger=100 energy=100 poop_count=1 asleep=1 grid_x=18 grid_y=3 z=0 facing=right | Trigger: tick_pets
 [2026-07-28 22:16:46] StateChange: egg_4 tick hunger=100 energy=100 poop_count=1 asleep=1 grid_x=18 grid_y=3 z=0 facing=right | Trigger: tick_pets
 [2026-07-28 22:16:49] StateChange: egg_4 tick hunger=100 energy=100 poop_count=1 asleep=1 grid_x=18 grid_y=3 z=0 facing=right | Trigger: tick_pets
+[2026-07-31 06:28:46] ProcessEvent: egg_1 window_opened | Trigger: egg_window
+[2026-07-31 07:01:43] ProcessEvent: egg_7 window_opened | Trigger: egg_window

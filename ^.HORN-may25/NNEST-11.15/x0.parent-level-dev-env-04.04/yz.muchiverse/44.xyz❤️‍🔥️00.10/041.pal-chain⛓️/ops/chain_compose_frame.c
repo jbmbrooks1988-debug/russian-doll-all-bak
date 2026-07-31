@@ -163,7 +163,14 @@ int main(void) {
     char wallet_id[128];
     read_kv_str(session_path, "wallet_id", wallet_id, sizeof(wallet_id));
 
-    char rowbuf[BOX_W + 1];
+    /* REAL BUG, LIVE-CAUGHT: this used to be sized BOX_W+1, exactly the
+     * visible width - that made snprintf() itself silently truncate any
+     * longer content (e.g. the send confirmation message) BEFORE line()
+     * ever got to run its own, correct %.*s-based width clamp, cutting
+     * off the last character with no padding. line() below is what's
+     * actually responsible for clamping to BOX_W - this buffer only
+     * needs to hold the real content up to MAX_LINE. */
+    char rowbuf[MAX_LINE];
     border();
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat-truncation"

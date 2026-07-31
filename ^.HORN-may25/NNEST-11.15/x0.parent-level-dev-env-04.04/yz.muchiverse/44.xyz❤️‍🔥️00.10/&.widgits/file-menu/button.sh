@@ -45,8 +45,6 @@ run_widget_session() {
     : > pieces/system/fm_state.txt
     echo "$(cd "$SCRIPT_DIR/../.." && pwd)" > pieces/system/house_root.txt
     cat > pieces/system/fm_state.txt << 'EOF'
-mode=main_menu
-cursor_pos=1
 path_buffer=
 EOF
     cat > pieces/apps/player_app/state.txt << 'EOSTATE'
@@ -73,7 +71,7 @@ EOSTATE
     # Start both ASCII renderer and layout parser (chtpm_parser_pal runs PAL, renderer prints ASCII)
     ./system/renderer &
     RENDERER_PID=$!
-    ./system/chtpm_parser_pal pieces/chtpm/layouts/file-menu.chtpm >/dev/null 2>&1 &
+    ./system/chtpm_parser_pal pieces/chtpm/layouts/file_menu_main.chtpm >/dev/null 2>&1 &
     CHTPM_PID=$!
 
     GL_PID=""

@@ -230,16 +230,24 @@ static void remove_focus_lock(void) {
  * dead end in chtpm mode - it wrote only to player_app/history.txt,
  * which neither chtpm_parser_pal.c nor the module (which reads
  * interact_relay.txt exclusively once in chtpm mode) ever look at. */
+/* REMOVED 2026-07-31 (direct instruction: mirror 101.mutaclsym's own
+ * real, working gl_mirror.c exactly): this used to ALSO write directly
+ * to interact_relay.txt (a second, unconditional delivery path beyond
+ * the two writes below), on top of chtpm_parser_pal.c's own SEPARATE,
+ * gl_focus.lock-gated relay of the SAME key (via pieces/keyboard/
+ * history.txt, written below). Two independent paths converging on
+ * the same file - real, live-observed typing doubling in this exact
+ * app - mutaclysm's own gl_mirror.c (confirmed via direct read, its
+ * own append_key()) has never had this third write at all, only the
+ * two below. Removed to match exactly - one write, into keyboard/
+ * history.txt, and chtpm_parser_pal.c's own already-existing relay
+ * logic is the SOLE path into interact_relay.txt from here on. */
 static void append_key(int key) {
     FILE *f = fopen(keyboard_history, "a");
     if (f) { fprintf(f, "%d\n", key); fclose(f); }
 
     FILE *cf = fopen(chtpm_keyboard_history, "a");
     if (cf) { fprintf(cf, "KEY_PRESSED: %d\n", key); fclose(cf); }
-
-    /* Forward to PAL loop's interact_relay.txt in bare decimal format */
-    FILE *rf = fopen(interact_relay, "a");
-    if (rf) { fprintf(rf, "%d\n", key); fclose(rf); }
 }
 
 /* Same GLUT_KEY_* -> 1000-1003 mapping as real wraith_gl.c's own

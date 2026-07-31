@@ -1,5 +1,5 @@
 <panel time_reactive="true">
-    <module>system/prisc+x pal/main_loop_chtpm.pal</module>
+    <module>system/prisc+x pal/store_module.pal</module>
     <interact src="pieces/apps/player_app/interact_relay.txt" />
     <text label="+============================================================+" /><br/>
     <text label="|                        S T O R E                          |" /><br/>

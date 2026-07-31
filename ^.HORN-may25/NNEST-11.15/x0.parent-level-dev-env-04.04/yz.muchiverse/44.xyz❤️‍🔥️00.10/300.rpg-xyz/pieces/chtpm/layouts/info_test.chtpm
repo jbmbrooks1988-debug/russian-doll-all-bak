@@ -1,5 +1,5 @@
 <panel time_reactive="true">
-    <module>${module_path}</module>
+    <module>system/prisc+x pal/info_test_module.pal</module>
     <interact src="pieces/apps/player_app/interact_relay.txt" />
     <text label="+============================================================+" /><br/>
     <text label="|                        I N F O                              |" /><br/>

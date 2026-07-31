@@ -1,3 +1,73 @@
+STATUS UPDATE (2026-07-30, same day): all 3 bugs below FIXED, per the
+"BUG 2 first" order this file itself recommends. `field_active` added
+to fm_state.txt (ops/fm_menu_input.c: set on typed-char/backspace/
+PASTE, cleared on any arrow move; ops/fm_compose_frame.c: read for
+rendering). ESC now checks it first (clears + stays in file_browser
+if set; only exits to main_menu otherwise). Enter on cursor_pos==1
+(FILE field) now reassigns to confirm_idx and falls into the EXISTING
+confirm logic (no duplicated code) - fires regardless of field_active,
+since selecting a file entry from the directory listing also populates
+path_buffer without typing, and that flow must submit on Enter too.
+Cursor render now emits `[^] N. [value_]` while field_active, `[>]`
+while merely selected, `[ ]` otherwise - confirmed byte-for-byte
+matching the user's own originally-expected `[^] 2. [hi_]` format.
+
+VERIFIED: (1) rebuilt via scripts/build.sh, compiles clean (only
+pre-existing unrelated warnings); (2) re-ran @.apps/text-editor-xyz/
+test-harn-ed-app/scenarios/demo_save.sh (the existing, already-proven
+harness, which uses fm_paste()+digit-jump-to-confirm, NOT the new
+Enter/Esc paths) - still ALL PASS, confirming no regression to the
+already-shipped flow; (3) new behavior verified directly via isolated
+op calls (PRISC_PROJECT_ROOT pointed at a scratch fm_state.txt, real
+`fm_menu_input.+x <key>` invocations, not simulated) - typing 'hi' sets
+field_active=1 and path_buffer=hi; first ESC clears field_active only
+(mode stays file_browser, path_buffer preserved); second ESC (no
+longer active) exits to main_menu, matching the original behavior for
+that case; Enter on cursor_pos=1 with path_buffer set sends the
+command and clears path_buffer, identical to pressing Enter directly
+on the confirm row.
+
+CORRECTION (2026-07-30, same day, real human test): the isolated
+op-level testing above was NOT sufficient, exactly as PITFALL 63 warns
+- a real human test found a 4th real bug that BOTH the isolated tests
+above AND the first version of the real black-box harness below
+missed: Enter pressed on an EMPTY, not-yet-active FILE field fell into
+the submit branch, found nothing to submit, and silently did nothing -
+looked like "activation waits for a second keypress," because the
+NEXT keystroke (an actual character) is what silently engaged
+field_active. This is the exact interaction order this house's OTHER
+apps train users to try FIRST (press Enter on a field to activate it,
+per 102.editor-📄️00.00/102.agy-txt's own onClick="INTERACT"
+convention) - and neither the isolated op test nor the first real
+black-box harness pass ever tried it, both jumping straight to typing
+instead. Same root pattern as the 3 bugs this file already documents,
+caught by the same author while fixing them, in the same session -
+recorded honestly, not smoothed over. Fixed: `ops/fm_menu_input.c`'s
+Enter branch now checks `!field_active && !path_buffer[0]` first and
+ENGAGES (sets field_active=1) instead of attempting an empty submit;
+only falls through to the confirm_idx submit path once the field is
+already active OR already has real content (e.g. pre-filled by
+clicking a directory entry, which still must submit on Enter with zero
+typing involved).
+
+REAL BLACK-BOX HARNESS NOW BUILT (closes the "Level-2-harness follow-
+up" gap this file used to flag as missing): @.apps/text-editor-xyz/
+test-harn-ed-app/scenarios/demo_fm_typing_ux.sh - real per-character
+typing via interact_relay.txt (gl_mirror.c's own real format, matching
+this project's own buttonless-layout convention, NOT PASTE/digit-jump),
+real frame evidence captured and checked for the exact `[^]`/trailing-
+cursor render, real Enter-submits, real Esc-scoping (both presses),
+AND the Enter-first-to-activate case that was missed the first time.
+11/11 PASS. The two original, already-shipped scenarios (demo_save.sh,
+demo_load.sh) were re-run after every edit in this fix pass and still
+ALL PASS - no regression to the proven digit-jump/PASTE flow.
+
+STILL NOT DONE: a live, real-GL, real-keyboard HUMAN pass (the harness
+above is real key injection through the real running app, per §36.6,
+but is still not literally a human at a keyboard/GL window - the
+distinction PITFALL 63/§38 exist to name, and the one that already
+caught the 4th bug above once). Do that before considering this fully
+closed, then update this STATUS block.
 ================================================================================
 todo-how2-j30.txt - 3 real bugs in file-menu's own file_browser mode,
 found via live human testing 2026-07-30 of @.apps/text-editor-xyz (the

@@ -4551,3 +4551,157 @@ SEE ALSO: PITFALL 63 in !.xyzos-pitfalls+1.txt (the full incident
 write-up); 102.agy-txt/xyz-agy-handoff-j30.txt; &.widgits/file-menu/
 todo-how2-j30.txt (the concrete, cited, per-bug reference-comparison
 this rule generalizes from)
+
+--------------------------------------------------------------------------------
+39. HARNESSES MUST BE BUILT TO K3 HUMAN-INPUT-PARITY - NON-NEGOTIABLE,
+    NOT A GUIDELINE
+
+Direct instruction, 2026-07-30, stated as non-negotiable: every harness
+in this house testing user-facing interaction MUST be built to the
+standard in `#.haiku+/tpmos-re-dox/_.0.aigent-testing-k3.txt` (the "K3
+testing guide") - real key injection through the real running app,
+real frame/state evidence, and critically, the SAME interaction a real
+human actually performs, not the mechanically shortest path to an
+assertion. K3's own PITFALL 5 names this exactly: "False confidence
+from op-only tests - direct op passes do not prove end-to-end
+editor/save/load/script/play behavior." §38 (above) already covers the
+typing-order half of this (Enter-submits, Esc-scoping); this section
+is the CHECKLIST - concrete, mandatory dimensions a save/load-shaped
+harness must cover, derived from three real bugs THIS HOUSE's own
+harnesses missed in one week specifically because they took a
+mechanical shortcut instead of the real human path:
+
+  1. Real per-character typing into any live text field (not PASTE
+     alone) for at least one pass per field - §38's own rule.
+  2. Real Enter-submits AND real Esc-only-deactivates, both directions
+     - §38's own rule.
+  3. SELECTING A REAL LISTED ENTRY from a directory/file browser (real
+     arrow-nav to it, one real Enter) - not just typing/pasting a path
+     directly. Missed for a full week in this house's own file-menu
+     widget: one real Enter on a listed file used to only pre-fill a
+     text field, requiring an unsignaled SECOND Enter to actually load
+     - found only by a human clicking a real file, never by any
+     harness, because every harness always typed/pasted the path
+     instead of ever selecting from the real listing. See
+     @.apps/text-editor-xyz/test-harn-ed-app/scenarios/
+     demo_fm_click_to_load.sh for the worked reference implementation
+     - filter the listing to a known-unique fixture via a real SEARCH
+     field first (so the target entry's index is deterministic
+     regardless of whatever else a real user's own files put in the
+     same directory), then real-arrow-nav to it, then ONE real Enter,
+     then assert the real downstream effect (buffer content, rendered
+     frame) - not just that a command was "sent."
+  4. DIGIT-JUMP vs DIGIT-JUMP-AND-ACTIVATE, asserted EXPLICITLY, not
+     inferred. A harness that always sends a digit press immediately
+     followed by a real Enter cannot tell whether the underlying code
+     jumps-only (the real standard - every chtpm-native buttoned
+     layout in this house already follows it) or jumps-AND-activates-
+     in-one-keystroke (a real, separate bug this house's own file-menu
+     widget had for as long as it existed, invisible to every prior
+     harness for exactly this reason). Assert the STATE immediately
+     after the digit alone, BEFORE sending Enter, showing the mode/
+     screen has NOT changed yet - see demo_fm_click_to_load.sh's own
+     "digit press alone moved cursor... did NOT activate it" assertion
+     for the concrete shape.
+  5. A real on-disk file-existence check after any save-shaped action
+     - not just a status message claiming success. Direct instruction,
+     2026-07-30: "the harness should have tested for the creation of
+     the file." A status line can say "ok" while nothing real landed
+     anywhere findable (confirmed real bug, save-bug.txt).
+  6. If the feature has any real containment/jail boundary (this
+     house's own xyzfs user-home jail, see save-bug.txt), a real
+     escape-attempt test - real `../` sequences typed through the real
+     field, asserting BOTH a real rejection status AND that nothing
+     landed at the real would-be-escaped target. Never trust that a
+     jail exists just because the code that's supposed to enforce it
+     was written - prove it against a real attempt.
+
+WHAT THIS DOES NOT MEAN: rewriting every assertion in every scenario to
+use the slowest, most literal path always. PASTE/digit-jump shortcuts
+remain correct and valuable for assertions that are NOT the specific
+interaction being proven (e.g. establishing a known starting state
+before testing something else) - the rule is that the real human path
+must be covered AT LEAST ONCE per interaction pattern in a project's
+own harness suite, not that every single line of every scenario must
+avoid every shortcut forever.
+
+A NOTE ON HARNESS RELIABILITY ITSELF (2026-07-30, same day): running
+several full app-launch-and-teardown cycles back-to-back with minimal
+settle time between them produced one real, non-reproducible-on-retry
+flake (all captured state/proof files from the failed run matched
+expected values exactly when inspected afterward - point-in-time
+evidence contradicted the pass/fail verdict, meaning the race was in
+the RUN, not the assertions). Give a real app launch genuine settle
+time before injecting the first key, and don't chain many full app
+launches with zero gap between them, especially soon after any host-
+level disruption (a reboot, a crash) where system load hasn't
+stabilized yet.
+
+SEE ALSO: `#.haiku+/tpmos-re-dox/_.0.aigent-testing-k3.txt` (the K3
+guide itself); §38 above (the typing-order half); PITFALL 63 (the
+original false-confidence incident); @.apps/text-editor-xyz/
+test-harn-ed-app/scenarios/demo_fm_click_to_load.sh (worked reference
+for checklist items 3-4)
+
+========================================================================
+41. EACH SCREEN GETS ITS OWN <module> - THE REAL STANDARD NOW (2026-07-31,
+    supersedes the "one shared module per project" framing this house
+    defaulted to until now)
+========================================================================
+
+DIRECT INSTRUCTION, confirmed against real TPMOS precedent before
+adopting: "files that are shared across pages are handled by an
+orchestrator in a separate fork, and then pages will have unique
+functionality to them, that will be run as a module in a new fork."
+Checked against the real reference source (`/home/no/Downloads/
+1.TPMOS_c_+rmmp.0100.0110/pieces/chtpm/plugins/orchestrator.c`,
+`chtpm_parser.c`) before rolling this out - both halves are real:
+
+  - Shared infrastructure (keyboard/joystick/render/parser threads) IS
+    already a separate, always-alive orchestrator process in every
+    project's own system/orchestrator.c - this part was never broken,
+    nothing to change here.
+  - `launch_module()`'s own real liveness check (`strcmp(launch_str,
+    current_module_path) == 0 && current_module_pid > 0` -> reuse,
+    else kill+fork+exec) already supports a genuinely distinct
+    `<module>` string PER SCREEN, not just per project - it was simply
+    never used that way anywhere in this house before 2026-07-31.
+
+WHAT CHANGES: every real screen (`.chtpm` layout) in a project should
+declare its own dedicated `<module>` (e.g. `pal/pets_module.pal`, not
+a shared `pal/main_loop_chtpm.pal` used identically by every screen).
+Each new per-screen module can still call the SAME shared ops the old
+single module called (splitting those ops into per-screen dedicated
+files is a real, separate, further step - not required for this part).
+Proven first in 01.muchi-pals-🥚️-13.01 (all six of its own screens),
+confirmed via direct `debug.txt` evidence: real kill+fork+exec exactly
+on genuine screen-to-screen navigation, real process reuse while
+staying on one screen, no orphaned processes, correct first-frame
+render. See 01.muchi-pals-🥚️-13.01/dox/06-per-screen-module-standard.md
+for the full write-up and the house-wide rollout scope (every other
+multi-screen project still needs this same split as of this writing).
+
+WHAT DOES NOT CHANGE: §16 above (INTERACT is only for continuous, real
+map/cursor movement, never a pure discrete menu) is still correct and
+is a SEPARATE concern from this section - §16 is about which
+INPUT MECHANISM a screen uses (${piece_methods} vs onClick="INTERACT"),
+this section is about whether that screen's own module is a distinct
+process from its siblings'. A pure discrete-menu screen still uses
+${piece_methods}, it just now also gets its own `<module>` line instead
+of sharing one with every other screen in the project.
+
+REAL BUG FOUND DURING THIS ROLLOUT, NOT LIMITED TO THE MODULE SPLIT
+ITSELF: giving screens their own modules is what surfaced PITFALL 66
+(clear_saved_active_index() missing from every local, unsynced copy of
+chtpm_parser_pal.c in the house) - a real, house-wide, pre-existing gap
+that any real layout transition can hit (not specific to per-screen
+modules), just made more visible by testing more transitions. Any
+project adopting this section's own per-screen split should get
+PITFALL 66's fix ported into its own chtpm_parser_pal.c copy at the
+same time, not as an afterthought - see that pitfall entry for the
+exact fix shape.
+
+SEE ALSO: PITFALL 66; 01.muchi-pals-🥚️-13.01/dox/04-module-and-manager-
+architecture.md (superseded, corrected, kept for the reasoning record);
+01.muchi-pals-🥚️-13.01/dox/06-per-screen-module-standard.md (the full
+house-wide scope table)

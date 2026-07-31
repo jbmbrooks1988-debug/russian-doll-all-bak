@@ -122,77 +122,18 @@ static void box_row(FILE *o, const char *content) {
     fprintf(o, "║\n");
 }
 
-/* Phase T4 (PLAN.md §4): file_browser_save.chtpm/file_browser_load.chtpm
- * show the typed path buffer + widget_cmds status instead of the
- * editor canvas - real, live content, not a static stub. Separate
- * small render path rather than threading a mode flag through the
- * editor canvas rendering above, matching this file's own existing
- * "one clear box-drawing render per screen kind" shape. */
-static int compose_file_browser(const char *view_path, const char *layout) {
-    char path_buf_path[PATH_BUF], status_path[PATH_BUF];
-    snprintf(path_buf_path, sizeof(path_buf_path), "%s/pieces/system/agy_path_buffer.txt", project_root);
-    snprintf(status_path, sizeof(status_path), "%s/pieces/system/widget_cmds/status.txt", project_root);
-
-    char typed[MAX_BUF] = "";
-    FILE *pf = fopen(path_buf_path, "r");
-    if (pf) {
-        size_t n = fread(typed, 1, sizeof(typed) - 1, pf);
-        typed[n] = '\0';
-        typed[strcspn(typed, "\r\n")] = '\0';
-        fclose(pf);
-    }
-
-    char last_cmd[128] = "", result[64] = "", message[MAX_LINE] = "";
-    read_kv_str(status_path, "last_cmd", last_cmd, sizeof(last_cmd));
-    read_kv_str(status_path, "result", result, sizeof(result));
-    read_kv_str(status_path, "message", message, sizeof(message));
-
-    FILE *o = fopen(view_path, "w");
-    if (!o) return 1;
-
-    int is_save = (strstr(layout, "file_browser_save.chtpm") != NULL);
-    box_top(o, is_save ? " S A V E   A S " : " L O A D   F I L E ");
-    {
-        char row[BOX_W + 32];
-        snprintf(row, sizeof(row), "PATH: %s[X]", typed);
-        box_row(o, row);
-    }
-    box_row(o, "");
-    {
-        char row[BOX_W + 32];
-        snprintf(row, sizeof(row), "Last: %s result=%s", last_cmd[0] ? last_cmd : "(none)", result[0] ? result : "-");
-        box_row(o, row);
-    }
-    if (message[0]) {
-        char row[BOX_W + 32];
-        snprintf(row, sizeof(row), "%s", message);
-        box_row(o, row);
-    }
-    box_sep(o);
-    box_bot(o);
-    fclose(o);
-    ping_render_marker();
-    return 0;
-}
-
 int main(void) {
     resolve_root();
 
-    char layout_path[PATH_BUF], layout[256] = "";
-    snprintf(layout_path, sizeof(layout_path), "%s/pieces/display/current_layout.txt", project_root);
-    FILE *lf = fopen(layout_path, "r");
-    if (lf) {
-        if (fgets(layout, sizeof(layout), lf)) layout[strcspn(layout, "\r\n")] = '\0';
-        fclose(lf);
-    }
-
+    /* file_browser_save.chtpm/file_browser_load.chtpm own rendering is
+     * now handled by the new native manager (PITFALL 65 rebuild) - see
+     * manager/agy_browser_manager.c's own write_frame(), which writes
+     * gui_state.txt directly rather than composing view.txt through
+     * this op. This binary is only ever invoked for editor.chtpm/
+     * file_menu.chtpm now, both of which share the same render below. */
     char state_path[PATH_BUF], view_path[PATH_BUF];
     snprintf(state_path, sizeof(state_path), "%s/pieces/system/editor_state.txt", project_root);
     snprintf(view_path, sizeof(view_path), "%s/pieces/apps/player_app/view.txt", project_root);
-
-    if (strstr(layout, "file_browser_save.chtpm") != NULL || strstr(layout, "file_browser_load.chtpm") != NULL) {
-        return compose_file_browser(view_path, layout);
-    }
 
     char file_path[256], last_message[MAX_LINE];
     read_kv_str(state_path, "file_path", file_path, sizeof(file_path));

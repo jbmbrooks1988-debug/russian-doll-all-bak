@@ -117,7 +117,7 @@ static const char *detect_tool(const char *input) {
         has_keyword(buf, "save")) return "write_file";
 
     if (has_keyword(buf, "edit") || has_keyword(buf, "replace") ||
-        has_keyword(buf, "modify")) return "edit_file";
+        has_keyword(buf, "modify") || has_keyword(buf, "append")) return "edit_file";
 
     if (has_keyword(buf, "search") || has_keyword(buf, "find") ||
         has_keyword(buf, "grep")) return "search_in_files";

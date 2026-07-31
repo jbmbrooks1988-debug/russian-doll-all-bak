@@ -2183,6 +2183,397 @@ pattern this pitfall is a refinement of, not a departure from - §36.6
 itself stays correct, this narrows what "real key injection" must cover
 to actually satisfy it)
 
+PITFALL 64: two more real file-menu bugs a synthetic harness could not
+            see - selecting a real listed file required an unsignaled
+            SECOND Enter to load, and a digit keypress activated the
+            main menu option in the same keystroke instead of only
+            navigating to it
+=======================================================================
+DATE: 2026-07-30
+FOUND WHILE: live human testing of file-menu's own real UI, the SAME
+day PITFALL 63's own three bugs were fixed and their fix was verified
+via a NEW real black-box harness (test-harn-ed-app/scenarios/
+demo_fm_typing_ux.sh) - that harness itself still could not see either
+bug below, because it always typed/pasted paths directly and always
+sent a digit press immediately followed by a real Enter, never once
+selecting a listed entry or checking state between the digit and the
+Enter separately.
+
+BUG A - selecting a real file from the directory listing didn't load
+it: `fm_menu_input.c`'s own file-entry-selection branch (inside
+`handle_file_browser()`) only ever wrote `path_buffer` and moved
+`cursor_pos` to the FILE field - it never submitted. A real user
+arrow-navigating to a real listed file and pressing Enter ONCE (the
+obvious, expected action - "select this file") saw nothing happen; a
+SECOND Enter, now on the FILE field, was required, with no on-screen
+signal that a second press was needed. FIX: selecting a file entry
+while `browse_mode == "load"` now calls `enqueue_cmd_with_path("LOAD",
+full_path)` directly - real, immediate load on one real Enter.
+SAVE_AS's own identical-looking selection deliberately stays as
+pre-fill-then-confirm (protects against an accidental overwrite from
+one stray keypress) - not an oversight, a real, considered asymmetry.
+
+BUG B - digit press on the main menu activated immediately, skipping
+Enter entirely: `handle_main_menu()`'s own digit-key branch
+(`key >= 49 && key <= 54`) moved the cursor AND called
+`execute_menu_option()` on the SAME keystroke. Real chtpm digit-jump
+(`isdigit(key)` -> `do_jump()`, the standard every chtpm-native
+buttoned layout in this house already follows - confirmed this same
+week for 102.editor/102.agy-txt) moves focus only; a separate Enter
+activates. File-menu's own hand-built nav never matched this standard
+- direct report: "when i press nav index # of load option it goes
+straight to new window, doesn't wait for enter - this isn't std chtpm
+behavior." FIX: digit press now only writes `cursor_pos`, matching
+arrow-nav's own existing behavior; the pre-existing Enter branch
+already did the activation half correctly.
+
+BUG B SIDE-EFFECT - a digit press inside file_browser mode (SEARCH/
+FILE fields) was previously indistinguishable from typed text:
+pressing "2" while on the SEARCH field (the default landing row) typed
+a literal "2" into the search box instead of doing anything nav-
+shaped, because file_browser mode had NO digit-jump concept at all -
+direct report: "when i press number to nav to file index it instead
+inputs into search." FIX: `field_active` (PITFALL 63's own real focus-
+state) is exactly the right disambiguator - a digit pressed while NOT
+actively engaged in a field now jumps `cursor_pos` to that row (1-based
+on screen -> 0-based internally, confirmed via a live off-by-one catch:
+the first version of this fix jumped to the WRONG row, landing on BACK
+instead of FILE when the user pressed the on-screen "2." - fixed by
+converting `key - '0' - 1`); a digit pressed WHILE actively typing
+still types normally (needed for real filenames containing digits,
+e.g. "file2.txt").
+
+VERIFIED LIVE: new harness scenario, test-harn-ed-app/scenarios/
+demo_fm_click_to_load.sh - real digit-press-alone state assertion
+(mode stays main_menu, cursor moves), real separate-Enter activation,
+real SEARCH-filter down to a unique fixture (deterministic listing
+index regardless of whatever else is in the user's own real documents/
+folder), real arrow-nav to the listed entry, ONE real Enter, real
+editor_buffer.txt + current_frame.txt assertions - 5/5 PASS. Full
+four-scenario regression (demo_save.sh, demo_load.sh,
+demo_fm_typing_ux.sh, demo_fm_click_to_load.sh) re-run clean.
+
+FILES: &.widgits/file-menu/ops/fm_menu_input.c (handle_main_menu()'s
+digit branch, handle_file_browser()'s file-entry-selection branch and
+new digit-jump branch)
+SEE ALSO: !.xyzos-standards+1.txt §39 (the NEW, non-negotiable
+checklist this incident directly produced - real listed-entry
+selection and real digit-jump-vs-activate assertions are now MANDATORY
+harness coverage, not optional); PITFALL 63 (the same-day, same-root-
+pattern predecessor); &.widgits/file-menu/todo-how2-j30.txt
+
+PITFALL 65: built a real chtpm dynamic list using hand-drawn "[>]"/
+            "[ ]" text markers instead of real <button> elements -
+            the comparable in-house precedent (mutaclysm) was never
+            checked before building on a cross-category reference
+=======================================================================
+DATE: 2026-07-30
+FOUND WHILE: rebuilding 102.agy-txt's own file browser (PLAN.md §4
+Phase T4/T6 follow-up), caught directly by the user's own domain
+knowledge, not by any verification pass of mine.
+
+ROOT CAUSE: the file browser's directory listing/SEARCH/FILE fields
+were built as fully buttonless (matching &.widgits/file-menu's own
+real architecture) with the OP hand-composing "[>]"/"[^]"/"[ ]" text
+markers itself, based on cursor_pos tracked in a custom state file.
+This directly violates a real, already-cited, already-followed
+in-house standard: `101.mutaclsym🧟‍♂️️+18.01/ops/compose_frame.c`'s own
+`write_panel_gui_state()` (a REAL, shipped implementation, read in
+full) cites `DYNAMIC_SUBMENUS_FUNCTIONAL_STD.md` directly: "the PARSER
+owns nav/focus/highlighting entirely; the MANAGER only ever projects
+raw button markup... never hand-draws its own '[>]'/'[ ]' markers."
+mutaclysm already does this correctly (real `<button onClick="KEY:n">`
+rows, dynamically generated, `${var}`-injected) - this was sitting in
+the SAME house, one project away, and was never checked before
+building on file-menu's shape instead, because file-menu was the
+model explicitly asked to be reused for its OWN ops (a real, correct
+instruction) - the mistake was treating that as license to also copy
+file-menu's overall SCREEN ARCHITECTURE without separately checking
+whether a more directly-comparable in-house precedent (same PAL-native
+family, not a cross-project widget) did it differently.
+
+FURTHER FINDING, SAME INVESTIGATION: the STANDARDS DOC itself
+(`DYNAMIC_SUBMENUS_FUNCTIONAL_STD.md`) turned out to be partially
+inapplicable to this house's own runtime - it says to avoid
+`onClick="KEY:n"` and use string commands (`OP:`/`SET_` prefixes)
+instead, correctly describing TPMOS's own real reference manager
+(confirmed: `agy-text-editor_manager.c` really does this). But THIS
+house's own `prisc+x` VM (`014.wsr-pal💸️📌️+2/system/prisc+x.c`)
+has `OP_READ_HISTORY` hard-coded to `fscanf(hf, "%d", &key)` - integer
+ONLY, a real, verified VM limitation, not a stylistic choice - string
+commands genuinely cannot pass through this specific opcode as it
+exists today. mutaclysm's own `KEY:n`-based deviation from the
+"official" doc was itself CORRECT for this constraint, not an error -
+confirmed by reading the VM source directly rather than trusting
+either the doc or the comment. See `#.haiku+/jul30-house-refactor.txt`
+for the full chain of findings and the two real, separately-scoped
+paths forward (a native C manager per screen that needs string
+commands - low risk, project-scoped, real precedent already exists in
+`101.ledger-player-npc-simple+3/system/game_manager.c` - vs. extending
+prisc+x itself - real, but house-wide blast radius, deliberately
+deferred).
+
+LESSON: "the standard doc says X" and "the comparable shipped code
+does X" are two different claims - when they disagree, trust the
+shipped code, and go find out WHY before assuming the doc is simply
+wrong (here, the doc wasn't wrong for ITS OWN reference runtime, it
+was incomplete for describing a DIFFERENT runtime's own real, verified
+constraint). And before adopting an architecture from a REUSED
+reference (file-menu, reused correctly per explicit instruction for
+its OWN ops), separately check whether a MORE directly comparable
+in-house precedent (same project family, not a cross-category widget)
+already solved the exact same problem a different way.
+
+STATUS: not yet fixed - 102.agy-txt's file browser is being rebuilt on
+the real pattern (native C manager, real dynamic button markup,
+mirroring TPMOS's own agy-text-editor_manager.c + mutaclysm's own real
+`${var}`-markup convention), not patched in place. See
+`#.haiku+/jul30-house-refactor.txt` §6 for the concrete rebuild steps
+and `!.xyzos-2do.txt` for the deferred prisc+x string-command
+extension (Path B).
+
+FILES: 102.agy-txt/ops/agy_edit_key.c, agy_compose_view.c (the code
+being replaced); #.haiku+/jul30-house-refactor.txt (full account);
+101.mutaclsym🧟‍♂️️+18.01/ops/compose_frame.c (the real, correct in-house
+reference); 1.TPMOS_c_+rmmp.0103.0001/projects/agy-text-editor/
+manager/agy-text-editor_manager.c (the real reference being ported,
+this time on the correct foundation)
+SEE ALSO: PITFALL 63/64 (same week, same root pattern - real
+comparable code checked too late, after building on an assumption)
+
+=======================================================================
+PITFALL 66: clear_saved_active_index() (the real, house-wide stale-
+            focus-index fix from PITFALL 65's own rebuild) never
+            propagated past the two projects that fixed it directly -
+            every LOCAL COPY of chtpm_parser_pal.c in the house is
+            still missing it
+=======================================================================
+DATE: 2026-07-31
+FOUND WHILE: prototyping a per-screen module split in 01.muchi-pals-
+🥚️-13.01 (dox/06-per-screen-module-standard.md), live-caught directly
+by the user during real testing: selecting egg_7 from the pets list
+(interactive_idx 7) landed keyboard focus on "7. Destroy Card" in the
+freshly-entered, structurally different pet-action submenu, instead of
+the first real navigable item.
+
+ROOT CAUSE: identical to PITFALL 65's own file-menu finding -
+initialize_focus() unconditionally calls sync_focus_from_saved_active_
+index() first, which reads pieces/display/active_gui_index.txt and
+jams focus onto whatever element shares the SAME interactive_idx in
+the new layout, a pure structural coincidence. The fix
+(clear_saved_active_index(), write "0" to that file immediately before
+every real parse_chtm() layout-transition call) was made in `014.wsr-
+pal💸️📌️+2/system/chtpm_parser_pal.c` at the time - but that's only the
+canonical source agy-txt and file-menu actually sync FROM. Checked
+directly (grep -c clear_saved_active_index, all returned 0) - every
+other project in the house keeps its own local, unsynced copy of this
+file, and none of them ever got the fix:
+
+  041.pal-chain⛓️, 041.pal-forum👥️, 044.pal-chat-irc👥️+2,
+  0.user-pal👤️/00.login-signup, 0.user-pal👤️/01.avatar-creation👤️,
+  045.muchi-pal-agent🤖️+1, 002.zoo__🦓️🐒️0000, 101.mutaclsym🧟‍♂️️+18.01,
+  300.rpg-xyz, 300.rtp-xyz
+
+This whole family's own real sync source (`sync_shared_op.sh` from
+`yz.muchiverse/2.muchi-verse/shared-ops/`) doesn't exist anywhere in
+this house copy (confirmed earlier the same session) - so there was no
+mechanism for the fix to propagate even if someone had tried.
+
+FIX: ported directly into muchi-pals' own local copy (copy the
+function verbatim + insert `clear_saved_active_index();` immediately
+before every real `parse_chtm()` call that follows an `active_index =
+-1; focus_index = 0;` reset - 7 such sites found in this project alone,
+more than wsr-pal's own 3, since this copy has extra features/paths).
+Same port still needed in every other project listed above - not done
+yet, tracked in dox/06-per-screen-module-standard.md §2.1/§3.
+
+LESSON: a fix made in a "canonical" source file only actually reaches
+projects that really sync from it. Before assuming a house-wide fix
+is house-wide, check whether the target project's own copy of that
+file is a live sync or an independently-diverged local fork - this
+family's own local copies are drifting further from any single source
+of truth over time, not converging.
+FILES: 01.muchi-pals-🥚️-13.01/system/chtpm_parser_pal.c (fixed);
+014.wsr-pal💸️📌️+2/system/chtpm_parser_pal.c (original fix, PITFALL 65);
+dox/05-jul30-live-bugs-and-plan.md, dox/06-per-screen-module-
+standard.md (both in 01.muchi-pals-🥚️-13.01/dox/)
+SEE ALSO: PITFALL 65 (the original fix this one never propagated)
+
+=======================================================================
+PITFALL 67: GL-mode typing doubling (hi -> hhii) - a redundant
+             double-writer into interact_relay.txt that survived for
+             DAYS because the app's real binaries never got rebuilt,
+             and the launcher's own EDITOR_DIR glob points at a
+             different project than the handoffs claimed
+=======================================================================
+DATE: 2026-07-31 (fixed same day after the long-running investigation
+documented in #.haiku+/editor-app-gl-dub-j32.txt)
+FOUND WHILE: @.apps/text-editor-xyz, `bash button.sh run`, real DISPLAY
+set (real GLUT/GL window). Typing "hi" into the editor's INTERACT-
+engaged canvas landed as "hhii" in editor_buffer.txt, confirmed by the
+user multiple times. Headless (`NO_GL=1`) never doubled. That GL-only /
+GL-off split was the one reliable behavioral clue, and it pointed the
+entire (long, exhausting, initially unsuccessful) investigation at
+gl_mirror.c - which was correct, but only half the story.
+
+SYMPTOM:
+  - GL enabled -> every character doubles (hi -> hhii).
+  - NO_GL=1 headless -> no doubling.
+  - file-menu's own GL widget also "acting crazy" alongside the editor
+    (separate symptom, same family of stale-process/file-sharing bugs).
+
+ROOT CAUSE (two bugs stacked, plus one that poisoned the investigation):
+  1. REDUNDANT DOUBLE-WRITER DESIGN. Two independent code paths could
+     each write a keystroke into pieces/apps/player_app/
+     interact_relay.txt, which is the editor's typing channel:
+       a) gl_mirror.c's append_key() originally wrote interact_relay.txt
+          DIRECTLY (unconditional), and
+       b) chtpm_parser_pal.c's INTERACT branch also inject_raw_key()'d
+          the same key into interact_relay.txt.
+     The only thing keeping that from doubling was a lock:
+       c) gl_focus.lock - created by gl_mirror at startup, removed at
+          exit; chtpm_parser_pal.c:3547-3550 checked access(lock)==0
+          and SKIPPED its own forward whenever the lock existed
+          ("gl is alive, so gl already delivered this key").
+  2. THE LOCK IS A LIVENESS FLAG, NOT A FOCUS FLAG - and it's resolved
+     through each process's OWN cwd/PRISC_PROJECT_ROOT. gl_mirror
+     builds the path from ITS root (gl_mirror.c:196); the parser from
+     ITS root. Any wrong-cwd gl_mirror, any stale duplicate from an old
+     session, or any SIGHUP-killed gl_mirror whose atexit() never ran
+     (fixed later, gl_mirror.c:475-484) leaves the lock absent/misplaced
+     while gl_mirror is still alive and delivering -> BOTH writers fire
+     per keystroke -> hi -> hhii. In NO_GL mode there is exactly ONE
+     writer (keyboard_input.c), so it can never double - the observed
+     GL-only split.
+  3. THE INVESTIGATION-POISONING BUG (why "huge confusion for a long
+     time"): @.apps/text-editor-xyz/button.sh resolves its editor via
+     EDITOR_DIR="$(ls -d "$HOUSE_DIR/102."*"editor"* | head -1)" which
+     matches **102.editor-📄️00.00**, NOT 102.agy-txt. 102.editor keeps
+     its OWN local chtpm_parser_pal.c (independent, already-gate-free
+     lineage) AND was running a Jul-30 gl_mirror binary that STILL had
+     the direct interact_relay.txt write. The earlier investigation
+     rebuilt/fixed only wsr-pal + agy-txt + file-menu and declared the
+     lock the culprit - but the app's REAL binaries (under 102.editor)
+     were never rebuilt, so the doubling survived. The handoff
+     (editor-app-gl-dub-j32.txt §7) claimed the app reads wsr-pal's
+     "live copy, no local copy of their own" - that was false for
+     102.editor, which has its own source AND stale binaries.
+
+FIX (Option B - single writer, delete the lock entirely):
+  - 014.wsr-pal💸️📌️+2/system/chtpm_parser_pal.c: deleted the 4-line
+    gl_focus.lock gate in the INTERACT branch; inject_raw_key(eff) is
+    now unconditional. The parser relay is the SOLE path into
+    interact_relay.txt; doubling is structurally impossible.
+  - Rebuilt wsr-pal, then redeployed the whole copy chain:
+      102.agy-txt      (bash scripts/build.sh - copies from wsr-pal)
+      102.editor-📄️00.00 (bash scripts/build.sh - copies gl_mirror,
+                        builds its OWN parser from its own source)
+      &.widgits/file-menu (bash scripts/build.sh - copies from wsr-pal)
+  - Verified: all 4 parsers have gl_focus string count 0; all 4
+    gl_mirror binaries identical (md5 8107eb78e9...), append_key() has
+    NO interact_relay fopen (remaining "interact_relay" strings are
+    only the unused buffer var + snprintf init, gl_mirror.c:121/195).
+  - No stale house processes were running; run `bash EMERGENCY_KILL.sh`
+    before any retest so a rebuilt binary isn't still locked in memory
+    ("Text file busy").
+
+LESSON: this is the second time (PITFALL 66) this family burned hours
+because a fix made in a "canonical" file didn't actually reach the
+project the user runs. TWO independent traps compound here:
+  a) The redundant double-writer + liveness-lock "arbiter" is a
+     minefield by design. Single-writer beats clever lock logic: if
+     exactly one code path can write to a file, doubling is impossible
+     by construction, and focus/ownership questions go away.
+  b) Before trusting any handoff or "live copy" claim, resolve the
+     launcher's OWN path resolution and check the ACTUAL binaries the
+     app runs (md5, mtime, strings). A stale binary on disk - even one
+     whose source was "fixed" elsewhere - reproduces the bug forever.
+FILES: 014.wsr-pal💸️📌️+2/system/chtpm_parser_pal.c (gate removed);
+014.wsr-pal💸️📌️+2/system/gl_mirror.c (direct write already removed
+2026-07-31, now verified propagated); 102.editor-📄️00.00/system/ (the
+real EDITOR_DIR target, stale gl_mirror replaced); @.apps/text-editor-
+xyz/button.sh (EDITOR_DIR glob = 102.editor-📄️00.00, not agy-txt);
+#.haiku+/double-wr-grok-j31.txt (full root-cause report + options A/B)
+SEE ALSO: PITFALL 65, PITFALL 66 (the same "fix didn't propagate to
+local forks" family); PITFALL 5 (keyboard/history.txt must be cleared
+on launch - adjacent input-pipeline gotcha)
+
+=======================================================================
+PITFALL 68: a manager daemon's OWN custom gui_state.txt variable
+            renders empty forever, even though the file has correct
+            fresh content on disk - bare ${var} raw-markup injection
+            points only re-resolve when piece_methods/active_target_id/
+            input_text specifically change, not on any gui_state.txt
+            write
+=======================================================================
+DATE: 2026-07-31
+SEVERITY: MEDIUM (silent - no error anywhere, the daemon appears to
+           work perfectly by every other measure: file writes succeed,
+           the process stays alive, other ${var}-wrapped-in-<text>
+           substitutions on the SAME layout update correctly)
+
+SYMPTOM: building rtp_manager.c (300.rtp-xyz's own new save/load
+daemon, modeled on slop-ed-dev_manager.c), a bare `${save_list_markup}`
+injection point (same shape as `${piece_methods}`/`${game_map}` -
+outside any `<text label="...">` wrapper, meant to inject real
+`<button>` markup) rendered as literally nothing on first screen
+arrival, and NEVER updated after a real save was created either -
+despite `pieces/apps/player_app/manager/gui_state.txt` having the
+correct, fresh `save_list_markup=...` line on disk every single time
+it was checked. Meanwhile a SEPARATE variable on the exact same
+layout, `${last_message}` (wrapped in `<text label="  ${last_message}"
+/>`), updated correctly on every real frame.
+
+ROOT CAUSE: chtpm_parser_pal.c's own compose_frame() only re-runs
+parse_chtm() (the pass that re-does raw/bare markup substitution -
+i.e. rebuilds the parsed XML tree with fresh injected content) when
+ONE of three SPECIFIC variables changes: `piece_methods`,
+`active_target_id`, or `input_text` (a hardcoded dirty-check, not
+generic to "any gui_state.txt variable changed"). A custom variable
+name like `save_list_markup` DOES get loaded into the in-memory var
+table via load_vars()/load_state_file()/set_var() every frame - `get_
+var("save_list_markup")` would return the fresh value if you asked for
+it - but nothing ever asks, because the ALREADY-PARSED XML element
+tree (built once, at the last real parse_chtm() call) is what actually
+gets rendered, and that tree's own copy of the bare injection point is
+frozen at whatever it resolved to the first time. Variables used
+INSIDE an existing `<text label="${var}">` wrapper don't have this
+problem - substituting `${var}` into an already-existing text element
+happens on every frame, no reparse needed; it's specifically the RAW/
+BARE injection shape (used for multi-element dynamic content like a
+button list) that's gated behind the three-variable dirty-check.
+
+FIX: publish the real dynamic markup AS `piece_methods` itself, not a
+custom variable name - already wired to force a reparse whenever its
+value changes. Safe for any layout with no active_target_id/hero
+context of its own (load_dynamic_methods() only overwrites
+piece_methods when active_target_id is non-empty, so a layout with no
+such context never fights your daemon for that variable). Confirmed
+live: renaming rtp_manager.c's own `save_list_markup=` gui_state.txt
+line to `piece_methods=` and project_menu.chtpm's own `${save_list_
+markup}` reference to `${piece_methods}` made the real save list
+render correctly on first arrival AND update correctly after a real
+save was created, with zero other changes.
+
+LESSON: before assuming a new manager daemon's own custom dynamic-
+markup variable will "just work" because `${piece_methods}` does,
+check WHICH SPECIFIC variables actually trigger a reparse in compose_
+frame() - it's a hardcoded short list, not a generic mechanism. If you
+need a NEW kind of dynamic multi-element content on a layout with no
+competing active_target_id, riding on `piece_methods` is the real,
+proven way to get it to redraw; inventing a new variable name for raw/
+bare injection will compile, run, and silently never update.
+FILES: 300.rtp-xyz/manager/rtp_manager.c (write_gui_state(), the
+piece_methods= line + its own header comment with this citation);
+300.rtp-xyz/pieces/chtpm/layouts/project_menu.chtpm (${piece_methods}
+reference); 300.rtp-xyz/system/chtpm_parser_pal.c compose_frame()
+(read directly to find this - the methods_changed/active_changed/
+input_changed dirty-check, ~line 2650-2665)
+SEE ALSO: 300.rtp-xyz/save-load-report-j31.txt (full build report,
+4 other real bugs found in the same daemon build - onClick prefix
+requirement is PITFALL #99 already documented elsewhere in this file,
+search for it)
+
 =======================================================================
 END OF XYZOS-PITFALLS
 Add new pitfalls above this line as they are discovered.

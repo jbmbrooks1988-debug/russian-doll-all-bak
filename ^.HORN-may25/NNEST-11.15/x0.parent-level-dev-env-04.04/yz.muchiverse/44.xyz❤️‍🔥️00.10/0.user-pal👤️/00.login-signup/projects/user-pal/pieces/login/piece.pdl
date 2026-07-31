@@ -10,3 +10,5 @@ METHOD       | Switch: avmenu_1653663 (MenuTest) | SWITCH:avmenu_1653663
 METHOD       | Switch: avmenu_1654388 (MenuTest) | SWITCH:avmenu_1654388
 METHOD       | Switch: jb (JB Test) | SWITCH:jb
 METHOD       | Switch: schar_1744476 (SessionChar) | SWITCH:schar_1744476
+METHOD       | Switch: uloginA_1138315 (LoginHarnessA) | SWITCH:uloginA_1138315
+METHOD       | Switch: uloginB_1138315 (LoginHarnessB) | SWITCH:uloginB_1138315
