@@ -296,8 +296,8 @@ int main(void) {
         fprintf(stderr, "[Orchestrator] Using PAL layout: %s\n", pal_layout);
         launch("./system/chtpm_parser_pal", pal_layout, NULL);
     } else {
-        fprintf(stderr, "[Orchestrator] Using default layout: pieces/chtpm/layouts/game.chtpm\n");
-        launch("./system/chtpm_parser_pal", "pieces/chtpm/layouts/game.chtpm", NULL);
+        fprintf(stderr, "[Orchestrator] Using default layout: pieces/chtpm/layouts/editor_home.chtpm\n");
+        launch("./system/chtpm_parser_pal", "pieces/chtpm/layouts/editor_home.chtpm", NULL);
     }
 
     /* Best effort: chtpm_rgb_render */

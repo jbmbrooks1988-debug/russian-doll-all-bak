@@ -1,0 +1,64 @@
+# Aug 3 Progress Report — yahoo-app + yahoo-broker
+
+## What was built
+
+Skeleton for `@.apps/yahoo-app/` and `&.widgits/yahoo-broker/` is in place and **compiles clean**:
+
+- `@.apps/yahoo-app/`
+  - `meta.pdl` — app metadata
+  - `button.sh` — launcher (bank GUI foreground, broker widget on demand)
+  - `scripts/build.sh` — compiles system + ops
+  - `default_op.txt` — op registry
+  - `system/*.c` — copied from `@.apps/my-chara-txt/system/`
+  - `ops/*.c` — `yahoo_menu_input.c`, `yahoo_compose_frame.c`, `broker_menu_input.c`, `broker_compose_frame.c`, `deposit_withdraw.c`, plus ported Yahoo Finance ops (`lookup_stock.c`, `portfolio_new.c`, `buy_stock.c`, `sell_stock.c`, `buy_option.c`, `sell_option.c`, `sell_option_inventory.c`, `options_pricing.c`, `predictions.c`, `add_credit.c`, `read_price.c`, `fetch_stock.c`)
+  - `pal/*.pal` — `bank_module.pal`, `broker_select_module.pal`
+  - `pieces/chtpm/layouts/` — `bank.chtpm`, `broker_select.chtpm`
+  - `pieces/system/` — `config.txt`, `brokers.txt` seeds
+
+- `&.widgits/yahoo-broker/`
+  - `button.sh` — widget launcher (`run-widget <project_root>`)
+  - `scripts/build.sh` — compiles widget ops
+  - `default_op.txt` — widget op registry
+  - `system/*.c` — copied from `@.apps/my-chara-txt/system/`
+  - `ops/*.c` — `broker_menu_input.c`, `broker_compose_frame.c`, `deposit_withdraw.c`, plus same ported Yahoo Finance ops
+  - `pal/broker_widget_module.pal`
+  - `pieces/chtpm/layouts/broker_widget.chtpm`
+
+## Architecture
+
+- Main app (`@.apps/yahoo-app/`) runs bank GUI in foreground with its own GL window
+- Broker widget (`&.widgits/yahoo-broker/`) spawns on demand via `OPEN_BROKER_WIDGET` using `setsid` (same pattern as `OPEN_BOARD_WIDGET` in civ-txt/tactics-txt)
+- State shared via files: `usr_acc.<hash>.txt` for account, `broker_state.txt` for broker balance, `config.txt` for bank balance
+- Broker list is dynamic `${piece_methods}` generated from `brokers.txt`
+
+## Status
+
+- **Compiled successfully** (both `@.apps/yahoo-app/` and `&.widgits/yahoo-broker/` ops build clean, only ported-code warnings remain)
+- `button.sh help` verified for both launchers
+- **Not yet run live** — next step is safe timed launch test
+- Plan doc written: `@.apps/yahoo-app/yahoo-xyz-plan.md`
+- Progress report: this file
+
+## Build fixes applied during this session
+
+1. `yahoo_compose_frame.c` was missing `write_kv` — added local static copy
+2. `options_pricing.c` and `portfolio_new.c` need `-lm` — added `LDFLAGS="-lm"` to build scripts
+3. `json_parser.c` has no `main()` — removed from both build scripts and ops/
+4. `mark_screen_changed` unused param — cast to void
+5. Broker widget system binaries copied from yahoo-app (same sources)
+6. Removed duplicate `broker_widget.chtpm` + `broker_widget_module.pal` from main app (broker UI lives only in widget)
+7. Fixed missing `pieces/system/widget_cmds` directory in `button.sh` mkdir block
+8. Added `get_current_piece_id()`, `write_chtpm_bridge()`, `ping_state_changed_marker()` to both menu_input ops — ensures `${piece_methods}` and state_changed fire correctly
+9. Copied `chtpm_parser_pal.c` from `my-chara-txt` to both projects, relaxed `load_dynamic_methods()` condition to always fire when `active_id` is set
+10. **Copied font glyph registry** (`pieces/registry/fonts/ascii/`) from `my-chara-txt` into both `yahoo-app` and `yahoo-broker` — this was the actual cause of blank GL mirror (`load_glyphs()` found no glyph files)
+11. Wrote `ops/yahoo_compose_rgb_frame.c` — standalone ASCII→RGBA composer as fallback/verification tool
+12. Updated `EMERGENCY_KILL.sh` with yahoo-app/broker process names and `/tmp/.yahoo-app-bank-*` cleanup
+
+## Known gaps / next steps
+
+1. Run `button.sh compile` in yahoo-app and yahoo-broker to confirm clean build
+2. Safe timed launch test: `timeout 5 bash button.sh run` to verify startup without crash
+3. Verify bank screen renders balance + watchlist
+4. Verify broker widget spawns in separate GL window
+5. Verify deposit/withdraw updates both bank and broker balances
+6. Add user_hash generation + `usr_acc.<hash>.txt` creation on first run

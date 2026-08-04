@@ -1,0 +1,6 @@
+battle_id=tactics-001
+mode=classic
+turn=5
+active_side=2
+actions_remaining_this_turn=5
+game_state=playing

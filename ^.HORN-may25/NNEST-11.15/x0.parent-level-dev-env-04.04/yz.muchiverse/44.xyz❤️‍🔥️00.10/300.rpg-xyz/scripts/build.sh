@@ -64,6 +64,16 @@ $CC $CFLAGS -o ops/+x/camera_control.+x ops/camera_control.c
 $CC $CFLAGS -o ops/+x/end_turn.+x ops/end_turn.c
 $CC $CFLAGS -o ops/+x/compose_frame.+x ops/compose_frame.c
 $CC $CFLAGS -o ops/+x/compose_rgb_frame.+x ops/compose_rgb_frame.c -lm
+echo "-- emoji_gen_atlas / emoji_xtract (ported from mutaclsym's own"
+echo "   real fix 2026-07-31 - local copies, own source, NOT a shared-"
+echo "   ops reference. This project's own compose_rgb_frame.c was"
+echo "   missing ensure_emoji_asset_ready() entirely before this port -"
+echo "   the real root cause of 3D GL mode showing flat colors instead"
+echo "   of real emoji textures for any registry entry without a pre-"
+echo "   baked voxels_16.csv on disk. See compose_rgb_frame.c's own"
+echo "   ensure_emoji_asset_ready() header comment for the full story.)"
+$CC $CFLAGS -I"ops/lib" -I/usr/include/freetype2 -o ops/+x/emoji_gen_atlas.+x ops/emoji_gen_atlas.c -lfreetype -lm
+$CC $CFLAGS -I"ops/lib" -o ops/+x/emoji_xtract.+x ops/emoji_xtract.c -lm
 echo "-- dump_rgb_png (local copy - DEBUG TOOL, not wired into pal/"
 echo "   main_loop.pal or default_op.txt - run manually to see the RGB"
 echo "   mirror's actual pixels as a real PNG, since this agent has no"

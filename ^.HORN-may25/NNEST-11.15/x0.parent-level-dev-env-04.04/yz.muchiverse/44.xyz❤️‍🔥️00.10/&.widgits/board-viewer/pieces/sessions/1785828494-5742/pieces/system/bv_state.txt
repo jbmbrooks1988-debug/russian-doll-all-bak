@@ -1,0 +1,12 @@
+focused_project_id=piececraft-xyz
+focused_project_root=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.15/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.10/@.apps/piececraft-xyz
+emoji_mode=1
+render_mode=1
+camera_mode=3
+cam_pan_x=4
+cam_pan_y=17
+cam_pan_z=4
+cam_yaw=0
+cam_pitch=-20
+cam_z_level=6
+current_z=18

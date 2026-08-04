@@ -2,7 +2,7 @@
     <module>system/prisc+x pal/game_module.pal</module>
     <interact src="pieces/apps/player_app/interact_relay.txt" />
     <text label="+============================================================+" /><br/>
-    <text label="|                     M U T A C L S X M                     |" /><br/>
+    <text label="|                R T P - X Y Z   P L A Y T E S T              |" /><br/>
     <text label="+============================================================+" /><br/>
     <button label="Control Hero" onClick="INTERACT" /><br/>
     ${piece_methods}<br/>
@@ -38,7 +38,7 @@
         <text label="  [q] quits." /><br/>
     </button><br/>
     <button label="Save / Load" href="pieces/chtpm/layouts/project_menu.chtpm" /><br/>
-    <button label="Info (href test)" href="pieces/chtpm/layouts/info_test.chtpm" /><br/>
+    <button label="Stop Playtest" href="pieces/chtpm/layouts/editor_home.chtpm" /><br/>
     <text label="+============================================================+" /><br/>
     <text label="${game_map}" /><br/>
     <text label="+============================================================+" /><br/>

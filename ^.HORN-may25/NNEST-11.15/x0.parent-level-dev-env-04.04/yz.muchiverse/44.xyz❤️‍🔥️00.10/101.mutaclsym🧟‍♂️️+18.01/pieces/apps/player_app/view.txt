@@ -1,8 +1,9 @@
 MUTACLSYM   map: map_start  turn: 1
+
 🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱
 🧱🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🧱🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🧱🧱
 🧱🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🧱🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🧱🧱
-🧱🟫🟫🟫🪑🍽️🪑🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🚪🟫🟫🟫🟫🟫🛏️🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🧱🧱
+🧱🟫🟫🟫🪑🍽️🪑🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🎯🟫🟫🟫🟫🟫🛏️🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🧱🧱
 🧱🟫🟫🟫🟫🧑🟫🟫🟫🟫🟫🟫🪵🪵🟫🟫🟫🟫🟫🧱🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🧱🧱
 🧱🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🧻🧻🧻🟫🟫🟫🟫🧱🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🧱🧱
 🧱🟫🟫🟫🟫🟫🟫🪨🥤🟫🟫🟫🔩🟫🟫🟫🟫🟫🟫🧱🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🧱🧱
@@ -15,10 +16,10 @@ MUTACLSYM   map: map_start  turn: 1
 🧱🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🧱🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🧱🧱
 🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱
 🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱
-HP:100  Hunger:1  Thirst:2  Stamina:100  Last key: 53 ('5')
+HP:100  Hunger:1  Thirst:2  Stamina:100  Last key: 1001
 Inventory: (empty)
 Saved (save_2, turn 0).
 You see nothing here.
 Saved (save_3, turn 0).
 Saved (save_4, turn 0).
-[wasd/arrows] Move  [i] Interact  [e] Emoji
+[wasd/arrows] Look  [enter] Examine  [t] Throw  [esc] Back  [e] Emoji

@@ -1,0 +1,6 @@
+SECTION      | KEY                | VALUE
+----------------------------------------
+META         | piece_id           | broker_select
+METHOD       | Alpha Securities (full)                | SELECT_BROKER:broker_alpha
+METHOD       | Beta Investments (discount)                | SELECT_BROKER:broker_beta
+METHOD       | Gamma Trading (crypto)                | SELECT_BROKER:broker_gamma

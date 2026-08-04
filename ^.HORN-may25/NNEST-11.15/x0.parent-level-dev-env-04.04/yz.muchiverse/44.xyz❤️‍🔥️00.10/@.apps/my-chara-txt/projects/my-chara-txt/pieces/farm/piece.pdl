@@ -1,0 +1,7 @@
+SECTION      | KEY                | VALUE
+----------------------------------------
+META         | piece_id           | farm
+
+METHOD       | Plot 0: Growing (12 days left)       | NOOP
+METHOD       | Plot 1: Growing (12 days left)       | NOOP
+METHOD       | Plot 2: Growing (12 days left)       | NOOP

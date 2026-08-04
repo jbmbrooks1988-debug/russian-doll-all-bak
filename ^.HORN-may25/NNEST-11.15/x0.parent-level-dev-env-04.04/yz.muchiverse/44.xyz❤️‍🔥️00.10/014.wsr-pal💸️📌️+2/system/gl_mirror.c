@@ -444,17 +444,27 @@ static void timer(int value) {
 /* Forwards every printable key verbatim - same "append everything, let
  * the pal script/ops decide what matters" shape as keyboard_input.c's
  * own main loop, not a curated allowlist here that could drift from
- * the actual dispatch op's own key handling. Ctrl+C (ETX, byte 3) is
- * translated to 'q' before appending, matching keyboard_input.c's own
- * ETX-to-quit translation. */
+ * the actual dispatch op's own key handling.
+ *
+ * FIXED 2026-08-02 (real, live-caught bug: pressing plain 'q' quit an
+ * entire board-viewer widget window while 'q' was also bound as a
+ * real camera-yaw key there - it got appended as content AND treated
+ * as quit, simultaneously). This file was the one remaining exception
+ * to a standing, already-enforced house-wide rule - direct instruction
+ * "never use q to quit in any of the refactors" - already applied to
+ * chtpm_parser_pal.c and keyboard_input.c (see their own "QUIT KEY
+ * REMOVED" comments) but never to this file. Real quit is Ctrl+C
+ * (ETX, byte 3) ONLY, and it no longer gets remapped to/appended as a
+ * literal 'q' keypress first - it's consumed here directly, never
+ * forwarded as content to any project's own key relay. */
 static void keyboard(unsigned char key, int x, int y) {
     (void)x;
     (void)y;
-    if (key == 3) key = 'q';
-    append_key((int)key);
-    if (key == 'q' || key == 'Q') {
+    if (key == 3) {
         g_shutdown_requested = 1;
+        return;
     }
+    append_key((int)key);
 }
 
 static void special_keyboard(int key, int x, int y) {
@@ -489,6 +499,18 @@ int main(int argc, char **argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowSize(g_frame_w, g_frame_h);
+    /* Optional window placement: a project running MORE THAN ONE
+     * gl_mirror (e.g. a host app + a separate WIDGIT program with its
+     * own GL window) needs them side by side, but glut otherwise parks
+     * every window at the same default spot - the widget ends up hidden
+     * behind the host (live-observed in TSC_ELO). GL_MIRROR_X/Y set a
+     * real position; unset means let the WM place it (no glut call,
+     * unchanged default behavior). */
+    const char *gmx = getenv("GL_MIRROR_X");
+    const char *gmy = getenv("GL_MIRROR_Y");
+    if (gmx && gmx[0] && gmy && gmy[0]) {
+        glutInitWindowPosition(atoi(gmx), atoi(gmy));
+    }
     glutCreateWindow("wsr-pal RGB mirror");
 
     glGenTextures(1, &texture_id);

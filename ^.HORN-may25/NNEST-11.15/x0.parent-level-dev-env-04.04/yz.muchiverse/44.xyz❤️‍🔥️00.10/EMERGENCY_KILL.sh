@@ -27,7 +27,7 @@
 
 echo "EMERGENCY KILL..."
 
-NAMES='orchestrator keyboard_input chtpm_parser_pal chtpm_rgb_render gl_mirror egg_window avatar_window renderer prisc\+x agy_browser_manager'
+NAMES='orchestrator keyboard_input chtpm_parser_pal chtpm_rgb_render gl_mirror egg_window avatar_window renderer prisc\+x agy_browser_manager rtp_manager yahoo_menu_input yahoo_compose_frame broker_menu_input broker_compose_frame deposit_withdraw'
 
 pat() {
     # $1 = bare name (unescaped except prisc+x's own literal backslash
@@ -93,6 +93,7 @@ done
 # pattern: /tmp/.<app-name>-editor-<id>/ - not under pieces/sessions/ at
 # all, so the find above never reaches these).
 rm -rf /tmp/.text-editor-xyz-editor-* 2>/dev/null || true
+rm -rf /tmp/.yahoo-app-bank-* 2>/dev/null || true
 
 left=""
 for name in $NAMES; do

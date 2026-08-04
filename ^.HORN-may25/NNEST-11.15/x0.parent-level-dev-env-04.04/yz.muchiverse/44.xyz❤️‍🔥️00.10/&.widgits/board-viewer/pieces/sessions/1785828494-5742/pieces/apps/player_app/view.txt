@@ -1,0 +1,48 @@
++============================================================+
+|  B O A R D - V I E W E R   ( W I D G E T )                 |
++============================================================+
+|                                                            |
+|  Focused on: piececraft-xyz  (board 16x16, cam 0,3)        |
+|  Interact mode: ON (arrows move selector, ESC exits)       |
+|  Possessing: hero_01 (jump/mine/build active)  (press 9 to |
+|  Display: emoji (default)                                  |
+|  Z-level: 18 / 31  (z / x to switch layers)                |
+|  Camera: 3D mode 4 (bird's-eye) yaw=180 pitch=-90          |
+|    pan=(8,19,0) z_level=6 [q/e yaw][r/t pitch][wasd pan][c/|
+|                                                            |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+|                                                            |
+|  Selected (8,8): air                                       |
+|  Arrow keys pan the selector. Camera follows, clamped to bo|
+|                                                            |
++============================================================+

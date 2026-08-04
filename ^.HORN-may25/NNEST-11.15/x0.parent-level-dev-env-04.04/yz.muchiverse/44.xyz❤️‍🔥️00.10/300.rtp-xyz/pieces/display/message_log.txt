@@ -979,3 +979,7 @@ Save failed.
 Save failed.
 Load failed.
 Load failed.
+You see nothing here.
+You see nothing here.
+You take control of hero.
+Saved to save_2 (turn 1, xyzfs).

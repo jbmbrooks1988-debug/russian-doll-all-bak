@@ -49,6 +49,8 @@
 #include <time.h>
 #include <ctype.h>
 #include <math.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 #define MAX_LINE 512
 #define MAX_PATH 4096
@@ -346,6 +348,53 @@ static void terrain_or_furniture_asset_id(char glyph, char *out, size_t out_sz) 
     out[0] = '\0';
 }
 
+/* Same scan shape as glyph_asset_id() above, but walks 4 pipes (past
+ * id/name/walkable/rgb_top) to reach the row's own `unicode` field -
+ * needed by ensure_emoji_asset_ready() below to generate a real asset
+ * for a registry row that doesn't have one on disk yet. Separate
+ * function/separate file scan rather than combining with
+ * glyph_asset_id() in one pass - matches this file's own existing
+ * convention of "correctness over micro-optimization" already noted
+ * on load_emoji_voxels()'s own single-entry-cache comment; this is a
+ * one-time-per-glyph-per-frame lookup at most (see ensure_emoji_
+ * asset_ready()'s own on-disk cache check), never a hot path. */
+static int glyph_unicode(const char *registry_rel_path, char glyph, char *out, size_t out_sz) {
+    char path[PATH_BUF];
+    snprintf(path, sizeof(path), "%s/%s", project_root, registry_rel_path);
+    FILE *f = fopen(path, "r");
+    if (!f) return 0;
+    char line[MAX_LINE];
+    int found = 0;
+    while (fgets(line, sizeof(line), f)) {
+        if (line[0] == '\n' || (line[0] == '#' && line[1] != '|')) continue;
+        if (line[0] != glyph) continue;
+        line[strcspn(line, "\n")] = '\0';
+        char *p = strchr(line, '|'); /* -> id */
+        if (!p) continue;
+        p = strchr(p + 1, '|'); /* -> name */
+        if (!p) continue;
+        p = strchr(p + 1, '|'); /* -> walkable */
+        if (!p) continue;
+        p = strchr(p + 1, '|'); /* -> rgb_top */
+        if (!p) continue;
+        p = strchr(p + 1, '|'); /* -> unicode */
+        if (!p) continue;
+        char *end = strchr(p + 1, '|');
+        if (end) *end = '\0';
+        snprintf(out, out_sz, "%s", p + 1);
+        found = 1;
+        break;
+    }
+    fclose(f);
+    return found;
+}
+
+static void terrain_or_furniture_unicode(char glyph, char *out, size_t out_sz) {
+    if (glyph_unicode("pieces/registry/terrain/terrain_types.txt", glyph, out, out_sz)) return;
+    if (glyph_unicode("pieces/registry/furniture/furniture_types.txt", glyph, out, out_sz)) return;
+    out[0] = '\0';
+}
+
 /* The real ASCII<->emoji GL pipeline, ported from real 1.TPMOS
  * wraith-alpha's own working mechanism after direct instruction to look
  * at it specifically ("look at wraith-alpha for how it converts emojis
@@ -363,17 +412,65 @@ static void terrain_or_furniture_asset_id(char glyph, char *out, size_t out_sz) 
  * The daemon then just reads that pre-generated CSV and blits real
  * pixels - no FreeType calls anywhere in the hot per-frame path.
  *
- * mutaclsym's own version: assets pre-generated ONCE (not on demand
- * like wraith-alpha's own lazy fork/exec cache) into
- * pieces/registry/emoji_assets/<asset_id>/voxels_16.csv, at N=16 -
- * chosen to match TILE_PX exactly, so no runtime scaling is needed,
- * unlike wraith-alpha's own 64->N downsample (its daemon targets a
- * variable emoji_glyph_size; mutaclsym's tile size is fixed). Keyed by
- * this project's own registry `id` (see glyph_asset_id() above) rather
- * than the real precedent's hex-codepoint directory naming - mutaclsym
- * doesn't need cross-content asset sharing at that granularity, every
- * registry row already has its own unique id, so reusing it avoids a
- * whole extra codepoint-decoding step for no real benefit here. */
+ * mutaclsym's own version: assets keyed by this project's own registry
+ * `id` (see glyph_asset_id() above) rather than the real precedent's
+ * hex-codepoint directory naming - mutaclsym doesn't need cross-
+ * content asset sharing at that granularity, every registry row
+ * already has its own unique id, so reusing it avoids a whole extra
+ * codepoint-decoding step for no real benefit here.
+ *
+ * UPDATE (2026-07-30): originally every asset here was pre-generated
+ * ONCE by hand (someone manually running emoji-studio's own two tools
+ * and placing the CSV under the right id-named folder) - the exact
+ * same "someone has to remember to do a manual step, or it silently
+ * falls back to a flat color forever" gap chtpm_rgb_render.c's own
+ * PITFALL 57/!.pal-2do.txt 2DO 1 already found and fixed for
+ * 102.editor-📄️00.00/&.widgits/file-menu. Ported the same real fix
+ * here: ensure_emoji_asset_ready() below now generates BOTH
+ * voxels_16.csv (this function) AND voxels_8.csv (the separate
+ * per-face relief texture raymarch_walls_3d() uses, see that
+ * function's own Voxel8Cache comment) from ONE FreeType rasterize the
+ * first time any glyph/item/monster with a registry `unicode` field
+ * is encountered without an asset on disk yet - so adding a brand new
+ * terrain/furniture/item/monster type to a registry file is now
+ * enough on its own; no separate manual asset-generation step
+ * required. This project's own build.sh keeps its own local copies of
+ * emoji_gen_atlas.c/emoji_xtract.c (ops/emoji_gen_atlas.c,
+ * ops/emoji_xtract.c) rather than reaching into wsr-pal at build time,
+ * matching this file's own top-of-file "solo shippable" convention. */
+static int ensure_emoji_asset_ready(const char *asset_id, const char *utf8_bytes) {
+    if (!asset_id[0] || !utf8_bytes[0]) return 0;
+    char csv16_path[PATH_BUF], csv8_path[PATH_BUF], dir_path[PATH_BUF], tmp_png[PATH_BUF], cmd[PATH_BUF * 3];
+    snprintf(dir_path, sizeof(dir_path), "%s/pieces/registry/emoji_assets/%s", project_root, asset_id);
+    snprintf(csv16_path, sizeof(csv16_path), "%s/voxels_16.csv", dir_path);
+    snprintf(csv8_path, sizeof(csv8_path), "%s/voxels_8.csv", dir_path);
+
+    struct stat st;
+    if (stat(csv16_path, &st) == 0) return 1; /* already generated, real cache hit */
+
+    snprintf(cmd, sizeof(cmd), "mkdir -p '%s'", dir_path);
+    if (system(cmd) != 0) return 0;
+
+    snprintf(tmp_png, sizeof(tmp_png), "/tmp/emoji_gen_%s_%d.png", asset_id, (int)getpid());
+    snprintf(cmd, sizeof(cmd), "'%s/ops/+x/emoji_gen_atlas.+x' '%s' '%s' >/dev/null 2>&1",
+             project_root, utf8_bytes, tmp_png);
+    int rc1 = system(cmd);
+
+    snprintf(cmd, sizeof(cmd), "'%s/ops/+x/emoji_xtract.+x' '%s' 0 16 '%s' >/dev/null 2>&1",
+             project_root, tmp_png, csv16_path);
+    int rc2 = system(cmd);
+
+    /* Same atlas PNG, second resolution - avoids a second FreeType
+     * rasterize for the 3D relief texture raymarch_walls_3d() needs. */
+    snprintf(cmd, sizeof(cmd), "'%s/ops/+x/emoji_xtract.+x' '%s' 0 8 '%s' >/dev/null 2>&1",
+             project_root, tmp_png, csv8_path);
+    int rc3 = system(cmd);
+
+    unlink(tmp_png);
+
+    return (rc1 == 0 && rc2 == 0 && rc3 == 0 && stat(csv16_path, &st) == 0) ? 1 : 0;
+}
+
 static int load_emoji_voxels(const char *asset_id, unsigned char voxels[TILE_PX][TILE_PX][4]) {
     /* Single-entry cache - adjacent tiles in the same frame are very
      * often the same asset_id (a run of floor tiles, a wall row), and
@@ -1743,6 +1840,11 @@ int main(void) {
                     char fg = (col < (int)strlen(furniture_line)) ? furniture_line[col] : ' ';
                     grid_early[rows_early][col] = (fg != ' ') ? fg : terrain_line[col];
                     terrain_or_furniture_asset_id(grid_early[rows_early][col], cell_asset_early[rows_early][col], ASSET_ID_BUF);
+                    if (cell_asset_early[rows_early][col][0]) {
+                        char uni[16];
+                        terrain_or_furniture_unicode(grid_early[rows_early][col], uni, sizeof(uni));
+                        ensure_emoji_asset_ready(cell_asset_early[rows_early][col], uni);
+                    }
                 }
                 grid_early[rows_early][len2] = '\0';
                 rows_early++;
@@ -1798,7 +1900,13 @@ int main(void) {
                 char glyph[4];
                 item_registry_field(item_id, 3, glyph, sizeof(glyph), "?");
                 if (glyph[0]) grid_early[iy][ix] = glyph[0];
-                if (glyph[0]) { snprintf(cell_asset_early[iy][ix], ASSET_ID_BUF, "%s", item_id); cell_is_entity_early[iy][ix] = 1; }
+                if (glyph[0]) {
+                    snprintf(cell_asset_early[iy][ix], ASSET_ID_BUF, "%s", item_id);
+                    cell_is_entity_early[iy][ix] = 1;
+                    char uni[16];
+                    item_registry_field(item_id, 6, uni, sizeof(uni), "");
+                    ensure_emoji_asset_ready(item_id, uni);
+                }
             }
             closedir(d_early);
         }
@@ -1820,7 +1928,13 @@ int main(void) {
                 char glyph[4];
                 monster_registry_field(monster_type, 2, glyph, sizeof(glyph), "?");
                 if (glyph[0]) grid_early[my][mx] = glyph[0];
-                if (glyph[0]) { snprintf(cell_asset_early[my][mx], ASSET_ID_BUF, "%s", monster_type); cell_is_entity_early[my][mx] = 1; }
+                if (glyph[0]) {
+                    snprintf(cell_asset_early[my][mx], ASSET_ID_BUF, "%s", monster_type);
+                    cell_is_entity_early[my][mx] = 1;
+                    char uni[16];
+                    monster_registry_field(monster_type, 5, uni, sizeof(uni), "");
+                    ensure_emoji_asset_ready(monster_type, uni);
+                }
             }
             closedir(d_early);
         }
@@ -1956,7 +2070,14 @@ int main(void) {
             for (int col = 0; col < len; col++) {
                 char fg = (col < (int)strlen(furniture_line)) ? furniture_line[col] : ' ';
                 grid[rows][col] = (fg != ' ') ? fg : terrain_line[col];
-                if (emoji_mode || render_mode == 1) terrain_or_furniture_asset_id(grid[rows][col], cell_asset[rows][col], ASSET_ID_BUF);
+                if (emoji_mode || render_mode == 1) {
+                    terrain_or_furniture_asset_id(grid[rows][col], cell_asset[rows][col], ASSET_ID_BUF);
+                    if (cell_asset[rows][col][0]) {
+                        char uni[16];
+                        terrain_or_furniture_unicode(grid[rows][col], uni, sizeof(uni));
+                        ensure_emoji_asset_ready(cell_asset[rows][col], uni);
+                    }
+                }
                 cell_is_entity[rows][col] = 0;
             }
             grid[rows][len] = '\0';
@@ -1987,7 +2108,13 @@ int main(void) {
              * not re-derived from glyph[0] - see cell_asset's own
              * declaration comment for the real terrain/item collisions
              * this avoids. */
-            if ((emoji_mode || render_mode == 1) && glyph[0]) { snprintf(cell_asset[iy][ix], ASSET_ID_BUF, "%s", item_id); cell_is_entity[iy][ix] = 1; }
+            if ((emoji_mode || render_mode == 1) && glyph[0]) {
+                snprintf(cell_asset[iy][ix], ASSET_ID_BUF, "%s", item_id);
+                cell_is_entity[iy][ix] = 1;
+                char uni[16];
+                item_registry_field(item_id, 6, uni, sizeof(uni), "");
+                ensure_emoji_asset_ready(item_id, uni);
+            }
         }
         closedir(d);
     }
@@ -2011,7 +2138,13 @@ int main(void) {
             if (glyph[0]) grid[my][mx] = glyph[0];
             /* Resolved by monster_type directly - same reasoning as the
              * item loop above. */
-            if ((emoji_mode || render_mode == 1) && glyph[0]) { snprintf(cell_asset[my][mx], ASSET_ID_BUF, "%s", monster_type); cell_is_entity[my][mx] = 1; }
+            if ((emoji_mode || render_mode == 1) && glyph[0]) {
+                snprintf(cell_asset[my][mx], ASSET_ID_BUF, "%s", monster_type);
+                cell_is_entity[my][mx] = 1;
+                char uni[16];
+                monster_registry_field(monster_type, 5, uni, sizeof(uni), "");
+                ensure_emoji_asset_ready(monster_type, uni);
+            }
         }
         closedir(d);
     }

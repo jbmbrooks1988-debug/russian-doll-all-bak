@@ -1,1 +1,1 @@
-projects/agy-text-editor/layouts/file_browser.chtpm
+projects/slop-ed-dev/layouts/slop-ed-dev.chtpm

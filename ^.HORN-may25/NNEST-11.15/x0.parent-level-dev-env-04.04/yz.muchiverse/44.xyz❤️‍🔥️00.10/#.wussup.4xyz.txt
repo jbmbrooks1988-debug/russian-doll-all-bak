@@ -1,6 +1,25 @@
 *tell agent , "always consider future agents, and write readme/testing and other helpful docs"
 ----------------------------------------------------------------------------
 
+📅️AUG 1  : everything should be widgets. its more modular. = ezier 2 dev & audit!💯️
+
+
+when we have completely independant agetns running on gemma 
+i want an anouncer/ref , giving a "stream" of what they are all doing
+like its a sports game. this is literally the demo 2 sell 2 customers/b2b
+(they can check the data, rewind the tapes etc, if they dont believe)
+(they can even 'posses' and play and see if its 'real')
+(wuts the point of this? i dunno , wuts the point of an llm agent? w/e u want it 2 be)
+
+<imagine this on projector on wall , u kno? +voice control of cursword...>
+
+
+
+🎯️
+<make sure u can turn a "zoo" into a "dir" and back again 
+(dropping things in a dir , they dissapear and freeze (like a flexbox) 
+but turning it into a zoo means they are interactive. 
+(u can movee turns in zoo manutally or using game mex widget btw ) 🎯️
 📅️j30: 
 
 todo says to do  'fix editor save/load' 

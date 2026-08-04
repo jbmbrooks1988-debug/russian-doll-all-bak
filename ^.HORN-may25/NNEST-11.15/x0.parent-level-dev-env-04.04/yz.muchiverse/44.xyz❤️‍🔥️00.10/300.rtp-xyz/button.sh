@@ -67,7 +67,7 @@ case "$ACTION" in
         fi
         if [ "$PAL_MODE" -eq 1 ]; then
             echo "=== mutaclsym Launcher (PAL Mode) ==="
-            export PAL_LAYOUT="pieces/chtpm/layouts/game.chtpm"
+            export PAL_LAYOUT="pieces/chtpm/layouts/editor_home.chtpm"
         else
             echo "=== mutaclsym Launcher (C Mode) ==="
             export PAL_LAYOUT=""
@@ -111,6 +111,13 @@ case "$ACTION" in
         pkill -9 -f "system/orchestrator" 2>/dev/null
         pkill -9 -f '\.pal$' 2>/dev/null
         pkill -9 -f "ops/+x/" 2>/dev/null
+        # manager/+x/ (rtp_manager.+x, added 2026-07-31) - NOT under
+        # ops/+x/, so the pattern above never caught it. Real gap: this
+        # is a PERSISTENT daemon (project_menu.chtpm's own <module>),
+        # exactly the kind of process that goes stray and eats CPU if
+        # a kill action forgets it - see EMERGENCY_KILL.sh's own
+        # updated NAMES list for the house-wide equivalent fix.
+        pkill -9 -f "manager/+x/" 2>/dev/null
         sleep 0.2
         rm -f "$SCRIPT_DIR/pieces/system/gl_focus.lock"
         rm -f "$SCRIPT_DIR/pieces/system/quit_flag.txt"

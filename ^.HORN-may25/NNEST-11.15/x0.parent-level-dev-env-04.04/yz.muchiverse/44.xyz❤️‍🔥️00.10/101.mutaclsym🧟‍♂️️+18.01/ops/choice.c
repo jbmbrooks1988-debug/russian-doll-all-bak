@@ -102,8 +102,21 @@
  * buttons (matching fuzz-op.chtpm's own exact usage) as a real,
  * separate, not-yet-done follow-up, not silently assumed equivalent.
  *
- * 'i'/'I' toggles interact_mode outside a panel (meaningless inside one
- * - a panel is already its own menu-mode context), resetting the
+ * STALE, CORRECTED 2026-08-02 (an external investigation into this
+ * project's own '0'/render_mode toggle found this paragraph no longer
+ * matches the live code below and flagged it for cleanup - see
+ * git history/handoff docs from that pass for the full finding):
+ * this paragraph used to claim 'i'/'I' is a live, unconditional key
+ * dispatch for entering interact_mode. That is NOT what the code below
+ * does - `is_interact_toggle` was REMOVED (see the real, current
+ * comment just above `is_3d_toggle`'s own declaration, further down
+ * this file: "is_interact_toggle ('i') and is_emoji_toggle ('e')
+ * REMOVED: 'e' is camera yaw, interact_mode entered via panel/'9'
+ * only."). interact_mode is entered via the CHTPM-native "Control
+ * Hero" button (onClick="INTERACT", pieces/chtpm/layouts/game.chtpm)
+ * or the '9' reverse-jump/possession path, never a raw 'i' keypress.
+ * Once interact_mode IS active, the rest of this paragraph's
+ * description of the mechanics is accurate and unchanged: resets the
  * xlector cursor's position (hero/state.txt's xlector_pos_x/
  * xlector_pos_y) to the hero's current position every time it's
  * entered. While interact_mode=1: wasd/arrows move the CURSOR, not the
@@ -120,21 +133,34 @@
  * unaffected by any of this - a panel is its own menu-mode context,
  * independent of interact_mode's value, same as it always was).
  *
- * 'e'/'E' toggles emoji_mode - the real ASCII<->emoji display toggle
- * from op-ed/fuzz-op (`op-ed_manager.c:1079`, `fuzz-op_manager.c:
- * 693-705` - a single boolean flag flipped by one key, read in full,
- * not excerpted - see 2.muchi-verse/GRAND-ARCHITECTURE.md §0a for the
- * complete research writeup, including the mistake to avoid repeating:
- * op-ed/fuzz-op's own two hardcoded glyph->emoji tables actively
- * disagree with each other. mutaclsym's version is registry-driven
- * instead (a `unicode=` field on each of the four content registries -
- * see ops/compose_frame.c's own header comment), the doc's explicitly
- * recommended fix for that exact drift. Checked FIRST, unconditionally
- * - before panel handling, before interact_mode - since it's a pure
- * display preference, orthogonal to whatever menu/cursor state is
- * currently active (matches how the real toggle works globally in
- * both reference projects, never scoped to a submode there either).
- * Does not touch action_cursor/digit_accum/panel state at all.
+ * STALE, CORRECTED 2026-08-02 (same pass as above): this paragraph
+ * used to claim 'e'/'E' is a live, unconditional key dispatch for
+ * emoji_mode, "checked FIRST... before panel handling, before
+ * interact_mode." That is also NOT what the code below does - 'e' is
+ * now camera yaw (only meaningful while render_mode==1, see
+ * is_pov_key's own sibling controls in ops/camera_control.c), and
+ * `is_emoji_toggle` was REMOVED the same pass `is_interact_toggle` was
+ * (see the real, current comment above `is_3d_toggle`'s declaration).
+ * emoji_mode is toggled today ONLY via the standalone
+ * `ops/toggle_emoji.c` binary (a plain, unconditional
+ * `emoji_mode = !emoji_mode`, no other side effects), wired as a real
+ * numbered piece.pdl METHOD row, not a raw keypress this file
+ * intercepts. It remains fully decoupled from render_mode/camera_mode
+ * - switching either does not force emoji_mode to any particular
+ * value, and emoji_mode's own value is independently honored by both
+ * the 2D glyph_to_rgb() color path and (for entity/wall asset
+ * tracking specifically) the 3D raymarch path - see
+ * ops/compose_rgb_frame.c's own `if (emoji_mode || render_mode == 1)`
+ * gates for the exact shape. Everything below this point in the
+ * original paragraph (registry-driven `unicode=` field, the
+ * op-ed/fuzz-op two-hardcoded-table drift this design avoids) is
+ * still accurate background on WHY the registry approach was chosen,
+ * just no longer paired with a true 'e' keypress as the live trigger:
+ * the real ASCII<->emoji display toggle mechanism is registry-driven
+ * (a `unicode=` field on each of the four content registries - see
+ * ops/compose_frame.c's own header comment), avoiding the exact
+ * op-ed/fuzz-op glyph->emoji table drift documented in
+ * 2.muchi-verse/GRAND-ARCHITECTURE.md §0a.
  *
  * Quit is Ctrl+C only (keyboard_input.c / gl_mirror.c handle it at the
  * terminal/GL level, writing quit_flag.txt). There is no 'q'-to-quit in
@@ -876,15 +902,22 @@ int main(int argc, char **argv) {
      * wraith/manager/piececraft-wraith_manager.c`'s own
      * update_scene_objects(), confirmed via direct read - NOT the
      * legacy gltpm-based `projects/piececraft-3d`, which is dead kruft
-     * predating wraith): '0' toggles the 3D GL view on/off (a no-op in
-     * ASCII terminal rendering - see ops/compose_frame.c, which never
-     * reads render_mode at all). While render_mode==1, '1'/'2'/'3'
-     * switch camera POV (1st person/3rd person/free camera) INSTEAD of
-     * their normal outer-action-bar meaning (pickup/drop) - matches
-     * real piececraft-wraith's own scene.objects.pdl button set
-     * (btn_pov1/2/3 = KEY:49/50/51) exactly. This is a real,
-     * mode-gated key reinterpretation, same shape as 't' meaning
-     * "throw" only in interact_mode - not a new, separate input path. */
+     * predating wraith): '0' toggles the 3D GL view on/off - a genuine
+     * bidirectional toggle (`render_mode = !render_mode`, see below;
+     * confirmed 2026-08-02, pressing '0' a second time correctly
+     * returns to 2D, no separate key needed) - and is itself a no-op in
+     * ASCII terminal rendering (see ops/compose_frame.c, which never
+     * reads render_mode at all). While render_mode==1, '1'/'2'/'3'/'4'
+     * switch camera POV (1st person/3rd person/free camera/bird's-eye)
+     * INSTEAD of their normal outer-action-bar meaning (pickup/drop) -
+     * '1'/'2'/'3' match real piececraft-wraith's own scene.objects.pdl
+     * button set (btn_pov1/2/3 = KEY:49/50/51) exactly; '4' (bird's-eye/
+     * "board game" view) is this project's own addition beyond that
+     * precedent, added later - see ops/compose_rgb_frame.c's own
+     * camera_mode switch and dox/pov-cam-fix.md for that addition's own
+     * history. This is a real, mode-gated key reinterpretation, same
+     * shape as 't' meaning "throw" only in interact_mode - not a new,
+     * separate input path. */
     int is_3d_toggle = (key == '0');
     int is_pov_key = (render_mode == 1 && (key == '1' || key == '2' || key == '3' || key == '4'));
     /* Universal escape, same real 1.TPMOS chtpm_parser.c convention

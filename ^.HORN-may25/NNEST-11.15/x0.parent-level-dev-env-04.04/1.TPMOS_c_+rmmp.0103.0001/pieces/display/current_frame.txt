@@ -1,33 +1,34 @@
-╔══════════════ FILE BROWSER ════════════════╗
-║  MODE: SAVE FILE AS                         ║
-║  DIR: projects/agy-text-editor            ║
-║ SEARCH: | [ ] 1. []                                                 |
-║ FILE:   | [^] 2. [hi_]                                              |
-║                                             ║
-║ ACTIVE: projects/agy-text-editor/pieces/document.txt
-║                                             ║
-║  SUGGESTIONS:                               ║
-║  [ ] 3. [...ditor/pieces/document.txt]    ║
-║                                             ║
-╠════════════ DIRECTORY CONTENTS ═════════════╣
-║  [ ] 4. [<- BACK]                         ║
-║  [ ] 5. [[DIR] layouts/]                  ║
-║  [ ] 6. [[DIR] manager/]                  ║
-║  [ ] 7. [[DIR] pieces/]                   ║
-║  [ ] 8. [[FIL] file-op-dox.txt (2KB)]     ║
-║  [ ] 9. [[FIL] hi.txt (26B)]              ║
-║  [ ] 10. [[FIL] project.pdl (575B)]       ║
-║  [ ] 11. [...pipeline-study+.txt (2KB)]   ║
-║  [ ] 12. [[FIL] t (26B)]                  ║
-║                                             ║
-╠═════════════════════════════════════════════╣
-║  [ ] 13. [SAVE FILE]                      ║
-║  [ ] 14. [CANCEL]                         ║
-║                                             ║
-╠═════════════════════════════════════════════╣
-| ║  Enter Save-As path.                      ║         |
+╔════════════ SLO P - E D   A D V A N C E D ════════════╗
+| PROJECT: slop-ed-dev/games/default-0000 | GAME: projects/slop-ed-dev/games/default-0000 |
+| LAYOUT: slop-ed-dev.chtpm                                 |
+|                                                           |
+|  GAME MAP:                                                |
+[>] 1. [Control Map]
++=========================================================+
+| [Z-LEVEL]: 0                                               |
++=========================================================+
+|  ####################                                     |
+|  #                  #                                     |
+|  #                  #                                     |
+|  #    .             #                                     |
+|  #                  #                                     |
+|  #   ###    R       #                                     |
+|  #        .         #                                     |
+|  #  #     @         #                                     |
+|  #                  #                                     |
+|  ####################                                     |
 
-╚═════════════════════════════════════════════╝
+╠═══════════════════════════════════════════════════════════╣
+| [RESP]: Loaded game: projects/slop-ed-dev/games/default-0000 |
+| [POS]: (5,5,0) | [ARMED]: [ # ] | [KEY]: None             |
+╠═══════════════════════════════════════════════════════════╣
+| [ ] 2. MAPS      : ADD map_0002.txt [map_0001.txt]   |
+| [ ] 3. GLYPHS    : [#] . R T @ & Z X ? !             |
+╠═══════════════════════════════════════════════════════════╣
+║ [ ] 4. [TOGGLE EMOJI] [ ] 5. [DB]║ [ ] 6. [PROJECT] [ ] 7. [EVENT]                             ║
+║ [ ] 8. [FILE] [ ] 9. [LOADER] [ ] 10. [EXIT]                                 ║
+╚═══════════════════════════════════════════════════════════╝
+ [1]: Grid | [2/3]: Palettes | [4]: Emoji Toggle | [ESC]: Nav
 
 +=========================================================+
-Active [^]:  (ESC to exit)
+Nav > _

@@ -2575,6 +2575,104 @@ requirement is PITFALL #99 already documented elsewhere in this file,
 search for it)
 
 =======================================================================
+PITFALL 69: A SMALL LOCAL LLM (gemma3:270m) CANNOT RELIABLY SELF-CLASSIFY
+            INTO A BINARY VERDICT ZERO-SHOT, EVEN WHEN IT DEMONSTRABLY
+            HAS THE UNDERLYING KNOWLEDGE — DECOUPLE "DESCRIBE" (WORKS)
+            FROM "CLASSIFY" (DOESN'T) INTO A DETERMINISTIC SCORER
+            BEFORE REACHING FOR A BIGGER MODEL
+=======================================================================
+DATE: 2026-08-02
+SEVERITY: HIGH (any project asking a small local LLM to render a judge/
+          approve-reject/win-lose verdict will silently get near-
+          meaningless output unless this pattern is followed)
+PROJECT FOUND: @.apps/my-biotech (its own "FDA_REVIEW" mechanic - a
+          Gemma call meant to read a real research dossier and render
+          APPROVED/REJECTED)
+
+SYMPTOM: A prompt asking gemma3:270m to directly classify content into
+a binary verdict ("Answer with just APPROVED or REJECTED") produces
+answers that look plausible but are NOT actually responsive to the
+content - live-tested against two deliberately extreme dossiers (one
+describing a compound that "causes immediate cardiac arrest in 100% of
+test subjects... banned as a chemical weapon," one describing Vitamin
+C), 270m answered APPROVED for the LETHAL compound 2 times out of 3,
+and when the question was reframed as SAFE/DANGEROUS (still binary,
+more concrete framing) it answered SAFE for the lethal compound 3/3
+times - even with the danger-option listed FIRST in the prompt (ruling
+out simple order/anchoring bias). Asking it to also explain its verdict
+produced ZERO real explanatory content ("Approved", "AN APPROVED" - no
+substance at all), the clearest signal that it was not reasoning about
+the content, just completing toward a default-positive-sounding token.
+
+ROOT CAUSE: this is NOT the same failure mode as Pitfall (see
+045.muchi-pal-agent🤖️+1's own gemma_strategy.c precedent, "gemma is too
+small to reliably follow a TOOL: format") - that finding was about
+STRUCTURED OUTPUT FORMAT reliability. This is different and, at first,
+counter-intuitive: 270m demonstrably HAS real, accurate knowledge about
+the exact same content when asked to freely describe/recall it (the
+SAME two test dossiers, when 270m was asked "Describe the safety
+concerns of this compound in one sentence" instead of "APPROVED or
+REJECTED," answered "highly toxic and potentially fatal... severe side
+effects" for the lethal compound and "generally safe... mild stomach
+upset" for Vitamin C, 6/6 trials both directions, real content-aware
+language every time). The model's OPEN-ENDED recall/description
+capability is genuinely good; its ZERO-SHOT SELF-CLASSIFICATION
+capability (collapsing that same knowledge into a binary decision) is
+not - a real, measured capability gap between "say what you know" and
+"judge what you know," specific to a model this small.
+
+FIX (the real, working pattern, live-verified 2026-08-02): do NOT ask
+the small model to classify. Ask it an OPEN-ENDED DESCRIBE question
+(the thing it's actually good at), then run your OWN deterministic
+keyword/sentiment scorer over that description text to derive the
+verdict - the exact same "deterministic dispatch over free text, never
+another LLM self-judgment" doctrine gemma_strategy.c already
+established for tool-detection, now confirmed to generalize to
+judge/verdict tasks too:
+
+  1. Prompt: "Describe the safety concerns of <X> in one sentence."
+     (open-ended, not "APPROVED/REJECTED" or "SAFE/DANGEROUS")
+  2. Run a small, auditable, hand-written keyword scorer over the real
+     response text (danger-words: toxic/fatal/lethal/dangerous/deadly/
+     poison/banned/severe/risk/harm/hazard/death/unsafe vs. safe-words:
+     safe/mild/beneficial/well-tolerated/none known/rare - count
+     occurrences, danger_count > safe_count -> REJECTED, tie defaults
+     to REJECTED per this house's own "honest default on inconclusive"
+     convention)
+  3. Verdict is now derived from OUR OWN code, not the model's own
+     unreliable self-judgment - fully auditable, matches this whole
+     project family's transparency ethos, and the real description
+     text is itself the player-visible "explanation" for the verdict,
+     not a fabricated one.
+
+TRIED AND REJECTED before landing on the above (documented so a future
+agent doesn't re-waste the same effort): switching the classify call to
+a bigger model (gemma3:1b) DID work (6/6 correct, real content-aware
+explanations) - but the describe+deterministic-score approach on the
+SAME small 270m model also reached 6/6 correct with real explanations,
+without needing the bigger model at all. Direct user framing, worth
+repeating as a standing rule: "i think its a big deal that we try to
+make it work b4 going up 2 larger model" - always try this
+decouple-describe-from-classify pattern FIRST, on whatever model is
+already in use, before reaching for a bigger one. A bigger model is a
+real, valid fallback if this pattern still doesn't work for a given
+task, not the first thing to reach for.
+
+FILES: @.apps/my-biotech/ops/mybiotech_fda_verdict.c (own header
+       comment has the full three-approach experiment trail),
+       @.apps/my-biotech/ops/mybiotech_research_worker.c (FDA_REVIEW
+       step), @.apps/my-biotech/test-harn-same/scenarios/
+       demo_fda_review_discrimination.sh (the real, repeatable,
+       live-gemma-call harness this finding was measured with - reuse
+       its shape for any other project's own judge/verdict mechanic)
+SEE ALSO: @.apps/my-lawyer/MY_LAWYER_DESIGN.md (its own judge mechanic,
+       §4, reads two real documents and picks a winner - the SAME
+       decouple-describe-from-classify pattern applies directly there:
+       ask gemma to describe/compare the two cases in prose, THEN
+       deterministically score which side's description reads
+       stronger, rather than asking it to directly output "A or B")
+
+=======================================================================
 END OF XYZOS-PITFALLS
 Add new pitfalls above this line as they are discovered.
 ========================================================================

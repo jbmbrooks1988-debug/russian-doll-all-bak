@@ -1665,12 +1665,26 @@ int main(int argc, char *argv[]) {
             // Before each epoch, reset the KV cache to process the sequence from the start
             zero_kv_cache(&model);
 
+            // SLIDING-WINDOW FIX (2026-07-31): training previously fed the
+            // raw corpus position i straight into transformer_forward/
+            // transformer_backward with no seq_len guard, so any corpus
+            // longer than model->seq_len (32) wrote the KV cache out of
+            // bounds -> heap corruption ("free(): invalid pointer") and
+            // "Position N out of bounds" warnings. This is why iqabod had
+            // only ever been trainable on <=32-token toy corpora (the loss
+            // plateau at the random floor in #.how2.3.txt). Generation
+            // already caps at seq_len; training now mirrors it: position is
+            // wrapped with i % seq_len and the KV cache is zeroed at each
+            // window boundary, so every window sees a fresh 32-token context.
             for (int i = 0; i < num_corpus_tokens - 1; i++) {
                 int current_token_id = corpus_token_ids[i];
                 int target_token_id = corpus_token_ids[i+1];
 
+                int pos = i % model.seq_len;
+                if (pos == 0) zero_kv_cache(&model);
+
                 // 1. FORWARD PASS: Run the model to get logits
-                float* logits = transformer_forward(&model, &vocab, &state, current_token_id, i);
+                float* logits = transformer_forward(&model, &vocab, &state, current_token_id, pos);
 
                 // 2. SOFTMAX: Convert logits to probabilities (in-place)
                 softmax(logits, model.vocab_size);
@@ -1682,7 +1696,7 @@ int main(int argc, char *argv[]) {
                 // 4. BACKWARD PASS: Compute all gradients
                 // Clear gradients from previous step
                 zero_gradients(&model);
-                transformer_backward(&model, &vocab, &state, current_token_id, i, target_token_id);
+                transformer_backward(&model, &vocab, &state, current_token_id, pos, target_token_id);
 
                 // 5. UPDATE WEIGHTS: Apply gradients to update model weights
                 update_weights(&model, learning_rate);

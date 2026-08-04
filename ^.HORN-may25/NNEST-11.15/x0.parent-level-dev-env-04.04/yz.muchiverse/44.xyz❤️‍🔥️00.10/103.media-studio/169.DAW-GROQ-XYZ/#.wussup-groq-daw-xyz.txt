@@ -1,0 +1,10 @@
+269.DAW-GROQ-XYZ
+
+
+seems like we could just keeping pushing this with "GROK" 
+
+(could even go the "do ur own thing first, then make into our arch after"
+way...)
+
+(or even get haiku / oc 2 "start" 
+(and 2 guide those refactors als)

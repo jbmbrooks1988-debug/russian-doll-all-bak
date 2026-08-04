@@ -4705,3 +4705,83 @@ SEE ALSO: PITFALL 66; 01.muchi-pals-🥚️-13.01/dox/04-module-and-manager-
 architecture.md (superseded, corrected, kept for the reasoning record);
 01.muchi-pals-🥚️-13.01/dox/06-per-screen-module-standard.md (the full
 house-wide scope table)
+
+========================================================================
+42. WHEN A SMALL LOCAL LLM NEEDS TO RENDER A JUDGE/VERDICT DECISION:
+    DECOUPLE "DESCRIBE" FROM "CLASSIFY" BEFORE REACHING FOR A BIGGER
+    MODEL — STANDING RULE, NOT A ONE-OFF FIX
+========================================================================
+
+DIRECT USER FRAMING (2026-08-02), stated as a standing priority, not
+just a fix for one project: "i think its a big deal that we try to make
+it work b4 going up 2 larger model." This section makes that a house-
+wide rule for ANY project asking a small local LLM (this house's own
+gemma3:270m, in practice) to render a binary/classification verdict -
+APPROVED/REJECTED, A/B, WIN/LOSE, SAFE/DANGEROUS, or similar.
+
+THE RULE: never ask the small model to directly classify. Ask it an
+OPEN-ENDED DESCRIBE question about the same content instead (what it is
+demonstrably good at - real, accurate, content-aware recall/description
+when the task doesn't require it to also collapse that knowledge into a
+decision), then run YOUR OWN deterministic keyword/sentiment scorer over
+the real response text to derive the verdict. This is the SAME
+"deterministic dispatch over free text, never another LLM self-
+judgment" doctrine §"gemma_strategy.c" already established for tool-
+detection (045.muchi-pal-agent🤖️+1's own real, live-tested finding:
+"gemma is too small to reliably follow a TOOL: format, so tool
+detection is fully deterministic and keyword-based, decided BEFORE any
+LLM call") - PITFALL 69 confirms this generalizes from tool-detection
+to judge/verdict tasks too, and is a DIFFERENT, separate finding from
+the tool-format one (a model can have genuinely poor zero-shot self-
+classification even when its underlying knowledge recall is accurate -
+these are not the same capability).
+
+WHY THIS MATTERS ENOUGH TO BE A STANDING RULE, NOT JUST A PITFALL: the
+easy, tempting first move when a small model's own verdict "doesn't
+seem right" is to reach for a bigger model (this house already has
+gemma3:1b available on the same LAN box specifically for this reason -
+see model_list.txt's own gemma-lan-1b entry). That IS a real, valid
+fallback (live-tested, PITFALL 69: 1b got 6/6 correct with real
+explanations on the exact test case that broke 270m) - but it should be
+the FALLBACK, tried AFTER the describe+deterministic-score pattern,
+not the default first reach. On the one real case tested so far
+(PITFALL 69), describe+deterministic-score on the SAME small 270m model
+matched the bigger model's own 6/6 correctness, with zero need to
+upgrade at all - meaning the "problem" was never really model size, it
+was asking the wrong SHAPE of question.
+
+CONCRETE CHECKLIST for any project building a judge/verdict mechanic
+against a small local LLM:
+  1. Does the task require the model to CLASSIFY (pick between 2+ fixed
+     options) rather than DESCRIBE/RECALL (produce open-ended text)? If
+     classify: this section applies.
+  2. Rewrite the prompt to ask for a description/explanation of the
+     relevant content instead of a direct verdict.
+  3. Write a small, hand-authored, auditable keyword/sentiment scorer
+     over the real response text (a short positive-keyword list vs.
+     negative-keyword list, simple counting, deterministic tie-breaking
+     toward whichever default is "safer"/more conservative for the
+     domain - see PITFALL 69's own example scorer).
+  4. Test BOTH an obviously-should-pass case and an obviously-should-
+     fail case, multiple trials each (N=1 is not enough - PITFALL 69's
+     own first pass looked like a hard bias at N=2, turned out to be a
+     strong-but-not-total bias at N=6), through the REAL production
+     code path, not a one-off manual curl - build this as a real
+     `test-harn-same/` scenario (see PITFALL 69's own
+     demo_fda_review_discrimination.sh) so the finding is repeatable
+     and the harness itself becomes a regression guard if a future
+     prompt change reintroduces poor discrimination.
+  5. Only escalate to a bigger local model (or an external API) if step
+     2-3's own pattern still fails the step-4 test after real attempts
+     at both a naive AND a reframed/few-shot describe-prompt - and
+     document what was tried, same as PITFALL 69 does, so the next
+     project doesn't re-spend the same effort finding this out again.
+
+SEE ALSO: PITFALL 69 in !.xyzos-pitfalls+1.txt (the full real incident
+this rule generalizes from, including the exact three-approach
+experiment trail and a real example scorer); 045.muchi-pal-agent🤖️+1's
+own ops/gemma_strategy.c (the original deterministic-dispatch
+precedent this section extends); @.apps/my-lawyer/MY_LAWYER_DESIGN.md
+§4 (a second, not-yet-built project whose own judge mechanic should
+apply this same pattern from the start, not discover it the hard way
+like my-biotech did)

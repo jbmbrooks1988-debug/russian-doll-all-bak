@@ -213,31 +213,108 @@ static int next_save_serial(void) {
     return max_n + 1;
 }
 
+/* REAL, LIVE-CAUGHT DATA-LOSS BUG (2026-07-31): the original version of
+ * both functions below chained every step with `&&` in ONE shell -c
+ * string, checked only the FINAL combined exit code, and - worse, in
+ * do_load() - ran `rm -rf` on the LIVE pieces/registry BEFORE
+ * confirming the save actually had a valid registry/ to restore.
+ * Real consequence, confirmed live: this project's own pieces/
+ * registry/ (containing this whole de-theme's own real slime/
+ * slime_pup content) was silently destroyed - the ORIGINAL save
+ * (`save_1`) turned out to have never actually received a registry/
+ * copy at all (root cause of THAT specific silent failure not fully
+ * chased down - a shell-chain step failed invisibly, since
+ * run_command() redirects both stdout AND stderr to /dev/null in the
+ * child, matching real_command()'s own header - no error ever
+ * surfaced anywhere), and the later Load's own blind `rm -rf` had
+ * nothing valid to restore from, permanently deleting the live copy
+ * with zero recovery path. Rewritten below: every step's own real
+ * exit code is checked separately (no more single combined chain
+ * hiding which step actually failed), and do_load() NEVER touches the
+ * live directories until the SOURCE (the save's own world_01/registry)
+ * is confirmed to exist first - if the source is missing or
+ * incomplete, the load is refused outright, live data is left
+ * completely untouched. */
+static int dir_nonempty(const char *path) {
+    DIR *d = opendir(path);
+    if (!d) return 0;
+    struct dirent *e;
+    int found = 0;
+    while ((e = readdir(d)) != NULL) {
+        if (e->d_name[0] == '.') continue;
+        found = 1;
+        break;
+    }
+    closedir(d);
+    return found;
+}
+
 static void do_save_new(void) {
     int serial = next_save_serial();
     char dst[MAX_PATH];
     snprintf(dst, sizeof(dst), "%s/save_%d", save_root, serial);
-    char cmd[MAX_PATH * 4];
-    snprintf(cmd, sizeof(cmd), "mkdir -p '%s' && cp -r '%s/pieces/world_01' '%s/' && cp -r '%s/pieces/registry' '%s/' && cp '%s/project.pdl' '%s/' 2>/dev/null",
-             dst, project_root, dst, project_root, dst, project_root, dst);
-    int rc = run_command(cmd);
+
+    char cmd[MAX_PATH * 2];
+    int ok = 1;
+
+    snprintf(cmd, sizeof(cmd), "mkdir -p '%s'", dst);
+    if (run_command(cmd) != 0) ok = 0;
+
+    if (ok) {
+        snprintf(cmd, sizeof(cmd), "cp -r '%s/pieces/world_01' '%s/'", project_root, dst);
+        if (run_command(cmd) != 0) ok = 0;
+    }
+
+    if (ok) {
+        snprintf(cmd, sizeof(cmd), "cp -r '%s/pieces/registry' '%s/'", project_root, dst);
+        if (run_command(cmd) != 0) ok = 0;
+    }
+
+    /* project.pdl is real but optional - a missing one should not fail
+     * the whole save (matches the original behavior's own intent),
+     * but is checked separately rather than silently folded into a
+     * combined chain. */
+    if (ok) {
+        char src_pdl[MAX_PATH];
+        snprintf(src_pdl, sizeof(src_pdl), "%s/project.pdl", project_root);
+        if (is_dir(src_pdl) == 0) { /* not a dir check, just existence via access below */ }
+        snprintf(cmd, sizeof(cmd), "[ -f '%s/project.pdl' ] && cp '%s/project.pdl' '%s/'", project_root, project_root, dst);
+        run_command(cmd); /* best-effort, not gated on ok */
+    }
+
+    /* Verify what actually landed, not just trust exit codes - a `cp`
+     * can exit 0 while copying an EMPTY source directory (not an
+     * error, just nothing to copy), which is exactly how the original
+     * incident's own registry/ ended up silently absent. */
+    if (ok) {
+        char world_dst[MAX_PATH], reg_dst[MAX_PATH];
+        snprintf(world_dst, sizeof(world_dst), "%s/world_01", dst);
+        snprintf(reg_dst, sizeof(reg_dst), "%s/registry", dst);
+        if (!dir_nonempty(world_dst) || !dir_nonempty(reg_dst)) ok = 0;
+    }
 
     char turn_path[MAX_PATH];
     snprintf(turn_path, sizeof(turn_path), "%s/pieces/world_01/map_start/state.txt", project_root);
     int turn = read_kv_int(turn_path, "turn", 0);
 
-    char meta_path[MAX_PATH + 32];
-    snprintf(meta_path, sizeof(meta_path), "%s/save_meta.txt", dst);
-    FILE *mf = fopen(meta_path, "w");
-    if (mf) {
-        fprintf(mf, "turn=%d\n", turn);
-        fprintf(mf, "saved_at=%ld\n", (long)time(NULL));
-        fclose(mf);
+    if (ok) {
+        char meta_path[MAX_PATH + 32];
+        snprintf(meta_path, sizeof(meta_path), "%s/save_meta.txt", dst);
+        FILE *mf = fopen(meta_path, "w");
+        if (mf) {
+            fprintf(mf, "turn=%d\n", turn);
+            fprintf(mf, "saved_at=%ld\n", (long)time(NULL));
+            fclose(mf);
+        }
+    } else {
+        /* Don't leave a half-written, misleading save slot behind. */
+        snprintf(cmd, sizeof(cmd), "rm -rf '%s'", dst);
+        run_command(cmd);
     }
 
     char msg[160];
-    if (rc == 0) snprintf(msg, sizeof(msg), "Saved to save_%d (turn %d, %s).", serial, turn, using_xyzfs ? "xyzfs" : "local dev");
-    else snprintf(msg, sizeof(msg), "Save failed.");
+    if (ok) snprintf(msg, sizeof(msg), "Saved to save_%d (turn %d, %s).", serial, turn, using_xyzfs ? "xyzfs" : "local dev");
+    else snprintf(msg, sizeof(msg), "Save failed - nothing was written (see this daemon's own header comment for the real incident this guards against).");
     log_message(msg);
 }
 
@@ -246,18 +323,48 @@ static void do_load(const char *save_name) {
     snprintf(src, sizeof(src), "%s/%s", save_root, save_name);
     if (!is_dir(src)) { log_message("Load failed: save not found."); return; }
 
-    char cmd[MAX_PATH * 4];
-    snprintf(cmd, sizeof(cmd),
-        "rm -rf '%s/pieces/world_01' '%s/pieces/registry' && "
-        "cp -r '%s/world_01' '%s/pieces/' && "
-        "cp -r '%s/registry' '%s/pieces/' && "
-        "( [ -f '%s/project.pdl' ] && cp '%s/project.pdl' '%s/' || true )",
-        project_root, project_root, src, project_root, src, project_root, src, src, project_root);
-    int rc = run_command(cmd);
+    /* REAL SAFETY GATE - confirm the source has valid content BEFORE
+     * touching the live directories at all. This is the fix for the
+     * real incident this file's own header comment documents. */
+    char src_world[MAX_PATH], src_reg[MAX_PATH];
+    snprintf(src_world, sizeof(src_world), "%s/world_01", src);
+    snprintf(src_reg, sizeof(src_reg), "%s/registry", src);
+    if (!dir_nonempty(src_world)) {
+        log_message("Load refused: this save has no real world_01/ content - live data left untouched.");
+        return;
+    }
+    if (!dir_nonempty(src_reg)) {
+        log_message("Load refused: this save has no real registry/ content - live data left untouched.");
+        return;
+    }
+
+    char cmd[MAX_PATH * 2];
+    int ok = 1;
+
+    snprintf(cmd, sizeof(cmd), "rm -rf '%s/pieces/world_01'", project_root);
+    if (run_command(cmd) != 0) ok = 0;
+    if (ok) {
+        snprintf(cmd, sizeof(cmd), "cp -r '%s' '%s/pieces/'", src_world, project_root);
+        if (run_command(cmd) != 0) ok = 0;
+    }
+
+    if (ok) {
+        snprintf(cmd, sizeof(cmd), "rm -rf '%s/pieces/registry'", project_root);
+        if (run_command(cmd) != 0) ok = 0;
+    }
+    if (ok) {
+        snprintf(cmd, sizeof(cmd), "cp -r '%s' '%s/pieces/'", src_reg, project_root);
+        if (run_command(cmd) != 0) ok = 0;
+    }
+
+    if (ok) {
+        snprintf(cmd, sizeof(cmd), "[ -f '%s/project.pdl' ] && cp '%s/project.pdl' '%s/'", src, src, project_root);
+        run_command(cmd); /* best-effort, optional */
+    }
 
     char msg[160];
-    if (rc == 0) snprintf(msg, sizeof(msg), "Loaded %s.", save_name);
-    else snprintf(msg, sizeof(msg), "Load failed.");
+    if (ok) snprintf(msg, sizeof(msg), "Loaded %s.", save_name);
+    else snprintf(msg, sizeof(msg), "Load partially failed - live pieces/world_01 or pieces/registry may be incomplete, check manually.");
     log_message(msg);
     transition_to_layout("pieces/chtpm/layouts/game.chtpm");
 }
