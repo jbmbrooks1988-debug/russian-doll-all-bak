@@ -839,16 +839,27 @@ void exec_custom_op(Inst *i) {
                 full_script_path = strdup(clean_script_path);
             }
 
-            /* For layout_op, use system() for interactive stdin */
+            /* REAL FIX 2026-08-04 (event-editor "Enter bug" root cause):
+             * full_script_path was interpolated BARE into these popen()/
+             * system() command strings. This house's own directory tree
+             * has a literal "&.widgits" path segment - an unescaped '&'
+             * in a shell command backgrounds/truncates it, so every
+             * PAL-driven custom-op call (ee_menu_input, ee_compose_frame,
+             * etc, anything living under &.widgits) was silently
+             * mis-parsed by /bin/sh and never actually ran, while direct
+             * manual invocation (relative path, no shell reinterpretation)
+             * worked fine - which is exactly why the op tested correct
+             * standalone but never took effect live. Single-quoting the
+             * path defuses '&' and any other shell metacharacter in it. */
             if (strcmp(i->custom_name, "layout_op") == 0) {
                 /* Pass menu_id from rs1, result goes to shared file */
-                if (asprintf(&cmd, "%s %d > /tmp/prisc_layout_result.txt",
+                if (asprintf(&cmd, "'%s' %d > /tmp/prisc_layout_result.txt",
                          full_script_path, regs[i->rs1]) != -1) {
                     int sys_rc = system(cmd);
                     (void)sys_rc; /* op's own exit status isn't consulted here */
                     free(cmd);
                 }
-                
+
                 /* Read result from shared file */
                 FILE *rf = fopen("/tmp/prisc_layout_result.txt", "r");
                 if (rf) {
@@ -861,7 +872,7 @@ void exec_custom_op(Inst *i) {
             } else {
                 /* Pass literal arg if present, else pass register value */
                 if (strlen(i->literal_arg) > 0) {
-                    if (asprintf(&cmd, "%s \"%s\"",
+                    if (asprintf(&cmd, "'%s' \"%s\"",
                              full_script_path, i->literal_arg) != -1) {
                         FILE *pipe = popen(cmd, "r");
                         if (pipe) {
@@ -872,7 +883,7 @@ void exec_custom_op(Inst *i) {
                         free(cmd);
                     }
                 } else {
-                    if (asprintf(&cmd, "%s %d",
+                    if (asprintf(&cmd, "'%s' %d",
                              full_script_path, regs[i->rs1]) != -1) {
                         FILE *pipe = popen(cmd, "r");
                         if (pipe) {

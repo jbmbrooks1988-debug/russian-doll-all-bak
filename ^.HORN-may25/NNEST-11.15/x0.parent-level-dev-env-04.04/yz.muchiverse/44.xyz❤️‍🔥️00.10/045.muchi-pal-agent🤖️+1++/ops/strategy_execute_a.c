@@ -469,9 +469,11 @@ static int parse_w1_args(const char *msg, char *book, size_t bsz,
     }
     if (!ch_ptr) return 0;
 
-    /* Extract chapter */
-    size_t clen = strlen(ch_ptr);
-    while (clen > 0 && !isspace((unsigned char)ch_ptr[clen-1])) clen--;
+    /* Extract chapter — word boundary only (ch_ptr extends into the rest
+     * of the message, so measure to the first space, not strlen). */
+    const char *w_end = ch_ptr;
+    while (*w_end && !isspace((unsigned char)*w_end)) w_end++;
+    size_t clen = w_end - ch_ptr;
     if (clen >= csz) clen = csz - 1;
     memcpy(chapter, ch_ptr, clen);
     chapter[clen] = '\0';
@@ -487,12 +489,13 @@ static int parse_w1_args(const char *msg, char *book, size_t bsz,
         book[bklen] = '\0';
     }
 
-    /* Step 3: Find cell_id — look for "cell" keyword anywhere in message */
-    const char *cell_kw = strcasestr(msg, "cell");
-    if (cell_kw) {
-        const char *cp = cell_kw + 4;
+    /* Step 3: Find cell_id — scan all "cell" occurrences for one followed
+     * by (optional "_") + digits: "cell 01", "cell_01", "cell01". */
+    const char *scan = msg;
+    while ((scan = strcasestr(scan, "cell")) != NULL) {
+        const char *cp = scan + 4;
         while (*cp && isspace((unsigned char)*cp)) cp++;
-        /* Extract the cell identifier (could be "01", "cell_01", etc.) */
+        if (*cp == '_') cp++;
         if (*cp >= '0' && *cp <= '9') {
             char cid[64];
             int ci = 0;
@@ -500,13 +503,14 @@ static int parse_w1_args(const char *msg, char *book, size_t bsz,
                 cid[ci++] = *cp++;
             }
             cid[ci] = '\0';
-            /* If just digits, prefix with "cell_" */
             if (cid[0] >= '0' && cid[0] <= '9' && strstr(cid, "_") == NULL) {
                 snprintf(cell_id, cell_sz, "cell_%s", cid);
             } else {
                 snprintf(cell_id, cell_sz, "%s", cid);
             }
+            break;
         }
+        scan += 4;
     }
 
     return (chapter[0] && book[0]) ? 1 : 0;

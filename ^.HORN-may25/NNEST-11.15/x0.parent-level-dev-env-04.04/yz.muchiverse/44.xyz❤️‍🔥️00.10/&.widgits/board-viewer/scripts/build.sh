@@ -24,6 +24,16 @@ gcc $CFLAGS -fopenmp -o "ops/+x/bv_render_3d.+x" "ops/bv_render_3d.c" -lm
 # it works with no active login).
 gcc $CFLAGS -o "ops/+x/ledger_append.+x" "ops/ledger_append.c"
 gcc $CFLAGS -o "ops/+x/ledger_peers.+x" "ops/ledger_peers.c"
+# REAL, NEW 2026-08-04, direct instruction (tile-picker's own "^" drag-
+# anywhere mode, see &.widgits/tile-picker/TILE_PICKER_DESIGN.md §4):
+# GLUT doesn't set _NET_WM_PID and this house's WM doesn't synthesize
+# one (confirmed via direct xprop check on a live gl_mirror window) -
+# tag this widget's own window with its real PID right after spawn (see
+# button.sh's own call site) so tile-picker's ledger_peers+PID lookup
+# can find THIS specific board-viewer instance's window unambiguously,
+# even with several identically-titled "wsr-pal RGB mirror" windows open
+# at once. Ported from tile-picker's own ops/tp_set_wm_pid.c.
+gcc $CFLAGS -o "ops/+x/bv_set_wm_pid.+x" "ops/bv_set_wm_pid.c" -lX11
 
 echo "--- Copying system binaries (local copies, per file-menu's own real pattern) ---"
 WSR="$(cd "$SCRIPT_DIR/../.." && pwd)/014.wsr-pal💸️📌️+2"

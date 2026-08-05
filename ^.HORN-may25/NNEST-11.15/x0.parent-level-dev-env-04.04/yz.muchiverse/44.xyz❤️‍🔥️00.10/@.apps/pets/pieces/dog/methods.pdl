@@ -1,0 +1,4 @@
+SECTION      | KEY                | VALUE
+----------------------------------------
+METHOD       | Close                | CLOSE
+METHOD       | Cancel               | void

@@ -92,7 +92,8 @@ _start_session() {
 
     cat > pieces/system/ee_state.txt << EOF
 view_mode=commands
-pkg_name=door_guard
+pkg_name=${EE_PKG_NAME:-door_guard}
+pkg_dir=${EE_PKG_DIR:-}
 page=1
 last_message=widget profile: GL primary; SHOW_ASCII=$SHOW_ASCII
 EOF
@@ -124,6 +125,23 @@ EOF
     # CHTPM → current_frame.txt
     ./system/chtpm_parser_pal pieces/chtpm/layouts/event_editor.chtpm >/dev/null 2>&1 &
     _log_pid $! chtpm_parser_pal
+
+    # REAL FIX 2026-08-04, direct instruction ("requires enter press
+    # before it renders text, otherwise blank, lets fix that bug no
+    # matter wut"): the exact "THREE-LAYER RACE" already documented and
+    # fixed in file-menu/tile-picker/board-viewer's own button.sh was
+    # simply MISSING here - chtpm_rgb_render started immediately, before
+    # chtpm_parser_pal's own first real parse_chtm()+compose_frame() had
+    # produced a real current_frame.txt, so its own baseline pulse-size
+    # read latched onto an empty/incomplete frame - it then never
+    # re-rendered until some LATER pulse (e.g. a keypress) grew the
+    # marker past that wrong baseline, which is exactly "blank until
+    # Enter." Same real wait-loop fix as those other three projects.
+    waited=0
+    while [ ! -s pieces/display/current_frame.txt ] && [ "$waited" -lt 20 ]; do
+        sleep 0.1
+        waited=$((waited + 1))
+    done
 
     # RGB from ASCII frame
     if [ -x ./system/chtpm_rgb_render ]; then

@@ -1,6 +1,6 @@
 opencode --continue   <- works. 
 
-
+🦁️
 📆️
 extrude emojis "backwards" maaybe b4 u push forward more or add ".config option"
 

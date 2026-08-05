@@ -29,3 +29,5 @@ leather_gloves|Leather Gloves|armor|[|100|1|🧤
 backpack|Backpack|container|(|800|0|🎒
 flashlight|Flashlight|tool|;|200|0|🔦
 lighter|Lighter|tool|;|50|0|🔥
+asa_portrait|Asa Portrait Marker|material|@|0|0|🎤
+ava_portrait|Ava Portrait Marker|material|@|0|0|💃

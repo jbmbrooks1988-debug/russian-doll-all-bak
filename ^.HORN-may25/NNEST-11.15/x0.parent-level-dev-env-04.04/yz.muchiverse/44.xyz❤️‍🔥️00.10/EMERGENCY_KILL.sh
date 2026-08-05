@@ -27,7 +27,19 @@
 
 echo "EMERGENCY KILL..."
 
-NAMES='orchestrator keyboard_input chtpm_parser_pal chtpm_rgb_render gl_mirror egg_window avatar_window renderer prisc\+x agy_browser_manager rtp_manager yahoo_menu_input yahoo_compose_frame broker_menu_input broker_compose_frame deposit_withdraw'
+# REAL ADDITION 2026-08-04, direct instruction ("clean up cpu emergency
+# add to EMERGENCY_KILL.sh"): tp_desktop_window.+x (tile-picker's own
+# live desktop-entity GL windows - long-running by design, same class
+# of process as egg_window above) and tp_arm_placer.+x (holds a real
+# GLOBAL X11 pointer+keyboard grab while armed - a stuck one would lock
+# input for the whole desktop, not just one window, making it a real
+# emergency-kill candidate specifically). Confirmed this session:
+# chtpm_parser_pal/chtpm_rgb_render (already on this list) are the ones
+# that actually ran away with real CPU/memory when left unattended -
+# root cause was a real bug in tp_menu_input.c (fixed), not these
+# binaries themselves, but keeping them on this list is still correct
+# defense-in-depth.
+NAMES='orchestrator keyboard_input chtpm_parser_pal chtpm_rgb_render gl_mirror egg_window avatar_window renderer prisc\+x agy_browser_manager rtp_manager yahoo_menu_input yahoo_compose_frame broker_menu_input broker_compose_frame deposit_withdraw tp_desktop_window tp_arm_placer'
 
 pat() {
     # $1 = bare name (unescaped except prisc+x's own literal backslash

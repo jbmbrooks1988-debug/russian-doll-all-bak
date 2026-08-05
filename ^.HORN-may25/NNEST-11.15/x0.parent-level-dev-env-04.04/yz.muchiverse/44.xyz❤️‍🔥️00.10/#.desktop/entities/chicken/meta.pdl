@@ -1,0 +1,6 @@
+SECTION      | KEY                | VALUE
+----------------------------------------
+META         | piece_id           | chicken
+STATE        | kind                 | pet
+METHOD       | Close                | CLOSE
+METHOD       | Cancel               | void

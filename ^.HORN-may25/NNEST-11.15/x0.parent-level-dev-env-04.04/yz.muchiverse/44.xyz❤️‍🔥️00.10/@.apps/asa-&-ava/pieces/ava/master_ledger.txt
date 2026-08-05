@@ -1,0 +1,2 @@
+[2026-08-04 20:36:44] Chat: user said "hello ava" | Trigger: chat.sh
+[2026-08-04 20:36:44] Chat: ava replied "Hi there!" | Trigger: chat.sh

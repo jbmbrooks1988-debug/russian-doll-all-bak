@@ -1,0 +1,6 @@
+SECTION      | KEY                | VALUE
+----------------------------------------
+META         | piece_id           | cat
+STATE        | kind                 | pet
+METHOD       | Close                | CLOSE
+METHOD       | Cancel               | void

@@ -109,6 +109,48 @@ static void sanitize(const char *in, char *out, size_t n) {
     out[j] = '\0';
 }
 
+/* REAL event content, 2026-08-04 direct instruction ("i want to start
+ * seeing the actual events in any of the event editors"): parses a
+ * real package's own event.ir.pdl NODE rows (format:
+ * "NODE         | id=N type=TYPE    | text=TEXT") into real content
+ * lines, replacing the hardcoded door_guard CMDS[]/BLOCKS[] demo
+ * arrays whenever a real pkg_dir (ee_state.txt's own pkg_dir= key,
+ * set by button.sh's EE_PKG_DIR env, see methods.pdl's own Events row)
+ * points at a package that actually has one. Falls back to the demo
+ * arrays untouched if no pkg_dir or no event.ir.pdl - existing
+ * door_guard behavior is unaffected. */
+static int load_real_rows(const char *pkg_dir, char rows_buf[MAX_CONTENT][160]) {
+    if (!pkg_dir || !pkg_dir[0]) return 0;
+    char path[PATH_BUF];
+    snprintf(path, sizeof(path), "%s/event.ir.pdl", pkg_dir);
+    FILE *f = fopen(path, "r");
+    if (!f) return 0;
+    char line[MAX_LINE];
+    int n = 0;
+    while (n < MAX_CONTENT && fgets(line, sizeof(line), f)) {
+        line[strcspn(line, "\r\n")] = '\0';
+        if (strncmp(line, "NODE", 4) != 0) continue;
+        char *type_p = strstr(line, "type=");
+        char *text_p = strstr(line, "text=");
+        if (!type_p) continue;
+        char type_buf[48] = "";
+        {
+            char *t = type_p + 5, *sp = strchr(t, ' ');
+            char *pipe = strchr(t, '|');
+            size_t len = sp ? (size_t)(sp - t) : (pipe ? (size_t)(pipe - t) : strlen(t));
+            if (len >= sizeof(type_buf)) len = sizeof(type_buf) - 1;
+            memcpy(type_buf, t, len);
+            type_buf[len] = '\0';
+        }
+        const char *text_val = text_p ? text_p + 5 : "";
+        while (*text_val == ' ') text_val++;
+        snprintf(rows_buf[n], 160, "%s: %s", type_buf, text_val);
+        n++;
+    }
+    fclose(f);
+    return n;
+}
+
 int main(void) {
     resolve_root();
 
@@ -117,18 +159,24 @@ int main(void) {
     snprintf(view, sizeof(view), "%s/pieces/apps/player_app/view.txt", project_root);
     snprintf(gui, sizeof(gui), "%s/projects/event-editor/manager/gui_state.txt", project_root);
 
-    char view_mode[64], pkg[128], page[32], msg[MAX_LINE];
+    char view_mode[64], pkg[128], page[32], msg[MAX_LINE], pkg_dir[PATH_BUF];
     read_kv(state, "view_mode", view_mode, sizeof(view_mode));
     read_kv(state, "pkg_name", pkg, sizeof(pkg));
     read_kv(state, "page", page, sizeof(page));
     read_kv(state, "last_message", msg, sizeof(msg));
+    read_kv(state, "pkg_dir", pkg_dir, sizeof(pkg_dir));
     if (!view_mode[0]) snprintf(view_mode, sizeof(view_mode), "commands");
     if (!pkg[0]) snprintf(pkg, sizeof(pkg), "door_guard");
     if (!page[0]) snprintf(page, sizeof(page), "1");
 
     int scratch = (strcmp(view_mode, "scratch") == 0);
-    const char **rows = scratch ? BLOCKS : CMDS;
-    int n_content = MAX_CONTENT;
+    static char real_rows_buf[MAX_CONTENT][160];
+    static const char *real_rows_ptr[MAX_CONTENT];
+    int n_real = load_real_rows(pkg_dir, real_rows_buf);
+    for (int i = 0; i < n_real; i++) real_rows_ptr[i] = real_rows_buf[i];
+
+    const char **rows = n_real > 0 ? real_rows_ptr : (scratch ? BLOCKS : CMDS);
+    int n_content = n_real > 0 ? n_real : MAX_CONTENT;
     int footer_base = CONTENT_START + n_content; /* 29 */
     int last_nav = footer_base + N_FOOTER - 1;   /* 34 */
 
@@ -138,7 +186,27 @@ int main(void) {
     fprintf(o, "|  EVENT  name=%-16.16s  page=%s  view=%-8.8s |\n",
             pkg, page, scratch ? "SCRATCH" : "COMMANDS");
     fprintf(o, "+==============================================================+\n");
-    box_line(o, "Image [@]  Trigger: Action Button  Priority: Same");
+    /* REAL sprite thumbnail, 2026-08-04 direct instruction ("dont we
+     * create emoji atlas as jpg then convert to csv? cant we do the
+     * same with an image"): reuses the EXACT same real mechanism as
+     * map-tile emoji rendering (chtpm_rgb_render's own
+     * load_emoji_assets_from() reverse lookup against
+     * pieces/registry/items/items.txt) - the glyph below is not
+     * decorative text, it's a registered Unicode marker
+     * (items.txt: asa_portrait|...|🎤) that chtpm_rgb_render replaces
+     * with a real 16x16 voxel block generated from asa's own
+     * il-dj.png via tp_asset_to_sprite.+x (registry:
+     * pieces/registry/emoji_assets/asa_portrait/voxels_16.csv). Only
+     * wired for pkg=="asa"/"ava" so far (ava: items.txt ava_portrait|
+     * ...|💃, from nyeoni8.png); other pkgs fall back to the plain
+     * bracket placeholder until they get their own registered asset. */
+    if (strcmp(pkg, "asa") == 0) {
+        box_line(o, "Image \xF0\x9F\x8E\xA4  Trigger: Action Button  Priority: Same");
+    } else if (strcmp(pkg, "ava") == 0) {
+        box_line(o, "Image \xF0\x9F\x92\x83  Trigger: Action Button  Priority: Same");
+    } else {
+        box_line(o, "Image [@]  Trigger: Action Button  Priority: Same");
+    }
     box_line(o, "Conditions: [x] Switch door_open is OFF");
     fprintf(o, "+==============================================================+\n");
     {

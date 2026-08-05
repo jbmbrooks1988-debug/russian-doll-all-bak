@@ -149,6 +149,29 @@ EOSTATE
         if [ -z "$NO_GL" ] && [ -x ./system/gl_mirror ]; then
             ./system/gl_mirror >/dev/null 2>&1 &
             GL_PID=$!
+            # REAL, NEW 2026-08-04, direct instruction (tile-picker's own
+            # "^" drag-anywhere mode - see &.widgits/tile-picker/
+            # TILE_PICKER_DESIGN.md §4): tag this window with the real
+            # _NET_WM_PID property so tile-picker's ledger_peers+PID
+            # lookup can find THIS specific board-viewer instance's
+            # window unambiguously (every widget's gl_mirror window
+            # shares the same title, "wsr-pal RGB mirror" - title
+            # matching alone can't disambiguate). Re-resolves the true
+            # running PID via cwd-scoped pgrep (bash's own $! didn't
+            # match the actual gl_mirror process in testing - it forks
+            # internally), same technique kill_own_module() below
+            # already uses.
+            if [ -x ./ops/+x/bv_set_wm_pid.+x ]; then
+                (
+                    sleep 0.3
+                    real_pid=""
+                    for cand in $(pgrep -f "system/gl_mirror" 2>/dev/null); do
+                        cwd="$(readlink -f "/proc/$cand/cwd" 2>/dev/null)"
+                        if [ "$cwd" = "$SESSION_DIR" ]; then real_pid="$cand"; fi
+                    done
+                    [ -n "$real_pid" ] && ./ops/+x/bv_set_wm_pid.+x "wsr-pal RGB mirror" "$real_pid" >/dev/null 2>&1
+                ) &
+            fi
         fi
         if [ -z "$NO_GL" ] && [ -x ./system/chtpm_rgb_render ]; then
             ./system/chtpm_rgb_render >/dev/null 2>&1 &

@@ -1,4 +1,0 @@
-5200 orchestrator
-5203 ./system/renderer
-5204 ./system/chtpm_parser_pal
-5205 ./system/chtpm_rgb_render

@@ -59,9 +59,17 @@ static void json_escaped(FILE *out, const char *s) {
     }
 }
 
+/* Next verse number after the given one, as a string. */
+static const char *next_verse_num(const char *v) {
+    static char buf[16];
+    int n = atoi(v) + 1;
+    if (n < 100) snprintf(buf, sizeof(buf), "%02d", n);
+    else          snprintf(buf, sizeof(buf), "%d", n);
+    return buf;
+}
+
 /* Find the last verse line of a cell txt: last line matching **N** ... */
-static char *last_verse_of(const char *path) {
-    char *txt = read_full_file(path);
+static char *last_verse_of(const char *path) {    char *txt = read_full_file(path);
     if (!txt) return NULL;
     char *last = NULL;
     char *save = NULL;
@@ -182,9 +190,13 @@ int main(int argc, char **argv) {
     }
 
     up += (size_t)snprintf(user + up, MAX_PROMPT - up,
-        "\nNow write verses %s through %s of this chapter. "
-        "Output ONLY the verse lines, each beginning **N** with sequential numbering.\n",
-        v_from, v_to);
+        "\nNow write verses %s through %s of this chapter. Format every verse as a "
+        "bold verse number followed by the verse text, exactly like this:\n"
+        "**%s** And it came to pass that the city slept beneath the dust.\n"
+        "**%s** Now the man of great wealth walked its streets, and none knew him.\n"
+        "Write ONLY those verse lines, in order, starting at verse %s. "
+        "No headers, no notes, no commentary.\n",
+        v_from, v_to, v_from, next_verse_num(v_from), v_from);
 
     /* Build ollama /api/generate request file */
     char req_path[PATH_BUF];

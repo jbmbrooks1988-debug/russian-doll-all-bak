@@ -1,0 +1,3 @@
+project_id=aomorai-editor
+active_target_id=new_game
+game_datetime=2026-01-01T00:00:00.108
