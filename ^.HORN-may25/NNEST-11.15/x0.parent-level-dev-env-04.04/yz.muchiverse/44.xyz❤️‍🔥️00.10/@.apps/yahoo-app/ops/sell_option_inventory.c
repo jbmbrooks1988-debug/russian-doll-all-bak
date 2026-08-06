@@ -34,8 +34,77 @@ static int dates_match(const char *date1, const char *date2) {
     return tm1.tm_year == tm2.tm_year && tm1.tm_mon == tm2.tm_mon && tm1.tm_mday == tm2.tm_mday;
 }
 
+/* Read the held option's current price straight off the existing options sheet
+ * (as OPTIONS_PRICING last wrote it), matching type + strike + expiry. */
+static float read_option_price_from_sheet(const char *symbol, const char *type,
+                                          float strike, const char *held_expiry,
+                                          time_t now) {
+    char csv_filename[64];
+    snprintf(csv_filename, sizeof(csv_filename), "option_prices.%s.csv", symbol);
+    FILE *csv_fp = fopen(csv_filename, "r");
+    if (!csv_fp) return 0.0;
+    float option_price = 0.0;
+    char csv_line[MAX_LINE];
+    fgets(csv_line, sizeof(csv_line), csv_fp); /* Skip header */
+    while (fgets(csv_line, sizeof(csv_line), csv_fp)) {
+        int index;
+        char csv_type[16], expiry[32];
+        float strike_val, price;
+        if (sscanf(csv_line, "%d,%[^,],%[^,],%f,%f", &index, csv_type, expiry, &strike_val, &price) == 5) {
+            if (strcmp(csv_type, type) == 0 && strike_val == strike) {
+                long seconds = expiry_to_seconds(expiry);
+                if (seconds > 0) {
+                    time_t base_time = now;
+                    time_t exp_time = base_time + seconds;
+                    struct tm *exp_tm = localtime(&exp_time);
+                    char computed_expiry[32];
+                    strftime(computed_expiry, sizeof(computed_expiry), "%Y-%m-%dT%H:%M:%S", exp_tm);
+                    if (dates_match(computed_expiry, held_expiry)) {
+                        option_price = price;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    fclose(csv_fp);
+    return option_price;
+}
+
 static void to_upper(char *str) {
     for (char *p = str; *p; p++) *p = toupper(*p);
+}
+
+/* Ledger player column uses the house-logged-in human user id when one is
+ * active (current_login.txt), else falls back to the session hash. */
+static const char *resolve_player(const char *fallback) {
+    static char buf[128];
+    buf[0] = '\0';
+    FILE *f = fopen("pieces/system/house_root.txt", "r");
+    char house_root[MAX_LINE] = "";
+    if (f) {
+        if (fgets(house_root, sizeof(house_root), f)) house_root[strcspn(house_root, "\r\n")] = '\0';
+        fclose(f);
+    }
+    if (house_root[0]) {
+        char login_path[384];
+        snprintf(login_path, sizeof(login_path), "%s/0.user-pal👤️/00.login-signup/current_login.txt", house_root);
+        FILE *lf = fopen(login_path, "r");
+        if (lf) {
+            char line[MAX_LINE];
+            while (fgets(line, sizeof(line), lf)) {
+                if (strncmp(line, "current_user_id=", 16) == 0) {
+                    char *v = line + 16;
+                    v[strcspn(v, "\r\n")] = '\0';
+                    snprintf(buf, sizeof(buf), "%s", v);
+                    break;
+                }
+            }
+            fclose(lf);
+        }
+    }
+    if (!buf[0]) snprintf(buf, sizeof(buf), "%s", fallback);
+    return buf;
 }
 
 int main(int argc, char *argv[]) {
@@ -48,7 +117,7 @@ int main(int argc, char *argv[]) {
     int option_index = atoi(argv[2]);
     float contracts_to_sell = atof(argv[3]);
 
-    if (option_index < 0 || contracts_to_sell <= 0) {
+    if (option_index < 1 || contracts_to_sell <= 0) {
         printf("Invalid index or contracts\n");
         return 1;
     }
@@ -185,49 +254,43 @@ int main(int argc, char *argv[]) {
     }
     fclose(fp);
 
-    if (option_index >= options_count || options_contracts[option_index] < contracts_to_sell) {
+    if (option_index > options_count || options_contracts[option_index - 1] < contracts_to_sell) {
         printf("Invalid index or insufficient contracts\n");
         return 1;
     }
+    int idx = option_index - 1;
 
     time_t now = time(NULL);
     struct tm *tm = localtime(&now);
     char time_str[32];
     strftime(time_str, sizeof(time_str), "%Y-%m-%dT%H:%M:%S", tm);
-    char command[512];
-    snprintf(command, sizeof(command), "./+x/options_pricing.+x -s %s -p %.2f -k %.2f -r 0.05 -v 0.2 -d 0.00 -t %s > option_prices.%s.csv",
-             options_symbol[option_index], options_strike[option_index], options_strike[option_index], time_str, options_symbol[option_index]);
-    system(command);
+    float option_price = read_option_price_from_sheet(options_symbol[idx], options_type[idx],
+                                                      options_strike[idx], options_expiry[idx], now);
 
-    char csv_filename[64];
-    snprintf(csv_filename, sizeof(csv_filename), "option_prices.%s.csv", options_symbol[option_index]);
-    FILE *csv_fp = fopen(csv_filename, "r");
-    float option_price = 0.0;
-    if (csv_fp) {
-        char csv_line[MAX_LINE];
-        fgets(csv_line, sizeof(csv_line), csv_fp); // Skip header
-        while (fgets(csv_line, sizeof(csv_line), csv_fp)) {
-            int index;
-            char type[16], expiry[32];
-            float strike_val, price;
-            if (sscanf(csv_line, "%d,%[^,],%[^,],%f,%f", &index, type, expiry, &strike_val, &price) == 5) {
-                if (strcmp(type, options_type[option_index]) == 0 && strike_val == options_strike[option_index]) {
-                    long seconds = expiry_to_seconds(expiry);
-                    if (seconds > 0) {
-                        time_t base_time = now;
-                        time_t exp_time = base_time + seconds;
-                        struct tm *exp_tm = localtime(&exp_time);
-                        char computed_expiry[32];
-                        strftime(computed_expiry, sizeof(computed_expiry), "%Y-%m-%dT%H:%M:%S", exp_tm);
-                        if (dates_match(computed_expiry, options_expiry[option_index])) {
-                            option_price = price;
-                            break;
-                        }
-                    }
+    /* No matching sheet row: regenerate the sheet using the current underlying
+     * price (from the master list) so the option is not mispriced off its strike. */
+    if (option_price == 0.0) {
+        float underlying = 0.0;
+        FILE *mf = fopen("yfin_master_list.txt", "r");
+        if (mf) {
+            char mline[MAX_LINE];
+            while (fgets(mline, sizeof(mline), mf)) {
+                char sym[64], tstr[64];
+                float mp;
+                if (sscanf(mline, "%63[^,],%f,%63s", sym, &mp, tstr) == 3 && strcmp(sym, options_symbol[idx]) == 0) {
+                    underlying = mp;
+                    break;
                 }
             }
+            fclose(mf);
         }
-        fclose(csv_fp);
+        if (underlying <= 0.0) underlying = options_strike[idx];
+        char command[512];
+        snprintf(command, sizeof(command), "./+x/options_pricing.+x -s %s -p %.2f -k %.2f -r 0.05 -v 0.2 -d 0.00 -t %s > option_prices.%s.csv",
+                 options_symbol[idx], underlying, options_strike[idx], time_str, options_symbol[idx]);
+        system(command);
+        option_price = read_option_price_from_sheet(options_symbol[idx], options_type[idx],
+                                                    options_strike[idx], options_expiry[idx], now);
     }
 
     if (option_price == 0.0) {
@@ -237,15 +300,15 @@ int main(int argc, char *argv[]) {
 
     float sale_value = contracts_to_sell * 100.0 * option_price;
     balance += sale_value;
-    options_contracts[option_index] -= contracts_to_sell;
+    options_contracts[idx] -= contracts_to_sell;
 
     strncpy(history_type[history_count], "Sell", 15);
-    strncpy(history_symbol[history_count], options_symbol[option_index], MAX_LINE - 1);
+    strncpy(history_symbol[history_count], options_symbol[idx], MAX_LINE - 1);
     history_shares[history_count] = contracts_to_sell;
     history_price[history_count] = option_price;
     strncpy(history_time[history_count], time_str, 31);
-    strncpy(history_expiration[history_count], options_expiry[option_index], 31);
-    history_strike[history_count] = options_strike[option_index];
+    strncpy(history_expiration[history_count], options_expiry[idx], 31);
+    history_strike[history_count] = options_strike[idx];
     history_count++;
 
     FILE *out_fp = fopen(filename, "w");
@@ -285,8 +348,20 @@ int main(int argc, char *argv[]) {
     fclose(out_fp);
 
     printf("Sold %.2f %s %s option (Strike: %.2f, Expiry: %s) at $%.2f. New balance: $%.2f\n",
-           contracts_to_sell, options_type[option_index], options_symbol[option_index],
-           options_strike[option_index], options_expiry[option_index], option_price, balance);
+           contracts_to_sell, options_type[idx], options_symbol[idx],
+           options_strike[idx], options_expiry[idx], option_price, balance);
+
+    {
+        char ledger_word[128];
+        snprintf(ledger_word, sizeof(ledger_word), "sell_option:%s:%s:%.2f:%.2f:%.2f",
+                 options_type[idx], options_symbol[idx],
+                 contracts_to_sell, option_price, balance);
+        char cmd[512];
+        snprintf(cmd, sizeof(cmd), "./+x/ledger_append.+x data/master_ledger.txt 0 %s \"%s\" sell_option",
+                 resolve_player(user_hash), ledger_word);
+        FILE *lfp = popen(cmd, "r");
+        if (lfp) pclose(lfp);
+    }
 
     return 0;
 }

@@ -35,6 +35,7 @@ run_widget_session() {
             "$SESSION_DIR/projects/yahoo-broker/pieces/yahoo_broker" 2>/dev/null || true
     ln -sfn "$SCRIPT_DIR/projects/yahoo-broker/pieces/broker_widget" \
             "$SESSION_DIR/projects/yahoo-broker/pieces/broker_widget" 2>/dev/null || true
+    ln -sfn "$SCRIPT_DIR/data" "$SESSION_DIR/data" 2>/dev/null || true
 
     cd "$SESSION_DIR"
     : > pieces/apps/player_app/interact_relay.txt

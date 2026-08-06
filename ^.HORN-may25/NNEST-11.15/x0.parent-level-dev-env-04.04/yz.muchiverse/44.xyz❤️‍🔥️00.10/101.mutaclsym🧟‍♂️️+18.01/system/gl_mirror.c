@@ -68,6 +68,7 @@
 #include <GL/glut.h>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
+#include <GL/glx.h>
 #endif
 #include <signal.h>
 #include <stdio.h>
@@ -361,9 +362,9 @@ static void check_for_drop(void) {
  * func back-to-back with no yield of its own; the old check_xdnd_events()
  * had no throttle at all here, which is the exact CPU-spin bug that
  * crashed the machine once already in gl-canvas's own prototype of this
- * fix. gl_mirror already has its own glutTimerFunc(33, /* 30 fps cap */ timer, 0) driving
- * the render loop - this idle poll runs independently alongside it, not
- * a replacement for it. */
+ * fix. gl_mirror already has its own glutTimerFunc (a 30fps-cap timer)
+ * driving the render loop - this idle poll runs independently alongside
+ * it, not a replacement for it. */
 static void idle_tick(void) {
     check_for_drop();
     usleep(16000);
@@ -657,6 +658,51 @@ static void special_keyboard(int key, int x, int y) {
     if (mapped > 0) append_key(mapped);
 }
 
+/* REAL FIX 2026-08-05, direct instruction ("do all 3 of the momentum
+ * givers now" - mouse click forwarding, one of 3 real gl_mirror gaps
+ * found this session): this window never forwarded real mouse clicks
+ * anywhere - chtpm_parser_pal.c's own get_var("last_click_x"/"_y")
+ * (its real, already-working, already-calibrated element hit-test, see
+ * that file's own "CALIBRATION: Apply offsets found during Phase 6
+ * calibration" comment) had a real consumer with no real producer.
+ * Writes into pieces/apps/player_app/state.txt using the SAME real
+ * KEY=VALUE format load_state_file() already parses for every other
+ * var this file's own session already relies on (module_path,
+ * project_id, etc) - read-modify-write, not a blind overwrite, so
+ * those other real keys survive every click. */
+static void write_click_kv(const char *key, int value) {
+    char path[MAX_PATH];
+    snprintf(path, sizeof(path), "%s/pieces/apps/player_app/state.txt", project_root);
+    char lines[128][512];
+    int n = 0, replaced = 0;
+    FILE *rf = fopen(path, "r");
+    if (rf) {
+        char line[512];
+        size_t klen = strlen(key);
+        while (n < 128 && fgets(line, sizeof(line), rf)) {
+            if (strncmp(line, key, klen) == 0 && line[klen] == '=') {
+                snprintf(lines[n], sizeof(lines[0]), "%s=%d\n", key, value);
+                replaced = 1;
+            } else {
+                snprintf(lines[n], sizeof(lines[0]), "%s", line);
+            }
+            n++;
+        }
+        fclose(rf);
+    }
+    FILE *wf = fopen(path, "w");
+    if (!wf) return;
+    for (int i = 0; i < n; i++) fputs(lines[i], wf);
+    if (!replaced) fprintf(wf, "%s=%d\n", key, value);
+    fclose(wf);
+}
+
+static void mouse_click(int button, int state, int x, int y) {
+    if (button != GLUT_LEFT_BUTTON || state != GLUT_DOWN) return;
+    write_click_kv("last_click_x", x);
+    write_click_kv("last_click_y", y);
+}
+
 int main(int argc, char **argv) {
     struct stat st;
 
@@ -684,6 +730,33 @@ int main(int argc, char **argv) {
     glutInitWindowSize(g_frame_w, g_frame_h);
     glutCreateWindow("mutaclsym RGB mirror");
 
+    /* REAL FIX 2026-08-05, direct instruction ("do all 3 of the
+     * momentum givers now" - borderless popup, one of 3 real gl_mirror
+     * gaps found this session): classic freeglut has no native
+     * "borderless" toggle. Real, known technique: grab the underlying
+     * X11 Window via glXGetCurrentDrawable() (the GLX drawable freeglut
+     * created IS the real X11 window in the standard case), then set
+     * override_redirect directly via raw Xlib. Real quirk: most window
+     * managers only honor override_redirect at MAP time, so the window
+     * must be unmapped and remapped for this to take visible effect -
+     * gated behind an env var (default OFF) so every OTHER real caller
+     * of this shared binary (event-editor, event-ez, tile-picker
+     * desktop entities) keeps its normal decorated-or-undecorated
+     * behavior unchanged - "so the other type is still backwards
+     * usable" (direct instruction, same session). */
+    if (getenv("GL_MIRROR_BORDERLESS")) {
+        Display *xdpy = glXGetCurrentDisplay();
+        Window xwin = glXGetCurrentDrawable();
+        if (xdpy && xwin) {
+            XSetWindowAttributes swa;
+            swa.override_redirect = True;
+            XChangeWindowAttributes(xdpy, xwin, CWOverrideRedirect, &swa);
+            XUnmapWindow(xdpy, xwin);
+            XMapWindow(xdpy, xwin);
+            XFlush(xdpy);
+        }
+    }
+
 #ifndef __APPLE__
     /* Coordinate+file handoff instead of real Xdnd - see this file's
      * header comment near g_drop_pet_id and 0.a-z-pets-plan/a-z-fix.txt.
@@ -701,6 +774,7 @@ int main(int argc, char **argv) {
     glutReshapeFunc(reshape);
     glutKeyboardFunc(keyboard);
     glutSpecialFunc(special_keyboard);
+    glutMouseFunc(mouse_click);
     glutTimerFunc(33, /* 30 fps cap */ timer, 0);
     /* Same freeglut auto-repeat rationale as wraith_gl.c's own call -
      * avoids double-fire of key events while held down. */

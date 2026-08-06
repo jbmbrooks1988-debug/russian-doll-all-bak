@@ -13,6 +13,8 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
+#include <dirent.h>
+#include <sys/stat.h>
 
 #define MAX_LINE 512
 #define MAX_PATH 4096
@@ -33,7 +35,9 @@ static void read_kv_str_local(const char *path, const char *key, char *out, size
     size_t key_len = strlen(key);
     while (fgets(line, sizeof(line), f)) {
         if (strncmp(line, key, key_len) == 0 && line[key_len] == '=') {
-            snprintf(out, out_sz, "%s", line + key_len + 1);
+            char *v = line + key_len + 1;
+            v[strcspn(v, "\r\n")] = '\0';
+            snprintf(out, out_sz, "%s", v);
             break;
         }
     }
@@ -73,16 +77,43 @@ static void write_kv(const char *path, const char *key, const char *val) {
     rename(tmp, path);
 }
 
+/* Resolve the house-logged-in player id (human user id). Falls back to the
+ * most recent xyzfs user dir when no login is active, else stays empty. */
+static void resolve_player_id(char *out, size_t out_sz) {
+    out[0] = '\0';
+    char hr_path[PATH_BUF], house_root[MAX_PATH] = "";
+    snprintf(hr_path, sizeof(hr_path), "%s/pieces/system/house_root.txt", project_root);
+    FILE *f = fopen(hr_path, "r");
+    if (f) {
+        if (fgets(house_root, sizeof(house_root), f)) house_root[strcspn(house_root, "\r\n")] = '\0';
+        fclose(f);
+    }
+    if (!house_root[0]) return;
+    char login_path[PATH_BUF];
+    snprintf(login_path, sizeof(login_path), "%s/0.user-pal👤️/00.login-signup/current_login.txt", house_root);
+    read_kv_str_local(login_path, "current_user_id", out, out_sz);
+    if (out[0]) return;
+    char users_dir[PATH_BUF];
+    snprintf(users_dir, sizeof(users_dir), "%s/0.user-pal👤️/00.login-signup/xyzfs/users", house_root);
+    DIR *d = opendir(users_dir);
+    if (d) {
+        struct dirent *e;
+        while ((e = readdir(d)) != NULL) {
+            if (e->d_name[0] == '.') continue;
+            char home[PATH_BUF];
+            snprintf(home, sizeof(home), "%s/%s/home", users_dir, e->d_name);
+            if (access(home, F_OK) == 0) {
+                snprintf(out, out_sz, "%s", e->d_name);
+                break;
+            }
+        }
+        closedir(d);
+    }
+}
+
 static void ping_chtpm_render_marker(const char *root) {
     char marker_path[PATH_BUF];
     snprintf(marker_path, sizeof(marker_path), "%s/pieces/display/frame_changed.txt", root);
-    FILE *mf = fopen(marker_path, "a");
-    if (mf) { fputc('.', mf); fclose(mf); }
-}
-
-static void ping_state_changed_marker(const char *root) {
-    char marker_path[PATH_BUF];
-    snprintf(marker_path, sizeof(marker_path), "%s/pieces/apps/player_app/state_changed.txt", root);
     FILE *mf = fopen(marker_path, "a");
     if (mf) { fputc('.', mf); fclose(mf); }
 }
@@ -101,15 +132,31 @@ static void render_bank(char *view, size_t view_sz) {
 
     char watchlist[512] = "(empty)";
     char user_hash[64] = "";
+    char player_id[64] = "";
     read_kv_str_local(config_path, "user_hash", user_hash, sizeof(user_hash));
+    read_kv_str_local(config_path, "player_id", player_id, sizeof(player_id));
     if (!user_hash[0]) {
-        srand(time(NULL) + getpid());
-        const char *chars = "0123456789ABCDEF";
-        for (int i = 0; i < 6; i++) {
-            user_hash[i] = chars[rand() % 16];
+        char ident[64] = "";
+        resolve_player_id(ident, sizeof(ident));
+        if (ident[0]) {
+            unsigned h = 2166136261u;
+            for (const char *p = ident; *p; p++) {
+                h ^= (unsigned char)*p;
+                h *= 16777619u;
+            }
+            snprintf(user_hash, sizeof(user_hash), "%06X", h & 0xFFFFFFu);
+            snprintf(player_id, sizeof(player_id), "%s", ident);
+        } else {
+            srand(time(NULL) + getpid());
+            const char *chars = "0123456789ABCDEF";
+            for (int i = 0; i < 6; i++) {
+                user_hash[i] = chars[rand() % 16];
+            }
+            user_hash[6] = '\0';
+            snprintf(player_id, sizeof(player_id), "%s", user_hash);
         }
-        user_hash[6] = '\0';
         write_kv(config_path, "user_hash", user_hash);
+        write_kv(config_path, "player_id", player_id);
     }
     if (user_hash[0]) {
         char acc_path[PATH_BUF];
@@ -154,12 +201,13 @@ static void render_bank(char *view, size_t view_sz) {
         "|                    Y A H O O - X Y Z                      |\n"
         "+============================================================+\n"
         "|  Bank Balance: $%-14s                              |\n"
+        "|  Player: %-46s|\n"
         "+============================================================+\n"
         "|  Watchlist: %-44s|\n"
         "+============================================================+\n"
         "|  Last Lookup: %-10s @ $%-10s  %-20s|\n"
         "+============================================================+\n",
-        balance, watchlist, last_sym, last_price, last_time);
+        balance, player_id, watchlist, last_sym, last_price, last_time);
 }
 
 static void render_piece_pdl_brokers(const char *layout_name) {
@@ -228,7 +276,6 @@ int main(int argc, char *argv[]) {
     }
 
     ping_chtpm_render_marker(project_root);
-    ping_state_changed_marker(project_root);
 
     return 0;
 }

@@ -72,8 +72,25 @@
 
 #define GLYPH_W 8
 #define GLYPH_H 16
+/* REAL FIX 2026-08-05, direct instruction ("do all 3 of the momentum
+ * givers now" - small popup window, one of 3 real gl_mirror-pipeline
+ * gaps found this session): FRAME_W/FRAME_H were unconditional
+ * #defines - the ONLY way to get a smaller real popup (matching the
+ * raw X11 popup's own real small size, not the full 640x768 "worst
+ * case chrome" size every other CHTPM window needs) was to touch this
+ * shared file's own runtime behavior for every caller. Wrapping in
+ * #ifndef instead: the DEFAULT build (no -D flags) is byte-identical
+ * to before, 640x768, for event-editor/event-ez/every existing
+ * caller - "so the other type is still backwards usable." A SEPARATE
+ * small-popup build (e.g. `gcc -DFRAME_W=400 -DFRAME_H=240 ...`,
+ * producing a differently-named binary) gets a real small frame
+ * without any shared-binary risk. */
+#ifndef FRAME_W
 #define FRAME_W 640
+#endif
+#ifndef FRAME_H
 #define FRAME_H 768
+#endif
 #define MAX_TEXT_COLS (FRAME_W / GLYPH_W)
 #define MAX_TEXT_ROWS (FRAME_H / GLYPH_H)
 

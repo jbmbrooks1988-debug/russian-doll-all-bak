@@ -30,10 +30,15 @@ typedef struct {
 } MenuItem;
 
 static char project_root[MAX_PATH] = ".";
+static char project_id[64] = "yahoo-app";
+
+static char *trim(char *s);
 
 static void resolve_root(void) {
     const char *env = getenv("PRISC_PROJECT_ROOT");
     if (env && env[0]) snprintf(project_root, sizeof(project_root), "%s", env);
+    const char *pid = getenv("PRISC_PROJECT_ID");
+    if (pid && pid[0]) snprintf(project_id, sizeof(project_id), "%s", pid);
 }
 
 static void read_kv_str_local(const char *path, const char *key, char *out, size_t out_sz) {
@@ -44,7 +49,9 @@ static void read_kv_str_local(const char *path, const char *key, char *out, size
     size_t key_len = strlen(key);
     while (fgets(line, sizeof(line), f)) {
         if (strncmp(line, key, key_len) == 0 && line[key_len] == '=') {
-            snprintf(out, out_sz, "%s", line + key_len + 1);
+            char *v = line + key_len + 1;
+            v[strcspn(v, "\r\n")] = '\0';
+            snprintf(out, out_sz, "%s", v);
             break;
         }
     }
@@ -81,7 +88,7 @@ static int load_menu_items(const char *root, const char *piece_id, MenuItem *ite
     char pdl_path[PATH_BUF];
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat-truncation"
-    snprintf(pdl_path, sizeof(pdl_path), "%s/projects/yahoo-app/pieces/%s/piece.pdl", root, piece_id);
+    snprintf(pdl_path, sizeof(pdl_path), "%s/projects/%s/pieces/%s/piece.pdl", root, project_id, piece_id);
 #pragma GCC diagnostic pop
     FILE *f = fopen(pdl_path, "r");
     if (!f) return 0;
@@ -113,7 +120,7 @@ static char *trim(char *s) {
 
 static void append_message(const char *msg) {
     char state_path[PATH_BUF];
-    snprintf(state_path, sizeof(state_path), "%s/projects/yahoo-app/manager/gui_state.txt", project_root);
+    snprintf(state_path, sizeof(state_path), "%s/projects/%s/manager/gui_state.txt", project_root, project_id);
     write_kv(state_path, "last_message", msg);
 }
 
@@ -166,7 +173,7 @@ static void write_chtpm_bridge(const char *piece_id) {
     snprintf(chtpm_state_path, sizeof(chtpm_state_path), "%s/pieces/apps/player_app/state.txt", project_root);
     FILE *cf = fopen(chtpm_state_path, "w");
     if (cf) {
-        fprintf(cf, "project_id=yahoo-app\n");
+        fprintf(cf, "project_id=%s\n", project_id);
         fprintf(cf, "active_target_id=%s\n", piece_id);
         fclose(cf);
     }
@@ -175,13 +182,6 @@ static void write_chtpm_bridge(const char *piece_id) {
 static void ping_chtpm_render_marker(const char *root) {
     char marker_path[PATH_BUF];
     snprintf(marker_path, sizeof(marker_path), "%s/pieces/display/frame_changed.txt", root);
-    FILE *mf = fopen(marker_path, "a");
-    if (mf) { fputc('.', mf); fclose(mf); }
-}
-
-static void ping_state_changed_marker(const char *root) {
-    char marker_path[PATH_BUF];
-    snprintf(marker_path, sizeof(marker_path), "%s/pieces/apps/player_app/state_changed.txt", root);
     FILE *mf = fopen(marker_path, "a");
     if (mf) { fputc('.', mf); fclose(mf); }
 }
@@ -250,8 +250,11 @@ int main(int argc, char *argv[]) {
 
     char message[256] = "";
 
-    if (keycode > 0 && keycode <= item_count) {
-        const char *cmd = items[keycode - 1].command;
+    int resolved_item = 0;
+    if (keycode >= '0' && keycode <= '9') resolved_item = (keycode - '0') - 1;
+    else if (keycode > 9 && keycode < 1000) resolved_item = keycode - 1;
+    if (resolved_item >= 1 && resolved_item <= item_count) {
+        const char *cmd = items[resolved_item - 1].command;
         if (strcmp(cmd, "CHECK_BALANCE") == 0) {
             char config_path[PATH_BUF];
             snprintf(config_path, sizeof(config_path), "%s/pieces/system/config.txt", project_root);
@@ -301,13 +304,13 @@ int main(int argc, char *argv[]) {
                     snprintf(message, sizeof(message), "Broker widget not built yet.");
                 }
             }
-        } else if (strncmp(cmd, "SELECT_BROKER:", 13) == 0) {
-            const char *broker_id = cmd + 13;
+        } else if (strncmp(cmd, "SELECT_BROKER:", 14) == 0) {
+            const char *broker_id = cmd + 14;
             char broker_state_path[PATH_BUF];
             snprintf(broker_state_path, sizeof(broker_state_path), "%s/pieces/system/broker_state.txt", project_root);
             write_kv(broker_state_path, "selected_broker", broker_id);
             write_kv(broker_state_path, "focused_project_root", project_root);
-            write_kv(broker_state_path, "focused_project_id", "yahoo-app");
+            write_kv(broker_state_path, "focused_project_id", project_id);
             char house_root[PATH_BUF] = "";
             char house_root_path[PATH_BUF];
             snprintf(house_root_path, sizeof(house_root_path), "%s/pieces/system/house_root.txt", project_root);
@@ -349,7 +352,6 @@ int main(int argc, char *argv[]) {
     get_current_piece_id(project_root, piece_id, sizeof(piece_id));
     write_chtpm_bridge(piece_id);
     ping_chtpm_render_marker(project_root);
-    ping_state_changed_marker(project_root);
 
     return 0;
 }

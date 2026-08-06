@@ -204,6 +204,38 @@ static char *get_expiry_time(const char *expiry, char *time_str, size_t time_str
     return time_str;
 }
 
+/* Ledger player column uses the house-logged-in human user id when one is
+ * active (current_login.txt), else falls back to the session hash. */
+static const char *resolve_player(const char *fallback) {
+    static char buf[128];
+    buf[0] = '\0';
+    FILE *f = fopen("pieces/system/house_root.txt", "r");
+    char house_root[MAX_LINE] = "";
+    if (f) {
+        if (fgets(house_root, sizeof(house_root), f)) house_root[strcspn(house_root, "\r\n")] = '\0';
+        fclose(f);
+    }
+    if (house_root[0]) {
+        char login_path[384];
+        snprintf(login_path, sizeof(login_path), "%s/0.user-pal👤️/00.login-signup/current_login.txt", house_root);
+        FILE *lf = fopen(login_path, "r");
+        if (lf) {
+            char line[MAX_LINE];
+            while (fgets(line, sizeof(line), lf)) {
+                if (strncmp(line, "current_user_id=", 16) == 0) {
+                    char *v = line + 16;
+                    v[strcspn(v, "\r\n")] = '\0';
+                    snprintf(buf, sizeof(buf), "%s", v);
+                    break;
+                }
+            }
+            fclose(lf);
+        }
+    }
+    if (!buf[0]) snprintf(buf, sizeof(buf), "%s", fallback);
+    return buf;
+}
+
 int main(int argc, char *argv[]) {
     if (argc != 5) {
         fprintf(stderr, "Usage: %s <user_hash> <symbol> <index> <contracts>\n", argv[0]);
@@ -346,6 +378,17 @@ int main(int argc, char *argv[]) {
                       history_type, history_symbol, history_shares, history_price, history_time,
                       history_expiration, history_strike, history_count,
                       last_lookup_symbol, last_lookup_price, last_lookup_time);
+
+    {
+        char ledger_word[128];
+        snprintf(ledger_word, sizeof(ledger_word), "buy_option:%s:%s:%.2f:%.2f:%.2f",
+                 opt_type, symbol, contracts, strike, price);
+        char cmd[512];
+        snprintf(cmd, sizeof(cmd), "./+x/ledger_append.+x data/master_ledger.txt 0 %s \"%s\" buy_option",
+                 resolve_player(hash), ledger_word);
+        FILE *lfp = popen(cmd, "r");
+        if (lfp) pclose(lfp);
+    }
 
     printf("Bought %.2f %s %s option (Strike: %.2f, Expiry: %s) at $%.2f. New balance: $%.2f\n",
            contracts, opt_type, symbol, strike, expiry, price, balance);

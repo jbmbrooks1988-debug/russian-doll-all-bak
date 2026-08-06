@@ -1,0 +1,21 @@
+<!-- event_ez.chtpm — Gallery entry screen, 2026-08-05 rebuild.
+     RPG-Maker-MV-accurate flow: Gallery (this file, page list) -> Page
+     (event_ez_page_N.chtpm, generated real files, one per page) -> Back
+     returns here. See EVENT_SCRIPTING_PROGRESS_AND_GOALS.md's own
+     "Full nested flow" section for the complete design.
+     ${page_gallery_rows} is a bare (non-<text>-wrapped) variable -
+     substitute_vars_naked() replaces it with real <button href="..."/>
+     markup BEFORE tokenization, same proven mechanism the real CHTPM
+     editor's own ${event_content_rows} already uses.
+-->
+<panel time_reactive="true">
+    <module>system/prisc+x pal/main_loop_chtpm.pal</module>
+    <interact src="pieces/apps/player_app/interact_relay.txt" />
+    <text label="+==========================================+" /><br/>
+    <text label="| EVENT-EZ  pkg=${pkg_name}                |" /><br/>
+    <text label="+==========================================+" /><br/>
+    <text label="-- PAGES --" /><br/>
+    ${page_gallery_rows}
+    <text label="+==========================================+" /><br/>
+    <text label="${last_message}" /><br/>
+</panel>

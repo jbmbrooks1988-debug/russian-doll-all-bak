@@ -16,6 +16,11 @@ PKG="$DESK/entities/$NAME"
 
 ensure_package() {
     mkdir -p "$PKG"
+    if [ ! -f "$PKG/instance_id.txt" ]; then
+        INSTANCE_ID=$(tr -dc 'A-Z0-9' < /dev/urandom | head -c4)
+        echo "$INSTANCE_ID" > "$PKG/instance_id.txt"
+    fi
+    INSTANCE_ID=$(cat "$PKG/instance_id.txt" 2>/dev/null || echo "0000")
     echo "$GLYPH" > "$PKG/glyph.txt"
     if [ ! -f "$PKG/meta.pdl" ]; then
         {
@@ -25,6 +30,7 @@ ensure_package() {
             echo "STATE        | kind                 | pet"
             echo "STATE        | glyph                | $GLYPH"
             echo "STATE        | created_at           | $(date +%s)"
+            echo "STATE        | instance_id          | $INSTANCE_ID"
             if [ -f "$SCRIPT_DIR/methods.pdl" ]; then
                 grep "^METHOD" "$SCRIPT_DIR/methods.pdl"
             else

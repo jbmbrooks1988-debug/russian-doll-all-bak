@@ -334,8 +334,21 @@ int is_variable_line(char *line) {
 }
 
 void parse_line(char *line, int pass) {
-    char original[128];
-    strncpy(original, line, 127);
+    /* REAL FIX 2026-08-06, direct-caught bug ("RUN_METHOD:Read never
+     * actually reached dispatch.sh, no matter how long I waited"):
+     * original[128] silently truncated any "exec <path>" (or any other
+     * op taking a literal path argument) whose full line exceeded 127
+     * bytes - which is EVERY real absolute path in this house, since
+     * directory names here are routinely emoji-heavy (each emoji is
+     * 4+ UTF-8 bytes, several combined with variation
+     * selectors/ZWJ sequences). Confirmed via strace -s 500: the
+     * command handed to `sh -c` was cut off mid-path at exactly this
+     * boundary. original only ever needs to hold what `line` itself
+     * (the caller's own buffer) can hold, so matching that size (256)
+     * with real headroom (512) fixes this at the actual root, not just
+     * for this one script. */
+    char original[512];
+    snprintf(original, sizeof(original), "%s", line);
     trim(line);
     
     if (line[0] == '#' || line[0] == '\0') return;

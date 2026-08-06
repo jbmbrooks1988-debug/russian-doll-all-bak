@@ -1,0 +1,23 @@
+[2026-08-06 00:08:29] WINDOW_OPEN
+[2026-08-06 00:08:29] LIVEDESK_INDEX=6
+[2026-08-06 00:11:08] CLICK method=Dir action=xdg-open
+[2026-08-06 00:15:46] WINDOW_OPEN
+[2026-08-06 00:15:46] LIVEDESK_INDEX=6
+[2026-08-06 00:21:47] WINDOW_OPEN
+[2026-08-06 00:21:47] LIVEDESK_INDEX=6
+[2026-08-06 00:28:40] CLICK method=Dir action=xdg-open
+[2026-08-06 00:33:13] WINDOW_OPEN
+[2026-08-06 00:33:13] LIVEDESK_INDEX=6
+[2026-08-06 00:43:04] WINDOW_OPEN
+[2026-08-06 00:43:04] LIVEDESK_INDEX=6
+[2026-08-06 00:47:56] WINDOW_OPEN
+[2026-08-06 00:47:56] LIVEDESK_INDEX=6
+[2026-08-06 00:49:16] CLICK method=Chat action=gnome-terminal -- "/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.15/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.10/@.apps/asa-&-ava/pieces/ava/chat.sh"
+[2026-08-06 00:52:42] CLICK method=Events action=env EE_PKG_NAME=ava-$(cat "/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.15/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.10/#.desktop/entities/ava/instance_id.txt") EE_PKG_DIR="/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.15/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.10/@.apps/asa-&-ava/pieces/ava/event_pkg" sh "/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.15/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.10/&.widgits/event-editor/button.sh" run-widget
+[2026-08-06 00:56:06] WINDOW_OPEN
+[2026-08-06 00:56:06] LIVEDESK_INDEX=6
+[2026-08-06 00:56:36] CLICK method=Chat action=gnome-terminal -- "/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.15/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.10/@.apps/asa-&-ava/pieces/ava/chat.sh"
+[2026-08-06 01:03:05] WINDOW_OPEN
+[2026-08-06 01:03:05] LIVEDESK_INDEX=6
+[2026-08-06 01:36:21] WINDOW_OPEN
+[2026-08-06 01:36:21] LIVEDESK_INDEX=6

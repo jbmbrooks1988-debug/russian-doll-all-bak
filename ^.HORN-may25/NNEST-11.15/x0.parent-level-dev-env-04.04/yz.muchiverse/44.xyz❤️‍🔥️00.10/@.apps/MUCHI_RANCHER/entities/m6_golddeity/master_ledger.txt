@@ -1,0 +1,1 @@
+[2026-08-05 14:28:49] Created: m6_golddeity entity initialized | Trigger: active_monster.pdl selection

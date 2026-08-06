@@ -30,7 +30,9 @@ static void read_kv_str_local(const char *path, const char *key, char *out, size
     size_t key_len = strlen(key);
     while (fgets(line, sizeof(line), f)) {
         if (strncmp(line, key, key_len) == 0 && line[key_len] == '=') {
-            snprintf(out, out_sz, "%s", line + key_len + 1);
+            char *v = line + key_len + 1;
+            v[strcspn(v, "\r\n")] = '\0';
+            snprintf(out, out_sz, "%s", v);
             break;
         }
     }
@@ -47,13 +49,6 @@ static void write_file(const char *path, const char *content) {
 static void ping_chtpm_render_marker(const char *root) {
     char marker_path[PATH_BUF];
     snprintf(marker_path, sizeof(marker_path), "%s/pieces/display/frame_changed.txt", root);
-    FILE *mf = fopen(marker_path, "a");
-    if (mf) { fputc('.', mf); fclose(mf); }
-}
-
-static void ping_state_changed_marker(const char *root) {
-    char marker_path[PATH_BUF];
-    snprintf(marker_path, sizeof(marker_path), "%s/pieces/apps/player_app/state_changed.txt", root);
     FILE *mf = fopen(marker_path, "a");
     if (mf) { fputc('.', mf); fclose(mf); }
 }
@@ -135,7 +130,6 @@ int main(int argc, char *argv[]) {
     }
 
     ping_chtpm_render_marker(project_root);
-    ping_state_changed_marker(project_root);
 
     return 0;
 }

@@ -42,10 +42,12 @@ gcc $CFLAGS -o "ops/+x/sell_stock.+x" "ops/sell_stock.c"
 gcc $CFLAGS -o "ops/+x/buy_option.+x" "ops/buy_option.c"
 gcc $CFLAGS -o "ops/+x/sell_option.+x" "ops/sell_option.c"
 gcc $CFLAGS -o "ops/+x/sell_option_inventory.+x" "ops/sell_option_inventory.c"
+gcc $CFLAGS -o "ops/+x/ledger_append.+x" "ops/ledger_append.c"
 gcc $CFLAGS -o "ops/+x/options_pricing.+x" "ops/options_pricing.c" $LDFLAGS
 gcc $CFLAGS -o "ops/+x/predictions.+x" "ops/predictions.c"
 gcc $CFLAGS -o "ops/+x/add_credit.+x" "ops/add_credit.c"
 gcc $CFLAGS -o "ops/+x/read_price.+x" "ops/read_price.c"
+gcc $CFLAGS -o "ops/+x/research_refresh.+x" "ops/research_refresh.c"
 gcc $CFLAGS -o "ops/+x/fetch_stock.+x" "ops/fetch_stock.c"
 gcc $CFLAGS -o "ops/+x/yahoo_compose_rgb_frame.+x" "ops/yahoo_compose_rgb_frame.c"
 

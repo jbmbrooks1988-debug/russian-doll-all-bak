@@ -1,5 +1,0 @@
-tool=fill_cell
-status=done
-result=fill_cell: cell_01 v1..6 generated -> cell_01.txt (11408 bytes raw)
-
-finished=1785904057

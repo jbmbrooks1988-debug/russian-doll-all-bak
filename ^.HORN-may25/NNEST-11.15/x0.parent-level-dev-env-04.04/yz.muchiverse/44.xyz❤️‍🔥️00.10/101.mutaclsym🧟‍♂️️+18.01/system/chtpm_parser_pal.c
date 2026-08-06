@@ -176,6 +176,32 @@ typedef struct {
 } UIElement;
 
 char current_layout[MAX_PATH] = "pieces/chtpm/layouts/os.chtpm";
+/* REAL, 2026-08-05, direct instruction (root-cause the known,
+ * unresolved Gallery<->Page href nav bug - see event-editor's own
+ * EVENT_SCRIPTING_PROGRESS_AND_GOALS.md "KNOWN BUG" section, which
+ * scoped this exact instrumentation but never captured a trace):
+ * env-gated (CHTPM_NAV_DEBUG=1) so every other real project sharing
+ * this same house-wide binary is completely unaffected unless someone
+ * explicitly opts in. Never printed unless g_nav_debug is set. */
+static int g_nav_debug = 0;
+static FILE *g_nav_debug_f = NULL;
+/* Writes to a FIXED path (not stderr) - button.sh's own real launch
+ * always redirects the child's stderr to /dev/null internally
+ * (">/dev/null 2>&1 &"), which no outer shell redirect can override, so
+ * plain stderr tracing is invisible through the real, unmodified launch
+ * path. A fixed log file works regardless of how this process was
+ * started. */
+#define NAV_DEBUG_LOG "/tmp/chtpm_nav_debug.log"
+static void nav_debug(const char *fmt, ...) {
+    if (!g_nav_debug) return;
+    if (!g_nav_debug_f) g_nav_debug_f = fopen(NAV_DEBUG_LOG, "a");
+    if (!g_nav_debug_f) return;
+    va_list ap;
+    va_start(ap, fmt);
+    vfprintf(g_nav_debug_f, fmt, ap);
+    va_end(ap);
+    fflush(g_nav_debug_f);
+}
 char last_active_id[64] = "";
 char last_methods_raw[MAX_VAR_VALUE] = "";
 int focus_index = 0; int active_index = -1;
@@ -2111,7 +2137,8 @@ Token* tokenize(const char* content, int* token_count) {
 }
 
 void parse_chtm() {
-    is_time_reactive = false; 
+    if (g_nav_debug) nav_debug("[NAV] parse_chtm() ENTER layout=%s\n", current_layout);
+    is_time_reactive = false;
     
     /* EXPORT CURRENT LAYOUT FOR MODULE HEARTBEAT */
     char *cl_path = build_path_malloc("pieces/display/current_layout.txt");
@@ -2766,7 +2793,25 @@ void compose_frame() {
     free(cur_f); free(cur_tmp); free(frame); if (clear_nav_on_next) { nav_buffer[0] = '\0'; clear_nav_on_next = false; }
 }
 
-bool do_jump(int target_num) { int cn = 0; for (int i = 0; i < element_count; i++) { if (is_navigable(i)) { cn++; if (cn == target_num) { focus_index = i; return true; } } } return false; }
+bool do_jump(int target_num) {
+    int cn = 0;
+    if (g_nav_debug) nav_debug("[NAV] do_jump(%d) layout=%s element_count=%d\n", target_num, current_layout, element_count);
+    for (int i = 0; i < element_count; i++) {
+        int nav = is_navigable(i);
+        if (g_nav_debug && nav) nav_debug("[NAV]   elem[%d] cn=%d type=%s label=%s href=%s onClick=%s\n",
+                                         i, cn + 1, elements[i].type, elements[i].label, elements[i].href, elements[i].onClick);
+        if (nav) {
+            cn++;
+            if (cn == target_num) {
+                focus_index = i;
+                if (g_nav_debug) nav_debug("[NAV] do_jump(%d) -> focus_index=%d (MATCH)\n", target_num, i);
+                return true;
+            }
+        }
+    }
+    if (g_nav_debug) nav_debug("[NAV] do_jump(%d) -> NO MATCH (only %d navigable)\n", target_num, cn);
+    return false;
+}
 static int count_navigable() { int cn = 0; for (int i = 0; i < element_count; i++) { if (is_navigable(i)) cn++; } return cn; }
 void initialize_focus() {
     sync_focus_from_saved_active_index();
@@ -3028,6 +3073,8 @@ void process_key(int key) {
                     export_active_index(); 
                 }
                 else if (strlen(el->href) > 0) {
+                    if (g_nav_debug) nav_debug("[NAV] HREF COMMIT: focus_index=%d label=%s old_layout=%s new_layout=%s\n",
+                                              focus_index, el->label, current_layout, el->href);
                     strncpy(current_layout, el->href, MAX_PATH-1);
                     /* REAL BUG, LIVE-CAUGHT (pal-chain's own 2-screen
                      * href test, 2026-07-19): this used to just zero
@@ -3215,6 +3262,7 @@ void process_key(int key) {
 }
 
 int main(int argc, char **argv) {
+    g_nav_debug = (getenv("CHTPM_NAV_DEBUG") != NULL);
     resolve_root(); scratch_substituted = malloc(MAX_LABEL_LEN); if (argc > 1) strncpy(current_layout, argv[1], MAX_PATH-1);
     signal(SIGINT, handle_sigint); 
     active_index = -1;

@@ -55,6 +55,7 @@ run_app() {
     ln -sfn "$SCRIPT_DIR/pieces/chtpm" "$BANK_SESSION/pieces/chtpm"
     ln -sfn "$SCRIPT_DIR/pieces/registry" "$BANK_SESSION/pieces/registry"
     ln -sfn "$SCRIPT_DIR/projects/yahoo-app/pieces" "$BANK_SESSION/projects/yahoo-app/pieces"
+    ln -sfn "$SCRIPT_DIR/projects/yahoo-app/data" "$BANK_SESSION/data"
 
     cd "$BANK_SESSION"
 
@@ -79,9 +80,7 @@ EOCONFIG
 
     if [ ! -f pieces/system/brokers.txt ]; then
         cat > pieces/system/brokers.txt << 'EOBROKERS'
-BROKER_A|Fidelity|stocks+options|0.00
-BROKER_B|Robinhood|stocks+options+crypto|0.00
-BROKER_C|InteractiveBrokers|full-service|1000.00
+yahoo_finance|Yahoo Finance|full
 EOBROKERS
     fi
 
@@ -89,7 +88,7 @@ EOBROKERS
     if [ -f pieces/system/brokers.txt ]; then
         {
             printf 'SECTION      | KEY                | VALUE\n'
-            printf '----------------------------------------\n'
+            printf '%s\n' '----------------------------------------'
             printf 'META         | piece_id           | broker_select\n'
             while IFS='|' read -r id name type rest; do
                 id=$(echo "$id" | xargs)

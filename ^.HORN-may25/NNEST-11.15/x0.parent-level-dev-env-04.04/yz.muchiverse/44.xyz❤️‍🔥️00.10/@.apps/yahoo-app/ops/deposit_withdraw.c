@@ -11,6 +11,50 @@
 #define MAX_LINE 512
 #define MAX_PATH 4096
 
+/* Ledger player column uses the house-logged-in human user id when one is
+ * active (current_login.txt), else falls back to "bank". */
+static const char *resolve_player(const char *bank_session, const char *fallback) {
+    static char buf[128];
+    buf[0] = '\0';
+    char hr_path[MAX_PATH];
+    snprintf(hr_path, sizeof(hr_path), "%s/pieces/system/house_root.txt", bank_session);
+    FILE *f = fopen(hr_path, "r");
+    char house_root[MAX_PATH] = "";
+    if (f) {
+        if (fgets(house_root, sizeof(house_root), f)) house_root[strcspn(house_root, "\r\n")] = '\0';
+        fclose(f);
+    }
+    if (house_root[0]) {
+        char login_path[MAX_PATH];
+        snprintf(login_path, sizeof(login_path), "%s/0.user-pal👤️/00.login-signup/current_login.txt", house_root);
+        FILE *lf = fopen(login_path, "r");
+        if (lf) {
+            char line[MAX_LINE];
+            while (fgets(line, sizeof(line), lf)) {
+                if (strncmp(line, "current_user_id=", 16) == 0) {
+                    char *v = line + 16;
+                    v[strcspn(v, "\r\n")] = '\0';
+                    snprintf(buf, sizeof(buf), "%s", v);
+                    break;
+                }
+            }
+            fclose(lf);
+        }
+    }
+    if (!buf[0]) snprintf(buf, sizeof(buf), "%s", fallback);
+    return buf;
+}
+
+static void append_ledger(const char *bank_session, const char *action_type, const char *word) {
+    char ledger_path[MAX_PATH];
+    snprintf(ledger_path, sizeof(ledger_path), "%s/data/master_ledger.txt", bank_session);
+    char cmd[MAX_PATH * 2];
+    snprintf(cmd, sizeof(cmd), "%s/+x/ledger_append.+x %s 0 %s \"%s\" %s",
+             bank_session, ledger_path, resolve_player(bank_session, "bank"), word, action_type);
+    FILE *fp = popen(cmd, "r");
+    if (fp) pclose(fp);
+}
+
 static void read_kv_str(const char *path, const char *key, char *out, size_t out_sz) {
     out[0] = '\0';
     FILE *f = fopen(path, "r");
@@ -19,7 +63,9 @@ static void read_kv_str(const char *path, const char *key, char *out, size_t out
     size_t key_len = strlen(key);
     while (fgets(line, sizeof(line), f)) {
         if (strncmp(line, key, key_len) == 0 && line[key_len] == '=') {
-            snprintf(out, out_sz, "%s", line + key_len + 1);
+            char *v = line + key_len + 1;
+            v[strcspn(v, "\r\n")] = '\0';
+            snprintf(out, out_sz, "%s", v);
             break;
         }
     }
@@ -87,6 +133,11 @@ int main(int argc, char *argv[]) {
         write_kv(bank_config, "bank_balance", buf);
         snprintf(buf, sizeof(buf), "%.2f", broker_balance);
         write_kv(broker_state, "broker_balance", buf);
+        {
+            char lw[128];
+            snprintf(lw, sizeof(lw), "deposit:%.2f:broker_balance:%.2f", amount, broker_balance);
+            append_ledger(bank_session, "deposit", lw);
+        }
         printf("Deposited $%.2f. Broker balance: $%.2f\n", amount, broker_balance);
     } else if (strcmp(direction, "withdraw") == 0) {
         if (amount > broker_balance) amount = broker_balance;
@@ -96,6 +147,11 @@ int main(int argc, char *argv[]) {
         write_kv(bank_config, "bank_balance", buf);
         snprintf(buf, sizeof(buf), "%.2f", broker_balance);
         write_kv(broker_state, "broker_balance", buf);
+        {
+            char lw[128];
+            snprintf(lw, sizeof(lw), "withdraw:%.2f:bank_balance:%.2f", amount, bank_balance);
+            append_ledger(bank_session, "withdraw", lw);
+        }
         printf("Withdrew $%.2f. Bank balance: $%.2f\n", amount, bank_balance);
     } else {
         fprintf(stderr, "Unknown direction: %s\n", direction);

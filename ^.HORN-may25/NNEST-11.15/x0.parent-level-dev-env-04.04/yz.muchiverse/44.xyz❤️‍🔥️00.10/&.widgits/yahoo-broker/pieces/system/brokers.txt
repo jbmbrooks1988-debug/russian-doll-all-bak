@@ -1,3 +1,1 @@
-broker_alpha|Alpha Securities|full
-broker_beta|Beta Investments|discount
-broker_gamma|Gamma Trading|crypto
+yahoo_finance|Yahoo Finance|full

@@ -1,0 +1,24 @@
+<panel time_reactive="true">
+    <module>system/prisc+x pal/main_loop_chtpm.pal</module>
+    <interact src="pieces/apps/player_app/interact_relay.txt" />
+    <text label="+==========================================+" /><br/>
+    <text label="| PAGE 2  pkg=${pkg_name}                 |" /><br/>
+    <text label="+==========================================+" /><br/>
+    <text label="Pick a behavior:" /><br/>
+    <button label="Chase" onClick="KEY:1" /><br/>
+    <button label="Flee" onClick="KEY:2" /><br/>
+    <button label="Wander" onClick="KEY:3" /><br/>
+    <button label="Idle" onClick="KEY:4" /><br/>
+    <text label="Fill in the blanks:" /><br/>
+    <cli_io id="ez_trigger" label="Trigger (on_spawn/on_click/parallel)" target_id="ez_trigger" /><br/>
+    <cli_io id="ez_target" label="Target entity" target_id="ez_target" /><br/>
+    <cli_io id="ez_speed" label="Speed" target_id="ez_speed" /><br/>
+    <cli_io id="ez_command" label="Command (shell-exec action)" target_id="ez_command" /><br/>
+    <text label="RPG-Maker-style page overrides (optional):" /><br/>
+    <cli_io id="ez_graphic" label="Graphic override (blank=default sprite)" target_id="ez_graphic" /><br/>
+    <cli_io id="ez_move_type" label="Move type (fixed/random/approach/custom)" target_id="ez_move_type" /><br/>
+    <cli_io id="ez_priority" label="Priority (below/same/above)" target_id="ez_priority" /><br/>
+    <button label="Save" onClick="KEY:5" /><br/>
+    <button label="Back to Pages" href="pieces/chtpm/layouts/event_ez.chtpm" /><br/>
+    <text label="${last_message}" /><br/>
+</panel>

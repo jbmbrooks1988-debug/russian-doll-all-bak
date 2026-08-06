@@ -36,6 +36,8 @@ static void resolve_root(void) {
     if (env && env[0]) snprintf(project_root, sizeof(project_root), "%s", env);
 }
 
+static char *trim(char *s);
+
 static void read_kv_str_local(const char *path, const char *key, char *out, size_t out_sz) {
     out[0] = '\0';
     FILE *f = fopen(path, "r");
@@ -44,7 +46,9 @@ static void read_kv_str_local(const char *path, const char *key, char *out, size
     size_t key_len = strlen(key);
     while (fgets(line, sizeof(line), f)) {
         if (strncmp(line, key, key_len) == 0 && line[key_len] == '=') {
-            snprintf(out, out_sz, "%s", line + key_len + 1);
+            char *v = line + key_len + 1;
+            v[strcspn(v, "\r\n")] = '\0';
+            snprintf(out, out_sz, "%s", v);
             break;
         }
     }
@@ -212,13 +216,6 @@ static void ping_chtpm_render_marker(const char *root) {
     if (mf) { fputc('.', mf); fclose(mf); }
 }
 
-static void ping_state_changed_marker(const char *root) {
-    char marker_path[PATH_BUF];
-    snprintf(marker_path, sizeof(marker_path), "%s/pieces/apps/player_app/state_changed.txt", root);
-    FILE *mf = fopen(marker_path, "a");
-    if (mf) { fputc('.', mf); fclose(mf); }
-}
-
 static void run_external(const char *cmd, const char *arg) {
     char path[PATH_BUF];
     snprintf(path, sizeof(path), "%s/ops/+x/%s.+x", project_root, cmd);
@@ -335,6 +332,18 @@ int main(int argc, char *argv[]) {
             snprintf(message, sizeof(message), "Portfolio refreshed");
         } else if (strcmp(cmd, "BACK_TO_BANK") == 0) {
             message[0] = '\0';
+        } else if (strcmp(cmd, "DEBUG_LEDGER") == 0) {
+            char ledger_path[PATH_BUF];
+            snprintf(ledger_path, sizeof(ledger_path), "%s/data/master_ledger.txt", project_root);
+            const char *display = getenv("DISPLAY");
+            if (display && display[0]) {
+                char gcmd[PATH_BUF * 2];
+                snprintf(gcmd, sizeof(gcmd), "gedit \"%s\" >/dev/null 2>&1 &", ledger_path);
+                system(gcmd);
+                snprintf(message, sizeof(message), "Opened master ledger in gedit: %s", ledger_path);
+            } else {
+                snprintf(message, sizeof(message), "Ledger: %s", ledger_path);
+            }
         } else {
             snprintf(message, sizeof(message), "Command: %s", cmd);
         }
@@ -349,7 +358,6 @@ int main(int argc, char *argv[]) {
     get_current_piece_id(project_root, piece_id, sizeof(piece_id));
     write_chtpm_bridge(piece_id);
     ping_chtpm_render_marker(project_root);
-    ping_state_changed_marker(project_root);
 
     return 0;
 }

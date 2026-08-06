@@ -39,7 +39,19 @@ echo "EMERGENCY KILL..."
 # root cause was a real bug in tp_menu_input.c (fixed), not these
 # binaries themselves, but keeping them on this list is still correct
 # defense-in-depth.
-NAMES='orchestrator keyboard_input chtpm_parser_pal chtpm_rgb_render gl_mirror egg_window avatar_window renderer prisc\+x agy_browser_manager rtp_manager yahoo_menu_input yahoo_compose_frame broker_menu_input broker_compose_frame deposit_withdraw tp_desktop_window tp_arm_placer'
+#
+# REAL ADDITION 2026-08-05, direct instruction ("all those borderless
+# windows u make need to have a... script to emergency kill them, pls
+# make that now. or they will stay on screen like a virus"):
+# tp_range_grid.+x - a real, small, standalone override_redirect X11
+# popup (the range-finder grid) with NO titlebar and NO window-manager
+# close button, only closable via its own click/Escape handler inside
+# its own event loop. If that process somehow hangs (stuck in
+# XNextEvent with a lost grab, say), there is NO other way to close it
+# short of this. gl_mirror itself (already on this list above) also now
+# has a real GL_MIRROR_BORDERLESS=1 mode (same binary/process name, no
+# separate entry needed - this list already covers it).
+NAMES='orchestrator keyboard_input chtpm_parser_pal chtpm_rgb_render gl_mirror egg_window avatar_window renderer prisc\+x agy_browser_manager rtp_manager yahoo_menu_input yahoo_compose_frame broker_menu_input broker_compose_frame deposit_withdraw tp_desktop_window tp_arm_placer tp_range_grid'
 
 pat() {
     # $1 = bare name (unescaped except prisc+x's own literal backslash

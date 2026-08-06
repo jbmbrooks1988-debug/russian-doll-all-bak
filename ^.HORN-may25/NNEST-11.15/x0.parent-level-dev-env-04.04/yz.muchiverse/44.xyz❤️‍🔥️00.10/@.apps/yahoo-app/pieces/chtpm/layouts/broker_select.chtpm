@@ -4,7 +4,7 @@
     <text label="+============================================================+" /><br/>
     <text label="|              S E L E C T   B R O K E R                   |" /><br/>
     <text label="+============================================================+" /><br/>
-    ${piece_methods}
+    <button label="Yahoo Finance (full)" href="pieces/chtpm/layouts/broker.chtpm" /><br/>
     <text label="+============================================================+" /><br/>
     <button label="Back to Bank" href="pieces/chtpm/layouts/bank.chtpm" /><br/>
     <text label=" (Ctrl+C to quit)" /><br/>

@@ -1,6 +1,11 @@
 *tell agent , "always consider future agents, and write readme/testing and other helpful docs"
 ----------------------------------------------------------------------------
 
+
+📅️AUG 5  :
+unreal has a grid and "per 'cube' fidelity 2 handle longer distance degradation (they turn eveyrthing into voxels ;) 
+ask about doing the same
+
 📅️AUG 1  : everything should be widgets. its more modular. = ezier 2 dev & audit!💯️
 
 

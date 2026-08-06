@@ -80,8 +80,12 @@ static void read_user_account(const char *hash, float *balance, char stocks[MAX_
                 token = strtok(NULL, ",");
                 if (!token) break;
                 strncpy(history_time[*history_count], token, 31);
-                token = strtok(NULL, ",");
-                if (token && strcmp(token, "last_lookup") != 0) token = strtok(NULL, ","); // Skip expiration/strike
+                /* Uniform 7-field history rows (option ops carry
+                 * expiration+strike). Stock rows use the '-' sentinel +
+                 * 0.00 strike so all readers (incl. strtok-based ones, which
+                 * collapse empty fields) can consume the same shape. */
+                token = strtok(NULL, ","); /* expiration ('' -> skipped) */
+                if (token && strcmp(token, "last_lookup") != 0) token = strtok(NULL, ","); /* strike */
                 (*history_count)++;
                 token = strtok(NULL, ",");
             }
@@ -148,12 +152,44 @@ static void write_user_account(const char *hash, float balance, char stocks[MAX_
     }
     fprintf(fp, ",options%s,history", options);
     for (int i = 0; i < history_count; i++) {
-        fprintf(fp, ",%s,%s,%.2f,%.2f,%s", history_type[i], history_symbol[i],
+        fprintf(fp, ",%s,%s,%.2f,%.2f,%s,-,0.00", history_type[i], history_symbol[i],
                 history_shares[i], history_price[i], history_time[i]);
     }
     fprintf(fp, ",last_lookup,%s,%.2f,%s\n", last_lookup_symbol, last_lookup_price, last_lookup_time);
     fclose(fp);
     fprintf(stderr, "[%s] Updated: balance=%.2f, stocks=%d, history=%d\n", filename, balance, stocks_count, history_count);
+}
+
+/* Ledger player column uses the house-logged-in human user id when one is
+ * active (current_login.txt), else falls back to the session hash. */
+static const char *resolve_player(const char *fallback) {
+    static char buf[128];
+    buf[0] = '\0';
+    FILE *f = fopen("pieces/system/house_root.txt", "r");
+    char house_root[MAX_LINE] = "";
+    if (f) {
+        if (fgets(house_root, sizeof(house_root), f)) house_root[strcspn(house_root, "\r\n")] = '\0';
+        fclose(f);
+    }
+    if (house_root[0]) {
+        char login_path[384];
+        snprintf(login_path, sizeof(login_path), "%s/0.user-pal👤️/00.login-signup/current_login.txt", house_root);
+        FILE *lf = fopen(login_path, "r");
+        if (lf) {
+            char line[MAX_LINE];
+            while (fgets(line, sizeof(line), lf)) {
+                if (strncmp(line, "current_user_id=", 16) == 0) {
+                    char *v = line + 16;
+                    v[strcspn(v, "\r\n")] = '\0';
+                    snprintf(buf, sizeof(buf), "%s", v);
+                    break;
+                }
+            }
+            fclose(lf);
+        }
+    }
+    if (!buf[0]) snprintf(buf, sizeof(buf), "%s", fallback);
+    return buf;
 }
 
 int main(int argc, char *argv[]) {
@@ -255,6 +291,16 @@ int main(int argc, char *argv[]) {
     write_user_account(hash, balance, stocks, shares, stocks_count,
                        history_type, history_symbol, history_shares, history_price, history_time, history_count,
                        last_lookup_symbol, last_lookup_price, last_lookup_time);
+
+    {
+        char ledger_word[128];
+        snprintf(ledger_word, sizeof(ledger_word), "sell:%s:%.2f:%.2f:%.2f", symbol, shares_to_sell, price, balance);
+        char cmd[512];
+        snprintf(cmd, sizeof(cmd), "./+x/ledger_append.+x data/master_ledger.txt 0 %s \"%s\" sell",
+                 resolve_player(hash), ledger_word);
+        FILE *lfp = popen(cmd, "r");
+        if (lfp) pclose(lfp);
+    }
 
     printf("Sold %.2f shares of %s at $%.2f. New balance: $%.2f\n", shares_to_sell, symbol, price, balance);
     return 0;

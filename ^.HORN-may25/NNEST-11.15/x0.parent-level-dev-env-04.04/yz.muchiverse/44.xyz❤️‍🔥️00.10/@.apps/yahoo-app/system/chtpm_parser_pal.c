@@ -307,6 +307,14 @@ static void sync_cli_input_from_gui_state(void) {
     for (int i = 0; i < element_count; i++) {
         if (strcmp(elements[i].type, "cli_io") != 0) continue;
         if (!elements[i].target_id[0]) continue;
+        /* BROKER-FORM FIX (2026-08-05): skip the element currently being
+           typed into. Its buffer is authoritative while active (each
+           keystroke already mirrors it to gui_state live), so a stale
+           gui_state value can never resurrect a cleared buffer mid-typing.
+           This extends the one-shot suppress below to cover the broker
+           form's longer window (a METHOD op clears sym_input/amt_input
+           many renders after the cli_io Enter, not on the next render). */
+        if (i == active_index) continue;
         /* REAL BUG, LIVE-CAUGHT (2026-07-20, building pal-chat-irc's own
            Enter-sends-chat feature): the cli_io Enter handler below
            (key==10||13 branch) saves the FULL typed value to gui_state,
@@ -356,6 +364,7 @@ static void sync_cli_input_from_gui_state(void) {
     for (int i = 0; i < element_count; i++) {
         if (strcmp(elements[i].type, "cli_io") != 0) continue;
         if (elements[i].target_id[0]) continue;  /* already handled above */
+        if (i == active_index) continue;  /* BROKER-FORM FIX: buffer authoritative while active */
 
         if (strcmp(elements[i].id, "input_text") == 0) {
             if (state_input_present && state_input && state_input[0] != '\0') {
@@ -2041,7 +2050,7 @@ void send_command(const char* cmd) {
     /* Handle KEY:n prefix for injecting key codes */
     if (strncmp(cmd, "KEY:", 4) == 0) {
         int k = atoi(cmd + 4);
-        if (k >= 0 && k <= 9) inject_raw_key('0' + k); else inject_raw_key(k);
+        if (k >= 0 && k <= 14) inject_raw_key('0' + k); else inject_raw_key(k);
         return;
     }
     
@@ -3310,6 +3319,19 @@ void process_key(int key) {
                 if (strcmp(el->type, "cli_io") == 0) {
                     /* CLI input field - activate on Enter */
                     active_index = focus_index;
+                    /* BROKER-FORM FIX (2026-08-05): a fresh activation is a
+                     * fresh typing session. Without this, re-entering a
+                     * field whose buffer was re-seeded from a still-stale
+                     * gui_state value (see sync_cli_input_from_gui_state())
+                     * appended to the old text instead of replacing it
+                     * (live-caught: 2nd NVDA typed -> "NVDANVDA", 1 share ->
+                     * "10001"). The auto-fill path (main loop's cli_input
+                     * check) sets active_index directly, NOT through this
+                     * Enter branch, so it is unaffected. The buffer stays
+                     * empty while active because sync skips active elements;
+                     * after ESC the next sync re-seeds it from gui_state so
+                     * the field still displays its last committed value. */
+                    el->input_buffer[0] = '\0';
                     clear_nav_on_next = true;
                     export_active_index();
                 }
