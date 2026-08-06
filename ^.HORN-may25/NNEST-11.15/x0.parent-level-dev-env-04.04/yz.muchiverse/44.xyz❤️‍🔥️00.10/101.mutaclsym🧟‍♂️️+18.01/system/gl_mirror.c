@@ -367,7 +367,9 @@ static void check_for_drop(void) {
  * it, not a replacement for it. */
 static void idle_tick(void) {
     check_for_drop();
-    usleep(16000);
+    /* REAL FIX 2026-08-06: was 16000us (~62Hz) independent of the
+     * 33ms render timer — idle+timer together burned CPU. 30fps max. */
+    usleep(33333);
 }
 #endif
 

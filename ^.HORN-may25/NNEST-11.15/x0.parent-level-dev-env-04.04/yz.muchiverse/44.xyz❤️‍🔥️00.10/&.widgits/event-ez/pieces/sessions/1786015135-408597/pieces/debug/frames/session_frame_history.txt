@@ -1,0 +1,75 @@
+
+===== 2026-08-06 04:18:55 layout=pieces/chtpm/layouts/event_ez.chtpm =====
++==========================================+
+| EVENT EDITOR — m6_golddeity               |
++==========================================+
+What is this? Each PAGE is one event script
+(like RPG Maker Event pages). Open a page,
+then add commands (e.g. Change Gold).
+------------------------------------------
+HOW TO: number or arrows, then Enter.
+------------------------------------------
+-- EVENT PAGES --
+[>] 1. [Page 1 - When: on_click (0 cmd)]
+[ ] 2. [Page 2 - (new empty page)]
+------------------------------------------
+widget profile: GL primary; SHOW_ASCII=0
+
++=========================================================+
+Nav > _
+
+===== 2026-08-06 04:19:00 layout=pieces/chtpm/layouts/event_ez_page_1.chtpm =====
++==========================================+
+| EVENT EDITOR — m6_golddeity               |
++==========================================+
+What is this? Each PAGE is one event script
+(like RPG Maker Event pages). Open a page,
+then add commands (e.g. Change Gold).
+------------------------------------------
+HOW TO: number or arrows, then Enter.
+------------------------------------------
+-- EVENT PAGES --
+[>] 1. [Page 1 - When: on_click (0 cmd)]
+[ ] 2. [Page 2 - (new empty page)]
+------------------------------------------
+widget profile: GL primary; SHOW_ASCII=0
+
++=========================================================+
+Nav > 1_
+
+===== 2026-08-06 04:19:03 layout=pieces/chtpm/layouts/event_ez.chtpm =====
++==========================================+
+| EVENT EDITOR — m6_golddeity               |
++==========================================+
+What is this? Each PAGE is one event script
+(like RPG Maker Event pages). Open a page,
+then add commands (e.g. Change Gold).
+------------------------------------------
+HOW TO: number or arrows, then Enter.
+------------------------------------------
+-- EVENT PAGES --
+[>] 1. [Page 1 - When: on_click (0 cmd)]
+[ ] 2. [Page 2 - (new empty page)]
+------------------------------------------
+widget profile: GL primary; SHOW_ASCII=0
+
++=========================================================+
+Nav > _
+
+===== 2026-08-06 04:33:03 layout=pieces/chtpm/layouts/event_ez_page_1.chtpm =====
++==========================================+
+| EVENT PAGE 1 — m6_golddeity              |
++==========================================+
+When does this page run? (RMMV Trigger)
+| [>] 1. Trigger: on_click / on_spawn / parallel: []                                        |
+[ ] 2. [Save Trigger]
+------------------------------------------
+-- EVENT COMMANDS (runs top to bottom) --
+Pick [New Event Command] to add a line.
+[ ] 3. [New Event Command...]
+------------------------------------------
+[ ] 4. [< Back to Event Pages]
+widget profile: GL primary; SHOW_ASCII=0
+
++=========================================================+
+Nav > _

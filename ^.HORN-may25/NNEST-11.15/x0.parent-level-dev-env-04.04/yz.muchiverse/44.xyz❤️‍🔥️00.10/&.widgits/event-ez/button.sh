@@ -65,7 +65,8 @@ _start_session() {
 
     mkdir -p "$SESSION_DIR/pieces/system" "$SESSION_DIR/pieces/display" \
              "$SESSION_DIR/pieces/apps/player_app" "$SESSION_DIR/pieces/keyboard" \
-             "$SESSION_DIR/projects/event-ez/manager" "$SESSION_DIR/pieces/os"
+             "$SESSION_DIR/projects/event-ez/manager" "$SESSION_DIR/pieces/os" \
+             "$SESSION_DIR/pieces/debug/frames"
 
     ln -sfn "$MUTA/system" "$SESSION_DIR/system"
     ln -sfn "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"

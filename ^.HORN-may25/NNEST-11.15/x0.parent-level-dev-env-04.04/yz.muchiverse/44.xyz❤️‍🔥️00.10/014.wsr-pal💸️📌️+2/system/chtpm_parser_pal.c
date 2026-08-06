@@ -3706,7 +3706,8 @@ int main(int argc, char **argv) {
                 fclose(lf); 
             }
         }
-        if (dirty || clear_nav_on_next) { compose_frame(); dirty = 0; } usleep(16667);
+        /* 30fps hard cap (was 16667 ≈ 60fps). */
+        if (dirty || clear_nav_on_next) { compose_frame(); dirty = 0; } usleep(33333);
     }
     return 0;
 }

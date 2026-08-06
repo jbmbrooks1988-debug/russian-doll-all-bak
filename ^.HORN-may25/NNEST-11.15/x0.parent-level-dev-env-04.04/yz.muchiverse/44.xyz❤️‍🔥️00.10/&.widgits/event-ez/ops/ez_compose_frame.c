@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <sys/stat.h>
 
 #define MAX_LINE 2048
@@ -143,14 +144,18 @@ static void write_page_layout(const char *layouts_dir, int n) {
         "    <module>system/prisc+x pal/main_loop_chtpm.pal</module>\n"
         "    <interact src=\"pieces/apps/player_app/interact_relay.txt\" />\n"
         "    <text label=\"+==========================================+\" /><br/>\n"
-        "    <text label=\"| PAGE %d  pkg=${pkg_name}                 |\" /><br/>\n"
+        "    <text label=\"| EVENT PAGE %d - ${pkg_name}               |\" /><br/>\n"
         "    <text label=\"+==========================================+\" /><br/>\n"
-        "    <cli_io id=\"ez_trigger\" label=\"Trigger (on_spawn/on_click/parallel)\" target_id=\"ez_trigger\" /><br/>\n"
+        "    <text label=\"When does this page run? (RMMV Trigger)\" /><br/>\n"
+        "    <cli_io id=\"ez_trigger\" label=\"Trigger: on_click / on_spawn / parallel\" target_id=\"ez_trigger\" /><br/>\n"
         "    <button label=\"Save Trigger\" onClick=\"KEY:5\" /><br/>\n"
-        "    <text label=\"-- COMMANDS --\" /><br/>\n"
+        "    <text label=\"------------------------------------------\" /><br/>\n"
+        "    <text label=\"-- EVENT COMMANDS (runs top to bottom) --\" /><br/>\n"
+        "    <text label=\"Pick New Event Command to add a line.\" /><br/>\n"
         "    ${command_list_rows_%d}\n"
-        "    <text label=\"+==========================================+\" /><br/>\n"
-        "    <button label=\"Back to Pages\" href=\"pieces/chtpm/layouts/event_ez.chtpm\" /><br/>\n"
+        "    <button label=\"Clear All Commands on This Page\" onClick=\"KEY:7\" /><br/>\n"
+        "    <text label=\"------------------------------------------\" /><br/>\n"
+        "    <button label=\"< Back to Event Pages\" href=\"pieces/chtpm/layouts/event_ez.chtpm\" /><br/>\n"
         "    <text label=\"${last_message}\" /><br/>\n"
         "</panel>\n",
         n, n);
@@ -174,10 +179,12 @@ static void write_cmdpick_layout(const char *layouts_dir, int n) {
         "    <module>system/prisc+x pal/main_loop_chtpm.pal</module>\n"
         "    <interact src=\"pieces/apps/player_app/interact_relay.txt\" />\n"
         "    <text label=\"+==========================================+\" /><br/>\n"
-        "    <text label=\"| ADD COMMAND  page=%d                     |\" /><br/>\n"
+        "    <text label=\"| NEW EVENT COMMAND (page %d)              |\" /><br/>\n"
         "    <text label=\"+==========================================+\" /><br/>\n"
-        "    <button label=\"Change Gold\" href=\"pieces/chtpm/layouts/event_ez_page_%d_cmd_change_gold.chtpm\" /><br/>\n"
-        "    <button label=\"Back\" href=\"pieces/chtpm/layouts/event_ez_page_%d.chtpm\" /><br/>\n"
+        "    <text label=\"Choose a command type (RMMV-style list).\" /><br/>\n"
+        "    <text label=\"Only working types are listed.\" /><br/>\n"
+        "    <button label=\"Change Gold...\" href=\"pieces/chtpm/layouts/event_ez_page_%d_cmd_change_gold.chtpm\" /><br/>\n"
+        "    <button label=\"< Back\" href=\"pieces/chtpm/layouts/event_ez_page_%d.chtpm\" /><br/>\n"
         "</panel>\n",
         n, n, n);
     fclose(f);
@@ -199,11 +206,14 @@ static void write_cmd_change_gold_layout(const char *layouts_dir, int n) {
         "    <module>system/prisc+x pal/main_loop_chtpm.pal</module>\n"
         "    <interact src=\"pieces/apps/player_app/interact_relay.txt\" />\n"
         "    <text label=\"+==========================================+\" /><br/>\n"
-        "    <text label=\"| CHANGE GOLD  page=%d                     |\" /><br/>\n"
+        "    <text label=\"| Change Gold (page %d)                    |\" /><br/>\n"
         "    <text label=\"+==========================================+\" /><br/>\n"
-        "    <cli_io id=\"ez_cg_amount\" label=\"Amount (+10 or -5)\" target_id=\"ez_cg_amount\" /><br/>\n"
-        "    <button label=\"Save\" onClick=\"KEY:6\" /><br/>\n"
-        "    <button label=\"Back\" href=\"pieces/chtpm/layouts/event_ez_page_%d.chtpm\" /><br/>\n"
+        "    <text label=\"Add gold to this character (use -N to spend).\" /><br/>\n"
+        "    <text label=\"HOW TO: Enter on field, type number, Esc,\" /><br/>\n"
+        "    <text label=\"then OK to save the command.\" /><br/>\n"
+        "    <cli_io id=\"ez_cg_amount\" label=\"Gold amount (e.g. 25 or -5)\" target_id=\"ez_cg_amount\" /><br/>\n"
+        "    <button label=\"OK — Save Command\" onClick=\"KEY:6\" /><br/>\n"
+        "    <button label=\"< Back\" href=\"pieces/chtpm/layouts/event_ez_page_%d.chtpm\" /><br/>\n"
         "    <text label=\"${last_message}\" /><br/>\n"
         "</panel>\n",
         n, n);
@@ -223,13 +233,43 @@ static void sanitize(const char *in, char *out, size_t n) {
     out[j] = '\0';
 }
 
-static void ping(void) {
+/* REAL FIX 2026-08-06, user CPU throttle ("toolbar/muchi/events >30fps"):
+ * This used to ALWAYS append to BOTH frame_changed.txt AND
+ * ez_screen_changed.txt on every compose. main_loop_chtpm.pal only
+ * re-runs ez_compose_frame when ez_screen_changed grows — so each
+ * compose re-armed the next compose → ~25–33 full recomposes/sec forever
+ * (live-measured), which kept chtpm_rgb_render (~40% CPU) + gl_mirror
+ * (~20%) + parser (~10%) pinned hot even while idle.
+ *
+ * Contract now:
+ *   - ez_screen_changed: owned ONLY by ez_menu_input bump() (real
+ *     KEY side-effects). Compose never touches it.
+ *   - frame_changed: only when view.txt content actually changed, so
+ *     rgb_render/parser don't re-blit an identical frame. */
+static void ping_frame_if_view_changed(const char *view_path) {
+    static char last_fp[64] = "";
+    char fp[64] = "empty";
+    FILE *vf = fopen(view_path, "r");
+    if (vf) {
+        /* Cheap stable fingerprint: size + FNV-ish over first 2KB. */
+        unsigned long long h = 14695981039346656037ULL;
+        char buf[2048];
+        size_t n = fread(buf, 1, sizeof(buf), vf);
+        long sz = 0;
+        if (fseek(vf, 0, SEEK_END) == 0) sz = ftell(vf);
+        fclose(vf);
+        for (size_t i = 0; i < n; i++) {
+            h ^= (unsigned char)buf[i];
+            h *= 1099511628211ULL;
+        }
+        snprintf(fp, sizeof(fp), "%ld:%llx", sz, (unsigned long long)h);
+    }
+    if (strcmp(fp, last_fp) == 0) return;
+    snprintf(last_fp, sizeof(last_fp), "%s", fp);
+
     char p[PATH_BUF];
     snprintf(p, sizeof(p), "%s/pieces/display/frame_changed.txt", project_root);
     FILE *f = fopen(p, "a");
-    if (f) { fputc('.', f); fclose(f); }
-    snprintf(p, sizeof(p), "%s/pieces/display/ez_screen_changed.txt", project_root);
-    f = fopen(p, "a");
     if (f) { fputc('.', f); fclose(f); }
 }
 
@@ -303,7 +343,7 @@ static void build_command_list_rows(const char *pkg_dir, int page_n, char *rows_
             }
             shown++;
             char label[96], clean[96];
-            snprintf(label, sizeof(label), "%d. Change Gold: %s", shown, amount);
+            snprintf(label, sizeof(label), "• Change Gold: %s", amount[0] ? amount : "?");
             sanitize(label, clean, sizeof(clean));
             int wrote = snprintf(rows_out + used, rows_out_sz - used,
                                   "<text label=\"%s\" /><br/>", clean);
@@ -313,7 +353,7 @@ static void build_command_list_rows(const char *pkg_dir, int page_n, char *rows_
         fclose(irf);
     }
     int wrote = snprintf(rows_out + used, rows_out_sz - used,
-                          "<button label=\"[+] Add Command\" href=\"pieces/chtpm/layouts/event_ez_page_%d_cmdpick.chtpm\" /><br/>",
+                          "<button label=\"New Event Command...\" href=\"pieces/chtpm/layouts/event_ez_page_%d_cmdpick.chtpm\" /><br/>",
                           page_n);
     if (wrote > 0 && (size_t)wrote < rows_out_sz - used) used += (size_t)wrote;
 }
@@ -374,12 +414,26 @@ static void compose_gallery(const char *state, const char *view, const char *gui
          * the real content - chtpm's own real nav chrome supplies the
          * number and bracket. */
         if (i <= n_real) {
-            char cond_path[PATH_BUF], trig[64] = "";
+            char cond_path[PATH_BUF], ir_path[PATH_BUF], trig[64] = "";
+            int n_cmds = 0;
             snprintf(cond_path, sizeof(cond_path), "%s/pages/page_%d/condition.pdl", pkg_dir, i);
             read_pdl_value(cond_path, "trigger", trig, sizeof(trig));
-            snprintf(label, sizeof(label), "%s", trig[0] ? trig : "?");
+            snprintf(ir_path, sizeof(ir_path), "%s/pages/page_%d/event.ir.pdl", pkg_dir, i);
+            {
+                FILE *irf = fopen(ir_path, "r");
+                if (irf) {
+                    char ln[MAX_LINE];
+                    while (fgets(ln, sizeof(ln), irf)) {
+                        if (strncmp(ln, "NODE", 4) == 0 && strstr(ln, "type=change_gold")) n_cmds++;
+                    }
+                    fclose(irf);
+                }
+            }
+            if (!trig[0]) snprintf(trig, sizeof(trig), "on_click");
+            /* RMMV-ish: Page N — When: Action Button / n commands */
+            snprintf(label, sizeof(label), "Page %d - When: %s (%d cmd)", i, trig, n_cmds);
         } else {
-            snprintf(label, sizeof(label), "empty");
+            snprintf(label, sizeof(label), "Page %d - (new empty page)", i);
         }
         char clean[80]; sanitize(label, clean, sizeof(clean));
         int wrote = snprintf(rows_out + used, rows_out_sz - used,
@@ -392,9 +446,9 @@ static void compose_gallery(const char *state, const char *view, const char *gui
     FILE *o = fopen(view, "w");
     if (!o) return;
     fprintf(o, "+==========================================+\n");
-    fprintf(o, "| EVENT-EZ  pkg=%-27.27s|\n", pkg);
+    fprintf(o, "| EVENT EDITOR — %-22.22s|\n", pkg);
     fprintf(o, "+==========================================+\n");
-    fprintf(o, "| -- PAGES --                                |\n");
+    fprintf(o, "| -- EVENT PAGES (open one to edit) --       |\n");
     for (int i = 1; i <= n_real; i++) {
         char cond_path[PATH_BUF], ir_path[PATH_BUF], trig[64] = "";
         snprintf(cond_path, sizeof(cond_path), "%s/pages/page_%d/condition.pdl", pkg_dir, i);
@@ -485,15 +539,36 @@ int main(void) {
     char command_list_rows_kv[32768] = "";
     int page_n = 0;
     ScreenKind kind = current_screen_kind(&page_n);
+
+    /* REAL FIX 2026-08-06 (user: new command not listed after Save):
+     * ALWAYS recompute page_gallery_rows + command_list_rows_N from disk.
+     * Cheap, and guarantees:
+     *  - Back still has a real page list (not wiped)
+     *  - After Change Gold Save, page list shows the new NODE immediately
+     *    even while still on the param/page screen (not only after
+     *    revisiting the Gallery). */
+    {
+        char dummy_view[PATH_BUF];
+        snprintf(dummy_view, sizeof(dummy_view), "%s/pieces/apps/player_app/view_gallery_blob.txt", project_root);
+        compose_gallery(state, dummy_view, gui, pkg, pkg_dir, msg, page_gallery_rows, sizeof(page_gallery_rows),
+                         command_list_rows_kv, sizeof(command_list_rows_kv));
+    }
+
     if (kind == SCREEN_PAGE) {
         compose_page(state, view, gui, pkg, pkg_dir, msg, page_n, command_list_rows, sizeof(command_list_rows));
     } else if (kind == SCREEN_GALLERY) {
-        compose_gallery(state, view, gui, pkg, pkg_dir, msg, page_gallery_rows, sizeof(page_gallery_rows),
-                         command_list_rows_kv, sizeof(command_list_rows_kv));
+        /* Gallery chrome goes to the real view.txt (compose_gallery
+         * already wrote dummy_view; write the same content to view). */
+        char src[PATH_BUF], cmd[PATH_BUF * 2];
+        snprintf(src, sizeof(src), "%s/pieces/apps/player_app/view_gallery_blob.txt", project_root);
+        snprintf(cmd, sizeof(cmd), "cp -f '%s' '%s' 2>/dev/null", src, view);
+        if (system(cmd) != 0) {
+            /* fallback: recompose directly into view */
+            compose_gallery(state, view, gui, pkg, pkg_dir, msg, page_gallery_rows, sizeof(page_gallery_rows),
+                             command_list_rows_kv, sizeof(command_list_rows_kv));
+        }
     }
-    /* SCREEN_CMDPICK / SCREEN_CMD_CHANGE_GOLD: static, pre-generated by
-     * compose_gallery() above whenever the Gallery loads - no per-frame
-     * dynamic content of their own, nothing to compose here. */
+    /* CMDPICK / CHANGE_GOLD: static .chtpm; gui blobs still refreshed above. */
 
     {
         char cmd[PATH_BUF];
@@ -501,14 +576,7 @@ int main(void) {
         if (system(cmd) != 0) { /* best-effort, dir likely already exists */ }
     }
 
-    /* REAL FIX: a plain "a" (append) open here would grow gui_state.txt
-     * unbounded (this op runs every ~30ms in the PAL loop). chtpm_parser_
-     * pal.c owns writing ez_target=/ez_speed= itself on every keystroke
-     * (save_cli_io_gui_state(), confirmed via source read) - read the
-     * WHOLE file first, keep every line except our own pkg_name=/
-     * last_message= (which we're about to rewrite fresh), then write it
-     * all back plus our fresh values. Preserves the live cli_io keys
-     * without ever growing the file. */
+    /* Read gui_state, drop our managed keys, rewrite atomically. */
     char keep[64][MAX_LINE];
     int n_keep = 0;
     FILE *rf = fopen(gui, "r");
@@ -519,7 +587,9 @@ int main(void) {
             if (strncmp(line, "last_message=", 13) == 0) continue;
             if (strncmp(line, "page_gallery_rows=", 18) == 0) continue;
             if (strncmp(line, "command_list_rows=", 18) == 0) continue;
-            if (strncmp(line, "command_list_rows_", 19) == 0) continue;
+            /* REAL FIX: was strncmp(..., 19) which NEVER matched
+             * "command_list_rows_N=" (18-char prefix) → unbounded dupes. */
+            if (strncmp(line, "command_list_rows_", 18) == 0) continue;
             snprintf(keep[n_keep], MAX_LINE, "%s", line);
             n_keep++;
         }
@@ -563,6 +633,80 @@ int main(void) {
     fclose(g);
     rename(gui_tmp, gui);
 
-    ping();
+    ping_frame_if_view_changed(view);
+
+    /* Session frame history: ONLY when layout or frame TEXT changes
+     * (not every 30ms tick — that produced 30k-line logs where one
+     * "Saved..." message looked like thousands of saves). */
+    {
+        char hist_dir[PATH_BUF], hist_path[PATH_BUF], frame_path[PATH_BUF], layout_path[PATH_BUF];
+        char last_path[PATH_BUF];
+        snprintf(hist_dir, sizeof(hist_dir), "%s/pieces/debug/frames", project_root);
+        snprintf(hist_path, sizeof(hist_path), "%s/session_frame_history.txt", hist_dir);
+        {
+            FILE *szf = fopen(hist_path, "r");
+            if (szf) {
+                if (fseek(szf, 0, SEEK_END) == 0) {
+                    long sz = ftell(szf);
+                    if (sz > 400000L) { /* ~400KB cap — crash risk if unbounded */
+                        fclose(szf);
+                        szf = NULL;
+                        FILE *wf = fopen(hist_path, "w");
+                        if (wf) {
+                            fprintf(wf, "(session_frame_history truncated — was >400KB)\n");
+                            fclose(wf);
+                        }
+                    }
+                }
+                if (szf) fclose(szf);
+            }
+        }
+
+        snprintf(frame_path, sizeof(frame_path), "%s/pieces/display/current_frame.txt", project_root);
+        snprintf(layout_path, sizeof(layout_path), "%s/pieces/display/current_layout.txt", project_root);
+        snprintf(last_path, sizeof(last_path), "%s/pieces/debug/frames/last_logged_frame.txt", project_root);
+        char mk[PATH_BUF];
+        snprintf(mk, sizeof(mk), "mkdir -p '%s'", hist_dir);
+        if (system(mk) == 0) {
+            FILE *ff = fopen(frame_path, "r");
+            if (ff) {
+                char frame_buf[8192];
+                size_t n = fread(frame_buf, 1, sizeof(frame_buf) - 1, ff);
+                fclose(ff);
+                frame_buf[n] = '\0';
+                char layout_buf[PATH_BUF] = "";
+                FILE *lf = fopen(layout_path, "r");
+                if (lf) {
+                    if (fgets(layout_buf, sizeof(layout_buf), lf))
+                        layout_buf[strcspn(layout_buf, "\r\n")] = '\0';
+                    fclose(lf);
+                }
+                char fingerprint[8700];
+                snprintf(fingerprint, sizeof(fingerprint), "%s\n%s", layout_buf, frame_buf);
+                char prev[8700] = "";
+                FILE *pf = fopen(last_path, "r");
+                if (pf) {
+                    size_t pn = fread(prev, 1, sizeof(prev) - 1, pf);
+                    prev[pn] = '\0';
+                    fclose(pf);
+                }
+                if (strcmp(prev, fingerprint) != 0) {
+                    FILE *wf = fopen(last_path, "w");
+                    if (wf) { fputs(fingerprint, wf); fclose(wf); }
+                    FILE *hf = fopen(hist_path, "a");
+                    if (hf) {
+                        time_t now = time(NULL);
+                        struct tm tm;
+                        localtime_r(&now, &tm);
+                        fprintf(hf, "\n===== %04d-%02d-%02d %02d:%02d:%02d layout=%s =====\n",
+                                tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday,
+                                tm.tm_hour, tm.tm_min, tm.tm_sec, layout_buf);
+                        fputs(frame_buf, hf);
+                        fclose(hf);
+                    }
+                }
+            }
+        }
+    }
     return 0;
 }

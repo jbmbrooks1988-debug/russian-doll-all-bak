@@ -3411,7 +3411,9 @@ int main(int argc, char **argv) {
                 fclose(lf); 
             }
         }
-        if (dirty || clear_nav_on_next) { compose_frame(); dirty = 0; } usleep(16667);
+        /* REAL FIX 2026-08-06: was usleep(16667) ≈ 60fps — doubles
+         * compose work vs the house 30fps budget. Cap at 30fps. */
+        if (dirty || clear_nav_on_next) { compose_frame(); dirty = 0; } usleep(33333);
     }
     return 0;
 }

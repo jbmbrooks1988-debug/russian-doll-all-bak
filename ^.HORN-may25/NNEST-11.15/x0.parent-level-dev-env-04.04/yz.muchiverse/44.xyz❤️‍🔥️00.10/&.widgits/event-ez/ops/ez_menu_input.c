@@ -5,12 +5,17 @@
  *   5=Save Trigger (Page screen - writes condition.pdl's real trigger)
  *   6=Save Change Gold (Change Gold parameter screen - appends a real
  *     NODE row to event.ir.pdl, recompiles event.pal fresh from it)
+ *   7=Clear All Commands on This Page (wipe NODE rows; keep trigger;
+ *     recompile empty event.pal; remove cmd_*.sh wrappers)
  *   idle 0 = no-op
- */
+ *
+ * KEY:n is injected as the ASCII digit char ('5'==53, not integer 5) —
+ * see chtpm_parser_pal send_command KEY: path + inject_raw_key. */
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <sys/stat.h>
 
 #define MAX_LINE 2048
@@ -216,6 +221,26 @@ int main(int argc, char **argv) {
         read_kv(gui, "ez_cg_amount", amount, sizeof(amount));
         if (!amount[0]) { set_msg(state, "Save failed: enter an amount (+10 or -5)"); bump(); return 0; }
 
+        /* Debounce via state file (ez_menu_input is a one-shot process —
+         * static vars do NOT persist across KEY:6 presses). */
+        {
+            char last_amt[64] = "";
+            char last_t_s[32] = "";
+            read_kv(state, "last_cg_amount", last_amt, sizeof(last_amt));
+            read_kv(state, "last_cg_time", last_t_s, sizeof(last_t_s));
+            time_t now = time(NULL);
+            time_t last_t = (time_t)atol(last_t_s);
+            if (last_amt[0] && strcmp(last_amt, amount) == 0 && last_t > 0 && (now - last_t) < 2) {
+                set_msg(state, "Already saved that amount — not adding again");
+                bump();
+                return 0;
+            }
+            char ts[32];
+            snprintf(ts, sizeof(ts), "%ld", (long)now);
+            write_kv(state, "last_cg_amount", amount);
+            write_kv(state, "last_cg_time", ts);
+        }
+
         char pkg_dir[PATH_BUF];
         read_kv(state, "pkg_dir", pkg_dir, sizeof(pkg_dir));
         if (!pkg_dir[0]) { set_msg(state, "Save failed: no pkg_dir set"); bump(); return 0; }
@@ -336,6 +361,112 @@ int main(int argc, char **argv) {
 
         char msg[MAX_LINE];
         snprintf(msg, sizeof(msg), "Saved Change Gold %s to page %d - click Back to see it listed", amount, page_n);
+        set_msg(state, msg);
+        bump();
+        return 0;
+    }
+
+    if (key == '7') {
+        /* REAL FIX 2026-08-06, user: "clear all isn't yet working" —
+         * layout had onClick=KEY:7 and session relay showed 55 ('7'),
+         * but this handler was never implemented. Wipe every NODE on the
+         * current page's event.ir.pdl, leave META/STATE/header + trigger
+         * (condition.pdl) alone, rewrite event.pal to empty+halt, delete
+         * cmd_*.sh wrappers, and poke piece_methods so chtpm_parser_pal
+         * re-parses the page with the emptied command_list_rows_N. */
+        int page_n = current_page_number();
+        if (page_n <= 0) {
+            set_msg(state, "Clear failed: not on a page screen");
+            bump();
+            return 0;
+        }
+        char pkg[128], pkg_dir[PATH_BUF];
+        read_kv(state, "pkg_name", pkg, sizeof(pkg));
+        read_kv(state, "pkg_dir", pkg_dir, sizeof(pkg_dir));
+        if (!pkg_dir[0]) {
+            set_msg(state, "Clear failed: no pkg_dir set");
+            bump();
+            return 0;
+        }
+
+        char page_dir[PATH_BUF], ir_path[PATH_BUF], pal_path[PATH_BUF];
+        snprintf(page_dir, sizeof(page_dir), "%s/pages/page_%d", pkg_dir, page_n);
+        snprintf(ir_path, sizeof(ir_path), "%s/event.ir.pdl", page_dir);
+        snprintf(pal_path, sizeof(pal_path), "%s/event.pal", page_dir);
+
+        int removed = 0;
+        {
+            char keep[128][MAX_LINE];
+            int n_keep = 0;
+            FILE *rf = fopen(ir_path, "r");
+            if (rf) {
+                char line[MAX_LINE];
+                while (n_keep < 128 && fgets(line, sizeof(line), rf)) {
+                    if (strncmp(line, "NODE", 4) == 0) {
+                        removed++;
+                        continue;
+                    }
+                    snprintf(keep[n_keep], MAX_LINE, "%s", line);
+                    n_keep++;
+                }
+                fclose(rf);
+            }
+            FILE *wf = fopen(ir_path, "w");
+            if (!wf) {
+                set_msg(state, "Clear failed: could not rewrite event.ir.pdl");
+                bump();
+                return 0;
+            }
+            if (n_keep == 0) {
+                /* Page never had IR — still leave a valid header. */
+                fprintf(wf, "SECTION      | KEY                | VALUE\n");
+                fprintf(wf, "----------------------------------------\n");
+                fprintf(wf, "META         | piece_id           | %s\n", pkg[0] ? pkg : "event");
+                fprintf(wf, "STATE        | source               | event-ez\n");
+            } else {
+                for (int i = 0; i < n_keep; i++) fputs(keep[i], wf);
+            }
+            fclose(wf);
+        }
+
+        /* Empty compiled artifact (same visual-compiler semantics as KEY:6). */
+        {
+            FILE *pf = fopen(pal_path, "w");
+            if (pf) {
+                fprintf(pf, "# event.pal - real prisc+x opcodes, COMPILED from event.ir.pdl by event-ez\n");
+                fprintf(pf, "# pkg=%s page=%d - cleared (no NODE commands)\n",
+                        pkg[0] ? pkg : "?", page_n);
+                fprintf(pf, "halt\n");
+                fclose(pf);
+            }
+        }
+
+        /* Drop per-command wrappers baked at Save time. */
+        {
+            char rmcmd[PATH_BUF * 2];
+            snprintf(rmcmd, sizeof(rmcmd), "rm -f '%s'/cmd_*.sh 2>/dev/null", page_dir);
+            if (system(rmcmd) != 0) { /* best-effort */ }
+        }
+
+        /* Force chtpm reparse: command_list_rows_N is baked into the
+         * element tree at parse_chtm time; only active_target_id /
+         * piece_methods / input_text / wait_for_view_change re-trigger
+         * parse. Flip piece_methods so the next compose_frame reloads
+         * the page with emptied rows (compose_gallery rewrites
+         * command_list_rows_N from disk after this bump). */
+        {
+            char nonce[64];
+            snprintf(nonce, sizeof(nonce), "ez_clear_%d_%ld", page_n, (long)time(NULL));
+            write_kv(gui, "piece_methods", nonce);
+        }
+
+        char msg[MAX_LINE];
+        if (removed > 0)
+            snprintf(msg, sizeof(msg),
+                     "Cleared %d command(s) on page %d (trigger kept)", removed, page_n);
+        else
+            snprintf(msg, sizeof(msg),
+                     "Page %d already had no commands (trigger kept)", page_n);
         set_msg(state, msg);
         bump();
         return 0;

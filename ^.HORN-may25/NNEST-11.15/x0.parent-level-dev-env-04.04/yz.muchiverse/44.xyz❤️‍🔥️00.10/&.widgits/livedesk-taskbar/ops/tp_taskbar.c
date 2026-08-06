@@ -35,6 +35,7 @@
 #define _DEFAULT_SOURCE
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
+#include <X11/Xutil.h>
 #include <sys/select.h>
 #include <sys/time.h>
 #include <signal.h>
@@ -46,12 +47,24 @@
 #include <string.h>
 #include <unistd.h>
 
+
+/* ========================================================================
+ * 2026-08-06 FOCUS-RECOVERY — taskbar Nav (user: toolbar still broken).
+ * Match entity popup option C: WM_CLASS + soft focus + keyboard grab
+ * while Nav is active. Locks stay off. Entity raise-steal stays off.
+ * ======================================================================== */
+#ifndef LIVEDESK_USE_REGISTRY_LOCK
+#define LIVEDESK_USE_REGISTRY_LOCK 0
+#endif
+#ifndef LIVEDESK_TASKBAR_RAISE_FOCUS_ENTITIES
+#define LIVEDESK_TASKBAR_RAISE_FOCUS_ENTITIES 0
+#endif
+
 #define PATH_BUF 4352
 #define POLL_INTERVAL_USEC 300000
 #define BAR_H 32
 #define TAB_W 160
 #define MAX_TABS 64
-#define INPUT_BOX_W 300
 
 typedef struct {
     int pid;
@@ -189,6 +202,7 @@ static int pid_is_alive(int pid) {
  * processes without a real lock. Same shared lockfile, same fix here. */
 static int g_registry_lock_fd = -1;
 static void registry_lock_acquire(const char *house_root) {
+    if (!LIVEDESK_USE_REGISTRY_LOCK) return;
     if (g_registry_lock_fd < 0) {
         char lock_path[PATH_BUF];
         snprintf(lock_path, sizeof(lock_path), "%s/#.desktop/livedesk_registry.lock", house_root);
@@ -197,6 +211,7 @@ static void registry_lock_acquire(const char *house_root) {
     if (g_registry_lock_fd >= 0) flock(g_registry_lock_fd, LOCK_EX);
 }
 static void registry_lock_release(void) {
+    if (!LIVEDESK_USE_REGISTRY_LOCK) return;
     if (g_registry_lock_fd >= 0) flock(g_registry_lock_fd, LOCK_UN);
 }
 
@@ -343,6 +358,26 @@ static int lookup_nav(const char *house_root, int nav_n, char *kind_out, size_t 
  * ever contains KIND=row entries while nav_claim_rows()/nav_release_pid()
  * says a popup is genuinely open right now (see tp_desktop_window.c) -
  * so the first KIND=row line found IS the live popup owner, no guessing. */
+/* Highest live NAV= address currently claimed (tabs + open menu rows).
+ * Mirrors chtpm_parser's total_nav bound for digit accumulation. */
+static int max_claimed_nav(const char *house_root) {
+    char claims_path[PATH_BUF];
+    snprintf(claims_path, sizeof(claims_path), "%s/#.desktop/livedesk_nav_claims.txt", house_root);
+    FILE *f = fopen(claims_path, "r");
+    if (!f) return 0;
+    char line[PATH_BUF];
+    int max_n = 0;
+    while (fgets(line, sizeof(line), f)) {
+        char *navp = strstr(line, "NAV=");
+        if (!navp) continue;
+        int v = atoi(navp + 4);
+        if (v > max_n) max_n = v;
+    }
+    fclose(f);
+    return max_n;
+}
+
+
 static int find_open_popup_path(const char *house_root, char *path_out, size_t path_sz) {
     char claims_path[PATH_BUF];
     snprintf(claims_path, sizeof(claims_path), "%s/#.desktop/livedesk_nav_claims.txt", house_root);
@@ -422,8 +457,9 @@ static Pixmap g_bar_buf = 0;
 static GC g_bar_buf_gc = 0;
 
 static void draw_bar(Display *dpy, Window win, GC gc, int screen_w,
-                     Tab *tabs, int n_tabs, int box_x0, int input_active, const char *input_buffer,
-                     Shortcut *shortcuts, int n_shortcuts, unsigned long bg_pixel) {
+                     Tab *tabs, int n_tabs, int nav_armed, int digit_buf_len,
+                     Shortcut *shortcuts, int n_shortcuts, unsigned long bg_pixel, int tab_focus_idx,
+                     const char *digit_buf) {
     Window win_real = win;
     if (!g_bar_buf) {
         g_bar_buf = XCreatePixmap(dpy, win, screen_w, BAR_H, DefaultDepth(dpy, DefaultScreen(dpy)));
@@ -439,14 +475,9 @@ static void draw_bar(Display *dpy, Window win, GC gc, int screen_w,
     win = g_bar_buf;
     XDrawLine(dpy, win, gc, 0, 0, screen_w, 0);
 
-    /* REAL FIX 2026-08-05, direct report ("1 in toolbar not getting '>'
-     * even tho 1 should always have first focus"): raw X focus can
-     * genuinely be None/PointerRoot/some unrelated window a lot of the
-     * time (override_redirect entity windows aren't auto-focused on
-     * creation) - real chtpm-style UIs always show SOMETHING as active,
-     * so when no real tab currently holds X focus, default the display
-     * to whichever tab holds the LOWEST live nav number, matching what
-     * a user reasonably expects "first" to mean. */
+    /* REAL 2026-08-06, user: when toolbar has focus it owns arrows.
+     * While Nav is active, [>] follows tab_focus_idx (keyboard cursor).
+     * When Nav is idle, fall back to X focus / lowest-nav default. */
     int any_real_focus = 0;
     for (int i = 0; i < n_tabs; i++) {
         if (tab_has_focus(dpy, tabs[i].entity)) { any_real_focus = 1; break; }
@@ -459,30 +490,41 @@ static void draw_bar(Display *dpy, Window win, GC gc, int screen_w,
         }
     }
 
+    int close_x0 = screen_w - CLOSE_BTN_W;
+    int shortcuts_x0 = close_x0 - n_shortcuts * SHORTCUT_W;
+    int tabs_right = shortcuts_x0 - 4;
+    if (tabs_right < TAB_W) tabs_right = screen_w / 2;
+
     for (int i = 0; i < n_tabs; i++) {
         int x0 = i * TAB_W;
-        if (x0 + TAB_W > box_x0) break; /* don't draw over the input box */
+        if (x0 + 8 >= tabs_right) break; /* stop before shortcuts / X */
         XDrawLine(dpy, win, gc, x0, 0, x0, BAR_H);
-        /* REAL FIX 2026-08-05, direct correction ("im still seeing
-         * numbers in brackets instead of [>] [] empty brackets like
-         * chtpm"): real chtpm format is "[ ] N. Label" - the empty
-         * bracket is its own real focus-cursor marker, separate from
-         * the plain row number, not a container FOR the number. */
-        int has_focus = tab_has_focus(dpy, tabs[i].entity) || i == default_idx;
+        int has_focus;
+        if (nav_armed && n_tabs > 0) {
+            int fi = tab_focus_idx;
+            if (fi < 0) fi = 0;
+            if (fi >= n_tabs) fi = n_tabs - 1;
+            has_focus = (i == fi);
+        } else {
+            has_focus = tab_has_focus(dpy, tabs[i].entity) || i == default_idx;
+        }
         const char *cursor = has_focus ? "[>]" : "[ ]";
         char label[192];
+        /* Wraith/CHTPM style: [>] N. name  — number is jump address */
         snprintf(label, sizeof(label), "%s %d. %s", cursor, tabs[i].nav, tabs[i].entity);
         XDrawString(dpy, win, gc, x0 + 8, BAR_H / 2 + 4, label, (int)strlen(label));
     }
-    XDrawRectangle(dpy, win, gc, box_x0, 2, INPUT_BOX_W, BAR_H - 5);
-    char disp[320];
-    snprintf(disp, sizeof(disp), "Nav > %s%s", input_buffer, input_active ? "_" : "");
-    XDrawString(dpy, win, gc, box_x0 + 8, BAR_H / 2 + 4, disp, (int)strlen(disp));
+    /* Small status when right-click nav is armed (no typing box). */
+    if (nav_armed) {
+        const char *arm = digit_buf_len > 0 ? digit_buf : "NAV";
+        char arm_lab[64];
+        snprintf(arm_lab, sizeof(arm_lab), "[%s]", arm);
+        XDrawString(dpy, win, gc, tabs_right - 80, BAR_H / 2 + 4, arm_lab, (int)strlen(arm_lab));
+    }
 
     /* REAL, 2026-08-05, direct instruction ("i also want to add a 'x'
      * button to [the taskbar]. it will quit and save session"): a real
      * close button, far right of the bar. */
-    int close_x0 = screen_w - CLOSE_BTN_W;
     XDrawRectangle(dpy, win, gc, close_x0, 2, CLOSE_BTN_W - 4, BAR_H - 5);
     XDrawString(dpy, win, gc, close_x0 + 14, BAR_H / 2 + 4, "X", 1);
 
@@ -567,6 +609,55 @@ static void quit_and_save_session(Display *dpy, const char *house_root, Tab *tab
     unlink(pid_path);
 }
 
+
+static void taskbar_set_wm_class(Display *dpy, Window w) {
+    XClassHint *ch = XAllocClassHint();
+    if (!ch) return;
+    ch->res_name = (char *)"MuchiverseLivedesk";
+    ch->res_class = (char *)"MuchiverseLivedesk";
+    XSetClassHint(dpy, w, ch);
+    XFree(ch);
+}
+
+/* Toolbar Nav (simple): no popup, no X grab. Soft-focus the bar and
+ * use Left/Right/Up/Down for tab [>] only. Context menus keep the real
+ * grab path on entities — toolbar never steals it. */
+static void taskbar_soft_focus(Display *dpy, Window w) {
+    if (!w) return;
+    XRaiseWindow(dpy, w);
+    XSetInputFocus(dpy, w, RevertToParent, CurrentTime);
+    XFlush(dpy);
+}
+
+/* Activate the tab under keyboard cursor: raise entity window (intentional
+ * user action — not the old global focus-fight on every tab mouse click). */
+static void taskbar_raise_tab(Display *dpy, Tab *tabs, int n_tabs, int idx) {
+    if (idx < 0 || idx >= n_tabs) return;
+    char target[160];
+    snprintf(target, sizeof(target), "tile:%s-", tabs[idx].entity);
+    Window w = find_by_name(dpy, RootWindow(dpy, DefaultScreen(dpy)), target);
+    if (w) {
+        XRaiseWindow(dpy, w);
+        XSetInputFocus(dpy, w, RevertToParent, CurrentTime);
+        XFlush(dpy);
+    }
+}
+
+/* Nav Enter / digit-jump: raise + open that entity's context menu
+ * (OPEN_CONTEXT relay = same path as right-click on the tile). */
+static void taskbar_activate_tab(Display *dpy, Tab *tabs, int n_tabs, int idx) {
+    taskbar_raise_tab(dpy, tabs, n_tabs, idx);
+    if (idx < 0 || idx >= n_tabs) return;
+    if (tabs[idx].path[0]) {
+        char relay[PATH_BUF];
+        snprintf(relay, sizeof(relay), "%s/interact_relay.txt", tabs[idx].path);
+        FILE *rf = fopen(relay, "w");
+        if (rf) { fprintf(rf, "OPEN_CONTEXT\n"); fclose(rf); }
+    }
+}
+
+
+
 int main(int argc, char **argv) {
     if (argc < 2) {
         fprintf(stderr, "Usage: tp_taskbar.+x <house_root>\n");
@@ -581,10 +672,11 @@ int main(int argc, char **argv) {
 
     Display *dpy = XOpenDisplay(NULL);
     if (!dpy) { fprintf(stderr, "cannot open display\n"); return 1; }
+    /* Drop leftover grabs from older taskbar builds that held keyboard. */
+    XUngrabKeyboard(dpy, CurrentTime);
+    XUngrabPointer(dpy, CurrentTime);
     int screen_w = DisplayWidth(dpy, DefaultScreen(dpy));
     int screen_h = DisplayHeight(dpy, DefaultScreen(dpy));
-    int box_x0 = screen_w / 2 - INPUT_BOX_W / 2;
-
     char theme_bg[32], theme_fg[32];
     load_theme(house_root, theme_bg, sizeof(theme_bg), theme_fg, sizeof(theme_fg));
     unsigned long bg_pixel = alloc_color_or(dpy, theme_bg, WhitePixel(dpy, DefaultScreen(dpy)));
@@ -598,6 +690,7 @@ int main(int argc, char **argv) {
                                 0, screen_h - BAR_H, screen_w, BAR_H, 0,
                                 CopyFromParent, InputOutput, CopyFromParent,
                                 CWOverrideRedirect | CWBackPixel | CWEventMask, &swa);
+    taskbar_set_wm_class(dpy, win);
     XMapRaised(dpy, win);
     GC gc = XCreateGC(dpy, win, 0, NULL);
     XSetForeground(dpy, gc, fg_pixel);
@@ -655,6 +748,7 @@ int main(int argc, char **argv) {
                                      user_x0, screen_h - BAR_H - BAR_H, user_w, BAR_H, 0,
                                      CopyFromParent, InputOutput, CopyFromParent,
                                      CWOverrideRedirect | CWBackPixel | CWEventMask, &swa);
+    taskbar_set_wm_class(dpy, user_win);
     XMapRaised(dpy, user_win);
 
     Shortcut shortcuts[MAX_SHORTCUTS];
@@ -662,8 +756,9 @@ int main(int argc, char **argv) {
 
     Tab tabs[MAX_TABS];
     int n_tabs = 0;
-    int input_active = 0;
-    char input_buffer[32] = "";
+    int nav_armed = 0;       /* right-click arms arrows + # digit jump (wraith-style) */
+    int tab_focus_idx = 0;
+    char digit_buf[16] = "";  /* typed index while armed — no middle Nav box */
     int xfd = ConnectionNumber(dpy);
     int running = 1;
 
@@ -681,6 +776,8 @@ int main(int argc, char **argv) {
         if (last_poll.tv_sec == 0 || (now.tv_sec - last_poll.tv_sec) >= 1) {
             n_tabs = load_tabs(house_root, tabs, MAX_TABS);
             sync_tab_claims(house_root, tabs, n_tabs);
+            if (n_tabs <= 0) tab_focus_idx = 0;
+            else if (tab_focus_idx >= n_tabs) tab_focus_idx = n_tabs - 1;
             need_redraw = 1;
             last_poll = now;
         }
@@ -694,16 +791,16 @@ int main(int argc, char **argv) {
                 XDrawString(dpy, user_win, gc, 10, BAR_H / 2 + 4, user_label, (int)strlen(user_label));
             } else if (xev.type == Expose) {
                 need_redraw = 1;
-            } else if (xev.type == ButtonPress) {
+            } else if (xev.type == ButtonPress && xev.xany.window == win) {
                 int close_x0 = screen_w - CLOSE_BTN_W;
                 int shortcuts_x0 = close_x0 - n_shortcuts * SHORTCUT_W;
-                if (xev.xbutton.x >= close_x0) {
+                int btn = xev.xbutton.button;
+
+                if (xev.xbutton.x >= close_x0 && btn == 1) {
                     n_tabs = load_tabs(house_root, tabs, MAX_TABS);
                     quit_and_save_session(dpy, house_root, tabs, n_tabs, pid_path);
                     running = 0;
-                } else if (n_shortcuts > 0 && xev.xbutton.x >= shortcuts_x0 && xev.xbutton.x < close_x0) {
-                    /* Real, generic shortcut dispatch - see
-                     * load_shortcuts()'s own header comment. */
+                } else if (btn == 1 && n_shortcuts > 0 && xev.xbutton.x >= shortcuts_x0 && xev.xbutton.x < close_x0) {
                     int sidx = (xev.xbutton.x - shortcuts_x0) / SHORTCUT_W;
                     if (sidx >= 0 && sidx < n_shortcuts) {
                         char cmd[PATH_BUF * 2];
@@ -711,88 +808,128 @@ int main(int argc, char **argv) {
                         int rc = system(cmd);
                         (void)rc;
                     }
-                } else if (xev.xbutton.x >= box_x0 && xev.xbutton.x < box_x0 + INPUT_BOX_W) {
-                    input_active = 1;
-                    XSetInputFocus(dpy, win, RevertToParent, CurrentTime);
-                } else {
+                } else if (btn == 3) {
+                    /* Right-click = arm toolbar nav (wraith-style engage).
+                     * Arrows + digit-index jump. No middle typing box.
+                     * No X grab — entity context menus stay free. */
+                    nav_armed = 1;
+                    digit_buf[0] = '\0';
+                    taskbar_soft_focus(dpy, win);
+                } else if (btn == 1) {
+                    /* Left-click tab: mouse select. Disarm keyboard nav. */
+                    nav_armed = 0;
+                    digit_buf[0] = '\0';
                     int idx = xev.xbutton.x / TAB_W;
-                    if (idx >= 0 && idx < n_tabs) {
-                        char target[160];
-                        snprintf(target, sizeof(target), "tile:%s-", tabs[idx].entity);
-                        Window w = find_by_name(dpy, RootWindow(dpy, DefaultScreen(dpy)), target);
-                        if (w) {
-                            XRaiseWindow(dpy, w);
-                            XSetInputFocus(dpy, w, RevertToParent, CurrentTime);
-                        }
+                    if (idx >= 0 && idx < n_tabs && (idx + 1) * TAB_W <= shortcuts_x0) {
+                        tab_focus_idx = idx;
+                        taskbar_raise_tab(dpy, tabs, n_tabs, idx);
                     }
                 }
                 need_redraw = 1;
-            } else if (input_active && xev.type == KeyPress) {
+            } else if (xev.type == KeyPress && nav_armed) {
                 char kbuf[8];
                 KeySym ks;
                 int klen = XLookupString(&xev.xkey, kbuf, sizeof(kbuf) - 1, &ks, NULL);
-                /* REAL, 2026-08-06 (see find_open_popup_path()'s own
-                 * header comment): Up/Down/Enter with NO digits typed
-                 * yet are real remote nav-cursor control for whichever
-                 * entity currently has a popup open - NAV_KEY relay,
-                 * NOT the existing digit-jump ACTIVATE_NAV path below
-                 * (which only fires once real digits are in
-                 * input_buffer). Stays in input_active mode after each
-                 * key so Up/Down/Enter can be pressed repeatedly without
-                 * re-activating the box each time. */
-                if (input_buffer[0] == '\0' && (ks == XK_Up || ks == XK_Down || ks == XK_Return || ks == XK_KP_Enter)) {
-                    char path[PATH_BUF];
-                    if (find_open_popup_path(house_root, path, sizeof(path))) {
-                        char relay[PATH_BUF];
-                        snprintf(relay, sizeof(relay), "%s/interact_relay.txt", path);
-                        FILE *rf = fopen(relay, "w");
-                        if (rf) {
-                            fprintf(rf, "NAV_KEY:%s\n", (ks == XK_Up) ? "Up" : (ks == XK_Down) ? "Down" : "Enter");
-                            fclose(rf);
+                if (ks == XK_Left || ks == XK_Up) {
+                    if (n_tabs > 0)
+                        tab_focus_idx = (tab_focus_idx - 1 + n_tabs) % n_tabs;
+                    digit_buf[0] = '\0'; /* chtpm: arrows reset digit_accum */
+                } else if (ks == XK_Right || ks == XK_Down) {
+                    if (n_tabs > 0)
+                        tab_focus_idx = (tab_focus_idx + 1) % n_tabs;
+                    digit_buf[0] = '\0';
+                } else if (ks == XK_Return || ks == XK_KP_Enter) {
+                    if (digit_buf[0] == '\0') {
+                        if (n_tabs > 0) {
+                            if (tab_focus_idx < 0) tab_focus_idx = 0;
+                            if (tab_focus_idx >= n_tabs) tab_focus_idx = n_tabs - 1;
+                            taskbar_activate_tab(dpy, tabs, n_tabs, tab_focus_idx);
                         }
+                    } else {
+                        int nav_n = atoi(digit_buf);
+                        if (nav_n > 0) {
+                            char kind[8] = "", entity[128] = "", path[PATH_BUF] = "";
+                            if (lookup_nav(house_root, nav_n, kind, sizeof(kind), entity, sizeof(entity), path, sizeof(path))) {
+                                if (strcmp(kind, "tab") == 0) {
+                                    for (int ti = 0; ti < n_tabs; ti++) {
+                                        if (strcmp(tabs[ti].entity, entity) == 0) {
+                                            tab_focus_idx = ti;
+                                            taskbar_activate_tab(dpy, tabs, n_tabs, ti);
+                                            break;
+                                        }
+                                    }
+                                } else {
+                                    char relay[PATH_BUF];
+                                    snprintf(relay, sizeof(relay), "%s/interact_relay.txt", path);
+                                    FILE *rf = fopen(relay, "w");
+                                    if (rf) { fprintf(rf, "ACTIVATE_NAV:%d\n", nav_n); fclose(rf); }
+                                }
+                            }
+                        }
+                        digit_buf[0] = '\0';
                     }
-                    need_redraw = 1;
-                    goto skip_input_key_dispatch;
-                }
-                if (ks == XK_Return || ks == XK_KP_Enter) {
-                    int nav_n = atoi(input_buffer);
-                    if (nav_n > 0) {
+                    nav_armed = 0; /* free keys for entity context after jump */
+                } else if (ks == XK_Escape) {
+                    digit_buf[0] = '\0';
+                    nav_armed = 0;
+                } else if (ks == XK_BackSpace) {
+                    size_t l = strlen(digit_buf);
+                    if (l > 0) digit_buf[l - 1] = '\0';
+                } else if (klen > 0 && kbuf[0] >= '0' && kbuf[0] <= '9') {
+                    /* chtpm_parser_pal digit_accum: new_val = accum*10+d;
+                     * accept only if 1..total_nav; else restart with d if
+                     * d is valid alone. Cap length so we never grow forever. */
+                    int d = kbuf[0] - '0';
+                    int total_nav = max_claimed_nav(house_root);
+                    if (total_nav < 1) total_nav = n_tabs > 0 ? n_tabs : 9;
+                    int accum = atoi(digit_buf);
+                    int new_val = accum * 10 + d;
+                    if (new_val > 0 && new_val <= total_nav) {
+                        snprintf(digit_buf, sizeof(digit_buf), "%d", new_val);
+                    } else if (d > 0 && d <= total_nav) {
+                        snprintf(digit_buf, sizeof(digit_buf), "%d", d);
+                    } else if (d == 0 && accum == 0) {
+                        /* leading zeros ignored */
+                    } else {
+                        /* out of bounds restart with bare digit if usable */
+                        if (d > 0 && d <= total_nav)
+                            snprintf(digit_buf, sizeof(digit_buf), "%d", d);
+                        else
+                            digit_buf[0] = '\0';
+                    }
+                    /* hard cap: never more digits than needed for total_nav */
+                    {
+                        int max_digits = 1, tn = total_nav;
+                        while (tn >= 10) { max_digits++; tn /= 10; }
+                        if ((int)strlen(digit_buf) > max_digits)
+                            digit_buf[max_digits] = '\0';
+                    }
+                    /* chtpm do_jump: move [>] immediately to that index */
+                    if (digit_buf[0]) {
+                        int nav_n = atoi(digit_buf);
                         char kind[8] = "", entity[128] = "", path[PATH_BUF] = "";
                         if (lookup_nav(house_root, nav_n, kind, sizeof(kind), entity, sizeof(entity), path, sizeof(path))) {
                             if (strcmp(kind, "tab") == 0) {
-                                char target[160];
-                                snprintf(target, sizeof(target), "tile:%s-", entity);
-                                Window w = find_by_name(dpy, RootWindow(dpy, DefaultScreen(dpy)), target);
-                                if (w) {
-                                    XRaiseWindow(dpy, w);
-                                    XSetInputFocus(dpy, w, RevertToParent, CurrentTime);
+                                for (int ti = 0; ti < n_tabs; ti++) {
+                                    if (strcmp(tabs[ti].entity, entity) == 0) {
+                                        tab_focus_idx = ti;
+                                        break;
+                                    }
                                 }
-                            } else {
+                            } else if (strcmp(kind, "row") == 0 && path[0]) {
                                 char relay[PATH_BUF];
                                 snprintf(relay, sizeof(relay), "%s/interact_relay.txt", path);
                                 FILE *rf = fopen(relay, "w");
-                                if (rf) { fprintf(rf, "ACTIVATE_NAV:%d\n", nav_n); fclose(rf); }
+                                if (rf) { fprintf(rf, "FOCUS_NAV:%d\n", nav_n); fclose(rf); }
                             }
                         }
                     }
-                    input_buffer[0] = '\0';
-                    input_active = 0;
-                } else if (ks == XK_Escape) {
-                    input_buffer[0] = '\0';
-                    input_active = 0;
-                } else if (ks == XK_BackSpace) {
-                    size_t l = strlen(input_buffer);
-                    if (l > 0) input_buffer[l - 1] = '\0';
-                } else if (klen > 0 && kbuf[0] >= '0' && kbuf[0] <= '9') {
-                    size_t l = strlen(input_buffer);
-                    if (l + 1 < sizeof(input_buffer)) { input_buffer[l] = kbuf[0]; input_buffer[l + 1] = '\0'; }
                 }
                 need_redraw = 1;
-                skip_input_key_dispatch: ;
             }
         }
 
-        if (need_redraw) draw_bar(dpy, win, gc, screen_w, tabs, n_tabs, box_x0, input_active, input_buffer, shortcuts, n_shortcuts, bg_pixel);
+        if (need_redraw) draw_bar(dpy, win, gc, screen_w, tabs, n_tabs, nav_armed, (int)strlen(digit_buf), shortcuts, n_shortcuts, bg_pixel, tab_focus_idx, digit_buf);
     }
 
     XCloseDisplay(dpy);

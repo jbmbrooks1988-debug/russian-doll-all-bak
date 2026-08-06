@@ -45,6 +45,32 @@
 #include <sys/file.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <dirent.h>
+#include <ctype.h>
+
+/* ========================================================================
+ * 2026-08-06 FOCUS-RECOVERY — option C (user chose):
+ *   locks OFF; grabs ON; soft focus ON (this popup only).
+ * Flip any flag to experiment. Nav [N] UI + NAV_KEY file relay stay ON.
+ * ======================================================================== */
+#ifndef LIVEDESK_USE_REGISTRY_LOCK
+#define LIVEDESK_USE_REGISTRY_LOCK 0
+#endif
+#ifndef LIVEDESK_USE_POPUP_LOCK
+#define LIVEDESK_USE_POPUP_LOCK 0
+#endif
+#ifndef LIVEDESK_USE_XGRAB_POINTER
+#define LIVEDESK_USE_XGRAB_POINTER 1
+#endif
+#ifndef LIVEDESK_USE_XGRAB_KEYBOARD
+#define LIVEDESK_USE_XGRAB_KEYBOARD 1
+#endif
+/* Soft focus fallback (option C 2026-08-06): set input focus on THIS
+ * popup only — not a house-wide raise-fight across entity tiles.
+ * Used on open + header click so keys still work if grab fails. */
+#ifndef LIVEDESK_POPUP_SOFT_FOCUS
+#define LIVEDESK_POPUP_SOFT_FOCUS 1
+#endif
 
 /* REAL FIX 2026-08-05, direct instruction (MUCHI_RANCHER's own real
  * monsters need a 2x2-desktop-grid-cell footprint - "these monsters
@@ -251,6 +277,7 @@ static int pid_is_alive(int pid);
 static int g_registry_lock_fd = -1;
 
 static void registry_lock_acquire(const char *house_root) {
+    if (!LIVEDESK_USE_REGISTRY_LOCK) return;
     if (g_registry_lock_fd < 0) {
         char lock_path[PATH_BUF];
         snprintf(lock_path, sizeof(lock_path), "%s/#.desktop/livedesk_registry.lock", house_root);
@@ -260,6 +287,7 @@ static void registry_lock_acquire(const char *house_root) {
 }
 
 static void registry_lock_release(void) {
+    if (!LIVEDESK_USE_REGISTRY_LOCK) return;
     if (g_registry_lock_fd >= 0) flock(g_registry_lock_fd, LOCK_UN);
 }
 
@@ -344,6 +372,33 @@ static void ensure_taskbar_running(const char *house_root) {
         int pid = 0;
         if (fscanf(f, "%d", &pid) == 1 && pid > 0 && kill((pid_t)pid, 0) == 0) alive = 1;
         fclose(f);
+    }
+    /* REAL FIX 2026-08-06: pid-file race with $.crypts concurrent launch
+     * spawned DUPLICATE taskbars (two processes, grab/focus chaos). Also
+     * scan /proc for an already-running tp_taskbar for this house. */
+    if (!alive) {
+        DIR *pd = opendir("/proc");
+        if (pd) {
+            struct dirent *ent;
+            while ((ent = readdir(pd)) != NULL) {
+                if (ent->d_name[0] < '0' || ent->d_name[0] > '9') continue;
+                char cpath[64];
+                snprintf(cpath, sizeof(cpath), "/proc/%s/cmdline", ent->d_name);
+                FILE *cf = fopen(cpath, "r");
+                if (!cf) continue;
+                char cmdbuf[PATH_BUF * 2];
+                size_t n = fread(cmdbuf, 1, sizeof(cmdbuf) - 1, cf);
+                fclose(cf);
+                if (n == 0) continue;
+                cmdbuf[n] = '\0';
+                for (size_t i = 0; i < n; i++) if (cmdbuf[i] == '\0') cmdbuf[i] = ' ';
+                if (strstr(cmdbuf, "tp_taskbar") && strstr(cmdbuf, house_root)) {
+                    alive = 1;
+                    break;
+                }
+            }
+            closedir(pd);
+        }
     }
     if (!alive) {
         char cmd[PATH_BUF * 2];
@@ -604,6 +659,19 @@ static void popup_draw_text(Display *dpy, Drawable d, GC gc, int x, int y, const
     }
 }
 
+/* Pixel width of UTF-8 popup label text (same fontset as popup_draw_text). */
+static int popup_text_px(Display *dpy, const char *s) {
+    (void)dpy;
+    if (!s || !*s) return 0;
+    if (g_popup_fontset) {
+        XRectangle ink, logical;
+        Xutf8TextExtents(g_popup_fontset, s, (int)strlen(s), &ink, &logical);
+        return logical.width > 0 ? logical.width : ink.width;
+    }
+    /* Fallback: ~9px/glyph for the 18px fixed face we load. */
+    return (int)strlen(s) * 9;
+}
+
 static int load_glyph_font(Display *dpy) {
     g_font_info = XLoadQueryFont(dpy, "-sony-fixed-medium-r-normal--24-170-100-100-c-120-iso8859-1");
     if (!g_font_info) g_font_info = XLoadQueryFont(dpy, "fixed");
@@ -769,7 +837,14 @@ static int read_initial_pos(const char *package_dir, int *out_x, int *out_y) {
  * with zero warning. Bumped with real headroom, not just +1. */
 #define MAX_METHODS 12
 #define POPUP_ROW_H 28
-#define POPUP_W 160
+/* REAL FIX 2026-08-06, user: "menu screen is too thin i cant see everything"
+ * — fixed 160px clipped RPG Menu rows (XP / qolq / Level lines with nav
+ * prefixes). Width is now content-measured (see measure_context_popup_w /
+ * g_popup_w); these are floor/ceiling only. */
+#define POPUP_W_MIN 180
+#define POPUP_W_MAX 640
+#define POPUP_W POPUP_W_MIN /* legacy alias: text-popup floor, input defaults */
+static int g_popup_w = POPUP_W_MIN;
 
 static int load_methods(const char *package_dir, MethodItem *items, int max) {
     char path[PATH_BUF];
@@ -959,6 +1034,28 @@ static int load_flat_objects(const char *full_path, MethodItem *items, int max) 
  * its real address directly, not just infer it from the glyph. */
 static char g_full_id[96] = "";
 
+/* Size the next context menu to its longest drawn row (header + labels,
+ * including worst-case chtpm nav prefix "[>] 99. "). Result lives in
+ * g_popup_w; open/draw/hit-test/submenu offset all share that. */
+static int measure_context_popup_w(Display *dpy, MethodItem *items, int n) {
+    const int pad = 28; /* left text x (12) + right margin + border */
+    int maxw = popup_text_px(dpy, g_full_id);
+    if (items) {
+        for (int i = 0; i < n; i++) {
+            char buf[192];
+            snprintf(buf, sizeof(buf), "[>] 99. %s", items[i].label);
+            int tw = popup_text_px(dpy, buf);
+            if (tw > maxw) maxw = tw;
+            tw = popup_text_px(dpy, items[i].label);
+            if (tw > maxw) maxw = tw;
+        }
+    }
+    int w = maxw + pad;
+    if (w < POPUP_W_MIN) w = POPUP_W_MIN;
+    if (w > POPUP_W_MAX) w = POPUP_W_MAX;
+    return w;
+}
+
 /* REAL FIX 2026-08-05, direct-caught bug ("its been having issues"
  * investigation - a plain `kill <pid>` left a stale livedesk_open.txt/
  * nav_claims.txt entry behind forever, since this process had no
@@ -1017,6 +1114,7 @@ static char g_house_root_for_lock[PATH_BUF] = "";
  * still race), but the process is NEVER frozen long enough to build up
  * a dangerous input backlog. */
 static void popup_lock_acquire(void) {
+    if (!LIVEDESK_USE_POPUP_LOCK) return;
     if (g_popup_lock_depth++ > 0) return;
     if (!g_house_root_for_lock[0]) return;
     if (g_popup_lock_fd < 0) {
@@ -1033,15 +1131,60 @@ static void popup_lock_acquire(void) {
 }
 
 static void popup_lock_release(void) {
+    if (!LIVEDESK_USE_POPUP_LOCK) return;
     if (g_popup_lock_depth <= 0) return;
     if (--g_popup_lock_depth > 0) return;
     if (g_popup_lock_fd >= 0) flock(g_popup_lock_fd, LOCK_UN);
 }
 
-static Window open_context_menu(Display *dpy, GC gc, int root_x, int root_y, int nitems) {
+
+/* Soft focus for a single popup window (option C). Only touches THIS
+ * window — no XRaiseWindow on other entities, no global focus war. */
+static void popup_soft_focus(Display *dpy, Window popup) {
+    if (!LIVEDESK_POPUP_SOFT_FOCUS) return;
+    if (!popup) return;
+    XRaiseWindow(dpy, popup); /* raise the menu itself so it's not buried */
+    XSetInputFocus(dpy, popup, RevertToParent, CurrentTime);
+    XFlush(dpy);
+}
+
+static void clamp_popup_to_screen(Display *dpy, int *x, int *y, int w, int h) {
+    /* REAL 2026-08-06, user: context windows near bottom/side should open
+     * in empty space (stay fully on-screen above taskbar, not clipped). */
+    int scr = DefaultScreen(dpy);
+    int sw = DisplayWidth(dpy, scr);
+    int sh = DisplayHeight(dpy, scr);
+    const int margin = 4;
+    const int taskbar_reserve = 40; /* livedesk bar ~32px + padding */
+    int usable_h = sh - taskbar_reserve;
+    if (usable_h < h + margin) usable_h = sh - margin;
+    int px = *x, py = *y;
+    if (px + w + margin > sw) px = sw - w - margin;
+    if (px < margin) px = margin;
+    if (py + h + margin > usable_h) py = usable_h - h - margin;
+    if (py < margin) py = margin;
+    /* Prefer flipping above-left of anchor if we still overflow badly */
+    if (py + h > usable_h) py = margin;
+    if (px + w > sw) px = margin;
+    *x = px;
+    *y = py;
+}
+
+static Window open_context_menu(Display *dpy, GC gc, int *root_x, int *root_y, int nitems, MethodItem *items) {
     popup_lock_acquire();
     /* +1 row for the id header (see g_full_id comment above). */
     int h = POPUP_ROW_H * ((nitems > 0 ? nitems : 1) + 1);
+    /* Content-aware width: measure labels when caller passes items;
+     * bare input/placeholder menus get a slightly roomier default. */
+    if (items && nitems > 0)
+        g_popup_w = measure_context_popup_w(dpy, items, nitems);
+    else
+        g_popup_w = 320; /* input / empty: wider than the old 160 floor */
+    int px = root_x ? *root_x : 0;
+    int py = root_y ? *root_y : 0;
+    clamp_popup_to_screen(dpy, &px, &py, g_popup_w, h);
+    if (root_x) *root_x = px;
+    if (root_y) *root_y = py;
     XSetWindowAttributes swa;
     swa.override_redirect = True;
     swa.background_pixel = WhitePixel(dpy, DefaultScreen(dpy));
@@ -1052,7 +1195,7 @@ static Window open_context_menu(Display *dpy, GC gc, int root_x, int root_y, int
      * reasoning as the existing XGrabPointer just above. */
     swa.event_mask = ExposureMask | ButtonPressMask | KeyPressMask;
     Window popup = XCreateWindow(dpy, RootWindow(dpy, DefaultScreen(dpy)),
-                                  root_x, root_y, POPUP_W, h, 1,
+                                  px, py, (unsigned)g_popup_w, h, 1,
                                   CopyFromParent, InputOutput, CopyFromParent,
                                   CWOverrideRedirect | CWBackPixel | CWEventMask, &swa);
     /* REAL FIX 2026-08-06, direct root cause found ("keystrokes went
@@ -1086,18 +1229,22 @@ static Window open_context_menu(Display *dpy, GC gc, int root_x, int root_y, int
      * grab. Real fix: retry a few times with a short real wait,
      * confirmed via `man XGrabKeyboard`'s own documented AlreadyGrabbed
      * return - not a made-up mitigation. */
-    for (int attempt = 0; attempt < 5; attempt++) {
-        int rc = XGrabPointer(dpy, popup, True, ButtonPressMask, GrabModeAsync, GrabModeAsync,
-                               None, None, CurrentTime);
-        if (rc == GrabSuccess) break;
-        XSync(dpy, False);
-        usleep(5000);
+    if (LIVEDESK_USE_XGRAB_POINTER) {
+        for (int attempt = 0; attempt < 5; attempt++) {
+            int rc = XGrabPointer(dpy, popup, True, ButtonPressMask, GrabModeAsync, GrabModeAsync,
+                                   None, None, CurrentTime);
+            if (rc == GrabSuccess) break;
+            XSync(dpy, False);
+            usleep(5000);
+        }
     }
-    for (int attempt = 0; attempt < 5; attempt++) {
-        int rc = XGrabKeyboard(dpy, popup, True, GrabModeAsync, GrabModeAsync, CurrentTime);
-        if (rc == GrabSuccess) break;
-        XSync(dpy, False);
-        usleep(5000);
+    if (LIVEDESK_USE_XGRAB_KEYBOARD) {
+        for (int attempt = 0; attempt < 5; attempt++) {
+            int rc = XGrabKeyboard(dpy, popup, True, GrabModeAsync, GrabModeAsync, CurrentTime);
+            if (rc == GrabSuccess) break;
+            XSync(dpy, False);
+            usleep(5000);
+        }
     }
     /* REAL FIX 2026-08-05, direct report ("clicking read just closes
      * context"): X11 can and does recycle a destroyed window's own
@@ -1116,17 +1263,11 @@ static Window open_context_menu(Display *dpy, GC gc, int root_x, int root_y, int
     while (XCheckWindowEvent(dpy, popup, ButtonPressMask | KeyPressMask, &stale_ev)) {
         /* discard - see comment above */
     }
-    /* REAL FIX/REVERT 2026-08-06, direct report ("muchi-rancher pet is
-     * now having focus problems"): XSetInputFocus + XRaiseWindow (added
-     * to give a popup input priority) turned out to be a real
-     * regression - it's a house-wide global fight over ONE X focus/
-     * stacking order across every entity's own separate process, so
-     * this popup opening could yank focus away from a DIFFERENT
-     * entity's own already-open popup on the same display. The existing
-     * XGrabKeyboard above already gives this popup real, scoped input
-     * priority (every keypress routes here regardless of nominal focus)
-     * without fighting other windows for global focus - that's the
-     * correct mechanism, this broader one was not. */
+    /* OPTION C 2026-08-06: grabs re-enabled (flags=1); locks stay off.
+     * Soft focus on THIS popup only as fallback when grab fails or
+     * XWayland ignores grab — not the old multi-entity focus war
+     * (we never XSetInputFocus other processes' tile windows here). */
+    popup_soft_focus(dpy, popup);
     return popup;
 }
 
@@ -1153,14 +1294,15 @@ static Window open_context_menu(Display *dpy, GC gc, int root_x, int root_y, int
 static void draw_context_menu(Display *dpy, Window popup, GC gc, MethodItem *items, int n, int nav_base, int focus_row) {
     XClearWindow(dpy, popup);
     int h = POPUP_ROW_H * ((n > 0 ? n : 1) + 1);
-    XDrawRectangle(dpy, popup, gc, 0, 0, POPUP_W - 1, h - 1);
+    int pw = g_popup_w > 0 ? g_popup_w : POPUP_W_MIN;
+    XDrawRectangle(dpy, popup, gc, 0, 0, pw - 1, h - 1);
     /* Row 0: non-clickable id header. */
     popup_draw_text(dpy, popup, gc, 12, POPUP_ROW_H / 2 + 4, g_full_id);
-    XDrawLine(dpy, popup, gc, 0, POPUP_ROW_H, POPUP_W, POPUP_ROW_H);
+    XDrawLine(dpy, popup, gc, 0, POPUP_ROW_H, pw, POPUP_ROW_H);
     for (int i = 0; i < n; i++) {
         int row_y = (i + 1) * POPUP_ROW_H;
-        if (i > 0) XDrawLine(dpy, popup, gc, 0, row_y, POPUP_W, row_y);
-        char labeled[96];
+        if (i > 0) XDrawLine(dpy, popup, gc, 0, row_y, pw, row_y);
+        char labeled[160];
         const char *cursor = (i == focus_row) ? "[>]" : "[ ]";
         if (nav_base > 0) snprintf(labeled, sizeof(labeled), "%s %d. %s", cursor, nav_base + i, items[i].label);
         else snprintf(labeled, sizeof(labeled), "%s", items[i].label);
@@ -1177,8 +1319,8 @@ static void draw_context_menu(Display *dpy, Window popup, GC gc, MethodItem *ite
  * "OPEN_RANGE_GRID" dispatch below instead of drawn inline. */
 
 static void close_context_menu(Display *dpy, Window popup) {
-    XUngrabPointer(dpy, CurrentTime);
-    XUngrabKeyboard(dpy, CurrentTime);
+    if (LIVEDESK_USE_XGRAB_POINTER) XUngrabPointer(dpy, CurrentTime);
+    if (LIVEDESK_USE_XGRAB_KEYBOARD) XUngrabKeyboard(dpy, CurrentTime);
     XDestroyWindow(dpy, popup);
     popup_lock_release();
 }
@@ -1449,6 +1591,7 @@ int main(int argc, char **argv) {
     Window popup_win = 0;
     int popup_nav_base = 0;
     int popup_focus_row = 0;
+    int popup_digit_accum = 0; /* chtpm: digits move [>] before Enter */
     /* REAL, 2026-08-05, direct instruction ("book stack emoji... give
      * me option to generate a random verse... entirely with khtpm /
      * eventscript page, and pal"): real Show Choices support - a
@@ -1551,9 +1694,9 @@ int main(int argc, char **argv) {
                                          * silently update methods[]. */
                                         if (popup_win) close_context_menu(dpy, popup_win);
                                         else { popup_x = win_x; popup_y = win_y; }
-                                        popup_win = open_context_menu(dpy, popup_gc, popup_x, popup_y, n_methods);
+                                        popup_win = open_context_menu(dpy, popup_gc, &popup_x, &popup_y, n_methods, methods);
                                         popup_nav_base = nav_claim_rows(g_house_root, getpid(), package_dir, methods, n_methods);
-                                        popup_focus_row = 0;
+                                        popup_focus_row = 0; popup_digit_accum = 0;
                                         break;
                                     }
                                 }
@@ -1564,9 +1707,9 @@ int main(int argc, char **argv) {
                                     for (int k = 0; k < n_methods; k++) methods[k] = obj_pages[cur_page].items[k];
                                     if (popup_win) close_context_menu(dpy, popup_win);
                                     else { popup_x = win_x; popup_y = win_y; }
-                                    popup_win = open_context_menu(dpy, popup_gc, popup_x, popup_y, n_methods);
+                                    popup_win = open_context_menu(dpy, popup_gc, &popup_x, &popup_y, n_methods, methods);
                                     popup_nav_base = nav_claim_rows(g_house_root, getpid(), package_dir, methods, n_methods);
-                                        popup_focus_row = 0;
+                                        popup_focus_row = 0; popup_digit_accum = 0;
                                 }
                             } else if (using_objects && strncmp(methods[i].action, "STATE:", 6) == 0) {
                                 snprintf(input_key, sizeof(input_key), "%s", methods[i].action + 6);
@@ -1574,7 +1717,7 @@ int main(int argc, char **argv) {
                                 input_active = 1;
                                 append_history("INPUT_ACTIVATE key=%s", input_key);
                                 if (!input_popup_win) {
-                                    input_popup_win = open_context_menu(dpy, popup_gc, win_x, win_y + WIN_PX + 4, 1);
+                                    input_popup_win = open_context_menu(dpy, popup_gc, (int[]){win_x}, (int[]){win_y + WIN_PX + 4}, 1, NULL) /* writeback discarded */;
                                 }
                             } else {
                                 dispatch_action(methods[i].action, package_dir, &running);
@@ -1614,9 +1757,9 @@ int main(int argc, char **argv) {
                                         cur_page = pi;
                                         n_methods = obj_pages[cur_page].n_items;
                                         for (int k = 0; k < n_methods; k++) methods[k] = obj_pages[cur_page].items[k];
-                                        popup_win = open_context_menu(dpy, popup_gc, popup_x, popup_y, n_methods);
+                                        popup_win = open_context_menu(dpy, popup_gc, &popup_x, &popup_y, n_methods, methods);
                                         popup_nav_base = nav_claim_rows(g_house_root, getpid(), package_dir, methods, n_methods);
-                                        popup_focus_row = 0;
+                                        popup_focus_row = 0; popup_digit_accum = 0;
                                         break;
                                     }
                                 }
@@ -1625,9 +1768,9 @@ int main(int argc, char **argv) {
                                     cur_page = page_stack[--page_stack_n];
                                     n_methods = obj_pages[cur_page].n_items;
                                     for (int k = 0; k < n_methods; k++) methods[k] = obj_pages[cur_page].items[k];
-                                    popup_win = open_context_menu(dpy, popup_gc, popup_x, popup_y, n_methods);
+                                    popup_win = open_context_menu(dpy, popup_gc, &popup_x, &popup_y, n_methods, methods);
                                     popup_nav_base = nav_claim_rows(g_house_root, getpid(), package_dir, methods, n_methods);
-                                        popup_focus_row = 0;
+                                        popup_focus_row = 0; popup_digit_accum = 0;
                                 }
                             } else if (using_objects && strncmp(methods[row].action, "STATE:", 6) == 0) {
                                 snprintf(input_key, sizeof(input_key), "%s", methods[row].action + 6);
@@ -1635,11 +1778,20 @@ int main(int argc, char **argv) {
                                 input_active = 1;
                                 append_history("INPUT_ACTIVATE key=%s", input_key);
                                 if (!input_popup_win) {
-                                    input_popup_win = open_context_menu(dpy, popup_gc, win_x, win_y + WIN_PX + 4, 1);
+                                    input_popup_win = open_context_menu(dpy, popup_gc, (int[]){win_x}, (int[]){win_y + WIN_PX + 4}, 1, NULL) /* writeback discarded */;
                                 }
                             } else {
                                 dispatch_action(methods[row].action, package_dir, &running);
                             }
+                        }
+                    } else if (strncmp(line, "FOCUS_NAV:", 10) == 0) {
+                        /* Move [>] only (chtpm digit-jump). No activate. */
+                        int nav_n = atoi(line + 10);
+                        if (popup_win && nav_n >= popup_nav_base && nav_n < popup_nav_base + n_methods) {
+                            popup_focus_row = nav_n - popup_nav_base;
+                            popup_digit_accum = nav_n;
+                            draw_context_menu(dpy, popup_win, popup_gc, methods, n_methods, popup_nav_base, popup_focus_row);
+                            append_history("FOCUS_NAV %d -> row %d", nav_n, popup_focus_row);
                         }
                     } else if (strncmp(line, "NAV_KEY:", 8) == 0) {
                         /* REAL, 2026-08-06, direct instruction ("what if
@@ -1697,9 +1849,9 @@ int main(int argc, char **argv) {
                                 } else if (strcmp(methods[row].action, "void") == 0) {
                                     /* no-op */
                                 } else if (strcmp(methods[row].action, "OPEN_USER") == 0) {
-                                    user_popup_x = popup_x + POPUP_W + 4;
+                                    user_popup_x = popup_x + g_popup_w + 4;
                                     user_popup_y = popup_y;
-                                    user_popup_win = open_context_menu(dpy, popup_gc, user_popup_x, user_popup_y, 4);
+                                    user_popup_win = open_context_menu(dpy, popup_gc, &user_popup_x, &user_popup_y, 4, user_methods);
                                 } else if (using_objects && strncmp(methods[row].action, "GOTO:", 5) == 0) {
                                     const char *target = methods[row].action + 5;
                                     for (int pi = 0; pi < n_obj_pages; pi++) {
@@ -1708,9 +1860,9 @@ int main(int argc, char **argv) {
                                             cur_page = pi;
                                             n_methods = obj_pages[cur_page].n_items;
                                             for (int k = 0; k < n_methods; k++) methods[k] = obj_pages[cur_page].items[k];
-                                            popup_win = open_context_menu(dpy, popup_gc, popup_x, popup_y, n_methods);
+                                            popup_win = open_context_menu(dpy, popup_gc, &popup_x, &popup_y, n_methods, methods);
                                             popup_nav_base = nav_claim_rows(g_house_root, getpid(), package_dir, methods, n_methods);
-                                            popup_focus_row = 0;
+                                            popup_focus_row = 0; popup_digit_accum = 0;
                                             break;
                                         }
                                     }
@@ -1719,9 +1871,9 @@ int main(int argc, char **argv) {
                                         cur_page = page_stack[--page_stack_n];
                                         n_methods = obj_pages[cur_page].n_items;
                                         for (int k = 0; k < n_methods; k++) methods[k] = obj_pages[cur_page].items[k];
-                                        popup_win = open_context_menu(dpy, popup_gc, popup_x, popup_y, n_methods);
+                                        popup_win = open_context_menu(dpy, popup_gc, &popup_x, &popup_y, n_methods, methods);
                                         popup_nav_base = nav_claim_rows(g_house_root, getpid(), package_dir, methods, n_methods);
-                                        popup_focus_row = 0;
+                                        popup_focus_row = 0; popup_digit_accum = 0;
                                     }
                                 } else if (using_objects && strncmp(methods[row].action, "STATE:", 6) == 0) {
                                     snprintf(input_key, sizeof(input_key), "%s", methods[row].action + 6);
@@ -1729,7 +1881,7 @@ int main(int argc, char **argv) {
                                     input_active = 1;
                                     append_history("INPUT_ACTIVATE key=%s", input_key);
                                     if (!input_popup_win) {
-                                        input_popup_win = open_context_menu(dpy, popup_gc, win_x, win_y + WIN_PX + 4, 1);
+                                        input_popup_win = open_context_menu(dpy, popup_gc, (int[]){win_x}, (int[]){win_y + WIN_PX + 4}, 1, NULL) /* writeback discarded */;
                                     }
                                 } else {
                                     dispatch_action(methods[row].action, package_dir, &running);
@@ -1762,7 +1914,7 @@ int main(int argc, char **argv) {
                                 if (popup_win) close_context_menu(dpy, popup_win);
                                 popup_x = win_x;
                                 popup_y = win_y + WIN_PX + 4;
-                                popup_win = open_context_menu(dpy, popup_gc, popup_x, popup_y, n_methods);
+                                popup_win = open_context_menu(dpy, popup_gc, &popup_x, &popup_y, n_methods, methods);
                                 /* REAL FIX 2026-08-06, direct report ("they
                                  * hav nav in main but not book choices"):
                                  * SHOW_PAGE popups never claimed real
@@ -1776,7 +1928,7 @@ int main(int argc, char **argv) {
                                  * fix: claim rows here too, same as every
                                  * other popup_win open site in this file. */
                                 popup_nav_base = nav_claim_rows(g_house_root, getpid(), package_dir, methods, n_methods);
-                                popup_focus_row = 0;
+                                popup_focus_row = 0; popup_digit_accum = 0;
                                 append_history("SHOW_PAGE objects=%s result=%s", objpath, choice_result_path);
                             }
                         }
@@ -1811,12 +1963,14 @@ int main(int argc, char **argv) {
                             if (pop_w < POPUP_W) pop_w = POPUP_W;
                             if (pop_w > 900) pop_w = 900;
                             int pop_h = (n_lines + 1) * POPUP_ROW_H;
+                            int tpx = win_x, tpy = win_y + WIN_PX + 4;
+                            clamp_popup_to_screen(dpy, &tpx, &tpy, pop_w, pop_h);
                             XSetWindowAttributes swa2;
                             swa2.override_redirect = True;
                             swa2.background_pixel = WhitePixel(dpy, DefaultScreen(dpy));
                             swa2.event_mask = ExposureMask | ButtonPressMask | KeyPressMask;
                             text_popup_win = XCreateWindow(dpy, RootWindow(dpy, DefaultScreen(dpy)),
-                                                            win_x, win_y + WIN_PX + 4, pop_w, pop_h, 1,
+                                                            tpx, tpy, pop_w, pop_h, 1,
                                                             CopyFromParent, InputOutput, CopyFromParent,
                                                             CWOverrideRedirect | CWBackPixel | CWEventMask, &swa2);
                             {
@@ -1829,9 +1983,12 @@ int main(int argc, char **argv) {
                                 }
                             }
                             XMapRaised(dpy, text_popup_win);
-                            XGrabPointer(dpy, text_popup_win, True, ButtonPressMask, GrabModeAsync, GrabModeAsync,
-                                         None, None, CurrentTime);
-                            XGrabKeyboard(dpy, text_popup_win, True, GrabModeAsync, GrabModeAsync, CurrentTime);
+                            if (LIVEDESK_USE_XGRAB_POINTER)
+                                XGrabPointer(dpy, text_popup_win, True, ButtonPressMask, GrabModeAsync, GrabModeAsync,
+                                             None, None, CurrentTime);
+                            if (LIVEDESK_USE_XGRAB_KEYBOARD)
+                                XGrabKeyboard(dpy, text_popup_win, True, GrabModeAsync, GrabModeAsync, CurrentTime);
+                            popup_soft_focus(dpy, text_popup_win);
                             /* REAL FIX 2026-08-06, direct-caught bug (a
                              * NAV_KEY-opened SHOW_TEXT_FILE popup
                              * self-dismissed a few seconds after opening,
@@ -1858,6 +2015,83 @@ int main(int argc, char **argv) {
                             g_text_popup_n_lines = n_lines;
                             append_history("SHOW_TEXT_FILE %s (%d lines)", textpath, n_lines);
                         }
+                    } else if (strncmp(line, "OPEN_PAGE:", 10) == 0) {
+                        /* REAL 2026-08-06: open a named objects.pdl page
+                         * after reload (e.g. RPG Menu rewritten by
+                         * open_rp_menu.sh with live Level/Gold/HP). */
+                        char page_name[64];
+                        snprintf(page_name, sizeof(page_name), "%s", line + 10);
+                        page_name[strcspn(page_name, "\r\n")] = '\0';
+                        if (popup_win) {
+                            close_context_menu(dpy, popup_win);
+                            popup_win = 0;
+                            nav_release_pid(g_house_root, getpid());
+                        }
+                        n_obj_pages = load_objects(package_dir, obj_pages, MAX_PAGES);
+                        using_objects = (n_obj_pages > 0);
+                        cur_page = 0;
+                        page_stack_n = 0;
+                        if (using_objects) {
+                            int found = -1;
+                            for (int pi = 0; pi < n_obj_pages; pi++) {
+                                if (strcmp(obj_pages[pi].name, page_name) == 0) {
+                                    found = pi;
+                                    break;
+                                }
+                            }
+                            if (found >= 0) {
+                                cur_page = found;
+                                n_methods = obj_pages[cur_page].n_items;
+                                for (int k = 0; k < n_methods; k++) methods[k] = obj_pages[cur_page].items[k];
+                            } else {
+                                cur_page = 0;
+                                n_methods = obj_pages[0].n_items;
+                                for (int k = 0; k < n_methods; k++) methods[k] = obj_pages[0].items[k];
+                            }
+                        } else {
+                            n_methods = load_methods(package_dir, methods, MAX_METHODS);
+                            if (n_methods == 0) {
+                                snprintf(methods[0].label, sizeof(methods[0].label), "Close");
+                                snprintf(methods[0].action, sizeof(methods[0].action), "CLOSE");
+                                n_methods = 1;
+                            }
+                        }
+                        popup_x = win_x;
+                        popup_y = win_y + WIN_PX + 4;
+                        popup_win = open_context_menu(dpy, popup_gc, &popup_x, &popup_y, n_methods, methods);
+                        popup_nav_base = nav_claim_rows(g_house_root, getpid(), package_dir, methods, n_methods);
+                        popup_focus_row = 0;
+                        append_history("OPEN_PAGE:%s", page_name);
+                    } else if (strcmp(line, "OPEN_CONTEXT") == 0) {
+                        /* REAL 2026-08-06: taskbar nav Enter on a tab
+                         * writes this to open the entity context menu
+                         * (same reload+open path as right-click). */
+                        if (popup_win) {
+                            close_context_menu(dpy, popup_win);
+                            popup_win = 0;
+                            nav_release_pid(g_house_root, getpid());
+                        }
+                        n_obj_pages = load_objects(package_dir, obj_pages, MAX_PAGES);
+                        using_objects = (n_obj_pages > 0);
+                        if (using_objects) {
+                            cur_page = 0;
+                            page_stack_n = 0;
+                            n_methods = obj_pages[cur_page].n_items;
+                            for (int k = 0; k < n_methods; k++) methods[k] = obj_pages[cur_page].items[k];
+                        } else {
+                            n_methods = load_methods(package_dir, methods, MAX_METHODS);
+                            if (n_methods == 0) {
+                                snprintf(methods[0].label, sizeof(methods[0].label), "Close");
+                                snprintf(methods[0].action, sizeof(methods[0].action), "CLOSE");
+                                n_methods = 1;
+                            }
+                        }
+                        popup_x = win_x;
+                        popup_y = win_y + WIN_PX + 4;
+                        popup_win = open_context_menu(dpy, popup_gc, &popup_x, &popup_y, n_methods, methods);
+                        popup_nav_base = nav_claim_rows(g_house_root, getpid(), package_dir, methods, n_methods);
+                        popup_focus_row = 0; popup_digit_accum = 0;
+                        append_history("OPEN_CONTEXT");
                     } else if (strcmp(line, "CLOSE") == 0) {
                         running = 0;
                     }
@@ -1882,9 +2116,9 @@ int main(int argc, char **argv) {
                  * methods[0]. */
                 int raw_row = xev.xbutton.y / POPUP_ROW_H;
                 int row = raw_row - 1;
-                int inside = xev.xbutton.x >= 0 && xev.xbutton.x < POPUP_W &&
+                int inside = xev.xbutton.x >= 0 && xev.xbutton.x < g_popup_w &&
                              row >= 0 && row < n_methods;
-                int header_click = xev.xbutton.x >= 0 && xev.xbutton.x < POPUP_W && raw_row == 0;
+                int header_click = xev.xbutton.x >= 0 && xev.xbutton.x < g_popup_w && raw_row == 0;
                 /* REAL FIX 2026-08-05, direct report ("context nav
                  * arrows and index #'s should get autofocus while its
                  * open or esp if 'headerbar' is touch[ed]"): a click on
@@ -1896,6 +2130,9 @@ int main(int argc, char **argv) {
                  * real grab-retry fix above) instead of silently
                  * dismissing. */
                 if (header_click) {
+                    /* OPTION C: header click re-asserts soft focus on this
+                     * menu (was pure no-op when grab alone was assumed). */
+                    popup_soft_focus(dpy, popup_win);
                     need_redraw = 1;
                     continue;
                 }
@@ -1950,9 +2187,9 @@ int main(int argc, char **argv) {
                          * adjacent to popup_win's own real position -
                          * right next to it, same top edge, regardless
                          * of which row was clicked. */
-                        user_popup_x = popup_x + POPUP_W + 4;
+                        user_popup_x = popup_x + g_popup_w + 4;
                         user_popup_y = popup_y;
-                        user_popup_win = open_context_menu(dpy, popup_gc, user_popup_x, user_popup_y, 4);
+                        user_popup_win = open_context_menu(dpy, popup_gc, &user_popup_x, &user_popup_y, 4, user_methods);
                     } else if (using_objects && strncmp(methods[row].action, "GOTO:", 5) == 0) {
                         /* REAL, 2026-08-05: objects.pdl href navigation -
                          * see load_objects()'s own header comment.
@@ -1970,9 +2207,9 @@ int main(int argc, char **argv) {
                                 cur_page = pi;
                                 n_methods = obj_pages[cur_page].n_items;
                                 for (int k = 0; k < n_methods; k++) methods[k] = obj_pages[cur_page].items[k];
-                                popup_win = open_context_menu(dpy, popup_gc, popup_x, popup_y, n_methods);
+                                popup_win = open_context_menu(dpy, popup_gc, &popup_x, &popup_y, n_methods, methods);
                                 popup_nav_base = nav_claim_rows(g_house_root, getpid(), package_dir, methods, n_methods);
-                                        popup_focus_row = 0;
+                                        popup_focus_row = 0; popup_digit_accum = 0;
                                 break;
                             }
                         }
@@ -1981,9 +2218,9 @@ int main(int argc, char **argv) {
                             cur_page = page_stack[--page_stack_n];
                             n_methods = obj_pages[cur_page].n_items;
                             for (int k = 0; k < n_methods; k++) methods[k] = obj_pages[cur_page].items[k];
-                            popup_win = open_context_menu(dpy, popup_gc, popup_x, popup_y, n_methods);
+                            popup_win = open_context_menu(dpy, popup_gc, &popup_x, &popup_y, n_methods, methods);
                             popup_nav_base = nav_claim_rows(g_house_root, getpid(), package_dir, methods, n_methods);
-                                        popup_focus_row = 0;
+                                        popup_focus_row = 0; popup_digit_accum = 0;
                         }
                     } else if (using_objects && strncmp(methods[row].action, "STATE:", 6) == 0) {
                         /* REAL, 2026-08-05: objects.pdl real text-input
@@ -1997,7 +2234,7 @@ int main(int argc, char **argv) {
                         input_active = 1;
                         append_history("INPUT_ACTIVATE key=%s", input_key);
                         if (!input_popup_win) {
-                            input_popup_win = open_context_menu(dpy, popup_gc, win_x, win_y + WIN_PX + 4, 1);
+                            input_popup_win = open_context_menu(dpy, popup_gc, (int[]){win_x}, (int[]){win_y + WIN_PX + 4}, 1, NULL) /* writeback discarded */;
                         }
                     } else {
                         char cmd[PATH_BUF * 2];
@@ -2029,19 +2266,58 @@ int main(int argc, char **argv) {
                  * dispatch logic the mouse-click/ACTIVATE_NAV paths use. */
                 char kbuf[8];
                 KeySym ks;
-                XLookupString(&xev.xkey, kbuf, sizeof(kbuf) - 1, &ks, NULL);
+                int klen = XLookupString(&xev.xkey, kbuf, sizeof(kbuf) - 1, &ks, NULL);
+                if (klen < 0) klen = 0;
+                if (klen >= (int)sizeof(kbuf)) klen = (int)sizeof(kbuf) - 1;
+                kbuf[klen] = '\0';
                 if (ks == XK_Escape) {
                     close_context_menu(dpy, popup_win);
                     popup_win = 0;
                     nav_release_pid(g_house_root, getpid());
+                    popup_digit_accum = 0;
                     need_redraw = 1;
                 } else if (ks == XK_Up) {
                     popup_focus_row = (popup_focus_row - 1 + n_methods) % n_methods;
+                    popup_digit_accum = 0;
                     draw_context_menu(dpy, popup_win, popup_gc, methods, n_methods, popup_nav_base, popup_focus_row);
                 } else if (ks == XK_Down) {
                     popup_focus_row = (popup_focus_row + 1) % n_methods;
+                    popup_digit_accum = 0;
                     draw_context_menu(dpy, popup_win, popup_gc, methods, n_methods, popup_nav_base, popup_focus_row);
+                } else if (klen > 0 && kbuf[0] >= '0' && kbuf[0] <= '9') {
+                    /* chtpm digit_accum: jump [>] to global nav index in this menu */
+                    int d = kbuf[0] - '0';
+                    int lo = popup_nav_base;
+                    int hi = popup_nav_base + n_methods - 1; /* inclusive */
+                    if (n_methods <= 0) { /* no-op */ }
+                    else {
+                        int new_val = popup_digit_accum * 10 + d;
+                        int jumped = 0;
+                        if (new_val >= lo && new_val <= hi) {
+                            popup_digit_accum = new_val;
+                            popup_focus_row = new_val - popup_nav_base;
+                            jumped = 1;
+                        } else if (d >= lo && d <= hi) {
+                            /* out of range as append — restart with d if valid address */
+                            popup_digit_accum = d;
+                            popup_focus_row = d - popup_nav_base;
+                            jumped = 1;
+                        } else if (d >= 1 && d <= n_methods && lo <= d && d <= hi) {
+                            popup_digit_accum = d;
+                            popup_focus_row = d - popup_nav_base;
+                            jumped = 1;
+                        } else if (d >= 1 && d <= n_methods) {
+                            /* local 1..N when global range doesn't include small digits */
+                            /* only if nav numbers are lo..hi; if lo>9, d alone won't match */
+                            popup_digit_accum = 0;
+                        } else {
+                            popup_digit_accum = 0;
+                        }
+                        if (jumped)
+                            draw_context_menu(dpy, popup_win, popup_gc, methods, n_methods, popup_nav_base, popup_focus_row);
+                    }
                 } else if (ks == XK_Return || ks == XK_KP_Enter) {
+                    popup_digit_accum = 0;
                     int row = popup_focus_row;
                     close_context_menu(dpy, popup_win);
                     popup_win = 0;
@@ -2060,9 +2336,9 @@ int main(int argc, char **argv) {
                     } else if (strcmp(methods[row].action, "void") == 0) {
                         /* no-op */
                     } else if (strcmp(methods[row].action, "OPEN_USER") == 0) {
-                        user_popup_x = popup_x + POPUP_W + 4;
+                        user_popup_x = popup_x + g_popup_w + 4;
                         user_popup_y = popup_y;
-                        user_popup_win = open_context_menu(dpy, popup_gc, user_popup_x, user_popup_y, 4);
+                        user_popup_win = open_context_menu(dpy, popup_gc, &user_popup_x, &user_popup_y, 4, user_methods);
                     } else if (using_objects && strncmp(methods[row].action, "GOTO:", 5) == 0) {
                         const char *target = methods[row].action + 5;
                         for (int pi = 0; pi < n_obj_pages; pi++) {
@@ -2071,9 +2347,9 @@ int main(int argc, char **argv) {
                                 cur_page = pi;
                                 n_methods = obj_pages[cur_page].n_items;
                                 for (int k = 0; k < n_methods; k++) methods[k] = obj_pages[cur_page].items[k];
-                                popup_win = open_context_menu(dpy, popup_gc, popup_x, popup_y, n_methods);
+                                popup_win = open_context_menu(dpy, popup_gc, &popup_x, &popup_y, n_methods, methods);
                                 popup_nav_base = nav_claim_rows(g_house_root, getpid(), package_dir, methods, n_methods);
-                                popup_focus_row = 0;
+                                popup_focus_row = 0; popup_digit_accum = 0;
                                 break;
                             }
                         }
@@ -2082,9 +2358,9 @@ int main(int argc, char **argv) {
                             cur_page = page_stack[--page_stack_n];
                             n_methods = obj_pages[cur_page].n_items;
                             for (int k = 0; k < n_methods; k++) methods[k] = obj_pages[cur_page].items[k];
-                            popup_win = open_context_menu(dpy, popup_gc, popup_x, popup_y, n_methods);
+                            popup_win = open_context_menu(dpy, popup_gc, &popup_x, &popup_y, n_methods, methods);
                             popup_nav_base = nav_claim_rows(g_house_root, getpid(), package_dir, methods, n_methods);
-                            popup_focus_row = 0;
+                            popup_focus_row = 0; popup_digit_accum = 0;
                         }
                     } else if (using_objects && strncmp(methods[row].action, "STATE:", 6) == 0) {
                         snprintf(input_key, sizeof(input_key), "%s", methods[row].action + 6);
@@ -2092,7 +2368,7 @@ int main(int argc, char **argv) {
                         input_active = 1;
                         append_history("INPUT_ACTIVATE key=%s", input_key);
                         if (!input_popup_win) {
-                            input_popup_win = open_context_menu(dpy, popup_gc, win_x, win_y + WIN_PX + 4, 1);
+                            input_popup_win = open_context_menu(dpy, popup_gc, (int[]){win_x}, (int[]){win_y + WIN_PX + 4}, 1, NULL) /* writeback discarded */;
                         }
                     } else {
                         dispatch_action(methods[row].action, package_dir, &running);
@@ -2105,7 +2381,7 @@ int main(int argc, char **argv) {
             } else if (user_popup_win && xev.type == ButtonPress) {
                 int raw_row = xev.xbutton.y / POPUP_ROW_H;
                 int row = raw_row - 1;
-                int inside = xev.xbutton.x >= 0 && xev.xbutton.x < POPUP_W &&
+                int inside = xev.xbutton.x >= 0 && xev.xbutton.x < g_popup_w &&
                              row >= 0 && row < 4;
                 close_context_menu(dpy, user_popup_win);
                 user_popup_win = 0;
@@ -2145,7 +2421,7 @@ int main(int argc, char **argv) {
                 char disp[300];
                 snprintf(disp, sizeof(disp), "%s: %s_", input_key, input_buffer);
                 XClearWindow(dpy, input_popup_win);
-                XDrawRectangle(dpy, input_popup_win, popup_gc, 0, 0, POPUP_W - 1, POPUP_ROW_H * 2 - 1);
+                XDrawRectangle(dpy, input_popup_win, popup_gc, 0, 0, g_popup_w - 1, POPUP_ROW_H * 2 - 1);
                 popup_draw_text(dpy, input_popup_win, popup_gc, 8, POPUP_ROW_H, disp);
             } else if (input_active && xev.type == KeyPress) {
                 /* REAL, 2026-08-05: real text-input for an objects.pdl
@@ -2180,7 +2456,7 @@ int main(int argc, char **argv) {
                     char disp[300];
                     snprintf(disp, sizeof(disp), "%s: %s_", input_key, input_buffer);
                     XClearWindow(dpy, input_popup_win);
-                    XDrawRectangle(dpy, input_popup_win, popup_gc, 0, 0, POPUP_W - 1, POPUP_ROW_H * 2 - 1);
+                    XDrawRectangle(dpy, input_popup_win, popup_gc, 0, 0, g_popup_w - 1, POPUP_ROW_H * 2 - 1);
                     XDrawString(dpy, input_popup_win, popup_gc, 8, POPUP_ROW_H,
                                 disp, (int)strlen(disp));
                 }
@@ -2234,33 +2510,14 @@ int main(int argc, char **argv) {
                  * ("add the context menus that already exist from
                  * egg-pal to these by default"). */
                 if (!popup_win) {
-                    /* REAL FIX 2026-08-06, direct-caught bug ("first
-                     * time i tried book... it worked, but subsequent
-                     * tries fail"): methods[]/n_methods is ONE shared
-                     * array reused by the entity's real base menu (Read/
-                     * Dir/Close/Cancel) AND by SHOW_PAGE's own Show-
-                     * Choices popup (load_flat_objects() overwrites this
-                     * exact same array/count with the Bible verse/Tao
-                     * choice rows, on purpose, to reuse open_context_menu
-                     * /draw_context_menu() wholesale). Nothing ever
-                     * restored it afterward - so every base-menu open
-                     * AFTER the first Show-Choices interaction reused the
-                     * STALE choice rows instead of the real base menu,
-                     * and clicking one of those tried to dispatch
-                     * "bible_text"/"bible_tts"/"tao" as if they were real
-                     * shell commands (they're not - only meaningful
-                     * inside choice_mode), silently failing. Real fix:
-                     * always reload the real base menu fresh from
-                     * meta.pdl right here, every time - the one place
-                     * this array's "should be my real base menu" state
-                     * needs to be guaranteed true, regardless of what
-                     * SHOW_PAGE or GOTO paging did to it in between. */
+                    /* REAL FIX 2026-08-06: always reload base menu from DISK
+                     * (objects.pdl if present, else meta.pdl). In-memory
+                     * obj_pages went stale after SHOW_PAGE AND after user
+                     * edited objects.pdl/meta.pdl while the process lived
+                     * (Events (ez) missing until restart). */
+                    n_obj_pages = load_objects(package_dir, obj_pages, MAX_PAGES);
+                    using_objects = (n_obj_pages > 0);
                     if (using_objects) {
-                        /* Real base state for a paged-objects entity is
-                         * page 0, not load_methods() - restore THAT, not
-                         * the flat methods.pdl shape (see this block's
-                         * own comment above for why restoring is needed
-                         * at all). */
                         cur_page = 0;
                         page_stack_n = 0;
                         n_methods = obj_pages[cur_page].n_items;
@@ -2275,9 +2532,9 @@ int main(int argc, char **argv) {
                     }
                     popup_x = xev.xbutton.x_root;
                     popup_y = xev.xbutton.y_root;
-                    popup_win = open_context_menu(dpy, popup_gc, popup_x, popup_y, n_methods);
+                    popup_win = open_context_menu(dpy, popup_gc, &popup_x, &popup_y, n_methods, methods);
                     popup_nav_base = nav_claim_rows(g_house_root, getpid(), package_dir, methods, n_methods);
-                                        popup_focus_row = 0;
+                                        popup_focus_row = 0; popup_digit_accum = 0;
                 }
             } else if (xev.type == MotionNotify && dragging) {
                 int dx = xev.xmotion.x_root - drag_start_x;
@@ -2306,8 +2563,22 @@ int main(int argc, char **argv) {
         gettimeofday(&now, NULL);
         long elapsed_usec = (now.tv_sec - last_frame.tv_sec) * 1000000L +
                              (now.tv_usec - last_frame.tv_usec);
-        if (elapsed_usec < MIN_FRAME_USEC) continue; /* hard-cap at MAX_FPS, even mid-drag */
-        (void)need_redraw;
+        /* REAL FIX 2026-08-06: bare continue spun the CPU when X events
+         * arrived faster than MAX_FPS (drag/motion floods). Sleep the
+         * remainder of the frame budget instead.
+         * Also: static tiles used to glXSwapBuffers every frame even when
+         * need_redraw==0 (need_redraw was cast void) — 4 entities * 30fps
+         * of useless GL. Skip the swap when nothing changed; still honor
+         * the frame budget when a redraw is pending. */
+        if (!need_redraw) {
+            /* Idle: select() already waited up to POLL_INTERVAL; no GL. */
+            continue;
+        }
+        if (elapsed_usec < MIN_FRAME_USEC) {
+            long rem = MIN_FRAME_USEC - elapsed_usec;
+            if (rem > 0 && rem < 1000000L) usleep((useconds_t)rem);
+            continue;
+        }
 
         glViewport(0, 0, WIN_PX, WIN_PX);
         glClearColor(r, g, b, 1.0f);

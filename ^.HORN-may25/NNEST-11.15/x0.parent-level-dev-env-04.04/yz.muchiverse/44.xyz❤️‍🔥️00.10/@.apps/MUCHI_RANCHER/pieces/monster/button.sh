@@ -70,6 +70,7 @@ ensure_package() {
         echo "STATE        | instance_id          | $INSTANCE_ID"
         echo "STATE        | footprint_tiles      | 2"
         echo "METHOD       | Ledger               | gedit \"$PKG/master_ledger.txt\""
+        echo "METHOD       | Events (ez)          | \"$MUCHI_RANCHER/ops/open_event_ez.sh\""
         echo "METHOD       | Dir                  | xdg-open"
         echo "METHOD       | Close                | CLOSE"
         echo "METHOD       | Cancel               | void"

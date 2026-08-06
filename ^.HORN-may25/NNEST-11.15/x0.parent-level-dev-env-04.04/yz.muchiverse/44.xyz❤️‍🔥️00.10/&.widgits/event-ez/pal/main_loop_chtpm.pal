@@ -27,9 +27,11 @@ addi x7, x8, 0
 render_always:
 ez_compose_frame
 hit_frame
-sleep 30000
+# 33333 us ≈ 30fps hard ceiling (was 30000 ≈ 33fps)
+sleep 33333
 j loop
 
 no_render:
-sleep 30000
+# Idle poll: same 30fps ceiling; no compose/hit when screen unchanged
+sleep 33333
 j loop

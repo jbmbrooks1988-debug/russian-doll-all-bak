@@ -9,7 +9,8 @@ PDL="$SCRIPT_DIR/autostart.pdl"
 BIN="$SCRIPT_DIR/ops/+x/crypt_autostart.+x"
 
 case "$ACTION" in
-    run|r|start)
+    run|r|start|restart)
+        # restart == run: crypt_autostart quits current livedesk first, then launches
         mkdir -p "$SCRIPT_DIR/ops/+x"
         [ -x "$BIN" ] || gcc -Wall -O2 -o "$BIN" "$SCRIPT_DIR/ops/crypt_autostart.c"
         "$BIN" "$PDL"
@@ -48,7 +49,8 @@ EOF
         cat <<EOF
 \$.crypts — house-wide autostart control
 
-  sh button.sh run            # run once now (mounts + launches per autostart.pdl)
+  sh button.sh run            # quit current livedesk, then mount+launch (autostart.pdl)
+  sh button.sh restart        # same as run (clean restart for $ shortcut / focus tests)
   sh button.sh on | off       # toggle STATE|enabled in autostart.pdl
   sh button.sh status         # show current enabled state
   sh button.sh compile        # rebuild ops/+x/crypt_autostart.+x

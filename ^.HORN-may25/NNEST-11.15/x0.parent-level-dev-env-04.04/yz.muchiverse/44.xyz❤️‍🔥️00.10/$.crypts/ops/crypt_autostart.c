@@ -17,6 +17,11 @@
  * when `enabled=0` are both safe no-ops, not errors - this can be
  * re-run manually (via button.sh) as many times as you like.
  *
+ * REAL 2026-08-06: each successful `run` first quits the current
+ * livedesk session (CLOSE relays + SIGTERM taskbar/entities for this
+ * house_root, clear open/claims) so `$` on the taskbar restarts clean
+ * instead of stacking duplicate processes.
+ *
  * Usage: crypt_autostart.+x [pdl_path]
  *   pdl_path defaults to <this binary's own house-relative
  *   $.crypts/autostart.pdl>, resolved via /proc/self/exe so it works
@@ -30,6 +35,10 @@
 #include <unistd.h>
 #include <libgen.h>
 #include <sys/stat.h>
+#include <signal.h>
+#include <errno.h>
+#include <dirent.h>
+#include <ctype.h>
 
 #define PATH_BUF 4352
 #define MAX_LINE 4352
@@ -71,6 +80,143 @@ static int is_mounted(const char *mountpoint) {
     }
     fclose(f);
     return found;
+}
+
+
+/* Resolve <house_root> from pdl at <house_root>/$.crypts/autostart.pdl */
+static void resolve_house_root_from_pdl(const char *pdl_path, char *out, size_t out_sz) {
+    char step[PATH_BUF];
+    dirname_step(pdl_path, step, sizeof(step)); /* .../$.crypts */
+    dirname_step(step, out, out_sz);             /* .../house_root */
+}
+
+static int pid_alive(pid_t pid) {
+    if (pid <= 1) return 0;
+    return kill(pid, 0) == 0 || errno != ESRCH;
+}
+
+/* REAL 2026-08-06, user: when $ / button.sh run fires, quit current
+ * livedesk first so we don't stack old tp_desktop_window/taskbar on
+ * top of new binaries (focus-recovery restarts). Graceful CLOSE via
+ * interact_relay, then SIGTERM leftovers, clear open/claims registries. */
+static void quit_current_livedesk(const char *house_root) {
+    char open_path[PATH_BUF];
+    char claims_path[PATH_BUF];
+    char tbar_pid_path[PATH_BUF];
+    snprintf(open_path, sizeof(open_path), "%s/#.desktop/livedesk_open.txt", house_root);
+    snprintf(claims_path, sizeof(claims_path), "%s/#.desktop/livedesk_nav_claims.txt", house_root);
+    snprintf(tbar_pid_path, sizeof(tbar_pid_path), "%s/#.desktop/livedesk_taskbar.pid", house_root);
+
+    printf("crypt_autostart: quitting current livedesk before re-launch\n");
+
+    /* 1) Graceful CLOSE to every registered entity package. */
+    FILE *of = fopen(open_path, "r");
+    if (of) {
+        char line[MAX_LINE];
+        while (fgets(line, sizeof(line), of)) {
+            char *pp = strstr(line, "PATH=");
+            char *pidp = strstr(line, "PID=");
+            if (pp) {
+                char path[PATH_BUF];
+                snprintf(path, sizeof(path), "%s", pp + 5);
+                path[strcspn(path, "\r\n")] = '\0';
+                /* strip trailing junk if any after path (shouldn't be) */
+                char relay[PATH_BUF];
+                snprintf(relay, sizeof(relay), "%s/interact_relay.txt", path);
+                FILE *rf = fopen(relay, "w");
+                if (rf) { fprintf(rf, "CLOSE\n"); fclose(rf); }
+                printf("crypt_autostart: CLOSE -> %s\n", path);
+            }
+            if (pidp) {
+                pid_t pid = (pid_t)atoi(pidp + 4);
+                if (pid_alive(pid)) {
+                    /* give CLOSE a moment; SIGTERM after loop */
+                    (void)pid;
+                }
+            }
+        }
+        fclose(of);
+    }
+
+    /* 2) Taskbar pid file. */
+    {
+        FILE *pf = fopen(tbar_pid_path, "r");
+        if (pf) {
+            int tpid = 0;
+            if (fscanf(pf, "%d", &tpid) == 1 && tpid > 1 && pid_alive((pid_t)tpid)) {
+                kill((pid_t)tpid, SIGTERM);
+                printf("crypt_autostart: SIGTERM taskbar pid=%d\n", tpid);
+            }
+            fclose(pf);
+        }
+    }
+
+    /* 3) Brief wait for graceful CLOSE to take effect. */
+    usleep(400000);
+
+    /* 4) SIGTERM any still-alive PIDs from livedesk_open.txt. */
+    of = fopen(open_path, "r");
+    if (of) {
+        char line[MAX_LINE];
+        while (fgets(line, sizeof(line), of)) {
+            char *pidp = strstr(line, "PID=");
+            if (!pidp) continue;
+            pid_t pid = (pid_t)atoi(pidp + 4);
+            if (pid_alive(pid)) {
+                kill(pid, SIGTERM);
+                printf("crypt_autostart: SIGTERM entity pid=%d\n", (int)pid);
+            }
+        }
+        fclose(of);
+    }
+
+    /* 5) Sweep: any remaining tp_desktop_window / tp_taskbar whose
+     * cmdline contains this house_root (catches stragglers not in open). */
+    {
+        DIR *d = opendir("/proc");
+        if (d) {
+            struct dirent *ent;
+            while ((ent = readdir(d)) != NULL) {
+                if (!isdigit((unsigned char)ent->d_name[0])) continue;
+                pid_t pid = (pid_t)atoi(ent->d_name);
+                if (pid <= 1 || pid == getpid()) continue;
+                char cpath[64];
+                snprintf(cpath, sizeof(cpath), "/proc/%d/cmdline", (int)pid);
+                FILE *cf = fopen(cpath, "r");
+                if (!cf) continue;
+                char cmd[PATH_BUF * 2];
+                size_t n = fread(cmd, 1, sizeof(cmd) - 1, cf);
+                fclose(cf);
+                if (n == 0) continue;
+                cmd[n] = '\0';
+                /* cmdline is NUL-separated; turn NULs into spaces for strstr */
+                for (size_t i = 0; i < n; i++) if (cmd[i] == '\0') cmd[i] = ' ';
+                int is_tb = strstr(cmd, "tp_taskbar") != NULL;
+                int is_dw = strstr(cmd, "tp_desktop_window") != NULL;
+                if (!is_tb && !is_dw) continue;
+                if (!strstr(cmd, house_root)) continue;
+                if (pid_alive(pid)) {
+                    kill(pid, SIGTERM);
+                    printf("crypt_autostart: SIGTERM sweep pid=%d (%s)\n",
+                           (int)pid, is_tb ? "taskbar" : "desktop_window");
+                }
+            }
+            closedir(d);
+        }
+    }
+
+    usleep(200000);
+
+    /* 6) Clear registries so next launch starts clean (no phantom [N]). */
+    {
+        FILE *wf = fopen(open_path, "w");
+        if (wf) fclose(wf);
+        wf = fopen(claims_path, "w");
+        if (wf) fclose(wf);
+        /* leave taskbar pid file empty / gone */
+        unlink(tbar_pid_path);
+    }
+    printf("crypt_autostart: livedesk quit complete\n");
 }
 
 int main(int argc, char **argv) {
@@ -152,6 +298,13 @@ int main(int argc, char **argv) {
     if (!enabled) {
         printf("crypt_autostart: disabled (STATE|enabled|0) - no-op\n");
         return 0;
+    }
+
+    /* Always quit existing livedesk before re-launch ($ shortcut / run). */
+    {
+        char house_root[PATH_BUF];
+        resolve_house_root_from_pdl(pdl_path, house_root, sizeof(house_root));
+        if (house_root[0]) quit_current_livedesk(house_root);
     }
 
     for (int i = 0; i < n_launch; i++) {
