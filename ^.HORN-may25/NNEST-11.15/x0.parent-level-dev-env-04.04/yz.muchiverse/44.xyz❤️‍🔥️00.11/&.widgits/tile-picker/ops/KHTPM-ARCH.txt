@@ -1,0 +1,66 @@
+KHTPM shared architecture (2026-08-06)
+======================================
+
+Rule: WIN-COMPAT-RULE.md — Linux primary; Win = compatibility; no dual rewrites.
+
+Layout (ops/)
+-------------
+  khtpm_core.h / khtpm_core.c     SHARED design logic
+                                  - entity init, sprite.csv, history, relay
+                                  - livedesk_open / nav_claims registry
+                                  - objects.pdl multi-page + meta.pdl METHOD
+                                  - menu apply (GOTO/BACK/CLOSE/portable paths)
+
+  khtpm_plat.h                    Platform API (run entity, ensure taskbar)
+
+  khtpm_plat_win.c                Win32 + WGL ONLY (window, draw, TrackPopupMenu)
+  khtpm_plat_x11.c                (TODO) X11 + GLX ONLY — then retire
+                                  tp_desktop_window.c megafile for Linux
+
+  khtpm_main.c                    Shared main(): core init → plat_run_entity
+
+  tp_desktop_window.c             LEGACY Linux full X11 (still build this on
+                                  Linux until plat_x11 lands). Do not add new
+                                  design features only here — add to khtpm_core.
+
+  tp_desktop_window_win.c         LEGACY Win stub — superseded by core+plat_win.
+                                  Keep as reference; Win builds use khtpm_*.c
+
+Build Windows (button.ps1 / manual)
+-----------------------------------
+  gcc -O2 -o +x/tp_desktop_window.exe \
+      khtpm_main.c khtpm_core.c khtpm_plat_win.c \
+      -lopengl32 -lgdi32 -luser32
+
+Build Linux (today)
+-------------------
+  Still: gcc ... -o +x/tp_desktop_window.+x tp_desktop_window.c -lX11 -lXext -lGL
+  Next:  gcc ... khtpm_main.c khtpm_core.c khtpm_plat_x11.c ...
+
+When you change design on Linux
+-------------------------------
+  1. Prefer editing khtpm_core.c (and PDL/sprites).
+  2. If change is still only in tp_desktop_window.c, ALSO port the pure
+     logic into khtpm_core.c in the same change — or implement in core first.
+  3. Never reimplement the feature in khtpm_plat_win.c.
+
+Taskbar — ONE logic set (done)
+------------------------------
+  khtpm_taskbar_core.c/h     SHARED: tabs, nav claims, shortcuts, theme,
+                             digit jump, ACTIVATE/OPEN_CONTEXT, quit+save
+  khtpm_taskbar_main.c       shared main
+  khtpm_taskbar_plat_win.c   Win draw/events only
+  khtpm_taskbar_plat_x11.c   X11 draw/events only
+  livedesk-taskbar/ops/tp_taskbar.c     LEGACY — do not add design here
+  livedesk-taskbar/ops/tp_taskbar_win.c LEGACY stub
+
+Entity
+------
+  khtpm_core + khtpm_plat_win / khtpm_plat_x11 + khtpm_main
+  tp_desktop_window.c         LEGACY Linux megafile
+  tp_desktop_window_win.c     LEGACY Win stub
+
+Build
+-----
+  Win:  $.crypts/button.ps1 compile
+  Linux: ops/build_khtpm.sh  → shared entity + taskbar binaries

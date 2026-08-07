@@ -1,0 +1,12 @@
+﻿SECTION      | KEY                | VALUE
+----------------------------------------
+META         | piece_id           | m8_redhorned
+STATE        | kind                 | monster
+STATE        | glyph                | ðŸ‘º
+STATE        | instance_id          | 4TSG
+STATE        | footprint_tiles      | 2
+METHOD       | Ledger               | gedit "/home/no/Desktop/ðŸ¤–ï¸ðŸª¤ï¸ðŸ ï¸/ðŸ¥¡ï¸ðŸªœï¸/ðŸªœï¸-00.00/NNEST_CLEAN_PARENT/NNEST-11.15/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyzâ¤ï¸â€ðŸ”¥ï¸00.10/@.apps/MUCHI_RANCHER/entities/m8_redhorned/master_ledger.txt"
+METHOD       | Events (ez)          | @.apps/MUCHI_RANCHER/ops/open_event_ez.sh
+METHOD       | Dir                  | xdg-open
+METHOD       | Close                | CLOSE
+METHOD       | Cancel               | void

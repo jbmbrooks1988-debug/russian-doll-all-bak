@@ -1,0 +1,12 @@
+[2026-08-05 14:43:44] ASSIGN INDEX=1 ENTITY=m6_golddeity PATH=@.apps/MUCHI_RANCHER/entities/m6_golddeity
+[2026-08-05 14:49:29] ASSIGN INDEX=2 ENTITY=m8_redhorned PATH=@.apps/MUCHI_RANCHER/entities/m8_redhorned
+[2026-08-05 22:49:39] ASSIGN INDEX=3 ENTITY=m6_golddeity PATH=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.15/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.10/@.apps/MUCHI_RANCHER/entities/m6_golddeity
+[2026-08-05 23:13:25] ASSIGN INDEX=4 ENTITY=book-stack PATH=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.15/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.10/#.desktop/entities/book-stack
+[2026-08-06 00:08:29] ASSIGN INDEX=5 ENTITY=asa PATH=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.15/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.10/#.desktop/entities/asa
+[2026-08-06 00:08:29] ASSIGN INDEX=6 ENTITY=ava PATH=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.15/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.10/#.desktop/entities/ava
+[2026-08-07 01:36:20] ASSIGN INDEX=79 ENTITY=ava PATH=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.15/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.11/#.desktop/entities/ava
+[2026-08-07 01:36:20] ASSIGN INDEX=1 ENTITY=asa PATH=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.15/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.11/#.desktop/entities/asa
+[2026-08-07 01:36:20] ASSIGN INDEX=80 ENTITY=book-stack PATH=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.15/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.11/#.desktop/entities/book-stack
+[2026-08-07 01:36:20] ASSIGN INDEX=1 ENTITY=m8_redhorned PATH=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.15/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.11/@.apps/MUCHI_RANCHER/entities/m8_redhorned
+[2026-08-07 01:36:20] ASSIGN INDEX=1 ENTITY=m6_golddeity PATH=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.15/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.11/@.apps/MUCHI_RANCHER/entities/m6_golddeity
+[2026-08-07 01:36:20] ASSIGN INDEX=1 ENTITY=m1_ninjadragon PATH=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.15/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.11/@.apps/MUCHI_RANCHER/entities/m1_ninjadragon

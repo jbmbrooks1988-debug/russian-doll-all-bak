@@ -1,6 +1,0 @@
-3213727 orchestrator
-3214027 ./system/renderer
-3214028 ./system/keyboard_input
-3214029 ./system/chtpm_parser_pal
-3214035 ./system/chtpm_rgb_render
-3214039 ./system/gl_mirror
