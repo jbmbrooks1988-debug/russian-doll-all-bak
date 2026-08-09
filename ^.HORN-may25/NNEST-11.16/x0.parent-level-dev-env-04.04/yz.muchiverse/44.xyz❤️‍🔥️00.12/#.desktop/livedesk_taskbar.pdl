@@ -1,0 +1,8 @@
+SECTION      | user_tag_x_offset   | 500
+SECTION      | user_tag_y          | 0
+SECTION      | hq_label            | HQ
+SECTION      | hq_menu_1_label     | $.restart
+SECTION      | hq_menu_1_cmd       | setsid nohup $.crypts/button.sh run
+SECTION      | hq_menu_2_label     | X.quit
+SECTION      | hq_menu_2_cmd       | quit
+SECTION      | hq_menu_3_label     | cancel

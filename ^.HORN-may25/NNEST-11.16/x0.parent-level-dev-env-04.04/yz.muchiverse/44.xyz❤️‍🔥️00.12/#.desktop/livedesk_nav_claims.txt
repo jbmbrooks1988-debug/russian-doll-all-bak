@@ -1,0 +1,6 @@
+KIND=tab|PID=80210|NAV=1|ENTITY=m1_ninjadragon|PATH=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.16/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.12/*.monads/*.muchi-pet/entities/m1_ninjadragon
+KIND=tab|PID=80208|NAV=2|ENTITY=self|PATH=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.16/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.12/*.monads/*.hard-vvar-agent-Q0000/entities/self
+KIND=tab|PID=80213|NAV=3|ENTITY=m8_redhorned|PATH=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.16/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.12/*.monads/*.muchi-pet/entities/m8_redhorned
+KIND=tab|PID=80218|NAV=4|ENTITY=book-stack|PATH=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.16/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.12/*.monads/*.book-stack/entities/book-stack
+KIND=tab|PID=80241|NAV=5|ENTITY=asa|PATH=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.16/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.12/#.desktop/entities/asa
+KIND=tab|PID=80251|NAV=6|ENTITY=ava|PATH=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.16/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.12/#.desktop/entities/ava

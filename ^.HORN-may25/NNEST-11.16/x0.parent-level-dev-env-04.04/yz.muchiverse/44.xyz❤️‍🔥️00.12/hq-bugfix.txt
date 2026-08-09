@@ -1,0 +1,151 @@
+hq-bugfix.txt
+=============
+
+GOAL: HQ popup shows black background (working) but NO green text.
+      Taskbar itself renders fine with same theme. book-stack context
+      menus in tp_desktop_window.c render fine. Only HQ popup is invisible.
+
+WHAT WE KNOW
+------------
+1. Theme: livedesk_theme.pdl = bg #000000, fg #00ff00
+2. Taskbar tabs/text render correctly with green-on-black using shared GC `gc`
+3. HQ popup opens, stays open, background is black -- text is invisible
+4. Clicking HQ no longer kills taskbar (that was old binary, fixed)
+5. Shell used to launch (sh vs bash) does NOT matter -- same C binary runs
+
+WHAT WE TRIED (all failed)
+--------------------------
+A. Fresh GC for popup:
+   - XCreateGC(dpy, popup, 0, NULL) + XDrawString
+   - Result: no text. Likely missing font in fresh GC.
+
+B. Copy GCFont from taskbar GC into fresh popup GC:
+   - XCopyGC(dpy, gc, GCFont | GCForeground | GCBackground, local_gc)
+   - Result: still no text.
+
+C. Use taskbar's own shared GC directly, save/restore foreground:
+   - XGetGCValues(gc, GCForeground | GCFont, &saved)
+   - XSetForeground(gc, fg_pixel)  // set green
+   - XDrawString(...)
+   - XSetForeground(gc, saved.foreground)
+   - Result: still no text.
+
+D. Use black/white fallback colors (matching khtpm_plat_x11.c's working menu):
+   - XSetWindowAttributes background_pixel = WhitePixel(...)
+   - XSetForeground(gc, BlackPixel(...))
+   - Result: background changed but text still invisible.
+
+E. Read theme from livedesk_theme.pdl and apply to popup:
+   - load_theme() + alloc_color_or() for bg/fg
+   - Result: black background appears, green text still missing.
+
+WORKING REFERENCES
+------------------
+1. tp_desktop_window.c draw_context_menu() (line 1380):
+   - Uses shared GC `gc` directly
+   - Calls popup_draw_text() which does Xutf8DrawString() or XDrawString()
+   - Has g_popup_fontset (XFontSet) for UTF-8 support
+   - Does NOT create a fresh GC
+
+2. khtpm_plat_x11.c show_menu_x11() (line 103):
+   - XCreateSimpleWindow with BlackPixel bg / WhitePixel fg
+   - XCreateGC + XSetForeground(BlackPixel)
+   - XDrawString directly -- NO font loading, NO XCopyGC
+   - Works perfectly
+
+3. tp_taskbar.c draw_bar() (line 569):
+   - Creates g_bar_buf_gc via XCreateGC + XCopyGC(gc, GCForeground|GCBackground|GCFont)
+   - Draws tabs text with XDrawString using g_bar_buf_gc
+   - Works perfectly
+
+KEY SUSPICION
+-------------
+The taskbar's main GC `gc` (line 827) is created with:
+  gc = XCreateGC(dpy, win, 0, NULL);
+  XSetForeground(dpy, gc, fg_pixel);
+  XSetBackground(dpy, gc, bg_pixel);
+
+But it is MISSING an explicit XSetFont() call. The font may be coming
+from XCopyGC in draw_bar() (copied from original gc into g_bar_buf_gc).
+But the original gc might have no font set either -- it works because
+the X server picks a default when none is specified.
+
+The popup draws on a DIFFERENT window (popup) than the GC was created
+for (win). In X11, GCs are display-scoped, not window-scoped, so this
+SHOULD work. But something about the popup's window attributes or
+creation order may be preventing text from appearing.
+
+POSSIBLE CAUSES
+---------------
+1. The popup is created with CWBackPixel but the GC's foreground is
+   set to the SAME value as the background (both green from theme).
+   Wait -- we set fg_pixel from theme_fg (#00ff00). But is the theme
+   actually being loaded correctly? livedesk_theme.pdl says #00ff00
+   for fg. But the taskbar's default fallback is "black" for fg.
+   
+   CHECK: is load_theme() actually reading livedesk_theme.pdl correctly
+   when called from open_hq_popup()? The function takes house_root as
+   a parameter. Is house_root in scope there?
+
+2. The popup's XClearWindow + XDrawRectangle border may be drawing
+   over the text, or the text coordinates may be off-screen for the
+   popup's actual size.
+
+3. The popup window's background_pixel is set BEFORE XCreateWindow,
+   but XMapRaised + XSync happen before any drawing. The first Expose
+   event should trigger draw_hq_popup(). Are we getting the Expose?
+
+4. The theme's fg (#00ff00 green) on the theme's bg (#000000 black)
+   may actually be rendering, but the green is too dark or the font
+   metrics are wrong and text is clipped.
+
+INVESTIGATION STEPS FOR NEXT AGENT
+-----------------------------------
+1. Add fprintf(stderr, ...) debug prints to open_hq_popup() and
+   draw_hq_popup() showing:
+   - bg_pixel and fg_pixel values (hex)
+   - popup window ID, size, position
+   - whether draw_hq_popup is actually called
+   - the exact string being drawn and its coordinates
+
+2. Try HARDCODING fg_pixel to WhitePixel (0xffffff) and bg to
+   BlackPixel (0x000000) to rule out theme loading issues.
+
+3. Try drawing with the ORIGINAL taskbar gc (no save/restore, no
+   XSetForeground change) to see if the default GC foreground works
+   on the popup window.
+
+4. Try XFillRectangle instead of XDrawRectangle for the popup border
+   to rule out clipping issues.
+
+5. Check if Xutf8DrawString is needed instead of XDrawString
+   (khtpm_plat_x11.c uses plain XDrawString and works).
+
+6. Compare GC values between working draw_bar() and HQ popup:
+   - XGetGCValues(gc, GCForeground | GCFont | GCBackground, &gv)
+   - Print gv.foreground, gv.background, gv.font for both call sites.
+
+7. Try drawing the popup text INSIDE open_hq_popup() immediately
+   after XMapRaised, before returning, to rule out event-loop issues.
+
+FILES TO TOUCH
+--------------
+- &.widgits/livedesk-taskbar/ops/tp_taskbar.c
+  Functions: open_hq_popup(), draw_hq_popup()
+  Lines: ~736-786
+
+- #.desktop/livedesk_theme.pdl (theme colors, for reference)
+
+KEY CODE SITES
+--------------
+main() creates GC at line 827:
+  GC gc = XCreateGC(dpy, win, 0, NULL);
+  XSetForeground(dpy, gc, fg_pixel);
+  XSetBackground(dpy, gc, bg_pixel);
+
+draw_bar() copies GC at line 578:
+  g_bar_buf_gc = XCreateGC(dpy, g_bar_buf, 0, NULL);
+  XCopyGC(dpy, gc, GCForeground | GCBackground | GCFont, g_bar_buf_gc);
+
+open_hq_popup() at line 736 -- uses shared gc, sets fg_pixel
+draw_hq_popup() at line 770 -- uses shared gc, saves/restores fg

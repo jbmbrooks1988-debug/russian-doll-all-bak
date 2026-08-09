@@ -1,0 +1,12 @@
+﻿SECTION      | KEY                | VALUE
+----------------------------------------
+STATE        | enabled              | 1
+STATE        | restore-last-open     | 0
+MOUNT        | uuid                 | b7ced73c-5231-4462-b98d-64e38fe2df9e
+MOUNT        | mountpoint           | /media/no/b7ced73c-5231-4462-b98d-64e38fe2df9e
+LAUNCH       | tool-bar             | '&.widgits/livedesk-taskbar/ops/+x/tp_taskbar.+x' '.'
+LAUNCH       | asa&ava               | '/bin/bash' '@.apps/asa-&-ava/button.sh' 'run'
+LAUNCH       | hard-vvar-agent-Q0000 | '&.widgits/tile-picker/ops/+x/tp_desktop_window.+x' '*.monads/*.hard-vvar-agent-Q0000/entities/self'
+LAUNCH       | m1_ninjadragon       | '&.widgits/tile-picker/ops/+x/tp_desktop_window.+x' '*.monads/*.muchi-pet/entities/m1_ninjadragon'
+LAUNCH       | m8_redhorned         | '&.widgits/tile-picker/ops/+x/tp_desktop_window.+x' '*.monads/*.muchi-pet/entities/m8_redhorned'
+LAUNCH       | book-stack           | '&.widgits/tile-picker/ops/+x/tp_desktop_window.+x' '*.monads/*.book-stack/entities/book-stack'
