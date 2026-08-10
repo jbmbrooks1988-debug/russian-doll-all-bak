@@ -1,0 +1,223 @@
+tp_taskbar.c: In function ‘sync_strip_claims’:
+tp_taskbar.c:639:16: warning: unused variable ‘btn_nav_assigned’ [-Wunused-variable]
+  639 |     static int btn_nav_assigned = 0;  /* remember if we've already assigned nav numbers */
+      |                ^~~~~~~~~~~~~~~~
+At top level:
+tp_taskbar.c:639:16: warning: ‘btn_nav_assigned’ defined but not used [-Wunused-variable]
+tp_taskbar.c:796:12: warning: ‘find_open_popup_path’ defined but not used [-Wunused-function]
+  796 | static int find_open_popup_path(const char *house_root, char *path_out, size_t path_sz) {
+      |            ^~~~~~~~~~~~~~~~~~~~
+tp_taskbar.c:131:12: warning: ‘load_shortcuts’ defined but not used [-Wunused-function]
+  131 | static int load_shortcuts(const char *house_root, Shortcut *out, int max) {
+      |            ^~~~~~~~~~~~~~
+tp_taskbar.c: In function ‘mark_strip_frame_changed’:
+tp_taskbar.c:1492:51: warning: ‘/strip_frame_changed.txt’ directive output may be truncated writing 24 bytes into a region of size between 1 and 4352 [-Wformat-truncation=]
+ 1492 |     snprintf(marker_path, sizeof(marker_path), "%s/strip_frame_changed.txt", dbg_dir);
+      |                                                   ^~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/stdio.h:894,
+                 from tp_taskbar.c:48:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:71:10: note: ‘__builtin___snprintf_chk’ output between 25 and 4376 bytes into a destination of size 4352
+   71 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   72 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   73 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+tp_taskbar.c: In function ‘draw_hq_popup’:
+tp_taskbar.c:1240:47: warning: ‘/#.desktop/tp_taskbar_debug’ directive output may be truncated writing 27 bytes into a region of size between 1 and 4352 [-Wformat-truncation=]
+ 1240 |         snprintf(dbg_dir, sizeof(dbg_dir), "%s/#.desktop/tp_taskbar_debug", g_house_root);
+      |                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/stdio.h:894,
+                 from tp_taskbar.c:48:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:71:10: note: ‘__builtin___snprintf_chk’ output between 28 and 4379 bytes into a destination of size 4352
+   71 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   72 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   73 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+tp_taskbar.c:1242:49: warning: ‘/popup_frame.raw’ directive output may be truncated writing 16 bytes into a region of size between 1 and 4352 [-Wformat-truncation=]
+ 1242 |         snprintf(raw_path, sizeof(raw_path), "%s/popup_frame.raw", dbg_dir);
+      |                                                 ^~~~~~~~~~~~~~~~
+In file included from /usr/include/stdio.h:894,
+                 from tp_taskbar.c:48:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:71:10: note: ‘__builtin___snprintf_chk’ output between 17 and 4368 bytes into a destination of size 4352
+   71 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   72 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   73 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+tp_taskbar.c:1243:57: warning: ‘/popup_frame.receipt.txt’ directive output may be truncated writing 24 bytes into a region of size between 1 and 4352 [-Wformat-truncation=]
+ 1243 |         snprintf(receipt_path, sizeof(receipt_path), "%s/popup_frame.receipt.txt", dbg_dir);
+      |                                                         ^~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/stdio.h:894,
+                 from tp_taskbar.c:48:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:71:10: note: ‘__builtin___snprintf_chk’ output between 25 and 4376 bytes into a destination of size 4352
+   71 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   72 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   73 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+tp_taskbar.c:1244:49: warning: ‘/popup_frame_log.txt’ directive output may be truncated writing 20 bytes into a region of size between 1 and 4352 [-Wformat-truncation=]
+ 1244 |         snprintf(log_path, sizeof(log_path), "%s/popup_frame_log.txt", dbg_dir);
+      |                                                 ^~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/stdio.h:894,
+                 from tp_taskbar.c:48:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:71:10: note: ‘__builtin___snprintf_chk’ output between 21 and 4372 bytes into a destination of size 4352
+   71 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   72 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   73 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+tp_taskbar.c: In function ‘taskbar_activate_tab.part.0’:
+tp_taskbar.c:1124:43: warning: ‘/interact_relay.txt’ directive output may be truncated writing 19 bytes into a region of size between 1 and 4352 [-Wformat-truncation=]
+ 1124 |         snprintf(relay, sizeof(relay), "%s/interact_relay.txt", tabs[idx].path);
+      |                                           ^~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/stdio.h:894,
+                 from tp_taskbar.c:48:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:71:10: note: ‘__builtin___snprintf_chk’ output between 20 and 4371 bytes into a destination of size 4352
+   71 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   72 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   73 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+tp_taskbar.c: In function ‘draw_strip_if_marked.constprop’:
+tp_taskbar.c:1522:45: warning: ‘/strip_frame.raw’ directive output may be truncated writing 16 bytes into a region of size between 1 and 4352 [-Wformat-truncation=]
+ 1522 |     snprintf(raw_path, sizeof(raw_path), "%s/strip_frame.raw", dbg_dir);
+      |                                             ^~~~~~~~~~~~~~~~
+In file included from /usr/include/stdio.h:894,
+                 from tp_taskbar.c:48:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:71:10: note: ‘__builtin___snprintf_chk’ output between 17 and 4368 bytes into a destination of size 4352
+   71 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   72 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   73 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+tp_taskbar.c:1523:53: warning: ‘/strip_frame.receipt.txt’ directive output may be truncated writing 24 bytes into a region of size between 1 and 4352 [-Wformat-truncation=]
+ 1523 |     snprintf(receipt_path, sizeof(receipt_path), "%s/strip_frame.receipt.txt", dbg_dir);
+      |                                                     ^~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/stdio.h:894,
+                 from tp_taskbar.c:48:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:71:10: note: ‘__builtin___snprintf_chk’ output between 25 and 4376 bytes into a destination of size 4352
+   71 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   72 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   73 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+tp_taskbar.c:1524:45: warning: ‘/strip_frame_log.txt’ directive output may be truncated writing 20 bytes into a region of size between 1 and 4352 [-Wformat-truncation=]
+ 1524 |     snprintf(log_path, sizeof(log_path), "%s/strip_frame_log.txt", dbg_dir);
+      |                                             ^~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/stdio.h:894,
+                 from tp_taskbar.c:48:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:71:10: note: ‘__builtin___snprintf_chk’ output between 21 and 4372 bytes into a destination of size 4352
+   71 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   72 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   73 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+tp_taskbar.c: In function ‘main’:
+tp_taskbar.c:1810:44: warning: ‘%s’ directive output may be truncated writing up to 4351 bytes into a region of size between 4330 and 8681 [-Wformat-truncation=]
+ 1810 |                  "PRISC_PROJECT_ROOT='%s' '%s/ops/+x/userpal_whoami.+x' 2>/dev/null",
+      |                                            ^~
+ 1811 |                  userpal_root, userpal_root);
+      |                                ~~~~~~~~~~~~ 
+In file included from /usr/include/stdio.h:894,
+                 from tp_taskbar.c:48:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:71:10: note: ‘__builtin___snprintf_chk’ output between 62 and 8764 bytes into a destination of size 8704
+   71 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   72 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   73 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+tp_taskbar.c:350:69: warning: ‘%s’ directive output may be truncated writing up to 35359 bytes into a region of size 64 [-Wformat-truncation=]
+  350 |             snprintf(menu[count].label, sizeof(menu[count].label), "%s", menu[i].label);
+      |                                                                     ^~
+In file included from /usr/include/stdio.h:894,
+                 from tp_taskbar.c:48:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:71:10: note: ‘__builtin_snprintf’ output between 1 and 35360 bytes into a destination of size 64
+   71 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   72 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   73 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+tp_taskbar.c:1859:67: warning: ‘%s’ directive output may be truncated writing up to 159 bytes into a region of size 64 [-Wformat-truncation=]
+ 1859 |     snprintf(cells[n_cells].label, sizeof(cells[n_cells].label), "%s", user_label);
+      |                                                                   ^~   ~~~~~~~~~~
+In file included from /usr/include/stdio.h:894,
+                 from tp_taskbar.c:48:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:71:10: note: ‘__builtin_snprintf’ output between 1 and 160 bytes into a destination of size 64
+   71 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   72 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   73 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+tp_taskbar.c:1859:67: warning: ‘%s’ directive output may be truncated writing up to 159 bytes into a region of size 64 [-Wformat-truncation=]
+ 1859 |     snprintf(cells[n_cells].label, sizeof(cells[n_cells].label), "%s", user_label);
+      |                                                                   ^~   ~~~~~~~~~~
+In file included from /usr/include/stdio.h:894,
+                 from tp_taskbar.c:48:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:71:10: note: ‘__builtin_snprintf’ output between 1 and 160 bytes into a destination of size 64
+   71 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   72 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   73 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+tp_taskbar.c:1866:71: warning: ‘%s’ directive output may be truncated writing up to 318239 bytes into a region of size 64 [-Wformat-truncation=]
+ 1866 |         snprintf(cells[n_cells].label, sizeof(cells[n_cells].label), "%s", strip_btns[i].label);
+      |                                                                       ^~
+In file included from /usr/include/stdio.h:894,
+                 from tp_taskbar.c:48:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:71:10: note: ‘__builtin_snprintf’ output between 1 and 318240 bytes into a destination of size 64
+   71 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   72 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   73 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+tp_taskbar.c:1386:28: warning: ‘%s’ directive output may be truncated writing up to 1039 bytes into a region of size 160 [-Wformat-truncation=]
+ 1386 |         snprintf(out, sz, "%s", c->label);
+      |                            ^~
+In file included from /usr/include/stdio.h:894,
+                 from tp_taskbar.c:48:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:71:10: note: ‘__builtin_snprintf’ output between 1 and 1040 bytes into a destination of size 160
+   71 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   72 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   73 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+tp_taskbar.c:1384:35: warning: ‘%s’ directive output may be truncated writing up to 1039 bytes into a region of size between 144 and 153 [-Wformat-truncation=]
+ 1384 |         snprintf(out, sz, "%s %d. %s", focused ? "[>]" : "[ ]", c->nav, c->label);
+      |                                   ^~
+In file included from /usr/include/stdio.h:894,
+                 from tp_taskbar.c:48:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:71:10: note: ‘__builtin___snprintf_chk’ output between 8 and 1056 bytes into a destination of size 160
+   71 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   72 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   73 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+tp_taskbar.c:1506:47: warning: ‘/key_history.txt’ directive output may be truncated writing 16 bytes into a region of size between 1 and 4352 [-Wformat-truncation=]
+ 1506 |     snprintf(hist_path, sizeof(hist_path), "%s/key_history.txt", dbg_dir);
+      |                                               ^~~~~~~~~~~~~~~~
+In file included from /usr/include/stdio.h:894,
+                 from tp_taskbar.c:48:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:71:10: note: ‘__builtin___snprintf_chk’ output between 17 and 4368 bytes into a destination of size 4352
+   71 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   72 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   73 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~

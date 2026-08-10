@@ -1,0 +1,242 @@
+OPACITY BUG - 2026-08-09 - livedesk taskbar (tp_taskbar.c)
+
+SYMPTOM
+-------
+Two override_redirect X11 windows in the same process (the top-left
+command strip "strip_win" and the bottom bar "win", both in
+&.widgits/livedesk-taskbar/ops/tp_taskbar.c):
+  - Bottom bar (win): visibly ~50% transparent. Correct, expected.
+  - Top strip (strip_win): still fully opaque, visually. NOT correct.
+
+Both bars are supposed to share the exact same background-opacity
+behavior, driven from #.desktop/livedesk_theme.pdl:
+  COLOR | opacity | 0.5
+
+WHAT WAS ALREADY RULED OUT (verified directly, not assumed)
+-------------------------------------------------------------
+1. Property value itself: `xprop -id <win>` on BOTH windows shows
+   _NET_WM_WINDOW_OPACITY(CARDINAL) = 2147483647 (~50% of 0xFFFFFFFF)
+   on both. Identical value, both present. Confirmed via direct xprop
+   read on the live windows, not inferred from source.
+
+2. Full property dump (`xprop -id <win>` with no filter) shows every
+   OTHER property is also byte-identical between the two windows:
+   WM_CLASS, _NET_WM_STATE (SKIP_PAGER, SKIP_TASKBAR),
+   _NET_WM_ALLOWED_ACTIONS, _GTK_EDGE_CONSTRAINTS(=170 on both).
+   Note _GTK_EDGE_CONSTRAINTS is NOT something tp_taskbar.c sets - it
+   is injected externally (see THEORY 1 below).
+
+3. Creation code path: originally win and strip_win were built via two
+   separate, hand-duplicated blocks (XCreateWindow -> taskbar_set_wm_class
+   -> XMapRaised -> set_window_opacity). Refactored into ONE shared
+   function, create_bar_window(), that both now call with the same
+   argument shape (differs only in x/y/w/h position/size, which is
+   expected/correct). This was done specifically to remove any chance of
+   silent divergence between the two call sites. Did NOT fix the bug -
+   confirmed by rebuild + restart + re-test after this refactor.
+
+4. Rendering pipeline: draw_bar() (bottom bar) has always rendered into
+   an offscreen Pixmap (g_bar_buf) then done ONE XCopyArea onto the real
+   window. draw_strip() originally drew directly to the real window via
+   XClearWindow every frame - a genuine, real structural difference.
+   Converted draw_strip() to the exact same offscreen-Pixmap+XCopyArea
+   pattern as draw_bar() (new g_strip_buf/g_strip_buf_gc statics,
+   mirroring g_bar_buf/g_bar_buf_gc exactly). Did NOT fix the bug -
+   confirmed by rebuild + restart + re-test after this change too.
+
+5. Window count / stale windows: `xwininfo -root -tree` after each
+   restart shows exactly 2 "MuchiverseLivedesk"-classed windows, both
+   owned by the single currently-running tp_taskbar PID (verified via
+   `ps aux` cross-check). No leftover/duplicate window sitting on top
+   of the strip at a higher stacking order.
+
+WHAT STILL DIFFERS (real, not yet explained)
+---------------------------------------------
+- win (bottom bar): position (0, screen_h-BAR_H), size screen_w x BAR_H
+  (full screen width, anchored to the bottom edge).
+- strip_win (top strip): position (strip_x_offset, 0) - observed at
+  x=1500 this session (from #.desktop/livedesk_taskbar.pdl's
+  strip_x_offset key) - size is much narrower (~900px) than the screen,
+  NOT edge-to-edge, NOT anchored flush to a screen edge horizontally
+  (there's empty desktop to its left AND right).
+
+That geometry difference (full-width bottom-edge-anchored dock-like
+window vs. a narrower, floating-position window elsewhere on screen) is
+the one remaining OBSERVABLE difference between the two windows that
+hasn't been eliminated by the fixes above.
+
+ENVIRONMENT - CONFIRMED, NOT A GUESS
+--------------------------------------
+Checked directly this session:
+  $XDG_SESSION_TYPE = wayland
+  `loginctl show-session ... -p Type` = wayland
+  `ps aux` shows: gnome-shell (compositor), and
+  `/usr/bin/Xwayland :0 -rootless -noreset ... -auth
+  /run/user/1000/.mutter-Xwaylandauth.*` (Mutter's own embedded Xwayland,
+  rootless mode).
+
+So this IS confirmed running under GNOME Shell + Mutter (Wayland), with
+X11 clients (including tp_taskbar) going through Xwayland in rootless
+mode. `_GTK_EDGE_CONSTRAINTS` being present on both windows (noted
+above) is consistent with this - it's a hint Mutter itself adds to
+Xwayland client surfaces, not something any GTK app or tp_taskbar.c
+sets.
+
+This matters because Mutter's handling of `_NET_WM_WINDOW_OPACITY` for
+Xwayland override-redirect surfaces specifically (as opposed to normal
+WM-managed top-level windows) is a genuinely known area of
+inconsistency across Mutter versions - different override-redirect
+surfaces can be routed through different internal Mutter code paths
+depending on how Mutter's own window-classification heuristics treat
+them (this is Mutter/GNOME-side behavior, not something documented or
+controllable from X11 client code). NOT independently confirmed that
+this specific inconsistency is THE cause here - flagged as the
+strongest lead given the confirmed environment, not a conclusion.
+
+THEORY 5 - RULED OUT (tested live, 2026-08-09)
+------------------------------------------------
+Tested directly: moved strip_win to y=40 (below GNOME Shell's native top
+panel), keeping x/width unchanged. Rebuilt, restarted, user confirmed
+live: still fully opaque. GNOME's own top-panel screen region is NOT
+the cause - ruled out.
+
+Side note: the user liked this y=40 position independent of the opacity
+bug and asked to keep it permanently (not just as a diagnostic) - it's
+now the real default (`strip_y_offset` key in
+#.desktop/livedesk_taskbar.pdl, defaults to 40, same PDL-overridable
+shape as strip_x_offset). This does NOT mean the geometry theory is
+confirmed in any way - it's coincidental that the diagnostic position
+turned out to be a preferred permanent one. The opacity bug itself is
+still open; do not read "the strip stayed at y=40" as if it were
+supporting evidence for any geometry-based theory.
+
+ORIGINAL THEORY 5 TEXT (kept for reference/context)
+--------------------------------------------------------------------
+strip_win sits at y=0 (top of screen). GNOME Shell has its OWN native
+top panel (clock/activities/status icons) that, by default, occupies
+that exact same screen region - typically ~28-40px tall, i.e. plausibly
+the same rough height as this taskbar's own BAR_H=32. win (the bottom
+bar) sits at y=screen_h-BAR_H, a region GNOME Shell does NOT reserve
+anything in by default.
+
+NOT confirmed whether this is actually relevant here - possibilities,
+none checked yet:
+  - GNOME's own top panel might be genuinely underneath/overlapping our
+    strip_win, and Mutter may have special-cased compositing behavior
+    for windows placed directly over its own shell panel's screen
+    region (distinct from a generic "override-redirect window
+    somewhere on screen" case).
+  - Simpler still: maybe nothing subtle at all - maybe GNOME's real top
+    panel is genuinely visible in a way that makes the strip's own
+    transparency effect land ON TOP of an already fairly
+    solid/dark/opaque-looking native panel, producing something that
+    LOOKS like "our window is opaque" without our window's own
+    compositing actually being at fault. (Noted the user already said
+    they ruled out "background happens to be dark" for the strip's
+    general position - but that was about desktop wallpaper/other app
+    windows, not specifically about GNOME's own top-panel strip - worth
+    explicitly re-checking THIS specific possibility rather than
+    assuming it was already covered.)
+  - Check with `xwininfo -root -tree` (or equivalent) for ANY window
+    (Wayland-native GNOME Shell surfaces will NOT show up there at all,
+    since they're not X11 windows) - so the earlier "only 2
+    MuchiverseLivedesk windows, no stale duplicates" check in this file
+    does NOT rule this out. A genuinely different, Wayland-native check
+    is needed (e.g. does moving/hiding strip_win to a different y
+    position, away from y=0, change anything?).
+
+CHEAPEST NEXT DIAGNOSTIC (not yet run - do this before further code
+changes)
+-------------------------------------------------------------------------
+NOTE: strip_y_offset is now 40 by default (see THEORY 5 section above -
+kept permanently for unrelated reasons, y=0 vs y=40 already ruled out
+as the opacity cause either way). Run this next test starting from
+whatever strip_y_offset currently is in #.desktop/livedesk_taskbar.pdl
+- the y value doesn't matter for this specific test, only x/width do.
+
+Temporarily change ONLY strip_win's create_bar_window() call (in
+main(), tp_taskbar.c) to use the exact same x/width shape as win - i.e.
+x=0, w=screen_w (full width) - full-edge-anchored horizontally, matching
+win's own "flush to a screen edge, full width" shape instead of its
+current narrower/floating position. Rebuild, restart, and have a human
+look at whether THAT strip is transparent.
+  - If YES (opacity now works once full-width/edge-anchored): strongly
+    isolates the variable to geometry/edge-anchoring specifically -
+    next step would be researching Mutter's own edge-anchoring/panel
+    detection heuristics for Xwayland override-redirect surfaces.
+  - If NO (still opaque even full-width): rules out geometry entirely,
+    points elsewhere - e.g. window creation ORDER (strip_win is always
+    created/mapped after win in program startup), or something about
+    being the SECOND override-redirect surface from the same client
+    connection specifically.
+Revert the x/width change after the test regardless of outcome - this
+is a diagnostic probe, not a real fix (the strip is deliberately
+supposed to stay narrow/positioned by strip_x_offset per
+#.desktop/livedesk_taskbar.pdl, this isn't something to permanently
+change). The y_offset=40 change IS permanent (see THEORY 5 note) -
+don't revert that part.
+
+THEORIES (not confirmed - momentum for the next pass, not conclusions)
+-------------------------------------------------------------------------
+1. Wayland/XWayland compositor-side heuristic: some Wayland compositors
+   treat XWayland override_redirect surfaces differently based on
+   geometry - e.g. a window that looks like a "panel/dock" (full-width,
+   edge-anchored) may get handled through a different internal
+   compositing path than a "floating" override_redirect surface of
+   arbitrary size/position, even with identical X11-level properties.
+   If true, _NET_WM_WINDOW_OPACITY might only be honored consistently
+   for one of those paths. This would NOT be fixable from tp_taskbar.c's
+   C code at all - it'd need compositor-side config, or a different
+   opacity mechanism entirely (e.g. an actual ARGB32 visual + alpha
+   channel drawn client-side, instead of relying on
+   _NET_WM_WINDOW_OPACITY).
+
+2. Compositor "shape"/damage-region caching keyed on window creation
+   order or initial paint timing: strip_win is created and mapped
+   slightly after win in program startup order. If the compositor reads
+   _NET_WM_WINDOW_OPACITY once around map-time and something about the
+   very first paint differs (e.g. the reserved STRIP_NAV_BOX_W left-padding
+   region, or the fact strip_win's first draw_strip() call happens with
+   show_cursor=0/nav not yet armed), it's possible - not confirmed - that
+   whatever "first frame" the compositor captured got cached as the
+   opaque baseline. Worth testing: force additional no-op redraws/property
+   re-sets (e.g. re-issue XChangeProperty for opacity a second time,
+   slightly delayed, after the window has been visible for >1 frame) to
+   see if that unsticks it.
+
+3. Possible interaction with strip_win's CWBackPixel background_pixel
+   attribute and how a Wayland compositor interprets "backing store" for
+   a narrower, non-edge-anchored override_redirect window vs a full-width
+   one - i.e. same idea as theory 1 but centered on the background_pixel
+   attribute itself rather than geometry/anchoring per se. Not
+   distinguished from theory 1 yet.
+
+4. Worth a completely different verification method before chasing more
+   X11-property theories: dump actual rendered pixels from BOTH windows
+   (XGetImage into a real RGBA buffer, same technique already used
+   elsewhere in this file via capture_strip_frame()) and compare pixel
+   values against a known background color behind each bar, to
+   confirm/deny that the strip's pixels are genuinely 100% opaque at the
+   X11/pixmap level (as opposed to a purely visual/perceptual read from
+   a screenshot, which hasn't been done yet this session - everything
+   verified so far was via `xprop`, not by sampling real pixel alpha/
+   blend values).
+
+WHERE THE CODE LIVES
+---------------------
+&.widgits/livedesk-taskbar/ops/tp_taskbar.c
+  - create_bar_window() - shared window creation, right before main()
+  - set_window_opacity() - the _NET_WM_WINDOW_OPACITY setter
+  - load_theme_opacity() - reads #.desktop/livedesk_theme.pdl's
+    `COLOR | opacity | <0..1>` row (defaults to 0.5 if absent)
+  - draw_bar() / draw_strip() - both now use the offscreen-Pixmap +
+    XCopyArea double-buffer pattern (g_bar_buf / g_strip_buf)
+
+NOTE FOR THE NEXT AGENT
+------------------------
+This file (&.widgits/livedesk-taskbar/ops/tp_taskbar.c) is marked
+LEGACY per &.widgits/tile-picker/ops/KHTPM-ARCH.txt - see
+yz.muchiverse/a8-cc-++fix.md (same session, earlier) for the fuller
+writeup of that gap. Not directly related to this opacity bug, but
+relevant context if this investigation ends up touching window-creation
+architecture further.

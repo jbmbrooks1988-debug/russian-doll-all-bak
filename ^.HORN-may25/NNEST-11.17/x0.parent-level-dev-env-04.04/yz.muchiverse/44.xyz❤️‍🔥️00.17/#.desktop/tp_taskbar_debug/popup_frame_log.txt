@@ -1,0 +1,682 @@
+--- popup frame @ 1786266765 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="X.quit" global_nav=15 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=16 focused=0
+--- popup frame @ 1786266765 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="X.quit" global_nav=15 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=16 focused=0
+--- popup frame @ 1786266766 (focus_row=1, n_menu=3) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=0
+  row[1] local_nav=2 label="X.quit" global_nav=15 focused=1
+  row[2] local_nav=3 label="cancel" global_nav=16 focused=0
+--- popup frame @ 1786270348 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="X.quit" global_nav=15 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=16 focused=0
+--- popup frame @ 1786270348 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="X.quit" global_nav=15 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=16 focused=0
+--- popup frame @ 1786270349 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="X.quit" global_nav=15 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=16 focused=0
+--- popup frame @ 1786270351 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="X.quit" global_nav=15 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=16 focused=0
+--- popup frame @ 1786316930 (focus_row=0, n_menu=4) ---
+  row[0] local_nav=1 label="new-desk" global_nav=14 focused=1
+  row[1] local_nav=2 label="save" global_nav=15 focused=0
+  row[2] local_nav=3 label="save-as" global_nav=16 focused=0
+  row[3] local_nav=4 label="load" global_nav=17 focused=0
+--- popup frame @ 1786316930 (focus_row=0, n_menu=4) ---
+  row[0] local_nav=1 label="new-desk" global_nav=14 focused=1
+  row[1] local_nav=2 label="save" global_nav=15 focused=0
+  row[2] local_nav=3 label="save-as" global_nav=16 focused=0
+  row[3] local_nav=4 label="load" global_nav=17 focused=0
+--- popup frame @ 1786317079 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="play" global_nav=14 focused=1
+  row[1] local_nav=2 label="pause" global_nav=15 focused=0
+  row[2] local_nav=3 label="reset" global_nav=16 focused=0
+--- popup frame @ 1786317079 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="play" global_nav=14 focused=1
+  row[1] local_nav=2 label="pause" global_nav=15 focused=0
+  row[2] local_nav=3 label="reset" global_nav=16 focused=0
+--- popup frame @ 1786317124 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="play" global_nav=14 focused=1
+  row[1] local_nav=2 label="pause" global_nav=15 focused=0
+  row[2] local_nav=3 label="reset" global_nav=16 focused=0
+--- popup frame @ 1786317124 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="play" global_nav=14 focused=1
+  row[1] local_nav=2 label="pause" global_nav=15 focused=0
+  row[2] local_nav=3 label="reset" global_nav=16 focused=0
+--- popup frame @ 1786317674 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="X.quit" global_nav=15 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=16 focused=0
+--- popup frame @ 1786317674 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="X.quit" global_nav=15 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=16 focused=0
+--- popup frame @ 1786317770 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="X.quit" global_nav=15 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=16 focused=0
+--- popup frame @ 1786317770 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="X.quit" global_nav=15 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=16 focused=0
+--- popup frame @ 1786318073 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="X.quit" global_nav=15 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=16 focused=0
+--- popup frame @ 1786318073 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="X.quit" global_nav=15 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=16 focused=0
+--- popup frame @ 1786318152 (focus_row=0, n_menu=4) ---
+  row[0] local_nav=1 label="rebuild-tb" global_nav=14 focused=1
+  row[1] local_nav=2 label="$.restart" global_nav=15 focused=0
+  row[2] local_nav=3 label="X.quit" global_nav=16 focused=0
+  row[3] local_nav=4 label="cancel" global_nav=17 focused=0
+--- popup frame @ 1786318152 (focus_row=0, n_menu=4) ---
+  row[0] local_nav=1 label="rebuild-tb" global_nav=14 focused=1
+  row[1] local_nav=2 label="$.restart" global_nav=15 focused=0
+  row[2] local_nav=3 label="X.quit" global_nav=16 focused=0
+  row[3] local_nav=4 label="cancel" global_nav=17 focused=0
+--- popup frame @ 1786318158 (focus_row=0, n_menu=4) ---
+  row[0] local_nav=1 label="rebuild-tb" global_nav=14 focused=1
+  row[1] local_nav=2 label="$.restart" global_nav=15 focused=0
+  row[2] local_nav=3 label="X.quit" global_nav=16 focused=0
+  row[3] local_nav=4 label="cancel" global_nav=17 focused=0
+--- popup frame @ 1786318158 (focus_row=0, n_menu=4) ---
+  row[0] local_nav=1 label="rebuild-tb" global_nav=14 focused=1
+  row[1] local_nav=2 label="$.restart" global_nav=15 focused=0
+  row[2] local_nav=3 label="X.quit" global_nav=16 focused=0
+  row[3] local_nav=4 label="cancel" global_nav=17 focused=0
+--- popup frame @ 1786318222 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="X.quit" global_nav=15 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=16 focused=0
+--- popup frame @ 1786318222 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="X.quit" global_nav=15 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=16 focused=0
+--- popup frame @ 1786323709 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="$.restart" global_nav=15 focused=1
+  row[1] local_nav=2 label="X.quit" global_nav=16 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=17 focused=0
+--- popup frame @ 1786323709 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="$.restart" global_nav=15 focused=1
+  row[1] local_nav=2 label="X.quit" global_nav=16 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=17 focused=0
+--- popup frame @ 1786325402 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="$.restart" global_nav=15 focused=1
+  row[1] local_nav=2 label="X.quit" global_nav=16 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=17 focused=0
+--- popup frame @ 1786325402 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="$.restart" global_nav=15 focused=1
+  row[1] local_nav=2 label="X.quit" global_nav=16 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=17 focused=0
+--- popup frame @ 1786327789 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="$.restart" global_nav=16 focused=1
+  row[1] local_nav=2 label="X.quit" global_nav=17 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786327789 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="$.restart" global_nav=16 focused=1
+  row[1] local_nav=2 label="X.quit" global_nav=17 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786327801 (focus_row=0, n_menu=4) ---
+  row[0] local_nav=1 label="new-desk" global_nav=16 focused=1
+  row[1] local_nav=2 label="save" global_nav=17 focused=0
+  row[2] local_nav=3 label="save-as" global_nav=18 focused=0
+  row[3] local_nav=4 label="load" global_nav=19 focused=0
+--- popup frame @ 1786327801 (focus_row=0, n_menu=4) ---
+  row[0] local_nav=1 label="new-desk" global_nav=16 focused=1
+  row[1] local_nav=2 label="save" global_nav=17 focused=0
+  row[2] local_nav=3 label="save-as" global_nav=18 focused=0
+  row[3] local_nav=4 label="load" global_nav=19 focused=0
+--- popup frame @ 1786327807 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="$.restart" global_nav=16 focused=1
+  row[1] local_nav=2 label="X.quit" global_nav=17 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786327807 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="$.restart" global_nav=16 focused=1
+  row[1] local_nav=2 label="X.quit" global_nav=17 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328182 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328182 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328202 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328202 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328202 (focus_row=1, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=0
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=1
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328203 (focus_row=2, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=0
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=1
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328203 (focus_row=3, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=0
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=1
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328203 (focus_row=4, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=0
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=1
+--- popup frame @ 1786328204 (focus_row=3, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=0
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=1
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328204 (focus_row=2, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=0
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=1
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328205 (focus_row=1, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=0
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=1
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328210 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328210 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328210 (focus_row=1, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=0
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=1
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328223 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328223 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328223 (focus_row=1, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=0
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=1
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328233 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328233 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328233 (focus_row=1, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=0
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=1
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328234 (focus_row=2, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=0
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=1
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328235 (focus_row=1, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=0
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=1
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328236 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328296 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328296 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328346 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328346 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328349 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328349 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328355 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328355 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328358 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328358 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328359 (focus_row=1, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=0
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=1
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328361 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328361 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328366 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328366 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328367 (focus_row=1, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=0
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=1
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328367 (focus_row=2, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=0
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=1
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328367 (focus_row=1, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=0
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=1
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328419 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328419 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328421 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328421 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328425 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328425 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328428 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=8 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=9 focused=0
+  row[2] local_nav=3 label="dir" global_nav=10 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=11 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=12 focused=0
+--- popup frame @ 1786328428 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=8 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=9 focused=0
+  row[2] local_nav=3 label="dir" global_nav=10 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=11 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=12 focused=0
+--- popup frame @ 1786328487 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=8 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=9 focused=0
+  row[2] local_nav=3 label="dir" global_nav=10 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=11 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=12 focused=0
+--- popup frame @ 1786328487 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=8 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=9 focused=0
+  row[2] local_nav=3 label="dir" global_nav=10 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=11 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=12 focused=0
+--- popup frame @ 1786328493 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786328493 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786335762 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=15 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=16 focused=0
+  row[2] local_nav=3 label="dir" global_nav=17 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=18 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786335762 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=15 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=16 focused=0
+  row[2] local_nav=3 label="dir" global_nav=17 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=18 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786335765 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=15 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=16 focused=0
+  row[2] local_nav=3 label="dir" global_nav=17 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=18 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786335765 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=15 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=16 focused=0
+  row[2] local_nav=3 label="dir" global_nav=17 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=18 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786335766 (focus_row=1, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=15 focused=0
+  row[1] local_nav=2 label="hide/show" global_nav=16 focused=1
+  row[2] local_nav=3 label="dir" global_nav=17 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=18 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786335766 (focus_row=2, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=15 focused=0
+  row[1] local_nav=2 label="hide/show" global_nav=16 focused=0
+  row[2] local_nav=3 label="dir" global_nav=17 focused=1
+  row[3] local_nav=4 label="X.quit" global_nav=18 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786339217 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=17 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=18 focused=0
+  row[2] local_nav=3 label="dir" global_nav=19 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=20 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=21 focused=0
+--- popup frame @ 1786339217 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=17 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=18 focused=0
+  row[2] local_nav=3 label="dir" global_nav=19 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=20 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=21 focused=0
+--- popup frame @ 1786342936 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=8 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=9 focused=0
+  row[2] local_nav=3 label="dir" global_nav=10 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=11 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=12 focused=0
+--- popup frame @ 1786342936 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=8 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=9 focused=0
+  row[2] local_nav=3 label="dir" global_nav=10 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=11 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=12 focused=0
+--- popup frame @ 1786344200 (focus_row=0, n_menu=2) ---
+  row[0] local_nav=1 label="+new-desk" global_nav=14 focused=1
+  row[1] local_nav=2 label="cancel" global_nav=15 focused=0
+--- popup frame @ 1786344200 (focus_row=0, n_menu=2) ---
+  row[0] local_nav=1 label="+new-desk" global_nav=14 focused=1
+  row[1] local_nav=2 label="cancel" global_nav=15 focused=0
+--- popup frame @ 1786344344 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786344344 (focus_row=0, n_menu=5) ---
+  row[0] local_nav=1 label="$.restart" global_nav=14 focused=1
+  row[1] local_nav=2 label="hide/show" global_nav=15 focused=0
+  row[2] local_nav=3 label="dir" global_nav=16 focused=0
+  row[3] local_nav=4 label="X.quit" global_nav=17 focused=0
+  row[4] local_nav=5 label="cancel" global_nav=18 focused=0
+--- popup frame @ 1786344346 (focus_row=0, n_menu=4) ---
+  row[0] local_nav=1 label="livedesk:new-desk" global_nav=14 focused=1
+  row[1] local_nav=2 label="livedesk:save" global_nav=15 focused=0
+  row[2] local_nav=3 label="livedesk:save-as" global_nav=16 focused=0
+  row[3] local_nav=4 label="livedesk:load" global_nav=17 focused=0
+--- popup frame @ 1786344346 (focus_row=0, n_menu=4) ---
+  row[0] local_nav=1 label="livedesk:new-desk" global_nav=14 focused=1
+  row[1] local_nav=2 label="livedesk:save" global_nav=15 focused=0
+  row[2] local_nav=3 label="livedesk:save-as" global_nav=16 focused=0
+  row[3] local_nav=4 label="livedesk:load" global_nav=17 focused=0
+--- popup frame @ 1786344351 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=14 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=15 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=16 focused=0
+--- popup frame @ 1786344351 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=14 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=15 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=16 focused=0
+--- popup frame @ 1786344781 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=17 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=18 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786344781 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=17 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=18 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786344830 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=17 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=18 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786344830 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=17 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=18 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786344830 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=17 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=18 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786344830 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=17 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=18 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786344830 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=17 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=18 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786344830 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=17 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=18 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786344830 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=17 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=18 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786344830 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=17 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=18 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786344830 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=17 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=18 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786344830 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=17 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=18 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786344830 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=17 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=18 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786344830 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=17 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=18 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786344830 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=17 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=18 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786344830 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=17 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=18 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786344830 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=17 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=18 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786344830 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=17 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=18 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786344830 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=17 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=18 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786344830 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=17 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=18 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786344857 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=17 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=18 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786344857 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=17 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=18 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786344867 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=17 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=18 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786344867 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=17 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=18 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786346088 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=17 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=18 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786346088 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=17 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=18 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=19 focused=0
+--- popup frame @ 1786346376 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=20 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=21 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=22 focused=0
+--- popup frame @ 1786346376 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=20 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=21 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=22 focused=0
+--- popup frame @ 1786346408 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=26 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=27 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=28 focused=0
+--- popup frame @ 1786346408 (focus_row=0, n_menu=3) ---
+  row[0] local_nav=1 label="desk_01" global_nav=26 focused=1
+  row[1] local_nav=2 label="+new-desk" global_nav=27 focused=0
+  row[2] local_nav=3 label="cancel" global_nav=28 focused=0

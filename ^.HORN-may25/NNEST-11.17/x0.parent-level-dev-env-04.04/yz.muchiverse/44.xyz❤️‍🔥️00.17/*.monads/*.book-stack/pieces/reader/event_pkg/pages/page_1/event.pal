@@ -1,0 +1,3 @@
+# event.pal - page_1's real top-level script - Show Choices dispatch
+exec dispatch.sh
+halt
