@@ -1,0 +1,4 @@
+SHOW_TEXT speaker=NPC text=Hello world
+SHOW_CHOICES default=0 choices=Alice
+Bob
+Charlie

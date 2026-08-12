@@ -219,6 +219,52 @@ player | db | plugins`.
 Everything a session editor needs UI-wise already exists here. The work is
 **behavior behind existing labels**, not new windows.
 
+### 3.1 pals button — owned default-tile library (MODEL LOCKED 2026-08-10)
+
+**The model (user, 2026-08-10 — Pokémon analogy):** pals is the
+**Pokédex**, file/desk positions are the **party**.
+
+- **Pals = the master owned library.** A pal ALWAYS appears in the pals
+  list, for ALL sessions, whether or not it is currently placed somewhere.
+- **File/desk = placements (party).** A placed pal is still in the pals
+  list — like a Pokémon in your party is still in your Pokédex.
+- **1 pal = 1 canonical copy = 1 HASH.** There is never a divergent copy.
+  Desk/file rows REFERENCE the pal (path + position); the pal is the real
+  location, so **moving a pal moves it from its file/desk spot** too.
+- **NFT identity (future):** the hash is the pal's identity and will later
+  be recorded to the pal-chain blockchain — pals are tradable NFTs.
+
+- Naming correction (user, 2026-08-10): a "palette" is NOT the grand
+  inventory — it is the set of **default tiles not yet in inventory**.
+- **BUILT 2026-08-10 (pdl-only, no recompile)**: `pals` strip button added.
+  User then corrected the order (2026-08-10) — `edit` moves AFTER `palettes`.
+  Final strip order (12 cells; nav 1..12, tabs from 13):
+  `HQ | USER | file | desks | pals | palettes | edit | player | db |
+  plugins | store | network`.
+- Button is wired with the reserved `livedesk:pals` cmd (dispatch ignores it
+  until the pals popup is implemented — silent no-op today). The pals popup
+  behavior is IN SCOPE (approved 2026-08-10): implement after the §4.8
+  runtime-ownership change.
+- **pals popup (TO BUILD, §4.9 for storage):** lists all owned pals
+  (pokedex) — one row per pal (glyph + name + hash), available in every
+  session. Selecting one PLACES it onto the current desk (adds a desk row
+  referencing the pal + spawns it from the canonical pals copy). Never
+  removes it from the list. The strip's **store** cell is where pals/
+  entities are acquired (populated from the dev-folders catalog); **pals**
+  is what's already owned; **desks** is where they get placed; per-session
+  placements then live under `desks/` (§4.9). The existing **palettes**
+  cell is separate (the palette app) — `pals` is the owned-tile library, a
+  distinct button.
+- **Dev folders are the STORE's catalog** (user, 2026-08-10): `*.monads`,
+  app/widget packages populate the store for selection; they are never a
+  runtime home (see §4.8). Acquiring from the store copies the package into
+  the user's pals registry.
+- **Economy (future, §4.9):** sprites/tiles are acquired in **palettes**
+  (free or purchased); once acquired the pal is **minted**; later minted
+  pals are **added to blocks for mining** — a verified ledger (pal-chain),
+  making pals tradable NFTs. The pals registry's hash is the on-ledger
+  identity.
+
 ---
 
 ## 4. Session/desk data model (RESOLVED by Q&A, 2026-08-09)
@@ -281,10 +327,51 @@ event_pkg/, positions) — stored **decompressed**, matching the existing
 `pieces/sessions/<id>/` house convention. No overlay/delta layer while
 building.
 
+**Entity OWNERSHIP (intent, 2026-08-10):** long-term the entity's permanent
+home is the USER's own livedesk storage, not a dev dir. Today entities sit
+in dev locations (`*.monads/*.muchi-pet/entities/…`,
+`#.desktop/entities/…`) as scaffolding; super-long-term the user
+**downloads the entity from the "store"** and it lands **permanently in
+their own storage**. Consequences for the snapshot model:
+- The per-session copy is a **FULL package copy** — the whole entity dir,
+  every file (sprite.csv, meta.pdl, objects.pdl, assets, state.txt,
+  inventory/, event_pkg/, desktop_pos.txt, …). No whitelist of
+  "state files" and no asset/state split: the user's storage owns the whole
+  entity, so per-session snapshots are simply full clones of it.
+- When the store flow lands, "download" = place the full package into user
+  storage directly; per-session snapshots already handle the rest, so C5's
+  copy code is the SAME in both eras.
+
 Shipping-stage optimization (later, not now): a **compress** script creates a
 **delta** of a session (space-efficient form); a **decompress** script expands
 a delta back to a full session. During development we use full copies only;
 delta packaging arrives when the desktop ships.
+
+### 4.5b C5 — AS BUILT + runtime-verified (2026-08-10)
+
+- Helpers in `tp_taskbar.c`: `livedesk_base_name()` (rel-path basename →
+  entity-dir key) and `livedesk_copy_full()` (rm + `cp -r`, single-quoted
+  paths so literal `*`/emoji/space dirnames stay literal).
+- **Snapshot** (`livedesk_snapshot_desk`): after writing the desk pdl, clones
+  every live entity's whole package dir → `<session>/entities/<basename>/`.
+  Triggered by save / new-desk / new-session / load / switch (outgoing) /
+  save-as — one hook covers all flows.
+- **Restore** (`livedesk_spawn_desk`): per desk row, replaces the live
+  package with an exact clone of `<session>/entities/<basename>/` before
+  writing the saved position and launching `tp_desktop_window.+x`.
+- **save-as** (`cp -r` of the whole session dir) clones the `entities/`
+  tree along with the desks — K6 independence is structural, no extra code.
+- **Verified (KPI K5)**: live `m8_redhorned/hp.txt` = 100 → save (session
+  copy captured it) → `+new-desk` (empty `desk_01`, all entities closed) →
+  session copy edited to hp=42 → switch back to `office` → 6 entities
+  respawned, live hp = **42** (session copy authoritative). office.pdl rows
+  intact (6).
+- **Known follow-up**: snapshot currently runs BEFORE `close_all()`, so an
+  entity that writes state only on CLOSE could lose its final write to the
+  outgoing snapshot. Harmless today (no entity does that); revisit ordering
+  once entities gain `state.txt` write semantics.
+- Current state carries the test artifact: s1 `m8_redhorned` hp=42 in both
+  session copy and live (consistent — the point of the test).
 
 ### 4.6 Save/load/desk semantics (Q6, Q9, Q10)
 
@@ -297,6 +384,147 @@ delta packaging arrives when the desktop ships.
 - Session switching = quit-then-launch via crypt_autostart-style teardown.
 - File menu verbs: `new` (blank template), `save`, `save-as` (clone to new
   id), `load`.
+
+### 4.6b C2b — AS BUILT + runtime-verified (2026-08-10)
+
+Verbose feature-work summary of the whole sessions/desks arc (C5 + C2b +
+K11 + harness): `#.livedesk/livedesk-report-2026-08-10.md`.
+
+- **File menu = `new | save | save-as | load`** (design §4.6). pdl row 0 was
+  `new-desk`; changed to `new` (`livedesk:new` → new session). `+new-desk`
+  stays in the desks popup (§4.6) so desk-creation is still reachable.
+  PDL-driven — no recompile.
+- **Bug fixed in `run_popup_row()`**: a `livedesk:*` popup-row command that
+  opens a REPLACEMENT popup (load → sessions picker, desk-props) was being
+  killed the instant it opened — the row handler always returned keep_open=0,
+  so the caller's `close_popups()` destroyed the fresh popup. Now it returns
+  1 (keep open) only when the popup now showing has a DIFFERENT menu pointer
+  than the row just run (`g_strip_popup_menu != menu`); commands that leave
+  the source popup alone (new/save/save-as/rename→cli-io) still return 0.
+- **Verified (KPI K6 / full RPG-maker cycle)** — driven entirely by nav-index
+  input via `/tmp/opencode/nav.sh`:
+  - `new`: s1 (office, 6 entities) → s2 `session2`, empty `desks/desk_01.pdl`,
+    all entities closed; strip `file:session2` / `desks:desk_01`.
+  - `save`: s2 gains `entities/` (empty), desks pdl preserved.
+  - `save-as`: s2 → s3 `session3` = independent clone (own desks/ + entities/).
+  - `save-as` (from s1): s1 → s4 `session4` = FULL clone — 6 entity packages,
+    office.pdl + desk_01.pdl, m8_redhorned hp=42.
+  - **K6 independence**: edited s4's `m8_redhorned/hp.txt` → 7; s1's copy
+    stayed **42**, s2/s3 stayed empty, each session has its own desks/ set.
+  - `load`: sessions picker lists pre-design/session2/session3/session4;
+    loading pre-design restores s1 = office + 6 entities relaunched, hp=42.
+- Test sessions s2/s3/s4 created by this verification are real saved sessions
+  and stay (they demonstrate the File menu working). s4 carries the K6 probe
+  (m8 hp=7) proving copy independence.
+- Harness hardening: `nav.sh row` now retries popup discovery (the popup can
+  lag its claim in xwininfo) and aborts if no popup is actually open, instead
+  of typing digits into whatever holds focus.
+
+### 4.7 Desk identity + names (K11, approved 2026-08-10)
+
+- **Desk identity = the `.pdl` filename** under `<session>/desks/`
+  (`desk_01.pdl` → name `desk_01`). No `name` field inside the pdl yet.
+- **Desk names are file-backed**, so rename = rename the `.pdl` file; if the
+  renamed desk is the active one, update that session's `STATE|active_desk`.
+  Names are sanitized to safe ASCII `[A-Za-z0-9_-]` (matches the existing
+  `desk_NN` convention and keeps shell/tool paths safe). Emoji/space names
+  would need a `name` field + spawn/glob changes — deferred.
+- **Desk pdl paths are HOUSE-RELATIVE** (portable save files, no machine
+  paths): `*.monads/*.muchi-pet/entities/...`. Spawn re-joins with
+  `house_root`; the live registry `livedesk_open.txt` stays absolute (runtime
+  state owned by the entity windows).
+  > Superseded for sessions created after 2026-08-10: desk pdl `path=` points
+  > at the CANONICAL xyzfs session-entities path, not dev folders — see §4.8.
+
+### 4.8 Runtime ownership — entities RUN from user xyzfs (2026-08-10)
+
+**The requirement (user, stated 2026-08-10):** what we test must be what
+ships. The dev folders (`*.monads/*.muchi-pet/entities/...`,
+`#.desktop/entities/...`) are dev-time fixtures — they do NOT exist for a
+user on independent cloud storage. The entity's canonical home is its
+session FULL copy in user xyzfs, and entities must RUN from that copy so
+their writes (hp.txt, inventory/, desktop_pos.txt, …) land in user storage.
+
+**Target runtime model:**
+- **Canonical entity home** =
+  `xyzfs/users/<uuid>/home/livedesk/pals/<name>/` (the pals registry, §4.9)
+  for owned pals. The live window's package dir IS this path; nothing stages
+  through a dev folder at run time.
+- **Desk pdl `path=`** = house-relative reference to the canonical pal
+  (e.g. `xyzfs/users/<uuid>/home/livedesk/pals/<name>`). Re-joined with
+  `house_root` on spawn as today. Placements never copy the pal — one pal,
+  one canonical copy (§4.9).
+- **Spawn** (`livedesk_spawn_desk`): launch from the session copy directly.
+  DROP the `access(dev-path)` skip — a missing dev folder must NOT drop the
+  entity. Skip only if the SESSION copy itself is missing. `desktop_pos.txt`
+  is written into the same (canonical) package dir before launch, as today.
+- **Snapshot** (`livedesk_snapshot_desk`): maintains the SINGLE canonical pal
+  copy. If the live registry path already IS the pal copy → no copy
+  (self-copy guard — `rm -rf` then `cp` of the same dir would delete the
+  package). Otherwise copy live → pals (covers dev-authored entities during
+  the transition only).
+- **save-as** (`cp -r` of the session dir) clones the session LAYOUT
+  (`desks/` referencing pals, `session.pdl`) — it must NOT clone the pals
+  themselves (1 pal = 1 copy). Sessions are independent in their placements;
+  the pal is shared by identity (§4.9). KPI K6 reframes accordingly.
+
+**Consistency with prior design:** §4.5 already declared the user's storage
+owns the whole entity, and the store-flow note says download = place the
+package into user storage directly. §4.8 makes the RUNTIME honor that: the
+canonical pal copy IS the live package. The C5 copy layer stays — it
+populates the pals registry (acquisition + snapshot); the dev→xyzfs
+direction remains only as the migration/catalog path.
+
+**Migration (existing s1..s4):** move each session's `entities/<name>/` into
+the pals registry (dedupe by hash, §4.9), compute hashes, then rewrite each
+desk pdl's `path=` to reference the pal. Verify by spawn + live write. Dev
+folders become read-only catalog sources (the store), never the runtime.
+
+**Implications:**
+- `livedesk_open.txt` PATH= becomes an xyzfs pals path — format unchanged
+  (absolute, audit trail).
+- `tp_desktop_window.+x <package_dir>` takes the xyzfs pals dir — no change
+  to the entity window.
+
+### 4.9 Pal identity + ownership (hash / NFT — MODEL LOCKED 2026-08-10)
+
+**One pal = one canonical copy = one HASH.**
+
+- **Pals registry (pokedex):**
+  `xyzfs/users/<uuid>/home/livedesk/pals/<name>/` — the single canonical
+  package dir per owned pal. A manifest (`pal.pdl`) records:
+  `PAL | name | <name>` + `PAL | hash | <content hash>` + glyph + acquired
+  timestamp. `<name>` is the pal's stable, sanitized id (`[A-Za-z0-9_-]`).
+- **Hash = identity (NFT-ready):** a content hash (e.g. SHA-256 over the
+  package tree) uniquely identifies the pal. Same content → same hash → the
+  pal is deterministic and tamper-evident; later the hash is recorded to the
+  pal-chain blockchain and the pal becomes tradable (NFT). Until then the
+  hash lives in the registry manifest only.
+- **Acquisition & minting (economy, user 2026-08-10):**
+  - Sprites and tiles are acquired through **palettes** (and the store) —
+    some are **free**, others are **purchased**.
+  - **Once acquired, the pal is MINTED** — ownership is recorded on the
+    ledger. Free and purchased acquisitions both mint (minting is the act
+    of becoming a verifiably-owned pal, not just paying).
+  - **Later, minted pals are added to blocks for MINING**, placing them on a
+    **verified ledger** (pal-chain) — the tradable, provable NFT layer.
+  - Lifecycle: acquire (palettes/store, free or paid) → **minted** →
+    **added to block / mined** → verified, tradable pal.
+- **Placements reference, never copy:** a desk pdl row's `path=` is the
+  house-relative pals path (position + glyph live in the row). Placing a pal
+  does not duplicate it; there is exactly one copy, so edits are visible
+  everywhere it's placed and moving a pal moves it from its file/desk spot.
+- **Pals list (pokedex) semantics:** available in ALL sessions, every owned
+  pal always listed even while placed. Selecting a pal = place onto the
+  current desk (append row to the active desk pdl referencing the pal +
+  spawn). It is never removed from the list by placing.
+- **Acquisition:** store (future, populated from the dev-folders catalog)
+  or initial dev-authored default — copies the package into the pals
+  registry and computes the hash. Per-session `entities/` copies from C5
+  become the migration path into the registry, then placements take over.
+- **KPI K6 reframed (2026-08-10):** independence = sessions own independent
+  PLACEMENTS (layouts); the pal itself is ONE shared copy. Editing the pal
+  affects all placements — that is the point (Pokédex/party, NFT identity).
 
 ---
 
@@ -314,6 +542,63 @@ delta packaging arrives when the desktop ships.
 | 8 | C2b: File→new / save / save-as / load full sessions UI | 5 | Full RPG-maker cycle |
 | 9 | C6b: user-switcher (userpal login) + per-user default sessions | 8 | Second user has their own sessions |
 | 10 | (post-Q5=A) port pure logic to khtpm_core + strip support, if time | — | build_khtpm.sh no longer strips buttons |
+
+### 5.1 Why C5 + C2b must land BEFORE the khtpm port
+
+> **IMPORTANT — port end-state (intended, 2026-08-10):** the khtpm port is
+> NOT merely a C core/plat refactor (that is only what `KHTPM-ARCH.txt`
+> currently describes). The intended end-state is to make khtpm **close to
+> chtpm**: layouts as `.chtpm` HTML-like markup (`<panel>`, `<text>`,
+> `<cli_io>`, `<button href=…>`) and **logic as `<module>`-tagged `.pal`
+> instruction files** ("htpm js" analog) that `launch_module()` spawns —
+> i.e. behavior editable as text/markup, not C. Real examples:
+> `041.pal-chain⛓️/pieces/chtpm/layouts/login.chtpm` has
+> `<module>system/prisc+x pal/login_module.pal</module>`, and
+> `041.pal-chain⛓️/pal/login_module.pal` is the PAL instruction logic
+> (`li x1,0` / `chain_menu_input x9` / `compose_frame` / `beq` / `j loop`).
+> Parser support: `launch_module()` in `chtpm_parser.c` (e.g. line 1358).
+> **Decision pending** (recorded so nobody assumes "port = pure C refactor"
+> when we get there): scope the port as (a) core/plat C split now, or
+> (b) migrate khtpm's strip/desks UI onto the chtpm layout + `.pal` module
+> model. This does NOT change the C5→C2b→port ordering below — it makes it
+> *stronger*: settle the feature logic while it's cheap, then migrate it
+> into the markup/`.pal` model once, instead of porting to a C core and
+> re-porting into markup later.
+
+The port (step 10) is a **refactor** of settled logic — it ships no
+user-visible KPI of its own (see the §2.4 strategy-B warning), and its
+end-state is the chtpm-aligned markup/`.pal` model noted above. C5 and C2b
+are the last two feature steps that DO have KPIs (K5 per-session data, K6
+save-as independence), so they close out the user-testable list while the
+code is still in the LEGACY file where fixes are cheap. Four concrete
+reasons for the ordering:
+
+1. **Port once, not twice.** C5 changes the storage/snapshot schema
+   (per-session FULL copies of state.txt/inventory/event_pkg/desktop_pos)
+   and C2b rewrites the File-menu cycle to use it. If the taskbar is ported
+   to khtpm_core before those land, the ported core's data layer is wrong
+   the day it ships and the whole feature set must be re-ported — twice the
+   refactor, zero user value in between.
+2. **The port is FOR this logic.** What actually carries across to
+   khtpm_core is exactly the snapshot/restore format (C5) and the
+   save/load/new session cycle (C2b). Porting before they exist ships an
+   empty shell, and the storage schema would be guessed now and corrected
+   later anyway — same rework as reason 1.
+3. **KPI order stays intact.** The gates in §5 run 1→9: each step is only
+   demonstrable once its dependency's KPI holds. K6 (C2b's gate) literally
+   reads "save-as → its own desk set AND its own entity data", which only
+   passes after C5's FULL-copy model exists. Doing C2b first would make the
+   save-as UI look finished while silently sharing entity state between
+   sessions — exactly the bug C5 exists to kill.
+4. **The strip gate is independent.** build_khtpm.sh is blocked on the
+   strip port no matter what, so landing C5/C2b in the LEGACY file adds
+   nothing to that gate's cost. They are pure-logic additions to the same
+   file (Q5 rule: self-contained, no X11 inside), so they port just as
+   cleanly as the K9/K10/K11 logic already in place.
+
+**Resolution (2026-08-10): C5 → C2b → report → khtpm port.** The report
+summarizes the feature work; the port is the final refactor pass over a
+complete, verified feature set, not a step that features are built on.
 
 ---
 
@@ -514,5 +799,156 @@ Livedesk sessions (§4) already target `<house>/xyzfs/users/<uuid>/home/
 livedesk/sessions/` = Tree A. This cleanup makes that unambiguous and fixes
 the environment the sessions work depends on. Do not build sessions on the
 login-signup-relative Tree B interpretation.
+
+---
+
+## 10. Desk properties / rename / edit-nav (K11 — approved 2026-08-10)
+
+Follows option **(a) focused-row "edit" entry** (user approved; the
+per-row right-nav column variant (b) was rejected). Feature set:
+
+### 10.1 Desk name on the button
+
+- The **desks button shows the open desk's name**, exactly like the file
+  button shows the session name: `desks:<active-desk>` (e.g. `desks:desk_01`).
+- Same poll-driven refresh as `file:` — re-read the active session's
+  `STATE|active_desk` on the 1s tick; only rewrite + `mark_strip_frame_changed`
+  when the value changed.
+- `+new-desk` already creates the next `desk_NN.pdl` + switches; the label
+  update is a side effect of the poll, no extra call needed.
+
+### 10.2 Right-click on a desk row → desk properties
+
+- Right-click (button 3) on any desk row in the desks selector opens a
+  dynamic **desk properties** popup for THAT desk. Rows:
+  1. `name: <desk>` — read-only header (current name).
+  2. `rename...` — opens the modal cli-io input window (10.4).
+  3. `entities: N` — N = `DESK` row count in the desk pdl (info only).
+  4. `delete` — refuses if it's the only desk; if deleting the ACTIVE desk,
+     switch to another desk first, then remove the pdl file.
+  5. `cancel`.
+- Properties popup reuses `livedesk_open_dyn_popup`; right-click routing is a
+  new ButtonPress branch on the desks selector (the popup's current row is
+  known at click time).
+
+### 10.3 "edit" accessibility nav (option a)
+
+- The desks selector gains a dedicated `edit` entry at the FAR RIGHT of the
+  row list claiming the **next index after the popup's left nav block**
+  (rows `1..N` → edit = `N+1`), symbolizing "right-click here".
+- Behavior: Enter/digit on `edit` opens the properties popup for the
+  **currently focused** desk row (unambiguous — no per-row nav column).
+- Purely keyboard-visible: draws as its own row; mouse users just right-click.
+
+### 10.4 Rename input — the `cli-io` user-input standard
+
+Researched from the real CHTPM source
+(`pieces/chtpm/plugins/chtpm_parser.c` + wsr-pal's faithful small
+equivalent `014.wsr-pal…/ops/wsr_wizard_input.c`). cli-io shape to replicate:
+
+- **Per-element state**: `input_buffer` (bounded, ~64-256 chars),
+  `input_mode` (per-keystroke filter), distinct `target_id` so multiple
+  cli-io fields never collide on a shared "input_text".
+- **Key behavior**: printable chars append to the buffer; **Backspace trims**;
+  **Enter submits** (sends the value onward, then clears the buffer);
+  **Esc cancels**. Numeric/text filtering happens BEFORE the char reaches the
+  buffer (`input_mode`), exactly the wsr wizard's `if (numeric_step &&
+  !isdigit(key)) return 0;`.
+- **For desk rename**: `input_mode` = `[A-Za-z0-9_-]` only (safe ASCII — desk
+  identity is the pdl filename, §4.7). Enter commits = rename the pdl file +
+  update `active_desk`/`last_desk` if needed; Esc discards.
+- **Persistence** (later, optional): save/restore the in-progress buffer
+  keyed by project/session + target_id (cli-io's gui_state pattern), so a
+  mid-rename survives a restart.
+
+### 10.4b Rename input — AS BUILT (2026-08-10)
+
+The built modal (`cliio_*` block in `tp_taskbar.c`) follows the standard
+above with the approved nav-entry + separate-window shape:
+
+- **Standalone centered edit window** (`300x56`, two `HQ_POPUP_ROW_H` rows),
+  NOT anchored to the toolbar popup. override_redirect, class
+  "MuchiverseLivedesk", Exposure|KeyPress|ButtonPress mask.
+- **NAV-ENTRY two-mode**: row 0 renders `[>] 1. rename desk: [<buf>]` while
+  focused; Enter turns the pref to `[^]` and captures keys until **Escape
+  deactivates** (back to nav, buffer untouched). Enter again re-activates;
+  the final Enter commits. In nav mode Up/Down and digits `1`/`2` move
+  focus; row 2 = `[ ] 2. cancel` (Enter or click cancels). Escape in nav
+  mode closes the window.
+- **Focus ownership**: `cliio_open()` maps + focuses the editor; while
+  `g_cliio_active`, `close_popups()` skips its focus restore so the
+  modal owns the keyboard for the whole edit (direct instruction — nav
+  entry must capture keys).
+- Row numbers ALWAYS shown (`1.` / `2.`), digits selectable in nav mode.
+
+### 10.5 Implementation home
+
+Stays in LEGACY `tp_taskbar.c` (Q5-A): new pure-logic functions
+`livedesk_desk_props`, `livedesk_rename_desk`, `livedesk_delete_desk`, a modal
+cli-io input mode in the existing select loop, plus a ButtonPress button-3
+branch on the desks selector. khtpm port stays deferred.
+
+### 10.6 K11 acceptance
+
+- Desks button reads `desks:desk_01`.
+- Right-click `desk_01` → properties shows `name: desk_01`, `entities: 6`,
+  `rename...`, `delete`, `cancel`.
+- `rename...` types a new name → Enter → desk pdl renamed, active_desk
+  updated, desks button + popup list show the new name.
+- Keyboard: popup rows `1..N` + `N+1 edit`; Enter on `edit` opens properties
+  for the focused row.
+
+### 10.7 K11 — built + runtime-verified (2026-08-10)
+
+All acceptance items landed on the legacy taskbar (see worklog). Rename
+receipts (every rename below went through the app's modal, not the shell):
+`desk_01 → office` → `office22222222` (typed digits) →
+`officeoffice1finaldesk` (sanitizer + focus-capture proof — user keystrokes
+while idle landed in the focused editor, and `!` never appeared in any
+name). Final state: `office.pdl`, `STATE|active_desk | office`, strip label
+`desks:office` nav=4. Mouse click path (selector → right-click → rename →
+edit window) re-verified on the clean build; Escape closes the editor.
+Temporary debug logging removed; taskbar rebuilt (EXIT=0) + restarted
+(PID 319840). Delete-only-desk refusal + active-desk-switch-first also
+landed (`livedesk_delete_desk`).
+
+---
+
+## 11. KHTPM Refactor — Dynamic UI from Pals Registry (Design Debt, 2026-08-10)
+
+### 11.1 Current State: Hardcoded Strip Buttons
+
+The strip buttons (file, desks, **pals**, palettes, edit, player, db, plugins, store, network) are currently:
+1. **Hardcoded in `tp_taskbar.c`** (`btns[]` array initialization, lines ~420-435)
+2. **Overridable via `#.desktop/livedesk_taskbar.pdl`** (`SECTION | strip_btn_N_label`, etc.)
+3. **Static layout** — order and positions don't change based on what's in the system
+
+### 11.2 Design Issue (Fuzz-Op "Thin Theater" Pattern Violation)
+
+Following the Fuzz-Op **Manager Projection** pattern (documented in `#.haiku+/tpmos-re-dox/fo-menu-sys.md`):
+- **Current:** Layout is hollow but buttons are hardcoded (thick theater).
+- **Ideal:** Manager reads pals registry → publishes dynamic button state → UI renders from that state.
+
+### 11.3 Scope for KHTPM Port
+
+When refactoring to `khtpm_taskbar_core.c` (after Q10 Pals validation), consider:
+
+1. **Dynamic Button Discovery**: Manager scans pals/, builds button list (not hardcoded array).
+2. **Projection File**: Write `#.desktop/livedesk_strip_state.txt` with dynamic layout + commands.
+3. **Parser Sovereignty**: Keep button rendering in khtpm parser; keep button discovery in manager only.
+4. **Copy/Paste/Delete Desk UI**: Right-click on desk name → popup with copy/paste/delete (partial fix 2026-08-10: design documented, implementation deferred).
+5. **Pals as First-Class Buttons**: Consider making each pal a button (or slider section) for quick access, vs. the current popup-based model.
+
+### 11.4 Risk Mitigation (Legacy Taskbar, Now)
+
+Current pals button wiring is complete and functional:
+- ✅ Dispatch handles `livedesk:pals` correctly
+- ✅ Pals registry populated on migration
+- ✅ Popup builder scans pals/ correctly
+- ⚠️ Strip button order hardcoded (acceptable until khtpm port)
+
+**No action required before khtpm port.** The hardcoded approach works; the design debt is architectural, not functional.
+
+---
 
 *End livedesk-editor-design.md*

@@ -462,7 +462,7 @@ static void quit_current_livedesk(const char *house_root) {
     char claims_path[PATH_BUF];
     char tbar_pid_path[PATH_BUF];
     join_path(open_path, sizeof(open_path), house_root, "#.desktop/livedesk_open.txt");
-    join_path(claims_path, sizeof(claims_path), house_root, "#.desktop/livedesk_nav_claims.txt");
+    join_path(claims_path, sizeof(claims_path), house_root, "#.desktop/livedesk-nav-claims/livedesk_nav_claims.txt");
     join_path(tbar_pid_path, sizeof(tbar_pid_path), house_root, "#.desktop/livedesk_taskbar.pid");
     path_norm_slashes(open_path);
     path_norm_slashes(claims_path);
@@ -550,8 +550,19 @@ static void quit_current_livedesk(const char *house_root) {
 
     /* 4) Sweep by process name (Windows: taskkill; Linux: /proc cmdline). */
 #ifdef _WIN32
+    /* Real update (2026-08-11): legacy tp_taskbar.c retired (archived,
+     * originals deleted — see LEGACY-ARCHIVE-20260811.zip under the
+     * livedesk-taskbar ops dir). khtpm_strip_parser.+x is the real taskbar now
+     * — swept by name too, so a restart correctly clears a running khtpm
+     * instance before relaunching (the exact class of "2 taskbars open"
+     * bug this sweep exists to prevent, now for khtpm instead of
+     * legacy). tp_taskbar names kept in the sweep as a harmless no-op
+     * safety net in case a stray pre-retirement binary is still running
+     * somewhere. */
     kill_by_name_win("tp_taskbar");
     kill_by_name_win("tp_taskbar.+x");
+    kill_by_name_win("khtpm_strip_parser");
+    kill_by_name_win("khtpm_strip_parser.+x");
     kill_by_name_win("tp_desktop_window");
     kill_by_name_win("tp_desktop_window.+x");
     Sleep(200);
@@ -574,7 +585,11 @@ static void quit_current_livedesk(const char *house_root) {
                 if (n == 0) continue;
                 cmd[n] = '\0';
                 for (size_t i = 0; i < n; i++) if (cmd[i] == '\0') cmd[i] = ' ';
-                int is_tb = strstr(cmd, "tp_taskbar") != NULL;
+                /* Real update (2026-08-11): legacy retired, khtpm_strip_
+                 * parser.+x is the real taskbar now — matched here too so
+                 * a restart correctly clears a running khtpm instance
+                 * (tp_taskbar kept as a harmless safety net). */
+                int is_tb = strstr(cmd, "tp_taskbar") != NULL || strstr(cmd, "khtpm_strip_parser") != NULL;
                 int is_dw = strstr(cmd, "tp_desktop_window") != NULL;
                 if (!is_tb && !is_dw) continue;
                 if (!strstr(cmd, house_root)) continue;

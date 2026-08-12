@@ -1,0 +1,4 @@
+# event.pal - COMPILED from event.ir.pdl
+# pkg=relay_test_h1 page=2
+exec cmd_1.sh
+halt

@@ -35,6 +35,59 @@ own equivalent synthetic-event API). Don't assume file-injection
 "should" work everywhere just because it's documented first/most often
 in this house - verify which family the target actually is.
 
+UPDATE 2026-08-10 - a real third option now exists for raw-Xlib programs:
+give the program its OWN file-relay polling loop, additive alongside its
+existing XNextEvent() loop, rather than reaching for an XTest injector.
+First real instance: &.widgits/livedesk-taskbar/ops/tp_taskbar.c grew
+poll_agent_relay()/agent_relay_dispatch(), polling
+#.desktop/livedesk_agent_relay.txt on its normal ~300ms tick (see the
+big comment above poll_agent_relay()'s definition in that file for the
+exact contract). Direct instruction: built BEFORE any khtpm port of that
+program, specifically so a rollback still has working agent access.
+
+WHY THIS IS NOW PREFERRED OVER THE XTEST INJECTOR FOR THIS PROGRAM:
+XTest-injected events (XTestFakeKeyEvent/XTestFakeButtonEvent) are
+GLOBAL - they go to whichever window currently holds real X input focus,
+which taskbar_soft_focus() (XRaiseWindow -> XSetInputFocus -> XFlush,
+see !.HOUSE_STDS.md §F-19) has to forcibly steal to make injection land
+reliably. That focus-stealing conflicts with a real human using the SAME
+display at the same time - their mouse click/window switch mid-sequence
+silently redirects the next injected key to the wrong window. A
+real, live instance of exactly this cost significant debugging time
+before being identified as a test-hygiene/environment issue, not a
+tp_taskbar.c bug (see the "cell_for_nav mismatch" investigation,
+2026-08-10, provisionally attributed to an index bug before this focus-
+contention explanation was found).
+
+The relay sidesteps this entirely: it's a plain file append (`echo "51"
+>> #.desktop/livedesk_agent_relay.txt`), consumed by the SAME contextual
+dispatch logic a real KeyPress already uses (local popup-row-digit vs
+global-nav-digit semantics preserved exactly, see popup_digit()'s own
+header comment in tp_taskbar.c). No XTest, no XSendEvent, no window IDs,
+no shared input focus - a human can be actively using the browser or any
+other window on the SAME display at the same moment an agent is driving
+the taskbar via relay, with zero interference either direction. Format:
+one bare decimal ASCII code per line (48-57 = digits, 13 = Enter, 27 =
+Escape, 8 = Backspace, 32-126 = other printable ASCII for cli-io typed
+text) - same bare-decimal convention chtpm_parser.c's own
+inject_raw_key() already uses for pieces/apps/player_app/history.txt
+(NOT the `[TIMESTAMP] KEY_PRESSED: N` format that's specific to
+pieces/keyboard/history.txt/wraith-alpha - don't conflate the two, they
+are different target files with different readers and different format
+contracts even within the SAME chtpm_parser.c).
+
+The house-standard harness for this program
+(#.desktop/harnesses/livedesk-taskbar/) was updated 2026-08-10 to use
+this relay by default; its old XTest key_injector.c is kept only as a
+documented fallback for testing tp_taskbar.c's OWN real-human-input
+handling (the XNextEvent path itself), not as the default agent-testing
+method anymore. Any other raw-Xlib program in this house that grows an
+equivalent relay should follow the same bare-decimal-per-line contract
+for consistency, and should keep it truly additive (a new poll call site
+plus new functions, zero changes to the existing XNextEvent KeyPress
+handling) so existing real-human-input behavior can never regress from
+adding agent support.
+
 Principles
 ----------
 1) Test existing behavior first (regression baseline), then test new behavior.
@@ -299,5 +352,70 @@ Minimal Daily Regression Checklist
 6) High-risk changes get before/after evidence
 7) At least one end-to-end project flow is validated (create/play or load/play)
 8) Root frame report created in `./` and reviewed before edits
+
+SCOPE ADDENDUM 2026-08-11 - khtpm_strip_parser.c / khtpm_taskbar_manager
+family (split-process taskbar), + a real self-correction worth reading
+------------------------------------------------------------------------
+FIRST: a mistake made and caught live this session, kept here on purpose
+so the next agent doesn't repeat it. An agent tested `nav.sh nav 2`
+(digit-jump to header cell 2/USER) once, got a confusing result (focus
+landed inside an unrelated already-open HQ popup), and from that ONE
+result built an elaborate theory that the relay's digit-nav targets a
+different "nav claim" numbering unrelated to header cells at all - and
+was about to write that theory into this file as fact. The real cause of
+the confusing result: a human was interacting with the SAME live desktop
+at the same moment (an accidental Enter keypress), colliding with the
+agent's own relay sequence. Retried clean (fresh Escape first, no
+overlapping human input) and `nav.sh nav 2` worked exactly as designed
+the whole time - opened the USER header cell's submenu correctly. LESSON:
+one failed/confusing result on a live, shared, interactive desktop is not
+proof of a code-level gap - retry clean before concluding a mechanism is
+broken, especially when a real human might be touching the same display.
+
+Two real, verified-true things about this family, confirmed by clean
+retest (not superseded by the correction above):
+
+1) TWO relay files exist for this family, not one:
+   - #.desktop/livedesk_agent_relay.txt - agent -> PARSER (khtpm_strip_
+     parser.c's poll_agent_relay()). Accepts digits 48-57, Enter=13,
+     Escape=27, Backspace=8, printable 32-126. This is nav.sh's `nav`/
+     `row`/`key`/`esc`/`type` commands - and `nav <n>` DOES correctly
+     reach header cells (confirmed: `nav.sh nav 2` opens the USER cell's
+     real submenu, digit N jumping working exactly as intended). Once a
+     submenu IS open, further single digits (e.g. `nav.sh key 3`) select
+     a ROW within it (ktb_hq_digit() on the manager side), then `key
+     Return` activates that row - this is the correct, confirmed way to
+     drive multi-step submenu flows (verified end-to-end: opened USER
+     cell, activated "New User...", typed a user id, submitted, typed a
+     display name, submitted, and a real account + xyzfs home was
+     created and auto-logged-in, purely via this relay - see
+     au11-hq/USER_CREATION.md for the full trace).
+   - #.desktop/strip_history.txt - PARSER -> MANAGER (resolved decimal
+     action codes, khtpm_strip_codes.h). Normally parser-written after it
+     resolves a click/key locally; ALSO usable as a direct second
+     injection point (nav.sh's `hqcell`/`mgrcode`, added 2026-08-11) for
+     manager-side-only verification (does hq_open/hq_menu[] build
+     correctly) when you specifically want to isolate manager logic from
+     parser rendering — but prefer relay #1 (`nav`/`key`/`type`) for full
+     round-trip testing per the correction above; it works.
+
+2) Real X11 arrow-key stepping of header-cell focus (g_nav_focus in
+   khtpm_strip_parser.c) is still genuinely local-only to the parser's
+   real XNextEvent loop, with no relay equivalent - but this does NOT
+   matter in practice for THIS TASKBAR because digit-jump (relay #1)
+   reaches the same header cells directly by number, which is the
+   harness's actual, proven day-to-day method (see point 1). Don't reach
+   for arrow-key simulation for taskbar header-cell/submenu-row nav; you
+   don't need it there.
+   CAVEAT (direct note, 2026-08-11): this is scoped to the TASKBAR's own
+   header-cell nav specifically, not a blanket "arrows are never needed"
+   claim. Entity/desk-game movement (tp_desktop_window.c, and the demo
+   games under active development - desk-shop/desk-civ/muchipal-desk) is
+   a DIFFERENT input surface and will very likely need real directional
+   movement testing (player walking around a map, etc.) - if/when that
+   comes up, check whether tp_desktop_window.c's own relay (if any) already
+   supports directional codes before assuming it needs the same "digit-jump
+   is enough" treatment as this taskbar. Don't generalize this taskbar's
+   specific finding onto a different program without checking first.
 
 End of testing guide.

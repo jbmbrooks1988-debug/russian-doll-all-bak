@@ -274,6 +274,17 @@ Verified live end-to-end against `m6_golddeity` (MUCHI_RANCHER): `GOTO:activitie
 
 ### §12. Livedesk master ledger + real taskbar widget - BUILT, 2026-08-05 (practice pass)
 
+**Retired 2026-08-11**: this describes the ORIGINAL v1 taskbar
+(`tp_taskbar.c`, tab-bar only, predates the header strip and the real
+declarative-layout parser). That file is now fully retired and archived
+— the real, current taskbar is `khtpm_strip_parser.c` +
+`khtpm_taskbar_manager.c` under `*.monads/*.livedesk-taskbar/ops/`; see
+that dir's own `README.md` and
+`#.#.✅️.cal-user-sum/AU11-khtpm-gap-fixes.txt`. Kept below as an accurate
+historical record of the original build, not current guidance — the
+master-ledger/`livedesk_open.txt`/auto-launch mechanisms it describes are
+still real and still in use by the current system.
+
 Direct instruction: "if we used a master ledger when generating these things, they could get an index nav number and at some point be navigatable that way using livedesk... we should be thinking about adding open desk procs to a livedesk master ledger just for practice. we can even open a taskbar using our new format." Built the same day as a real, working v1, not just designed:
 
 - **`#.desktop/livedesk_master_ledger.txt`** - real, append-only, house-wide. `tp_desktop_window.c`'s new `ensure_livedesk_index()` scans it for a prior `PATH=<package_dir>` match on every window-open; if found, reuses that entity's real, STABLE `INDEX=N` (a relaunch never gets a new number); if not, assigns the next value from a real persisted counter (`#.desktop/livedesk_next_index.txt`) and appends a real `ASSIGN INDEX=N ENTITY=.. PATH=..` row. Also writes `<package_dir>/livedesk_index.txt` so any tool can read an entity's own index directly.

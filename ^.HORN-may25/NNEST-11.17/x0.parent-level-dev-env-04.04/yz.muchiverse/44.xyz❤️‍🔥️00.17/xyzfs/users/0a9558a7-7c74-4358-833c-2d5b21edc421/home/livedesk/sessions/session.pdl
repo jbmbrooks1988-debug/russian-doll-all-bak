@@ -1,1 +1,2 @@
-STATE | active_session | s1
+active_session=s1
+last_session=s7

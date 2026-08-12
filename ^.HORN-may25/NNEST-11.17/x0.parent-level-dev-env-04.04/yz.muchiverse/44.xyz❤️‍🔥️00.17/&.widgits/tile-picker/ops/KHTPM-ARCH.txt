@@ -1,66 +1,84 @@
-KHTPM shared architecture (2026-08-06)
+KHTPM shared architecture (rewritten 2026-08-11 — status inverted from
+the 2026-08-06 original, see note below)
 ======================================
 
 Rule: WIN-COMPAT-RULE.md — Linux primary; Win = compatibility; no dual rewrites.
 
-Layout (ops/)
--------------
-  khtpm_core.h / khtpm_core.c     SHARED design logic
-                                  - entity init, sprite.csv, history, relay
-                                  - livedesk_open / nav_claims registry
-                                  - objects.pdl multi-page + meta.pdl METHOD
-                                  - menu apply (GOTO/BACK/CLOSE/portable paths)
+REAL STATUS, as of 2026-08-11 (the section below this replaces the
+original 2026-08-06 draft, which planned the OPPOSITE of what actually
+happened — kept as a cautionary note, not deleted, since the plan itself
+isn't wrong reading material, it just never shipped):
 
-  khtpm_plat.h                    Platform API (run entity, ensure taskbar)
+The original plan here was to retire tp_desktop_window.c (the entity's
+"megafile") in favor of a shared khtpm_core.c + khtpm_plat_win.c/
+khtpm_plat_x11.c split. That split was built, but the X11 half
+(khtpm_plat_x11.c) never actually replaced tp_desktop_window.c — it sat
+alongside it, unused, unreferenced by the real build (&.widgits/
+tile-picker/scripts/build.sh), for the rest of this house's life. On
+2026-08-11, during a broader legacy-taskbar retirement pass, this was
+discovered and confirmed genuinely dead (grepped: zero references from
+the real build script or from tp_desktop_window.c itself) and archived to
+*.monads/*.livedesk-taskbar/ops/LEGACY-ARCHIVE-20260811.zip alongside an
+even earlier abandoned khtpm taskbar architecture found in the same
+sweep — khtpm_core.c, khtpm_plat_win.c, khtpm_plat_x11.c, and the old
+tile-picker/ops/build_khtpm.sh are ALL gone from this directory now,
+originals deleted.
 
-  khtpm_plat_win.c                Win32 + WGL ONLY (window, draw, TrackPopupMenu)
-  khtpm_plat_x11.c                (TODO) X11 + GLX ONLY — then retire
-                                  tp_desktop_window.c megafile for Linux
+tp_desktop_window.c is the real, live, ONLY Linux entity implementation —
+not legacy, was never actually superseded despite this file's original
+plan. tp_desktop_window_win.c is its real Windows port (also live, not a
+stub to be replaced — just not build-tested on this session's Linux
+environment).
 
-  khtpm_main.c                    Shared main(): core init → plat_run_entity
+Lesson for whoever reads this next: a plan document describing an
+in-progress migration can go stale silently if the migration itself never
+finishes — this file said "LEGACY, do not add design features only here"
+about the file that turned out to be the permanent, real implementation,
+for 5+ days, misleading anyone who read it at face value. If a migration
+stalls, update the plan doc to say so explicitly rather than leaving it
+describing an intent that quietly became fiction.
 
-  tp_desktop_window.c             LEGACY Linux full X11 (still build this on
-                                  Linux until plat_x11 lands). Do not add new
-                                  design features only here — add to khtpm_core.
-
-  tp_desktop_window_win.c         LEGACY Win stub — superseded by core+plat_win.
-                                  Keep as reference; Win builds use khtpm_*.c
-
-Build Windows (button.ps1 / manual)
------------------------------------
-  gcc -O2 -o +x/tp_desktop_window.exe \
-      khtpm_main.c khtpm_core.c khtpm_plat_win.c \
-      -lopengl32 -lgdi32 -luser32
-
-Build Linux (today)
--------------------
-  Still: gcc ... -o +x/tp_desktop_window.+x tp_desktop_window.c -lX11 -lXext -lGL
-  Next:  gcc ... khtpm_main.c khtpm_core.c khtpm_plat_x11.c ...
-
-When you change design on Linux
--------------------------------
-  1. Prefer editing khtpm_core.c (and PDL/sprites).
-  2. If change is still only in tp_desktop_window.c, ALSO port the pure
-     logic into khtpm_core.c in the same change — or implement in core first.
-  3. Never reimplement the feature in khtpm_plat_win.c.
-
-Taskbar — ONE logic set (done)
-------------------------------
-  khtpm_taskbar_core.c/h     SHARED: tabs, nav claims, shortcuts, theme,
-                             digit jump, ACTIVATE/OPEN_CONTEXT, quit+save
-  khtpm_taskbar_main.c       shared main
-  khtpm_taskbar_plat_win.c   Win draw/events only
-  khtpm_taskbar_plat_x11.c   X11 draw/events only
-  livedesk-taskbar/ops/tp_taskbar.c     LEGACY — do not add design here
-  livedesk-taskbar/ops/tp_taskbar_win.c LEGACY stub
-
-Entity
-------
-  khtpm_core + khtpm_plat_win / khtpm_plat_x11 + khtpm_main
-  tp_desktop_window.c         LEGACY Linux megafile
-  tp_desktop_window_win.c     LEGACY Win stub
+Entity (real, current)
+-----------------------
+  tp_desktop_window.c         the real Linux entity — Xlib + GLX, sprite
+                               rendering, context menus, cli-io text
+                               input, agent relay (interact_relay.txt),
+                               nav-claims registry participation. Design
+                               changes go HERE.
+  tp_desktop_window_win.c     the real Windows entity port. Keep design
+                               changes mirrored here too if touching
+                               cross-platform behavior.
 
 Build
 -----
-  Win:  $.crypts/button.ps1 compile
-  Linux: ops/build_khtpm.sh  → shared entity + taskbar binaries
+  Linux entity:  &.widgits/tile-picker/scripts/build.sh
+  Win:           $.crypts/button.ps1 compile
+
+Taskbar (real, current — see that dir's own docs for full detail)
+-------------------------------------------------------------------
+Lives entirely in *.monads/*.livedesk-taskbar/ops/, not here (moved out
+of tile-picker 2026-08-10 — a genuinely completed migration, unlike the
+entity one above — "these taskbars shouldn't be in tile picker widget...
+it's not a member of that widget").
+
+  khtpm_strip_parser.c / khtpm_strip_layout.c    the real declarative-
+                             layout parser (tokenizer, tag tree, ${var}
+                             substitution, ACTIVATE-scope popups) + Xlib
+                             rendering/dispatch — the outer, long-lived
+                             process. Design changes to LAYOUT/rendering
+                             go here.
+  khtpm_taskbar_manager.c/h + khtpm_taskbar_manager_main.c   the manager
+                             driver — pure business logic (tabs, nav
+                             claims, sessions/desks, save/load, cli-io,
+                             shortcuts), forked by the parser, no Xlib.
+                             Design changes to BEHAVIOR/commands go here.
+  Build: run_khtpm_strip.sh new  (or build_khtpm_strip.sh for a build-
+                             only pass)
+
+Legacy tp_taskbar.c (and its own attempted khtpm_taskbar_main.c/
+khtpm_taskbar_plat_win.c/khtpm_taskbar_plat_x11.c split, and
+tp_taskbar_win.c) fully retired 2026-08-11 — archived to
+*.monads/*.livedesk-taskbar/ops/LEGACY-ARCHIVE-20260811.zip, originals
+deleted. See that dir's khtpm-strip-parser-design.md and
+#.#.✅️.cal-user-sum/AU11-khtpm-gap-fixes.txt for the real, current
+architecture and the full retirement record.

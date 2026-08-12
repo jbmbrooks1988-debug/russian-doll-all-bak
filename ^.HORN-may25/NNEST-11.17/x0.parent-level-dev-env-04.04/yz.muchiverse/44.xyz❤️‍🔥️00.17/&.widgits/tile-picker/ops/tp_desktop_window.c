@@ -153,7 +153,31 @@ static void append_history(const char *fmt, ...) {
  * it needs live popup-position context only the real click site has;
  * a relay-injected OPEN_USER is a real, small future gap, not silently
  * faked here. */
-static void dispatch_action(const char *action, const char *package_dir, int *running_ptr) {
+static void dispatch_action(const char *action, const char *package_dir, const char *house_root, int *running_ptr) {
+    /* Real bug fix (2026-08-11, direct live report: "clicking enter on
+     * book menu doesn't work but mouse click does" — turned out to be
+     * about "Read" specifically, not "Dir"). This function used to only
+     * ever pass ONE argument (package_dir) to the command — but the
+     * mouse ButtonPress handler's own separate, DUPLICATED inline copy
+     * of this same dispatch logic (added 2026-08-10, "REAL FIX 2026-08-10
+     * ... pass it as a real second argument") passes TWO (package_dir,
+     * house_root). Any METHOD line updated to rely on the second argument
+     * (e.g. book-stack's real "Read" — `sh -c 'H="$1" && ... exec
+     * "$H/.../prisc+x" ...'`) worked via mouse (real click path) but
+     * silently failed via Enter/RUN_METHOD/ACTIVATE_NAV (all funnel
+     * through this ONE function) — $1/$H came up empty, the exec target
+     * became a malformed path, sh -c's own exec failed, stderr redirected
+     * to /dev/null, zero visible symptom beyond "nothing happened".
+     * Fixed: this function now ALWAYS passes both arguments, matching the
+     * mouse handler's own (already-correct) convention — the single
+     * source of truth for the calling contract, instead of two
+     * independently-diverging copies. Every METHOD line's script must
+     * tolerate BOTH being present regardless of trigger path now (already
+     * true for "Read" and, after the sibling fix wrapping bare system
+     * binaries like "Dir" in `sh -c 'exec CMD "$0"'`, true for those too —
+     * a bare command that ONLY reads argv[1] and ignores extras, like
+     * xdg-open, needs that wrapper; a real script using $0/$1 already
+     * works either way). */
     if (strcmp(action, "CLOSE") == 0) {
         *running_ptr = 0;
     } else if (strcmp(action, "void") == 0) {
@@ -161,8 +185,8 @@ static void dispatch_action(const char *action, const char *package_dir, int *ru
     } else if (strcmp(action, "OPEN_USER") == 0) {
         /* not supported via relay injection - see comment above */
     } else {
-        char cmd[PATH_BUF * 2];
-        snprintf(cmd, sizeof(cmd), "%s '%s' >/dev/null 2>&1 &", action, package_dir);
+        char cmd[PATH_BUF * 3];
+        snprintf(cmd, sizeof(cmd), "%s '%s' '%s' >/dev/null 2>&1 &", action, package_dir, house_root);
         int rc = system(cmd);
         (void)rc;
     }
@@ -371,7 +395,7 @@ static void livedesk_registry_remove(const char *house_root, pid_t pid) {
  * REAL FIX 2026-08-05, direct correction ("why dont i see task bar in
  * &.widgits dir? thats where its ment to be... its not a member of
  * tile-picker"): the taskbar is its own real widget
- * (&.widgits/livedesk-taskbar/), matching every other real widget's own
+ * (*.monads/*.livedesk-taskbar/), matching every other real widget's own
  * top-level layout (event-editor/, event-ez/, tile-picker/ itself) -
  * NOT nested inside tile-picker/ops/ just because tp_desktop_window.c
  * happens to be the one that launches it. Located via house_root
@@ -407,7 +431,29 @@ static void ensure_taskbar_running(const char *house_root) {
                 if (n == 0) continue;
                 cmdbuf[n] = '\0';
                 for (size_t i = 0; i < n; i++) if (cmdbuf[i] == '\0') cmdbuf[i] = ' ';
-                if (strstr(cmdbuf, "tp_taskbar") && strstr(cmdbuf, house_root)) {
+                /* REAL FIX 2026-08-11, direct live report "it opened both
+                 * toolbars" (entities each relaunched legacy tp_taskbar
+                 * even with the new khtpm strip taskbar already up): this
+                 * scan only ever matched the literal substring
+                 * "tp_taskbar", so it never recognized khtpm_strip_parser
+                 * as "a taskbar is already running for this house" —
+                 * every entity independently concluded none was running
+                 * and launched legacy on top of it. Broadened to also
+                 * match "khtpm_strip_parser", the taskbar's own process
+                 * name (parser is the long-lived, user-visible half; its
+                 * forked manager child living or dying tracks it 1:1).
+                 * "tp_taskbar" kept as a harmless no-op safety net.
+                 *
+                 * REAL UPDATE 2026-08-11, same session, later: legacy
+                 * tp_taskbar.c retired (archived to
+                 * *.monads/*.livedesk-taskbar/ops/LEGACY-ARCHIVE-20260811.zip,
+                 * originals deleted) — khtpm_strip_parser.+x is the real,
+                 * only taskbar now. The fallback launch command below
+                 * used to hardcode tp_taskbar.+x's path, which no longer
+                 * exists on disk at all; updated to launch khtpm's own
+                 * (renamed, no "_test" suffix) binary instead. */
+                if ((strstr(cmdbuf, "tp_taskbar") || strstr(cmdbuf, "khtpm_strip_parser"))
+                    && strstr(cmdbuf, house_root)) {
                     alive = 1;
                     break;
                 }
@@ -417,7 +463,7 @@ static void ensure_taskbar_running(const char *house_root) {
     }
     if (!alive) {
         char cmd[PATH_BUF * 2];
-        snprintf(cmd, sizeof(cmd), "'%s/&.widgits/livedesk-taskbar/ops/+x/tp_taskbar.+x' '%s' >/dev/null 2>&1 &",
+        snprintf(cmd, sizeof(cmd), "'%s/*.monads/*.livedesk-taskbar/ops/+x/khtpm_strip_parser.+x' '%s' >/dev/null 2>&1 &",
                  house_root, house_root);
         int rc = system(cmd);
         (void)rc;
@@ -428,14 +474,14 @@ static void ensure_taskbar_running(const char *house_root) {
  * "brackets are ment for focuz not holding numbers... it should look
  * up first and increment indexes"): a SHARED, LIVE claim pool for
  * every real "[N]" shown on screen right now, house-wide -
- * `#.desktop/livedesk_nav_claims.txt` - deliberately separate from
+ * `#.desktop/livedesk-nav-claims/livedesk_nav_claims.txt` - deliberately separate from
  * ensure_livedesk_index()'s own PERMANENT ledger above (that one never
  * changes across relaunches; this one is pure live/ephemeral, numbers
  * free up and get reused the moment whatever held them closes). A
  * context menu claims one contiguous NAV range for its own rows the
  * moment it opens (nav_claim_rows()), releases that same range the
  * moment it closes (nav_release_pid()) - the taskbar (a separate real
- * process, &.widgits/livedesk-taskbar/ops/tp_taskbar.c) claims its own
+ * process, *.monads/*.livedesk-taskbar/ops/tp_taskbar.c) claims its own
  * tab numbers from this exact same pool, so a tab and a menu row can
  * never show the same live number at once. */
 /* action widened 2026-08-04, direct instruction (fo-menu-sys.md's real
@@ -480,8 +526,8 @@ static int pid_is_alive(int pid) {
 
 static int nav_claim_rows(const char *house_root, pid_t pid, const char *package_dir, MethodItem *items, int n) {
     char claims_path[PATH_BUF], tmp_path[PATH_BUF];
-    snprintf(claims_path, sizeof(claims_path), "%s/#.desktop/livedesk_nav_claims.txt", house_root);
-    snprintf(tmp_path, sizeof(tmp_path), "%s/#.desktop/livedesk_nav_claims.txt.tmp", house_root);
+    snprintf(claims_path, sizeof(claims_path), "%s/#.desktop/livedesk-nav-claims/livedesk_nav_claims.txt", house_root);
+    snprintf(tmp_path, sizeof(tmp_path), "%s/#.desktop/livedesk-nav-claims/livedesk_nav_claims.txt.tmp", house_root);
     static char used[NAV_TRACK_MAX];
     memset(used, 0, sizeof(used));
     registry_lock_acquire(house_root); /* covers BOTH writes below - the prune-rename and the append are one critical section */
@@ -525,8 +571,8 @@ static int nav_claim_rows(const char *house_root, pid_t pid, const char *package
 
 static void nav_release_pid(const char *house_root, pid_t pid) {
     char claims_path[PATH_BUF], tmp_path[PATH_BUF];
-    snprintf(claims_path, sizeof(claims_path), "%s/#.desktop/livedesk_nav_claims.txt", house_root);
-    snprintf(tmp_path, sizeof(tmp_path), "%s/#.desktop/livedesk_nav_claims.txt.tmp", house_root);
+    snprintf(claims_path, sizeof(claims_path), "%s/#.desktop/livedesk-nav-claims/livedesk_nav_claims.txt", house_root);
+    snprintf(tmp_path, sizeof(tmp_path), "%s/#.desktop/livedesk-nav-claims/livedesk_nav_claims.txt.tmp", house_root);
     registry_lock_acquire(house_root);
     FILE *f = fopen(claims_path, "r");
     if (!f) { registry_lock_release(); return; }
@@ -619,9 +665,36 @@ static int read_footprint_tiles(const char *package_dir) {
  *   STATE | menu_stay_open | 1   outside/repeat clicks keep the menu open
  *   STATE | grab_pointer   | 1   modal pointer grab while a menu is open
  *   STATE | grab_keyboard  | 1   modal keyboard grab while a menu is open
+ *   STATE | grab_pointer_while_stay_open | 0   see open_context_menu()'s
+ *                                  own comment on this key — lets a user
+ *                                  opt back INTO a pointer grab even with
+ *                                  menu_stay_open=1, for entities whose
+ *                                  row clicks aren't reliably reaching a
+ *                                  non-grabbed override-redirect popup
+ *                                  under this house's Wayland/XWayland
+ *                                  setup (direct report 2026-08-11: "it
+ *                                  works clicking enter, but not mouse
+ *                                  clicking"). Trades away "rest of the
+ *                                  desk stays clickable while this menu's
+ *                                  open" (the ORIGINAL reason grabbing was
+ *                                  disabled for stay-open menus,
+ *                                  2026-08-07) — real tradeoff, exposed as
+ *                                  a knob instead of picking one hardcoded
+ *                                  answer for every entity.
  * Missing rows keep the compile-time defaults. Called on startup AND on
  * every right-click reload, so a human edits meta.pdl and the very next
- * menu open picks it up - no rebuild, no restart. */
+ * menu open picks it up - no rebuild, no restart.
+ *
+ * REAL BUG FIX (2026-08-11, found while adding the new key above, same
+ * off-by-one class hit repeatedly elsewhere this session): the
+ * "menu_stay_open" length check was klen==13 — the string is genuinely
+ * 14 characters (verified: `printf '%s' "menu_stay_open" | wc -c`). This
+ * meant STATE|menu_stay_open|... NEVER matched, at all — the key was
+ * permanently stuck at its compile-time default (1) no matter what a
+ * human set in meta.pdl, exactly the "looks configurable but silently
+ * isn't" trap this whole config system exists to avoid. Fixed to 14. */
+static int g_grab_pointer_while_stay_open = 0;
+
 static void read_menu_config(const char *package_dir) {
     char path[PATH_BUF];
     snprintf(path, sizeof(path), "%s/meta.pdl", package_dir);
@@ -640,12 +713,14 @@ static void read_menu_config(const char *package_dir) {
         while (label_end > p && label_end[-1] == ' ') label_end--;
         int v = atoi(end + 1);
         size_t klen = (size_t)(label_end - p);
-        if (klen == 13 && strncmp(p, "menu_stay_open", 13) == 0)
+        if (klen == 14 && strncmp(p, "menu_stay_open", 14) == 0)
             g_menu_stay_open = v ? 1 : 0;
         else if (klen == 12 && strncmp(p, "grab_pointer", 12) == 0)
             g_grab_pointer = v ? 1 : 0;
         else if (klen == 13 && strncmp(p, "grab_keyboard", 13) == 0)
             g_grab_keyboard = v ? 1 : 0;
+        else if (klen == 28 && strncmp(p, "grab_pointer_while_stay_open", 28) == 0)
+            g_grab_pointer_while_stay_open = v ? 1 : 0;
     }
     fclose(f);
 }
@@ -1309,12 +1384,28 @@ static Window open_context_menu(Display *dpy, GC gc, int *root_x, int *root_y, i
      * on, the menu must NOT hold a modal pointer grab - a grab redirects
      * EVERY pointer event (toolbar clicks, other windows, everything) to
      * this popup, so with the menu kept open the whole desk becomes
-     * unclickable. Stay-open menus are deliberately NON-modal: no
-     * pointer grab, so clicks reach their real targets; the menu simply
-     * stays open until the user clicks a row/Cancel or presses
+     * unclickable. Stay-open menus are deliberately NON-modal by default:
+     * no pointer grab, so clicks reach their real targets; the menu
+     * simply stays open until the user clicks a row/Cancel or presses
      * Escape/Enter. Arrow nav still works - the keyboard grab below is
      * kept. menu_stay_open=0 restores the old modal grab + dismiss-on-
-     * any-outside-click behavior (grab_pointer still toggles it there). */
+     * any-outside-click behavior (grab_pointer still toggles it there).
+     *
+     * REAL, 2026-08-11, direct instruction ("add a config to switch that
+     * on and off w/o hardcoding... user can tweak it w/o changing code,
+     * and find optimal solution"): the "no grab while stay-open" choice
+     * above is a genuine, real tradeoff (some entities' row clicks may
+     * not reliably reach a non-grabbed override-redirect popup under
+     * this house's Wayland/XWayland setup — direct report: "it works
+     * clicking enter, but not mouse clicking"), not a universally-correct
+     * answer for every entity. grab_pointer_while_stay_open (meta.pdl,
+     * default 0 = unchanged prior behavior) lets a human opt back INTO
+     * grabbing per-entity to test whether that fixes click delivery for
+     * THEM specifically, accepting the "rest of the desk goes unclickable
+     * while this menu is open" tradeoff as a deliberate choice instead of
+     * it being permanently unavailable. Don't grab pointer if menu stays
+     * open — allows user to click other windows (e.g., browser) while
+     * keeping the menu open for relay-based navigation. */
     if (g_grab_pointer && !g_menu_stay_open) {
         for (int attempt = 0; attempt < 5; attempt++) {
             int rc = XGrabPointer(dpy, popup, True, ButtonPressMask, GrabModeAsync, GrabModeAsync,
@@ -1807,7 +1898,7 @@ int main(int argc, char **argv) {
                                     input_popup_win = open_context_menu(dpy, popup_gc, (int[]){win_x}, (int[]){win_y + WIN_PX + 4}, 1, NULL) /* writeback discarded */;
                                 }
                             } else {
-                                dispatch_action(methods[i].action, package_dir, &running);
+                                dispatch_action(methods[i].action, package_dir, g_house_root, &running);
                             }
                             break;
                         }
@@ -1868,7 +1959,7 @@ int main(int argc, char **argv) {
                                     input_popup_win = open_context_menu(dpy, popup_gc, (int[]){win_x}, (int[]){win_y + WIN_PX + 4}, 1, NULL) /* writeback discarded */;
                                 }
                             } else {
-                                dispatch_action(methods[row].action, package_dir, &running);
+                                dispatch_action(methods[row].action, package_dir, g_house_root, &running);
                             }
                         }
                     } else if (strncmp(line, "FOCUS_NAV:", 10) == 0) {
@@ -1912,11 +2003,17 @@ int main(int argc, char **argv) {
                                 nav_release_pid(g_house_root, getpid());
                                 need_redraw = 1;
                             } else if (strcmp(navkey, "Up") == 0) {
-                                popup_focus_row = (popup_focus_row - 1 + n_methods) % n_methods;
-                                draw_context_menu(dpy, popup_win, popup_gc, methods, n_methods, popup_nav_base, popup_focus_row);
+                                if (n_methods > 0) {
+                                    popup_focus_row = (popup_focus_row - 1 + n_methods) % n_methods;
+                                    popup_digit_accum = 0;
+                                    draw_context_menu(dpy, popup_win, popup_gc, methods, n_methods, popup_nav_base, popup_focus_row);
+                                }
                             } else if (strcmp(navkey, "Down") == 0) {
-                                popup_focus_row = (popup_focus_row + 1) % n_methods;
-                                draw_context_menu(dpy, popup_win, popup_gc, methods, n_methods, popup_nav_base, popup_focus_row);
+                                if (n_methods > 0) {
+                                    popup_focus_row = (popup_focus_row + 1) % n_methods;
+                                    popup_digit_accum = 0;
+                                    draw_context_menu(dpy, popup_win, popup_gc, methods, n_methods, popup_nav_base, popup_focus_row);
+                                }
                             } else if (strcmp(navkey, "Enter") == 0) {
                                 int row = popup_focus_row;
                                 close_context_menu(dpy, popup_win);
@@ -1971,7 +2068,7 @@ int main(int argc, char **argv) {
                                         input_popup_win = open_context_menu(dpy, popup_gc, (int[]){win_x}, (int[]){win_y + WIN_PX + 4}, 1, NULL) /* writeback discarded */;
                                     }
                                 } else {
-                                    dispatch_action(methods[row].action, package_dir, &running);
+                                    dispatch_action(methods[row].action, package_dir, g_house_root, &running);
                                 }
                                 need_redraw = 1;
                                 skip_navkey_enter_dispatch: ;
@@ -2350,9 +2447,32 @@ int main(int argc, char **argv) {
                             input_popup_win = open_context_menu(dpy, popup_gc, (int[]){win_x}, (int[]){win_y + WIN_PX + 4}, 1, NULL) /* writeback discarded */;
                         }
                     } else {
-                        char cmd[PATH_BUF * 2];
-                        snprintf(cmd, sizeof(cmd), "%s '%s' >/dev/null 2>&1 &",
-                                 methods[row].action, package_dir);
+                        /* REAL FIX 2026-08-10, direct report ("bookstack no
+                         * longer shows verse, event-ez button no longer
+                         * opens event editor - path issue"): pals migration
+                         * moved entities out of the dev-tree's fixed nesting
+                         * depth (*.monads/*.widget/entities/<name>, always
+                         * 4 levels under house_root) into
+                         * xyzfs/users/<uuid>/home/livedesk/pals/<name>
+                         * (a different depth entirely). METHOD/OBJECT
+                         * actions that derived house_root by climbing a
+                         * FIXED number of ".." from package_dir (argv[1])
+                         * broke silently for any entity now living at pals'
+                         * depth - not a bug in this dispatch call itself,
+                         * but this is the one place that CAN fix it for
+                         * every action at once: house_root is already
+                         * known here (g_house_root), so pass it as a real
+                         * second argument instead of making every
+                         * downstream script/METHOD line re-derive it via
+                         * fragile directory-climbing. Backward compatible -
+                         * existing METHOD/OBJECT lines that only read $1
+                         * (package_dir) are unaffected; only ones updated
+                         * to also read $2 (sh scripts) / $1-after-$0 (sh -c
+                         * lines, since $0 is already package_dir there)
+                         * gain house_root. */
+                        char cmd[PATH_BUF * 3];
+                        snprintf(cmd, sizeof(cmd), "%s '%s' '%s' >/dev/null 2>&1 &",
+                                 methods[row].action, package_dir, g_house_root);
                         int rc = system(cmd);
                         (void)rc;
                     }
@@ -2390,13 +2510,17 @@ int main(int argc, char **argv) {
                     popup_digit_accum = 0;
                     need_redraw = 1;
                 } else if (ks == XK_Up) {
-                    popup_focus_row = (popup_focus_row - 1 + n_methods) % n_methods;
-                    popup_digit_accum = 0;
-                    draw_context_menu(dpy, popup_win, popup_gc, methods, n_methods, popup_nav_base, popup_focus_row);
+                    if (n_methods > 0) {
+                        popup_focus_row = (popup_focus_row - 1 + n_methods) % n_methods;
+                        popup_digit_accum = 0;
+                        draw_context_menu(dpy, popup_win, popup_gc, methods, n_methods, popup_nav_base, popup_focus_row);
+                    }
                 } else if (ks == XK_Down) {
-                    popup_focus_row = (popup_focus_row + 1) % n_methods;
-                    popup_digit_accum = 0;
-                    draw_context_menu(dpy, popup_win, popup_gc, methods, n_methods, popup_nav_base, popup_focus_row);
+                    if (n_methods > 0) {
+                        popup_focus_row = (popup_focus_row + 1) % n_methods;
+                        popup_digit_accum = 0;
+                        draw_context_menu(dpy, popup_win, popup_gc, methods, n_methods, popup_nav_base, popup_focus_row);
+                    }
                 } else if (klen > 0 && kbuf[0] >= '0' && kbuf[0] <= '9') {
                     /* chtpm digit_accum: jump [>] to global nav index in this menu */
                     int d = kbuf[0] - '0';
@@ -2484,7 +2608,7 @@ int main(int argc, char **argv) {
                             input_popup_win = open_context_menu(dpy, popup_gc, (int[]){win_x}, (int[]){win_y + WIN_PX + 4}, 1, NULL) /* writeback discarded */;
                         }
                     } else {
-                        dispatch_action(methods[row].action, package_dir, &running);
+                        dispatch_action(methods[row].action, package_dir, g_house_root, &running);
                     }
                     need_redraw = 1;
                     skip_enter_dispatch: ;

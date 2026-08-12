@@ -1,0 +1,5 @@
+SECTION      | KEY                | VALUE
+----------------------------------------
+META         | piece_id           | relay_test_h1
+STATE        | source               | relay_test
+NODE         | id=1 type=show_text | text=Welcome to the show! speaker=TestNPC

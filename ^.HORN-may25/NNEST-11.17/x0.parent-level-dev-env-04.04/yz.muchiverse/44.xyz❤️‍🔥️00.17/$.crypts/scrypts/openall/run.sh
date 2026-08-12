@@ -10,7 +10,7 @@ CRYPTS_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 HOUSE_DIR="$(cd "$CRYPTS_DIR/.." && pwd)"
 
 TPWIN="$HOUSE_DIR/&.widgits/tile-picker/ops/+x/tp_desktop_window.+x"
-TASKBAR="$HOUSE_DIR/&.widgits/livedesk-taskbar/ops/+x/tp_taskbar.+x"
+TASKBAR="$HOUSE_DIR/*.monads/*.livedesk-taskbar/ops/+x/khtpm_strip_parser.+x"
 RESTORE_LIST="$CRYPTS_DIR/restore-list.txt"
 
 # Ensure the shared asset drive is mounted (book-stack's bible assets

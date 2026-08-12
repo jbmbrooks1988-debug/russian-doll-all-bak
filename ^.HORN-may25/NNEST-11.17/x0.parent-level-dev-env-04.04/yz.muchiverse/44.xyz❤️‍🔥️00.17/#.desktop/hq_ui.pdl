@@ -1,0 +1,14 @@
+# hq_ui.pdl - shared UI scale for all -hq apps (db-hq, events-hq, ai-hq, etc.)
+# font_scale: multiplier applied to both font sizes and layout box sizes
+# (chrome height, row heights, default window size), so a bigger font
+# never gets clipped by boxes that stayed the same size. Range 0.5-3.0.
+font_scale=1.25
+
+# focus_grab: 0 (default, KISS hail-mary 2026-08-12) = do NOTHING focus-
+# related on map/click, matching egg_window.c's own entity/context
+# window exactly (no XSetInputFocus, no XGrabKeyboard) - those windows
+# also launch fresh from a click and reliably keep keyboard focus with
+# zero special handling, so try that first. 1 = fall back to the earlier
+# XGrabKeyboard+retry / right-click-force-focus machinery if 0 doesn't
+# actually fix real physical keyboard input.
+focus_grab=0

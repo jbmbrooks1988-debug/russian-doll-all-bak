@@ -1,5 +1,0 @@
-focused_project_id=aomorai-editor
-focused_project_root=@.apps/aomorai-editor
-emoji_mode=1
-selector_x=-1
-selector_y=-1

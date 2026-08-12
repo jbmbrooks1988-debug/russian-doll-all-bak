@@ -1,8 +1,8 @@
 PAGE | main
 OBJECT | label=Feed | action=void
 OBJECT | label=Menu | action=sh -c 'cd "$0" && exec ../../ops/open_rp_menu.sh "$0"'
-OBJECT | label=Play | action=sh -c 'cd "$0" && exec ../../ops/play_event.sh "$0"'
-OBJECT | label=Events (ez) | action=sh -c 'cd "$0" && exec ../../ops/open_event_ez.sh "$0"'
+OBJECT | label=Play | action=sh -c 'exec "$1/xyzfs/bin/muchi-pet/ops/play_event.sh" "$0" "$1"'
+OBJECT | label=Events (ez) | action=sh -c 'exec "$1/xyzfs/bin/muchi-pet/ops/open_event_ez.sh" "$0" "$1"'
 OBJECT | label=More | action=GOTO:activities
 OBJECT | label=Rename | action=STATE:pending_name
 OBJECT | label=Dir | action=xdg-open

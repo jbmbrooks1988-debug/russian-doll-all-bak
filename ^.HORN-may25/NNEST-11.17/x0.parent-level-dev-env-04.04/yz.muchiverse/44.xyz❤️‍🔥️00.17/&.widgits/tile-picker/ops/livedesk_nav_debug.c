@@ -59,7 +59,7 @@ int main(int argc, char **argv) {
     const char *house_root = argv[1];
     char open_path[PATH_BUF], claims_path[PATH_BUF], lock_path[PATH_BUF];
     snprintf(open_path, sizeof(open_path), "%s/#.desktop/livedesk_open.txt", house_root);
-    snprintf(claims_path, sizeof(claims_path), "%s/#.desktop/livedesk_nav_claims.txt", house_root);
+    snprintf(claims_path, sizeof(claims_path), "%s/#.desktop/livedesk-nav-claims/livedesk_nav_claims.txt", house_root);
     snprintf(lock_path, sizeof(lock_path), "%s/#.desktop/livedesk_popup.lock", house_root);
 
     dump_file(open_path, "livedesk_open.txt");

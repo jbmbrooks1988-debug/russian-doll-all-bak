@@ -62,7 +62,7 @@ function Invoke-CompileKhtpm {
     # Minimal Win32 stubs — output plain .exe (crypt_autostart resolves .exe)
     $tpOps = Join-Path $HOUSE "&.widgits\tile-picker\ops"
     $tpOutDir = Join-Path $tpOps "+x"
-    $tbOps = Join-Path $HOUSE "&.widgits\livedesk-taskbar\ops"
+    $tbOps = Join-Path $HOUSE "*.monads\*.livedesk-taskbar\ops"
     $tbOutDir = Join-Path $tbOps "+x"
 
     foreach ($d in @($tpOutDir, $tbOutDir)) {
@@ -99,6 +99,21 @@ function Invoke-CompileKhtpm {
         $rc = 1
     }
     # Shared taskbar core + Win plat (NO separate toolbar logic)
+    # STALE since 2026-08-10 (confirmed 2026-08-11, not a new break): these
+    # three files were moved OUT of tile-picker/ops into
+    # *.monads/*.livedesk-taskbar/ops/ that day, but this script's $tpOps
+    # path was never updated to match — this branch has been hitting the
+    # "MISS khtpm_taskbar shared sources" fallback below ever since,
+    # regardless of anything done tonight. Separately, as of 2026-08-11,
+    # legacy tp_taskbar.c/tp_taskbar_win.c AND this exact
+    # khtpm_taskbar_core/main/plat_win split (an earlier abandoned
+    # architecture attempt) are both retired/archived — see
+    # *.monads/*.livedesk-taskbar/ops/LEGACY-ARCHIVE-20260811.zip. The
+    # real, current taskbar (khtpm_strip_parser.c +
+    # khtpm_taskbar_manager.c) has NO Windows build yet. This whole
+    # taskbar section needs a real rewrite once one exists, not a path fix
+    # — do not just repoint $tbCore/$tbMain/$tbPlat at the new directory,
+    # the files themselves no longer exist.
     $tbCore = Join-Path $tpOps "khtpm_taskbar_core.c"
     $tbMain = Join-Path $tpOps "khtpm_taskbar_main.c"
     $tbPlat = Join-Path $tpOps "khtpm_taskbar_plat_win.c"
@@ -181,8 +196,8 @@ function Invoke-Run {
     Write-Host "[2/3] Ensure KHTPM Win stubs (if missing)..."
     $tp = Join-Path $HOUSE "&.widgits\tile-picker\ops\+x\tp_desktop_window.exe"
     $tp2 = Join-Path $HOUSE "&.widgits\tile-picker\ops\+x\tp_desktop_window.+x.exe"
-    $tb = Join-Path $HOUSE "&.widgits\livedesk-taskbar\ops\+x\tp_taskbar.exe"
-    $tb2 = Join-Path $HOUSE "&.widgits\livedesk-taskbar\ops\+x\tp_taskbar.+x.exe"
+    $tb = Join-Path $HOUSE "*.monads\*.livedesk-taskbar\ops\+x\tp_taskbar.exe"
+    $tb2 = Join-Path $HOUSE "*.monads\*.livedesk-taskbar\ops\+x\tp_taskbar.+x.exe"
     $needK = -not ((Test-Path -LiteralPath $tp) -or (Test-Path -LiteralPath $tp2)) -or
              -not ((Test-Path -LiteralPath $tb) -or (Test-Path -LiteralPath $tb2))
     if ($needK) {
@@ -239,7 +254,7 @@ elseif ($act -eq "check") {
     if ($bin) { Write-Host "OK $bin" } else { Write-Host "MISSING crypt_autostart" }
     if (Test-Path -LiteralPath $PDL) { Write-Host "OK $PDL" } else { Write-Host "MISSING $PDL" }
     $tp = Join-Path $HOUSE "&.widgits\tile-picker\ops\+x"
-    $tb = Join-Path $HOUSE "&.widgits\livedesk-taskbar\ops\+x"
+    $tb = Join-Path $HOUSE "*.monads\*.livedesk-taskbar\ops\+x"
     Get-ChildItem -LiteralPath $tp -Filter "tp_desktop_window*" -ErrorAction SilentlyContinue |
         ForEach-Object { Write-Host "OK $($_.FullName)" }
     Get-ChildItem -LiteralPath $tb -Filter "tp_taskbar*" -ErrorAction SilentlyContinue |

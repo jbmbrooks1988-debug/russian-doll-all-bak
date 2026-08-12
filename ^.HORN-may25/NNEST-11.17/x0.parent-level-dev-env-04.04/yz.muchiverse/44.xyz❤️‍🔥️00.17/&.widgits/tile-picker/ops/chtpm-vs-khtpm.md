@@ -34,10 +34,10 @@ Represents *many* entities as small windows on the desktop. House-native
 
 | part | file | job |
 | ---- | ---- | --- |
-| entity window | `ops/tp_desktop_window.c` (~2.7k, LEGACY X11) → `ops/khtpm_main.c` + `khtpm_core.c` + `khtpm_plat_x11.c` (TODO) / `khtpm_plat_win.c` | one borderless GL window per entity; glyph title; drag → `desktop_pos.txt` |
-| context menu | `khtpm_core.c` `load_methods()` | data-driven menu from `meta.pdl` METHOD rows + `objects.pdl` pages; `STATE` guard rows (menu_stay_open/grab_pointer/grab_keyboard) |
-| taskbar | `khtpm_taskbar_core.c` + `khtpm_taskbar_plat_x11.c` (LEGACY: `livedesk-taskbar/ops/tp_taskbar.c`) | bottom bar; tab per entity; nav numbers; quit+save-session |
-| registry | `khtpm_core.c` | `#.desktop/livedesk_open.txt` + `livedesk_nav_claims.txt` |
+| entity window | `ops/tp_desktop_window.c` (~2.7k) — the real, live, only Linux entity implementation; the planned `khtpm_main.c`/`khtpm_core.c`/`khtpm_plat_x11.c` split never actually replaced it (confirmed dead 2026-08-11, archived) | one borderless GL window per entity; glyph title; drag → `desktop_pos.txt` |
+| context menu | `tp_desktop_window.c` `load_methods()` | data-driven menu from `meta.pdl` METHOD rows + `objects.pdl` pages; `STATE` guard rows (menu_stay_open/grab_pointer/grab_keyboard/grab_pointer_while_stay_open) |
+| taskbar | `*.monads/*.livedesk-taskbar/ops/khtpm_strip_parser.c` + `khtpm_taskbar_manager.c` — real declarative-layout parser (2 processes). Legacy `tp_taskbar.c` fully retired 2026-08-11, archived. | persistent header + submenu popups + bottom tab bar; unified nav cursor; save/load/session/desk switching; agent relay |
+| registry | `tp_desktop_window.c` (`ensure_livedesk_index()`, `livedesk_registry_add/remove()`) | `#.desktop/livedesk_open.txt` + `livedesk-nav-claims/livedesk_nav_claims.txt` |
 | popups | `khtpm_show_text.+x`, `khtpm_show_choices.+x` | in-window text/choice popups |
 
 ---

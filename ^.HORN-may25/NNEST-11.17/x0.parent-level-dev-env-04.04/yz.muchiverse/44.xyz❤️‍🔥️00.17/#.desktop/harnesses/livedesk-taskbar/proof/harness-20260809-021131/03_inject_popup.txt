@@ -1,3 +1,0 @@
-key_injector: CLICK 1090,66 btn=1
-key_injector: KEY_PRESSED 'Down'
-key_injector: KEY_PRESSED 'Escape'

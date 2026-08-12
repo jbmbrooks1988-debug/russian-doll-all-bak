@@ -1,0 +1,265 @@
+aug-12-END.txt — session pause, 2026-08-12 (going to bed, resume via
+au11-hq/HAIKU_TASKS.md next session)
+
+WHAT GOT BUILT THIS SESSION
+----------------------------------------------------------------------
+db-hq: the first real proof of the HQML CSS styling layer
+(au11-hq/HQML-DESIGN+PLANS.md), scoped to the Common Events section.
+Own standalone binary (*.livedesk-taskbar/ops/khtpm_hq_render.c +
+khtpm_css_parser.c), own .chtpm tag vocabulary + CSS engine (selectors:
+element/.class/#id/:hover; properties: colors, border, position/top/
+left, width/height incl. %, padding, font-*, z-index), NOT a
+modification of the taskbar's own khtpm_strip_parser.c - the taskbar
+itself was never touched except the one dispatch branch that launches
+db-hq (khtpm_taskbar_manager.c, "livedesk:open-common-events-hq:").
+
+Real, working:
+- 15-tab bar matching au11-hq/rpg-maker-database.html's exact order
+  (Actors...Tilesets, Common Events, System, Types, Terms) - window
+  auto-widens to fit however many tabs exist, no clipping.
+- Common Events tab: real sidebar listing <house_root>/common_events/
+  (global, not session-scoped - matches db-ez's own convention),
+  bordered settings-block panel with the floating "Common Event" title
+  overlapping its own border (CSS position:absolute negative-offset
+  case), "Open in Editor" button launches the existing open_event_ez.sh
+  against the selected common event dir.
+- Own drawn chrome bar (title + real-focus "^" indicator + "[x]" close +
+  a live debug status line), no visible WM decoration - BUT (see the
+  fully-resolved focus section below, this changed from the session's
+  first attempt) achieved via a real WM-MANAGED window + _MOTIF_WM_HINTS
+  decorations=0, NOT override_redirect. HQML-DESIGN+PLANS.md's "Window
+  Chrome Convention" section is now WRONG for db-hq specifically and
+  needs a follow-up correction next session - it still says "every
+  khtpm window uses override_redirect", which was true when written but
+  is no longer db-hq's own actual approach (see below for why it had to
+  change). Don't copy that section's advice for a new -hq app without
+  reading the focus-fix section below first.
+- Since it's no longer override_redirect, the WM doesn't supply
+  titlebar-drag either - added hand-rolled chrome-bar drag (click+drag
+  the title area moves the window), same proven shape as
+  01.muchi-pals-🥚️-13.01/system/egg_window.c's own X11 drag block
+  (ButtonPress records x_root/y_root, MotionNotify computes delta +
+  XMoveWindow, ButtonRelease ends it) - ported, not reinvented. Scoped
+  to the chrome bar only, excluding the close button's own hit box.
+- wraith-alpha-standard index nav: every interactive element gets a
+  bracket-badge nav number ("[>N]" focused / "[ N]" not), digits jump
+  focus live, Enter activates, arrows step - ported from
+  1.TPMOS_c_+rmmp.0103.0001/projects/wraith-alpha/ops/
+  wraith_parser_alpha.c's own digit_accum/do_jump convention.
+- User-adjustable UI scale: #.desktop/hq_ui.pdl's font_scale key scales
+  BOTH fonts and layout box sizes together (chrome height, row heights,
+  default window size) so bigger text never clips - shared across all
+  future -hq apps, not just db-hq.
+- db-hq's own agent-relay test harness (#.desktop/db_hq_agent_relay.txt
+  + #.desktop/harnesses/db-hq/nav.sh), same bare-decimal-per-line
+  contract the taskbar's own relay uses - per au11-hq/
+  _.0.aigent-testing-k9.txt's documented pattern for raw-Xlib programs.
+- A real, separate debug PNG dump path (XGetImage off the offscreen
+  Pixmap -> stb_image_write, bound to 'p' or --dump-and-exit) that
+  actually works now - it silently produced solid-black output most of
+  the session until the real bug was found: XGetImage() on a bare
+  Pixmap (no Visual attached) leaves red_mask/green_mask/blue_mask all
+  zero, so mask-based color extraction always ANDed to black even
+  though the real pixel data was correct the whole time. Fixed by using
+  the standard 0xRRGGBB TrueColor byte layout directly instead of
+  trusting those (zeroed) fields.
+- Font-size root cause found and fixed: Xft's "size=" property is
+  POINTS, not pixels - this X server's DPI scaling was inflating every
+  font regardless of how small the CSS values were. Switched every
+  font-open call to "pixelsize=" instead.
+
+REAL BUGS FOUND AND FIXED ALONG THE WAY (worth remembering, not just
+db-hq trivia):
+- A classic off-by-one: strncmp(..., "livedesk:open-common-events-hq:",
+  32) used 32 when the string is actually 31 chars - comparing the
+  literal's own '\0' against the real command's next byte, a guaranteed
+  mismatch. This is WHY db-hq never opened from a real click for most of
+  the session - the dispatch branch could never match, full stop. Same
+  bug class as the "livedesk:open-session:" 23-vs-22 bug documented
+  elsewhere in khtpm_taskbar_manager.c - if a strncmp-prefix branch
+  "never fires" in this file, count the literal's real length with
+  `printf '%s' "..." | wc -c` before assuming the logic itself is wrong.
+- parse_chtpm() treated a leading <!-- --> doc comment as the WHOLE
+  top-level element and returned right after it, so the real <window>
+  tag was silently never parsed (root stayed empty, window rendered
+  totally blank). Fixed by skipping leading comments in a loop first.
+
+----------------------------------------------------------------------
+RESOLVED: real keyboard focus for db-hq (the actual point of using
+khtpm at all - digit-jump/arrow nav) - full struggle documented so it
+is NEVER repeated
+----------------------------------------------------------------------
+
+Status: FIXED, confirmed via real physical keystrokes (arrow keys
+logged and acted on), not just XTest or the relay. Root cause was
+architectural (override_redirect itself), not a missing X11 call - five
+different call-level fixes were tried first and none of them could have
+worked, because the actual problem was one level up. Read this whole
+section before touching ANY future -hq window's focus handling.
+
+WRONG TURNS TRIED FIRST (each a real, reasoned attempt - not guesses -
+but all addressing the wrong layer):
+
+1. soft_focus() (XRaiseWindow + XSetInputFocus + XFlush) once after
+   mapping - ported from khtpm_strip_parser.c's taskbar_soft_focus().
+2. soft_focus() re-asserted on every click too.
+3. Real XGrabKeyboard (5-attempt retry) - ported from &.widgits/
+   tile-picker/ops/tp_desktop_window.c's open_context_menu(), which DOES
+   reliably work for ITS OWN popups. Required first fixing WM_CLASS to
+   "MuchiverseLivedesk" (Mutter's xwayland-grab-access-rules allowlists
+   by WM_CLASS, confirmed via `gsettings get org.gnome.mutter.wayland
+   xwayland-grab-access-rules` -> ['MuchiverseLivedesk']; db-hq had been
+   using a different class, so any grab was silently doomed from the
+   start - same root cause tp_desktop_window.c itself originally hit,
+   see $.crypts/enable_xwayland_grabs.sh). Verified via real XTest key
+   injection that digit-jump + Enter worked through this path - but
+   XTest injects at the X server/Xwayland level directly and does NOT
+   prove real physical keystrokes take the same path. Direct user
+   correction, right to be skeptical: "did u try real sim x11".
+4. Re-grab on EVERY click, plus a dedicated right-click force-focus
+   action matching the taskbar's own right-click semantics
+   (khtpm_strip_parser.c :1633-1642). A real physical click+type test
+   with this in place showed a genuine FocusIn immediately followed by
+   FocusOut - the window got focus for an instant and lost it again
+   before typing could land.
+5. KISS hail-mary: studied 01.muchi-pals-🥚️-13.01/system/egg_window.c
+   (a real entity/"context" window, ALSO launched fresh from a click,
+   confirmed to work in daily use) and found it does ZERO focus/grab
+   calls at all - stripped ALL of db-hq's own focus machinery out to
+   match that bare-minimum behavior exactly (gated behind a new
+   #.desktop/hq_ui.pdl `focus_grab` key so it could be toggled back
+   without a rebuild). RESULT: WORSE, not better - direct report "its
+   legit not getting focus wheni i click with mouse or rightclick". This
+   was the moment the real root cause finally surfaced: pointer/click
+   events reached the window FINE the whole time (proving the window,
+   event delivery, and DISPLAY connection were never the problem) - but
+   FocusIn genuinely never fired, no matter what was tried, at any
+   step above.
+
+THE ACTUAL ROOT CAUSE, confirmed (not guessed):
+`gsettings get org.gnome.mutter focus-change-on-pointer-rest` -> true
+on this system - a real, automatic Mutter WM focus policy. That policy
+(and every other WM-level focus policy Mutter has) only applies to
+windows Mutter actually MANAGES. `override_redirect` windows are
+EXPLICITLY EXEMPT from window-manager focus handling by X11 protocol
+definition - that's the whole point of the flag. So no client-side call
+(XSetInputFocus, XGrabKeyboard, right-click force-focus, anything)
+could ever have fixed this: Mutter was structurally never going to
+consider db-hq's window for real focus transfer AT ALL, click or no
+click, because it was override_redirect. The taskbar's own
+override_redirect windows only "get away with it" because they grab
+initial focus once, early in a session, and mostly never need it back -
+not because override_redirect genuinely supports reliable focus under
+this compositor. This is a real, house-wide gotcha for any FUTURE
+override_redirect window that needs to reliably regain keyboard focus
+after the user's attention has been elsewhere - not just a db-hq quirk.
+
+THE ACTUAL FIX (khtpm_hq_render.c's main(), 2026-08-12):
+Stopped being override_redirect entirely. db-hq is now a normal,
+WM-MANAGED window (confirmed via a real position shift on map - Mutter
+placed it at 198,104 instead of the requested 100,100, something it
+only does to windows it actually manages) so Mutter applies its real
+focus policy to it exactly like any other app on the desktop. The
+visible chrome (title bar/border) is suppressed instead via the
+standard `_MOTIF_WM_HINTS` property (flags=2/MWM_HINTS_DECORATIONS,
+decorations=0) - confirmed working via `xprop _NET_FRAME_EXTENTS` ->
+"not found" (zero WM-drawn frame) on the live window. Also set
+real ICCCM `WM_HINTS` (input=True) and registered `WM_DELETE_WINDOW`
+via XSetWMProtocols, both real conventions for a managed window that
+override_redirect windows never need. CONFIRMED via real physical Left
+arrow keypresses actually being received and logged
+("REAL KeyPress received: keysym=Left") - the first genuine physical
+keyboard delivery of the entire session.
+
+CONSEQUENCE - HQML-DESIGN+PLANS.md's "Window Chrome Convention" section
+needs a follow-up correction next session: it currently says "every
+khtpm window is override_redirect, no exceptions" - true for the
+taskbar (which doesn't need to reliably REGAIN focus mid-session the
+way a persistent utility window like db-hq does) but WRONG as a blanket
+rule for any future -hq app that needs the same. Not fixed in this
+session - flagging so the doc doesn't mislead someone building the next
+one (events-hq, ai-hq, etc.).
+
+FIXES THAT ARE NOW DEAD CODE, KEPT BUT DISABLED (not deleted, in case
+a genuinely-override_redirect future window needs the pattern):
+grab_keyboard_retry(), soft_focus(), the right-click force-focus branch
+- all gated behind `focus_grab` in #.desktop/hq_ui.pdl, default 0 (off,
+correctly, since the real fix made them unnecessary for a managed
+window). Left in the file rather than removed since they ARE the
+correct pattern for a genuinely override_redirect popup (matching
+tp_desktop_window.c's own real, working popups) - just not what a
+persistent top-level window like db-hq needed.
+
+DIAGNOSTICS ADDED THIS SESSION, worth keeping for the NEXT time
+something like this happens (any future -hq window, or genuinely
+anything doing raw X11 input): a live "^" next to the window title
+(g_has_real_focus, real FocusIn/FocusOut tracking - "the only
+authoritative source", same convention khtpm_strip_parser.c's own F-19
+fix used) and a debug status line (Key:/Digits:/Focus:/RealFocus:) in
+the chrome bar, both direct requests ("we could show digits in header
+like tb", "'^' indicating window had focus"). These made the final
+diagnosis fast once added - build this INTO any new raw-Xlib window
+from the start next time, don't wait until deep into a debugging
+session to add visibility.
+
+----------------------------------------------------------------------
+RGB REFACTOR - intentions, all captured in !.khtpm-rgb-refactor.md
+(house root, this session)
+----------------------------------------------------------------------
+
+Not started, deliberately scoped small first. Full reasoning lives in
+that doc; short version:
+
+- Every khtpm window today composes directly into a server-side X
+  Pixmap via Xlib/Xft, then blits it. The GL/GLUT entity-mirror family
+  (chtpm_rgb_render.c/gl_mirror.c) does something structurally
+  different: composes into a plain portable RGB byte buffer FIRST,
+  independent of any window, presents it second (GL texture upload).
+- Why this matters (direct quotes captured in the doc): "it was to have
+  the rgb frames and beable to send them wherever we want", and a
+  headless compose step would make khtpm layouts testable/
+  screenshot-able without a live X connection at all - the same reason
+  dump_rgb_png.c exists for GL windows an agent can't otherwise "see".
+- Real fix already applied this session as a preview of why this
+  matters: db-hq's own debug PNG dump WAS broken (solid black) for most
+  of the session specifically because reading pixels back OUT of a live
+  Pixmap after the fact (XGetImage) is more fragile than if the frame
+  had started as a portable buffer to begin with (see the XGetImage
+  zeroed-mask bug above) - a lived example of the doc's own argument #3.
+- Phase 0 (added this session, per direct instruction "can we do it in
+  a small section first"): a throwaway standalone test binary, NOT
+  wired into anything real, that composes ONE minimal events-hq screen
+  (events-hq itself doesn't exist yet - just a title + a few text rows
+  + one button, reusing dashboard.chtpm/khtpm_css_parser.c's own
+  tag+CSS approach) into a malloc'd-buffer-backed Pixmap, presents it
+  BOTH via XPutImage to a real window AND via stbi_write_png straight to
+  disk, and compares that against a PNG dumped the OLD way
+  (XGetImage-after-XCopyArea) to confirm both paths produce identical
+  pixels before trusting the split further. Exit criteria and full step
+  list are in !.khtpm-rgb-refactor.md's own "Phase 0" section - read
+  that before starting, don't re-derive it.
+- Explicitly NOT decided yet: software font rasterizer (truly headless,
+  more code, chtpm_rgb_render.c's own approach) vs. malloc'd XImage +
+  Xft kept (way less code, still needs a live Display connection just
+  not a mapped window). Doc's own "open questions" section has the full
+  tradeoff - decide this BEFORE writing Phase 0's compose step, not
+  during.
+
+----------------------------------------------------------------------
+NEXT SESSION
+----------------------------------------------------------------------
+1. Correct HQML-DESIGN+PLANS.md's "Window Chrome Convention" section -
+   it's now wrong as a blanket rule (see the RESOLVED section above).
+   Any NEW -hq window should default to the managed + _MOTIF_WM_HINTS
+   approach unless there's a specific reason to be override_redirect
+   (e.g. a genuinely short-lived popup like tp_desktop_window.c's own,
+   which re-grabs fresh every open and doesn't need to survive the user
+   looking away mid-session).
+2. Do a full pass over db-hq confirming everything still works after
+   the managed-window switch (nav digit-jump/arrows/Enter with real
+   keys now that focus is real, sidebar/panel interactions, Open in
+   Editor, close via [x]/Escape/relay, the new chrome-bar drag).
+3. Move to the RGB Phase 0 test (!.khtpm-rgb-refactor.md) once the above
+   is confirmed solid.
+4. Otherwise: back to au11-hq/HAIKU_TASKS.md's queue - this session's
+   db-hq work was a detour from that queue, not a replacement for it.

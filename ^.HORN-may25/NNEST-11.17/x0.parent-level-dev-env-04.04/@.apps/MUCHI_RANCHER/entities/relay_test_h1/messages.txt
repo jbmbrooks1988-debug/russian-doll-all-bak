@@ -1,0 +1,1 @@
+[1786528236] SHOW_CHOICES default=0 choices=Fight\nFly\nTalk

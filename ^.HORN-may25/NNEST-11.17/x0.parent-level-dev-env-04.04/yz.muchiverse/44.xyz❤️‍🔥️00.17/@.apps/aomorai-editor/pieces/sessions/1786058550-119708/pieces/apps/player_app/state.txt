@@ -1,3 +1,0 @@
-﻿module_path=system/prisc+x pal/new_game_module.pal
-project_id=aomorai-editor
-active_target_id=new_game

@@ -4,9 +4,10 @@ STATE        | enabled              | 1
 STATE        | restore-last-open     | 0
 MOUNT        | uuid                 | b7ced73c-5231-4462-b98d-64e38fe2df9e
 MOUNT        | mountpoint           | /media/no/b7ced73c-5231-4462-b98d-64e38fe2df9e
-LAUNCH       | tool-bar             | '&.widgits/livedesk-taskbar/ops/+x/tp_taskbar.+x' '.'
-LAUNCH       | asa&ava               | '/bin/bash' '@.apps/asa-&-ava/button.sh' 'run'
-LAUNCH       | hard-vvar-agent-Q0000 | '&.widgits/tile-picker/ops/+x/tp_desktop_window.+x' '*.monads/*.hard-vvar-agent-Q0000/entities/self'
-LAUNCH       | m1_ninjadragon       | '&.widgits/tile-picker/ops/+x/tp_desktop_window.+x' '*.monads/*.muchi-pet/entities/m1_ninjadragon'
-LAUNCH       | m8_redhorned         | '&.widgits/tile-picker/ops/+x/tp_desktop_window.+x' '*.monads/*.muchi-pet/entities/m8_redhorned'
-LAUNCH       | book-stack           | '&.widgits/tile-picker/ops/+x/tp_desktop_window.+x' '*.monads/*.book-stack/entities/book-stack'
+LAUNCH       | tool-bar             | '*.monads/*.livedesk-taskbar/ops/+x/khtpm_strip_parser.+x' '.'
+LAUNCH       | self                 | '&.widgits/tile-picker/ops/+x/tp_desktop_window.+x' '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/xyzfs/users/0a9558a7-7c74-4358-833c-2d5b21edc421/home/livedesk/pals/self'
+LAUNCH       | m8_redhorned         | '&.widgits/tile-picker/ops/+x/tp_desktop_window.+x' '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/xyzfs/users/0a9558a7-7c74-4358-833c-2d5b21edc421/home/livedesk/pals/m8_redhorned'
+LAUNCH       | m1_ninjadragon       | '&.widgits/tile-picker/ops/+x/tp_desktop_window.+x' '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/xyzfs/users/0a9558a7-7c74-4358-833c-2d5b21edc421/home/livedesk/pals/m1_ninjadragon'
+LAUNCH       | book-stack           | '&.widgits/tile-picker/ops/+x/tp_desktop_window.+x' '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/xyzfs/users/0a9558a7-7c74-4358-833c-2d5b21edc421/home/livedesk/pals/book-stack'
+LAUNCH       | asa                  | '&.widgits/tile-picker/ops/+x/tp_desktop_window.+x' '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/xyzfs/users/0a9558a7-7c74-4358-833c-2d5b21edc421/home/livedesk/pals/asa'
+LAUNCH       | ava                  | '&.widgits/tile-picker/ops/+x/tp_desktop_window.+x' '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/xyzfs/users/0a9558a7-7c74-4358-833c-2d5b21edc421/home/livedesk/pals/ava'

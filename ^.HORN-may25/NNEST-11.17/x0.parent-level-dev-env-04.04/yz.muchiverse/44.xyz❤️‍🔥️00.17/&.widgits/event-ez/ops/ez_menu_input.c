@@ -300,17 +300,76 @@ int main(int argc, char **argv) {
                         snprintf(wrapper_path, sizeof(wrapper_path), "%s/cmd_%d.sh", page_dir, node_id);
                         FILE *wf = fopen(wrapper_path, "w");
                         if (wf) {
-                            /* Portable, self-locating wrapper: the cmd
-                             * script lives at
-                             * <entity>/event_pkg/pages/page_N/, so its
-                             * own dir walks up 3 levels to the real
-                             * entity dir; mr_change_gold.+x then sits at
-                             * ../../ops/+x/ from the entity dir. No
-                             * absolute house path baked in - survives
-                             * any future rename. */
+                            /* REAL FIX (2026-08-11, direct live report:
+                             * "test the current change gold... fixing it
+                             * if it doesn't run" - reproduced live: a
+                             * real Play trigger via interact_relay.txt
+                             * ran event.pal successfully but gold never
+                             * changed; traced to this exact wrapper).
+                             *
+                             * The OLD wrapper assumed a FIXED depth from
+                             * entity dir to mr_change_gold.+x
+                             * ("../../ops/+x/", i.e. exactly 2 levels up
+                             * from the entity root) - true ONLY for the
+                             * original @.apps/MUCHI_RANCHER/entities/<name>/
+                             * and *.monads/*.muchi-pet/entities/<name>/
+                             * template layouts (entity's grandparent ==
+                             * MUCHI_RANCHER/*.muchi-pet, which has its own
+                             * ops/+x/ sibling). Silently WRONG the moment
+                             * an entity is deployed/migrated to
+                             * xyzfs/users/<uuid>/home/livedesk/{pals,
+                             * sessions/<id>/entities}/<name>/ - a
+                             * DIFFERENT depth from house_root - which is
+                             * exactly where this house's own migration
+                             * (away from @.apps/dev-folders into
+                             * xyzfs/sessions) moves every entity to. The
+                             * comment's own stated goal ("no absolute
+                             * house path baked in - survives any future
+                             * rename") was right in spirit but implemented
+                             * as a depth assumption instead of an anchor
+                             * search - a rename survives fine, a DEPTH
+                             * change (exactly what this house's ongoing
+                             * migration does) does not.
+                             *
+                             * Fixed: walk up from the entity dir (still
+                             * genuinely 3 levels above this wrapper - that
+                             * part was always correct, matches
+                             * inventory.txt's real location) searching for
+                             * the literal `*.monads` directory - a stable
+                             * anchor that sits directly under house_root
+                             * regardless of how deep the entity itself is
+                             * nested. Same search-for-a-known-anchor
+                             * pattern khtpm_taskbar_manager.c's own
+                             * livedesk_login_root() already uses for the
+                             * identical class of problem (finding a
+                             * fixed-location tool from a variable-depth
+                             * caller).
+                             *
+                             * UPDATED 2026-08-11 (same session, direct
+                             * instruction "migration makes sense now"):
+                             * mr_change_gold.+x itself moved from the
+                             * legacy per-game dev folder
+                             * (*.monads/*.muchi-pet/ops/+x/) to
+                             * xyzfs/bin/muchi-pet/ops/+x/ - a shared,
+                             * house-wide location (not per-user, not
+                             * per-session), matching the stated direction
+                             * that ops/code should be shared across all
+                             * sessions/desks/users going forward (see
+                             * au11-hq/EVENTS_RUNTIME.md's ops-vs-events
+                             * table). Anchor changed from `*.monads` to
+                             * `xyzfs` (also always a direct child of
+                             * house_root) - still hardcodes
+                             * mr_change_gold.+x's own name/relative
+                             * location under the anchor, matching this
+                             * compiler's existing level of specificity;
+                             * only the anchor+target changed, not the
+                             * search STRATEGY. */
                             fprintf(wf, "#!/bin/sh\n");
                             fprintf(wf, "cd \"$(dirname \"$0\")/../../..\" || exit 1\n");
-                            fprintf(wf, "exec ../../ops/+x/mr_change_gold.+x \"$PWD\" '%s'\n", amt);
+                            fprintf(wf, "ENT=\"$PWD\"\n");
+                            fprintf(wf, "D=\"$ENT\"\n");
+                            fprintf(wf, "while [ \"$D\" != \"/\" ] && [ ! -d \"$D/xyzfs\" ]; do D=\"$(dirname \"$D\")\"; done\n");
+                            fprintf(wf, "exec \"$D/xyzfs/bin/muchi-pet/ops/+x/mr_change_gold.+x\" \"$ENT\" '%s'\n", amt);
                             fclose(wf);
                             chmod(wrapper_path, 0755);
                         }
@@ -434,6 +493,207 @@ int main(int argc, char **argv) {
         else
             snprintf(msg, sizeof(msg),
                      "Page %d already had no commands (trigger kept)", page_n);
+        set_msg(state, msg);
+        bump();
+        return 0;
+    }
+
+    if (key == '8') {
+        /* Show Text command save - same pattern as Change Gold (KEY:6). */
+        char pkg[128], text[256], speaker[128];
+        int page_n = current_page_number();
+        if (page_n <= 0) { set_msg(state, "Save failed: not on a command screen"); bump(); return 0; }
+        read_kv(state, "pkg_name", pkg, sizeof(pkg));
+        read_kv(gui, "ez_st_text", text, sizeof(text));
+        read_kv(gui, "ez_st_speaker", speaker, sizeof(speaker));
+        if (!text[0]) { set_msg(state, "Save failed: enter message text"); bump(); return 0; }
+
+        char pkg_dir[PATH_BUF];
+        read_kv(state, "pkg_dir", pkg_dir, sizeof(pkg_dir));
+        if (!pkg_dir[0]) { set_msg(state, "Save failed: no pkg_dir set"); bump(); return 0; }
+
+        char page_dir[PATH_BUF];
+        snprintf(page_dir, sizeof(page_dir), "%s/pages/page_%d", pkg_dir, page_n);
+        char ir_path[PATH_BUF];
+        snprintf(ir_path, sizeof(ir_path), "%s/event.ir.pdl", page_dir);
+
+        int next_id = 1;
+        FILE *rf2 = fopen(ir_path, "r");
+        if (rf2) {
+            char line[MAX_LINE];
+            while (fgets(line, sizeof(line), rf2)) {
+                if (strncmp(line, "NODE", 4) == 0) next_id++;
+            }
+            fclose(rf2);
+        }
+        FILE *af = fopen(ir_path, "a");
+        if (!af) { set_msg(state, "Save failed: could not open event.ir.pdl"); bump(); return 0; }
+        if (speaker[0]) {
+            fprintf(af, "NODE         | id=%d type=show_text | text=%s speaker=%s\n", next_id, text, speaker);
+        } else {
+            fprintf(af, "NODE         | id=%d type=show_text | text=%s\n", next_id, text);
+        }
+        fclose(af);
+
+        /* Compile event.pal from ir.pdl */
+        char pal_path[PATH_BUF];
+        snprintf(pal_path, sizeof(pal_path), "%s/event.pal", page_dir);
+        FILE *pf = fopen(pal_path, "w");
+        if (pf) {
+            fprintf(pf, "# event.pal - real prisc+x opcodes, COMPILED from event.ir.pdl by event-ez\n");
+            fprintf(pf, "# pkg=%s page=%d - regenerated fresh on every command save\n", pkg, page_n);
+            FILE *irf = fopen(ir_path, "r");
+            if (irf) {
+                char line[MAX_LINE];
+                while (fgets(line, sizeof(line), irf)) {
+                    if (strncmp(line, "NODE", 4) != 0) continue;
+                    char *tp = strstr(line, "type=");
+                    if (!tp) continue;
+                    char type_buf[48] = "";
+                    char *t = tp + 5, *sp = strchr(t, ' ');
+                    char *pipe = strchr(t, '|');
+                    size_t len = sp ? (size_t)(sp - t) : (pipe ? (size_t)(pipe - t) : strlen(t));
+                    if (len >= sizeof(type_buf)) len = sizeof(type_buf) - 1;
+                    memcpy(type_buf, t, len);
+                    type_buf[len] = '\0';
+                    if (strcmp(type_buf, "show_text") == 0) {
+                        char *txtp = strstr(line, "text=");
+                        char txt[512] = "";
+                        if (txtp) {
+                            snprintf(txt, sizeof(txt), "%s", txtp + 5);
+                            txt[strcspn(txt, "\r\n|")] = '\0';
+                        }
+                        char *spkp = strstr(line, "speaker=");
+                        char spk[128] = "";
+                        if (spkp) {
+                            snprintf(spk, sizeof(spk), "%s", spkp + 8);
+                            spk[strcspn(spk, "\r\n|")] = '\0';
+                        }
+                        char *idp = strstr(line, "id=");
+                        int node_id = idp ? atoi(idp + 3) : 1;
+                        char wrapper_path[PATH_BUF];
+                        snprintf(wrapper_path, sizeof(wrapper_path), "%s/cmd_%d.sh", page_dir, node_id);
+                        FILE *wf = fopen(wrapper_path, "w");
+                        if (wf) {
+                            fprintf(wf, "#!/bin/sh\n");
+                            fprintf(wf, "cd \"$(dirname \"$0\")/../../..\" || exit 1\n");
+                            fprintf(wf, "ENT=\"$PWD\"\n");
+                            fprintf(wf, "D=\"$ENT\"\n");
+                            fprintf(wf, "while [ \"$D\" != \"/\" ] && [ ! -d \"$D/xyzfs\" ]; do D=\"$(dirname \"$D\")\"; done\n");
+                            if (spk[0]) {
+                                fprintf(wf, "exec \"$D/xyzfs/bin/muchi-pet/ops/+x/mr_show_text.+x\" \"$ENT\" '%s' '%s'\n", txt, spk);
+                            } else {
+                                fprintf(wf, "exec \"$D/xyzfs/bin/muchi-pet/ops/+x/mr_show_text.+x\" \"$ENT\" '%s'\n", txt);
+                            }
+                            fclose(wf);
+                            chmod(wrapper_path, 0755);
+                        }
+                        fprintf(pf, "exec cmd_%d.sh\n", node_id);
+                    }
+                }
+                fclose(irf);
+            }
+            fprintf(pf, "halt\n");
+            fclose(pf);
+        }
+
+        char msg[MAX_LINE];
+        snprintf(msg, sizeof(msg), "Saved Show Text to page %d - click Back to see it listed", page_n);
+        set_msg(state, msg);
+        bump();
+        return 0;
+    }
+
+    if (key == '9') {
+        /* Show Choices command save - same pattern. */
+        char pkg[128], choices[1024], default_idx[32];
+        int page_n = current_page_number();
+        if (page_n <= 0) { set_msg(state, "Save failed: not on a command screen"); bump(); return 0; }
+        read_kv(state, "pkg_name", pkg, sizeof(pkg));
+        read_kv(gui, "ez_sc_choices", choices, sizeof(choices));
+        read_kv(gui, "ez_sc_default", default_idx, sizeof(default_idx));
+        if (!choices[0]) { set_msg(state, "Save failed: enter choice list"); bump(); return 0; }
+        int def_idx = default_idx[0] ? atoi(default_idx) : 0;
+
+        char pkg_dir[PATH_BUF];
+        read_kv(state, "pkg_dir", pkg_dir, sizeof(pkg_dir));
+        if (!pkg_dir[0]) { set_msg(state, "Save failed: no pkg_dir set"); bump(); return 0; }
+
+        char page_dir[PATH_BUF];
+        snprintf(page_dir, sizeof(page_dir), "%s/pages/page_%d", pkg_dir, page_n);
+        char ir_path[PATH_BUF];
+        snprintf(ir_path, sizeof(ir_path), "%s/event.ir.pdl", page_dir);
+
+        int next_id = 1;
+        FILE *rf2 = fopen(ir_path, "r");
+        if (rf2) {
+            char line[MAX_LINE];
+            while (fgets(line, sizeof(line), rf2)) {
+                if (strncmp(line, "NODE", 4) == 0) next_id++;
+            }
+            fclose(rf2);
+        }
+        FILE *af = fopen(ir_path, "a");
+        if (!af) { set_msg(state, "Save failed: could not open event.ir.pdl"); bump(); return 0; }
+        fprintf(af, "NODE         | id=%d type=show_choices | choices=%s default=%d\n", next_id, choices, def_idx);
+        fclose(af);
+
+        /* Compile event.pal from ir.pdl */
+        char pal_path[PATH_BUF];
+        snprintf(pal_path, sizeof(pal_path), "%s/event.pal", page_dir);
+        FILE *pf = fopen(pal_path, "w");
+        if (pf) {
+            fprintf(pf, "# event.pal - real prisc+x opcodes, COMPILED from event.ir.pdl by event-ez\n");
+            fprintf(pf, "# pkg=%s page=%d - regenerated fresh on every command save\n", pkg, page_n);
+            FILE *irf = fopen(ir_path, "r");
+            if (irf) {
+                char line[MAX_LINE];
+                while (fgets(line, sizeof(line), irf)) {
+                    if (strncmp(line, "NODE", 4) != 0) continue;
+                    char *tp = strstr(line, "type=");
+                    if (!tp) continue;
+                    char type_buf[48] = "";
+                    char *t = tp + 5, *sp = strchr(t, ' ');
+                    char *pipe = strchr(t, '|');
+                    size_t len = sp ? (size_t)(sp - t) : (pipe ? (size_t)(pipe - t) : strlen(t));
+                    if (len >= sizeof(type_buf)) len = sizeof(type_buf) - 1;
+                    memcpy(type_buf, t, len);
+                    type_buf[len] = '\0';
+                    if (strcmp(type_buf, "show_choices") == 0) {
+                        char *chp = strstr(line, "choices=");
+                        char ch[1024] = "";
+                        if (chp) {
+                            snprintf(ch, sizeof(ch), "%s", chp + 8);
+                            ch[strcspn(ch, "\r\n|")] = '\0';
+                        }
+                        char *defp = strstr(line, "default=");
+                        int def = defp ? atoi(defp + 8) : 0;
+                        char *idp = strstr(line, "id=");
+                        int node_id = idp ? atoi(idp + 3) : 1;
+                        char wrapper_path[PATH_BUF];
+                        snprintf(wrapper_path, sizeof(wrapper_path), "%s/cmd_%d.sh", page_dir, node_id);
+                        FILE *wf = fopen(wrapper_path, "w");
+                        if (wf) {
+                            fprintf(wf, "#!/bin/sh\n");
+                            fprintf(wf, "cd \"$(dirname \"$0\")/../../..\" || exit 1\n");
+                            fprintf(wf, "ENT=\"$PWD\"\n");
+                            fprintf(wf, "D=\"$ENT\"\n");
+                            fprintf(wf, "while [ \"$D\" != \"/\" ] && [ ! -d \"$D/xyzfs\" ]; do D=\"$(dirname \"$D\")\"; done\n");
+                            fprintf(wf, "exec \"$D/xyzfs/bin/muchi-pet/ops/+x/mr_show_choices.+x\" \"$ENT\" '%s' %d\n", ch, def);
+                            fclose(wf);
+                            chmod(wrapper_path, 0755);
+                        }
+                        fprintf(pf, "exec cmd_%d.sh\n", node_id);
+                    }
+                }
+                fclose(irf);
+            }
+            fprintf(pf, "halt\n");
+            fclose(pf);
+        }
+
+        char msg[MAX_LINE];
+        snprintf(msg, sizeof(msg), "Saved Show Choices to page %d - click Back to see it listed", page_n);
         set_msg(state, msg);
         bump();
         return 0;

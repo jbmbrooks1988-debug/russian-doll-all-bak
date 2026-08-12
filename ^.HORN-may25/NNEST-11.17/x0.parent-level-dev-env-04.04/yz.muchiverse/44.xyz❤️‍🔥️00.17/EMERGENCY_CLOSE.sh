@@ -2,6 +2,14 @@
 # Emergency close all desk-pals (entity windows)
 # Used when normal quit doesn't work
 # POSIX-compliant (works with sh and bash)
+#
+# STATUS UPDATE (2026-08-11): the normal quit path (khtpm's X.quit menu row
+# -> ktb_quit_and_save() in *.monads/*.livedesk-taskbar/ops/khtpm_taskbar_
+# manager.c) now does this same SIGTERM-then-SIGKILL sweep automatically on
+# every quit - see that function's own header comment. This script should
+# no longer be load-bearing for routine quits; keep it only as a manual
+# last resort for when khtpm's own processes are killed/crashed directly
+# (bypassing the quit menu entirely) and its own sweep never got to run.
 
 HOUSE="$(cd "$(dirname "$0")" && pwd)"
 OPEN_FILE="$HOUSE/#.desktop/livedesk_open.txt"

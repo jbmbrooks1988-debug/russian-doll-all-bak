@@ -1,0 +1,3 @@
+SHOW_CHOICES default=0 choices=Fight
+Fly
+Talk
