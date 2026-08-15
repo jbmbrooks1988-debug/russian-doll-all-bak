@@ -9,7 +9,7 @@ GRID_Y=3
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 HOUSE_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
-TP="$HOUSE_ROOT/&.widgits/tile-picker"
+TP="$HOUSE_ROOT/*.monads/*.livedesk-taskbar/ops"
 DESK="$HOUSE_ROOT/#.desktop"
 ACTION="${1:-run}"
 PKG="$DESK/entities/$NAME"
@@ -44,9 +44,9 @@ ensure_package() {
         local py=$((GRID_Y * 80))
         printf 'x=%d\ny=%d\n' "$px" "$py" > "$PKG/desktop_pos.txt"
     fi
-    if [ ! -f "$PKG/sprite.csv" ] && [ -x "$TP/ops/+x/emoji_gen_atlas.+x" ] && [ -x "$TP/ops/+x/emoji_xtract.+x" ]; then
-        "$TP/ops/+x/emoji_gen_atlas.+x" "$GLYPH" "$PKG/atlas.png" >/dev/null 2>&1
-        "$TP/ops/+x/emoji_xtract.+x" "$PKG/atlas.png" 0 64 "$PKG/sprite.csv" >/dev/null 2>&1
+    if [ ! -f "$PKG/sprite.csv" ] && [ -x "$TP/+x/emoji_gen_atlas.+x" ] && [ -x "$TP/+x/emoji_xtract.+x" ]; then
+        "$TP/+x/emoji_gen_atlas.+x" "$GLYPH" "$PKG/atlas.png" >/dev/null 2>&1
+        "$TP/+x/emoji_xtract.+x" "$PKG/atlas.png" 0 64 "$PKG/sprite.csv" >/dev/null 2>&1
     fi
     if [ ! -f "$PKG/asset.pal" ] && [ -f "$SCRIPT_DIR/asset.pal" ]; then
         cp "$SCRIPT_DIR/asset.pal" "$PKG/asset.pal"
@@ -56,12 +56,12 @@ ensure_package() {
 case "$ACTION" in
     run|r|start)
         ensure_package
-        if [ -x "$TP/ops/+x/tp_desktop_window.+x" ]; then
-            setsid nohup "$TP/ops/+x/tp_desktop_window.+x" "$PKG" >/dev/null 2>&1 < /dev/null &
+        if [ -x "$TP/+x/tp_desktop_window_rgb.+x" ]; then
+            setsid nohup "$TP/+x/tp_desktop_window_rgb.+x" "$PKG" >/dev/null 2>&1 < /dev/null &
             disown
             echo "$NAME spawned: $PKG"
         else
-            echo "MISSING: $TP/ops/+x/tp_desktop_window.+x (run tile-picker's own 'button.sh compile' first)"
+            echo "MISSING: $TP/+x/tp_desktop_window_rgb.+x (run *.monads/*.livedesk-taskbar/ops/build_khtpm_strip.sh first)"
         fi
         ;;
     kill|k|stop)
@@ -69,7 +69,7 @@ case "$ACTION" in
         echo "done"
         ;;
     check|verify)
-        [ -x "$TP/ops/+x/tp_desktop_window.+x" ] && echo "OK   tp_desktop_window.+x" || echo "MISSING tp_desktop_window.+x"
+        [ -x "$TP/+x/tp_desktop_window_rgb.+x" ] && echo "OK   tp_desktop_window_rgb.+x" || echo "MISSING tp_desktop_window_rgb.+x"
         [ -d "$SCRIPT_DIR" ] && echo "OK   $SCRIPT_DIR" || echo "MISSING $SCRIPT_DIR"
         ;;
     help|h|-h|--help|*)

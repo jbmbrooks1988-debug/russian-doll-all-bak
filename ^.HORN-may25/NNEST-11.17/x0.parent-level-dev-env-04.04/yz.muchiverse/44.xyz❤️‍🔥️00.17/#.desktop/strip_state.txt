@@ -1,14 +1,9 @@
-TAB | 19901 | 16 | self | /home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/xyzfs/users/0a9558a7-7c74-4358-833c-2d5b21edc421/home/livedesk/pals/self
-TAB | 19903 | 17 | m8_redhorned | /home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/xyzfs/users/0a9558a7-7c74-4358-833c-2d5b21edc421/home/livedesk/pals/m8_redhorned
-TAB | 19907 | 18 | book-stack | /home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/xyzfs/users/0a9558a7-7c74-4358-833c-2d5b21edc421/home/livedesk/pals/book-stack
-TAB | 19905 | 19 | m1_ninjadragon | /home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/xyzfs/users/0a9558a7-7c74-4358-833c-2d5b21edc421/home/livedesk/pals/m1_ninjadragon
-TAB | 19911 | 20 | ava | /home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/xyzfs/users/0a9558a7-7c74-4358-833c-2d5b21edc421/home/livedesk/pals/ava
 KEY | theme_bg | #000000
 KEY | theme_fg | #00ff00
-KEY | digit_buf | 9
-KEY | tab_focus_idx | 4
-KEY | nav_armed | 1
-KEY | n_tabs | 5
+KEY | digit_buf | 
+KEY | tab_focus_idx | 0
+KEY | nav_armed | 0
+KEY | n_tabs | 0
 KEY | n_shortcuts | 0
 KEY | hq_open | 0
 KEY | hq_n_menu | 0
@@ -18,5 +13,5 @@ KEY | cliio_typing | 0
 KEY | cliio_op | 
 KEY | cliio_buffer | 
 KEY | cliio_focus | 0
-KEY | strip_focus_cell | 8
+KEY | strip_focus_cell | 0
 KEY | cliio_label | rename desk

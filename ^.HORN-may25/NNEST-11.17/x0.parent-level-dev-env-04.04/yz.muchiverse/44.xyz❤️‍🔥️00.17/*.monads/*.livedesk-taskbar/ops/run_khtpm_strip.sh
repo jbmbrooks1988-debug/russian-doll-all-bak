@@ -17,7 +17,10 @@
 
 set -u
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-HOUSE="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+# Shared path vars: KHTPM_HOUSE, KHTPM_LOG, KHTPM_PID (single source of truth
+# for the log/pid paths - see khtpm_vars.sh's own header comment).
+. "$SCRIPT_DIR/khtpm_vars.sh"
+HOUSE="$KHTPM_HOUSE"
 PARSER="$SCRIPT_DIR/+x/khtpm_strip_parser.+x"
 ACTION="${1:-help}"
 
@@ -41,14 +44,14 @@ case "$ACTION" in
         # while a rebuilt binary sat unused on disk).
         sh "$SCRIPT_DIR/build_khtpm_strip.sh" || { echo "BUILD FAILED — not launching"; exit 1; }
         kill_khtpm
-        rm -f "$HOUSE/#.desktop/khtpm_strip_parser.log"
+        rm -f "$KHTPM_LOG"
         setsid env DISPLAY="${DISPLAY:-:0}" "$PARSER" "$HOUSE" \
-            > "$HOUSE/#.desktop/khtpm_strip_parser.log" 2>&1 < /dev/null &
+            > "$KHTPM_LOG" 2>&1 < /dev/null &
         sleep 2
         pids="$(khtpm_pids)"
         if [ -n "$pids" ]; then
             echo "OK — khtpm running, PID(s): $(echo $pids | tr '\n' ' ')"
-            echo "log: $HOUSE/#.desktop/khtpm_strip_parser.log"
+            echo "log: $KHTPM_LOG"
         else
             echo "FAILED to launch — check the log:"
             cat "$HOUSE/#.desktop/khtpm_strip_parser.log" 2>/dev/null

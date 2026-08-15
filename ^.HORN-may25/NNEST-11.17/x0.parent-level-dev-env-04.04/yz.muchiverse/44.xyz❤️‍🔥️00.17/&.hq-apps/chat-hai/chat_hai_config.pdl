@@ -1,0 +1,36 @@
+# chat_hai_config.pdl — live-editable chat-hai loop settings (house
+# standard: runtime-configurable values belong in a .pdl, not hardcoded
+# in C/shell - see !.HOUSE_STDS.md §A.7). chat_hai_loop.sh re-reads this
+# file at the TOP OF EVERY ROUND (not just once at startup), so editing
+# it takes effect within one round without restarting the loop - this
+# IS the "input to modify chat speed" asked for 2026-08-15, first cut
+# (a real file, not yet a GUI slider - see chat-hai-design.md's own
+# hooks section for that as a later step).
+#
+# sleep_between: seconds between each persona's turn. Default 6 - already
+# well above "at least 1 sec", not spam-fast. Raise this to slow the
+# conversation down further, lower it (min recommended: 2) to speed it up.
+SECTION | sleep_between | 6
+
+# Window geometry (direct instruction 2026-08-15: "all window dims can
+# be read from .pdl instead of hardcoded") - chat_hai_hq_render.c reads
+# these ONCE at startup (window position/size don't change mid-session
+# the way sleep_between does, so no live-reread needed here). Values are
+# UNSCALED base pixels - font_scale (from the shared #.desktop/hq_ui.pdl)
+# still multiplies these the same way it scales everything else in this
+# renderer, so a window_width of 280 becomes 280*font_scale actual
+# pixels, same convention every other size in this file follows.
+#
+# window_width:        base width of the chat window (pre font_scale)
+# window_bottom_margin: gap kept clear at the SCREEN's bottom edge
+# window_right_margin:  gap kept clear at the SCREEN's right edge
+# window_top_offset:    distance from the SCREEN's top edge to the
+#                        window's own top edge (clears the desktop's own
+#                        header bar - direct instruction 2026-08-15: "it
+#                        should be 50px lower... move the entire window
+#                        up about 25 pixel to be perfect" - net effect of
+#                        both reports folded into this one number)
+SECTION | window_width | 280
+SECTION | window_bottom_margin | 50
+SECTION | window_right_margin | 10
+SECTION | window_top_offset | 100

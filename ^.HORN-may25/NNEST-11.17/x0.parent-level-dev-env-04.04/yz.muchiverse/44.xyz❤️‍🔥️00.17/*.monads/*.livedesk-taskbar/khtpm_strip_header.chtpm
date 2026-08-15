@@ -107,10 +107,14 @@
     <row>${strip_hq_items}</row>
   </button>
   <button label="plugins" onClick="ACTIVATE:10"/>
-  <button label="menus" onClick="ACTIVATE:11"/>
+  <button label="toys" onClick="ACTIVATE:11"/>
   <button label="store" onClick="ACTIVATE:12"/>
   <button label="network" onClick="ACTIVATE:13"/>
-  <button label="ai" onClick="ACTIVATE:14"/>
-  <button label="${datetime}"/>
+  <button label="h-ai" onClick="ACTIVATE:14">
+    <row>${strip_hq_items}</row>
+  </button>
+  <button label="${datetime}" onClick="ACTIVATE:15">
+    <row>${strip_hq_items}</row>
+  </button>
   <cli_io target_id="cliio" label="${cliio_label}"/>
 </panel>

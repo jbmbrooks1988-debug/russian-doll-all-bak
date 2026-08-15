@@ -25,9 +25,13 @@ RESTORE="$SCRIPT_DIR/restore-list.txt"
 HOUSE="$(cd "$SCRIPT_DIR/.." && pwd)"
 TB_DIR="$HOUSE/*.monads/*.livedesk-taskbar/ops"
 KHTPM_PARSER="$TB_DIR/+x/khtpm_strip_parser.+x"
-ENTITY_BIN="$HOUSE/&.widgits/tile-picker/ops/+x/tp_desktop_window.+x"
-PALS="$HOUSE/xyzfs/users/0a9558a7-7c74-4358-833c-2d5b21edc421/home/livedesk/pals"
-ENTITIES="self m8_redhorned m1_ninjadragon book-stack asa ava"
+
+# Single shared kill pattern for every action (quit/reset/status) - was
+# duplicated three times with khtpm_hq_render present in some spots and
+# missing in others (drift). One source of truth. Includes both the _rgb
+# entity binary (the real one on Linux) and the bare name (legacy safety).
+KHTPM_PAT="khtpm_strip_parser\.\+x|khtpm_taskbar_manager_main\.\+x|khtpm_hq_render\.\+x|tp_desktop_window_rgb\.\+x|tp_desktop_window\.\+x"
+khtpm_pids() { pgrep -f "$KHTPM_PAT" 2>/dev/null; }
 
 read_restore_mode() {
     awk -F'|' '
@@ -51,31 +55,33 @@ case "$ACTION" in
             "$BIN" "$PDL"
         fi
         ;;
+    quit|close)
+        # Kill all running toolbars and entities (no relaunch)
+        khtpm_pids | xargs -r kill -TERM
+        sleep 1
+        khtpm_pids | xargs -r kill -KILL 2>/dev/null || true
+        echo "closed all toolbars and entities"
+        ;;
     reset)
         # Guaranteed-clean kill-everything-then-relaunch — for when the
         # normal autostart sweep (crypt_autostart's own /proc scan, which
         # only matches known taskbar/entity process names) isn't enough,
         # e.g. a genuinely stuck/orphaned process. Rebuilds khtpm fresh,
-        # always launches entities from the real pals/ session paths
-        # (never dev-folder paths).
-        pgrep -f "khtpm_strip_parser\.\+x|khtpm_taskbar_manager_main\.\+x|tp_desktop_window\.\+x" 2>/dev/null \
-            | xargs -r kill -TERM
+        # then delegates the actual launch to crypt_autostart against
+        # autostart.pdl — same single source of truth as `run` (the pdl
+        # LAUNCH rows own the tool-bar AND all entity paths, no hardcoded
+        # entity list duplicated here).
+        khtpm_pids | xargs -r kill -TERM
         sleep 1
+        khtpm_pids | xargs -r kill -KILL 2>/dev/null || true
         [ -x "$TB_DIR/build_khtpm_strip.sh" ] && sh "$TB_DIR/build_khtpm_strip.sh"
         [ -x "$KHTPM_PARSER" ] || { echo "MISSING $KHTPM_PARSER (build failed?)"; exit 1; }
-        setsid env DISPLAY="${DISPLAY:-:0}" "$KHTPM_PARSER" "$HOUSE" \
-            > "$HOUSE/#.desktop/khtpm_strip_parser.log" 2>&1 < /dev/null &
-        for e in $ENTITIES; do
-            if [ -d "$PALS/$e" ]; then
-                setsid env DISPLAY="${DISPLAY:-:0}" "$ENTITY_BIN" "$PALS/$e" \
-                    > /dev/null 2>&1 < /dev/null &
-            else
-                echo "skip $e — no pals dir at $PALS/$e"
-            fi
-        done
+        mkdir -p "$SCRIPT_DIR/ops/+x"
+        [ -x "$BIN" ] || gcc -Wall -O2 -o "$BIN" "$SCRIPT_DIR/ops/crypt_autostart.c"
+        DISPLAY="${DISPLAY:-:0}" "$BIN" "$PDL"
         sleep 2
         echo "--- status ---"
-        pgrep -af "khtpm_strip_parser\.\+x|khtpm_taskbar_manager_main\.\+x|tp_desktop_window\.\+x" 2>/dev/null
+        pgrep -af "$KHTPM_PAT" 2>/dev/null
         ;;
     on)
         sed -i 's/^STATE        | enabled              | 0/STATE        | enabled              | 1/' "$PDL"
@@ -87,7 +93,7 @@ case "$ACTION" in
         ;;
     status)
         grep "enabled" "$PDL"
-        pgrep -af "khtpm_strip_parser\.\+x|khtpm_taskbar_manager_main\.\+x|tp_desktop_window\.\+x" 2>/dev/null
+        pgrep -af "$KHTPM_PAT" 2>/dev/null
         ;;
     compile|c|build)
         mkdir -p "$SCRIPT_DIR/ops/+x"
@@ -114,7 +120,8 @@ EOF
 
   sh button.sh run            # quit current livedesk, then mount+launch (autostart.pdl)
   sh button.sh restart        # same as run (clean restart for $ shortcut / focus tests)
-  sh button.sh reset          # harder: guaranteed kill-everything + rebuild + relaunch khtpm + pals entities
+  sh button.sh quit | close   # kill all running toolbars and entities (no relaunch)
+  sh button.sh reset          # harder: guaranteed kill-everything + rebuild + relaunch via autostart.pdl
   sh button.sh on | off       # toggle STATE|enabled in autostart.pdl
   sh button.sh status         # show current enabled state + running processes
   sh button.sh compile        # rebuild ops/+x/crypt_autostart.+x

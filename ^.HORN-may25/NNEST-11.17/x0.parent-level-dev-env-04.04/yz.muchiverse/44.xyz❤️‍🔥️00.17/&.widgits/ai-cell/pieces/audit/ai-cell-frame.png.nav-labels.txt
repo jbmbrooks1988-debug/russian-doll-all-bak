@@ -1,0 +1,15 @@
+1|New Chat|New Chat
+2|* 08-14 22:45 (empty)|Session 1
+3|08-14 22:43 (empty)|Session 2
+4|08-13 22:53 (empty)|Session 3
+5|08-13 21:36 (empty)|Session 4
+6|08-13 21:18 (empty)|Session 5
+7|08-13 18:24 (empty)|Session 6
+8|08-13 07:10 (empty)|Session 7
+9|08-13 03:00 howdy , how are u ?|Session 8
+10|Model: gemma3:1b|Model: gemma3:1b
+11|Stats|Stats
+12|Scroll Up|Scroll Up
+13|Scroll Down|Scroll Down
+14|Composer|Composer
+15|Close|Close

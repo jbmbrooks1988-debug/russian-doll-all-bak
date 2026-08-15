@@ -418,4 +418,203 @@ retest (not superseded by the correction above):
    is enough" treatment as this taskbar. Don't generalize this taskbar's
    specific finding onto a different program without checking first.
 
+SCOPE ADDENDUM 2026-08-12 - external screen capture (xwd/PIL) is NOT
+reliable once a real human may be USING the desktop concurrently
+------------------------------------------------------------------------
+Real bug hit live testing ai-cell (&.widgits/ai-cell/): an xwd capture
+of a specific window ID returned ANOTHER real window's content
+entirely (bleed-through), because the target window had been dragged
+by the real user and was partially occluded at the exact moment of
+capture. xwd captures what's window-stacking-composited at that
+instant, not a guaranteed snapshot of one window's own content -
+this is fine for solo agent-only testing (the pattern used all session
+for db-hq/events-hq/taskbar/entities, no problems there) but breaks
+the moment a real human is ALSO actively using the same display.
+
+REAL FIX (direct instruction: "u should use png dump not pil capture.
+from now on (or receipt) learn 2 rely on receipts"): any khtpm/-hq
+window app should dump ITS OWN compose buffer directly (same
+`dump_frame_png()` pattern db-hq/ai-cell both use - `XGetImage` on the
+app's own offscreen Pixmap, standard 0xRRGGBB byte layout, not the
+zeroed mask fields a bare Pixmap returns) instead of relying on an
+external xwd/PIL capture of the mapped window. This can never race
+with window stacking/occlusion because it reads what the process
+itself drew, not what's visually on screen at capture time.
+
+Write a RECEIPT file alongside the PNG (`<name>.png.receipt.txt`,
+plain key=value line: ok/w/h/timestamp + whatever app-state fields are
+useful to confirm, e.g. ai-cell's own `nav=... n_sessions=... n_msgs=...`)
+- poll/trust the RECEIPT, not just the PNG's existence, since a
+partially-written PNG file existing doesn't prove the write finished.
+See `&.widgits/ai-cell/ops/khtpm_ai_cell_render.c`'s own
+`dump_frame_png()` for a complete real example (bound to 'p' when not
+in a text-entry context, plus a `--dump-and-exit` headless mode).
+
+Any NEW khtpm/-hq window built after this point should get this from
+day one, not bolted on after hitting the same bug live again.
+
+SCOPE ADDENDUM 2026-08-13 — three real bugs found testing h-ai's model
+selector, ALL caused by broken TEST METHODOLOGY, not (mostly) the app
+------------------------------------------------------------------------
+Real session, live: implemented a model-selector nav item for h-ai
+(&.widgits/ai-cell/), code compiled clean, but ~2 hours of relay
+testing produced totally inconsistent, unreproducible results ("works
+sometimes, model.txt sometimes appears, sometimes doesn't"). Root
+cause was NOT the feature code — it was three stacked testing mistakes
+that any future agent WILL make again if this isn't read first.
+
+MISTAKE #1 — `--dump-and-exit` is a SEPARATE PROCESS, not a peek into
+the live one you're relay-testing.
+  `khtpm_ai_cell_render.+x <house_root> --dump-and-exit` spawns a
+  brand-new, disposable process: fresh X window, fresh
+  `load_model_choice()`, `g_focus_nav` reset to 1, zero knowledge of
+  anything you've relay-injected into a DIFFERENT already-running
+  instance. Using it to "verify" whether relay codes landed on the
+  live process proves NOTHING about that live process — you're just
+  reading a brand-new process's default startup state every time,
+  which is why the receipt kept showing `nav=1`/`nav=3` no matter what
+  you'd actually injected.
+  REAL FIX: to inspect a LIVE process's actual current state without
+  killing/replacing it, send the `'p'` key THROUGH THE RELAY FILE
+  (ASCII 112, one line, same file as everything else) — this calls
+  `dump_frame_png()` from inside the SAME process you've been
+  injecting into, so the receipt actually reflects your prior codes.
+  `--dump-and-exit` is only useful for confirming "does this binary
+  render without crashing," never for checking live relay-driven state.
+
+MISTAKE #2 — nav item indices are NOT stable, and a test loop that
+presses "New Chat" (usually nav item 1) will keep moving its own
+target out from under itself.
+  This is directly documented in README.md ("Nav numbers are NOT
+  fixed... no static map you can hardcode into a test script") and was
+  read and even quoted back to the user earlier THIS SAME SESSION —
+  and still got violated by a brute-force "try digits 1 through 15"
+  test loop. Every pass through that loop hit digit '1' first
+  (New Chat), which calls `start_new_session()` and grows
+  `g_n_sessions` immediately, permanently shifting every nav index
+  after it on every single iteration. The loop could never land on a
+  fixed target because the target kept moving. 26 stray empty session
+  dirs were created this way before the mistake was caught.
+  REAL FIX: before injecting ANY digit-jump, first send `'p'` via
+  relay and READ THE RECEIPT'S `n_sessions`/`n_nav` fields to compute
+  the CURRENT correct index right before every navigation attempt —
+  never assume a fixed index across more than one action, and never
+  run a test loop that itself performs an action (like New Chat) which
+  changes the nav layout it's trying to test against.
+
+MISTAKE #3 — repeated `sh button.sh` calls without confirming the
+prior instance actually died first launches MULTIPLE CONCURRENT
+PROCESSES, all racing on the same relay file and session directory.
+  `pkill -9 khtpm_ai_cell_render` does not reliably match this
+  binary's process (the emoji-laden house-root path passed as argv[1]
+  appears to interfere with simple name-based pkill matching in some
+  shells/environments — not fully root-caused, but consistently
+  observed). Calling `button.sh` again without verifying zero prior
+  processes launches a NEW instance on top of still-living ones.
+  `ps aux | grep khtpm_ai_cell` during this session found FIVE
+  simultaneously-alive processes, all independently polling the exact
+  same `#.desktop/ai_cell_agent_relay.txt`, each with its own
+  independent `g_relay_cursor`/`g_focus_nav`/session state, all racing
+  each other to consume relay codes and all writing to the same
+  `sessions/` dir and PNG receipt path. This alone explains most of
+  the "flaky, unreproducible" behavior — there was never ONE
+  ground truth to check against.
+  REAL FIX: before starting a fresh instance for testing, always run
+  `ps aux | grep khtpm_ai_cell_render | grep -v grep` and confirm ZERO
+  results (kill any remaining PIDs individually by number, don't trust
+  a single `pkill` call to have worked) — THEN launch — THEN
+  re-confirm exactly ONE process exists — before injecting anything.
+  `button.sh` itself has no built-in single-instance guard; don't add
+  one to production code for this (multiple real windows may be a
+  legitimate future use case), but ALWAYS enforce it manually in test
+  procedure.
+
+A REAL APP BUG found (not a testing mistake) once the above three were
+controlled for: multi-digit nav-index accumulation is DEAD CODE once
+`n_nav >= 9` (true almost immediately in normal use — a handful of
+saved chats is enough). `handle_key()`'s digit branch checks
+`if (d >= 1 && d <= g_n_nav) g_focus_nav = d;` BEFORE the multi-digit
+accumulation branch, and since single digits 1-9 are almost always
+`<= g_n_nav`, that branch always wins first — pressing '2' then '6'
+sequentially jumps focus to item 2, then item 6, NEVER item 26. This
+was confirmed live: with `n_nav=30`, sending '2' then '6' via relay
+left `g_focus_nav=6`, not 26. Combined with relay's own ASCII-only
+protocol (digits/Enter/Escape/Backspace/printable — no arrow-key
+codes), this means **any h-ai nav item beyond index 9 is currently
+UNREACHABLE via relay once several sessions exist** — real keyboard
+arrow-key stepping still works (untested via relay, since relay can't
+send arrow keysyms at all), but a pure-relay agent session cannot
+reach deep sidebar items once session count grows. Flagged in
+`&.widgits/ai-cell/ops/khtpm_ai_cell_render.c`'s own
+`handle_key()` (~line 1717) for a future fix (needs a real digit
+accumulator with an explicit "commit" trigger — e.g. only jump on
+Enter, or use a short input-timeout window — not a same-session
+priority fix, but real and worth tracking, NOT re-discovering from
+scratch next time this area is touched).
+
+PROCEDURE — going forward, testing ANY nav-indexed khtpm/-hq window
+via relay should follow this order every time, not ad hoc:
+  1. Confirm zero stray processes (`ps aux | grep <binary> | grep -v grep`).
+  2. Launch exactly one instance, confirm exactly one PID exists.
+  3. Send `'p'` (or the app's own live-dump key) via relay BEFORE every
+     navigation attempt — read the receipt's live nav/session/focus
+     fields, don't assume from a prior state or a spawned dump-and-exit
+     process.
+  4. Compute the CURRENT correct nav index from the receipt you just
+     read, not from a hardcoded number or an earlier session's count.
+  5. If `n_nav >= 9` and the target index is >9, single-digit relay
+     jump CANNOT reach it (see the accumulator bug above) — don't loop
+     digits hoping it'll work; this is a known, real, confirmed dead
+     end until the accumulator itself is fixed.
+  6. Clean up any test-created state (stray sessions, temp files)
+     afterward so the next test starts from a small, predictable
+     `n_nav` — don't leave debris that makes the NEXT session's nav
+     math harder.
+
+SCOPE ADDENDUM 2026-08-13 (later) — the digit-accumulator bug above
+IS FIXED (ported the real `chtpm_parser.c` `digit_accum` standard into
+`khtpm_ai_cell_render.c`'s `handle_key()`), relay-verified live: grew
+a real instance to `n_nav=12`, confirmed `'1'` then `'2'` reaches item
+12 (not item 2), confirmed overflow fallback (`'9'` then `'9'` → falls
+back to item 9). Rule 5 above is now historical for ai-cell
+specifically — multi-digit jump past index 9 works there. Still a
+valid general caution for any OTHER khtpm/-hq window that hasn't had
+this same fix ported yet — check whether the target window's own
+`handle_key()` uses a real accumulator before assuming multi-digit
+jump works.
+
+A NEW real gotcha found while verifying the fix, worth its own rule:
+**nav index order follows the CALL order of a window's `draw_*()`
+functions inside its `redraw()` (or equivalent), NOT the textual/line
+order those functions appear in the source file.** Concretely in
+ai-cell: `draw_close_button()` is defined early in the file (so its
+`nav_add(NAV_CLOSE, ...)` call is one of the textually-first nav_add
+sites you'll grep to), but `redraw()` invokes it LAST — so Close
+actually gets the highest nav index at runtime, and whatever nav item
+is added by the SECOND-called `draw_*()` function gets index 1, not
+whatever textually appears second in the file. Assuming file order equals
+nav order sent a test digit at the wrong nav item (no crash — it just
+silently activated a different, valid nav item than intended, which
+is a worse failure mode than an error because it looks like it
+"worked"). **Rule 7, added to the procedure above**: before computing
+target nav indices for ANY khtpm/-hq window, grep that window's own
+`redraw()` (or equivalent per-frame draw dispatcher) for the ACTUAL
+call order of its `draw_*()` functions, and read each one's `nav_add()`
+calls in that call order — never infer nav index from where `nav_add()`
+happens to appear textually in the file.
+
+**Rule 8, added to the procedure above (2026-08-13)**: "confirm zero
+stray processes before launching" (Rule 3) applies to a window you are
+ACTIVELY BUILDING and smoke-testing in the same session just as much
+as to an existing one you're re-testing — no "just this once, quick
+check" exception. If launching a binary a second time for any reason
+without explicitly killing the prior instance first, check `pgrep -f`
+before sending anything. Doubly true for any window whose actions
+write to SHARED, non-disposable state (a real config another live
+process reads) rather than its own private session dir. Real incident
++ full narrative: see PITFALL 71-adjacent entry in
+`#.haiku+/!.xyzos-pitfalls+1.txt` (app-bug/incident writeups belong
+there, not in this file — this file stays scoped to injection/nav
+testing procedure only, per direct correction 2026-08-13).
+
 End of testing guide.

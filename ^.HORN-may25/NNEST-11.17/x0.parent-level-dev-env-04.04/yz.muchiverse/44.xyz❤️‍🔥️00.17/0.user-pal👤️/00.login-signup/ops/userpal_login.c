@@ -19,6 +19,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <errno.h>
+#include <dirent.h>
 
 #define MAX_PATH 4096
 #define PATH_BUF (MAX_PATH + 256)
@@ -313,6 +314,79 @@ int main(int argc, char **argv) {
     if (prev_uuid[0] && strcmp(prev_uuid, uuid) == 0) {
         read_session_state(install_root, "active_avatar_uuid", av_uuid, sizeof(av_uuid));
         read_session_state(install_root, "active_avatar_path", av_path, sizeof(av_path));
+    }
+    /* REAL FIX 2026-08-13, direct bug report: taskbar not showing the
+     * user avatar. The preserve-check above is FRAGILE - it only
+     * carries the avatar link forward if session.pdl PRIOR user_uuid
+     * still matches this login. Anything that resets or recreates
+     * session.pdl between avatar creation and a later login (a fresh
+     * checkout, a migration, any process rewriting session.pdl
+     * outside this exact flow) silently drops the avatar link
+     * forever, even though the avatar directory itself is still real
+     * on disk - confirmed live: a real, valid avatar (rendered and
+     * visually verified) existed the whole time, session.pdl own
+     * active_avatar_uuid was just empty.
+     *
+     * REAL BUG number 2 found while writing the first attempt at this
+     * fix: install_root (resolved from THIS process own cwd or
+     * PRISC_PROJECT_ROOT) is NOT reliably the same directory as the
+     * real house root the rest of the system uses. In
+     * khtpm_taskbar_manager.c, ktb_get_avatar_dir() always builds its
+     * path from its OWN house_root directly, never from session.pdl
+     * xyzfs_path field. Confirmed live: install_root resolved to this
+     * app own directory here, which has its own unrelated LOCAL
+     * users and xyzfs dirs with no real user home trees inside them,
+     * while the REAL per-user xyzfs/users/UUID/home/avatars tree
+     * lives only under the true house root - the naive install_root
+     * based path silently pointed at a directory that does not exist.
+     * Fixed: find the real house root the SAME way play_event.sh
+     * already does, an anchor search upward for the
+     * 101.mutaclsym system directory, the proven house-root marker
+     * already used elsewhere in this codebase for exactly this
+     * problem, instead of trusting this process own install_root.
+     * FALLBACK: if the preserve-check found nothing, scan the real
+     * house root avatars directory for an existing avatar (a
+     * directory containing a real sprite.csv) and use the first one
+     * found, rather than leaving a real avatar permanently
+     * disconnected until someone notices and hand-fixes session.pdl. */
+    if (!av_uuid[0]) {
+        char real_house_root[PATH_BUF] = "";
+        char probe[PATH_BUF];
+        snprintf(probe, sizeof(probe), "%s", install_root);
+        for (;;) {
+            DIR *td = opendir(probe);
+            int found = 0;
+            if (td) {
+                struct dirent *e;
+                while ((e = readdir(td))) {
+                    if (strncmp(e->d_name, "101.mutaclsym", 13) == 0) { found = 1; break; }
+                }
+                closedir(td);
+            }
+            if (found) { snprintf(real_house_root, sizeof(real_house_root), "%s", probe); break; }
+            char *slash = strrchr(probe, '/');
+            if (!slash || slash == probe) break;
+            *slash = '\0';
+        }
+        char avatars_dir[PATH_BUF];
+        snprintf(avatars_dir, sizeof(avatars_dir), "%s/%s/home/avatars",
+                 real_house_root[0] ? real_house_root : install_root, xyzfs_rel);
+        DIR *ad = opendir(avatars_dir);
+        if (ad) {
+            struct dirent *de;
+            while ((de = readdir(ad))) {
+                if (de->d_name[0] == '.') continue;
+                char csv_probe[PATH_BUF];
+                snprintf(csv_probe, sizeof(csv_probe), "%s/%s/sprite.csv", avatars_dir, de->d_name);
+                struct stat st;
+                if (stat(csv_probe, &st) == 0 && S_ISREG(st.st_mode)) {
+                    snprintf(av_uuid, sizeof(av_uuid), "%s", de->d_name);
+                    snprintf(av_path, sizeof(av_path), "%s/home/avatars/%s", xyzfs_rel, de->d_name);
+                    break;
+                }
+            }
+            closedir(ad);
+        }
     }
     write_session_pdl(install_root, "logged_in", user_id, uuid,
                       display_name, xyzfs_rel, av_uuid, av_path);

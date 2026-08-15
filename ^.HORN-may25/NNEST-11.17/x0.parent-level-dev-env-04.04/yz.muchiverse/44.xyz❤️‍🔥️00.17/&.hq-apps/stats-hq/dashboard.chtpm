@@ -1,0 +1,17 @@
+<window class="database-window">
+  <tabbar class="tab-bar">
+    <tab label="2026-08-13 22:53:37" class="active"/>
+    <tab label="2026-08-13 21:36:19"/>
+    <tab label="2026-08-13 21:18:27"/>
+    <tab label="2026-08-13 18:24:37"/>
+    <tab label="2026-08-13 07:10:13"/>
+    <tab label="2026-08-13 03:00:15"/>
+  </tabbar>
+  <panel id="stats-panel" class="settings-block">
+    <title class="block-title" label="Session: 2026-08-13 22:53:37"/>
+    <text class="stat-label" label="User Messages: 0"/>
+    <text class="stat-label" label="AI Responses: 1"/>
+    <text class="stat-value" label="Total Turns: 1"/>
+    <text class="stat-value" label="Tool Calls: 1   Delegation: 100.0%"/>
+  </panel>
+</window>

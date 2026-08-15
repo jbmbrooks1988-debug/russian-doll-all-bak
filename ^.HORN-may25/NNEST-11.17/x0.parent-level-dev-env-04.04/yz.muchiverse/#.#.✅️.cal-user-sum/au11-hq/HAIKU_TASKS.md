@@ -169,6 +169,74 @@
 
 ---
 
+### Task H6: events-hq — Page Creation UI
+
+**Goal:** events-hq (real events editor, `&.widgits/events-hq/`) can read/switch/edit existing `pages/page_N/` dirs but has no UI to CREATE a new page. Add one.
+
+**Context:** `EVENTS-HQ-RGB-HANDOFF.md` §1 "Near-term" item #1. events-hq was built 2026-08-12 studying event-ez's own file format first — do the same here, don't guess the shape. First VERIFY whether event-ez itself can create pages from its own UI, or whether that's always been a manual/external step (check `ez_menu_input.c` and `HOW2_USER_GUIDE.md`) — don't assume either way.
+
+**What to do:**
+1. Read `&.widgits/event-ez/ops/ez_menu_input.c` (or its live, non-backup copy — NOT `event-ez.backup-20260805-163329/`) for how (if at all) it creates a new `pages/page_N/` dir: `condition.pdl` + `event.ir.pdl` shape, what N gets picked, default trigger.
+2. Read `&.widgits/events-hq/ops/khtpm_events_hq_render.c`'s existing `load_pages()` to see how it enumerates/numbers pages today.
+3. Add a nav-indexed "New Page" row (wraith-alpha nav convention — bracket badges, digit-jump — same as every other list in this file, see house standard `!.HOUSE_STDS.md` #22) to the page-tabs area.
+4. On activate: create `pages/page_<next N>/condition.pdl` (default trigger, e.g. `on-click`) + empty `event.ir.pdl`, reload pages, focus the new one.
+5. Test via relay (never direct CLI — see `TESTING_STRATEGY.md`): open events-hq on a real entity, create a page, confirm the new dir + files exist on disk and the new tab is selectable.
+
+**Success Criteria:**
+- [ ] New Page row present with a real nav badge, keyboard-reachable (digit-jump + Enter)
+- [ ] Creates a real `pages/page_N/condition.pdl` + `event.ir.pdl` matching event-ez's own format exactly (verified by diffing against an event-ez-created page, not assumed)
+- [ ] New page immediately selectable/editable without restarting events-hq
+- [ ] Relay-only test harness proving the above (per house testing rule)
+
+**Estimated scope:** 2-3 hours. Bounded — one new UI row + file-creation logic, no architecture change.
+
+---
+
+### Task H7: events-hq — Condition/Trigger Editing
+
+**Goal:** The left panel shows the current page's `condition.pdl` trigger READ-ONLY. Make it editable.
+
+**Context:** `EVENTS-HQ-RGB-HANDOFF.md` §1 item #2. First verify event-ez itself can edit triggers (don't assume). events-hq already has a working text-entry mechanism from its "Add Command" picker (keystroke-accumulation pattern in `khtpm_events_hq_render.c`) — reuse that exact mechanism, don't build a second one.
+
+**What to do:**
+1. Check event-ez for trigger-editing precedent (same verify-first approach as H6).
+2. Find the existing "Add Command" text-entry code in `khtpm_events_hq_render.c` (keystroke accumulation, Enter-to-commit) and identify what to genericize/reuse.
+3. Make the Trigger field in the left panel clickable/nav-reachable; on activate, arm the SAME text-entry mechanism, seeded with the current trigger value.
+4. On commit, rewrite `condition.pdl`'s `COND | trigger | <value>` line, reload.
+5. Test via relay: change a trigger, confirm `condition.pdl` on disk actually changed and the runtime (`play_event.sh`) respects the new trigger.
+
+**Success Criteria:**
+- [ ] Trigger field is nav-reachable and editable via the reused text-entry mechanism (not a new one)
+- [ ] Edits persist to `condition.pdl` correctly (verified on disk, not just in the UI)
+- [ ] No regression to the "Add Command" picker's own text entry (still works after the refactor to share code)
+- [ ] Relay-only test harness
+
+**Estimated scope:** 2-3 hours. Bounded, but touches shared UI code — if genericizing the text-entry function turns out to be messy/risky, STOP and escalate to Sonnet rather than forcing it.
+
+---
+
+### Task H8: events-hq — "Play" Test-Run Button
+
+**Goal:** Add a footer button that runs the currently-open event right now, same as `ava`'s own `meta.pdl` "Play" METHOD row does.
+
+**Context:** `EVENTS-HQ-RGB-HANDOFF.md` §1 item #3. `EVENTS_RUNTIME.md` describes the real runtime path via `play_event.sh`.
+
+**What to do:**
+1. Read `EVENTS_RUNTIME.md`'s runtime section and find an existing real "Play" METHOD row (e.g. `ava`'s `meta.pdl`) to see the exact command shape it shells out to.
+2. Add a footer button (nav-reachable) to events-hq's layout.
+3. On activate, shell out to `play_event.sh <event_pkg_dir>` (or whatever the real existing invocation is — copy it, don't re-derive) for the CURRENTLY OPEN page's `event_pkg` dir.
+4. Test via relay: open an event with real commands (e.g. change_gold), hit Play, confirm the effect actually happens (e.g. gold changes) the same way it would from the entity's own context-menu Play row.
+
+**Success Criteria:**
+- [ ] Play button present, nav-reachable
+- [ ] Shells out to the exact same real runtime path other Play rows use (not a new/parallel mechanism)
+- [ ] Verified live: a real event command's effect actually occurs after pressing Play
+- [ ] Relay-only test harness
+
+**Estimated scope:** 1-2 hours. Smallest of the three — mostly wiring an existing, already-proven runtime call.
+
+---
+
 ## 🔲 IN PROGRESS
 
 (None currently assigned to Haiku)
@@ -204,6 +272,21 @@
 - **muchipal-desk** — Pokemon-like, full RPG Maker feature set
 - **dsr** — Business sim, complex economy events
 - **Menus cell (Step 1.3)** — Needs standards draft first (pal plugin architecture)
+- **events-hq: new RPG-Maker-style event/command types** (2026-08-12, direct
+  instruction: "adding new events from rpgmaker") — NOT ready for Haiku yet,
+  needs a Sonnet-level scoping pass first: which specific commands/trigger
+  types beyond the current 3 (change_gold/show_text/show_choices), and
+  whether each is a `compile_page()` extension (same pattern as the
+  existing 3) or something structurally new. See `EVENT_AI_VISION.md` for
+  the long-range trigger-type design intent before picking specific
+  commands to add. Once scoped into individual bounded commands (mirroring
+  H1's Show Text/Show Choices shape), each one becomes its own Haiku-ready
+  task here.
+- **events-hq: node delete/reorder** — NOT a gap, a deliberate parity
+  choice: `event.ir.pdl` is append-only in event-ez itself today. Only
+  add this once event-ez itself gains delete/reorder — don't get ahead of
+  the format's own real capabilities (see `EVENTS-HQ-RGB-HANDOFF.md` §1
+  item #4).
 
 ---
 

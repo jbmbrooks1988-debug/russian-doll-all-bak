@@ -2029,3 +2029,407 @@
 [2026-08-12 06:08:08] SHOW_TEXT_FILE /tmp/tmp.O5wsGfV9oS.txt (7 lines)
 [2026-08-12 06:08:16] SHOW_TEXT_DISMISSED
 [2026-08-12 06:08:18] CLICK method=Dir action=sh -c 'exec xdg-open "$0"'
+[2026-08-12 13:28:51] INJECTED: CLOSE
+[2026-08-12 13:28:51] WINDOW_OPEN
+[2026-08-12 13:28:51] LIVEDESK_INDEX=12
+[2026-08-12 13:31:16] INJECTED: CLOSE
+[2026-08-12 13:31:17] WINDOW_OPEN
+[2026-08-12 13:31:17] LIVEDESK_INDEX=12
+[2026-08-12 13:31:52] INJECTED: CLOSE
+[2026-08-12 13:31:52] WINDOW_OPEN
+[2026-08-12 13:31:52] LIVEDESK_INDEX=12
+[2026-08-12 13:33:11] INJECTED: CLOSE
+[2026-08-12 13:33:12] WINDOW_OPEN
+[2026-08-12 13:33:12] LIVEDESK_INDEX=12
+[2026-08-12 14:20:43] WINDOW_OPEN
+[2026-08-12 14:20:43] LIVEDESK_INDEX=12
+[2026-08-12 14:20:44] WINDOW_OPEN
+[2026-08-12 14:20:44] LIVEDESK_INDEX=12
+[2026-08-12 14:22:04] WINDOW_OPEN
+[2026-08-12 14:22:04] LIVEDESK_INDEX=12
+[2026-08-12 14:22:05] WINDOW_OPEN
+[2026-08-12 14:22:05] LIVEDESK_INDEX=12
+[2026-08-12 14:22:26] WINDOW_OPEN
+[2026-08-12 14:22:26] LIVEDESK_INDEX=12
+[2026-08-12 14:22:27] WINDOW_OPEN
+[2026-08-12 14:22:27] LIVEDESK_INDEX=12
+[2026-08-12 14:43:06] WINDOW_OPEN
+[2026-08-12 14:43:06] LIVEDESK_INDEX=12
+[2026-08-12 14:43:06] WINDOW_OPEN
+[2026-08-12 14:43:06] LIVEDESK_INDEX=12
+[2026-08-12 14:43:32] WINDOW_OPEN
+[2026-08-12 14:43:32] LIVEDESK_INDEX=12
+[2026-08-12 14:43:32] WINDOW_OPEN
+[2026-08-12 14:43:32] LIVEDESK_INDEX=12
+[2026-08-12 14:47:12] WINDOW_OPEN
+[2026-08-12 14:47:12] LIVEDESK_INDEX=12
+[2026-08-12 14:47:13] WINDOW_OPEN
+[2026-08-12 14:47:13] LIVEDESK_INDEX=12
+[2026-08-12 14:47:38] INJECTED: CLOSE
+[2026-08-12 14:47:39] WINDOW_OPEN
+[2026-08-12 14:47:39] LIVEDESK_INDEX=12
+[2026-08-12 14:47:40] WINDOW_OPEN
+[2026-08-12 14:47:40] LIVEDESK_INDEX=12
+[2026-08-12 14:50:34] INJECTED: CLOSE
+[2026-08-12 14:50:52] WINDOW_OPEN
+[2026-08-12 14:50:52] LIVEDESK_INDEX=12
+[2026-08-12 14:50:53] WINDOW_OPEN
+[2026-08-12 14:50:53] LIVEDESK_INDEX=12
+[2026-08-12 14:51:13] INJECTED: CLOSE
+[2026-08-12 14:56:33] INJECTED: CLOSE
+[2026-08-12 14:57:02] WINDOW_OPEN
+[2026-08-12 14:57:02] LIVEDESK_INDEX=12
+[2026-08-12 14:57:03] WINDOW_OPEN
+[2026-08-12 14:57:03] LIVEDESK_INDEX=12
+[2026-08-12 14:59:09] INJECTED: CLOSE
+[2026-08-12 14:59:47] WINDOW_OPEN
+[2026-08-12 14:59:47] LIVEDESK_INDEX=12
+[2026-08-12 14:59:48] WINDOW_OPEN
+[2026-08-12 14:59:48] LIVEDESK_INDEX=12
+[2026-08-12 14:59:48] WINDOW_OPEN
+[2026-08-12 14:59:48] LIVEDESK_INDEX=12
+[2026-08-12 15:00:17] INJECTED: CLOSE
+[2026-08-12 15:00:43] WINDOW_OPEN
+[2026-08-12 15:00:43] LIVEDESK_INDEX=12
+[2026-08-12 15:03:35] INJECTED: CLOSE
+[2026-08-12 15:03:42] WINDOW_OPEN
+[2026-08-12 15:03:42] LIVEDESK_INDEX=12
+[2026-08-12 15:19:11] WINDOW_OPEN
+[2026-08-12 15:19:11] LIVEDESK_INDEX=12
+[2026-08-12 15:21:22] WINDOW_OPEN
+[2026-08-12 15:21:22] LIVEDESK_INDEX=12
+[2026-08-12 18:31:51] WINDOW_OPEN
+[2026-08-12 18:31:51] LIVEDESK_INDEX=12
+[2026-08-12 19:57:32] WINDOW_OPEN
+[2026-08-12 19:57:32] LIVEDESK_INDEX=12
+[2026-08-12 19:57:38] CLICK method=Read action=sh -c 'H="$1" && export PACKAGE_DIR="$0" && exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-12 19:57:38] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_97496.txt
+[2026-08-12 19:57:38] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_97496.txt
+[2026-08-12 19:57:39] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_97496.txt
+[2026-08-12 19:57:42] CLICK method=Read action=sh -c 'H="$1" && export PACKAGE_DIR="$0" && exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-12 19:57:42] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_97518.txt
+[2026-08-12 19:57:42] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_97518.txt
+[2026-08-12 19:57:43] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_97518.txt
+[2026-08-12 19:58:29] CLICK method=Dir action=sh -c 'exec xdg-open "$0"'
+[2026-08-12 19:58:46] CLICK method=Read action=sh -c 'H="$1" && export PACKAGE_DIR="$0" && exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-12 19:58:47] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_98121.txt
+[2026-08-12 19:58:47] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_98121.txt
+[2026-08-12 19:58:48] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_98121.txt
+[2026-08-12 19:58:51] CLICK method=Read action=sh -c 'H="$1" && export PACKAGE_DIR="$0" && exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-12 19:58:51] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_98157.txt
+[2026-08-12 19:58:51] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_98157.txt
+[2026-08-12 19:58:52] SHOW_PAGE_PICK(cursor) action=bible_text -> /tmp/khtpm_choice_result_98157.txt
+[2026-08-12 20:00:24] CLICK method=Read action=sh -c 'P="$1" && H="${P%/xyzfs/*}" && export PACKAGE_DIR="$P" && exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-12 20:01:42] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-12 20:01:42] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_99871.txt
+[2026-08-12 20:01:42] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_99871.txt
+[2026-08-12 20:01:43] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_99871.txt
+[2026-08-12 20:02:11] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-12 20:02:11] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_100065.txt
+[2026-08-12 20:02:11] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_100065.txt
+[2026-08-12 20:02:12] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_100065.txt
+[2026-08-12 20:02:12] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.TtHiXeJ5xY.txt
+[2026-08-12 20:02:12] SHOW_TEXT_FILE /tmp/tmp.TtHiXeJ5xY.txt (8 lines)
+[2026-08-12 20:03:13] SHOW_TEXT_DISMISSED
+[2026-08-12 21:16:11] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-12 21:16:11] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_125621.txt
+[2026-08-12 21:16:11] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_125621.txt
+[2026-08-12 21:16:12] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_125621.txt
+[2026-08-12 21:16:12] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.Fvy1pVRwLG.txt
+[2026-08-12 21:16:12] SHOW_TEXT_FILE /tmp/tmp.Fvy1pVRwLG.txt (10 lines)
+[2026-08-12 21:16:36] SHOW_TEXT_DISMISSED
+[2026-08-12 21:16:43] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-12 21:16:43] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_125798.txt
+[2026-08-12 21:16:43] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_125798.txt
+[2026-08-12 21:16:45] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_125798.txt
+[2026-08-12 21:16:45] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.dENqcIPbzX.txt
+[2026-08-12 21:16:45] SHOW_TEXT_FILE /tmp/tmp.dENqcIPbzX.txt (5 lines)
+[2026-08-12 21:16:51] SHOW_TEXT_DISMISSED
+[2026-08-12 21:16:53] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-12 21:16:53] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_125877.txt
+[2026-08-12 21:16:53] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_125877.txt
+[2026-08-12 21:16:55] SHOW_PAGE_PICK action=bible_tts -> /tmp/khtpm_choice_result_125877.txt
+[2026-08-12 21:16:55] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.7wwjVWeH6R.txt
+[2026-08-12 21:16:55] SHOW_TEXT_FILE /tmp/tmp.7wwjVWeH6R.txt (6 lines)
+[2026-08-12 21:18:02] SHOW_TEXT_DISMISSED
+[2026-08-13 01:37:50] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-13 01:37:51] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_213722.txt
+[2026-08-13 01:37:51] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_213722.txt
+[2026-08-13 01:37:52] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_213722.txt
+[2026-08-13 01:37:52] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.3Zxh2zdSqM.txt
+[2026-08-13 01:37:52] SHOW_TEXT_FILE /tmp/tmp.3Zxh2zdSqM.txt (8 lines)
+[2026-08-13 01:38:05] SHOW_TEXT_DISMISSED
+[2026-08-13 02:04:05] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-13 02:04:06] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_221688.txt
+[2026-08-13 02:04:06] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_221688.txt
+[2026-08-13 02:04:07] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_221688.txt
+[2026-08-13 02:04:07] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.ZXvY9a0lIb.txt
+[2026-08-13 02:04:07] SHOW_TEXT_FILE /tmp/tmp.ZXvY9a0lIb.txt (9 lines)
+[2026-08-13 02:04:23] SHOW_TEXT_DISMISSED
+[2026-08-13 02:07:58] INJECTED: CLOSE
+[2026-08-13 02:08:50] WINDOW_OPEN
+[2026-08-13 02:08:50] LIVEDESK_INDEX=12
+[2026-08-13 02:08:57] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-13 02:08:57] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_223678.txt
+[2026-08-13 02:08:57] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_223678.txt
+[2026-08-13 02:08:59] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_223678.txt
+[2026-08-13 02:08:59] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.wJR4JPj83U.txt
+[2026-08-13 02:08:59] SHOW_TEXT_FILE /tmp/tmp.wJR4JPj83U.txt (6 lines)
+[2026-08-13 02:09:11] SHOW_TEXT_DISMISSED
+[2026-08-13 04:09:07] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-13 04:09:07] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_265630.txt
+[2026-08-13 04:09:07] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_265630.txt
+[2026-08-13 04:09:08] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_265630.txt
+[2026-08-13 04:09:08] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.4GGUOfHLVS.txt
+[2026-08-13 04:09:08] SHOW_TEXT_FILE /tmp/tmp.4GGUOfHLVS.txt (7 lines)
+[2026-08-13 04:43:29] SHOW_TEXT_DISMISSED
+[2026-08-13 05:22:45] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-13 05:22:45] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_282039.txt
+[2026-08-13 05:22:45] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_282039.txt
+[2026-08-13 05:22:46] SHOW_PAGE_PICK action=tao -> /tmp/khtpm_choice_result_282039.txt
+[2026-08-13 05:22:46] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.0dD0pwWLnU.txt
+[2026-08-13 05:22:46] SHOW_TEXT_FILE /tmp/tmp.0dD0pwWLnU.txt (14 lines)
+[2026-08-13 05:23:21] SHOW_TEXT_DISMISSED
+[2026-08-13 07:31:51] INJECTED: CLOSE
+[2026-08-13 07:44:44] WINDOW_OPEN
+[2026-08-13 07:44:44] LIVEDESK_INDEX=12
+[2026-08-13 07:46:23] INJECTED: CLOSE
+[2026-08-13 07:46:42] WINDOW_OPEN
+[2026-08-13 07:46:42] LIVEDESK_INDEX=12
+[2026-08-13 07:46:53] INJECTED: CLOSE
+[2026-08-13 07:56:31] WINDOW_OPEN
+[2026-08-13 07:56:31] LIVEDESK_INDEX=12
+[2026-08-13 16:31:07] INJECTED: CLOSE
+[2026-08-13 16:31:25] WINDOW_OPEN
+[2026-08-13 16:31:25] LIVEDESK_INDEX=12
+[2026-08-13 17:15:00] INJECTED: CLOSE
+[2026-08-13 18:11:14] WINDOW_OPEN
+[2026-08-13 18:11:14] LIVEDESK_INDEX=12
+[2026-08-13 18:22:56] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-13 18:22:56] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_509487.txt
+[2026-08-13 18:22:56] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_509487.txt
+[2026-08-13 18:22:57] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_509487.txt
+[2026-08-13 18:22:58] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.wY5Jri1uMz.txt
+[2026-08-13 18:22:58] SHOW_TEXT_FILE /tmp/tmp.wY5Jri1uMz.txt (6 lines)
+[2026-08-13 18:24:04] SHOW_TEXT_DISMISSED
+[2026-08-13 20:39:14] WINDOW_OPEN
+[2026-08-13 20:39:14] LIVEDESK_INDEX=12
+[2026-08-13 20:46:49] WINDOW_OPEN
+[2026-08-13 20:46:49] LIVEDESK_INDEX=12
+[2026-08-13 20:59:17] INJECTED: CLOSE
+[2026-08-13 23:18:50] WINDOW_OPEN
+[2026-08-13 23:18:50] LIVEDESK_INDEX=12
+[2026-08-13 23:18:56] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-13 23:18:57] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_14155.txt
+[2026-08-13 23:18:57] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_14155.txt
+[2026-08-13 23:18:58] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_14155.txt
+[2026-08-13 23:19:01] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-13 23:19:02] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_14178.txt
+[2026-08-13 23:19:02] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_14178.txt
+[2026-08-13 23:19:03] SHOW_PAGE_PICK action=bible_tts -> /tmp/khtpm_choice_result_14178.txt
+[2026-08-13 23:19:31] CLICK method=Dir action=sh -c 'exec xdg-open "$0"'
+[2026-08-13 23:19:52] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-13 23:19:52] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_14821.txt
+[2026-08-13 23:19:52] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_14821.txt
+[2026-08-13 23:19:53] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_14821.txt
+[2026-08-13 23:19:54] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.lkI7UOwJrG.txt
+[2026-08-13 23:19:54] SHOW_TEXT_FILE /tmp/tmp.lkI7UOwJrG.txt (8 lines)
+[2026-08-13 23:21:42] SHOW_TEXT_DISMISSED
+[2026-08-13 23:32:28] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-13 23:32:28] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_17956.txt
+[2026-08-13 23:32:28] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_17956.txt
+[2026-08-13 23:32:29] SHOW_PAGE_PICK action=tao -> /tmp/khtpm_choice_result_17956.txt
+[2026-08-13 23:32:30] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.Snua7Ra0TQ.txt
+[2026-08-13 23:32:30] SHOW_TEXT_FILE /tmp/tmp.Snua7Ra0TQ.txt (18 lines)
+[2026-08-13 23:34:39] SHOW_TEXT_DISMISSED
+[2026-08-13 23:34:42] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-13 23:34:42] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_18482.txt
+[2026-08-13 23:34:42] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_18482.txt
+[2026-08-13 23:34:44] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_18482.txt
+[2026-08-13 23:34:44] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.oMnSTHxG5O.txt
+[2026-08-13 23:34:44] SHOW_TEXT_FILE /tmp/tmp.oMnSTHxG5O.txt (12 lines)
+[2026-08-13 23:34:55] SHOW_TEXT_DISMISSED
+[2026-08-13 23:35:04] CLICK method=Dir action=sh -c 'exec xdg-open "$0"'
+[2026-08-13 23:35:07] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-13 23:35:07] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_18607.txt
+[2026-08-13 23:35:07] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_18607.txt
+[2026-08-13 23:35:09] SHOW_PAGE_PICK action=bible_tts -> /tmp/khtpm_choice_result_18607.txt
+[2026-08-13 23:35:09] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.zxNcNfsDTy.txt
+[2026-08-13 23:35:09] SHOW_TEXT_FILE /tmp/tmp.zxNcNfsDTy.txt (6 lines)
+[2026-08-13 23:35:20] SHOW_TEXT_DISMISSED
+[2026-08-14 01:09:29] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-14 01:09:29] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_40380.txt
+[2026-08-14 01:09:29] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_40380.txt
+[2026-08-14 01:09:30] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_40380.txt
+[2026-08-14 01:09:31] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.PsvWST88wT.txt
+[2026-08-14 01:09:31] SHOW_TEXT_FILE /tmp/tmp.PsvWST88wT.txt (7 lines)
+[2026-08-14 01:10:05] SHOW_TEXT_DISMISSED
+[2026-08-14 01:10:10] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-14 01:10:11] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_40536.txt
+[2026-08-14 01:10:11] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_40536.txt
+[2026-08-14 01:10:12] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_40536.txt
+[2026-08-14 01:10:12] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.TFsUC8l0rR.txt
+[2026-08-14 01:10:12] SHOW_TEXT_FILE /tmp/tmp.TFsUC8l0rR.txt (10 lines)
+[2026-08-14 01:11:26] SHOW_TEXT_DISMISSED
+[2026-08-14 03:05:36] INJECTED: CLOSE
+[2026-08-14 03:38:42] WINDOW_OPEN
+[2026-08-14 03:38:42] LIVEDESK_INDEX=12
+[2026-08-14 03:38:54] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-14 03:38:54] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_75438.txt
+[2026-08-14 03:38:54] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_75438.txt
+[2026-08-14 03:38:56] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_75438.txt
+[2026-08-14 03:38:57] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.kTJ7HHJOjm.txt
+[2026-08-14 03:38:57] SHOW_TEXT_FILE /tmp/tmp.kTJ7HHJOjm.txt (6 lines)
+[2026-08-14 03:38:57] SHOW_TEXT_DISMISSED
+[2026-08-14 03:39:02] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-14 03:39:02] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_75513.txt
+[2026-08-14 03:39:02] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_75513.txt
+[2026-08-14 03:39:03] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_75513.txt
+[2026-08-14 03:39:03] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.1BaKddrsoV.txt
+[2026-08-14 03:39:03] SHOW_TEXT_FILE /tmp/tmp.1BaKddrsoV.txt (7 lines)
+[2026-08-14 03:39:07] SHOW_TEXT_DISMISSED
+[2026-08-14 03:40:03] INJECTED: CLOSE
+[2026-08-14 03:42:39] WINDOW_OPEN
+[2026-08-14 03:42:39] LIVEDESK_INDEX=12
+[2026-08-14 03:42:39] INJECTED: CLOSE
+[2026-08-14 03:42:39] WINDOW_OPEN
+[2026-08-14 03:42:39] LIVEDESK_INDEX=12
+[2026-08-14 03:42:43] INJECTED: CLOSE
+[2026-08-14 03:46:46] WINDOW_OPEN
+[2026-08-14 03:46:46] LIVEDESK_INDEX=12
+[2026-08-14 03:47:09] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-14 03:47:09] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_77948.txt
+[2026-08-14 03:47:09] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_77948.txt
+[2026-08-14 03:47:11] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_77948.txt
+[2026-08-14 03:47:11] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.aK7igPeftU.txt
+[2026-08-14 03:47:11] SHOW_TEXT_FILE /tmp/tmp.aK7igPeftU.txt (6 lines)
+[2026-08-14 03:47:17] SHOW_TEXT_DISMISSED
+[2026-08-14 05:52:19] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-14 05:52:19] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_103534.txt
+[2026-08-14 05:52:19] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_103534.txt
+[2026-08-14 05:52:22] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_103534.txt
+[2026-08-14 05:52:22] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.Rzijzy8VzP.txt
+[2026-08-14 05:52:22] SHOW_TEXT_FILE /tmp/tmp.Rzijzy8VzP.txt (9 lines)
+[2026-08-14 05:52:32] SHOW_TEXT_DISMISSED
+[2026-08-14 05:52:34] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-14 05:52:34] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_103596.txt
+[2026-08-14 05:52:34] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_103596.txt
+[2026-08-14 05:52:35] SHOW_PAGE_PICK action=bible_tts -> /tmp/khtpm_choice_result_103596.txt
+[2026-08-14 05:52:35] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.8hsLHtAdwo.txt
+[2026-08-14 05:52:35] SHOW_TEXT_FILE /tmp/tmp.8hsLHtAdwo.txt (8 lines)
+[2026-08-14 05:52:44] SHOW_TEXT_DISMISSED
+[2026-08-14 05:52:47] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-14 05:52:47] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_103664.txt
+[2026-08-14 05:52:47] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_103664.txt
+[2026-08-14 05:52:49] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_103664.txt
+[2026-08-14 05:52:49] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.8C8I8CRwXl.txt
+[2026-08-14 05:52:49] SHOW_TEXT_FILE /tmp/tmp.8C8I8CRwXl.txt (6 lines)
+[2026-08-14 05:52:52] SHOW_TEXT_DISMISSED
+[2026-08-14 11:28:48] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-14 11:28:48] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_184869.txt
+[2026-08-14 11:28:48] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_184869.txt
+[2026-08-14 11:28:49] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_184869.txt
+[2026-08-14 11:28:49] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.42VXWUyfPB.txt
+[2026-08-14 11:28:49] SHOW_TEXT_FILE /tmp/tmp.42VXWUyfPB.txt (11 lines)
+[2026-08-14 11:29:07] SHOW_TEXT_DISMISSED
+[2026-08-14 11:29:33] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-14 11:29:34] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_185043.txt
+[2026-08-14 11:29:34] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_185043.txt
+[2026-08-14 11:29:35] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_185043.txt
+[2026-08-14 11:29:35] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.s478tcZX3K.txt
+[2026-08-14 11:29:35] SHOW_TEXT_FILE /tmp/tmp.s478tcZX3K.txt (6 lines)
+[2026-08-14 11:29:39] SHOW_TEXT_DISMISSED
+[2026-08-14 16:41:32] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-14 16:41:33] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_250918.txt
+[2026-08-14 16:41:33] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_250918.txt
+[2026-08-14 16:41:34] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_250918.txt
+[2026-08-14 16:41:34] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.jUwvmBbztY.txt
+[2026-08-14 16:41:34] SHOW_TEXT_FILE /tmp/tmp.jUwvmBbztY.txt (5 lines)
+[2026-08-14 16:41:38] SHOW_TEXT_DISMISSED
+[2026-08-14 18:24:11] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-14 18:24:11] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_274340.txt
+[2026-08-14 18:24:11] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_274340.txt
+[2026-08-14 18:24:13] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_274340.txt
+[2026-08-14 18:24:13] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.8I8Uym8XXy.txt
+[2026-08-14 18:24:13] SHOW_TEXT_FILE /tmp/tmp.8I8Uym8XXy.txt (8 lines)
+[2026-08-14 18:24:27] SHOW_TEXT_DISMISSED
+[2026-08-14 18:24:29] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-14 18:24:30] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_274416.txt
+[2026-08-14 18:24:30] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_274416.txt
+[2026-08-14 18:24:31] SHOW_PAGE_PICK action=bible_tts -> /tmp/khtpm_choice_result_274416.txt
+[2026-08-14 18:24:31] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.tV5dFellKl.txt
+[2026-08-14 18:24:31] SHOW_TEXT_FILE /tmp/tmp.tV5dFellKl.txt (7 lines)
+[2026-08-14 18:24:34] SHOW_TEXT_DISMISSED
+[2026-08-14 18:24:37] CLICK(cursor) method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-14 18:24:37] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_274469.txt
+[2026-08-14 18:24:37] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_274469.txt
+[2026-08-14 18:24:37] SHOW_PAGE_PICK(cursor) action=bible_text -> /tmp/khtpm_choice_result_274469.txt
+[2026-08-14 18:24:38] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.fY8BMUVpQ7.txt
+[2026-08-14 18:24:38] SHOW_TEXT_FILE /tmp/tmp.fY8BMUVpQ7.txt (6 lines)
+[2026-08-14 18:24:44] SHOW_TEXT_DISMISSED
+[2026-08-14 18:24:51] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-14 18:24:51] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_274542.txt
+[2026-08-14 18:24:51] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_274542.txt
+[2026-08-14 18:24:54] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_274542.txt
+[2026-08-14 18:24:54] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.IqlntkMDRI.txt
+[2026-08-14 18:24:54] SHOW_TEXT_FILE /tmp/tmp.IqlntkMDRI.txt (6 lines)
+[2026-08-14 18:25:06] SHOW_TEXT_DISMISSED
+[2026-08-14 18:25:34] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-14 18:25:35] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_274772.txt
+[2026-08-14 18:25:35] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_274772.txt
+[2026-08-14 18:25:36] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_274772.txt
+[2026-08-14 18:25:36] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.06S6DfTlgR.txt
+[2026-08-14 18:25:36] SHOW_TEXT_FILE /tmp/tmp.06S6DfTlgR.txt (10 lines)
+[2026-08-14 18:25:44] SHOW_TEXT_DISMISSED
+[2026-08-14 22:22:38] WINDOW_OPEN
+[2026-08-14 22:22:38] LIVEDESK_INDEX=12
+[2026-08-14 22:22:42] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-14 22:22:42] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_46488.txt
+[2026-08-14 22:22:42] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_46488.txt
+[2026-08-14 22:22:43] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_46488.txt
+[2026-08-14 22:22:43] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.mUv4WknlAX.txt
+[2026-08-14 22:22:43] SHOW_TEXT_FILE /tmp/tmp.mUv4WknlAX.txt (6 lines)
+[2026-08-14 22:23:16] SHOW_TEXT_DISMISSED
+[2026-08-14 22:23:27] WINDOW_OPEN
+[2026-08-14 22:23:27] LIVEDESK_INDEX=12
+[2026-08-14 22:23:28] INJECTED: CLOSE
+[2026-08-14 22:26:00] WINDOW_OPEN
+[2026-08-14 22:26:00] LIVEDESK_INDEX=12
+[2026-08-14 22:26:50] WINDOW_OPEN
+[2026-08-14 22:26:50] LIVEDESK_INDEX=12
+[2026-08-14 23:21:35] WINDOW_OPEN
+[2026-08-14 23:21:35] LIVEDESK_INDEX=12
+[2026-08-14 23:25:04] INJECTED: CLOSE
+[2026-08-14 23:25:05] WINDOW_OPEN
+[2026-08-14 23:25:05] LIVEDESK_INDEX=12
+[2026-08-14 23:27:59] INJECTED: CLOSE
+[2026-08-14 23:28:09] WINDOW_OPEN
+[2026-08-14 23:28:09] LIVEDESK_INDEX=12
+[2026-08-15 01:18:14] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-15 01:18:14] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_40116.txt
+[2026-08-15 01:18:14] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_40116.txt
+[2026-08-15 01:18:18] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_40116.txt
+[2026-08-15 01:18:19] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.F8Z0xAibsV.txt
+[2026-08-15 01:18:19] SHOW_TEXT_FILE /tmp/tmp.F8Z0xAibsV.txt (5 lines)
+[2026-08-15 01:18:26] SHOW_TEXT_DISMISSED
+[2026-08-15 01:28:51] INJECTED: CLOSE
+[2026-08-15 01:40:57] WINDOW_OPEN
+[2026-08-15 01:40:57] LIVEDESK_INDEX=12
+[2026-08-15 01:41:00] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-15 01:41:01] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_67375.txt
+[2026-08-15 01:41:01] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_67375.txt
+[2026-08-15 01:41:02] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_67375.txt
+[2026-08-15 01:41:02] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.dzsw6l7ybX.txt
+[2026-08-15 01:41:02] SHOW_TEXT_FILE /tmp/tmp.dzsw6l7ybX.txt (6 lines)
+[2026-08-15 01:41:06] SHOW_TEXT_DISMISSED
+[2026-08-15 01:41:08] CLICK method=Read action=sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+[2026-08-15 01:41:08] INJECTED: SHOW_PAGE:/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl|/tmp/khtpm_choice_result_69151.txt
+[2026-08-15 01:41:08] SHOW_PAGE objects=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/choices.objects.pdl result=/tmp/khtpm_choice_result_69151.txt
+[2026-08-15 01:41:09] SHOW_PAGE_PICK action=bible_text -> /tmp/khtpm_choice_result_69151.txt
+[2026-08-15 01:41:09] INJECTED: SHOW_TEXT_FILE:/tmp/tmp.XL50a0D9m4.txt
+[2026-08-15 01:41:09] SHOW_TEXT_FILE /tmp/tmp.XL50a0D9m4.txt (5 lines)
+[2026-08-15 01:41:11] SHOW_TEXT_DISMISSED
+[2026-08-15 01:47:00] INJECTED: CLOSE
+[2026-08-15 01:48:01] WINDOW_OPEN
+[2026-08-15 01:48:01] LIVEDESK_INDEX=12
+[2026-08-15 01:59:23] INJECTED: CLOSE

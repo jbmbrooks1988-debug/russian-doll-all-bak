@@ -34,6 +34,27 @@ full writeup of this exact case). Only invent new shape if genuinely absent from
 
 ---
 
+## 🪟 HOUSE WINDOW STANDARD (2026-08-13, do not regress)
+
+Every popup/dialog/hq window in this house is an **X11 RGB window + CSS** (`khtpm_css_parser`) —
+**NOT a GL window** (no freeglut/gl-canvas/GLX mirror; GL is only for `gl_mirror`-style RGB
+mirrors in muchi-pals/egg_window/mutaclysm). A reminder popup was once built looking GL-ish and
+the user pushed back: *"its still a gl window. just follow standard dont waste time."* The rule:
+
+- Own detached process: `setsid nohup <bin> <house> <payload>` (button.sh / open_*.sh style).
+- CSS from a `.css` file (e.g. `reminder.css`), font scale from `#.desktop/hq_ui.pdl`
+  `font_scale=1.25`.
+- WM-managed but **borderless**: `_MOTIF_WM_HINTS` `decorations=0` — NOT `override_redirect`
+  (override_redirect exempts the window from Mutter's focus policy entirely; the 2026-08-12 fix in
+  `khtpm_hq_render.c:1189-1229` is canonical). Also `WM_HINTS input=True`, `WM_DELETE_WINDOW`,
+  class `MuchiverseLivedesk` (xwayland grab-access allowlist), `XMapRaised`.
+- Own drawn chrome bar (`#2b2b2b` + DejaVu Sans bold scaled(10) + `[x]` close), Escape/click/`[x]`
+  closes. Copy the helpers from `khtpm_hq_render.c` (`alloc_pixel`/`xft_color`/`font_for`/`scaled`
+  `:594-630`, window setup `:1197-1251`) or `xyzfs/bin/livedesk-clock/ops/lc_reminder_popup.c`
+  (built to match, 2026-08-13). Full note in `au11-hq/15.clock-design.md §6.2`.
+
+---
+
 ## 🎯 Project State
 
 ### What's Done

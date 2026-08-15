@@ -4,10 +4,14 @@ SECTION      | hq_menu_1_cmd       | sh *.monads/*.livedesk-taskbar/ops/run_khtp
 SECTION      | hq_menu_2_label     | hide/show
 SECTION      | hq_menu_2_cmd       | sh $.crypts/scripts/hide-show-desks.sh
 SECTION      | hq_menu_3_label     | dir
-SECTION      | hq_menu_3_cmd       | sh -c "cd . && xdg-open #.desktop || nautilus #.desktop || open #.desktop"
+SECTION      | hq_menu_3_cmd       | xdg-open .
 SECTION      | hq_menu_4_label     | X.quit
 SECTION      | hq_menu_4_cmd       | quit
-SECTION      | hq_menu_5_label     | cancel
+SECTION      | hq_menu_5_label     | settings
+SECTION      | hq_menu_5_cmd       | livedesk:open-settings
+SECTION      | hq_menu_6_label     | stats
+SECTION      | hq_menu_6_cmd       | livedesk:open-stats
+SECTION      | hq_menu_7_label     | cancel
 
 # top-left command strip (2do task #4). Defaults match what's written
 # below, so editing here is the only thing needed to change labels or
@@ -49,3 +53,13 @@ SECTION      | strip_btn_6_label        | db
 SECTION      | strip_btn_7_label        | plugins
 SECTION      | strip_btn_8_label        | store
 SECTION      | strip_btn_9_label        | network
+SECTION      | strip_btn_10_label       | menus
+SECTION      | strip_btn_11_label       | datetime
+SECTION      | strip_btn_12_label       | tools
+SECTION      | strip_btn_13_label       | (reserved)
+SECTION      | strip_btn_14_label       | h-ai
+SECTION      | strip_btn_14_menu_0_label    | Open h-ai
+SECTION      | strip_btn_14_menu_0_cmd      | setsid nohup bash '&.widgits/ai-cell/ops/launch_h_ai.sh' &
+SECTION      | strip_btn_14_menu_1_label    | Chat-h-ai
+SECTION      | strip_btn_14_menu_1_cmd      | livedesk:open-chat-hai
+SECTION      | strip_btn_14_menu_2_label    | cancel

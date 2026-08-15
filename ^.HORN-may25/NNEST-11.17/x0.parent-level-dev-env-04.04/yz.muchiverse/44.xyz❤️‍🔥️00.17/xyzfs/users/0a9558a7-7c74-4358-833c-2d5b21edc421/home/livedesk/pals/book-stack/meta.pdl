@@ -5,7 +5,7 @@ STATE        | menu_stay_open     | 1
 STATE        | grab_pointer       | 1
 STATE        | grab_keyboard      | 1
 STATE        | grab_pointer_while_stay_open | 1
-METHOD       | Read                 | sh -c 'H="$1" && export PACKAGE_DIR="$0" && exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
+METHOD       | Read                 | sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/event.pal"'
 METHOD       | Dir                  | sh -c 'exec xdg-open "$0"'
 METHOD       | Close                | CLOSE
 METHOD       | Cancel               | void

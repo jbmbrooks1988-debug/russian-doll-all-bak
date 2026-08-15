@@ -13,8 +13,37 @@ KEY       : ~/.ssh/id_ed25519 is on THIS box but was DENIED for that
 CLI       : sshpass -p '1234' ssh -o PreferredAuthentications=password \
               -o PubkeyAuthentication=no lfs.master@10.0.0.144 '<cmd>'
 ARCH      : x86_64, macOS 15.1.1, has gcc/clang/cc
-OLLAMA    : http://10.0.0.144:11434 (LLM inference only, model gemma3:270m)
+OLLAMA    : http://10.0.0.144:11434 (LLM inference only)
 HOME      : /Users/lfs.master
+
+REAL MODELS PULLED (checked 2026-08-12 via /api/tags, not guessed):
+  gemma3:1b, gemma3:270m, llama3-groq-tool-use:latest/8b (has "tools"
+  capability), llama2:latest, llama2-uncensored:latest,
+  nomic-embed-text:latest (embeddings only), stable-code:latest (3B,
+  family stablelm - a CODE model, this is almost certainly the
+  "ollama-3b" referred to for delegated implementation work),
+  llama3:latest.
+
+REAL FIX 2026-08-12 (direct report: "i recently restart the mac so u
+may need to restart ollama port services"): after a Mac restart,
+Ollama.app's own child `ollama serve` process only binds
+`localhost:11434` by default - NOT reachable from 10.0.0.x directly,
+only via SSH+localhost. `launchctl setenv OLLAMA_HOST 0.0.0.0:11434`
+alone does NOT fix this - the GUI app's own child process does not
+inherit it (tried, confirmed still localhost-only after restarting the
+app). REAL fix: kill the app-launched serve process and run the
+daemon directly with the env var in that shell:
+  ssh ... "kill <old ollama.app pids>; \
+    OLLAMA_HOST=0.0.0.0:11434 nohup \
+    /Applications/Ollama.app/Contents/Resources/ollama serve \
+    > /tmp/ollama-lan.log 2>&1 & disown"
+Verify with `lsof -iTCP:11434 -sTCP:LISTEN -P` on the Mac - must show
+`*:11434`, not `localhost:11434`. Confirmed working end-to-end this
+session: direct `curl http://10.0.0.144:11434/api/generate` from the
+Linux box succeeded with a real completion from stable-code:latest.
+CAVEAT: this fix does not survive a Mac reboot/Ollama.app relaunch -
+if OLLAMA is unreachable again, re-run the fix above before assuming
+anything else is wrong.
 
 ================================================================
 TEST THE CONNECTION

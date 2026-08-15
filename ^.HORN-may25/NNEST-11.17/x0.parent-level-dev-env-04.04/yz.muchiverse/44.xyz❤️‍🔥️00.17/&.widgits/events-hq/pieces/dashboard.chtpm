@@ -1,0 +1,28 @@
+<!-- dashboard.chtpm — events-hq Phase 1 (2do-rgb-hq.md's own scope).
+     Mirrors au11-hq/rpgmaker-mv-event-editor.html's VISIBLE, non-flex/
+     grid regions only (titlebar/toolbar/page-tabs/left-properties/
+     right-command-list/footer) - the mockup's flex/grid/modal-overlay
+     parts are hand-laid-out here instead (khtpm_css_parser.c has no
+     flex/grid/position:fixed support yet, see 2do-rgb-hq.md's own
+     "mockup reality check"). Left panel scoped down to Trigger+Notes
+     only (real house data); command picker is a separate popout
+     window, not a modal - see khtpm_events_hq_render.c. -->
+<window class="events-hq-window">
+  <panel id="toolbar" class="toolbar">
+    <text id="event-name" class="event-name" label="(entity)"/>
+  </panel>
+  <tabbar id="pagetabs" class="page-tabs">
+    <tab label="(no pages yet)"/>
+  </tabbar>
+  <panel id="left" class="left-panel">
+    <title class="block-title" label="Trigger"/>
+    <text id="trigger-value" class="prop-value" label="(unknown)"/>
+  </panel>
+  <panel id="right" class="command-list">
+    <title class="block-title" label="Commands"/>
+    <text id="cmd-empty" class="empty-msg" label="(no commands yet)"/>
+  </panel>
+  <panel id="footer" class="footer">
+    <button id="add-command" class="btn-primary" label="+ Add Command"/>
+  </panel>
+</window>

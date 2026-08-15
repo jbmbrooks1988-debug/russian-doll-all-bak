@@ -1,0 +1,30 @@
+<!-- chat-hai.chtpm — IRC-like chat layout: left sidebar for session list,
+     right panel for messages, input at the bottom (via CSS positioning).
+     Rendered by ops/chat_hai_hq_render.c against chat-hai.css.
+
+     The sidebar (left) holds the session/channel list. The panel (right)
+     contains two parts (layered via CSS):
+     - messages area: scrolling feed from transcript.ledger (sidebar-like)
+     - input area: text field + send button (positioned at bottom via CSS)
+
+     Note: The chtpm model normally puts sidebar left and panel right.
+     We reuse this, but the panel's layout (messages on top, input below)
+     is managed by the renderer's redraw() and CSS positioning. -->
+<window id="chat-window" class="chat-window">
+  <sidebar id="sessions" class="sessions">
+    <item label="(sessions loading)"/>
+  </sidebar>
+  <panel id="content" class="content">
+    <!-- Upper: messages feed (dynamically injected)
+         Lower: status + controls + input box -->
+    <text id="status" class="status-text" label="[running]"/>
+    <button id="toggle-pause" class="btn-control" label="Stop"/>
+    <button id="speed-toggle" class="btn-control" label="Speed: 6s"/>
+    <!-- REAL FIX 2026-08-15 (direct instruction: "send should auto send
+         when enter is pressed... we dont need a send button") - Enter
+         already sent the composer (see handle_key()'s own Enter branch,
+         unchanged), the button was redundant. Removing it lets
+         composer-text take the FULL row width instead of sharing it. -->
+    <text id="composer-text" class="composer-text" label="> "/>
+  </panel>
+</window>

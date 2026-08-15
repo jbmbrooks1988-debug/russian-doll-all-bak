@@ -36,6 +36,16 @@
 #include <X11/Xutil.h>
 #include <X11/Xatom.h>
 #include <X11/keysym.h>
+#include <X11/Xft/Xft.h> /* REAL FIX 2026-08-13 (direct live report:
+ * "used to show chinese but theres a bug" - the datetime cell showed
+ * garbled glyphs, not Chinese text): every draw call in this file used
+ * plain XDrawString(), the legacy X11 8-bit/Latin-1 text function -
+ * it treats each byte of a multi-byte UTF-8 string (e.g. Chinese
+ * "2026年08月13日") as a SEPARATE Latin-1 codepoint, producing garbage,
+ * not tofu/missing-glyph boxes. khtpm_hq_render.c (same ops/ dir,
+ * db-hq's own renderer) already solves this correctly with
+ * XftDrawStringUtf8 - ported that exact pattern here rather than
+ * inventing a new one. See font_for_strip()/xft_color_strip() below. */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -840,10 +850,99 @@ static int g_bottom_hit_n = 0;
 
 #define STRIP_NAV_BOX_W 64
 
+/* ---------- Xft/UTF8 text (real fix 2026-08-13, see this file's own
+ * top-of-file comment on the #include <X11/Xft/Xft.h> line for the
+ * full incident). One shared XftDraw context per offscreen Pixmap
+ * (g_hq_buf/g_popup_buf/g_strip_buf), recreated alongside each
+ * Pixmap's own recreate-on-resize block - same lifecycle, same
+ * pattern khtpm_hq_render.c already proves works. One shared font
+ * (Noto Sans CJK SC - confirmed present on this house's real desktop
+ * via `fc-match`, covers Latin + CJK in one family so callers never
+ * need to pick a font per-string) rather than per-element font_for()
+ * (this file has no CSS styling concept to key off, unlike db-hq). */
+static Colormap g_strip_cmap = 0;
+static XftFont *g_strip_font = NULL;
+static XftDraw *g_hq_xft = NULL, *g_popup_xft = NULL, *g_strip_xft = NULL;
+
+static XftFont *strip_font(Display *dpy, int screen) {
+    if (g_strip_font) return g_strip_font;
+    g_strip_font = XftFontOpenName(dpy, screen, "Noto Sans CJK SC:pixelsize=13");
+    if (!g_strip_font) g_strip_font = XftFontOpenName(dpy, screen, "DejaVu Sans:pixelsize=13");
+    return g_strip_font;
+}
+
+static XftColor strip_xft_color(Display *dpy, int screen, unsigned long pixel) {
+    /* Converts an already-allocated X11 pixel value (this file works
+     * in raw pixel values throughout, not #rrggbb strings) to an
+     * XftColor by round-tripping through XQueryColor - avoids
+     * duplicating this file's own pixel-allocation scheme. */
+    XftColor xc;
+    XColor qc; qc.pixel = pixel;
+    XQueryColor(dpy, g_strip_cmap ? g_strip_cmap : DefaultColormap(dpy, screen), &qc);
+    XRenderColor rc = { qc.red, qc.green, qc.blue, 0xffff };
+    XftColorAllocValue(dpy, DefaultVisual(dpy, screen), g_strip_cmap ? g_strip_cmap : DefaultColormap(dpy, screen), &rc, &xc);
+    return xc;
+}
+
+/* Draws UTF-8 text at the same (x, baseline-y) convention the old
+ * XDrawString call sites used, onto whichever XftDraw context matches
+ * the target Pixmap (buf). fg_pixel is the X11 pixel value the
+ * caller's GC was already set to (XGetGCValues(GCForeground)) - reuse
+ * it rather than introducing a second, separate color scheme. */
+static void strip_draw_utf8(Display *dpy, int screen, XftDraw *xftd, unsigned long fg_pixel,
+                             int x, int y, const char *s, int len) {
+    if (!xftd || !s || len <= 0) return;
+    XftFont *f = strip_font(dpy, screen);
+    if (!f) return;
+    XftColor col = strip_xft_color(dpy, screen, fg_pixel);
+    XftDrawStringUtf8(xftd, &col, f, x, y, (const FcChar8 *)s, len);
+    XftColorFree(dpy, DefaultVisual(dpy, screen), g_strip_cmap ? g_strip_cmap : DefaultColormap(dpy, screen), &col);
+}
+
 static Pixmap g_hq_buf = 0, g_popup_buf = 0, g_strip_buf = 0;
 static GC g_hq_buf_gc = 0, g_popup_buf_gc = 0, g_strip_buf_gc = 0;
 static int g_hq_buf_h = 0, g_hq_buf_w = 0;
 static int g_popup_buf_h = 0, g_popup_buf_w = 0;
+
+/* RGB compose->present refactor (2026-08-12, "this seems like a good
+ * time to do the tb refactor" - after db-hq's own conversion ran
+ * confirmed-stable for real). Same pattern as khtpm_hq_render.c's own
+ * g_frame_rgb: each of this app's THREE windows (strip/hq/popup) keeps
+ * ONE persistent RGB buffer holding "what's actually on screen right
+ * now" for that window, refreshed each present via one real XImage
+ * capture + XPutImage (proven pixel-identical to XCopyArea in the
+ * !.khtpm-rgb-refactor.md Phase 0 test, then confirmed again on
+ * db-hq's own real code). present_rgb() is the one shared helper all
+ * three call sites use instead of each doing its own bare XCopyArea -
+ * composition (everything drawn into g_*_buf above) is untouched. */
+static unsigned char *g_strip_rgb = NULL; static int g_strip_rgb_w = 0, g_strip_rgb_h = 0;
+static unsigned char *g_hq_rgb = NULL;    static int g_hq_rgb_w = 0, g_hq_rgb_h = 0;
+static unsigned char *g_popup_rgb = NULL; static int g_popup_rgb_w = 0, g_popup_rgb_h = 0;
+
+static void present_rgb(Display *dpy, Pixmap buf, Window win, GC gc, int w, int h,
+                         unsigned char **rgb_slot, int *rgb_w, int *rgb_h) {
+    XSync(dpy, False);
+    XImage *img = XGetImage(dpy, buf, 0, 0, (unsigned)w, (unsigned)h, AllPlanes, ZPixmap);
+    if (!img) { XCopyArea(dpy, buf, win, gc, 0, 0, (unsigned)w, (unsigned)h, 0, 0); return; }
+    XPutImage(dpy, win, gc, img, 0, 0, 0, 0, (unsigned)w, (unsigned)h);
+    if (*rgb_w != w || *rgb_h != h) {
+        free(*rgb_slot);
+        *rgb_slot = malloc((size_t)w * h * 3);
+        *rgb_w = w; *rgb_h = h;
+    }
+    if (*rgb_slot) {
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
+                unsigned long px = XGetPixel(img, x, y);
+                size_t o = ((size_t)y * w + x) * 3;
+                (*rgb_slot)[o]     = (unsigned char)((px >> 16) & 0xff);
+                (*rgb_slot)[o + 1] = (unsigned char)((px >> 8) & 0xff);
+                (*rgb_slot)[o + 2] = (unsigned char)(px & 0xff);
+            }
+        }
+    }
+    XDestroyImage(img);
+}
 
 /* One header cell's drawn string + pixel width, matching the old
  * header_cell_width() formula exactly (strlen*8+20, min 40) so drawn
@@ -1024,11 +1123,13 @@ static void draw_header_win(Display *dpy, Window win, GC gc, LayDoc *doc, SpStat
     if (w_guess < 1) w_guess = 1;
     if (!g_hq_buf || g_hq_buf_h < h || g_hq_buf_w < w_guess) {
         if (g_hq_buf) { XFreePixmap(dpy, g_hq_buf); XFreeGC(dpy, g_hq_buf_gc); }
+        if (g_hq_xft) { XftDrawDestroy(g_hq_xft); g_hq_xft = NULL; }
         g_hq_buf = XCreatePixmap(dpy, win, w_guess, h, DefaultDepth(dpy, DefaultScreen(dpy)));
         g_hq_buf_gc = XCreateGC(dpy, g_hq_buf, 0, NULL);
         XCopyGC(dpy, gc, GCForeground | GCBackground | GCFont, g_hq_buf_gc);
         g_hq_buf_h = h;
         g_hq_buf_w = w_guess;
+        g_hq_xft = XftDrawCreate(dpy, g_hq_buf, DefaultVisual(dpy, DefaultScreen(dpy)), g_strip_cmap ? g_strip_cmap : DefaultColormap(dpy, DefaultScreen(dpy)));
     }
     unsigned long fg, bg_pixel;
     { XGCValues gv; XGetGCValues(dpy, gc, GCForeground, &gv); fg = gv.foreground; }
@@ -1055,7 +1156,7 @@ static void draw_header_win(Display *dpy, Window win, GC gc, LayDoc *doc, SpStat
         } else {
             snprintf(arm_lab, sizeof(arm_lab), "%s", focus_mark);
         }
-        XDrawString(dpy, g_hq_buf, bgc, 4, KTB_BAR_H / 2 + 4, arm_lab, (int)strlen(arm_lab));
+        strip_draw_utf8(dpy, DefaultScreen(dpy), g_hq_xft, fg, 4, KTB_BAR_H / 2 + 4, arm_lab, (int)strlen(arm_lab));
     }
     XDrawLine(dpy, g_hq_buf, bgc, STRIP_NAV_BOX_W, 0, STRIP_NAV_BOX_W, KTB_BAR_H);
 
@@ -1082,7 +1183,7 @@ static void draw_header_win(Display *dpy, Window win, GC gc, LayDoc *doc, SpStat
             blit_tab_sprite(dpy, g_hq_buf, bgc, sp, header_w + 4, (KTB_BAR_H - TAB_SPRITE_PX) / 2, TAB_SPRITE_PX, bg_pixel);
             text_x = header_w + TAB_SPRITE_PX + 10;
         }
-        XDrawString(dpy, g_hq_buf, bgc, text_x, KTB_BAR_H / 2 + 4, disp, (int)strlen(disp));
+        strip_draw_utf8(dpy, DefaultScreen(dpy), g_hq_xft, fg, text_x, KTB_BAR_H / 2 + 4, disp, (int)strlen(disp));
         if (g_header_hit_n < SP_MAX_HIT) {
             SpHitRect *r = &g_header_hits[g_header_hit_n++];
             r->x0 = header_w; r->x1 = header_w + cw; r->y0 = 0; r->y1 = KTB_BAR_H; r->elidx = i;
@@ -1091,7 +1192,7 @@ static void draw_header_win(Display *dpy, Window win, GC gc, LayDoc *doc, SpStat
     }
     g_header_row_w = header_w;
 
-    XCopyArea(dpy, g_hq_buf, win_real, g_hq_buf_gc, 0, 0, w_guess, h, 0, 0);
+    present_rgb(dpy, g_hq_buf, win_real, g_hq_buf_gc, w_guess, h, &g_hq_rgb, &g_hq_rgb_w, &g_hq_rgb_h);
     XFlush(dpy);
 }
 
@@ -1176,11 +1277,13 @@ static int draw_popup_win(Display *dpy, Window win, GC gc, LayDoc *doc, SpState 
     Window win_real = win;
     if (!g_popup_buf || g_popup_buf_h < h || g_popup_buf_w < w) {
         if (g_popup_buf) { XFreePixmap(dpy, g_popup_buf); XFreeGC(dpy, g_popup_buf_gc); }
+        if (g_popup_xft) { XftDrawDestroy(g_popup_xft); g_popup_xft = NULL; }
         g_popup_buf = XCreatePixmap(dpy, win, w, h, DefaultDepth(dpy, DefaultScreen(dpy)));
         g_popup_buf_gc = XCreateGC(dpy, g_popup_buf, 0, NULL);
         XCopyGC(dpy, gc, GCForeground | GCBackground | GCFont, g_popup_buf_gc);
         g_popup_buf_h = h;
         g_popup_buf_w = w;
+        g_popup_xft = XftDrawCreate(dpy, g_popup_buf, DefaultVisual(dpy, DefaultScreen(dpy)), g_strip_cmap ? g_strip_cmap : DefaultColormap(dpy, DefaultScreen(dpy)));
     }
     unsigned long fg, bg_pixel;
     { XGCValues gv; XGetGCValues(dpy, gc, GCForeground, &gv); fg = gv.foreground; }
@@ -1198,7 +1301,7 @@ static int draw_popup_win(Display *dpy, Window win, GC gc, LayDoc *doc, SpState 
             snprintf(row0, sizeof(row0), "%s %s: [%s_]  (Enter=save, Esc=cancel)", pref, st->cliio_label, st->cliio_buffer);
         else
             snprintf(row0, sizeof(row0), "%s %s: [%s]  (Enter=edit, Esc=cancel)", pref, st->cliio_label, st->cliio_buffer);
-        XDrawString(dpy, g_popup_buf, bgc, 8, KTB_BAR_H / 2 + 4, row0, (int)strlen(row0));
+        strip_draw_utf8(dpy, DefaultScreen(dpy), g_popup_xft, fg, 8, KTB_BAR_H / 2 + 4, row0, (int)strlen(row0));
         if (g_popup_hit_n < SP_MAX_HIT) {
             SpHitRect *r = &g_popup_hits[g_popup_hit_n++];
             r->x0 = 0; r->x1 = w; r->y0 = 0; r->y1 = KTB_BAR_H; r->elidx = doc->active_index;
@@ -1211,7 +1314,7 @@ static int draw_popup_win(Display *dpy, Window win, GC gc, LayDoc *doc, SpState 
             lay_get_label(doc, row_elidx[r], sp_get_var, &g_st, label, sizeof(label));
             char lab[192];
             snprintf(lab, sizeof(lab), "%s %d. %s", lay_cursor_prefix(doc, row_elidx[r]), r + 1, label);
-            XDrawString(dpy, g_popup_buf, bgc, 12, row_y + KTB_BAR_H / 2 + 4, lab, (int)strlen(lab));
+            strip_draw_utf8(dpy, DefaultScreen(dpy), g_popup_xft, fg, 12, row_y + KTB_BAR_H / 2 + 4, lab, (int)strlen(lab));
             if (g_popup_hit_n < SP_MAX_HIT) {
                 SpHitRect *hr = &g_popup_hits[g_popup_hit_n++];
                 hr->x0 = 0; hr->x1 = w; hr->y0 = row_y; hr->y1 = row_y + KTB_BAR_H; hr->elidx = row_elidx[r];
@@ -1220,7 +1323,7 @@ static int draw_popup_win(Display *dpy, Window win, GC gc, LayDoc *doc, SpState 
     }
 
     XMoveResizeWindow(dpy, win_real, win_x, win_y, w, h);
-    XCopyArea(dpy, g_popup_buf, win_real, g_popup_buf_gc, 0, 0, w, h, 0, 0);
+    present_rgb(dpy, g_popup_buf, win_real, g_popup_buf_gc, w, h, &g_popup_rgb, &g_popup_rgb_w, &g_popup_rgb_h);
     XFlush(dpy);
     return 1;
 }
@@ -1237,6 +1340,7 @@ static void draw_bottom(Display *dpy, Window win, GC gc, int sw, unsigned long b
         g_strip_buf = XCreatePixmap(dpy, win, sw, KTB_BAR_H, DefaultDepth(dpy, DefaultScreen(dpy)));
         g_strip_buf_gc = XCreateGC(dpy, g_strip_buf, 0, NULL);
         XCopyGC(dpy, gc, GCForeground | GCBackground | GCFont, g_strip_buf_gc);
+        g_strip_xft = XftDrawCreate(dpy, g_strip_buf, DefaultVisual(dpy, DefaultScreen(dpy)), g_strip_cmap ? g_strip_cmap : DefaultColormap(dpy, DefaultScreen(dpy)));
     }
     unsigned long fg;
     { XGCValues gv; XGetGCValues(dpy, gc, GCForeground, &gv); fg = gv.foreground; }
@@ -1279,7 +1383,7 @@ static void draw_bottom(Display *dpy, Window win, GC gc, int sw, unsigned long b
                 blit_tab_sprite(dpy, win, bgc, sp, x + 2, sy, TAB_SPRITE_PX, bg_pixel);
                 text_x = x + 8 + TAB_SPRITE_PX;
             }
-            XDrawString(dpy, win, bgc, text_x, KTB_BAR_H / 2 + 4, lab, (int)strlen(lab));
+            strip_draw_utf8(dpy, DefaultScreen(dpy), g_strip_xft, fg, text_x, KTB_BAR_H / 2 + 4, lab, (int)strlen(lab));
             if (g_bottom_hit_n < SP_MAX_HIT) {
                 SpHitRect *r = &g_bottom_hits[g_bottom_hit_n++];
                 r->x0 = x; r->x1 = x + w; r->y0 = 0; r->y1 = KTB_BAR_H; r->elidx = ci;
@@ -1288,7 +1392,7 @@ static void draw_bottom(Display *dpy, Window win, GC gc, int sw, unsigned long b
         }
     }
 
-    XCopyArea(dpy, g_strip_buf, win_real, g_strip_buf_gc, 0, 0, sw, KTB_BAR_H, 0, 0);
+    present_rgb(dpy, g_strip_buf, win_real, g_strip_buf_gc, sw, KTB_BAR_H, &g_strip_rgb, &g_strip_rgb_w, &g_strip_rgb_h);
     XFlush(dpy);
 }
 
@@ -1431,6 +1535,7 @@ int main(int argc, char **argv) {
     }
     int sw = DisplayWidth(dpy, DefaultScreen(dpy));
     int sh = DisplayHeight(dpy, DefaultScreen(dpy));
+    g_strip_cmap = DefaultColormap(dpy, DefaultScreen(dpy));
 
     load_state(&g_st);
 
@@ -1581,6 +1686,21 @@ int main(int argc, char **argv) {
             fg = parse_color(dpy, g_st.theme_fg, fg);
             XSetWindowBackground(dpy, win, bg);
             XSetForeground(dpy, gc, fg);
+            /* REAL FIX 2026-08-13: XSetBackground(dpy, gc, bg) was only
+             * ever called once at startup (line ~1534), never again
+             * here. draw_bottom()/draw_header_win()'s own sprite alpha-
+             * blending (blit_tab_sprite()) reads the GC's CACHED
+             * background via XGetGCValues(..., GCBackground, ...), not
+             * the window's background_pixel attribute - so after any
+             * live theme change, XSetWindowBackground below correctly
+             * updates the window's own bg, but sprites kept blending
+             * against the ORIGINAL startup color forever, producing a
+             * visible top/bottom-bar (or pre/post-theme-change) color
+             * mismatch once any live-reload happened after startup.
+             * Direct user report: "colors have not been going back to
+             * usual there is a discrepancy of discoloration between top
+             * and bottom bar now." */
+            XSetBackground(dpy, gc, bg);
             draw_bottom(dpy, win, gc, sw, bg, &bottom_doc);
             XSetWindowBackground(dpy, hq_win, bg);
             draw_header_win(dpy, hq_win, gc, &header_doc, &g_st);

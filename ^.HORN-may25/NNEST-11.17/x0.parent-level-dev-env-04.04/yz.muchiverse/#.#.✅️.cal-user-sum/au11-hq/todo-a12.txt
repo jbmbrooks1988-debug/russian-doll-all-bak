@@ -1,3 +1,16 @@
+══════════════════════════════════════════════════════════════════════
+STALE — SUPERSEDED, kept for history only (2026-08-12, direct instruction
+"remove the stale info or w/e"). Do not resume from this file.
+- Phase A (db-ez) was explicitly dropped mid-session: "wanna just do
+  db-hq. we may not need db-ez."
+- Phase B (HQML CSS engine) is DONE, not a plan anymore: db-hq is real,
+  built, wired, and RGB-refactored - see EVENTS-HQ-RGB-HANDOFF.md and
+  !.khtpm-rgb-refactor.md for what actually shipped.
+- Current real next-step list lives in EVENTS-HQ-RGB-HANDOFF.md §1
+  ("Near-term: events-hq still needs real logic event-ez already has")
+  and HAIKU_TASKS.md (bounded, ready-to-pick-up tasks).
+══════════════════════════════════════════════════════════════════════
+
 TODO — db-ez / db-hq / HQML CSS engine (started 2026-08-12)
 
 Reference mockup: au11-hq/rpg-maker-database.html (SUPERSEDES the

@@ -2809,7 +2809,284 @@ LESSON IN ONE LINE: for livedesk chrome and context menus, boring
 ownership + one mutex + soft focus on the active popup beats any
 fancy focus graph; recompose only on real change.
 
-=======================================================================
+========================================================================
+PITFALL 71: khtpm taskbar theme change leaves sprites blending against
+the STALE background color (GC-cached bg never refreshed on reload)
+========================================================================
+
+SYMPTOM: after a live theme change (bg/fg), the taskbar's top bar and
+bottom bar show a color mismatch - one bar's sprites/flat-fill uses
+the OLD color, the other uses the new one. Direct user report:
+"colors have not been going back to usual there is a discrepancy of
+discoloration between top and bottom bar now."
+
+ROOT CAUSE: khtpm_strip_parser.c's live-reload path
+(frame_changed_dirty() branch, ~line 1620) calls XSetWindowBackground()
++ XSetForeground() when the theme changes, but never calls
+XSetBackground(dpy, gc, bg) again after the ONE-TIME startup call
+(~line 1534). draw_bottom()/draw_header_win()'s sprite alpha-blending
+(blit_tab_sprite()) reads the GC's OWN cached background via
+XGetGCValues(dpy, gc, GCBackground, &gv) - NOT the window's
+background_pixel attribute. So after any live theme change post-
+startup, the window's flat-fill background updates correctly
+(XSetWindowBackground), but sprites keep compositing against whatever
+background color was set at PROCESS STARTUP, forever, until the next
+full restart.
+
+FIX: add the missing XSetBackground(dpy, gc, bg) call right alongside
+the existing XSetWindowBackground() calls on the reload path, so the
+GC's cached background tracks the window's real background exactly
+like the one-time startup code already does.
+
+FILES: *.monads/*.livedesk-taskbar/ops/khtpm_strip_parser.c - reload
+  branch near line 1620 (frame_changed_dirty()), original one-time
+  setup near line 1534
+
+SEE ALSO: PITFALL 70 (livedesk toolbar focus - same file, same
+  general "don't get fancy, keep GC/window state in lockstep" lesson).
+
+========================================================================
+PITFALL 72: concurrent-instance race corrupted REAL production config
+(theme.pdl), not just a test fixture - single-instance guard applies
+to windows you're actively BUILDING too, no exceptions
+========================================================================
+
+SYMPTOM: user's live taskbar went black-text-on-black (fonts/sprites
+invisible). Direct report: "i no longer see any fonts in tb or
+anything sprites. we broke it."
+
+ROOT CAUSE: while building the taskbar HQ menu's new "Settings" window
+(khtpm_taskbar_settings_render.c, a palette picker that writes
+#.desktop/livedesk_theme.pdl's COLOR|bg / COLOR|fg keys), launched it
+via bare `setsid nohup ./+x/... &` for a quick relay smoke-test, then
+- WITHOUT confirming the first one had been killed - launched a SECOND
+copy directly (`./+x/... 2>&1 &` in the foreground this time) to watch
+it interactively. Both processes independently polled the SAME relay
+file (#.desktop/taskbar_settings_agent_relay.txt) and the same
+apply_theme() read-modify-write path, each with their OWN independent
+g_focus_nav/g_chosen_bg_idx/g_chosen_fg_idx state - the exact same
+class of bug as PITFALL 53 (backgrounded button.sh zombies) and the
+2026-08-13 ai-cell concurrent-process incident (5 processes racing on
+one relay file, see _.0.aigent-testing-k9.txt SCOPE ADDENDUM 2026-08-13),
+except this time the shared resource being raced on was the house's
+ACTUAL live theme config, not a disposable test session dir. One
+process (which never received the digit meant for it, so its focus
+stayed at the default swatch, index 0 = black) received two stray
+Enters and reached its own phase-2 "apply" with bg_idx=0 fg_idx=0 -
+wrote bg=#000000 fg=#000000 into the REAL livedesk_theme.pdl, and the
+running taskbar manager picked it up on its own scoped auto-restart.
+
+The bitter irony: this happened MINUTES after writing down "always
+confirm zero stray processes before launching, every time" as a
+lesson from the ai-cell incident - the discipline was internalized as
+"testing an EXISTING window," not as "every khtpm/-hq window,
+including brand new ones I'm actively writing, no exceptions."
+
+FIX: killed both stray processes, restored livedesk_theme.pdl's
+original bg=#000000 fg=#00ff00 by hand, restarted the taskbar via the
+same scoped run_khtpm_strip.sh new the HQ menu's own "$.restart" row
+uses, confirmed fonts/sprites visible again (user-confirmed live).
+Then re-ran the ENTIRE pick-primary -> pick-secondary -> apply flow
+correctly, this time exclusively through button_taskbar_settings.sh
+(the real single-instance-guard launcher, written but not used the
+first time around) - confirmed exactly one PID before sending any
+relay codes.
+
+LESSON IN ONE LINE: "confirm zero stray processes before launching"
+has NO exception for "it's a window I just wrote, this is just a
+quick look" - check `pgrep -f` before every single launch, always,
+especially for anything writing to shared non-disposable state (a
+real config another live process reads) rather than its own private
+session dir, where the blast radius of a race is live user-visible
+breakage, not just a confusing test result.
+
+FILES: *.monads/*.livedesk-taskbar/ops/khtpm_taskbar_settings_render.c,
+  button_taskbar_settings.sh (the correct launcher, not used the first
+  time), #.desktop/livedesk_theme.pdl (the corrupted shared state)
+
+SEE ALSO: PITFALL 53 (backgrounded button.sh zombies), PITFALL 71
+  (same session, same file family - GC/window state lockstep lesson),
+  _.0.aigent-testing-k9.txt Rule 3/Rule 8 (the procedural rule this
+  incident is the real-world case study for).
+
+========================================================================
+PITFALL 73: ai-cell's JSON response parser silently corrupted \uXXXX
+escapes ('>' became literal "u003e" text) - found via a cross-model
+signal, not a single bad output
+========================================================================
+
+SYMPTOM: model-generated bash scripts (via h-ai/ai-cell) contained
+garbage like "u003e" where ">" should be, and "u0026" where "&" should
+be - real, runnable output corrupted into broken syntax.
+
+ROOT CAUSE: `extract_response_field()` (khtpm_ai_cell_render.c) is a
+hand-rolled JSON string unescaper that explicitly handled `\n` and
+`\t` but had no `\uXXXX` case. Ollama's own standard JSON encoding
+escapes '>' as `>` and '&' as `&` (both entirely normal,
+spec-compliant JSON) - hitting the parser's generic `else` branch,
+which after consuming the backslash just emitted the literal 'u'
+character and let the hex digits "003e"/"0026" fall through as plain
+text, corrupting ANY response containing those characters.
+
+**How this was actually caught** (real methodology worth repeating):
+TWO INDEPENDENT models (stable-code:latest, gemma3:1b) produced the
+EXACT SAME corruption pattern on the same delegated task. A single bad
+output from one model is "the model got it wrong" - the SAME artifact
+from two unrelated models is a signal the common factor (this app's
+own parser) is the actual bug. Don't stop investigating at "the model
+produced garbage" without checking whether a DIFFERENT model produces
+the identical garbage - if it does, look at your own code first.
+
+FIX: added a real `\uXXXX` → UTF-8 decoder (BMP range: 1-3 byte UTF-8
+depending on codepoint) to `extract_response_field()`. Confirmed live:
+re-ran the same delegated task after rebuilding, '>' rendered
+correctly instead of "u003e".
+
+FILES: `&.widgits/ai-cell/ops/khtpm_ai_cell_render.c` -
+`extract_response_field()`
+
+SEE ALSO: `au11-hq/EVENTS-PAL-BUILDOUT-PLAN.md` §8.3 for the full
+delegation-pipeline context this was found inside.
+
+========================================================================
+PITFALL 74: khtpm taskbar HQ menu items from livedesk_taskbar.pdl were
+NEVER actually readable - read_key_value() skipped every real "SECTION
+| key | value" data row, not just the true header divider
+========================================================================
+
+SYMPTOM: HQ menu (taskbar header cell 1) only ever showed 3 hardcoded
+items ($.restart / X.quit / cancel), no matter what was in
+#.desktop/livedesk_taskbar.pdl's hq_menu_N_label/hq_menu_N_cmd rows -
+including rows that had "always" been there (hide/show, dir), not just
+newly-added ones. Direct user report: "wait. i see neither settings
+nor statistics added to tb. where is it?!"
+
+ROOT CAUSE: `read_key_value()` (khtpm_taskbar_manager.c) had
+`if (strncmp(line, "SECTION", 7) == 0) continue;` - intended to skip
+the file's own true header/divider line ("SECTION | KEY | VALUE"), but
+in this house's real .pdl convention EVERY data row also starts with
+the literal word "SECTION" as its row-tag ("SECTION | hq_menu_5_label |
+settings"). The blanket check skipped ALL of them, header and real
+data alike - `livedesk_build_hq_menu()`'s per-row read_key_value()
+calls always returned empty, `count` stayed 0, and the function always
+fell into its hardcoded 3-item fallback. This was NOT a regression
+from any one session's edits - it looks like this function has NEVER
+been able to read hq_menu_N_* from this file format, the fallback just
+happened to look plausible enough (3 real-looking menu items) that
+nobody noticed until someone went looking for a SPECIFIC missing item.
+
+HOW THIS WAS ACTUALLY CAUGHT: direct relay verification, not
+assumption - dumped #.desktop/strip_var_hqitems.txt (the live-rendered
+menu content) after actually opening the HQ menu via relay, and it
+showed exactly the 3-item hardcoded fallback set, not the 7 real rows
+on disk. Confirmed the .pdl file itself was correct (grep showed all 7
+rows), confirmed the running process had the right house_root, then
+found the actual bug by reading read_key_value()'s source directly
+instead of continuing to guess at config/restart issues.
+
+FIX: only skip the line if it is the TRUE header row - check that the
+field immediately after "SECTION |" is literally the word "KEY", not
+just that the line starts with "SECTION". Real data rows (whose second
+field is a real key name like "hq_menu_5_label") are no longer
+skipped.
+
+REAL RELAY TESTING NOTE (separate but related): opening the HQ menu
+via relay needs digit-then-ENTER (e.g. "49" then "13"), NOT a bare
+digit alone - a bare digit only accumulates into digit_buf, it does
+not activate/open the targeted header cell by itself. Confirmed via
+#.desktop/strip_state.txt's own "hq_open" key (0=closed, 1=open) and
+strip_var_hqitems.txt (only populated while hq_open=1).
+
+FILES: `*.monads/*.livedesk-taskbar/ops/khtpm_taskbar_manager.c` -
+`read_key_value()` (~line 697)
+
+SEE ALSO: this bug likely affected EVERY OTHER caller of
+read_key_value() reading a "SECTION"-tagged .pdl row too (strip_user_cmd,
+datetime_lang, session state reads, etc. all go through the same
+function) - worth auditing those callers for the same silently-empty-
+read symptom if something else "never seems to read its config" in
+this taskbar family.
+
+========================================================================
+PITFALL 75: taskbar HQ "stats" window "never opens" - THREE stacked
+silent failures (relative-path pdl row, find-based OPS_DIR, sh-vs-bash)
+========================================================================
+
+SYMPTOM: clicking "stats" in the taskbar HQ menu (cell 1) did nothing -
+the menu closed but no stats window ever appeared. "This has been
+constantly buggy. why cant it just copy how hai opens?" - and ai-cell /
+settings / db-hq all DID open fine. The failure was silent at every
+layer: no window, no error dialog, no log line, no nonzero exit anyone
+looked at.
+
+ROOT CAUSE: not one bug but THREE, stacked, each masking the next:
+
+  1) RELATIVE PATH IN PDL ROW. livedesk_taskbar.pdl's stats row was
+     `sh "&.hq-apps/stats-hq/open_stats_hq.sh" .` - a raw shell
+     command that fell through to ktb_hq_activate()'s generic
+     shell-out fallback. That fallback's ktb_action_portable() only
+     rewrites `$.crypts/`, `&.widgits/`, `@.apps/` markers - it does
+     NOT handle `&.hq-apps/` - so the relative path was passed through
+     verbatim and resolved against the MANAGER's own cwd, which is the
+     house's PARENT dir (run_khtpm_strip.sh never chdirs to
+     house_root). The shell silently could not find the script.
+  2) FIND-BASED OPS_DIR. open_stats_hq.sh resolved its render binary
+     via `find "$HOUSE_ROOT" -name "*livedesk-taskbar" | head -1`,
+     which matched the HARNESS dir first (#.desktop/harnesses/
+     khtpm-livedesk-taskbar), never the real ops dir - so
+     "$OPS_DIR/+x/khtpm_hq_render.+x" did not exist and it bailed
+     with "build failed" (written to a discarded stderr).
+  3) sh-vs-BASH SHEBANG. Even once the path resolved, the manager
+     launched launchers via `sh -c 'sh "script" ...'` - the inner
+     `sh` runs dash, ignoring the script's `#!/bin/bash`. The stats
+     script uses bash-only array syntax (`sessions=()`, line ~81),
+     so dash died with `Syntax error: "(" unexpected`. ai-cell's
+     button.sh happens to be POSIX-safe, which is why hai "just
+     worked" under sh while stats never did.
+
+WHY THIS WAS HARD TO FIND: every layer was silent. The generic
+fallback discards stderr (`>/dev/null 2>&1`), the script's own
+"build failed" went to that same discarded stderr, and the final dash
+syntax error only showed up once the first two were fixed and stderr
+was redirected to a file instead of /dev/null. Any single layer being
+fixed alone looked like "still broken."
+
+FIX (2026-08-13):
+  * Stats (and settings) now use a dedicated reserved command
+    (`livedesk:open-stats`, mirroring `livedesk:open-settings` /
+    `livedesk:open-ai-cell`) instead of a raw relative shell row.
+  * All HQ window launcher paths moved to the house-standard registry
+    `#.desktop/livedesk_launchers.pdl` (`SECTION | launcher_<app> |
+    <path relative to house_root>`) and resolved against house_root by
+    the new ktb_hq_launcher_path() - never cwd-dependent, never
+    hardcoded in C.
+  * open_stats_hq.sh now uses the literal house-standard ops path
+    `$HOUSE_ROOT/*.monads/*.livedesk-taskbar/ops` (exactly like
+    open_db_hq.sh/open_event_ez.sh), NOT find.
+  * Launchers are invoked with `bash` (`setsid nohup sh -c 'bash
+    "script" "house_root"'`), honoring the `#!/bin/bash` shebang every
+    launcher in the registry carries.
+
+VERIFY THIS PATTERN WHEN: any taskbar HQ row "does nothing" while a
+sibling row works - check (a) does the pdl row hit a real reserved
+dispatch or the generic fallback, (b) is the target path absolute-vs-
+cwd or find-derived, (c) does the launched script need bash while the
+invocation forces sh. All three are silent killers.
+
+FILES:
+  * `#.desktop/livedesk_taskbar.pdl` - hq_menu_6_cmd now
+    `livedesk:open-stats` (was a relative shell row)
+  * `#.desktop/livedesk_launchers.pdl` - NEW house-standard launcher
+    registry (settings/stats/ai/db)
+  * `*.monads/*.livedesk-taskbar/ops/khtpm_taskbar_manager.c` -
+    ktb_hq_launcher_path() (~line 752), livedesk:open-settings and
+    livedesk:open-stats branches (now bash-launch via the registry)
+  * `&.hq-apps/stats-hq/open_stats_hq.sh` - OPS_DIR fix (find ->
+    literal house path)
+  * `*.monads/*.livedesk-taskbar/ops/button_taskbar_stats.sh` -
+    STATS_SCRIPT path fixed (xyzfs/bin/stats-hq/ops/ -> &.hq-apps/)
+
+========================================================================
 END OF XYZOS-PITFALLS
 Add new pitfalls above this line as they are discovered.
 ========================================================================

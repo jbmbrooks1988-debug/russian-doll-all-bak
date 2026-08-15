@@ -28,6 +28,10 @@
 #include <string.h>
 #include <signal.h>
 #include <time.h>
+#ifndef _WIN32
+#include <sys/types.h>
+#include <unistd.h>
+#endif
 
 /* Matches tp_taskbar.c's own POLL_INTERVAL_USEC (300ms) for consistency
  * across all taskbar-family binaries, not an independently chosen value. */
@@ -375,6 +379,22 @@ static void dispatch_code(KtbState *s, int code) {
         ktb_nav_arm(s);
         return;
     }
+    /* Real HQ menu's "X.quit" row (ktb_hq_open() which==5) can only
+     * raise a flag from inside ktb_hq_activate() - see that field's own
+     * header comment in khtpm_taskbar_manager.h. This check must be BEFORE
+     * the hq_open block because ktb_hq_close() sets hq_open=0, so if the
+     * check stayed inside the hq_open block, it would be unreachable.
+     * This is the one place that actually stops the event loop, mirroring
+     * tp_taskbar.c's own "quit" command branch in agent_relay_dispatch(). */
+    if (s->hq_quit_requested) {
+        s->hq_quit_requested = 0;
+        ktb_quit_and_save(s);
+        #ifndef _WIN32
+        pid_t ppid = getppid();
+        if (ppid > 1) kill(ppid, SIGTERM);
+        #endif
+        exit(0);
+    }
     if (s->hq_open) {
         if (code == KSC_ESCAPE) {
             ktb_hq_close(s);
@@ -409,15 +429,14 @@ static void dispatch_code(KtbState *s, int code) {
              * below does. */
             ktb_hq_open(s, code - KSC_HQ_HEADER_BASE);
         }
-        /* Real HQ menu's "X.quit" row (ktb_hq_open() which==5) can only
-         * raise a flag from inside ktb_hq_activate() - see that field's own
-         * header comment in khtpm_taskbar_manager.h. This is the one place
-         * that actually stops the event loop, mirroring tp_taskbar.c's own
-         * "quit" command branch in agent_relay_dispatch(). */
         if (s->hq_quit_requested) {
             s->hq_quit_requested = 0;
             ktb_quit_and_save(s);
-            g_running = 0;
+            #ifndef _WIN32
+            pid_t ppid = getppid();
+            if (ppid > 1) kill(ppid, SIGTERM);
+            #endif
+            exit(0);
         }
         return;
     }
@@ -516,6 +535,47 @@ int main(int argc, char **argv) {
 
     KtbState st;
     ktb_init(&st, house_root);
+
+    /* REAL FIX 2026-08-12, direct report ("i sawn u double render all
+     * entities in toolbar on accident. we should have a guard so that
+     * never happens"): livedesk_taskbar.pid (st.pid_path) already
+     * existed but nothing ever CHECKED it before this process started
+     * doing real work - it was purely a courtesy record for humans/
+     * scripts to read, not an enforced singleton. Traced live: manually
+     * launching this binary a second time (while strip_parser's own
+     * ensure_manager_running()/launch_manager() already had a live one
+     * running as its tracked child) produced TWO managers both polling
+     * the same strip_history.txt/livedesk_open.txt/reset dispatch at
+     * once - every relay command got handled twice, so "reset entities"
+     * spawned every entity twice. This is now a REAL, enforced
+     * singleton: if pid_path names a still-alive OTHER process, this
+     * instance refuses to start at all (kill(pid,0) liveness probe -
+     * same convention tp_desktop_window.c's own "already open -> just
+     * add a tab" singleton check already uses elsewhere in this house).
+     * A second manager launched by mistake (human or code) now exits
+     * immediately instead of silently running alongside the real one. */
+#ifndef _WIN32
+    {
+        FILE *pf = fopen(st.pid_path, "r");
+        if (pf) {
+            long existing = 0;
+            if (fscanf(pf, "%ld", &existing) == 1) {
+                fclose(pf);
+                if (existing > 0 && existing != (long)ktb_getpid() &&
+                    kill((pid_t)existing, 0) == 0) {
+                    fprintf(stderr,
+                        "khtpm_taskbar_manager_main: refusing to start - "
+                        "pid %ld already running for this house_root "
+                        "(%s)\n", existing, st.pid_path);
+                    return 1;
+                }
+            } else {
+                fclose(pf);
+            }
+        }
+    }
+#endif
+
     ktb_write_pidfile(&st, ktb_getpid());
     ktb_reload(&st);
     publish_state(&st, house_root); /* initial state so the parser has something to draw */
@@ -543,6 +603,9 @@ int main(int argc, char **argv) {
         Sleep(POLL_INTERVAL_USEC / 1000);
 #endif
     }
+
+    /* Clean up any subwindows (h-ai, db-hq, etc.) and desktop entities on exit */
+    ktb_quit_and_save(&st);
 
     ktb_unlink_pidfile(&st);
     return 0;

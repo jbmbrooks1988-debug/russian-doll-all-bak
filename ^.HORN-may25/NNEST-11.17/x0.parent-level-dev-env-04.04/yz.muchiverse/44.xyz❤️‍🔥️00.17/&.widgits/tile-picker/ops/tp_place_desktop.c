@@ -161,20 +161,42 @@ int main(int argc, char **argv) {
      * degradation hatch_egg.c's own "Hatch warning: sprite generation
      * failed" comment describes for itself. */
     {
+        /* 2026-08-14 consolidation: emoji tools moved to the livedesk-
+         * taskbar runtime +x/ (same folder as the entity binary). Resolve
+         * the house root via marker-walk, same as the spawn step below. */
         char self_path[PATH_BUF];
         ssize_t len = readlink("/proc/self/exe", self_path, sizeof(self_path) - 1);
         if (len > 0) {
             self_path[len] = '\0';
-            char *ops_dir = dirname(self_path);
-            char png_path[PATH_BUF], csv_path[PATH_BUF], gen_cmd[PATH_BUF * 3];
-            snprintf(png_path, sizeof(png_path), "%s/atlas.png", dir);
-            snprintf(csv_path, sizeof(csv_path), "%s/sprite.csv", dir);
-            snprintf(gen_cmd, sizeof(gen_cmd),
-                     "'%s/emoji_gen_atlas.+x' '%s' '%s' >/dev/null 2>&1 && "
-                     "'%s/emoji_xtract.+x' '%s' 0 64 '%s' >/dev/null 2>&1",
-                     ops_dir, glyph, png_path, ops_dir, png_path, csv_path);
-            int rc = system(gen_cmd);
-            (void)rc;
+            char step[PATH_BUF];
+            snprintf(step, sizeof(step), "%s", self_path);
+            char *ops_dir = NULL;
+            for (;;) {
+                char *slash = strrchr(step, '/');
+                if (!slash || slash == step) break;
+                *slash = '\0';
+                char desk[PATH_BUF], widg[PATH_BUF];
+                snprintf(desk, sizeof(desk), "%s/#.desktop", step);
+                snprintf(widg, sizeof(widg), "%s/&.widgits", step);
+                if (access(desk, F_OK) == 0 && access(widg, F_OK) == 0) {
+                    char ent_ops[PATH_BUF];
+                    snprintf(ent_ops, sizeof(ent_ops), "%s/*.monads/*.livedesk-taskbar/ops/+x", step);
+                    ops_dir = strdup(ent_ops);
+                    break;
+                }
+            }
+            if (ops_dir) {
+                char png_path[PATH_BUF], csv_path[PATH_BUF], gen_cmd[PATH_BUF * 3];
+                snprintf(png_path, sizeof(png_path), "%s/atlas.png", dir);
+                snprintf(csv_path, sizeof(csv_path), "%s/sprite.csv", dir);
+                snprintf(gen_cmd, sizeof(gen_cmd),
+                         "'%s/emoji_gen_atlas.+x' '%s' '%s' >/dev/null 2>&1 && "
+                         "'%s/emoji_xtract.+x' '%s' 0 64 '%s' >/dev/null 2>&1",
+                         ops_dir, glyph, png_path, ops_dir, png_path, csv_path);
+                int rc = system(gen_cmd);
+                (void)rc;
+                free(ops_dir);
+            }
         }
     }
 
@@ -188,7 +210,7 @@ int main(int argc, char **argv) {
      * package dir as its sole argument. */
     {
         char pgrep_cmd[PATH_BUF * 2];
-        snprintf(pgrep_cmd, sizeof(pgrep_cmd), "pgrep -f 'tp_desktop_window.+x %s' >/dev/null 2>&1", dir);
+        snprintf(pgrep_cmd, sizeof(pgrep_cmd), "pgrep -f 'tp_desktop_window_rgb.+x %s' >/dev/null 2>&1", dir);
         if (system(pgrep_cmd) == 0) {
             printf("DESKTOP_TILE %s: window already running, not spawning a duplicate\n", dir);
             return 0;
@@ -202,31 +224,50 @@ int main(int argc, char **argv) {
      * direct instruction 2026-08-04: tile-picker's desktop placer must be
      * visibly live, not just a file write. */
     {
-        /* tp_desktop_window.+x lives in the same ops/+x/ dir this binary
-         * was launched from - resolve via /proc/self/exe (Linux) rather
-         * than guessing from wdir (an arbitrary widget *state* dir, not
-         * this project's own root) or from argv[0] (which callers may
-         * invoke as a bare relative path with no directory component). */
+        /* tp_desktop_window_rgb.+x was consolidated OUT of tile-picker
+         * into the livedesk-taskbar runtime (2026-08-14) - it now lives at
+         * <house_root>/*.monads/*.livedesk-taskbar/ops/+x/. Resolve the
+         * house root by walking up from /proc/self/exe (this binary's own
+         * install dir) until a dir holding BOTH #.desktop/ and &.widgits/
+         * is found - same marker-walk khtpm_vars.sh uses. */
         char self_path[PATH_BUF];
         ssize_t len = readlink("/proc/self/exe", self_path, sizeof(self_path) - 1);
         if (len > 0) {
             self_path[len] = '\0';
-            char *ops_dir = dirname(self_path); /* .../ops/+x */
-            char exe_path[PATH_BUF], spawn_cmd[PATH_BUF * 2];
-            snprintf(exe_path, sizeof(exe_path), "%s/tp_desktop_window.+x", ops_dir);
-            /* setsid detaches into its own session (not just backgrounded
-             * with &) so this window genuinely outlives the calling
-             * terminal/process group - same "meant to outlive its
-             * terminal session" requirement egg_window.c's own header
-             * states for itself. Confirmed necessary 2026-08-04: a plain
-             * "... &" child died the moment its parent shell session
-             * ended, even though POSIX orphan-reparenting should normally
-             * keep it alive - some process-group supervisors reap the
-             * whole group, not just the direct parent. setsid sidesteps
-             * that by removing it from that group entirely. */
-            snprintf(spawn_cmd, sizeof(spawn_cmd), "setsid '%s' '%s' >/dev/null 2>&1 < /dev/null &", exe_path, dir);
-            int rc = system(spawn_cmd);
-            (void)rc;
+            char step[PATH_BUF];
+            snprintf(step, sizeof(step), "%s", self_path);
+            char *house_root = NULL;
+            for (;;) {
+                char *slash = strrchr(step, '/');
+                if (!slash || slash == step) break; /* reached /, give up */
+                *slash = '\0';
+                char desk[PATH_BUF], widg[PATH_BUF];
+                snprintf(desk, sizeof(desk), "%s/#.desktop", step);
+                snprintf(widg, sizeof(widg), "%s/&.widgits", step);
+                if (access(desk, F_OK) == 0 && access(widg, F_OK) == 0) {
+                    house_root = step;
+                    break;
+                }
+            }
+            if (house_root) {
+                char exe_path[PATH_BUF], spawn_cmd[PATH_BUF * 2];
+                snprintf(exe_path, sizeof(exe_path), "%s/*.monads/*.livedesk-taskbar/ops/+x/tp_desktop_window_rgb.+x", house_root);
+                /* setsid detaches into its own session (not just backgrounded
+                 * with &) so this window genuinely outlives the calling
+                 * terminal/process group - same "meant to outlive its
+                 * terminal session" requirement egg_window.c's own header
+                 * states for itself. Confirmed necessary 2026-08-04: a plain
+                 * "... &" child died the moment its parent shell session
+                 * ended, even though POSIX orphan-reparenting should normally
+                 * keep it alive - some process-group supervisors reap the
+                 * whole group, not just the direct parent. setsid sidesteps
+                 * that by removing it from that group entirely. */
+                snprintf(spawn_cmd, sizeof(spawn_cmd), "setsid '%s' '%s' >/dev/null 2>&1 < /dev/null &", exe_path, dir);
+                int rc = system(spawn_cmd);
+                (void)rc;
+            } else {
+                fprintf(stderr, "tp_place_desktop: could not find house root, window not spawned\n");
+            }
         } else {
             fprintf(stderr, "tp_place_desktop: could not resolve own path, window not spawned\n");
         }

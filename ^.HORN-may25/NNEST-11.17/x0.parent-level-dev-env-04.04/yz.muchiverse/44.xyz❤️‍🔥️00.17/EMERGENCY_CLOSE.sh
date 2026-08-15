@@ -24,10 +24,11 @@ if [ -f "$OPEN_FILE" ] && [ -s "$OPEN_FILE" ]; then
     grep "^PID=" "$OPEN_FILE" 2>/dev/null | sed 's/^PID=\([0-9]*\).*/\1/' > "$PIDFILE"
 fi
 
-# Fallback: find tp_desktop_window processes if file was empty
+# Fallback: find tp_desktop_window and khtpm subwindow processes if file was empty
 if [ ! -s "$PIDFILE" ]; then
-    echo "livedesk_open.txt empty, searching for tp_desktop_window processes..."
-    pgrep -f "tp_desktop_window" > "$PIDFILE" 2>/dev/null
+    echo "livedesk_open.txt empty, searching for entity and subwindow processes..."
+    (pgrep -f "tp_desktop_window"; pgrep -f "khtpm_ai_cell_render"; pgrep -f "khtpm_hq_render") > "$PIDFILE" 2>/dev/null
+    sort -u "$PIDFILE" -o "$PIDFILE"  # Remove duplicates
 fi
 
 if [ ! -s "$PIDFILE" ]; then

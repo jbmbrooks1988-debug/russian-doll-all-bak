@@ -9,7 +9,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 CRYPTS_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 HOUSE_DIR="$(cd "$CRYPTS_DIR/.." && pwd)"
 
-TPWIN="$HOUSE_DIR/&.widgits/tile-picker/ops/+x/tp_desktop_window.+x"
+TPWIN="$HOUSE_DIR/*.monads/*.livedesk-taskbar/ops/+x/tp_desktop_window_rgb.+x"
 TASKBAR="$HOUSE_DIR/*.monads/*.livedesk-taskbar/ops/+x/khtpm_strip_parser.+x"
 RESTORE_LIST="$CRYPTS_DIR/restore-list.txt"
 

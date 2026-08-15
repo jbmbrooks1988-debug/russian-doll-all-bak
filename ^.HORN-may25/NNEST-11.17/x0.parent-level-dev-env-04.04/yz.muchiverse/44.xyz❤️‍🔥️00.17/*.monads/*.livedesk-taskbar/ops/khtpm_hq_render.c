@@ -14,6 +14,7 @@
  * the same GLOBAL (not session-scoped) location db-ez uses - see
  * livedesk_build_db_common_events_menu() in khtpm_taskbar_manager.c. */
 #include "khtpm_css_parser.h"
+#include "khtpm_taskbar_manager.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -381,6 +382,10 @@ static void load_font_scale(void) {
             if (v >= 0.5 && v <= 3.0) g_font_scale = v; /* sane clamp - not a layout-breaking value */
         } else if (strcmp(line, "focus_grab") == 0) {
             g_focus_grab_enabled = atoi(val) != 0;
+        } else if (strcmp(line, "window_x") == 0) {
+            g_win_x = atoi(val);
+        } else if (strcmp(line, "window_y") == 0) {
+            g_win_y = atoi(val);
         }
     }
     fclose(f);
@@ -455,7 +460,7 @@ static void layout_pass(Elem *window) {
     window->w = window->style.has_width ? window->style.width : (tabbar_natural_w > default_w ? tabbar_natural_w : default_w);
     window->h = content_total_h + g_chrome_h;
 
-    g_close_w = scaled(32); g_close_h = g_chrome_h - scaled(6); /* wide enough for "[x]" at 11pt bold, no badge to fit now */
+    g_close_w = scaled(56); g_close_h = g_chrome_h - scaled(6); /* wide enough for "[>NN] x" - badge + label both now, see draw_elem()'s own comment */
     g_close_x = window->w - g_close_w - scaled(4);
     g_close_y = scaled(3);
 
@@ -659,16 +664,30 @@ static void draw_elem(Elem *e, int hover_id_hash) {
      * this whole nav system was ported from). "[>3]" when focused,
      * "[ 3]" otherwise, in its own small muted font so it reads as a
      * toolbar index badge, not run into the label's own text. */
-    /* Chrome close control is a fixed-size icon, not a content row - a
-     * "[N]" badge doesn't fit its 22px box and was pushing the label past
-     * the window's right edge ("off screen to the right too far", direct
-     * report). Its focus ring (the orange outline above) is enough of a
-     * focus indicator on its own, matching how tabs already show focus
-     * without a badge overflowing their box either. */
-    if (e->nav_index > 0 && strcmp(e->tag, "closebtn") != 0) {
+    /* Direct correction 2026-08-12 ("x close isn't getting a number...
+     * everything gets a number") - the close button used to be
+     * special-cased out of the badge (its box was too small and the
+     * badge pushed the label off-screen, see the earlier "off screen to
+     * the right" fix). Real fix is a wider box (g_close_w, see
+     * layout_pass()) and a shorter label ("x" not "[x]", since the
+     * badge itself now supplies the brackets) instead of an exception -
+     * every nav item gets a number, no special cases. */
+    if (e->nav_index > 0) {
         char badge[16];
         int focused = (e->nav_index == g_focus_nav);
-        snprintf(badge, sizeof(badge), "[%c%d]", focused ? '>' : ' ', e->nav_index);
+        /* REAL FIX 2026-08-12, direct correction ("db-hq and hai are
+         * using nav index in not quite the std the std is [].<#> not
+         * [<#>]"): verified against the actual real reference
+         * (1.TPMOS_c_+rmmp.0103.0001/projects/wraith-alpha/ops/
+         * wraith_parser_alpha.c ~line 2221-2224/2283) - the bracket
+         * holds ONLY the state glyph (`[^]`/`[>]`/`[]`/`[ ]`), the
+         * number is a SEPARATE suffix drawn after the closing bracket
+         * with a trailing period (`pref + "%d." `, e.g. `[>]1.`), NOT
+         * embedded inside the brackets as `[>1]`. This was wrong
+         * everywhere in this house's own khtpm/-hq family until now -
+         * see !.HOUSE_STDS.md #22's own correction for why this must
+         * not drift back. */
+        snprintf(badge, sizeof(badge), "[%c]%d.", focused ? '>' : ' ', e->nav_index);
         char numspec[48];
         snprintf(numspec, sizeof(numspec), "DejaVu Sans Mono:pixelsize=%d", scaled(9));
         XftFont *numfont = XftFontOpenName(dpy, screen, numspec);
@@ -778,41 +797,42 @@ static void grab_keyboard_retry(void) {
 
 static Elem *g_window;
 
+/* RGB compose→present refactor (2026-08-12, direct instruction: "we
+ * should do db to rgb refactor. the need being auditability"). Proven
+ * first on a throwaway test binary (!.khtpm-rgb-refactor.md's own
+ * "Phase 0" - compose buffer vs. presented-window readback confirmed
+ * BYTE-IDENTICAL two independent ways before trusting this pattern on
+ * real code). Real change here, not a rewrite: `redraw()` still
+ * composes into `buf` (the offscreen Pixmap) exactly as before via Xft/
+ * Xlib - only the PRESENT step changes, from `XCopyArea` (Pixmap→Window
+ * blit, no portable byte buffer ever exists) to deriving one real
+ * `XImage` via `XGetImage` and presenting THAT via `XPutImage` (proven
+ * pixel-identical in Phase 0). g_frame_rgb is the persistent, single-
+ * source-of-truth 3-byte-per-pixel copy of "what's actually on screen
+ * right now" - dump_frame_png() just writes THIS out directly instead
+ * of doing its own separate XGetImage capture (the old, more fragile
+ * two-different-capture-paths shape) - this IS the auditability the
+ * refactor was for: one real buffer, inspectable at any time, not
+ * derived fresh and possibly-differently each time something wants to
+ * look at the frame. */
+static unsigned char *g_frame_rgb = NULL;
+static int g_frame_w = 0, g_frame_h = 0;
+
 /* debug PNG dump - see the header comment above the stb_image_write.h
- * include. Reads back whatever's currently composed in `buf` (the same
- * offscreen Pixmap redraw() just painted and blitted to the real window)
- * via XGetImage, converts BGRX/RGBX -> tightly-packed RGB, writes a PNG
- * next to the running binary. Bound to 'p' - not part of the normal
- * render loop, purely an on-demand debug aid (matches dump_rgb_png.c's
- * own "run manually whenever needed" framing). */
+ * include. RGB refactor (2026-08-12): writes the single persistent
+ * `g_frame_rgb` buffer redraw() already derived for the real on-screen
+ * present - no separate XGetImage capture of its own anymore. This IS
+ * the auditability point of the refactor: what gets dumped is
+ * byte-for-byte the same buffer that was actually presented, not a
+ * fresh, possibly-different second capture. Bound to 'p' - not part of
+ * the normal render loop, purely an on-demand debug aid. */
 static void dump_frame_png(void) {
-    XSync(dpy, False);
-    XImage *img = XGetImage(dpy, buf, 0, 0, (unsigned)g_window->w, (unsigned)g_window->h, AllPlanes, ZPixmap);
-    if (!img) { fprintf(stderr, "db-hq: dump_frame_png: XGetImage failed\n"); return; }
-    /* XGetImage() on a bare Pixmap (no Visual attached, unlike a Window)
-     * leaves red_mask/green_mask/blue_mask all 0 - confirmed live (was
-     * the actual cause of every earlier dump coming back solid black:
-     * `px & 0` is always 0 regardless of the real pixel value). The pixel
-     * DATA itself is correct (confirmed: a sampled interior pixel read
-     * back exactly 0xfafafa, this app's real panel background color) -
-     * just use the standard 24/32bpp TrueColor byte layout directly
-     * (0xRRGGBB) instead of trusting the (zeroed) mask fields. */
-    int w = g_window->w, h = g_window->h;
-    unsigned char *rgb = malloc((size_t)w * h * 3);
-    for (int y = 0; y < h; y++) {
-        for (int x = 0; x < w; x++) {
-            unsigned long px = XGetPixel(img, x, y);
-            unsigned char r = (unsigned char)((px >> 16) & 0xff);
-            unsigned char g = (unsigned char)((px >> 8) & 0xff);
-            unsigned char b = (unsigned char)(px & 0xff);
-            size_t o = ((size_t)y * w + x) * 3;
-            rgb[o] = r; rgb[o + 1] = g; rgb[o + 2] = b;
-        }
+    if (!g_frame_rgb || g_frame_w <= 0 || g_frame_h <= 0) {
+        fprintf(stderr, "db-hq: dump_frame_png: no frame composed yet\n");
+        return;
     }
-    XDestroyImage(img);
-    int ok = stbi_write_png("/tmp/db-hq-frame.png", w, h, 3, rgb, w * 3);
-    free(rgb);
-    fprintf(stderr, ok ? "db-hq: wrote /tmp/db-hq-frame.png (%dx%d)\n" : "db-hq: dump_frame_png: write failed\n", w, h);
+    int ok = stbi_write_png("/tmp/db-hq-frame.png", g_frame_w, g_frame_h, 3, g_frame_rgb, g_frame_w * 3);
+    fprintf(stderr, ok ? "db-hq: wrote /tmp/db-hq-frame.png (%dx%d)\n" : "db-hq: dump_frame_png: write failed\n", g_frame_w, g_frame_h);
 }
 
 /* Own chrome bar (title + close) - see layout_pass()'s CHROME_H comment
@@ -844,7 +864,7 @@ static void draw_chrome_bar(void) {
 
     g_close_elem->x = g_close_x; g_close_elem->y = g_close_y;
     g_close_elem->w = g_close_w; g_close_elem->h = g_close_h;
-    snprintf(g_close_elem->label, sizeof(g_close_elem->label), "[x]");
+    snprintf(g_close_elem->label, sizeof(g_close_elem->label), "x");
     css_style_init(&g_close_elem->style);
     g_close_elem->style.has_border_color = 1;
     snprintf(g_close_elem->style.border_color, sizeof(g_close_elem->style.border_color), "%s",
@@ -893,7 +913,44 @@ static void redraw(void) {
         render_tree(g_window, 0);
     }
     draw_chrome_bar();
-    XCopyArea(dpy, buf, win, gc, 0, 0, (unsigned)g_window->w, (unsigned)g_window->h, 0, 0);
+
+    /* COMPOSE→PRESENT split (see g_frame_rgb's own header comment) -
+     * derive the one real portable buffer from what was just drawn into
+     * `buf`, present via XPutImage (proven pixel-identical to the old
+     * XCopyArea path in Phase 0), and keep a persistent RGB copy for
+     * dump_frame_png()/'p' to write out directly - no second, separate
+     * capture path anymore. */
+    XSync(dpy, False);
+    int w = g_window->w, h = g_window->h;
+    XImage *frame = XGetImage(dpy, buf, 0, 0, (unsigned)w, (unsigned)h, AllPlanes, ZPixmap);
+    if (frame) {
+        XPutImage(dpy, win, gc, frame, 0, 0, 0, 0, (unsigned)w, (unsigned)h);
+        /* standard 24/32bpp TrueColor byte layout, not the (zeroed on a
+         * bare Pixmap) mask fields - same fix already established for
+         * this app's own debug dump. */
+        if (g_frame_w != w || g_frame_h != h) {
+            free(g_frame_rgb);
+            g_frame_rgb = malloc((size_t)w * h * 3);
+            g_frame_w = w; g_frame_h = h;
+        }
+        if (g_frame_rgb) {
+            for (int y = 0; y < h; y++) {
+                for (int x = 0; x < w; x++) {
+                    unsigned long px = XGetPixel(frame, x, y);
+                    size_t o = ((size_t)y * w + x) * 3;
+                    g_frame_rgb[o] = (unsigned char)((px >> 16) & 0xff);
+                    g_frame_rgb[o + 1] = (unsigned char)((px >> 8) & 0xff);
+                    g_frame_rgb[o + 2] = (unsigned char)(px & 0xff);
+                }
+            }
+        }
+        XDestroyImage(frame);
+    } else {
+        /* fall back to the old direct blit if XGetImage ever fails, so
+         * a capture problem degrades to "no audit buffer this frame,"
+         * never "no picture at all." */
+        XCopyArea(dpy, buf, win, gc, 0, 0, (unsigned)w, (unsigned)h, 0, 0);
+    }
     XFlush(dpy);
 }
 
@@ -1144,7 +1201,7 @@ int main(int argc, char **argv) {
     XSetWindowAttributes swa;
     swa.background_pixel = WhitePixel(dpy, screen);
     swa.event_mask = ExposureMask | ButtonPressMask | ButtonReleaseMask | ButtonMotionMask | KeyPressMask | StructureNotifyMask | FocusChangeMask;
-    win = XCreateWindow(dpy, RootWindow(dpy, screen), 100, 100, (unsigned)ww, (unsigned)wh, 0,
+    win = XCreateWindow(dpy, RootWindow(dpy, screen), g_win_x, g_win_y, (unsigned)ww, (unsigned)wh, 0,
                          CopyFromParent, InputOutput, CopyFromParent,
                          CWBackPixel | CWEventMask, &swa);
     {
@@ -1173,6 +1230,23 @@ int main(int argc, char **argv) {
          * (own [x]/Escape close paths still work regardless). */
         Atom wm_delete = XInternAtom(dpy, "WM_DELETE_WINDOW", False);
         XSetWMProtocols(dpy, win, &wm_delete, 1);
+
+        /* PPosition: tell the WM the x/y passed to XCreateWindow are a
+         * REAL placement request, not a default hint. Without this, Mutter
+         * (org.gnome.mutter) treats them as unspecified and auto-places
+         * the window (it was landing at arbitrary spots like 148,54 or
+         * 198,104 instead of the hq_ui.pdl window_x/window_y - direct
+         * report 2026-08-13 "stats and db-hq window opens too high on
+         * desktop, underneath tb directly"). PPosition is the standard
+         * way every WM honors an explicitly-requested screen position. */
+        XSizeHints *shints = XAllocSizeHints();
+        if (shints) {
+            shints->flags = PPosition;
+            shints->x = g_win_x;
+            shints->y = g_win_y;
+            XSetWMNormalHints(dpy, win, shints);
+            XFree(shints);
+        }
     }
     {
         /* MUST be "MuchiverseLivedesk", not a db-hq-specific class - real
@@ -1333,5 +1407,10 @@ int main(int argc, char **argv) {
     XFreeGC(dpy, gc);
     XDestroyWindow(dpy, win);
     XCloseDisplay(dpy);
+
+    KtbState ktb;
+    ktb_init(&ktb, g_house_root);
+    ktb_quit_and_save(&ktb);
+
     return 0;
 }

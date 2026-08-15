@@ -1,8 +1,20 @@
 *tell agent , "always consider future agents, and write readme/testing and other helpful docs"
 ----------------------------------------------------------------------------
+
+📅️AUG 13  :
+wish 2 have 'clocks/cals' under time and realclock , gameclock0000 etc
+and can set reminders on real clock or on game clock
+and those can turn into scripts. / jobs. which u can program here
+as well as in common events cuz why not? clock is like an event
+it doens't have 2 be common but can still be common nice 2 have least-priv
+
+
+WSR CAN BE IN "TOYS AS A GUI APP NOW" 
+(just an x11 window mirroring WSR windows)
+
 📅️AUG 7  :
 
-ai likes to call them "livedesk & deskpals"
+ai likes to call them "livedesk & deskpals" entire thing is "harnecient"+hai 
 
 📅️AUG 5  :
 unreal has a grid and "per 'cube' fidelity 2 handle longer distance degradation (they turn eveyrthing into voxels ;) 
