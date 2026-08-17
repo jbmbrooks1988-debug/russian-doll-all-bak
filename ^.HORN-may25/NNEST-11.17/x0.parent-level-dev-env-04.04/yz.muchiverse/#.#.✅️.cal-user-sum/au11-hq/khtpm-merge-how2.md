@@ -2803,3 +2803,37 @@ the survey's own explicit scope (§2: "do NOT touch the 6 real non-identical cop
 `../../&.widgits/...`, while `@.apps/`/`&.widgits/`-nested projects (3 dirs deep) need
 `../../../&.widgits/...`. Caught immediately (broken symlink, `[ -f ]` check failed) and fixed for
 both top-level projects before declaring done.
+
+## §5d.13 — Real regression fixed: db-hq's/chat-hai's own [X] close button closed ALL desktop entities (2026-08-17)
+
+Direct live report: "db-hq isn't opening from tb. regression/drift after refactor... chat hai...
+when i use [x] to close, closes all desktop entures (bad)." Two real, separate issues investigated:
+
+**db-hq not opening from taskbar**: reproduced via real relay injection into the live taskbar
+(`#.desktop/livedesk_agent_relay.txt`, decimal ASCII codes - `57`/`13` to open the "db" header
+cell, `50`/`13` to select "db-hq"). Confirmed the menu opens correctly with the right real items
+(db-ez/db-hq/Cancel per `livedesk_build_db_menu()`), and `ktb_hq_activate()`'s own command-string
+matching (`strncmp(..., "livedesk:open-common-events-hq:", 31)`) is correct - verified both the
+real command construction and the strncmp math directly, neither had a bug. Real fix turned out to
+be a stale, already-running taskbar process not having picked up an earlier same-day fix - a full
+`run_khtpm_strip.sh new` (real, established restart action) resolved it; confirmed working by the
+user directly afterward.
+
+**[X] close button closing all desktop entities - real, confirmed bug, found and fixed**: both
+db-hq's and chat-hai's own real window-close path (`khtpm_entity_menu_render.c`, byte-identical
+code in both modes) called `ktb_init(&ktb, g_house_root); ktb_quit_and_save(&ktb);` right before
+exiting. `ktb_quit_and_save()` is a real, TASKBAR-LEVEL quit action (`khtpm_taskbar_manager.c` line
+649) - it calls `livedesk_close_all()` + `livedesk_kill_stray_entities()` (real, desktop-wide
+entity teardown, SIGTERM-then-SIGKILL sweep) and `ktb_unlink_pidfile()` (removes the shared
+taskbar's own pidfile) - none of which is appropriate for a single sub-app window closing. This
+block was ported from db-hq's own original standalone code (`khtpm_hq_render.c`) under a real,
+mistaken assumption that db-hq needed "KtbState persistence" on exit; it never did - the block's
+entire real effect was this unwanted, desktop-wide teardown. User initially reported only chat-hai
+as broken; direct investigation confirmed db-hq had the byte-identical bug too (user hadn't
+noticed yet, likely no other entities open during db-hq's own close test).
+
+**Real fix**: removed the whole `KtbState`/`ktb_init()`/`ktb_quit_and_save()` block from BOTH
+db-hq's and chat-hai's own close paths entirely (not narrowed - the local `ktb` variable was only
+ever used for this one call). Events-hq mode was confirmed to never have had this call at all
+(verified via grep - only db-hq and chat-hai included `khtpm_taskbar_manager.h`'s own
+persistence calls). Rebuilt clean.

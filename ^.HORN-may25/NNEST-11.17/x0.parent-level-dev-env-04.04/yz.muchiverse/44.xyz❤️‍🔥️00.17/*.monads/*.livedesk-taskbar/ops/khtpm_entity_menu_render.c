@@ -4446,10 +4446,18 @@ int main(int argc, char **argv) {
         XDestroyWindow(dpy, win);
         XCloseDisplay(dpy);
 
-        KtbState ktb;
-        ktb_init(&ktb, g_house_root);
-        ktb_quit_and_save(&ktb);
-
+        /* REAL FIX (2026-08-17, live report: "chat hai... when i use [x]
+         * to close, closes all desktop entures (bad)" - confirmed the
+         * SAME real bug also affects db-hq's own [X], byte-identical
+         * code). ktb_quit_and_save() is a real, TASKBAR-LEVEL quit
+         * action - it calls livedesk_close_all() + livedesk_kill_stray_
+         * entities() (real, desktop-wide entity teardown) and removes
+         * the shared taskbar pidfile (ktb_unlink_pidfile()). NONE of
+         * that is appropriate for a single sub-app window closing -
+         * this block was ported from db-hq's own original standalone
+         * code under a mistaken assumption it needed real "KtbState
+         * persistence" on exit; it never did. Removed entirely, not
+         * narrowed - `ktb` was only ever used for this one call. */
         return 0;
     }
 
@@ -4714,10 +4722,14 @@ int main(int argc, char **argv) {
         XDestroyWindow(dpy, win);
         XCloseDisplay(dpy);
 
-        KtbState chai_ktb;
-        ktb_init(&chai_ktb, g_house_root);
-        ktb_quit_and_save(&chai_ktb);
-
+        /* REAL FIX (2026-08-17, live report: "chat hai... when i use [x]
+         * to close, closes all desktop entures (bad)") - see db-hq's own
+         * real, identical fix above for the full explanation:
+         * ktb_quit_and_save() is a real, TASKBAR-LEVEL quit action
+         * (desktop-wide entity teardown + shared pidfile removal), never
+         * appropriate for a single sub-app window closing. Removed
+         * entirely, not narrowed - `chai_ktb` was only ever used for
+         * this one call. */
         return 0;
     }
 

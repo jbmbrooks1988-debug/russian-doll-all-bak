@@ -1836,3 +1836,14 @@ Separate, NOT yet fixed: toys-cell-launched sessions (mutaclysm/
 piececraft-xyz/board-viewer confirmed) don't tear down their process
 tree when the display window closes - orphaned orchestrator/prisc+x/
 chtpm_parser_pal processes pile up. Real, flagged follow-up task.
+
+2026-08-17: Fixed a real, confirmed bug - db-hq's and chat-hai's own [X]
+close button both called ktb_quit_and_save() (a real, TASKBAR-LEVEL quit
+action - desktop-wide entity teardown + shared pidfile removal) on
+their own individual window close, ported by mistake from db-hq's
+original standalone code. Removed entirely from both modes (events-hq
+never had it). Also fixed: db-hq not opening from taskbar turned out to
+be a stale already-running taskbar process, not a real code bug -
+resolved via a full taskbar restart (run_khtpm_strip.sh new), confirmed
+working live via real relay injection testing. See khtpm-merge-how2.md
+§5d.13.

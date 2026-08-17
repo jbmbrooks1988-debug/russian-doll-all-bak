@@ -1,9 +1,9 @@
 RELATION | bravo-moxie | 4
 RELATION | moxie-pip | 9
 RELATION | pip-sage | 6
-RELATION | echo-nova | 217
-RELATION | nova-quill | 203
-RELATION | echo-quill | 208
+RELATION | echo-nova | 227
+RELATION | nova-quill | 206
+RELATION | echo-quill | 211
 RELATION | moxie-sage | 5
 RELATION | bravo-sage | 5
 RELATION | bravo-pip | 4
