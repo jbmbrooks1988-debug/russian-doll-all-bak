@@ -363,7 +363,7 @@ int main(int argc, char **argv) {
     FILE *f = fopen(path, "r");
     if (!f) return 1;
 
-    char lines[32][MAX_LINE];
+    char lines[128][MAX_LINE];
     int nlines = 0;
     int px = 0, py = 0;
     char map_id[64] = "map_start";
@@ -379,7 +379,7 @@ int main(int argc, char **argv) {
     double cam_pan_x = 0.0, cam_pan_y = 0.0, cam_pan_z = 0.0; /* camera position offsets (preserved, not modified by this op) */
     double cam_yaw = 0.0, cam_pitch = 6.0; /* camera rotation state (preserved, not modified by this op) */
     int cam_z_level = 0; /* camera vertical offset (preserved, not modified by this op) */
-    while (nlines < 32 && fgets(lines[nlines], MAX_LINE, f)) {
+    while (nlines < 128 && fgets(lines[nlines], MAX_LINE, f)) {
         char *eq = strchr(lines[nlines], '=');
         if (eq) {
             *eq = '\0';

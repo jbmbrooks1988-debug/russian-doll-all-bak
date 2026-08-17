@@ -1,6 +1,6 @@
 #!/bin/bash
 # button.sh — launch chat-hai (taskbar cell 14 "h-ai" Chat submenu) as its own
-# detached X11 process. Follows exact ai-cell pattern but passes chtpm path.
+# detached X11 process. Follows exact open-hai pattern but passes chtpm path.
 # Usage: button.sh <house_root>
 set -e
 HOUSE_ROOT="${1:-}"
@@ -12,12 +12,12 @@ HOUSE_ROOT="$(cd "$HOUSE_ROOT" && pwd)"
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
 OPS_DIR="$HERE/ops"
-BIN="$OPS_DIR/+x/chat_hai_hq_render.+x"
+# REAL §5d.12 (2026-08-16, khtpm-merge-how2.md) - chat-hai merged into
+# the shared khtpm_entity_menu_render.+x binary (last of the 5 window
+# apps). Old chat_hai_hq_render.+x kept as reference/rollback, unused.
+BIN="$(cd "$HERE/../../*.monads/*.livedesk-taskbar/ops" && pwd)/+x/khtpm_entity_menu_render.+x"
 CHTPM="$HERE/chat-hai.chtpm"
 
-if [ ! -x "$BIN" ]; then
-    (cd "$OPS_DIR" && sh build_chat_hai.sh) || true
-fi
 if [ ! -x "$BIN" ]; then
     echo "chat-hai button.sh: build failed, missing $BIN" >&2
     exit 1
@@ -26,35 +26,32 @@ fi
 AUDIT_DIR="$HOUSE_ROOT/&.hq-apps/chat-hai/pieces/audit"
 mkdir -p "$AUDIT_DIR"
 
-LOOP="$OPS_DIR/chat_hai_loop.sh"
-loop_pids() { pgrep -f "chat_hai_loop\.sh" 2>/dev/null || true; }
+# REAL FIX 2026-08-16 (Stage 2d shell/manager split, au11-hq/khtpm-
+# merge-how2.md + local-2do-15.txt's own chat-hai entry): this used to
+# manually start chat_hai_loop.sh itself, separately from the renderer -
+# not the real <module> mechanism. chat-hai.chtpm now has a real
+# <module src="ops/chat_hai_loop.sh"/> tag; chat_hai_hq_render.c's own
+# main() reads it and fork()+execv()s the loop itself (ported
+# launch_module(), same shape as db-hq/events-hq). This script now only
+# launches the renderer - the loop is the renderer's own child process.
+#
+# REAL BEHAVIOR CHANGE, confirmed with direct instruction 2026-08-16:
+# the loop used to deliberately OUTLIVE the renderer (this script's own
+# "leave it running" guard, removed here) - tying its lifetime to the
+# renderer (full parity with db-hq/events-hq) means closing chat-hai's
+# window now ALSO stops the persona loop, a real, deliberate change from
+# the old behavior.
+chat_hai_pids() { pgrep -f "khtpm_entity_menu_render\.\+x.*chat-hai\.chtpm" 2>/dev/null || true; }
+chat_hai_loop_pids() { pgrep -f "chat_hai_loop\.sh" 2>/dev/null || true; }
 
-# REAL FIX 2026-08-15: this function used to launch ONLY the renderer -
-# no persona actually chats without chat_hai_loop.sh also running,
-# leaving a real, correctly-drawn window with an empty/frozen feed and
-# no visible symptom pointing at "the loop never started." Single-
-# instance guard here too (same class of bug this file's own header
-# comment already documents fixing for ai-cell) - if the loop's already
-# up (e.g. this button.sh is being re-run just to bring the window back
-# after a close), leave it running rather than restarting it and losing
-# in-flight round state for no reason.
-if [ -z "$(loop_pids)" ]; then
-    setsid nohup bash "$LOOP" >/dev/null 2>&1 &
-    disown 2>/dev/null || true
-    sleep 1
-    echo "chat-hai button.sh: chat loop started (pid $(loop_pids | tr '\n' ' '))"
-else
-    echo "chat-hai button.sh: chat loop already running (pid $(loop_pids | tr '\n' ' '))"
-fi
-
-chat_hai_pids() { pgrep -f "chat_hai_hq_render\.\+x" 2>/dev/null || true; }
-
-pids="$(chat_hai_pids)"
+pids="$(chat_hai_pids) $(chat_hai_loop_pids)"
+pids="$(echo "$pids" | tr ' ' '\n' | grep -v '^$' || true)"
 if [ -n "$pids" ]; then
     echo "chat-hai button.sh: killing existing instance(s): $(echo $pids | tr '\n' ' ')"
     echo "$pids" | xargs -r kill -TERM
     sleep 1
-    pids="$(chat_hai_pids)"
+    pids="$(chat_hai_pids) $(chat_hai_loop_pids)"
+    pids="$(echo "$pids" | tr ' ' '\n' | grep -v '^$' || true)"
     if [ -n "$pids" ]; then
         echo "chat-hai button.sh: still alive after TERM, escalating to KILL: $(echo $pids | tr '\n' ' ')"
         echo "$pids" | xargs -r kill -KILL
@@ -69,10 +66,13 @@ sleep 1
 
 pids="$(chat_hai_pids)"
 n="$(echo "$pids" | grep -c . || true)"
-if [ "$n" = "1" ]; then
-    echo "chat-hai launched (PID $pids, log=$AUDIT_DIR/chat-hai.log)"
+loop_n="$(chat_hai_loop_pids | grep -c . || true)"
+if [ "$n" = "1" ] && [ "$loop_n" = "1" ]; then
+    echo "chat-hai launched (PID $pids, self-spawned loop PID $(chat_hai_loop_pids), log=$AUDIT_DIR/chat-hai.log)"
 elif [ "$n" -gt 1 ] 2>/dev/null; then
     echo "chat-hai button.sh: WARNING - $n instances alive after launch (expected 1): $(echo $pids | tr '\n' ' ')" >&2
+elif [ "$n" = "1" ]; then
+    echo "chat-hai button.sh: WARNING - renderer launched but loop wasn't self-spawned (check <module> tag in chat-hai.chtpm)" >&2
 else
     echo "chat-hai button.sh: FAILED to launch - check the log:" >&2
     cat "$AUDIT_DIR/chat-hai.log" 2>/dev/null >&2

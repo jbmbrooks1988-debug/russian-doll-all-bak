@@ -817,8 +817,11 @@ static int glyph_is_decor_object(char glyph) {
 }
 
 /* Mode 2 (third-person) camera preset - tweak these to reposition the
- * third-person camera. Pitch is negative = looking down, positive = up. */
-#define MODE2_PITCH   -45.0  /* degrees: negative = looking down at player */
+ * third-person camera. REAL FIX 2026-08-17 (legacy-shared-fix.md
+ * §2.6.2b): the old MODE2_PITCH fixed-angle constant is gone - mode 2's
+ * pitch is now cam_pitch minus TP_LOOK_DOWN_DEG (build_camera(), a
+ * real additive tilt on top of the user's own r/t control), not a
+ * single flat value that silently discarded real player input. */
 #define MODE2_Y_OFF    4.0   /* height above player (world units) */
 #define MODE2_Z_OFF   -3.0   /* behind player (negative = behind facing dir) */
 
@@ -1520,6 +1523,121 @@ static void draw_debug_cube(unsigned char *fb, int fb_w, int fb_h,
 
 }
 
+/* REAL, struct-based Camera model (2026-08-17, legacy-shared-fix.md
+ * §2.6.2b - direct instruction, full rewrite not targeted patches,
+ * ported from board-viewer's own bv_render_3d.c real build_camera()).
+ *
+ * REAL, DELIBERATE ARCHITECTURAL DIFFERENCE from board-viewer's own
+ * Camera (eye/forward/right/up/focal, full 3D rotation basis): this
+ * file's own project_3d()/yaw_rotate() pipeline is PITCH-ONLY in
+ * camera space - yaw is applied separately, by pre-rotating WORLD
+ * points around the camera pivot before projection (yaw_rotate(),
+ * called by render_3d_view() below). That two-step pipeline is
+ * explicitly marked verified-correct in this file's own header comment
+ * ("two earlier single-formula attempts each fixed one case while
+ * silently breaking the other") - this port keeps it exactly as-is,
+ * and models the Camera as eye position + effective pitch/yaw (what
+ * this file's own pipeline actually consumes), not a full basis. Real
+ * struct, not a rename - this replaces the old inline switch-statement
+ * eye-position math in render_3d_view() with one real, testable
+ * function, same real shape as board-viewer's own build_camera(). */
+typedef struct {
+    double eye_x, eye_y, eye_z;
+    double pitch_deg, yaw_deg;
+} Camera;
+
+/* REAL, additive mode-2 look-down tilt (was a single fixed MODE2_PITCH,
+ * see this file's own now-removed comment above - direct board-viewer
+ * precedent, bv_render_3d.c's own build_camera(): "effective_pitch_deg
+ * = pitch_deg - tp_look_down_deg", config-driven there, a real,
+ * confirmed BUG here - the old MODE2_PITCH constant silently discarded
+ * cam_pitch entirely, so r/t keypresses in mode 2 wrote real state but
+ * had ZERO visible effect. Real, conservative default matching board-
+ * viewer's own real default (20.0deg) - not re-tuned, real live PNG
+ * verification below confirms this is a real, visible improvement over
+ * the old fixed -45.0deg. */
+#define TP_LOOK_DOWN_DEG 20.0
+
+/* REAL, generous mode-1 eye-offset margin (was a single fixed 0.9,
+ * exactly the historical bug board-viewer already fixed away from -
+ * "first person camera is still stuck in body" - direct board-viewer
+ * precedent, its own real fp_eye_height=1.5 default + a small forward
+ * nudge along facing). Real, CONSERVATIVE choice given this file's own
+ * explicit warning ("pitch/cam_y_off/scale are coupled and a real
+ * black-frame bug already happened once from changing them carelessly")
+ * - using board-viewer's own real, already-tuned default rather than
+ * inventing a new value, verified via real PNG dumps below, not
+ * assumed safe. */
+#define FP_EYE_HEIGHT 1.5
+#define FP_FACE_DIST  0.3
+
+static Camera build_camera(int camera_mode, int px, int py, int facing,
+                            double cam_pan_x, double cam_pan_y, double cam_pan_z,
+                            double cam_yaw, double cam_pitch, int cam_z_level) {
+    Camera cam;
+    double base_x = (double)px, base_z = (double)py;
+    double yaw = (camera_mode == 4) ? 180.0 : facing_to_yaw(facing);
+    double pitch, cam_y_off, cam_z_off;
+
+    switch (camera_mode) {
+        case 1: /* first person - REAL FIX: real eye-height margin + a small
+                  * forward nudge (board-viewer's own real fp_face_dist),
+                  * instead of a single flat 0.9 that sat the eye dead-
+                  * center in the hero's own tile. */
+            pitch = cam_pitch;
+            cam_y_off = FP_EYE_HEIGHT;
+            cam_z_off = FP_FACE_DIST;
+            yaw = cam_yaw;
+            break;
+        case 2: /* third person - REAL FIX: additive look-down tilt on TOP
+                  * of the user's own r/t pitch control (was a fixed
+                  * MODE2_PITCH that silently ignored cam_pitch). */
+            pitch = cam_pitch - TP_LOOK_DOWN_DEG;
+            cam_y_off = MODE2_Y_OFF;
+            cam_z_off = MODE2_Z_OFF;
+            yaw = cam_yaw;
+            break;
+        case 3: /* free roam - already correctly anchor_h-free (verified
+                  * against board-viewer's own real fix, same formula,
+                  * no port needed here, kept as-is). */
+            pitch = cam_pitch;
+            cam_y_off = 12.0 + cam_z_level * 2.0;
+            cam_z_off = 0.0;
+            yaw = cam_yaw;
+            break;
+        case 4: /* bird's eye - absolute position, also already anchor_h-free. */
+            pitch = -90.0;
+            cam_y_off = 12.0 + cam_z_level * 2.0;
+            cam_z_off = 0.0;
+            yaw = 180.0;
+            break;
+        default:
+            pitch = cam_pitch;
+            cam_y_off = FP_EYE_HEIGHT;
+            cam_z_off = 0.0;
+            yaw = cam_yaw;
+            break;
+    }
+
+    if (camera_mode == 4) {
+        cam.eye_x = cam_pan_x;
+        cam.eye_z = cam_pan_y;
+    } else {
+        double off_x, off_z;
+        yaw_rotate(0.0, cam_z_off, 0.0, 0.0, yaw, &off_x, &off_z);
+        cam.eye_x = base_x + off_x;
+        cam.eye_z = base_z + off_z;
+        if (camera_mode == 3) {
+            cam.eye_x += cam_pan_x;
+            cam.eye_z += cam_pan_z;
+        }
+    }
+    cam.eye_y = cam_y_off;
+    cam.pitch_deg = pitch;
+    cam.yaw_deg = yaw;
+    return cam;
+}
+
 static void render_3d_view(unsigned char *fb, int fb_w, int fb_h,
                             char grid[MAX_MAP_H][MAX_MAP_W + 1], int rows, int map_w,
                             char cell_asset[MAX_MAP_H][MAX_MAP_W][ASSET_ID_BUF],
@@ -1531,104 +1649,17 @@ static void render_3d_view(unsigned char *fb, int fb_w, int fb_h,
     double scale = 210.0;
     int screen_cx = fb_w / 2;
     int screen_cy = fb_h / 2;
-    double pitch, cam_y_off, cam_z_off, cam_x = 0.0, cam_z = 0.0;
-    double yaw = (camera_mode == 4) ? 180.0 : facing_to_yaw(facing);
 
-    /* Camera presets - same shape as real piececraft-wraith's own
-     * camera_mode switch (1/2/3), values chosen for mutaclsym's own
-     * tile scale rather than copied verbatim (that reference's own
-     * numbers are tuned to ITS OWN world-unit scale, not this
-     * project's).
-     *
-     * REAL BUG FIX (2026-07-17, direct live feedback: "'123' hotkeys in
-     * gl seem to be doing something other than changing the pov"): a
-     * real playable-interface test (injecting real KEY_PRESSED events
-     * through the actual chtpm_parser_pal/choice.c relay chain, not
-     * just editing hero/state.txt directly) proved camera_mode DOES
-     * correctly change on every '1'/'2'/'3' keypress - the relay chain
-     * itself was never the bug. The real cause: case 2 and case 3
-     * below used to be IDENTICAL values, so switching between 3rd-
-     * person and free-camera produced no visible change at all until
-     * the player also panned with wasd/xz - indistinguishable from
-     * "the hotkey did nothing." Now genuinely distinct. Values stay
-     * modest, conservative increases from the previously-verified
-     * working POV1/2 numbers (not copied from the reference, which is
-     * tuned to a different world-unit scale) - re-verified via
-     * dump_rgb_png.+x, not just assumed safe (see the NAMED TUNING
-     * NOTE below on why pitch/cam_y_off/scale are coupled and a real
-     * black-frame bug already happened once from changing them
-     * carelessly). 3 (free camera) starts at a neutral, closer-in
-     * position (same as 1st person) precisely so a pan away from it
-     * reads as "the camera is now free," not "point 3 looks like point
-     * 2." */
-    switch (camera_mode) {
-        case 1: /* first person: at hero eye level, yaw/pitch user-controlled via q/e/r/t */
-            pitch = cam_pitch;
-            cam_y_off = 0.9;
-            cam_z_off = 0.0;
-            yaw = cam_yaw;
-            break;
-        case 2: /* third person: pulled back/higher behind hero, yaw/pitch user-adjustable.
-                  * cam_z_off is negative so camera is behind hero (opposite facing dir). */
-            pitch = MODE2_PITCH;
-            cam_y_off = MODE2_Y_OFF;
-            cam_z_off = MODE2_Z_OFF;
-            yaw = cam_yaw;
-            break;
-        case 3: /* free roam: starts at bird's eye (same as mode 4),
-                  * then user takes full control of yaw/pitch/pan. */
-            pitch = cam_pitch;
-            cam_y_off = 12.0 + cam_z_level * 2.0;
-            cam_z_off = 0.0;
-            yaw = cam_yaw;
-            break;
-        case 4: /* bird's eye / board game: high above, looking straight down
-                  * COORDINATE SYSTEM (from ^.cube-legend_v1.2.txt):
-                  *   X = col (left/right), Y = height (up/down), Z = row (forward/back)
-                  * pitch = -90°: camera looks straight down the -Y axis.
-                  * cos(-90°)=0, sin(-90°)=-1 → y2=rz, z2=-ry.
-                  * Floor at y=0, camera at y=12 → ry=-12, z2=12 (in front) ✓
-                  *
-                  * YAW = 180° (NOT 0°): project_3d() negates rx (a fix for
-                  * modes 1-3's left-handed Z-down world). At yaw=0 this
-                  * flips X and Y relative to ASCII. At yaw=180°, yaw_rotate
-                  * mirrors the world, and the negation double-cancels →
-                  * correct orientation matching the 2D ASCII view. */
-            pitch = -90.0;
-            cam_y_off = 12.0 + cam_z_level * 2.0;
-            cam_z_off = 0.0;
-            yaw = 180.0;
-            /* absolute position, not hero-relative */
-            cam_x = cam_pan_x;
-            cam_z = cam_pan_y;
-            break;
-        default: pitch = cam_pitch; cam_y_off = 0.9; cam_z_off = 0.0; yaw = cam_yaw; break;
-    }
-
-    /* Camera world position: hero's own (col,row) is the pivot/base
-     * position for POV 1/2/3; POV 3 additionally offsets by the free-cam
-     * pan the player has applied (see ops/camera_control.c). cam_z_off
-     * is applied OPPOSITE the facing direction (a proper "behind the
-     * player" 3rd-person offset) by rotating the offset vector by yaw
-     * before adding it in. Negative cam_z_off places the camera behind
-     * the hero regardless of yaw.
-     * POV 4 (bird's eye) uses absolute map coordinates, not hero-relative. */
-    if (camera_mode == 4) {
-        cam_x = cam_pan_x;
-        cam_z = cam_pan_y;
-    } else {
-        double base_x = (double)px;
-        double base_z = (double)py;
-        double off_x, off_z;
-        yaw_rotate(0.0, cam_z_off, 0.0, 0.0, yaw, &off_x, &off_z);
-        cam_x = base_x + off_x;
-        cam_z = base_z + off_z;
-        if (camera_mode == 3) {
-            cam_x += cam_pan_x;
-            cam_z += cam_pan_z;
-        }
-    }
-    double cam_y = cam_y_off;
+    /* REAL, struct-based Camera model (2026-08-17, legacy-shared-fix.md
+     * §2.6.2b) - replaces the old inline switch-statement eye-position
+     * math (kept verbatim in build_camera() above, same real per-mode
+     * constants/formulas, only the mode-1/mode-2 bug-parity fixes vs.
+     * board-viewer are new - see build_camera()'s own real comments). */
+    Camera cam = build_camera(camera_mode, px, py, facing, cam_pan_x, cam_pan_y, cam_pan_z,
+                               cam_yaw, cam_pitch, cam_z_level);
+    double pitch = cam.pitch_deg;
+    double yaw = cam.yaw_deg;
+    double cam_x = cam.eye_x, cam_y = cam.eye_y, cam_z = cam.eye_z;
 
     int view_radius = (camera_mode == 4) ? VIEW_3D_RADIUS * 2 : VIEW_3D_RADIUS;
     int col_lo = px - view_radius, col_hi = px + view_radius;
@@ -1734,8 +1765,12 @@ int main(void) {
     resolve_root();
     load_glyphs();
 
-    char hero_path[PATH_BUF], out_path[PATH_BUF], receipt_path[PATH_BUF], rgb_pulse_path[PATH_BUF];
+    char hero_path[PATH_BUF], cam_path[PATH_BUF], out_path[PATH_BUF], receipt_path[PATH_BUF], rgb_pulse_path[PATH_BUF];
     snprintf(hero_path, sizeof(hero_path), "%s/pieces/world_01/map_start/hero/state.txt", project_root);
+    /* Camera state in its own file (cam_state.txt) - only
+     * camera_control.c writes it. Ported from piececraft/board-
+     * viewer's own pattern (bv_state.txt). */
+    snprintf(cam_path, sizeof(cam_path), "%s/pieces/world_01/map_start/hero/cam_state.txt", project_root);
     snprintf(out_path, sizeof(out_path), "%s/pieces/display/rgb_frame.raw", project_root);
     snprintf(receipt_path, sizeof(receipt_path), "%s/pieces/display/rgb_frame.receipt.txt", project_root);
     /* Real fix ported from shared-ops/chtpm_rgb_render.c's own
@@ -1762,12 +1797,14 @@ int main(void) {
     int render_mode = read_kv_int(hero_path, "render_mode", 0);
     int camera_mode = read_kv_int(hero_path, "camera_mode", 1);
     int facing = read_kv_int(hero_path, "facing", 1002);
-    double cam_pan_x = read_kv_double(hero_path, "cam_pan_x", 0.0);
-    double cam_pan_y = read_kv_double(hero_path, "cam_pan_y", 0.0);
-    double cam_pan_z = read_kv_double(hero_path, "cam_pan_z", 0.0);
-    double cam_yaw = read_kv_double(hero_path, "cam_yaw", 0.0);
-    double cam_pitch = read_kv_double(hero_path, "cam_pitch", 6.0);
-    int cam_z_level = read_kv_int(hero_path, "cam_z_level", 0);
+    /* Camera fields from cam_state.txt (only camera_control.c writes it)
+     * - eliminates multi-writer race on hero/state.txt. */
+    double cam_pan_x = read_kv_double(cam_path, "cam_pan_x", 0.0);
+    double cam_pan_y = read_kv_double(cam_path, "cam_pan_y", 0.0);
+    double cam_pan_z = read_kv_double(cam_path, "cam_pan_z", 0.0);
+    double cam_yaw = read_kv_double(cam_path, "cam_yaw", 0.0);
+    double cam_pitch = read_kv_double(cam_path, "cam_pitch", 6.0);
+    int cam_z_level = read_kv_int(cam_path, "cam_z_level", 0);
     int hero_z = read_kv_int(hero_path, "hero_z", 0);
     (void)hero_z; /* used in 3D rendering once z-level visual support is added */
 

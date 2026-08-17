@@ -10,7 +10,7 @@ Per-session stats allow users to view delegation metrics and conversation analyt
 
 ### Components
 
-1. **Session Stat Calculation** (`&.widgits/ai-cell/calculate_session_stats.sh`)
+1. **Session Stat Calculation** (`&.widgits/open-hai/calculate_session_stats.sh`)
    - Runs retroactively to extract metrics from all existing session transcripts
    - Generates stats files for each session
    - Metrics tracked:
@@ -30,7 +30,7 @@ Per-session stats allow users to view delegation metrics and conversation analyt
    - Generates CHTPM dashboard from template
    - Supports both aggregate stats (no session_id) and per-session (with session_id)
 
-4. **Hai Integration** (`&.widgits/ai-cell/ops/khtpm_ai_cell_render.c`)
+4. **Hai Integration** (`&.widgits/open-hai/ops/khtpm_open_hai_render.c`)
    - "Stats" menu item in hai sidebar (below Model selector)
    - Click to open that session's stats window
    - `NAV_STATS` constant in navigation enum
@@ -53,10 +53,10 @@ Per-session stats allow users to view delegation metrics and conversation analyt
 
 ## Files Modified/Created
 
-- `&.widgits/ai-cell/calculate_session_stats.sh` — NEW
-- `&.widgits/ai-cell/open_session_stats.sh` — NEW
+- `&.widgits/open-hai/calculate_session_stats.sh` — NEW
+- `&.widgits/open-hai/open_session_stats.sh` — NEW
 - `&.hq-apps/stats-hq/open_stats_hq.sh` — MODIFIED (added session_id parameter)
-- `&.widgits/ai-cell/ops/khtpm_ai_cell_render.c` — MODIFIED (added NAV_STATS menu item)
+- `&.widgits/open-hai/ops/khtpm_open_hai_render.c` — MODIFIED (added NAV_STATS menu item)
 - `%.harnesses/harnecient-fsm/session-stats/` — NEW directory
 
 ## Completed
@@ -90,6 +90,6 @@ Per-session stats allow users to view delegation metrics and conversation analyt
 
 ## Related Features
 
-- [[features/ai-cell]] — The hai chat UI that integrates stats
+- [[features/open-hai]] — The hai chat UI that integrates stats
 - [[features/harnecient-fsm]] — Delegation tracking system
 

@@ -174,6 +174,14 @@ static void compile_binaries(void) {
                    "-Wno-unused-result -Wno-stringop-truncation");
     compile_single("system/chtpm_rgb_render.c", "system/chtpm_rgb_render", NULL);
     compile_single("system/gl_mirror.c", "system/gl_mirror", "-lglut -lGL -lGLU -lX11");
+    /* REAL SHARED BINARY (2026-08-17, khtpm-merge-how2.md §5c.6,
+     * legacy-shared-fix.md §3) - x11_mirror is no longer a per-project
+     * local build. mutaclysm's own original x11_mirror.c (the pilot)
+     * was promoted to "&.widgits/_shared-lib/ops/x11_mirror.c" once
+     * direct instruction confirmed the goal was "they should all use 1
+     * same binary" - see that file's own header comment. Built once,
+     * shared by every legacy-GL project. See the launch site below for
+     * the real preference/fallback order against gl_mirror. */
     compile_ops();
 }
 
@@ -307,10 +315,25 @@ int main(void) {
             launch("./system/chtpm_rgb_render", NULL, NULL);
     }
 
-    /* Best effort: gl_mirror (skip if NO_GL is set) */
+    /* Best effort: display mirror (skip if NO_GL is set - env name kept
+     * for compatibility, it now gates the whole mirror step, not just
+     * the GL one). REAL SHARED BINARY (2026-08-17, khtpm-merge-how2.md
+     * §5c.6, legacy-shared-fix.md §3): prefer the shared
+     * "&.widgits/_shared-lib/ops/+x/x11_mirror.+x" (plain Xlib, no GL
+     * dependency, project identity comes from PRISC_PROJECT_ROOT
+     * already exported above) over this project's own local
+     * system/gl_mirror. Never launches both - same "one mirror window"
+     * contract either way, only which binary satisfies it changed. Set
+     * FORCE_GL_MIRROR=1 to force the legacy GL path even when the
+     * shared binary is built (rollback switch while this is newly
+     * proven). */
     if (!getenv("NO_GL")) {
         struct stat st;
-        if (stat("./system/gl_mirror", &st) == 0)
+        const char *shared_mirror = "../&.widgits/_shared-lib/ops/+x/x11_mirror.+x";
+        if (!getenv("FORCE_GL_MIRROR") && stat(shared_mirror, &st) == 0) {
+            char cwd[4096];
+            if (getcwd(cwd, sizeof(cwd))) launch(shared_mirror, cwd, NULL);
+        } else if (stat("./system/gl_mirror", &st) == 0)
             launch("./system/gl_mirror", NULL, NULL);
     }
 

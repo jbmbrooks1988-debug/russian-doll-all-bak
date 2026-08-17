@@ -5,7 +5,7 @@
 #
 # What this actually does, real not aspirational: processes every
 # *.plan file sitting in plans/queue/ through run_plan.sh, one at a
-# time (never parallel - only one ai-cell instance can safely exist,
+# time (never parallel - only one open-hai instance can safely exist,
 # see PITFALL 72), files each plan into plans/done/ or plans/failed/
 # based on its REAL exit code (never a guess), and writes one
 # aggregate RUN_SUMMARY per queue pass. This is what turns "a person

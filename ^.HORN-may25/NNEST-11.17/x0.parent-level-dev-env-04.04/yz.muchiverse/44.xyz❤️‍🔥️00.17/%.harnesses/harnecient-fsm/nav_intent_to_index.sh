@@ -18,10 +18,10 @@
 # CLASSIFY discipline HARNECIENT-HACK.md already established for tool
 # dispatch, applied here to navigation instead.
 #
-# NOT YET WIRED INTO ANY LIVE APP: ai-cell's receipt only exposes nav
+# NOT YET WIRED INTO ANY LIVE APP: open-hai's receipt only exposes nav
 # COUNTS (nav=<focus> n_nav=<total>), not each item's real label - so
 # there is no live source for the labels array this script needs yet.
-# Real next step (not done): add a labels dump to ai-cell's receipt
+# Real next step (not done): add a labels dump to open-hai's receipt
 # (or a dedicated --dump-nav-labels mode) before this can drive a real
 # session end-to-end.
 #

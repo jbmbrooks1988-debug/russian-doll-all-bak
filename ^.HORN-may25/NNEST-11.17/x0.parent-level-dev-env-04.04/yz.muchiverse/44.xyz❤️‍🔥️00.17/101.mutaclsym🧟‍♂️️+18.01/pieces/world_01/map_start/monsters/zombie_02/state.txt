@@ -1,4 +1,4 @@
 monster_type=zombie
-pos_x=29
-pos_y=8
+pos_x=16
+pos_y=1
 hp=20

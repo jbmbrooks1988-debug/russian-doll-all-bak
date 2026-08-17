@@ -214,6 +214,30 @@ static void load_state(SpState *st) {
 /* The layout engine's ${var} lookup, backed by the vars the two .chtpm
  * files actually reference. Must never return NULL, matching
  * LayVarLookupFn's contract. */
+/* REAL, NEW 2026-08-16, direct request - real, static, per-launch
+ * identity (PID as keycap-digit unicode + a clock-face emoji for the
+ * real LAUNCH time, NOT live-ticking) so a human can visually tell "is
+ * this the process I just rebuilt/relaunched" directly on the taskbar
+ * itself, instead of guessing from terminal PIDs during live debugging
+ * (this session's own real toys-cell debugging hit exactly this
+ * confusion). A plain static global, NOT an SpState field - SpState
+ * gets memset() on every real reload (frame_changed_dirty()), which
+ * would silently turn this into a live-recomputed value instead of a
+ * true one-time launch snapshot if it lived there. */
+static char g_build_uid[64] = "";
+/* REAL, NEW 2026-08-16, direct correction ("x11 renders emojis, it
+ * does render bookstack... we have a specific renderer for emojis") -
+ * plain Xft/XftDrawStringUtf8 text drawing can't show real emoji
+ * glyphs (the house's own default font has no color-emoji coverage) -
+ * the REAL, proven mechanism (book-stack's own tab glyph, ported
+ * verbatim from tp_taskbar.c) pre-converts a glyph to a real sprite.csv
+ * texture via emoji_gen_atlas.+x/emoji_xtract.+x, then blits it as an
+ * image via tab_sprite()/blit_tab_sprite() - never drawn as a font
+ * glyph at all. g_build_uid stays PLAIN ASCII digits (the real PID) -
+ * digits render fine in any font, no sprite needed there; only the
+ * clock-face glyph needs the real sprite treatment. */
+static char g_build_uid_sprite_dir[SP_PATH_BUF] = "";
+
 static const char *sp_get_var(const char *name, void *ctx) {
     SpState *st = (SpState *)ctx;
     if (strcmp(name, "strip_tabs") == 0) return st->var_tabs;
@@ -225,7 +249,57 @@ static const char *sp_get_var(const char *name, void *ctx) {
     if (strcmp(name, "desks_label") == 0) return st->var_desks_label;
     if (strcmp(name, "avatar_dir") == 0) return st->var_avatar_dir;
     if (strcmp(name, "datetime") == 0) return st->var_datetime;
+    if (strcmp(name, "build_uid") == 0) return g_build_uid;
     return "";
+}
+
+/* REAL, NEW 2026-08-16 - see g_build_uid/g_build_uid_sprite_dir's own
+ * comments. out gets plain PID digits (real text, always renders).
+ * house_root is needed to find/invoke the real emoji_gen_atlas.+x/
+ * emoji_xtract.+x pair and to pick a real, writable sprite directory -
+ * same exact 2-step real CLI convention ava/button.sh's own
+ * ensure_package() already uses (read in full before writing this):
+ *   emoji_gen_atlas.+x "<glyph>" "<atlas.png>"
+ *   emoji_xtract.+x "<atlas.png>" 0 64 "<sprite.csv>"
+ * Real clock-face emoji chosen (U+1F550-U+1F567, 24 real glyphs) from
+ * this process's own real launch wall-clock time - NOT live-ticking, a
+ * one-time snapshot of "when did THIS process start" (a live clock
+ * already exists at cell 15 via ${datetime} - this is a distinct,
+ * deliberately static identity marker, not a duplicate clock). */
+static void build_uid_init(char *out, size_t outsz, const char *house_root) {
+    snprintf(out, outsz, "%d", (int)getpid());
+
+    time_t now = time(NULL);
+    struct tm tmv;
+    localtime_r(&now, &tmv);
+    int h = tmv.tm_hour % 12; if (h == 0) h = 12;
+    int half = tmv.tm_min >= 30;
+    /* U+1F550 = 1:00, ..., U+1F55B = 12:00, U+1F55C = 1:30, ..., U+1F567 = 12:30 */
+    unsigned cp = 0x1F550 + (unsigned)(h - 1) + (half ? 12 : 0);
+    char glyph[8];
+    int goff = 0;
+    glyph[goff++] = (char)(0xF0 | ((cp >> 18) & 0x07));
+    glyph[goff++] = (char)(0x80 | ((cp >> 12) & 0x3F));
+    glyph[goff++] = (char)(0x80 | ((cp >> 6) & 0x3F));
+    glyph[goff++] = (char)(0x80 | (cp & 0x3F));
+    glyph[goff] = '\0';
+
+    char dir[SP_PATH_BUF];
+    snprintf(dir, sizeof(dir), "%s/#.desktop/build_uid_sprite", house_root);
+    mkdir(dir, 0755);
+    char atlas[SP_PATH_BUF], csv[SP_PATH_BUF];
+    snprintf(atlas, sizeof(atlas), "%s/atlas.png", dir);
+    snprintf(csv, sizeof(csv), "%s/sprite.csv", dir);
+    /* Real, deliberate: always regenerate (unlike ava's own "only if
+     * missing" - the clock-face glyph can genuinely differ launch to
+     * launch, unlike a pal's fixed avatar). */
+    char gen_atlas[SP_PATH_BUF * 2], gen_xtract[SP_PATH_BUF * 2];
+    snprintf(gen_atlas, sizeof(gen_atlas), "'%s/*.monads/*.livedesk-taskbar/ops/+x/emoji_gen_atlas.+x' '%s' '%s' >/dev/null 2>&1",
+             house_root, glyph, atlas);
+    snprintf(gen_xtract, sizeof(gen_xtract), "'%s/*.monads/*.livedesk-taskbar/ops/+x/emoji_xtract.+x' '%s' 0 64 '%s' >/dev/null 2>&1",
+             house_root, atlas, csv);
+    if (system(gen_atlas) == 0 && system(gen_xtract) == 0)
+        snprintf(g_build_uid_sprite_dir, sizeof(g_build_uid_sprite_dir), "%s", dir);
 }
 
 /* ---------------------------------------------------------------------
@@ -904,43 +978,29 @@ static GC g_hq_buf_gc = 0, g_popup_buf_gc = 0, g_strip_buf_gc = 0;
 static int g_hq_buf_h = 0, g_hq_buf_w = 0;
 static int g_popup_buf_h = 0, g_popup_buf_w = 0;
 
-/* RGB compose->present refactor (2026-08-12, "this seems like a good
- * time to do the tb refactor" - after db-hq's own conversion ran
- * confirmed-stable for real). Same pattern as khtpm_hq_render.c's own
- * g_frame_rgb: each of this app's THREE windows (strip/hq/popup) keeps
- * ONE persistent RGB buffer holding "what's actually on screen right
- * now" for that window, refreshed each present via one real XImage
- * capture + XPutImage (proven pixel-identical to XCopyArea in the
- * !.khtpm-rgb-refactor.md Phase 0 test, then confirmed again on
- * db-hq's own real code). present_rgb() is the one shared helper all
- * three call sites use instead of each doing its own bare XCopyArea -
- * composition (everything drawn into g_*_buf above) is untouched. */
-static unsigned char *g_strip_rgb = NULL; static int g_strip_rgb_w = 0, g_strip_rgb_h = 0;
-static unsigned char *g_hq_rgb = NULL;    static int g_hq_rgb_w = 0, g_hq_rgb_h = 0;
-static unsigned char *g_popup_rgb = NULL; static int g_popup_rgb_w = 0, g_popup_rgb_h = 0;
-
-static void present_rgb(Display *dpy, Pixmap buf, Window win, GC gc, int w, int h,
-                         unsigned char **rgb_slot, int *rgb_w, int *rgb_h) {
+/* RGB compose->present refactor (2026-08-12) - present via one real
+ * XImage capture + XPutImage (proven pixel-identical to XCopyArea in the
+ * !.khtpm-rgb-refactor.md Phase 0 test), shared by all three windows
+ * (strip/hq/popup) instead of each doing its own bare XCopyArea.
+ *
+ * Stage 1 khtpm merge fix (khtpm-merge-how2.md §3.1, 2026-08-15): this
+ * used to also unpack every captured XImage into a persistent RGB byte
+ * buffer (g_strip_rgb/g_hq_rgb/g_popup_rgb) on EVERY present, for all
+ * three windows - the same hot-path-does-cold-path-work bug already
+ * fixed in khtpm_hq_render.c (db-hq), except worse here: audited and
+ * confirmed those buffers had NO reader anywhere in this file (no PNG
+ * dump, no debug hook, nothing) - pure wasted per-pixel unpack work on
+ * the taskbar's own always-running redraw path, across 3 windows, on
+ * every keystroke/menu-nav/digit-jump. Removed outright rather than
+ * replaced with an unused debug feature, since nothing consumes it; if
+ * an on-demand PNG dump is ever wanted here, follow db-hq's
+ * dump_frame_png() shape (its own separate, on-demand-only XGetImage
+ * capture) - do not resurrect an always-on unpack to serve it. */
+static void present_rgb(Display *dpy, Pixmap buf, Window win, GC gc, int w, int h) {
     XSync(dpy, False);
     XImage *img = XGetImage(dpy, buf, 0, 0, (unsigned)w, (unsigned)h, AllPlanes, ZPixmap);
     if (!img) { XCopyArea(dpy, buf, win, gc, 0, 0, (unsigned)w, (unsigned)h, 0, 0); return; }
     XPutImage(dpy, win, gc, img, 0, 0, 0, 0, (unsigned)w, (unsigned)h);
-    if (*rgb_w != w || *rgb_h != h) {
-        free(*rgb_slot);
-        *rgb_slot = malloc((size_t)w * h * 3);
-        *rgb_w = w; *rgb_h = h;
-    }
-    if (*rgb_slot) {
-        for (int y = 0; y < h; y++) {
-            for (int x = 0; x < w; x++) {
-                unsigned long px = XGetPixel(img, x, y);
-                size_t o = ((size_t)y * w + x) * 3;
-                (*rgb_slot)[o]     = (unsigned char)((px >> 16) & 0xff);
-                (*rgb_slot)[o + 1] = (unsigned char)((px >> 8) & 0xff);
-                (*rgb_slot)[o + 2] = (unsigned char)(px & 0xff);
-            }
-        }
-    }
     XDestroyImage(img);
 }
 
@@ -1108,6 +1168,21 @@ static int header_total_width(LayDoc *doc) {
         char disp[96];
         w += format_cell(doc, i, n, disp, sizeof(disp)) + 6 /* STRIP_PAD */;
     }
+    /* REAL, NEW 2026-08-16 - this loop (and draw_header_win()'s own
+     * matching loop below) was real, confirmed button-only - a real,
+     * separate, top-level `<text>` element (the new build_uid marker)
+     * was being silently skipped by both, direct live report ("doesn't
+     * have any unicode emojis after time"). Real, minimal, additive fix:
+     * account for ONE trailing top-level `<text>` element's own real
+     * width here too, so the buffer is sized to actually fit it. */
+    for (int i = 0; i < doc->element_count; i++) {
+        if (doc->elements[i].parent_index != -1) continue;
+        if (strcmp(doc->elements[i].type, "text") != 0) continue;
+        char label[LAY_LABEL_LEN];
+        lay_get_label(doc, i, sp_get_var, &g_st, label, sizeof(label));
+        w += (int)strlen(label) * 8 + 20 + TAB_SPRITE_PX + 4; /* + real sprite width, see draw_header_win()'s own matching block */
+        break; /* real, deliberate: only one such marker exists/expected */
+    }
     return w;
 }
 
@@ -1190,9 +1265,41 @@ static void draw_header_win(Display *dpy, Window win, GC gc, LayDoc *doc, SpStat
         }
         header_w += cw + 6;
     }
+    /* REAL, NEW 2026-08-16 - see header_total_width()'s own matching
+     * comment. Draws the one, real, trailing, non-interactive <text>
+     * marker (build_uid: real PID digits as plain text, then the real
+     * clock-face emoji as a real SPRITE - direct correction, "x11
+     * renders emojis... we have a specific renderer for emojis" -
+     * plain Xft text drawing can't show it, same real tab_sprite()/
+     * blit_tab_sprite() mechanism book-stack's own tab glyph uses).
+     * Deliberately NOT counted in cell_n, NOT given a hit-rect (not a
+     * real cell, no dispatch involved at all, purely decorative). */
+    for (int i = 0; i < doc->element_count; i++) {
+        if (doc->elements[i].parent_index != -1) continue;
+        if (strcmp(doc->elements[i].type, "text") != 0) continue;
+        char label[LAY_LABEL_LEN];
+        lay_get_label(doc, i, sp_get_var, &g_st, label, sizeof(label));
+        /* REAL, direct live report ("too far right... scootch it a bit
+         * left") - tucked into the datetime cell's own real trailing
+         * padding (format_cell()'s width formula is a generous
+         * strlen*8+20 estimate, real slack already there) instead of a
+         * separate box with its own separator line + full 6px gap. */
+        int text_x = header_w - 24;
+        if (text_x < header_w - (int)strlen(label) * 8 - 20) text_x = header_w - (int)strlen(label) * 8 - 20;
+        strip_draw_utf8(dpy, DefaultScreen(dpy), g_hq_xft, fg, text_x, KTB_BAR_H / 2 + 4, label, (int)strlen(label));
+        int adv = (int)strlen(label) * 8 + 20 - 24;
+        header_w += adv;
+        if (header_w < STRIP_NAV_BOX_W) header_w = STRIP_NAV_BOX_W;
+        TabSprite *usp = g_build_uid_sprite_dir[0] ? tab_sprite(g_build_uid_sprite_dir) : NULL;
+        if (usp) {
+            blit_tab_sprite(dpy, g_hq_buf, bgc, usp, header_w, (KTB_BAR_H - TAB_SPRITE_PX) / 2, TAB_SPRITE_PX, bg_pixel);
+            header_w += TAB_SPRITE_PX + 4;
+        }
+        break;
+    }
     g_header_row_w = header_w;
 
-    present_rgb(dpy, g_hq_buf, win_real, g_hq_buf_gc, w_guess, h, &g_hq_rgb, &g_hq_rgb_w, &g_hq_rgb_h);
+    present_rgb(dpy, g_hq_buf, win_real, g_hq_buf_gc, w_guess, h);
     XFlush(dpy);
 }
 
@@ -1323,7 +1430,7 @@ static int draw_popup_win(Display *dpy, Window win, GC gc, LayDoc *doc, SpState 
     }
 
     XMoveResizeWindow(dpy, win_real, win_x, win_y, w, h);
-    present_rgb(dpy, g_popup_buf, win_real, g_popup_buf_gc, w, h, &g_popup_rgb, &g_popup_rgb_w, &g_popup_rgb_h);
+    present_rgb(dpy, g_popup_buf, win_real, g_popup_buf_gc, w, h);
     XFlush(dpy);
     return 1;
 }
@@ -1392,7 +1499,7 @@ static void draw_bottom(Display *dpy, Window win, GC gc, int sw, unsigned long b
         }
     }
 
-    present_rgb(dpy, g_strip_buf, win_real, g_strip_buf_gc, sw, KTB_BAR_H, &g_strip_rgb, &g_strip_rgb_w, &g_strip_rgb_h);
+    present_rgb(dpy, g_strip_buf, win_real, g_strip_buf_gc, sw, KTB_BAR_H);
     XFlush(dpy);
 }
 
@@ -1409,6 +1516,41 @@ static void layout_path(char *out, size_t n, const char *filename) {
     char rel[256];
     snprintf(rel, sizeof(rel), "*.monads/*.livedesk-taskbar/%s", filename);
     path_join2(out, n, g_house_root, rel);
+}
+
+/* REAL, NEW 2026-08-16, direct correction ("the cells aren't supposed
+ * to be hardcoded... that's an oversight"). This process (strip_parser)
+ * is the only one that actually parses khtpm_strip_header.chtpm and
+ * therefore the only one that can see a button's real `id=` attribute
+ * — khtpm_taskbar_manager_main.+x is a genuinely SEPARATE process (see
+ * build_khtpm_strip.sh's own "two-process strip architecture" comment)
+ * with no in-memory access to this LayDoc at all. Real fix: write a
+ * small, real position->id mapping file the manager process reads on
+ * its own startup, matching this house's own established file-IPC
+ * convention (everything else these two processes share already goes
+ * through #.desktop/ files) — NOT a new in-process shortcut, because
+ * none exists between these two binaries. Numbering matches
+ * root_nav_element_at()'s own real definition exactly (1-based
+ * position among NAVIGABLE elements, in document order) — the same
+ * real definition `which`/ACTIVATE:<n> already use, so this file's own
+ * position numbers line up with existing dispatch with zero new
+ * assumptions. Written ONCE, right after the initial real header load
+ * — khtpm_strip_header.chtpm is a static, hand-edited file; its own
+ * button ORDER never changes at runtime, so no need to re-write on
+ * every ~300ms reload tick. */
+static void write_header_cell_ids(const LayDoc *header_doc) {
+    char path[SP_PATH_BUF];
+    snprintf(path, sizeof(path), "%s/#.desktop/livedesk_header_cell_ids.txt", g_house_root);
+    FILE *f = fopen(path, "w");
+    if (!f) return;
+    int pos = 0;
+    for (int i = 0; i < header_doc->element_count; i++) {
+        if (!lay_is_navigable(header_doc, i)) continue;
+        pos++;
+        const char *id = lay_get_id(header_doc, i);
+        if (id && id[0]) fprintf(f, "%d|%s\n", pos, id);
+    }
+    fclose(f);
 }
 
 /* Reload both docs + the one cli_io special case: if the manager says
@@ -1524,6 +1666,34 @@ int main(int argc, char **argv) {
     signal(SIGTERM, on_sigterm);
     signal(SIGINT, on_sigterm);
 
+    /* REAL FIX 2026-08-16, direct live report ("toy cell opens no
+     * submenu yet"): real, confirmed race condition found live - the
+     * REAL header_doc parse (below, needed for var substitution like
+     * ${username}) can't happen until AFTER launch_manager()+
+     * wait_for_manager_first_publish() (load_state() genuinely depends
+     * on the manager's own first real publish, strip_state.txt) - but
+     * that means write_header_cell_ids() (further below, tied to that
+     * same real parse) was ALSO only happening after the manager
+     * process had already started and already called ktb_load_cell_ids()
+     * in ITS OWN ktb_init() - reading a file that didn't exist yet.
+     * Real fix: a real, minimal, EARLY parse here, get_var=NULL (safe -
+     * lay_substitute_vars_naked() already falls back to "" when
+     * get_var is NULL, confirmed by reading it - id= attributes are
+     * always literal strings anyway, never ${var}, so this doesn't
+     * need real var substitution at all) - just to get real id=
+     * attributes out and published BEFORE the manager process exists,
+     * so its own first ktb_load_cell_ids() call reads real, current
+     * data. The REAL header_doc gets parsed normally, unchanged, later
+     * below (for actual rendering) - this is a real, separate, cheap,
+     * throwaway parse whose only job is the write. */
+    {
+        char early_header_path[SP_PATH_BUF];
+        layout_path(early_header_path, sizeof(early_header_path), "khtpm_strip_header.chtpm");
+        LayDoc early_doc;
+        if (lay_load(&early_doc, early_header_path, NULL, NULL))
+            write_header_cell_ids(&early_doc);
+    }
+
     launch_manager();
     wait_for_manager_first_publish();
 
@@ -1538,6 +1708,7 @@ int main(int argc, char **argv) {
     g_strip_cmap = DefaultColormap(dpy, DefaultScreen(dpy));
 
     load_state(&g_st);
+    build_uid_init(g_build_uid, sizeof(g_build_uid), g_house_root);
 
     char header_path[SP_PATH_BUF], bottom_path[SP_PATH_BUF];
     layout_path(header_path, sizeof(header_path), "khtpm_strip_header.chtpm");
@@ -1546,6 +1717,8 @@ int main(int argc, char **argv) {
     static LayDoc header_doc, bottom_doc;
     if (!lay_load(&header_doc, header_path, sp_get_var, &g_st))
         fprintf(stderr, "strip_parser: failed to load %s\n", header_path);
+    else
+        write_header_cell_ids(&header_doc);
     if (!lay_load(&bottom_doc, bottom_path, sp_get_var, &g_st))
         fprintf(stderr, "strip_parser: failed to load %s\n", bottom_path);
     /* Real bug fix (2026-08-11, direct live report — the visible "[>] 13.

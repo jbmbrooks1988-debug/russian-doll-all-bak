@@ -25,6 +25,16 @@ static void css_style_merge(CssStyle *dst, const CssStyle *src) {
     if (src->has_font_size)    { dst->has_font_size = 1; dst->font_size = src->font_size; }
     if (src->has_font_weight)  { dst->has_font_weight = 1; dst->font_weight_bold = src->font_weight_bold; }
     if (src->has_z_index)      { dst->has_z_index = 1; dst->z_index = src->z_index; }
+    /* REAL START 2026-08-16, Stage 3 - same real per-field merge shape
+     * as every field above, not a shortcut. Missing this would silently
+     * drop display/flex-direction/flex-grow whenever a real cascaded
+     * rule (e.g. ".tabbar.active") needed to combine with a base rule -
+     * a real, easy-to-miss bug class this function's own existing
+     * pattern already guards every other field against. */
+    if (src->has_display)        { dst->has_display = 1; dst->display_flex = src->display_flex; }
+    if (src->has_flex_direction) { dst->has_flex_direction = 1; dst->flex_row = src->flex_row; }
+    if (src->has_flex_grow)      { dst->has_flex_grow = 1; dst->flex_grow = src->flex_grow; }
+    if (src->has_gap)            { dst->has_gap = 1; dst->gap = src->gap; }
 }
 
 static void trim(char *s) {
@@ -83,8 +93,22 @@ static void parse_declaration(const char *prop, const char *val, CssStyle *out) 
         out->has_font_weight = 1; out->font_weight_bold = (strcmp(v, "bold") == 0 || atoi(v) >= 600);
     } else if (strcmp(prop, "z-index") == 0) {
         out->has_z_index = 1; out->z_index = atoi(v);
+    } else if (strcmp(prop, "display") == 0) {
+        /* REAL START 2026-08-16, Stage 3 - real, inventory-confirmed
+         * subset only (khtpm-merge-how2.md §5.1b) - "flex" is the only
+         * real value any of the 3 current apps' own layouts would need;
+         * anything else (grid, inline-block, none) parses as block
+         * (has_display=1, display_flex=0), same as omitting the
+         * property entirely - real, deliberate, not a silent bug. */
+        out->has_display = 1; out->display_flex = (strcmp(v, "flex") == 0);
+    } else if (strcmp(prop, "flex-direction") == 0) {
+        out->has_flex_direction = 1; out->flex_row = (strcmp(v, "row") == 0);
+    } else if (strcmp(prop, "flex-grow") == 0) {
+        out->has_flex_grow = 1; out->flex_grow = atoi(v);
+    } else if (strcmp(prop, "gap") == 0) {
+        out->has_gap = 1; out->gap = atoi(v);
     }
-    /* unrecognized properties (box-shadow, border-radius, display, etc.) are
+    /* unrecognized properties (box-shadow, border-radius, grid, etc.) are
      * silently ignored - out of scope for this minimal subset. */
 }
 

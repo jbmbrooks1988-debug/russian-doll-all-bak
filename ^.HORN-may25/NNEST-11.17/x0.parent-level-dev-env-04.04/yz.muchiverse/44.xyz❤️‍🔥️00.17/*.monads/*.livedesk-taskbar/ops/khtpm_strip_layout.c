@@ -183,6 +183,8 @@ static void lay_parse_attributes(LayElement *el, const char *attr_str) {
             strncpy(el->target_id, val_start, LAY_ATTR_LEN - 1);
         } else if (strcmp(name_start, "sprite") == 0) {
             strncpy(el->sprite, val_start, LAY_SPRITE_LEN - 1);
+        } else if (strcmp(name_start, "id") == 0) {
+            strncpy(el->id, val_start, LAY_ID_LEN - 1);
         }
         /* saved is only meaningful if we didn't already null-terminate past
          * it via the quote/bare-value walk above; chtpm_parser.c restores it
@@ -590,4 +592,12 @@ void lay_get_sprite(const LayDoc *doc, int idx, LayVarLookupFn get_var, void *ct
                      char *out, size_t outsz) {
     if (idx < 0 || idx >= doc->element_count) { if (outsz) out[0] = '\0'; return; }
     lay_substitute_vars(doc->elements[idx].sprite, out, outsz, get_var, ctx);
+}
+
+/* REAL, NEW 2026-08-16 (see LayElement's own `id` field comment) - a
+ * button's real stable identity, no ${var} substitution needed (it's
+ * a literal name, not display text, unlike label/sprite). */
+const char *lay_get_id(const LayDoc *doc, int idx) {
+    if (idx < 0 || idx >= doc->element_count) return "";
+    return doc->elements[idx].id;
 }

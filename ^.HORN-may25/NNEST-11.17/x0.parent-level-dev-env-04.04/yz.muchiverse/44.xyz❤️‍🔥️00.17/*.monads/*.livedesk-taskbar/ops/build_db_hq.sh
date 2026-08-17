@@ -17,6 +17,7 @@ LIBS="-lX11 $(pkg-config --libs xft) -lm"
 SHARED="$(cd "$(dirname "$0")/../../../&.widgits/_shared-lib" && pwd)"
 cp "$SHARED/khtpm_css_parser.c" khtpm_css_parser.c
 cp "$SHARED/khtpm_css_parser.h" khtpm_css_parser.h
+cp "$SHARED/khtpm_render_core.c" khtpm_render_core.c
 mkdir -p lib
 cp "$SHARED/stb_image_write.h" lib/stb_image_write.h
 

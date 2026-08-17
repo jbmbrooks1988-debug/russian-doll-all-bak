@@ -2866,7 +2866,7 @@ file (#.desktop/taskbar_settings_agent_relay.txt) and the same
 apply_theme() read-modify-write path, each with their OWN independent
 g_focus_nav/g_chosen_bg_idx/g_chosen_fg_idx state - the exact same
 class of bug as PITFALL 53 (backgrounded button.sh zombies) and the
-2026-08-13 ai-cell concurrent-process incident (5 processes racing on
+2026-08-13 open-hai concurrent-process incident (5 processes racing on
 one relay file, see _.0.aigent-testing-k9.txt SCOPE ADDENDUM 2026-08-13),
 except this time the shared resource being raced on was the house's
 ACTUAL live theme config, not a disposable test session dir. One
@@ -2878,7 +2878,7 @@ running taskbar manager picked it up on its own scoped auto-restart.
 
 The bitter irony: this happened MINUTES after writing down "always
 confirm zero stray processes before launching, every time" as a
-lesson from the ai-cell incident - the discipline was internalized as
+lesson from the open-hai incident - the discipline was internalized as
 "testing an EXISTING window," not as "every khtpm/-hq window,
 including brand new ones I'm actively writing, no exceptions."
 
@@ -2910,16 +2910,16 @@ SEE ALSO: PITFALL 53 (backgrounded button.sh zombies), PITFALL 71
   incident is the real-world case study for).
 
 ========================================================================
-PITFALL 73: ai-cell's JSON response parser silently corrupted \uXXXX
+PITFALL 73: open-hai's JSON response parser silently corrupted \uXXXX
 escapes ('>' became literal "u003e" text) - found via a cross-model
 signal, not a single bad output
 ========================================================================
 
-SYMPTOM: model-generated bash scripts (via h-ai/ai-cell) contained
+SYMPTOM: model-generated bash scripts (via h-ai/open-hai) contained
 garbage like "u003e" where ">" should be, and "u0026" where "&" should
 be - real, runnable output corrupted into broken syntax.
 
-ROOT CAUSE: `extract_response_field()` (khtpm_ai_cell_render.c) is a
+ROOT CAUSE: `extract_response_field()` (khtpm_open_hai_render.c) is a
 hand-rolled JSON string unescaper that explicitly handled `\n` and
 `\t` but had no `\uXXXX` case. Ollama's own standard JSON encoding
 escapes '>' as `>` and '&' as `&` (both entirely normal,
@@ -2942,7 +2942,7 @@ depending on codepoint) to `extract_response_field()`. Confirmed live:
 re-ran the same delegated task after rebuilding, '>' rendered
 correctly instead of "u003e".
 
-FILES: `&.widgits/ai-cell/ops/khtpm_ai_cell_render.c` -
+FILES: `&.widgits/open-hai/ops/khtpm_open_hai_render.c` -
 `extract_response_field()`
 
 SEE ALSO: `au11-hq/EVENTS-PAL-BUILDOUT-PLAN.md` §8.3 for the full
@@ -3014,7 +3014,7 @@ silent failures (relative-path pdl row, find-based OPS_DIR, sh-vs-bash)
 
 SYMPTOM: clicking "stats" in the taskbar HQ menu (cell 1) did nothing -
 the menu closed but no stats window ever appeared. "This has been
-constantly buggy. why cant it just copy how hai opens?" - and ai-cell /
+constantly buggy. why cant it just copy how hai opens?" - and open-hai /
 settings / db-hq all DID open fine. The failure was silent at every
 layer: no window, no error dialog, no log line, no nonzero exit anyone
 looked at.
@@ -3040,7 +3040,7 @@ ROOT CAUSE: not one bug but THREE, stacked, each masking the next:
      launched launchers via `sh -c 'sh "script" ...'` - the inner
      `sh` runs dash, ignoring the script's `#!/bin/bash`. The stats
      script uses bash-only array syntax (`sessions=()`, line ~81),
-     so dash died with `Syntax error: "(" unexpected`. ai-cell's
+     so dash died with `Syntax error: "(" unexpected`. open-hai's
      button.sh happens to be POSIX-safe, which is why hai "just
      worked" under sh while stats never did.
 
@@ -3054,7 +3054,7 @@ fixed alone looked like "still broken."
 FIX (2026-08-13):
   * Stats (and settings) now use a dedicated reserved command
     (`livedesk:open-stats`, mirroring `livedesk:open-settings` /
-    `livedesk:open-ai-cell`) instead of a raw relative shell row.
+    `livedesk:open-open-hai`) instead of a raw relative shell row.
   * All HQ window launcher paths moved to the house-standard registry
     `#.desktop/livedesk_launchers.pdl` (`SECTION | launcher_<app> |
     <path relative to house_root>`) and resolved against house_root by

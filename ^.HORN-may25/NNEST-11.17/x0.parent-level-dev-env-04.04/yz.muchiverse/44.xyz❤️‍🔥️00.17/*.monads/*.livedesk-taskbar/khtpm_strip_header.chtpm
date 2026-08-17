@@ -107,7 +107,9 @@
     <row>${strip_hq_items}</row>
   </button>
   <button label="plugins" onClick="ACTIVATE:10"/>
-  <button label="toys" onClick="ACTIVATE:11"/>
+  <button id="toys" label="toys" onClick="ACTIVATE:11">
+    <row>${strip_hq_items}</row>
+  </button>
   <button label="store" onClick="ACTIVATE:12"/>
   <button label="network" onClick="ACTIVATE:13"/>
   <button label="h-ai" onClick="ACTIVATE:14">
@@ -116,5 +118,12 @@
   <button label="${datetime}" onClick="ACTIVATE:15">
     <row>${strip_hq_items}</row>
   </button>
+  <!-- REAL, NEW 2026-08-16, direct request - real, static, per-launch
+       identity marker (PID as keycap-digit unicode + a clock-face
+       emoji for launch time, NOT live-ticking, NOT an ACTIVATE cell -
+       just a display-only <text>, matching the user's own wording
+       "final field", after 15/date-time, not part of the numbered
+       cells). See khtpm_strip_parser.c's own build_uid_init(). -->
+  <text label="${build_uid}"/>
   <cli_io target_id="cliio" label="${cliio_label}"/>
 </panel>

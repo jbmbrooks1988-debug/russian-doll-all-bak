@@ -190,9 +190,9 @@ int main(int argc, char **argv) {
      * move_player.c. */
     FILE *f = fopen(path, "r");
     if (!f) return 1;
-    char lines[32][MAX_LINE];
+    char lines[128][MAX_LINE];
     int nlines = 0;
-    while (nlines < 32 && fgets(lines[nlines], MAX_LINE, f)) nlines++;
+    while (nlines < 128 && fgets(lines[nlines], MAX_LINE, f)) nlines++;
     fclose(f);
 
     f = fopen(path, "w");

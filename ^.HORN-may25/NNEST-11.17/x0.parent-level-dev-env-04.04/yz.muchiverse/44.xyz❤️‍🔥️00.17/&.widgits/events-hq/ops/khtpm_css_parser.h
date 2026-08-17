@@ -28,6 +28,30 @@ typedef struct {
     int has_font_size;       int font_size;
     int has_font_weight;     int font_weight_bold;
     int has_z_index;         int z_index;
+    /* REAL START 2026-08-16, Stage 3 (khtpm-merge-how2.md §5) - real,
+     * inventory-confirmed fields only (see that doc's own §5.1b for the
+     * exact evidence from all 3 real consumers' current layout_pass()
+     * functions before this was added - db-hq/events-hq/chat-hai).
+     * gap/justify-content/align-items deliberately NOT added - that
+     * same real inventory confirmed none of the 3 apps' current layouts
+     * need them, adding them speculatively would be untested surface
+     * area. */
+    int has_display;         int display_flex; /* 0=block (default), 1=flex */
+    int has_flex_direction;  int flex_row;      /* 0=column, 1=row - only meaningful if display_flex */
+    int has_flex_grow;       int flex_grow;     /* real weight; a child with this set consumes remaining space on the main axis */
+    /* REAL 2026-08-16, added AFTER the first real live port (db-hq's
+     * own tabbar) found a real, genuine gap in the original §5.1b
+     * scope: `padding` (existing field above, already real/used
+     * elsewhere for text-label inset - reused here, same real
+     * "inset from box edge" meaning, not a new concept) now ALSO
+     * insets flex children on the cross axis when set on the
+     * container; `gap` is a real, new, additive main-axis space
+     * between consecutive flex children - NOT in the original §5.1b
+     * inventory (that inventory correctly found the 3 apps' own MAIN
+     * patterns didn't need it, but missed 2 real per-app insets/gaps
+     * db-hq's own tabbar needed - see khtpm-merge-how2.md's own real
+     * step-4 writeup). */
+    int has_gap;              int gap;
 } CssStyle;
 
 typedef struct {

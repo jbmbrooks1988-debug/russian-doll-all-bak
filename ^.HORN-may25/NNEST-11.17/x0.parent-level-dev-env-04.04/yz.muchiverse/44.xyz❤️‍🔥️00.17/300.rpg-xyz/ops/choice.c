@@ -775,7 +775,7 @@ int main(int argc, char **argv) {
     FILE *f = fopen(hero_path, "r");
     if (!f) return 1;
 
-    char lines[32][MAX_LINE];
+    char lines[128][MAX_LINE];
     int nlines = 0;
     int action_cursor = -1, digit_accum = 0, panel_cursor = 0, panel_digit_accum = 0;
     int interact_mode = 0;
@@ -792,7 +792,7 @@ int main(int argc, char **argv) {
     int xlector_x = -1, xlector_y = -1; /* -1 = absent, filled from hero_x/y below */
     char map_id[64] = "map_start";
     char active_panel[32] = "none";
-    while (nlines < 32 && fgets(lines[nlines], MAX_LINE, f)) {
+    while (nlines < 128 && fgets(lines[nlines], MAX_LINE, f)) {
         char *eq = strchr(lines[nlines], '=');
         if (eq) {
             *eq = '\0';
@@ -1207,7 +1207,7 @@ int main(int argc, char **argv) {
             /* Examine/inventory: read-only, matches the old in_panel
              * behavior exactly - selecting a row never execs anything. */
         } else {
-            char names[32][MAX_LINE];
+            char names[128][MAX_LINE];
             int total = load_method_names(names, 32);
             int d = key - '0';
             if (d >= 2 && d < total) {

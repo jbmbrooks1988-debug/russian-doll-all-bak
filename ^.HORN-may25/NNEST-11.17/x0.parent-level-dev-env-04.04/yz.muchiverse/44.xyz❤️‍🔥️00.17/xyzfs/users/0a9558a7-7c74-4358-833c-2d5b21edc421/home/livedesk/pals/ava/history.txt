@@ -684,3 +684,84 @@
 [2026-08-15 01:48:01] WINDOW_OPEN
 [2026-08-15 01:48:01] LIVEDESK_INDEX=14
 [2026-08-15 01:59:23] INJECTED: CLOSE
+[2026-08-15 04:52:47] WINDOW_OPEN
+[2026-08-15 04:52:47] LIVEDESK_INDEX=14
+[2026-08-15 05:09:44] WINDOW_OPEN
+[2026-08-15 05:09:44] LIVEDESK_INDEX=14
+[2026-08-16 00:05:06] INJECTED: CLOSE
+[2026-08-16 00:05:19] WINDOW_OPEN
+[2026-08-16 00:05:19] LIVEDESK_INDEX=14
+[2026-08-16 02:06:45] CLICK method=Events (mock) action=sh -c 'cd "$0" && H="$(cd ../../.. && pwd)" && exec sh "$H/&.widgits/event-editor/gl_mock/button.sh" run'
+[2026-08-16 02:06:47] CLICK method=Events action=sh -c 'cd "$0" && H="$(cd ../../.. && pwd)" && exec env EE_PKG_NAME=ava-$(cat "$0/instance_id.txt") EE_PKG_DIR="$H/@.apps/asa-&-ava/pieces/ava/event_pkg" sh "$H/&.widgits/event-editor/button.sh" run-widget'
+[2026-08-16 02:06:51] CLICK method=Events (ez) action=sh -c 'cd "$0" && H="$(cd ../../.. && pwd)" && exec env EZ_PKG_NAME=ava-$(cat "$0/instance_id.txt") EZ_PKG_DIR="$H/@.apps/asa-&-ava/pieces/ava/event_pkg" sh "$H/&.widgits/event-ez/button.sh" run-widget'
+[2026-08-16 02:06:54] CLICK method=Dir action=sh -c 'exec xdg-open "$0"'
+[2026-08-16 02:07:08] INJECTED: CLOSE
+[2026-08-16 02:08:28] WINDOW_OPEN
+[2026-08-16 02:08:28] LIVEDESK_INDEX=14
+[2026-08-16 02:12:22] CLICK method=Cancel action=void
+[2026-08-16 02:19:25] CLICK method=Events action=sh -c 'cd "$0" && H="$(cd ../../.. && pwd)" && exec env EE_PKG_NAME=ava-$(cat "$0/instance_id.txt") EE_PKG_DIR="$H/@.apps/asa-&-ava/pieces/ava/event_pkg" sh "$H/&.widgits/event-editor/button.sh" run-widget'
+[2026-08-16 02:20:51] CLICK method=Events action=sh -c 'cd "$0" && H="$(cd ../../.. && pwd)" && exec env EE_PKG_NAME=ava-$(cat "$0/instance_id.txt") EE_PKG_DIR="$H/@.apps/asa-&-ava/pieces/ava/event_pkg" sh "$H/&.widgits/event-editor/button.sh" run-widget'
+[2026-08-16 02:20:56] INJECTED: OPEN_CONTEXT
+[2026-08-16 02:20:56] OPEN_CONTEXT
+[2026-08-16 02:20:58] CLICK method=Events action=sh -c 'cd "$0" && H="$(cd ../../.. && pwd)" && exec env EE_PKG_NAME=ava-$(cat "$0/instance_id.txt") EE_PKG_DIR="$H/@.apps/asa-&-ava/pieces/ava/event_pkg" sh "$H/&.widgits/event-editor/button.sh" run-widget'
+[2026-08-16 02:24:07] INJECTED: OPEN_PAGE:main
+[2026-08-16 02:24:07] OPEN_PAGE:main
+[2026-08-16 02:24:08] INJECTED: RUN_METHOD:Events
+[2026-08-16 02:24:20] CLICK method=Cancel action=void
+[2026-08-16 02:24:23] CLICK method=Events action=sh -c 'exec "$1/&.widgits/events-hq/button.sh" "$0" "$1"'
+[2026-08-16 04:03:45] WINDOW_OPEN
+[2026-08-16 04:03:45] LIVEDESK_INDEX=1
+[2026-08-16 04:04:14] CLICK method=Chat action=sh -c 'cd "$0" && H="$(cd ../../.. && pwd)" && exec gnome-terminal -- "$H/@.apps/asa-&-ava/pieces/ava/chat.sh"'
+[2026-08-16 04:04:24] INJECTED: OPEN_CONTEXT
+[2026-08-16 04:04:24] OPEN_CONTEXT
+[2026-08-16 04:04:55] CLICK method=Chat action=sh -c 'cd "$0" && H="$(cd ../../.. && pwd)" && exec gnome-terminal -- "$H/@.apps/asa-&-ava/pieces/ava/chat.sh"'
+[2026-08-16 04:07:22] WINDOW_OPEN
+[2026-08-16 04:07:22] LIVEDESK_INDEX=1
+[2026-08-16 04:09:03] WINDOW_OPEN
+[2026-08-16 04:09:03] LIVEDESK_INDEX=1
+[2026-08-16 04:11:08] CLICK method=Chat action=sh -c 'cd "$0" && H="$(cd ../../.. && pwd)" && exec gnome-terminal -- "$H/@.apps/asa-&-ava/pieces/ava/chat.sh"'
+[2026-08-16 04:11:25] CLICK method=Chat action=sh -c 'cd "$0" && H="$(cd ../../.. && pwd)" && exec gnome-terminal -- "$H/@.apps/asa-&-ava/pieces/ava/chat.sh"'
+[2026-08-16 04:11:56] CLICK method=Chat action=sh -c 'cd "$0" && H="$(cd ../../.. && pwd)" && exec gnome-terminal -- "$H/@.apps/asa-&-ava/pieces/ava/chat.sh"'
+[2026-08-16 04:14:12] CLICK method=Chat action=sh -c 'cd "$0" && H="$(cd ../../.. && pwd)" && exec gnome-terminal -- "$H/@.apps/asa-&-ava/pieces/ava/chat.sh"'
+[2026-08-16 04:19:50] CLICK method=Chat action=sh -c 'cd "$0" && H="$(cd ../../.. && pwd)" && exec gnome-terminal -- "$H/@.apps/asa-&-ava/pieces/ava/chat.sh"'
+[2026-08-16 04:21:33] CLICK method=Chat action=sh -c 'cd "$0" && H="$(cd ../../.. && pwd)" && exec gnome-terminal -- "$H/@.apps/asa-&-ava/pieces/ava/chat.sh"'
+[2026-08-16 04:23:59] WINDOW_OPEN
+[2026-08-16 04:23:59] LIVEDESK_INDEX=1
+[2026-08-16 05:07:13] WINDOW_OPEN
+[2026-08-16 05:07:13] LIVEDESK_INDEX=14
+[2026-08-16 05:17:41] WINDOW_OPEN
+[2026-08-16 05:17:41] LIVEDESK_INDEX=1
+[2026-08-16 05:23:52] WINDOW_OPEN
+[2026-08-16 05:23:52] LIVEDESK_INDEX=14
+[2026-08-16 05:24:02] INJECTED: CLOSE
+[2026-08-16 05:27:22] WINDOW_OPEN
+[2026-08-16 05:27:22] LIVEDESK_INDEX=14
+[2026-08-16 14:06:16] WINDOW_OPEN
+[2026-08-16 14:06:16] LIVEDESK_INDEX=14
+[2026-08-16 14:14:16] WINDOW_OPEN
+[2026-08-16 14:14:16] LIVEDESK_INDEX=14
+[2026-08-16 17:14:12] INJECTED: CLOSE
+[2026-08-16 17:34:39] WINDOW_OPEN
+[2026-08-16 17:34:39] LIVEDESK_INDEX=14
+[2026-08-16 17:45:48] INJECTED: CLOSE
+[2026-08-16 19:00:33] WINDOW_OPEN
+[2026-08-16 19:00:33] LIVEDESK_INDEX=14
+[2026-08-16 19:02:45] INJECTED: OPEN_CONTEXT
+[2026-08-16 19:02:45] OPEN_CONTEXT
+[2026-08-16 19:02:45] INJECTED: OPEN_CONTEXT
+[2026-08-16 19:02:45] OPEN_CONTEXT
+[2026-08-16 20:34:15] INJECTED: CLOSE
+[2026-08-16 21:22:08] WINDOW_OPEN
+[2026-08-16 21:22:08] LIVEDESK_INDEX=14
+[2026-08-16 21:22:36] INJECTED: CLOSE
+[2026-08-16 21:58:20] WINDOW_OPEN
+[2026-08-16 21:58:20] LIVEDESK_INDEX=14
+[2026-08-16 23:22:25] INJECTED: CLOSE
+[2026-08-16 23:22:39] WINDOW_OPEN
+[2026-08-16 23:22:39] LIVEDESK_INDEX=14
+[2026-08-16 23:23:46] INJECTED: CLOSE
+[2026-08-17 01:24:05] WINDOW_OPEN
+[2026-08-17 01:24:05] LIVEDESK_INDEX=14
+[2026-08-17 04:03:43] INJECTED: CLOSE
+[2026-08-17 04:10:01] WINDOW_OPEN
+[2026-08-17 04:10:01] LIVEDESK_INDEX=14

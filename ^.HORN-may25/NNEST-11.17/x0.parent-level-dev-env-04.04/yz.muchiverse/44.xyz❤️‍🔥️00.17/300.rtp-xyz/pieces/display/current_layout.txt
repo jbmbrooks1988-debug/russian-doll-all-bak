@@ -1,1 +1,1 @@
-pieces/chtpm/layouts/editor_home.chtpm
+pieces/chtpm/layouts/game.chtpm

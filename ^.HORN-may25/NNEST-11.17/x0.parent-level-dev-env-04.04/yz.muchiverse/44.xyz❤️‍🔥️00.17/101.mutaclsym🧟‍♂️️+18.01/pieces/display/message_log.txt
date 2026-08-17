@@ -981,3 +981,27 @@ Saved (save_2, turn 0).
 You see nothing here.
 Saved (save_3, turn 0).
 Saved (save_4, turn 0).
+You see nothing here.
+You see nothing here.
+You see nothing here.
+Xlector menu: Event/Copy/Paste/Delete/Exit
+You see nothing here.
+You see nothing here.
+You see nothing here.
+You see nothing here.
+Xlector menu: Event/Copy/Paste/Delete/Exit
+Event → desktop package ev_map_start_20_10 (open event-editor widget).
+Nothing here to pick up.
+Nothing here to pick up.
+You see nothing here.
+You see nothing here.
+You see nothing here.
+Nothing to drop.
+Nothing to drop.
+Nothing here to pick up.
+Nothing here to pick up.
+Nothing here to pick up.
+Nothing here to pick up.
+Nothing to drop.
+You have nothing to eat or drink.
+Nothing to drop.

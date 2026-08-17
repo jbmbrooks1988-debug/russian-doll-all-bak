@@ -15,11 +15,20 @@ if [ -z "$HOUSE_ROOT" ] || [ ! -d "$HOUSE_ROOT" ]; then
 fi
 HOUSE_ROOT="$(cd "$HOUSE_ROOT" && pwd)"
 
+# REAL Stage 5 §5d.3 step 6 (2026-08-16, khtpm-merge-how2.md §5d) - the
+# real, literal binary merge: taskbar-settings now runs through the
+# SAME compiled khtpm_entity_menu_render.+x entity-menu already uses,
+# mode-selected by `<window class="swatch-picker">` in
+# taskbar_settings.chtpm - genuinely one binary, not two, verified live
+# both ways before this launcher was retargeted. khtpm_taskbar_settings_
+# render.c/build_taskbar_settings.sh are kept as real, working reference/
+# rollback (still build their own separate binary if invoked directly),
+# just no longer what this launcher points at.
 OPS_DIR="$(cd "$(dirname "$0")" && pwd)"
-BIN="$OPS_DIR/+x/khtpm_taskbar_settings_render.+x"
+BIN="$OPS_DIR/+x/khtpm_entity_menu_render.+x"
 
 if [ ! -x "$BIN" ]; then
-    (cd "$OPS_DIR" && sh build_taskbar_settings.sh) || true
+    (cd "$OPS_DIR" && sh build_entity_menu.sh) || true
 fi
 if [ ! -x "$BIN" ]; then
     echo "taskbar-settings button.sh: build failed, missing $BIN" >&2
@@ -29,7 +38,13 @@ fi
 AUDIT_DIR="$HOUSE_ROOT/#.desktop/taskbar-settings-audit"
 mkdir -p "$AUDIT_DIR"
 
-settings_pids() { pgrep -f "khtpm_taskbar_settings_render\.\+x" 2>/dev/null || true; }
+CHTPM_PATH="$OPS_DIR/taskbar_settings.chtpm"
+# REAL, deliberately specific - matches by the real chtpm PATH too, not
+# just the binary name, since khtpm_entity_menu_render.+x is a real,
+# genuinely shared binary now - a bare binary-name match here would
+# incorrectly kill/confuse itself with any other, unrelated, legitimately-
+# open entity right-click menu using the exact same executable.
+settings_pids() { pgrep -f "khtpm_entity_menu_render\.\+x .*taskbar_settings\.chtpm" 2>/dev/null || true; }
 
 pids="$(settings_pids)"
 if [ -n "$pids" ]; then
@@ -44,7 +59,7 @@ if [ -n "$pids" ]; then
     fi
 fi
 
-setsid nohup "$BIN" "$HOUSE_ROOT" \
+setsid nohup "$BIN" "$HOUSE_ROOT" "$CHTPM_PATH" \
     >"$AUDIT_DIR/taskbar-settings.log" 2>&1 < /dev/null &
 disown 2>/dev/null || true
 sleep 1

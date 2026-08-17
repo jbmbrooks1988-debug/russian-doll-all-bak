@@ -1,3 +1,11 @@
+**SUPERSEDED, forward pointer (2026-08-16):** events-hq (and db-hq) have
+since been merged into the shared `khtpm_entity_menu_render.c` binary —
+Stage 5 of the khtpm merge, see `khtpm-merge-how2.md` §5d.10/§5d.11 for
+current, real status. The managed-window/`_MOTIF_WM_HINTS` focus fix
+and RGB Phase 0 findings below are still real history, just no longer
+the current architecture (events-hq is no longer its own standalone
+binary).
+
 # events-hq + RGB refactor — handoff (2026-08-12, context full, new
 agent picking this up)
 

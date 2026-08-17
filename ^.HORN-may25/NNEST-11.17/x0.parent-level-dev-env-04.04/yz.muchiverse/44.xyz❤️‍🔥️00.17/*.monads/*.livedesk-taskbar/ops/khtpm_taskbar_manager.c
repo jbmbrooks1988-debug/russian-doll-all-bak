@@ -91,6 +91,46 @@ void ktb_init(KtbState *s, const char *house_root) {
     s->tab_focus_idx = 0;
     s->strip_focus_cell = 0; /* matches tp_taskbar.c's own strip_focus_cell default (button 1 / HQ) */
     s->strip_user_cmd[0] = '\0';
+    ktb_load_cell_ids(s);
+}
+
+/* REAL, NEW 2026-08-16 - see KtbState's own cell_id_pos/cell_id_str
+ * field comment for the full real cross-process reasoning. Read once
+ * at startup; khtpm_strip_header.chtpm's own button order never
+ * changes at runtime, so no need to re-read later. Missing file (e.g.
+ * strip_parser hasn't run yet this session) is a real, harmless no-op
+ * - every ktb_cell_id() lookup just returns "" and the existing
+ * which==N dispatch chain keeps working exactly as before. */
+void ktb_load_cell_ids(KtbState *s) {
+    s->n_cell_ids = 0;
+    char path[KTB_PATH_BUF];
+    path_join(path, sizeof(path), s->house_root, "#.desktop/livedesk_header_cell_ids.txt");
+    FILE *f = ktb_fopen(path, "r");
+    if (!f) return;
+    char line[128];
+    while (s->n_cell_ids < 15 && fgets(line, sizeof(line), f)) {
+        char *bar = strchr(line, '|');
+        if (!bar) continue;
+        *bar = '\0';
+        int pos = atoi(line);
+        char *id = bar + 1;
+        id[strcspn(id, "\r\n")] = '\0';
+        if (pos < 1 || !id[0]) continue;
+        s->cell_id_pos[s->n_cell_ids] = pos;
+        snprintf(s->cell_id_str[s->n_cell_ids], sizeof(s->cell_id_str[0]), "%s", id);
+        s->n_cell_ids++;
+    }
+    fclose(f);
+}
+
+/* REAL, NEW 2026-08-16 - real position(which)->id lookup, "" if this
+ * cell has no real declared id yet (every existing cell today, until
+ * migrated one at a time - real, deliberate incremental adoption, not
+ * a forced rewrite of the whole dispatch chain in one risky pass). */
+const char *ktb_cell_id(const KtbState *s, int which) {
+    for (int i = 0; i < s->n_cell_ids; i++)
+        if (s->cell_id_pos[i] == which) return s->cell_id_str[i];
+    return "";
 }
 
 void ktb_write_pidfile(KtbState *s, int pid) {
@@ -760,7 +800,7 @@ void read_key_value(const char *path, const char *key, char *out, size_t out_sz)
  * house's parent dir when the taskbar is launched by run_khtpm_strip.sh),
  * not house_root - so the shell could never find it. All HQ window rows
  * now go through here so they resolve against house_root regardless of
- * cwd, exactly like settings/ai-cell's own dedicated branches. */
+ * cwd, exactly like settings/open-hai's own dedicated branches. */
 static int ktb_hq_launcher_path(const char *house_root, const char *app,
                                 char *out, size_t out_sz) {
     out[0] = '\0';
@@ -1547,9 +1587,9 @@ static void livedesk_kill_stray_entities(const char *house_root) {
         cmdbuf[nb] = '\0';
         for (size_t i = 0; i < nb; i++) if (cmdbuf[i] == '\0') cmdbuf[i] = ' ';
         /* Kill both legacy entities (tp_desktop_window) and khtpm subwindows
-         * (ai-cell, db-hq, events-hq, etc.) that reference this house_root. */
+         * (open-hai, db-hq, events-hq, etc.) that reference this house_root. */
         if (strstr(cmdbuf, house_root) &&
-            (strstr(cmdbuf, "tp_desktop_window") || strstr(cmdbuf, "khtpm_ai_cell_render") ||
+            (strstr(cmdbuf, "tp_desktop_window") || strstr(cmdbuf, "khtpm_open_hai_render") ||
              strstr(cmdbuf, "khtpm_hq_render"))) {
             int pid = atoi(ent->d_name);
             if (pid > 0 && n < (int)(sizeof(pids) / sizeof(pids[0]))) pids[n++] = (pid_t)pid;
@@ -2048,7 +2088,7 @@ static int livedesk_build_player_menu(HQMenuItem *menu, int max) {
 }
 
 /* ai cell (14) - real, wired 2026-08-12 (direct instruction: "get
- * started" on AI-CELL-GUI-DESIGN.md).
+ * started" on OPEN-HAI-GUI-DESIGN.md).
  *
  * REAL BUG FOUND LIVE (2026-08-12, direct report: "tb still doesn't
  * open ai window... need to wire that up asap"): a single-row menu
@@ -2059,7 +2099,7 @@ static int livedesk_build_player_menu(HQMenuItem *menu, int max) {
  * children, so the menu was never found. Fixed by making the button
  * non-self-closing and adding the child row, exactly like db/player/etc.
  * already do. Confirmed working: relay sequence `nav.sh nav 14` / `row 1`
- * now reliably launches khtpm_ai_cell_render.+x.
+ * now reliably launches khtpm_open_hai_render.+x.
  *
  * The 2-row shape (Open h-ai + Cancel) is INTENTIONAL, not a workaround.
  * Cancel row provides standard close-without-action UX, matching other
@@ -2068,7 +2108,7 @@ static int livedesk_build_ai_menu(HQMenuItem *menu, int max) {
     int n = 0;
     if (n < max) {
         snprintf(menu[n].label, sizeof(menu[n].label), "Open h-ai");
-        snprintf(menu[n].command, sizeof(menu[n].command), "livedesk:open-ai-cell");
+        snprintf(menu[n].command, sizeof(menu[n].command), "livedesk:open-open-hai");
         n++;
     }
     if (n < max) {
@@ -2093,7 +2133,7 @@ static int livedesk_build_ai_menu(HQMenuItem *menu, int max) {
 /* Cell 15 (date/time) clock menu (15.clock-design.md §5.2).          */
 /*                                                                   */
 /* The clock system lives under <house>/#.desktop/clocks/ (owned by   */
-/* the headless lc_clock daemon, xyzfs/bin/livedesk-clock):           */
+/* the headless lc_clock daemon, &.widgits/livedesk-clock):            */
 /*   clocks.pdl    CLOCK|<id>|scope=<s>|desc=<d>   (registry)          */
 /*   <id>.pdl      SECTION rows: rate/running/tick/game_time_epoch_ms  */
 /*   reminders.pdl r<id>|clock=<id>|at=<ms>|text=<s>|event=<s>|note=<s>*/
@@ -2463,9 +2503,66 @@ static int livedesk_build_user_menu(const char *house_root, HQMenuItem *menu, in
  * onClick); since 2026-08-13 it IS an ACTIVATE:15 cell with a real clock
  * menu (see livedesk_build_clock_menu() + this function's which==15 branch
  * + the "livedesk:clock:*" dispatch cases in ktb_hq_activate()). */
+/* REAL, NEW 2026-08-16, khtpm-merge-how2.md §5c.2 - real "toys" cell
+ * population, scans for a real, new, minimal `toy.pdl` identity file
+ * (META|title, META|launch - a real button.sh-relative action) rather
+ * than retrofitting either of the house's two existing, real, but
+ * differently-shaped identity conventions (meta.pdl's category=Toys,
+ * or TPMOS-native project.pdl, which has no category field at all -
+ * see khtpm-merge-how2.md §5c.2's own real finding). Opt-in by FILE
+ * PRESENCE only (a directory with no toy.pdl is silently skipped, so
+ * this can't produce a false-positive no matter how many real,
+ * unrelated top-level directories exist) - scans house_root's own
+ * direct children AND house_root/@.apps's own direct children (one
+ * level each), matching where the 4 real, direct-instruction-named
+ * candidates (mutaclysm, my-chara, my-lawyer, piececraft) actually
+ * live (mutaclysm at house_root's own top level; the other 3 under
+ * @.apps/). Live, in-process directory scan every time this cell
+ * opens - same real, established shape as livedesk_build_pals_menu()/
+ * livedesk_build_desk_menu() above, not a new pattern. */
+static void toys_scan_one_root(const char *root, HQMenuItem *menu, int max, int *n) {
+    DIR *d = opendir(root);
+    if (!d) return;
+    struct dirent *e;
+    while (*n < max - 1 && (e = readdir(d))) {
+        if (e->d_name[0] == '.') continue;
+        char toy_pdl[KTB_PATH_BUF];
+        snprintf(toy_pdl, sizeof(toy_pdl), "%s/%s/toy.pdl", root, e->d_name);
+        if (access(toy_pdl, F_OK) != 0) continue;
+        char title[128] = "", launch[256] = "";
+        read_key_value(toy_pdl, "title", title, sizeof(title));
+        read_key_value(toy_pdl, "launch", launch, sizeof(launch));
+        if (!title[0]) snprintf(title, sizeof(title), "%s", e->d_name);
+        if (!launch[0]) snprintf(launch, sizeof(launch), "button.sh");
+        snprintf(menu[*n].label, sizeof(menu[*n].label), "%s", title);
+        snprintf(menu[*n].command, sizeof(menu[*n].command), "livedesk:open-toy:%s/%s/%s", root, e->d_name, launch);
+        (*n)++;
+    }
+    closedir(d);
+}
+
+static int livedesk_build_toys_menu(const char *house_root, HQMenuItem *menu, int max) {
+    int n = 0;
+    toys_scan_one_root(house_root, menu, max, &n);
+    char apps_root[KTB_PATH_BUF];
+    snprintf(apps_root, sizeof(apps_root), "%s/@.apps", house_root);
+    toys_scan_one_root(apps_root, menu, max, &n);
+    if (n < max) { snprintf(menu[n].label, sizeof(menu[n].label), "Cancel"); menu[n].command[0] = '\0'; n++; }
+    return n;
+}
+
 void ktb_hq_open(KtbState *s, int which) {
     int n = 0;
-    if (which == 2) n = livedesk_build_user_menu(s->house_root, s->hq_menu, KTB_LIVEDESK_DYN_MAX);
+    /* REAL, NEW 2026-08-16, direct correction ("the cells aren't
+     * supposed to be hardcoded... that's an oversight") - real,
+     * data-declared cell identity, checked FIRST, before the existing
+     * purely-positional which==N chain below (kept as-is for every
+     * cell not yet migrated - real, deliberate incremental adoption).
+     * "" (no real id declared for this position yet) falls through
+     * unchanged to the existing chain. */
+    const char *cid = ktb_cell_id(s, which);
+    if (strcmp(cid, "toys") == 0) { n = livedesk_build_toys_menu(s->house_root, s->hq_menu, KTB_LIVEDESK_DYN_MAX); }
+    else if (which == 2) n = livedesk_build_user_menu(s->house_root, s->hq_menu, KTB_LIVEDESK_DYN_MAX);
     else if (which == 4) n = livedesk_build_desk_menu(s->house_root, s->hq_menu, KTB_LIVEDESK_DYN_MAX);
     else if (which == 5) n = livedesk_build_pals_menu(s->house_root, s->hq_menu, KTB_LIVEDESK_DYN_MAX);
     else if (which == 1) n = livedesk_build_hq_menu(s->house_root, s->hq_menu, KTB_LIVEDESK_DYN_MAX);
@@ -2527,6 +2624,38 @@ void ktb_hq_digit(KtbState *s, int d) {
         s->hq_digit_accum = d;
         if (d >= 1 && d <= s->hq_n_menu) s->hq_focus = d - 1;
     }
+}
+
+/* REAL, dynamic path discovery (2026-08-17, direct instruction: "we
+ * dont hardcode, see how tpmos's button.sh does dynamic path
+ * discovery" - live report after muchi-pet/livedesk-clock moved out of
+ * xyzfs/bin/ and every hardcoded "%s/xyzfs/bin/<app>/..." string
+ * silently broke). Same real precedent as this house's own
+ * play_event.sh (upward "101.mutaclsym... / system" landmark search) and
+ * this very file's own toys_scan_one_root() (scans known root dirs for
+ * an app by name) - not invented fresh. Scans a short list of known
+ * real app-root directories under house_root for a subdirectory whose
+ * name contains app_name, so the next move doesn't need a source edit
+ * here again. */
+static int find_app_dir(const char *house_root, const char *app_name, char *out, size_t outsz) {
+    static const char *roots[] = { "*.monads", "&.widgits", "&.hq-apps", "@.apps", NULL };
+    for (int i = 0; roots[i]; i++) {
+        char parent[KTB_PATH_BUF];
+        snprintf(parent, sizeof(parent), "%s/%s", house_root, roots[i]);
+        DIR *d = opendir(parent);
+        if (!d) continue;
+        struct dirent *ent;
+        while ((ent = readdir(d)) != NULL) {
+            if (strstr(ent->d_name, app_name)) {
+                snprintf(out, outsz, "%s/%s", parent, ent->d_name);
+                closedir(d);
+                return 1;
+            }
+        }
+        closedir(d);
+    }
+    out[0] = '\0';
+    return 0;
 }
 
 void ktb_hq_activate(KtbState *s, int row) {
@@ -2653,15 +2782,28 @@ void ktb_hq_activate(KtbState *s, int row) {
         ktb_hq_open(s, 102);
     } else if (strcmp(m->command, "livedesk:db-ez-common-events-back") == 0) {
         ktb_hq_open(s, 101);
+    } else if (strncmp(m->command, "livedesk:open-toy:", 18) == 0) {
+        /* REAL, NEW 2026-08-16, khtpm-merge-how2.md §5c.2 - launches a
+         * real toy project's own button.sh "run" action, same real
+         * setsid-nohup-detached shape every other real launch in this
+         * file uses. m->command + 18 is the full, real, absolute
+         * button.sh path already resolved by livedesk_build_toys_menu(). */
+        char sh[KTB_PATH_BUF * 2];
+        snprintf(sh, sizeof(sh), "setsid nohup sh -c 'sh \"%s\" run' >/dev/null 2>&1 &", m->command + 18);
+        int rc = system(sh);
+        (void)rc;
+        ktb_hq_close(s);
     } else if (strncmp(m->command, "livedesk:open-common-event:", 28) == 0) {
         /* GLOBAL (house_root-wide) common event, not session-scoped - see
          * livedesk_build_db_common_events_menu()'s own header comment. */
         char ce_path[KTB_PATH_BUF];
         snprintf(ce_path, sizeof(ce_path), "%s/common_events/%s", s->house_root, m->command + 28);
         if (access(ce_path, F_OK) != 0) mkdir(ce_path, 0755);
+        char muchi_pet_dir[KTB_PATH_BUF];
+        find_app_dir(s->house_root, "muchi-pet", muchi_pet_dir, sizeof(muchi_pet_dir));
         char sh[KTB_PATH_BUF * 3];
-        snprintf(sh, sizeof(sh), "setsid nohup sh -c 'sh \"%s/xyzfs/bin/muchi-pet/ops/open_event_ez.sh\" \"%s\" \"%s\"' >/dev/null 2>&1 &",
-                 s->house_root, ce_path, s->house_root);
+        snprintf(sh, sizeof(sh), "setsid nohup sh -c 'sh \"%s/ops/open_event_ez.sh\" \"%s\" \"%s\"' >/dev/null 2>&1 &",
+                 muchi_pet_dir, ce_path, s->house_root);
         int rc = system(sh);
         (void)rc;
         ktb_hq_close(s);
@@ -2677,9 +2819,11 @@ void ktb_hq_activate(KtbState *s, int row) {
             idx++;
         }
         mkdir(ce_path, 0755);
+        char muchi_pet_dir[KTB_PATH_BUF];
+        find_app_dir(s->house_root, "muchi-pet", muchi_pet_dir, sizeof(muchi_pet_dir));
         char sh[KTB_PATH_BUF * 3];
-        snprintf(sh, sizeof(sh), "setsid nohup sh -c 'sh \"%s/xyzfs/bin/muchi-pet/ops/open_event_ez.sh\" \"%s\" \"%s\"' >/dev/null 2>&1 &",
-                 s->house_root, ce_path, s->house_root);
+        snprintf(sh, sizeof(sh), "setsid nohup sh -c 'sh \"%s/ops/open_event_ez.sh\" \"%s\" \"%s\"' >/dev/null 2>&1 &",
+                 muchi_pet_dir, ce_path, s->house_root);
         int rc = system(sh);
         (void)rc;
         ktb_hq_close(s);
@@ -2699,27 +2843,29 @@ void ktb_hq_activate(KtbState *s, int row) {
          * match, at all, which is why clicking db-hq from the real
          * taskbar did nothing (silently fell through to the final
          * catch-all, see ktb_hq_activate()'s own closing branches). */
+        char muchi_pet_dir[KTB_PATH_BUF];
+        find_app_dir(s->house_root, "muchi-pet", muchi_pet_dir, sizeof(muchi_pet_dir));
         char sh[KTB_PATH_BUF * 3];
-        snprintf(sh, sizeof(sh), "setsid nohup sh -c 'sh \"%s/xyzfs/bin/muchi-pet/ops/open_db_hq.sh\" \"%s\"' >/dev/null 2>&1 &",
-                 s->house_root, s->house_root);
+        snprintf(sh, sizeof(sh), "setsid nohup sh -c 'sh \"%s/ops/open_db_hq.sh\" \"%s\"' >/dev/null 2>&1 &",
+                 muchi_pet_dir, s->house_root);
         int rc = system(sh);
         (void)rc;
         ktb_hq_close(s);
-    } else if (strcmp(m->command, "livedesk:open-ai-cell") == 0) {
+    } else if (strcmp(m->command, "livedesk:open-open-hai") == 0) {
         /* ai cell (14) - real, wired 2026-08-12. Own separate X11
-         * window process (khtpm_ai_cell_render.c), same setsid nohup
-         * launch pattern as db-hq/event-ez above, via ai-cell's own
+         * window process (khtpm_open_hai_render.c), same setsid nohup
+         * launch pattern as db-hq/event-ez above, via open-hai's own
          * button.sh (mirrors open_db_hq.sh's own build-if-missing +
          * launch shape). */
         char sh[KTB_PATH_BUF * 3];
-        snprintf(sh, sizeof(sh), "setsid nohup sh -c 'sh \"%s/&.widgits/ai-cell/button.sh\" \"%s\"' >/dev/null 2>&1 &",
+        snprintf(sh, sizeof(sh), "setsid nohup sh -c 'sh \"%s/&.widgits/open-hai/button.sh\" \"%s\"' >/dev/null 2>&1 &",
                  s->house_root, s->house_root);
         int rc = system(sh);
         (void)rc;
         ktb_hq_close(s);
     } else if (strcmp(m->command, "livedesk:open-chat-hai") == 0) {
         /* chat-hai cell (14) - standalone X11 window for multi-model ambient chat.
-         * Launched via button.sh (mirrors ai-cell pattern exactly). */
+         * Launched via button.sh (mirrors open-hai pattern exactly). */
         char sh[KTB_PATH_BUF * 3];
         snprintf(sh, sizeof(sh), "setsid nohup sh -c 'sh \"%s/&.hq-apps/chat-hai/button.sh\" \"%s\"' >/dev/null 2>&1 &",
                  s->house_root, s->house_root);
@@ -2731,8 +2877,10 @@ void ktb_hq_activate(KtbState *s, int row) {
          * writers shell out to lc_clock (control plane) which does the
          * flock-protected read-modify-write; the daemon is the only
          * writer of game_time_epoch_ms/tick/fired. */
+        char lc_dir[KTB_PATH_BUF];
+        find_app_dir(s->house_root, "livedesk-clock", lc_dir, sizeof(lc_dir));
         char lcbin[KTB_PATH_BUF];
-        snprintf(lcbin, sizeof(lcbin), "%s/xyzfs/bin/livedesk-clock/ops/+x/lc_clock.+x", s->house_root);
+        snprintf(lcbin, sizeof(lcbin), "%s/ops/+x/lc_clock.+x", lc_dir);
         const char *rest = m->command + 15;
         if (strcmp(rest, "clocks") == 0) {
             ktb_hq_open(s, CLOCK_MENU_CLOCKS);
@@ -2797,9 +2945,11 @@ void ktb_hq_activate(KtbState *s, int row) {
         } else if (strncmp(rest, "event-ez:", 9) == 0) {
             /* P4 (15.clock-design.md §5.3): open this clock's event
              * package in event-ez. */
+            char muchi_pet_dir[KTB_PATH_BUF];
+            find_app_dir(s->house_root, "muchi-pet", muchi_pet_dir, sizeof(muchi_pet_dir));
             char sh[KTB_PATH_BUF * 3];
-            snprintf(sh, sizeof(sh), "setsid nohup sh -c 'sh \"%s/xyzfs/bin/muchi-pet/ops/open_event_ez.sh\" \"%s/#.desktop/clocks/%s\" \"%s\"' >/dev/null 2>&1 &",
-                     s->house_root, s->house_root, rest + 9, s->house_root);
+            snprintf(sh, sizeof(sh), "setsid nohup sh -c 'sh \"%s/ops/open_event_ez.sh\" \"%s/#.desktop/clocks/%s\" \"%s\"' >/dev/null 2>&1 &",
+                     muchi_pet_dir, s->house_root, rest + 9, s->house_root);
             int rc = system(sh);
             (void)rc;
             ktb_hq_close(s);
@@ -2813,7 +2963,7 @@ void ktb_hq_activate(KtbState *s, int row) {
          * triggers the same scoped restart "$.restart" already uses
          * so the new theme takes effect live. Own separate X11 window
          * process (khtpm_taskbar_settings_render.c), same setsid
-         * nohup + button-script launch pattern as ai-cell above.
+         * nohup + button-script launch pattern as open-hai above.
          * Launcher script path now comes from the house-standard
          * livedesk_launchers.pdl registry, not hardcoded here. */
         char launcher[KTB_PATH_BUF];
@@ -2837,12 +2987,12 @@ void ktb_hq_activate(KtbState *s, int row) {
          *    process's cwd (the house's PARENT dir), not house_root,
          *    so the shell silently couldn't find the script. The stats
          *    row now uses the same reserved "livedesk:open-*" command
-         *    shape as settings/ai-cell/db-hq above.
+         *    shape as settings/open-hai/db-hq above.
          * 2) button_taskbar_stats.sh (which this used to shell to)
          *    hardcoded a stale path "xyzfs/bin/stats-hq/ops/
          *    open_stats_hq.sh" that does not exist - the real script
          *    lives at "&.hq-apps/stats-hq/open_stats_hq.sh". The whole
-         *    window is now launched the exact same way ai-cell opens
+         *    window is now launched the exact same way open-hai opens
          *    (dedicated setsid nohup + button-script/launcher pattern),
          *    with the launcher script path read from the house-standard
          *    livedesk_launchers.pdl registry. */

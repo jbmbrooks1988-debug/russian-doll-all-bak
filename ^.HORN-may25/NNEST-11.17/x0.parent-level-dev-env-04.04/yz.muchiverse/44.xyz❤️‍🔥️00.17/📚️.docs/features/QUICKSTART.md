@@ -69,7 +69,7 @@ Features (user-facing functionality)
 └── [future features...]
 
 These docs support the main system:
-├── &.widgits/ai-cell/ (hai chat UI)
+├── &.widgits/open-hai/ (hai chat UI)
 ├── &.hq-apps/stats-hq/ (stats dashboard)
 ├── %.harnesses/harnecient-fsm/ (delegation tracking)
 └── *.monads/*.livedesk-taskbar/ (toolbar/process mgmt)

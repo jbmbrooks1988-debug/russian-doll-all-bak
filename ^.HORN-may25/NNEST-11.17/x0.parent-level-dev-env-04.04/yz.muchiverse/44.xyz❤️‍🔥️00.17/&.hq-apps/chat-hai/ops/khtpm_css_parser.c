@@ -25,6 +25,16 @@ static void css_style_merge(CssStyle *dst, const CssStyle *src) {
     if (src->has_font_size)    { dst->has_font_size = 1; dst->font_size = src->font_size; }
     if (src->has_font_weight)  { dst->has_font_weight = 1; dst->font_weight_bold = src->font_weight_bold; }
     if (src->has_z_index)      { dst->has_z_index = 1; dst->z_index = src->z_index; }
+    /* REAL START 2026-08-16, Stage 3 - same real per-field merge shape
+     * as every field above, not a shortcut. Missing this would silently
+     * drop display/flex-direction/flex-grow whenever a real cascaded
+     * rule (e.g. ".tabbar.active") needed to combine with a base rule -
+     * a real, easy-to-miss bug class this function's own existing
+     * pattern already guards every other field against. */
+    if (src->has_display)        { dst->has_display = 1; dst->display_flex = src->display_flex; }
+    if (src->has_flex_direction) { dst->has_flex_direction = 1; dst->flex_row = src->flex_row; }
+    if (src->has_flex_grow)      { dst->has_flex_grow = 1; dst->flex_grow = src->flex_grow; }
+    if (src->has_gap)            { dst->has_gap = 1; dst->gap = src->gap; }
 }
 
 static void trim(char *s) {
@@ -83,8 +93,22 @@ static void parse_declaration(const char *prop, const char *val, CssStyle *out) 
         out->has_font_weight = 1; out->font_weight_bold = (strcmp(v, "bold") == 0 || atoi(v) >= 600);
     } else if (strcmp(prop, "z-index") == 0) {
         out->has_z_index = 1; out->z_index = atoi(v);
+    } else if (strcmp(prop, "display") == 0) {
+        /* REAL START 2026-08-16, Stage 3 - real, inventory-confirmed
+         * subset only (khtpm-merge-how2.md §5.1b) - "flex" is the only
+         * real value any of the 3 current apps' own layouts would need;
+         * anything else (grid, inline-block, none) parses as block
+         * (has_display=1, display_flex=0), same as omitting the
+         * property entirely - real, deliberate, not a silent bug. */
+        out->has_display = 1; out->display_flex = (strcmp(v, "flex") == 0);
+    } else if (strcmp(prop, "flex-direction") == 0) {
+        out->has_flex_direction = 1; out->flex_row = (strcmp(v, "row") == 0);
+    } else if (strcmp(prop, "flex-grow") == 0) {
+        out->has_flex_grow = 1; out->flex_grow = atoi(v);
+    } else if (strcmp(prop, "gap") == 0) {
+        out->has_gap = 1; out->gap = atoi(v);
     }
-    /* unrecognized properties (box-shadow, border-radius, display, etc.) are
+    /* unrecognized properties (box-shadow, border-radius, grid, etc.) are
      * silently ignored - out of scope for this minimal subset. */
 }
 
@@ -159,15 +183,10 @@ int css_load(const char *path, CssSheet *sheet) {
     return 1;
 }
 
-/* returns: 0=no match, 1=element-tag tier, 2=class tier, 3=id tier */
-static int selector_tier_match(const char *selector, const char *tag, const char *id,
-                                char classes[][32], int n_classes, int hover) {
-    char sel[128]; snprintf(sel, sizeof(sel), "%s", selector);
-    int want_hover = 0;
-    char *hov = strstr(sel, ":hover");
-    if (hov) { want_hover = 1; *hov = '\0'; }
-    if (want_hover && !hover) return 0;
-
+/* Match a single (non-descendant) selector segment against one element.
+ * Returns: 0=no match, 1=element-tag tier, 2=class tier, 3=id tier. */
+static int match_one_selector(const char *sel, const char *tag, const char *id,
+                               char classes[][32], int n_classes) {
     if (sel[0] == '#') {
         return (id && strcmp(sel + 1, id) == 0) ? 3 : 0;
     }
@@ -183,22 +202,78 @@ static int selector_tier_match(const char *selector, const char *tag, const char
         }
         return 2;
     }
-    /* bare element tag, possibly with trailing .class (e.g. "button.primary") - not used
-     * by dashboard.css today but handled: split on first '.' */
-    char *dot = strchr(sel, '.');
+    /* bare element tag, possibly with trailing .class (e.g. "button.primary") */
+    char buf[128]; snprintf(buf, sizeof(buf), "%s", sel);
+    char *dot = strchr(buf, '.');
     if (dot) *dot = '\0';
-    if (tag && strcmp(sel, tag) == 0) return 1;
+    if (tag && strcmp(buf, tag) == 0) return 1;
     return 0;
+}
+
+/* returns: 0=no match, 1=element-tag tier, 2=class tier, 3=id tier
+ * REAL 2026-08-16: supports descendant combinators (spaces in selectors
+ * like ".messages-feed .data-item"). Selector is split on whitespace;
+ * last segment matches the element, preceding segments must match
+ * ancestors walking up the parent chain. get_parent/get_info may be NULL
+ * for backward compat (single-segment selectors still work). */
+static int selector_tier_match(const char *selector, const char *tag, const char *id,
+                                char classes[][32], int n_classes, int hover,
+                                const void *self, css_get_parent_fn get_parent,
+                                css_get_info_fn get_info) {
+    char sel[256]; snprintf(sel, sizeof(sel), "%s", selector);
+    int want_hover = 0;
+    char *hov = strstr(sel, ":hover");
+    if (hov) { want_hover = 1; *hov = '\0'; }
+    if (want_hover && !hover) return 0;
+
+    char segments[8][128];
+    int n_segments = 0;
+    char *tok = strtok(sel, " \t");
+    while (tok && n_segments < 8) {
+        snprintf(segments[n_segments], sizeof(segments[n_segments]), "%s", tok);
+        n_segments++;
+        tok = strtok(NULL, " \t");
+    }
+    if (n_segments == 0) return 0;
+
+    /* single segment — original behavior, no ancestor walk needed */
+    if (n_segments == 1 || !get_parent || !get_info || !self) {
+        return match_one_selector(segments[0], tag, id, classes, n_classes);
+    }
+
+    /* descendant combinator: last segment = this element, preceding
+     * segments = ancestors. Walk from self upward. */
+    int subject_tier = match_one_selector(segments[n_segments - 1], tag, id, classes, n_classes);
+    if (subject_tier == 0) return 0;
+
+    /* walk ancestors for segments[n_segments-2] down to segments[0] */
+    const void *cur = self;
+    for (int i = n_segments - 2; i >= 0; i--) {
+        cur = get_parent(cur);  /* cur = cur->parent */
+        if (!cur) return 0;    /* ran out of ancestors */
+        const char *a_tag = NULL, *a_id = NULL;
+        char a_classes[8][32]; int a_n = 0;
+        get_info(cur, &a_tag, &a_id, a_classes, &a_n);
+        if (!match_one_selector(segments[i], a_tag, a_id, a_classes, a_n))
+            return 0;
+    }
+    return subject_tier;
 }
 
 void css_compute_style(const CssSheet *sheet, const char *tag, const char *id,
                         char classes[][32], int n_classes, int hover, CssStyle *out) {
+    css_compute_style_ex(sheet, tag, id, classes, n_classes, hover, out, NULL, NULL, NULL);
+}
+
+void css_compute_style_ex(const CssSheet *sheet, const char *tag, const char *id,
+                           char classes[][32], int n_classes, int hover, CssStyle *out,
+                           const void *self, css_get_parent_fn get_parent,
+                           css_get_info_fn get_info) {
     css_style_init(out);
-    /* three passes, low to high specificity, so later tiers override earlier ones;
-     * within a tier, later-in-file rules override earlier ones (cascade order). */
     for (int tier = 1; tier <= 3; tier++) {
         for (int i = 0; i < sheet->n_rules; i++) {
-            if (selector_tier_match(sheet->rules[i].selector, tag, id, classes, n_classes, hover) == tier) {
+            if (selector_tier_match(sheet->rules[i].selector, tag, id, classes, n_classes, hover,
+                                    self, get_parent, get_info) == tier) {
                 css_style_merge(out, &sheet->rules[i].style);
             }
         }

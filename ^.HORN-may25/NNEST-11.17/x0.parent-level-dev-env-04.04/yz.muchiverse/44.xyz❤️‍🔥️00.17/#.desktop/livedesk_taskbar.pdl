@@ -59,7 +59,7 @@ SECTION      | strip_btn_12_label       | tools
 SECTION      | strip_btn_13_label       | (reserved)
 SECTION      | strip_btn_14_label       | h-ai
 SECTION      | strip_btn_14_menu_0_label    | Open h-ai
-SECTION      | strip_btn_14_menu_0_cmd      | setsid nohup bash '&.widgits/ai-cell/ops/launch_h_ai.sh' &
+SECTION      | strip_btn_14_menu_0_cmd      | setsid nohup bash '&.widgits/open-hai/ops/launch_h_ai.sh' &
 SECTION      | strip_btn_14_menu_1_label    | Chat-h-ai
 SECTION      | strip_btn_14_menu_1_cmd      | livedesk:open-chat-hai
 SECTION      | strip_btn_14_menu_2_label    | cancel

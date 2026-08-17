@@ -61,12 +61,28 @@ extern "C" {
  * whole tag's attribute string must fit in that buffer). */
 #define LAY_SPRITE_LEN     512
 
+/* REAL, NEW 2026-08-16, direct correction ("the cells aren't supposed
+ * to be hardcoded... that's an oversight"): a real, stable STRING
+ * identity for header buttons, so C dispatch can match by real
+ * NAME (e.g. "toys") instead of purely by strip POSITION
+ * (ACTIVATE:<n>, `which = cell index + 1`) - the real bug class this
+ * fixes: the position-only scheme has zero compiler/runtime check
+ * tying a `.chtpm` button's real position to the matching `which == N`
+ * case in khtpm_taskbar_manager.c's own dispatch chain, so a button
+ * reorder in the `.chtpm` silently desyncs every case below it with no
+ * error. Same real addition shape as `sprite`'s own 2026-08-11
+ * precedent (see that field's own comment) - optional, "" if absent,
+ * existing `which`-based dispatch stays as real, working fallback for
+ * every cell not yet migrated to id-based matching. */
+#define LAY_ID_LEN         64
+
 typedef struct {
     char type[LAY_TYPE_LEN];        /* "panel" | "text" | "button" | "row" | "cli_io" */
     char label[LAY_LABEL_LEN];      /* RAW, pre-substitution (may contain literal ${var}) */
     char onClick[LAY_ONCLICK_LEN];  /* RAW attribute, e.g. "ACTIVATE:3", "TAB:0", "STRIP:2", "HQITEM:1", "BACK" */
     char target_id[LAY_ATTR_LEN];   /* cli_io only */
     char sprite[LAY_SPRITE_LEN];    /* button only, optional — entity dir for tab_sprite(), "" = none */
+    char id[LAY_ID_LEN];            /* button only, optional real stable identity — "" if absent */
     int  parent_index;              /* -1 = root */
     int  children[LAY_MAX_CHILDREN];
     int  num_children;
@@ -162,6 +178,9 @@ void lay_get_label(const LayDoc *doc, int idx, LayVarLookupFn get_var, void *ctx
  * concrete string by the time it reaches the tokenizer. */
 void lay_get_sprite(const LayDoc *doc, int idx, LayVarLookupFn get_var, void *ctx,
                      char *out, size_t outsz);
+
+/* REAL, NEW 2026-08-16 - see LayElement's own `id` field comment. */
+const char *lay_get_id(const LayDoc *doc, int idx);
 
 #ifdef __cplusplus
 }

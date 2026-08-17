@@ -48,7 +48,7 @@ if [ ! -x "$BIN" ]; then
 fi
 
 STATS_DIR="$HOUSE_ROOT/%.harnesses/harnecient-fsm"
-AI_CELL_DIR="$HOUSE_ROOT/&.widgits/ai-cell"
+OPEN_HAI_DIR="$HOUSE_ROOT/&.widgits/open-hai"
 COMPUTE="$STATS_DIR/compute_stats.sh"
 
 # Use per-session stats if SESSION_ID provided, otherwise aggregate
@@ -69,7 +69,7 @@ if [ -z "$SESSION_ID" ] && [ -x "$COMPUTE" ]; then
 fi
 # For session stats, ensure they're calculated
 if [ -z "$SESSION_ID" ] || [ ! -f "$SUMMARY" ]; then
-    bash "$AI_CELL_DIR/calculate_session_stats.sh" >/dev/null 2>&1 || true
+    bash "$OPEN_HAI_DIR/calculate_session_stats.sh" >/dev/null 2>&1 || true
 fi
 
 TABS_FILE="/tmp/stats-hq-tabs-$$.xml"

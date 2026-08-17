@@ -560,9 +560,18 @@ shell constant, a real `!.HOUSE_STDS.md` §A.7 violation. Now:
 - `chat_hai_config.pdl` (new file, app root) holds `sleep_between`.
 - `chat_hai_loop.sh`'s `sleep_between()` re-reads it every round (not
   cached) — hand-editing the file takes effect within one round.
-- A real GUI control too: the **"Speed: Ns" button** (status row, next to
-  Stop/Start) cycles fixed presets (2/4/6/12/20s) and writes the `.pdl`
-  itself — not just a file for developers to hand-edit.
+- A real GUI control too: the **"Speed: Ns" button** (own control row below
+  the status row, three equal cells: Stop/Start toggle-pause, Speed,
+  Sound) cycles fixed presets (2/4/6/12/20s) and writes the `.pdl`
+  itself — not just a file for developers to hand-edit. Both Speed and
+  Sound share ONE writer (`write_chat_hai_cfg`), so a click never drops
+  the other keys.
+- Incoming-message tone (2026-08-16): the **"Sound: on/off" button**
+  (control-row cell 3) toggles a short notification tone played by
+  `chat_hai_loop.sh`'s `ledger_msg()` whenever a non-system (persona)
+  message is posted to the active ledger. State lives in
+  `chat_hai_config.pdl`'s `sound_on` key, re-read fresh on every posted
+  message, so a click goes live within one round — no restart.
 
 ### Known, reported, NOT yet fixed — why the conversation reads generic/repetitive
 Direct report: "the chats are not really good or meaningful... why do
@@ -600,7 +609,26 @@ map:
 
 **CRITICAL: These are architecture standard violations, fix ASAP**
 
-1. **Renderer consolidation — spec-drift (CRITICAL):**
+1. **Renderer consolidation — spec-drift (CRITICAL) — LIVE COST CONFIRMED 2026-08-15:**
+   The slow-typing bug this session (redraw() unconditionally re-wrapping
+   the ENTIRE feed on every keystroke) is a direct, concrete illustration
+   of this debt's real cost: `khtpm_ai_cell_render.c` already solved this
+   exact problem (its own `draw_transcript()` comment: "also (re)builds
+   the flat-line cache used for scroll math" - i.e. cached, not
+   recomputed every redraw) but chat-hai's separate copy-pasted renderer
+   never inherited that fix, so the same bug class had to be
+   rediscovered independently, in a different file, the hard way. Direct
+   user question after being shown this: "why were not just using the
+   same layout renderer, and merging both features, for both cell and
+   chat-hai? is that bad idea or what?" — confirmed: not a bad idea, the
+   correct one. Two real, confirmed perf fixes landed this session as
+   stopgaps (font-open caching in `measure_text_px()`; moved the
+   per-pixel `XGetPixel` image-unpack out of the redraw hot path into
+   on-demand `dump_frame_png()` only, matching ai-cell's real shape) -
+   but the STRUCTURAL fix (cached/dirty-checked feed layout, not
+   unconditional per-keystroke re-wrap) still needs the real
+   consolidation below to land properly rather than being re-solved a
+   third time in a fifth renderer copy.
    - **Problem:** Each app (chat-hai, db-hq, stats-hq, etc.) has its own renderer copy
    - **Standard:** ONE `khtpm_hq_render.c` (house standard), all apps pass `.chtpm`+`.css` to it
    - **Action:** Delete chat-hai's `chat_hai_hq_render.c`, use shared `khtpm_hq_render.c`

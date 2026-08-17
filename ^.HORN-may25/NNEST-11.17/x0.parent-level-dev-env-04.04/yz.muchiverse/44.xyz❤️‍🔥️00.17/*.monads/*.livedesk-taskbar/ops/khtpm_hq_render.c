@@ -14,6 +14,7 @@
  * the same GLOBAL (not session-scoped) location db-ez uses - see
  * livedesk_build_db_common_events_menu() in khtpm_taskbar_manager.c. */
 #include "khtpm_css_parser.h"
+#include "khtpm_render_core.c" /* real .c, not a header - see that file's own comment */
 #include "khtpm_taskbar_manager.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,6 +23,8 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <sys/wait.h>
+#include <signal.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/keysym.h>
@@ -41,36 +44,62 @@
 #include "lib/stb_image_write.h"
 
 #define PATH_BUF 4096
-#define MAX_CHILDREN 64
 #define MAX_ELEMS 512
-
-typedef struct Elem {
-    char tag[32];
-    char id[64];
-    char classes[CSS_MAX_CLASSES][32];
-    int n_classes;
-    char label[256];
-    char onclick[64];
-    int active;   /* tab active / sidebar item selected */
-    int nav_index; /* wraith-alpha-standard index nav: 1-based sequential
-                     * number assigned to every interactive element each
-                     * redraw (see assign_nav_indices()); 0 = not navigable.
-                     * Ported from 1.TPMOS_c_+rmmp.0103.0001/projects/
-                     * wraith-alpha/ops/wraith_parser_alpha.c's own
-                     * digit_accum/do_jump/display_num convention (direct
-                     * instruction: "wraith alpha should be a huge
-                     * inspiration for this"). */
-    struct Elem *children[MAX_CHILDREN];
-    int n_children;
-    struct Elem *parent;
-    /* computed layout, filled by layout_pass() */
-    int x, y, w, h;
-    CssStyle style;
-} Elem;
+/* Elem struct + MAX_CHILDREN now come from khtpm_render_core.h (Stage 2a
+ * of the khtpm merge, 2026-08-16 - see that header's own comment). */
 
 static Elem g_pool[MAX_ELEMS];
 static int g_n_elems = 0;
 static char g_house_root[PATH_BUF];
+
+/* REAL module launch (Stage 2d, 2026-08-16, direct correction: "explain
+ * to me your plan and why its different from the tpmos/wraith
+ * examples... they all get their own layouts but can share module,
+ * right?"). Ported verbatim from wraith_parser_alpha.c's own
+ * launch_module()/cleanup_module() (1.TPMOS_c_+rmmp.0103.0001/projects/
+ * wraith-alpha/ops/wraith_parser_alpha.c ~line 1521) - plain fork()+
+ * execv(), current_module_pid tracked, killed on exit. The <module
+ * src="..."/> tag in dashboard.chtpm gets read after parse_chtpm()
+ * returns (see main()); this is THIS shell's own code doing the launch,
+ * not an external bash script - matches the real mechanism, not just
+ * the file-IPC spirit of it. */
+static pid_t g_module_pid = -1;
+
+static void cleanup_module(void) {
+    if (g_module_pid > 0) {
+        kill(g_module_pid, SIGTERM);
+        waitpid(g_module_pid, NULL, WNOHANG);
+        g_module_pid = -1;
+    }
+}
+
+/* REAL FIX 2026-08-16: atexit(cleanup_module) alone does NOT cover the
+ * actual relaunch path - open_db_hq.sh kills the previous instance via
+ * a raw `kill -TERM`, and SIGTERM's default disposition terminates the
+ * process WITHOUT running atexit handlers. Without this, every db-hq
+ * relaunch would orphan the previous manager process instead of really
+ * replacing it. */
+static void handle_term_signal(int sig) {
+    (void)sig;
+    cleanup_module();
+    _exit(0);
+}
+
+static void launch_module(const char *src) {
+    if (!src || !src[0]) return;
+    char full_path[PATH_BUF];
+    if (src[0] == '/') snprintf(full_path, sizeof(full_path), "%s", src);
+    else snprintf(full_path, sizeof(full_path), "%s/%s", g_house_root, src);
+
+    g_module_pid = fork();
+    if (g_module_pid == 0) {
+        execl(full_path, full_path, g_house_root, (char *)NULL);
+        _exit(1); /* execl only returns on failure */
+    } else if (g_module_pid < 0) {
+        fprintf(stderr, "db-hq: launch_module: fork failed for %s\n", full_path);
+        g_module_pid = -1;
+    }
+}
 
 /* wraith-alpha-standard index nav state (see Elem.nav_index comment) */
 static Elem *g_nav[MAX_ELEMS];
@@ -154,6 +183,13 @@ static void apply_attr(Elem *e, const char *name, const char *val) {
         snprintf(e->onclick, sizeof(e->onclick), "%s", val);
     } else if (strcmp(name, "active") == 0) {
         e->active = (strcmp(val, "true") == 0);
+    } else if (strcmp(name, "src") == 0) {
+        /* <module src="..."/> (Stage 2d, 2026-08-16) - real wraith_parser_
+         * alpha.c convention (its own module-tag handling supports src=
+         * as the primary form, inner text as fallback). Reused e->label
+         * to hold it - <module> elements are never drawn, so this is
+         * safe and avoids adding a dedicated Elem field for one tag. */
+        snprintf(e->label, sizeof(e->label), "%s", val);
     }
 }
 
@@ -240,15 +276,7 @@ static Elem *parse_chtpm(const char *path) {
     return root;
 }
 
-static Elem *find_by_tag(Elem *e, const char *tag) {
-    if (!e) return NULL;
-    if (strcmp(e->tag, tag) == 0) return e;
-    for (int i = 0; i < e->n_children; i++) {
-        Elem *r = find_by_tag(e->children[i], tag);
-        if (r) return r;
-    }
-    return NULL;
-}
+/* find_by_tag() now comes from khtpm_render_core.h (Stage 2a, 2026-08-16). */
 
 /* ---------- data: common_events listing (GLOBAL, house_root-wide) ---------- */
 
@@ -257,31 +285,38 @@ static char g_events[MAX_EVENTS][64];
 static int g_n_events = 0;
 static int g_selected_event = -1;
 
-static void load_common_events(void) {
+/* REAL FIX 2026-08-16 (Stage 2d shell/manager split, local-2do-15.txt's
+ * "Stage 2d, REDONE correctly" entry): this used to scan common_events/
+ * itself, every call. That directory scan is now khtpm_hq_manager.c's
+ * job (a separate binary) - it publishes the sorted list to
+ * #.desktop/db_hq_common_events.state.txt, and this function just reads
+ * that file. The shell no longer touches the filesystem for business
+ * data at all, only for its own state file. */
+static char g_events_state_path[PATH_BUF];
+static time_t g_events_state_mtime = 0;
+
+/* Returns 1 if the list actually changed (caller should re-inject
+ * sidebar items + redraw), 0 if unchanged (cheap no-op, safe to call
+ * every main-loop tick). */
+static int load_common_events(void) {
+    struct stat st;
+    if (stat(g_events_state_path, &st) != 0) return 0;
+    if (st.st_mtime == g_events_state_mtime) return 0; /* unchanged since last read */
+    g_events_state_mtime = st.st_mtime;
+
     g_n_events = 0;
-    char ce_root[PATH_BUF];
-    snprintf(ce_root, sizeof(ce_root), "%s/common_events", g_house_root);
-    if (access(ce_root, F_OK) != 0) mkdir(ce_root, 0755);
-    DIR *d = opendir(ce_root);
-    if (!d) return;
-    struct dirent *de;
-    while ((de = readdir(d)) && g_n_events < MAX_EVENTS) {
-        if (de->d_name[0] == '.') continue;
-        char ep[PATH_BUF];
-        snprintf(ep, sizeof(ep), "%s/%s", ce_root, de->d_name);
-        struct stat st;
-        if (stat(ep, &st) != 0 || !S_ISDIR(st.st_mode)) continue;
-        snprintf(g_events[g_n_events], sizeof(g_events[0]), "%s", de->d_name);
+    FILE *f = fopen(g_events_state_path, "r");
+    if (!f) return 0;
+    char line[128];
+    while (g_n_events < MAX_EVENTS && fgets(line, sizeof(line), f)) {
+        size_t len = strlen(line);
+        while (len > 0 && (line[len - 1] == '\n' || line[len - 1] == '\r')) line[--len] = '\0';
+        if (len == 0) continue;
+        snprintf(g_events[g_n_events], sizeof(g_events[0]), "%s", line);
         g_n_events++;
     }
-    closedir(d);
-    for (int i = 0; i < g_n_events - 1; i++)
-        for (int j = i + 1; j < g_n_events; j++)
-            if (strcmp(g_events[j], g_events[i]) < 0) {
-                char t[64]; snprintf(t, sizeof(t), "%s", g_events[i]);
-                snprintf(g_events[i], sizeof(g_events[i]), "%s", g_events[j]);
-                snprintf(g_events[j], sizeof(g_events[j]), "%s", t);
-            }
+    fclose(f);
+    return 1;
 }
 
 /* replaces the sidebar's single <placeholder id="common_events_rows"/>
@@ -393,17 +428,32 @@ static void load_font_scale(void) {
 
 static int scaled(int base_px) { return (int)(base_px * g_font_scale + 0.5); }
 
+/* Stage 1 khtpm merge fix (khtpm-merge-how2.md §3.2), font-cache pattern
+ * ported verbatim from chat_hai_hq_render.c's own measure_text_px() fix -
+ * this was opening+closing a font on every call, called per-tab in
+ * layout_pass()'s hot path. Single-slot cache keyed by spec string, only
+ * reopens when the spec actually changes. */
 static int measure_text_px(const CssStyle *st, const char *text) {
     char spec[128];
     const char *fam = st->has_font_family ? st->font_family : "DejaVu Sans";
     int size = scaled(st->has_font_size ? st->font_size : 12);
     snprintf(spec, sizeof(spec), "%s:pixelsize=%d%s", fam, size, (st->has_font_weight && st->font_weight_bold) ? ":bold" : "");
-    XftFont *f = XftFontOpenName(dpy, screen, spec);
-    if (!f) f = XftFontOpenName(dpy, screen, "DejaVu Sans:pixelsize=10");
+
+    static char cached_spec[128] = "";
+    static XftFont *cached_font = NULL;
+    XftFont *f;
+    if (cached_font && strcmp(cached_spec, spec) == 0) {
+        f = cached_font;
+    } else {
+        if (cached_font) XftFontClose(dpy, cached_font);
+        f = XftFontOpenName(dpy, screen, spec);
+        if (!f) f = XftFontOpenName(dpy, screen, "DejaVu Sans:pixelsize=10");
+        cached_font = f;
+        snprintf(cached_spec, sizeof(cached_spec), "%s", spec);
+    }
     if (!f) return (int)strlen(text) * 8;
     XGlyphInfo ext;
     XftTextExtentsUtf8(dpy, f, (const FcChar8 *)text, (int)strlen(text), &ext);
-    XftFontClose(dpy, f);
     return ext.width;
 }
 
@@ -454,6 +504,15 @@ static void layout_pass(Elem *window) {
              * html's real count) don't fit the old fixed 900px default,
              * and this app has no flex-wrap engine to fall back on. */
             tab_widths[i] = measure_text_px(&tab->style, tab->label) + scaled(34); /* "[>NN]" badge + padding */
+            /* REAL FIX 2026-08-16, Stage 3 port, caught live (first
+             * dumped frame showed every tab overlapping at x=0 - tabs
+             * had zero/stale width): css_layout_pass()'s own real
+             * contract (khtpm_render_core.c's own header comment) is
+             * that a child's NATURAL size comes from its own e->w, not
+             * a caller-side local array - tab_widths[] alone was never
+             * visible to the engine. Write it into the real Elem field
+             * the engine actually reads. */
+            tab->w = tab_widths[i];
             tabbar_natural_w += tab_widths[i] + 1;
         }
     }
@@ -465,12 +524,62 @@ static void layout_pass(Elem *window) {
     g_close_y = scaled(3);
 
     if (tabbar) {
-        tabbar->x = 0; tabbar->y = g_chrome_h; tabbar->w = window->w; tabbar->h = tabbar_h;
-        int tx = scaled(4);
+        /* REAL PORT 2026-08-16, Stage 3 first live use of
+         * css_layout_pass() (khtpm-merge-how2.md §5.3 step 4) - real
+         * §5.1b pattern #2 (natural-width row, left-packed). tab->w is
+         * pre-measured above (tab_widths[i], via measure_text_px()) per
+         * the engine's own real contract (khtpm_render_core.c's own
+         * css_layout_pass() header comment) - set BEFORE the engine
+         * call, not after. tabbar itself needs display:flex/flex-
+         * direction:row for the engine to treat it as a real flex
+         * container - set programmatically here rather than editing
+         * dashboard.css (real, deliberate choice for this first port:
+         * proves the ENGINE live without also needing a real .chtpm/
+         * .css authoring-convention decision in the same pass - a real
+         * css-authored version is a legitimate future refinement, not
+         * required for this port to be real/correct).
+         * REAL, KNOWN GAP found while porting (not present in the
+         * engine's own §5.1b design, a real limitation): db-hq's own
+         * exact geometry insets tabs 2px down and shrinks them 4px tall
+         * within the tabbar row (a real cross-axis PADDING) - the
+         * engine has no padding/margin concept (§5.1b explicitly found
+         * this unneeded by the 3 apps' MAIN patterns, but missed this
+         * one cross-axis inset specifically). Real, safe fix: let the
+         * engine handle x-positioning (its actual job, natural-width
+         * packing) then apply the same real 2px/4px inset by hand
+         * afterward - preserves EXACT original pixel geometry, doesn't
+         * require extending the engine's own scope mid-port. */
+        /* REAL, second gap found while porting: original tx starts at
+         * scaled(4) (real left margin) and accumulates a real +1px gap
+         * between tabs (tx += tab_widths[i] + 1) - the engine's own
+         * pattern #2 packs with ZERO gap (§5.1b confirmed gap
+         * unnecessary for the 3 apps' MAIN patterns, but this exact
+         * +1px divider gap was missed the same way the cross-axis
+         * inset was). Real, safe fix, same shape as the y/h fix above:
+         * let the engine compute relative positions, offset the whole
+         * row by the real left margin, then add back the real
+         * per-index 1px cumulative gap by hand - preserves EXACT
+         * original pixel geometry. */
+        /* REAL FIX 2026-08-16, caught while porting events-hq's own
+         * identical pattern: passing the real 4px left-margin as the
+         * ENGINE CALL's own x/avail_w (as this code originally did)
+         * shifts tabbar's OWN e->x/e->w too, not just its children -
+         * draw_elem()'s real background fill (`XFillRectangle(...,
+         * e->x, e->y, e->w, e->h)`) then leaves a real, if subtle
+         * (masked by tab-bar bg #1a1a1a vs window bg #141414 being
+         * close shades), unfilled 4px sliver on the left edge. Real
+         * fix: give the engine the container's own REAL full box
+         * (x=0, w=window->w), let it pack children starting at 0, then
+         * add the real 4px margin to each child's x by hand alongside
+         * the already-existing per-index gap adjustment - same real
+         * technique, corrected target. */
+        tabbar->style.has_display = 1; tabbar->style.display_flex = 1;
+        tabbar->style.has_flex_direction = 1; tabbar->style.flex_row = 1;
+        css_layout_pass(tabbar, 0, g_chrome_h, window->w, tabbar_h);
         for (int i = 0; i < tabbar->n_children; i++) {
             Elem *tab = tabbar->children[i];
-            tab->x = tx; tab->y = g_chrome_h + scaled(2); tab->w = tab_widths[i]; tab->h = tabbar_h - scaled(4);
-            tx += tab_widths[i] + 1;
+            tab->x += scaled(4) + i; /* real 4px left margin + cumulative +1px-per-tab gap */
+            tab->y = g_chrome_h + scaled(2); tab->h = tabbar_h - scaled(4); /* real cross-axis inset */
         }
     }
 
@@ -487,15 +596,29 @@ static void layout_pass(Elem *window) {
     if (sidebar) {
         apply_css(sidebar, 0);
         if (sidebar->style.has_width && !sidebar->style.width_is_pct) sidebar_w = sidebar->style.width;
-        sidebar->x = 0; sidebar->y = content_y; sidebar->w = sidebar_w; sidebar->h = content_h;
-        int iy = sidebar->y + scaled(4);
+        /* REAL PORT 2026-08-16, Stage 3 (khtpm-merge-how2.md §5.3 step
+         * 4, 2nd real live use of css_layout_pass()) - real §5.1b
+         * pattern #1 (column stack of fixed-height rows), this time
+         * using the real padding/gap support added right after the
+         * tabbar port found it missing (khtpm_render_core.c's own
+         * css_layout_pass() - see that file's header comment). Original
+         * geometry was a REAL, uniform 4px inset on all 4 sides
+         * (x+4/w-8 horizontally, y start +4 vertically) and ZERO real
+         * gap between items (iy += item->h, no addition) - both map
+         * cleanly onto the engine's own real padding/gap fields with
+         * NO hand-adjustment needed this time (unlike the tabbar's own
+         * asymmetric 4px-left-only/2px-both-cross values, which still
+         * don't map to a single uniform padding number). */
+        sidebar->style.has_display = 1; sidebar->style.display_flex = 1;
+        sidebar->style.has_flex_direction = 1; sidebar->style.flex_row = 0;
+        sidebar->style.has_padding = 1; sidebar->style.padding = scaled(4);
         int item_h = scaled(22);
         for (int i = 0; i < sidebar->n_children; i++) {
             Elem *item = sidebar->children[i];
             apply_css(item, 0);
-            item->x = sidebar->x + scaled(4); item->y = iy; item->w = sidebar->w - scaled(8); item->h = item_h;
-            iy += item->h;
+            item->style.has_height = 1; item->style.height = item_h;
         }
+        css_layout_pass(sidebar, 0, content_y, sidebar_w, content_h);
     }
 
     if (panel) {
@@ -505,30 +628,45 @@ static void layout_pass(Elem *window) {
         panel->y = content_y + margin;
         panel->w = window->w - sidebar_w - margin * 2;
         panel->h = content_h - margin * 2;
-        int cy = panel->y + scaled(16); /* room for the floating title */
+        /* REAL PORT 2026-08-16, Stage 3 (khtpm-merge-how2.md §5.3 step
+         * 4, 3rd/last real live use of css_layout_pass() for db-hq -
+         * completes step 4). Real §5.1b pattern #1 (column stack) +
+         * pattern #5 (floating title, position:absolute) together in
+         * one real container, first time both are exercised live at
+         * once. The title's own real position:absolute comes from
+         * dashboard.css's real `.block-title` rule (confirmed applied
+         * via the real class="block-title" attribute in dashboard.
+         * chtpm) - apply_css(c, 0) below populates it correctly, the
+         * engine's own real position:absolute detection just works,
+         * no special-casing needed (unlike the ORIGINAL code's own
+         * `strcmp(c->tag, "title")` special case, now removed).
+         * Real, live-tested finding (the open question flagged in this
+         * doc's own khtpm-merge-how2.md §5.3 step 4 writeup): the
+         * original's extra 16px top clearance (beyond the real 12px
+         * uniform padding used everywhere else) turned out to be
+         * UNNECESSARY - the title is genuinely out-of-flow via the
+         * engine's own real position:absolute handling, so a normal
+         * uniform 12px padding (matching the horizontal inset exactly)
+         * is enough; confirmed via a real live PNG dump before
+         * finalizing this, not assumed. */
+        panel->style.has_display = 1; panel->style.display_flex = 1;
+        panel->style.has_flex_direction = 1; panel->style.flex_row = 0;
+        panel->style.has_padding = 1; panel->style.padding = scaled(12);
+        panel->style.has_gap = 1; panel->style.gap = scaled(6);
         for (int i = 0; i < panel->n_children; i++) {
             Elem *c = panel->children[i];
             apply_css(c, 0);
             if (strcmp(c->tag, "title") == 0) {
-                /* floating block-title: CSS position:absolute + top/left
-                 * (default top:-8 left:10) relative to the panel's own box -
-                 * painted after the panel's border in render_pass() so the
-                 * negative offset visually overlaps it, no special-casing
-                 * needed beyond draw order. */
-                int t = scaled(c->style.has_top ? c->style.top : -8);
-                int l = scaled(c->style.has_left ? c->style.left : 10);
-                c->x = panel->x + l;
-                c->y = panel->y + t;
+                /* real pre-measured natural size, per the engine's own
+                 * contract for position:absolute children (they use
+                 * their own pre-set w/h, never CSS width/height). */
                 c->w = measure_text_px(&c->style, c->label) + scaled(10);
                 c->h = scaled(14);
                 continue;
             }
-            c->x = panel->x + scaled(12);
-            c->y = cy;
-            c->w = panel->w - scaled(24);
-            c->h = scaled(22);
-            cy += c->h + scaled(6);
+            c->style.has_height = 1; c->style.height = scaled(22);
         }
+        css_layout_pass(panel, panel->x, panel->y, panel->w, panel->h);
     }
 }
 
@@ -618,13 +756,25 @@ static XftColor xft_color(const char *spec) {
     return xc;
 }
 
+/* Stage 1 khtpm merge fix (khtpm-merge-how2.md §3.2) - same cache pattern
+ * as measure_text_px() above, ported from chat_hai_hq_render.c's own
+ * font_for() fix. Caller must NOT XftFontClose() the returned font
+ * anymore - it's a shared, cached handle now, not an owned one. */
 static XftFont *font_for(const CssStyle *st) {
     char spec[128];
     const char *fam = st->has_font_family ? st->font_family : "DejaVu Sans";
     int size = scaled(st->has_font_size ? st->font_size : 12);
     snprintf(spec, sizeof(spec), "%s:pixelsize=%d%s", fam, size, (st->has_font_weight && st->font_weight_bold) ? ":bold" : "");
+
+    static char cached_spec[128] = "";
+    static XftFont *cached_font = NULL;
+    if (cached_font && strcmp(cached_spec, spec) == 0) return cached_font;
+    if (cached_font) XftFontClose(dpy, cached_font);
     XftFont *f = XftFontOpenName(dpy, screen, spec);
-    return f ? f : XftFontOpenName(dpy, screen, "DejaVu Sans:pixelsize=10");
+    if (!f) f = XftFontOpenName(dpy, screen, "DejaVu Sans:pixelsize=10");
+    cached_font = f;
+    snprintf(cached_spec, sizeof(cached_spec), "%s", spec);
+    return f;
 }
 
 static void draw_elem(Elem *e, int hover_id_hash) {
@@ -639,12 +789,34 @@ static void draw_elem(Elem *e, int hover_id_hash) {
         for (int i = 0; i < bw; i++)
             XDrawRectangle(dpy, buf, gc, e->x + i, e->y + i, e->w - 1 - 2 * i, e->h - 1 - 2 * i);
     }
+    /* REAL FIX 2026-08-16, direct live report ("the black text in
+     * header is no longer visble... fix highlight box as well"): these
+     * 2 hardcoded fallback fills are the REAL active-state colors -
+     * dashboard.css's own .tab.active/.data-item.active rules (see
+     * that file) are DEAD, confirmed live - `active` is a real C
+     * struct bool (Elem->active), never added to e->classes[] as an
+     * actual matchable ".active" class string, so css_compute_style()
+     * can never match those 2 selectors; the CSS-set has_bg_color stays
+     * 0 for these elements regardless of what the .css file says, and
+     * these 2 fallbacks ALWAYS fire. Was `#ffffff`/`#cce5ff` - real,
+     * correct-looking values for the OLD light theme, now wrong for
+     * the new dark one (2026-08-16, direct instruction to make db-hq
+     * dark) - real fix: dark-theme values matching this file's own new
+     * dashboard.css intent (`.tab.active`'s own now-effectively-
+     * documentation-only `#2a2a2a`, `.data-item.active`'s own
+     * `#2f5f8f`) so the (also-just-fixed) light-gray default text
+     * color stays readable against both. Real, separate follow-up not
+     * done here (out of scope for this pass): making `.tab.active`/
+     * `.data-item.active` actually reachable via CSS again would need
+     * pushing a real "active" string into e->classes[] whenever
+     * Elem->active is set, or teaching css_compute_style() to check
+     * the bool field directly - either is a real, larger change. */
     if (strcmp(e->tag, "tab") == 0 && e->active && !e->style.has_bg_color) {
-        XSetForeground(dpy, gc, alloc_pixel("#ffffff"));
+        XSetForeground(dpy, gc, alloc_pixel("#2a2a2a"));
         XFillRectangle(dpy, buf, gc, e->x, e->y, e->w, e->h);
     }
     if (strcmp(e->tag, "item") == 0 && e->active && !e->style.has_bg_color) {
-        XSetForeground(dpy, gc, alloc_pixel("#cce5ff"));
+        XSetForeground(dpy, gc, alloc_pixel("#2f5f8f"));
         XFillRectangle(dpy, buf, gc, e->x, e->y, e->w, e->h);
     }
     /* wraith-alpha-standard focus ring: the currently-focused navigable
@@ -703,14 +875,28 @@ static void draw_elem(Elem *e, int hover_id_hash) {
     }
     if (e->label[0]) {
         XftFont *font = font_for(&e->style);
-        XftColor col = xft_color(e->style.has_fg_color ? e->style.fg_color : "#000000");
+        /* REAL FIX 2026-08-16, direct live report ("the black text in
+         * header is no longer visble"): default text-color fallback
+         * for any element with no real explicit CSS color: rule. This
+         * CSS engine has no real cascade/inheritance (a documented,
+         * deliberate minimal-subset scope, not a bug) - an element
+         * without its OWN matching selector/color falls straight to
+         * this hardcoded default, not to a parent's color. Was
+         * `#000000` - correct for the OLD light theme, invisible
+         * against the new dark one (2026-08-16, direct instruction to
+         * make db-hq dark). Real fix: light gray, matching the same
+         * default text color this house's other dark khtpm apps
+         * already use (open-hai/chat-hai/entity-menu all read fine at
+         * this exact value against their own #141414-family
+         * backgrounds). */
+        XftColor col = xft_color(e->style.has_fg_color ? e->style.fg_color : "#cccccc");
         XGlyphInfo extents;
         XftTextExtentsUtf8(dpy, font, (const FcChar8 *)e->label, (int)strlen(e->label), &extents);
         int ty = e->y + (e->h + font->ascent - font->descent) / 2;
         if (ty < e->y + font->ascent) ty = e->y + font->ascent + pad / 2;
         XftDrawStringUtf8(xftdraw_buf, &col, font, label_x, ty, (const FcChar8 *)e->label, (int)strlen(e->label));
         XftColorFree(dpy, DefaultVisual(dpy, screen), cmap, &col);
-        XftFontClose(dpy, font);
+        /* font_for() now returns a cached, shared handle - do not close it. */
     }
 }
 
@@ -722,6 +908,10 @@ static void render_tree(Elem *e, int depth) {
     for (int i = 0; i < e->n_children; i++) {
         Elem *c = e->children[i];
         if (strcmp(c->tag, "title") == 0) continue; /* deferred */
+        /* <module> (Stage 2d, 2026-08-16) is pure config, never visual -
+         * e->label holds its src path (repurposed field, see apply_attr()'s
+         * own comment), not something to draw. */
+        if (strcmp(c->tag, "module") == 0) continue;
         draw_elem(c, 0);
         render_tree(c, depth + 1);
     }
@@ -798,41 +988,54 @@ static void grab_keyboard_retry(void) {
 static Elem *g_window;
 
 /* RGB compose→present refactor (2026-08-12, direct instruction: "we
- * should do db to rgb refactor. the need being auditability"). Proven
- * first on a throwaway test binary (!.khtpm-rgb-refactor.md's own
- * "Phase 0" - compose buffer vs. presented-window readback confirmed
- * BYTE-IDENTICAL two independent ways before trusting this pattern on
- * real code). Real change here, not a rewrite: `redraw()` still
- * composes into `buf` (the offscreen Pixmap) exactly as before via Xft/
- * Xlib - only the PRESENT step changes, from `XCopyArea` (Pixmap→Window
- * blit, no portable byte buffer ever exists) to deriving one real
- * `XImage` via `XGetImage` and presenting THAT via `XPutImage` (proven
- * pixel-identical in Phase 0). g_frame_rgb is the persistent, single-
- * source-of-truth 3-byte-per-pixel copy of "what's actually on screen
- * right now" - dump_frame_png() just writes THIS out directly instead
- * of doing its own separate XGetImage capture (the old, more fragile
- * two-different-capture-paths shape) - this IS the auditability the
- * refactor was for: one real buffer, inspectable at any time, not
- * derived fresh and possibly-differently each time something wants to
- * look at the frame. */
-static unsigned char *g_frame_rgb = NULL;
-static int g_frame_w = 0, g_frame_h = 0;
+ * should do db to rgb refactor. the need being auditability"). `redraw()`
+ * composes into `buf` (the offscreen Pixmap) via Xft/Xlib as before, then
+ * presents via one real `XImage` (XGetImage->XPutImage) instead of the
+ * old direct `XCopyArea` blit.
+ *
+ * Stage 1 khtpm merge fix (khtpm-merge-how2.md §3.1, 2026-08-15): the
+ * persistent g_frame_rgb byte-buffer this comment used to describe is
+ * gone - it forced an unconditional per-pixel unpack on every redraw()
+ * just to keep a debug dump "always fresh," the same hot-path-does-
+ * cold-path-work bug chat-hai had before this session's fix. Ported
+ * open-hai's actual proven shape instead: dump_frame_png() does its own
+ * on-demand XGetImage capture only when needed. */
 
 /* debug PNG dump - see the header comment above the stb_image_write.h
- * include. RGB refactor (2026-08-12): writes the single persistent
+ * include. Does its own on-demand capture now (Stage 1 fix), not a
  * `g_frame_rgb` buffer redraw() already derived for the real on-screen
  * present - no separate XGetImage capture of its own anymore. This IS
  * the auditability point of the refactor: what gets dumped is
  * byte-for-byte the same buffer that was actually presented, not a
  * fresh, possibly-different second capture. Bound to 'p' - not part of
  * the normal render loop, purely an on-demand debug aid. */
+/* Stage 1 khtpm merge fix (khtpm-merge-how2.md §3.1): the per-pixel
+ * XGetPixel unpack used to run unconditionally, every redraw(), just to
+ * keep g_frame_rgb "fresh" for this on-demand debug dump - same
+ * hot-path-does-cold-path-work bug chat-hai had. Ported open-hai's actual
+ * shape (khtpm_open_hai_render.c's dump_frame_png(), verified as the
+ * ground truth 2026-08-15): the unpack now happens ONLY here, via its own
+ * XGetImage capture of `buf`, only when 'p' is actually pressed. */
 static void dump_frame_png(void) {
-    if (!g_frame_rgb || g_frame_w <= 0 || g_frame_h <= 0) {
-        fprintf(stderr, "db-hq: dump_frame_png: no frame composed yet\n");
-        return;
+    if (!g_window) { fprintf(stderr, "db-hq: dump_frame_png: no frame composed yet\n"); return; }
+    int w = g_window->w, h = g_window->h;
+    XImage *img = XGetImage(dpy, buf, 0, 0, (unsigned)w, (unsigned)h, AllPlanes, ZPixmap);
+    if (!img) { fprintf(stderr, "db-hq: dump_frame_png: XGetImage failed\n"); return; }
+    unsigned char *rgb = malloc((size_t)w * h * 3);
+    if (!rgb) { XDestroyImage(img); return; }
+    for (int y = 0; y < h; y++) {
+        for (int x = 0; x < w; x++) {
+            unsigned long px = XGetPixel(img, x, y);
+            size_t o = ((size_t)y * w + x) * 3;
+            rgb[o] = (unsigned char)((px >> 16) & 0xff);
+            rgb[o + 1] = (unsigned char)((px >> 8) & 0xff);
+            rgb[o + 2] = (unsigned char)(px & 0xff);
+        }
     }
-    int ok = stbi_write_png("/tmp/db-hq-frame.png", g_frame_w, g_frame_h, 3, g_frame_rgb, g_frame_w * 3);
-    fprintf(stderr, ok ? "db-hq: wrote /tmp/db-hq-frame.png (%dx%d)\n" : "db-hq: dump_frame_png: write failed\n", g_frame_w, g_frame_h);
+    XDestroyImage(img);
+    int ok = stbi_write_png("/tmp/db-hq-frame.png", w, h, 3, rgb, w * 3);
+    fprintf(stderr, ok ? "db-hq: wrote /tmp/db-hq-frame.png (%dx%d)\n" : "db-hq: dump_frame_png: write failed\n", w, h);
+    free(rgb);
 }
 
 /* Own chrome bar (title + close) - see layout_pass()'s CHROME_H comment
@@ -914,36 +1117,16 @@ static void redraw(void) {
     }
     draw_chrome_bar();
 
-    /* COMPOSE→PRESENT split (see g_frame_rgb's own header comment) -
-     * derive the one real portable buffer from what was just drawn into
-     * `buf`, present via XPutImage (proven pixel-identical to the old
-     * XCopyArea path in Phase 0), and keep a persistent RGB copy for
-     * dump_frame_png()/'p' to write out directly - no second, separate
-     * capture path anymore. */
+    /* COMPOSE→PRESENT split, Stage 1-corrected (khtpm-merge-how2.md §3.1):
+     * present via XGetImage->XPutImage (still pixel-identical to the old
+     * XCopyArea path, per Phase 0). The per-pixel RGB unpack that used to
+     * run here every frame is gone - dump_frame_png() now does its own
+     * on-demand capture instead, matching open-hai's proven pattern. */
     XSync(dpy, False);
     int w = g_window->w, h = g_window->h;
     XImage *frame = XGetImage(dpy, buf, 0, 0, (unsigned)w, (unsigned)h, AllPlanes, ZPixmap);
     if (frame) {
         XPutImage(dpy, win, gc, frame, 0, 0, 0, 0, (unsigned)w, (unsigned)h);
-        /* standard 24/32bpp TrueColor byte layout, not the (zeroed on a
-         * bare Pixmap) mask fields - same fix already established for
-         * this app's own debug dump. */
-        if (g_frame_w != w || g_frame_h != h) {
-            free(g_frame_rgb);
-            g_frame_rgb = malloc((size_t)w * h * 3);
-            g_frame_w = w; g_frame_h = h;
-        }
-        if (g_frame_rgb) {
-            for (int y = 0; y < h; y++) {
-                for (int x = 0; x < w; x++) {
-                    unsigned long px = XGetPixel(frame, x, y);
-                    size_t o = ((size_t)y * w + x) * 3;
-                    g_frame_rgb[o] = (unsigned char)((px >> 16) & 0xff);
-                    g_frame_rgb[o + 1] = (unsigned char)((px >> 8) & 0xff);
-                    g_frame_rgb[o + 2] = (unsigned char)(px & 0xff);
-                }
-            }
-        }
         XDestroyImage(frame);
     } else {
         /* fall back to the old direct blit if XGetImage ever fails, so
@@ -956,24 +1139,20 @@ static void redraw(void) {
 
 /* ---------- hit testing / click dispatch ---------- */
 
-static Elem *hit_test(Elem *e, int px, int py) {
-    for (int i = e->n_children - 1; i >= 0; i--) {
-        Elem *r = hit_test(e->children[i], px, py);
-        if (r) return r;
-    }
-    if (px >= e->x && px < e->x + e->w && py >= e->y && py < e->y + e->h) return e;
-    return NULL;
-}
+/* hit_test() now comes from khtpm_render_core.h (Stage 2a, 2026-08-16). */
+
+/* REAL FIX 2026-08-16 (Stage 2d shell/manager split): this used to
+ * spawn the events-hq process directly via system() - a real business
+ * action, not rendering. The shell now only WRITES a request; the
+ * manager binary (khtpm_hq_manager.c) polls #.desktop/db_hq_action.txt
+ * and does the actual spawn. */
+static char g_action_path[PATH_BUF];
 
 static void open_in_editor(const char *name) {
-    char ce_path[PATH_BUF];
-    snprintf(ce_path, sizeof(ce_path), "%s/common_events/%s", g_house_root, name);
-    char sh[PATH_BUF * 3];
-    snprintf(sh, sizeof(sh),
-        "setsid nohup sh -c 'sh \"%s/xyzfs/bin/muchi-pet/ops/open_event_ez.sh\" \"%s\" \"%s\"' >/dev/null 2>&1 &",
-        g_house_root, ce_path, g_house_root);
-    int rc = system(sh);
-    (void)rc;
+    FILE *f = fopen(g_action_path, "w");
+    if (!f) return;
+    fprintf(f, "open:%s\n", name);
+    fclose(f);
 }
 
 /* shared dispatch for both mouse clicks and keyboard index-activation
@@ -1130,6 +1309,10 @@ int main(int argc, char **argv) {
         return 1;
     }
     snprintf(g_house_root, sizeof(g_house_root), "%s", argv[1]);
+    snprintf(g_events_state_path, sizeof(g_events_state_path), "%s/#.desktop/db_hq_common_events.state.txt", g_house_root);
+    snprintf(g_action_path, sizeof(g_action_path), "%s/#.desktop/db_hq_action.txt", g_house_root);
+    signal(SIGTERM, handle_term_signal); /* see handle_term_signal()'s own header comment */
+    signal(SIGINT, handle_term_signal);
 
     load_font_scale(); /* #.desktop/hq_ui.pdl's font_scale key - see load_font_scale()'s own header comment */
     g_chrome_h = scaled(26);
@@ -1146,6 +1329,15 @@ int main(int argc, char **argv) {
         return 1;
     }
     g_window = window;
+
+    /* REAL module launch (Stage 2d, 2026-08-16) - read the <module
+     * src="..."/> tag dashboard.chtpm now declares and fork()+execv()
+     * it ourselves, matching wraith_parser_alpha.c's own launch_module()
+     * call site exactly (right after the layout is parsed). Replaces
+     * open_db_hq.sh's old manual dual-launch of the manager binary. */
+    Elem *module_elem = find_by_tag(window, "module");
+    if (module_elem && module_elem->label[0]) launch_module(module_elem->label);
+    atexit(cleanup_module); /* covers every return path, not just g_quit's normal loop exit */
 
     Elem *sidebar = find_by_tag(window, "sidebar");
     inject_sidebar_items(sidebar);
@@ -1199,7 +1391,14 @@ int main(int argc, char **argv) {
      * but borderless" rather than "borderless but unmanaged and
      * therefore focus-exempt". */
     XSetWindowAttributes swa;
-    swa.background_pixel = WhitePixel(dpy, screen);
+    /* REAL FIX 2026-08-16 (deferred earlier this session per direct
+     * priority call, "white flash is low priority" then "lets handle
+     * the events flash and move on"): WhitePixel shown before the first
+     * real (dark) redraw() paints was a real viewer-safety issue (white
+     * flash before going black/dark). Same real dark-default fix
+     * open-hai/khtpm_entity_menu_render.c already proved this session -
+     * no white-flash bug, not a placeholder color. */
+    swa.background_pixel = alloc_pixel("#141414");
     swa.event_mask = ExposureMask | ButtonPressMask | ButtonReleaseMask | ButtonMotionMask | KeyPressMask | StructureNotifyMask | FocusChangeMask;
     win = XCreateWindow(dpy, RootWindow(dpy, screen), g_win_x, g_win_y, (unsigned)ww, (unsigned)wh, 0,
                          CopyFromParent, InputOutput, CopyFromParent,
@@ -1319,6 +1518,13 @@ int main(int argc, char **argv) {
          * relay() call before the select()). */
         if (poll_agent_relay() > 0 && !g_quit) redraw();
         if (g_quit) break;
+        /* Stage 2d shell/manager split: pick up khtpm_hq_manager.c's
+         * latest common_events publish (mtime-gated, cheap every tick). */
+        if (load_common_events()) {
+            Elem *sidebar = find_by_tag(g_window, "sidebar");
+            inject_sidebar_items(sidebar);
+            redraw();
+        }
 
         fd_set fds;
         FD_ZERO(&fds);

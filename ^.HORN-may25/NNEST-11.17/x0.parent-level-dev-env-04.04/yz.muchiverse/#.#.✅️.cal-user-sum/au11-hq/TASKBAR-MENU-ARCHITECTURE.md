@@ -280,6 +280,10 @@ family.
    pattern** (capture the baseline right after `parse_chtpm()`, rewind to
    it at the top of every `layout_pass()`, before any injection) - copy
    this from `chat_hai_hq_render.c` directly, don't rediscover the bug.
+   (2026-08-16: chat-hai's own standalone renderer is now archived to
+   `_.ARCHIVED-pre-merge-legacy.zip` — the live equivalent logic is the
+   `chai_`-prefixed functions in `khtpm_entity_menu_render.c`, see
+   `khtpm-merge-how2.md` §5d.12.)
 2. **`apply_css(window, 0)` clobbers any one-time `window->style`
    override, every single redraw** — if your app needs runtime-computed
    geometry (screen-relative size/position, anything not a fixed CSS
@@ -336,6 +340,11 @@ discipline.
 ---
 
 ## Chat-hai integration — final working state (2026-08-15)
+
+**(2026-08-16 forward pointer, historical section below unchanged):**
+`button.sh` now launches the shared `khtpm_entity_menu_render.+x`
+binary (chat-hai mode), not the standalone `chat_hai_hq_render.+x`
+named below — see `khtpm-merge-how2.md` §5d.12.
 
 - Menu: cell 14 (h-ai) → "1. Open h-ai | 2. Chat-h-ai | 3. Cancel" ✅
 - `livedesk_build_ai_menu()` (khtpm_taskbar_manager.c) — item 1 command is

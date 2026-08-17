@@ -49,7 +49,7 @@ When documenting a new feature, create or update a markdown file in `/📚️.do
 
 1. **Status Field**: Keep it accurate. "MVP" means it works but may have rough edges. "In Progress" means actively being built. "Stable" means production-ready.
 
-2. **Paths**: Use the symlink shortcuts (e.g., `&.widgits/ai-cell`, `%.harnesses`, `#.monads`) rather than full paths. Makes docs resilient to directory renames.
+2. **Paths**: Use the symlink shortcuts (e.g., `&.widgits/open-hai`, `%.harnesses`, `#.monads`) rather than full paths. Makes docs resilient to directory renames.
 
 3. **Architecture**: Explain HOW the feature works, not just WHAT it does.
    - What files are involved?

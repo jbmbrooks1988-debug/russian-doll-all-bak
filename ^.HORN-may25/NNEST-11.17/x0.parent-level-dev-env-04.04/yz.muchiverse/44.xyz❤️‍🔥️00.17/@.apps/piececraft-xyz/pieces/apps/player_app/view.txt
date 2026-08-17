@@ -1,10 +1,10 @@
 +============================================================+
-|  P I E C E C R A F T - X Y Z   [main]                      |
+|  A T L A S - E D I T O R   [new_game]                      |
 +============================================================+
 |                                                            |
-|  Tick: 0                                                   |
-|  Hero HP: 20   Pos: (8,8,17)                               |
-|  Chunk: (0,0)                                              |
-|  Date: 2026-01-01T00:00:00.108   Autotick: ON (day)  [ ] to|
+|Choose a world type, then Confirm & Start.                  |
 |                                                            |
-|  Tick speed: day.                                          |
+|Seeded World: real 16x16x32 chunk, +/-2 height variation.   |
+|Debug Flat World: flat ground, 4 trees, easy to verify.     |
+|                                                            |
+|  World generated (seed 1789069162). Game started.          |

@@ -1,0 +1,574 @@
+#define _POSIX_C_SOURCE 199309L /* CLOCK_MONOTONIC under -std=c11 strict mode */
+/* khtpm_entity_menu_render.c — entity context menu, Stage 2c PROOF
+ * (2026-08-16, direct instruction: "oh use chtpm. its standard" -
+ * overriding the smaller module-only-bolt-on option initially
+ * recommended). ONE-ENTITY TEST CASE ONLY - see local-2do-15.txt's own
+ * entity-context-menu entry for the full reasoning/rollout plan. Every
+ * OTHER entity still uses tp_desktop_window_rgb.c's own built-in popup
+ * engine (objects.pdl/meta.pdl) until this is proven live on ava first.
+ *
+ * Real .chtpm tag vocabulary, 1:1 with objects.pdl's own real semantics
+ * (same action-string convention dispatch_action() already uses - a
+ * real shell command, "CLOSE", "void", plus objects.pdl's own "GOTO:
+ * <page>"/"BACK" reserved forms for multi-page nav):
+ *   <window class="entity-menu">
+ *     <page name="main">
+ *       <item label="..." action="..."/>
+ *       ...
+ *     </page>
+ *     <page name="other-page"> ... </page>
+ *   </window>
+ * <page name="..."> uses e->id to hold the page name (reusing the
+ * shared Elem struct's existing field, not a new one). <item>'s action
+ * string lives in e->onclick (also an existing Elem field) - label
+ * holds the visible text, onclick holds the command, matching that
+ * field's own original purpose.
+ *
+ * Real entity decoding (2026-08-16 finding): this parser only supports
+ * double-quote-delimited attribute values with NO entity decoding
+ * anywhere else in this house's khtpm family - action strings need
+ * literal " characters (for "$0"-style var quoting inside their own
+ * sh -c '...' wrappers), so apply_attr() decodes &quot;/&amp; for the
+ * "action" attribute specifically - real, minimal XML entity decoding,
+ * only the 2 entities actually needed, not a general-purpose scheme.
+ *
+ * Shares khtpm_render_core.c (Elem struct + hit_test/find_by_tag/
+ * find_by_id) with db-hq/events-hq/chat-hai - a REAL step toward Stage
+ * 2c's eventual convergence, not just proximity - this is genuinely the
+ * 4th consumer of that shared core.
+ *
+ * Usage: khtpm_entity_menu_render.+x <package_dir> <house_root>
+ * (matches dispatch_action()'s own existing calling convention exactly -
+ * package_dir first, house_root second - so tp_desktop_window_rgb.c's
+ * eventual integration point doesn't need a different argv shape). */
+#include "khtpm_css_parser.h"
+#include "khtpm_render_core.c" /* real .c, not a header - see that file's own comment */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <sys/select.h>
+#include <time.h>
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <X11/keysym.h>
+#include <X11/Xft/Xft.h>
+
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "lib/stb_image_write.h"
+
+#define PATH_BUF 4096
+#define MAX_ELEMS 256
+#define MAX_PAGE_STACK 8
+
+static Elem g_pool[MAX_ELEMS];
+static int g_n_elems = 0;
+static char g_package_dir[PATH_BUF];
+static char g_house_root[PATH_BUF];
+
+static Elem *elem_new(const char *tag) {
+    if (g_n_elems >= MAX_ELEMS) return NULL;
+    Elem *e = &g_pool[g_n_elems++];
+    memset(e, 0, sizeof(*e));
+    snprintf(e->tag, sizeof(e->tag), "%s", tag);
+    return e;
+}
+
+/* ---------- tiny generic tag-tree parser (same shape as db-hq/events-hq's
+ * own hand-rolled parser, not reinvented) ---------- */
+static void skip_ws(const char **p) { while (**p && isspace((unsigned char)**p)) (*p)++; }
+
+static void parse_attr_value(const char **p, char *out, size_t outsz) {
+    skip_ws(p);
+    if (**p != '"') { out[0] = '\0'; return; }
+    (*p)++;
+    size_t n = 0;
+    while (**p && **p != '"') { if (n + 1 < outsz) out[n++] = **p; (*p)++; }
+    out[n] = '\0';
+    if (**p == '"') (*p)++;
+}
+
+/* Real, minimal XML entity decode - ONLY &quot;/&amp;, the 2 this file's
+ * own action= values actually need (see this file's own header comment
+ * for why - real shell commands embed literal " for their own "$0"-style
+ * var quoting). Decodes in place. */
+static void decode_entities(char *s) {
+    char *r = s, *w = s;
+    while (*r) {
+        if (strncmp(r, "&quot;", 6) == 0) { *w++ = '"'; r += 6; }
+        else if (strncmp(r, "&amp;", 5) == 0) { *w++ = '&'; r += 5; }
+        else *w++ = *r++;
+    }
+    *w = '\0';
+}
+
+static void apply_attr(Elem *e, const char *name, const char *val) {
+    if (strcmp(name, "id") == 0 || strcmp(name, "name") == 0) {
+        snprintf(e->id, sizeof(e->id), "%s", val);
+    } else if (strcmp(name, "class") == 0) {
+        char tmp[128]; snprintf(tmp, sizeof(tmp), "%s", val);
+        char *tok = strtok(tmp, " ");
+        while (tok && e->n_classes < CSS_MAX_CLASSES) {
+            snprintf(e->classes[e->n_classes], sizeof(e->classes[0]), "%s", tok);
+            e->n_classes++;
+            tok = strtok(NULL, " ");
+        }
+    } else if (strcmp(name, "label") == 0) {
+        snprintf(e->label, sizeof(e->label), "%s", val);
+    } else if (strcmp(name, "action") == 0) {
+        char decoded[sizeof(e->onclick)];
+        snprintf(decoded, sizeof(decoded), "%s", val);
+        decode_entities(decoded);
+        snprintf(e->onclick, sizeof(e->onclick), "%s", decoded);
+    }
+}
+
+static const char *parse_element(const char *p, Elem *parent) {
+    skip_ws(&p);
+    if (*p != '<') return p;
+    p++;
+    if (*p == '!') {
+        const char *end = strstr(p, "-->");
+        return end ? end + 3 : p + strlen(p);
+    }
+    char tag[32]; size_t tn = 0;
+    while (*p && !isspace((unsigned char)*p) && *p != '>' && *p != '/') {
+        if (tn + 1 < sizeof(tag)) tag[tn++] = *p;
+        p++;
+    }
+    tag[tn] = '\0';
+    Elem *e = elem_new(tag);
+    e->parent = parent;
+    if (parent && parent->n_children < MAX_CHILDREN) parent->children[parent->n_children++] = e;
+
+    for (;;) {
+        skip_ws(&p);
+        if (*p == '/' && p[1] == '>') { p += 2; return p; }
+        if (*p == '>') { p++; break; }
+        if (!*p) return p;
+        char attr[32]; size_t an = 0;
+        while (*p && *p != '=' && !isspace((unsigned char)*p) && *p != '>' && *p != '/') {
+            if (an + 1 < sizeof(attr)) attr[an++] = *p;
+            p++;
+        }
+        attr[an] = '\0';
+        skip_ws(&p);
+        char val[1024] = "";
+        if (*p == '=') { p++; parse_attr_value(&p, val, sizeof(val)); }
+        if (attr[0]) apply_attr(e, attr, val);
+    }
+
+    for (;;) {
+        skip_ws(&p);
+        if (!*p) return p;
+        if (p[0] == '<' && p[1] == '/') {
+            const char *end = strchr(p, '>');
+            return end ? end + 1 : p + strlen(p);
+        }
+        p = parse_element(p, e);
+    }
+}
+
+static Elem *parse_chtpm(const char *path) {
+    FILE *f = fopen(path, "r");
+    if (!f) return NULL;
+    fseek(f, 0, SEEK_END);
+    long sz = ftell(f);
+    fseek(f, 0, SEEK_SET);
+    char *buf = malloc((size_t)sz + 1);
+    if (!buf) { fclose(f); return NULL; }
+    size_t rd = fread(buf, 1, (size_t)sz, f);
+    buf[rd] = '\0';
+    fclose(f);
+    const char *p = buf;
+    Elem *root = NULL;
+    while (*p) {
+        skip_ws(&p);
+        if (!*p) break;
+        if (*p == '<' && p[1] == '!') { p = parse_element(p, NULL); continue; }
+        if (*p != '<') break;
+        if (!root) {
+            root = elem_new("__root");
+            const char *after = parse_element(p, root);
+            p = after;
+        } else {
+            p = parse_element(p, root);
+        }
+    }
+    free(buf);
+    if (root && root->n_children > 0) return root->children[0];
+    return root;
+}
+
+/* ---------- page navigation (real, matches objects.pdl's own GOTO:/
+ * BACK semantics exactly - not reinvented) ---------- */
+static Elem *g_window;
+static char g_page_stack[MAX_PAGE_STACK][32];
+static int g_page_stack_n = 0;
+static char g_current_page[32] = "main";
+
+static Elem *find_page(const char *name) {
+    for (int i = 0; i < g_window->n_children; i++) {
+        Elem *c = g_window->children[i];
+        if (strcmp(c->tag, "page") == 0 && strcmp(c->id, name) == 0) return c;
+    }
+    return NULL;
+}
+
+/* ---------- X11/Xft ---------- */
+static Display *dpy;
+static Window win;
+static int screen;
+static GC gc;
+static Pixmap buf;
+static XftDraw *xftdraw_buf;
+static Colormap cmap;
+static XftFont *font_ui;
+static int g_win_x = 300, g_win_y = 300;
+static int g_win_w = 260, g_win_h = 200;
+static int g_quit = 0;
+/* REAL FIX 2026-08-16, direct live report ("it breaks on events or just
+ * when right clicking sometimes" - intermittent): the stale-event drain
+ * right after XMapRaised only discards events already sitting in the X
+ * server's queue AT THAT INSTANT - it does not cover a trailing event
+ * from the initiating right-click that the server hasn't delivered yet
+ * (real race, not fully closed by the drain alone). Add a short
+ * time-based debounce on top: ignore ButtonPress entirely until this
+ * many ms after the window mapped, closing the race regardless of
+ * exact event-arrival timing. */
+static struct timespec g_map_time;
+#define PHANTOM_CLICK_GUARD_MS 150
+static int g_focus_nav = 1;
+static int g_n_nav = 0;
+static Elem *g_nav[MAX_ELEMS];
+#define ROW_H 24
+#define CHROME_H 24
+
+static unsigned long alloc_pixel(const char *spec) {
+    XColor c;
+    XParseColor(dpy, cmap, spec, &c);
+    XAllocColor(dpy, cmap, &c);
+    return c.pixel;
+}
+
+static XftColor xft_color(const char *spec) {
+    XftColor xc; XRenderColor rc = {0, 0, 0, 0xffff};
+    if (spec && spec[0] == '#' && strlen(spec) >= 7) {
+        unsigned int r, g, b; sscanf(spec + 1, "%02x%02x%02x", &r, &g, &b);
+        rc.red = (unsigned short)(r * 257); rc.green = (unsigned short)(g * 257); rc.blue = (unsigned short)(b * 257);
+    }
+    XftColorAllocValue(dpy, DefaultVisual(dpy, screen), cmap, &rc, &xc);
+    return xc;
+}
+
+static void assign_nav_and_layout(void) {
+    g_n_nav = 0;
+    Elem *page = find_page(g_current_page);
+    int y = CHROME_H;
+    if (page) {
+        for (int i = 0; i < page->n_children; i++) {
+            Elem *item = page->children[i];
+            if (strcmp(item->tag, "item") != 0) continue;
+            item->x = 0; item->y = y; item->w = g_win_w; item->h = ROW_H;
+            item->nav_index = ++g_n_nav;
+            g_nav[g_n_nav - 1] = item;
+            y += ROW_H;
+        }
+    }
+    g_win_h = y + 8;
+    if (g_focus_nav > g_n_nav) g_focus_nav = g_n_nav > 0 ? g_n_nav : 1;
+    if (g_focus_nav < 1) g_focus_nav = 1;
+}
+
+static void switch_page(const char *name) {
+    if (!find_page(name)) return;
+    snprintf(g_current_page, sizeof(g_current_page), "%s", name);
+    g_focus_nav = 1;
+}
+
+/* Real dispatch - same shape as tp_desktop_window_rgb.c's own
+ * dispatch_action(), ported not reinvented (this is a DIFFERENT process
+ * so it can't call that function directly, but the semantics must match
+ * exactly - CLOSE/void/GOTO:/BACK are handled here, everything else is a
+ * real shell command run with package_dir/house_root as args, same
+ * "%s '%s' '%s'" shape). */
+static void dispatch(const char *action) {
+    if (strcmp(action, "CLOSE") == 0) { g_quit = 1; return; }
+    /* REAL FIX 2026-08-16, direct live report ("cancel doesn't work
+     * yet"): the legacy dispatch (tp_desktop_window_rgb.c line ~2026)
+     * ALWAYS calls close_context_menu() before even looking at the
+     * action - "void" only skips running a shell command, it still
+     * closes the menu. This copy returned without setting g_quit, so
+     * Cancel/Stop silently left the window open. */
+    if (strcmp(action, "void") == 0) { g_quit = 1; return; }
+    if (strncmp(action, "GOTO:", 5) == 0) { switch_page(action + 5); return; }
+    if (strcmp(action, "BACK") == 0) {
+        if (g_page_stack_n > 0) { switch_page(g_page_stack[--g_page_stack_n]); }
+        return;
+    }
+    char cmd[PATH_BUF * 3];
+    snprintf(cmd, sizeof(cmd), "%s '%s' '%s' >/dev/null 2>&1 &", action, g_package_dir, g_house_root);
+    int rc = system(cmd);
+    (void)rc;
+    g_quit = 1; /* real menus close after a real action fires, matching tp_desktop_window_rgb.c's own UX (g_menu_stay_open aside - default behavior) */
+}
+
+static void activate_focused(void) {
+    if (g_focus_nav < 1 || g_focus_nav > g_n_nav) return;
+    Elem *item = g_nav[g_focus_nav - 1];
+    if (item->onclick[0]) dispatch(item->onclick);
+}
+
+static void redraw(void) {
+    assign_nav_and_layout();
+    XSetForeground(dpy, gc, alloc_pixel("#1c1c1c"));
+    XFillRectangle(dpy, buf, gc, 0, 0, (unsigned)g_win_w, (unsigned)g_win_h);
+    XSetForeground(dpy, gc, alloc_pixel("#2a2a2a"));
+    XFillRectangle(dpy, buf, gc, 0, 0, (unsigned)g_win_w, CHROME_H);
+
+    XftColor title_col = xft_color("#eeeeee");
+    XftDrawStringUtf8(xftdraw_buf, &title_col, font_ui, 8, 16, (const FcChar8 *)g_current_page, (int)strlen(g_current_page));
+    XftColorFree(dpy, DefaultVisual(dpy, screen), cmap, &title_col);
+
+    Elem *page = find_page(g_current_page);
+    if (page) {
+        for (int i = 0; i < page->n_children; i++) {
+            Elem *item = page->children[i];
+            if (strcmp(item->tag, "item") != 0) continue;
+            int focused = (item->nav_index == g_focus_nav);
+            if (focused) {
+                XSetForeground(dpy, gc, alloc_pixel("#333333"));
+                XFillRectangle(dpy, buf, gc, item->x, item->y, (unsigned)item->w, (unsigned)item->h);
+            }
+            char badge[16];
+            snprintf(badge, sizeof(badge), "[%c]%d.", focused ? '>' : ' ', item->nav_index);
+            XftColor bcol = xft_color(focused ? "#ff8c00" : "#9a9a9a");
+            XGlyphInfo bext;
+            XftTextExtentsUtf8(dpy, font_ui, (const FcChar8 *)badge, (int)strlen(badge), &bext);
+            int ty = item->y + (item->h + font_ui->ascent - font_ui->descent) / 2;
+            XftDrawStringUtf8(xftdraw_buf, &bcol, font_ui, item->x + 6, ty, (const FcChar8 *)badge, (int)strlen(badge));
+            XftColorFree(dpy, DefaultVisual(dpy, screen), cmap, &bcol);
+
+            XftColor lcol = xft_color(focused ? "#ffffff" : "#cccccc");
+            XftDrawStringUtf8(xftdraw_buf, &lcol, font_ui, item->x + 6 + bext.width + 6, ty, (const FcChar8 *)item->label, (int)strlen(item->label));
+            XftColorFree(dpy, DefaultVisual(dpy, screen), cmap, &lcol);
+        }
+    }
+
+    XSync(dpy, False);
+    XImage *frame = XGetImage(dpy, buf, 0, 0, (unsigned)g_win_w, (unsigned)g_win_h, AllPlanes, ZPixmap);
+    if (frame) {
+        XPutImage(dpy, win, gc, frame, 0, 0, 0, 0, (unsigned)g_win_w, (unsigned)g_win_h);
+        XDestroyImage(frame);
+    } else {
+        XCopyArea(dpy, buf, win, gc, 0, 0, (unsigned)g_win_w, (unsigned)g_win_h, 0, 0);
+    }
+    XFlush(dpy);
+}
+
+/* on-demand debug PNG dump, same real convention every other khtpm app
+ * uses (own separate capture, not the hot redraw path). */
+static void dump_frame_png(void) {
+    XImage *img = XGetImage(dpy, buf, 0, 0, (unsigned)g_win_w, (unsigned)g_win_h, AllPlanes, ZPixmap);
+    if (!img) return;
+    unsigned char *rgb = malloc((size_t)g_win_w * g_win_h * 3);
+    if (!rgb) { XDestroyImage(img); return; }
+    for (int y = 0; y < g_win_h; y++)
+        for (int x = 0; x < g_win_w; x++) {
+            unsigned long px = XGetPixel(img, x, y);
+            size_t o = ((size_t)y * g_win_w + x) * 3;
+            rgb[o] = (unsigned char)((px >> 16) & 0xff);
+            rgb[o + 1] = (unsigned char)((px >> 8) & 0xff);
+            rgb[o + 2] = (unsigned char)(px & 0xff);
+        }
+    XDestroyImage(img);
+    stbi_write_png("/tmp/entity-menu-frame.png", g_win_w, g_win_h, 3, rgb, g_win_w * 3);
+    free(rgb);
+}
+
+static void handle_key(KeySym ks, char ch) {
+    if (ch == 'p') { dump_frame_png(); return; }
+    if (ks == XK_Return || ks == XK_KP_Enter) { activate_focused(); return; }
+    if (ks == XK_Escape) { g_quit = 1; return; }
+    if (ks == XK_Up) { if (g_focus_nav > 1) g_focus_nav--; return; }
+    if (ks == XK_Down) { if (g_focus_nav < g_n_nav) g_focus_nav++; return; }
+    if (ch >= '1' && ch <= '9') { int d = ch - '0'; if (d <= g_n_nav) g_focus_nav = d; return; }
+}
+
+/* ---------- relay (same real testing convention every other khtpm app
+ * uses - #.desktop/entity_menu_agent_relay.txt) ---------- */
+static long g_relay_cursor = -1;
+static void relay_path(char *out, size_t outsz) { snprintf(out, outsz, "%s/#.desktop/entity_menu_agent_relay.txt", g_house_root); }
+static void dispatch_relay_code(int code) {
+    if (code == 13) handle_key(XK_Return, 0);
+    else if (code == 27) handle_key(XK_Escape, 0);
+    else if (code >= 32 && code <= 126) handle_key(0, (char)code);
+}
+static int poll_agent_relay(void) {
+    char path[PATH_BUF];
+    relay_path(path, sizeof(path));
+    struct stat st;
+    if (stat(path, &st) != 0) return 0;
+    if (g_relay_cursor < 0) { g_relay_cursor = st.st_size; return 0; }
+    if (st.st_size < g_relay_cursor) { g_relay_cursor = st.st_size; return 0; }
+    if (st.st_size == g_relay_cursor) return 0;
+    FILE *f = fopen(path, "r");
+    if (!f) return 0;
+    fseek(f, g_relay_cursor, SEEK_SET);
+    int n = 0;
+    char line[64];
+    long consumed = g_relay_cursor;
+    while (fgets(line, sizeof(line), f)) {
+        char *nl = strchr(line, '\n');
+        if (!nl) break;
+        *nl = '\0';
+        long here = ftell(f);
+        int code = atoi(line);
+        if (code > 0) { dispatch_relay_code(code); n++; }
+        consumed = here;
+    }
+    fclose(f);
+    g_relay_cursor = consumed;
+    return n;
+}
+
+int main(int argc, char **argv) {
+    if (argc < 3) { fprintf(stderr, "usage: %s <package_dir> <house_root> [x] [y]\n", argv[0]); return 1; }
+    snprintf(g_package_dir, sizeof(g_package_dir), "%s", argv[1]);
+    snprintf(g_house_root, sizeof(g_house_root), "%s", argv[2]);
+    /* REAL FIX 2026-08-16, direct live report ("doesn't open by her
+     * actual position like old context menu does") - launch_khtpm_menu()
+     * now passes the caller's real, screen-clamped popup x/y (the same
+     * px/py open_context_menu() itself computes via
+     * clamp_popup_to_screen()) as argv[3]/argv[4]. Optional so a
+     * standalone/relay-testing launch (2-arg) still works with the old
+     * 300,300 default. */
+    if (argc >= 5) { g_win_x = atoi(argv[3]); g_win_y = atoi(argv[4]); }
+
+    char chtpm_path[PATH_BUF];
+    snprintf(chtpm_path, sizeof(chtpm_path), "%s/menu.chtpm", g_package_dir);
+    g_window = parse_chtpm(chtpm_path);
+    if (!g_window) { fprintf(stderr, "khtpm_entity_menu_render: failed to parse %s\n", chtpm_path); return 1; }
+
+    /* REAL FIX (found live, first standalone test): g_win_h is DATA-
+     * DRIVEN (item count) but the window/pixmap used to be created at a
+     * fixed default height BEFORE this ever ran - redraw()'s first
+     * layout pass would then XGetImage a LARGER area than the actual
+     * Pixmap, a real geometry mismatch (X_GetImage BadMatch, confirmed
+     * live). Real fix: compute the real height once, up front, before
+     * creating anything X11-side - this menu's content is static per
+     * page switch, no need for ConfigureNotify-driven runtime resize. */
+    assign_nav_and_layout();
+
+    dpy = XOpenDisplay(NULL);
+    if (!dpy) { fprintf(stderr, "khtpm_entity_menu_render: cannot open display\n"); return 1; }
+    screen = DefaultScreen(dpy);
+    cmap = DefaultColormap(dpy, screen);
+    font_ui = XftFontOpenName(dpy, screen, "DejaVu Sans:pixelsize=12");
+
+    XSetWindowAttributes swa;
+    swa.background_pixel = alloc_pixel("#1c1c1c"); /* real dark default - no white-flash bug, ai-cell's own proven pattern, not WhitePixel */
+    /* REAL FIX 2026-08-16, direct live report ("none of the buttons seem
+     * 2 work yet"): this window was a normal WM-managed window, unlike
+     * the legacy popup (override_redirect=True, open_context_menu() near
+     * line 1414). Most WMs (Mutter included) use click-to-focus - the
+     * FIRST click on a just-mapped, unfocused window only focuses it and
+     * never reaches the app as a real ButtonPress, and since this
+     * process launches fresh on every open, EVERY click was a first
+     * click. override_redirect bypasses window-manager management
+     * entirely (same as any real popup/menu), so clicks are delivered
+     * immediately - matches the legacy popup's own real behavior. */
+    swa.override_redirect = True;
+    swa.event_mask = ExposureMask | ButtonPressMask | KeyPressMask | StructureNotifyMask | FocusChangeMask;
+    win = XCreateWindow(dpy, RootWindow(dpy, screen), g_win_x, g_win_y, (unsigned)g_win_w, (unsigned)g_win_h, 0,
+                         CopyFromParent, InputOutput, CopyFromParent, CWBackPixel | CWOverrideRedirect | CWEventMask, &swa);
+    Atom motif_hints = XInternAtom(dpy, "_MOTIF_WM_HINTS", False);
+    long hints[5] = { 2, 0, 0, 0, 0 };
+    XChangeProperty(dpy, win, motif_hints, motif_hints, 32, PropModeReplace, (unsigned char *)hints, 5);
+    Atom wm_delete = XInternAtom(dpy, "WM_DELETE_WINDOW", False);
+    XSetWMProtocols(dpy, win, &wm_delete, 1);
+    /* PPosition - same real fix db-hq/events-hq/chat-hai already needed
+     * (khtpm-merge-how2.md's own white-flash/position entries) - without
+     * this the WM ignores the requested x/y. */
+    XSizeHints *shints = XAllocSizeHints();
+    if (shints) { shints->flags = PPosition; shints->x = g_win_x; shints->y = g_win_y; XSetWMNormalHints(dpy, win, shints); XFree(shints); }
+
+    XMapRaised(dpy, win);
+    XSync(dpy, False);
+    /* override_redirect windows aren't given focus by the WM - grab it
+     * ourselves so KeyPress nav works immediately (soft, matches the
+     * legacy popup's own popup_soft_focus - RevertToPointerRoot so focus
+     * naturally falls back to whatever's under the cursor once we quit,
+     * no other window's focus is fought for). */
+    XSetInputFocus(dpy, win, RevertToPointerRoot, CurrentTime);
+    clock_gettime(CLOCK_MONOTONIC, &g_map_time);
+    /* REAL FIX 2026-08-16, direct live report ("it also pops up instead
+     * of context menu when i rightclick ava" - Chat fired immediately):
+     * same real cause class as tp_desktop_window_rgb.c's own documented
+     * window-ID-recycle phantom click fix (open_context_menu()) - the
+     * right-click that triggered this whole launch can still have a
+     * trailing Button event sitting in this window's queue the instant
+     * it maps. Drain it before the real event loop starts, so only
+     * input that arrives after this window genuinely existed can select
+     * a row. */
+    {
+        XEvent stale_ev;
+        while (XCheckWindowEvent(dpy, win, ButtonPressMask | KeyPressMask, &stale_ev)) {
+            /* discard - see comment above */
+        }
+    }
+
+    gc = XCreateGC(dpy, win, 0, NULL);
+    buf = XCreatePixmap(dpy, win, (unsigned)g_win_w, (unsigned)g_win_h, (unsigned)DefaultDepth(dpy, screen));
+    xftdraw_buf = XftDrawCreate(dpy, buf, DefaultVisual(dpy, screen), cmap);
+
+    redraw();
+
+    while (!g_quit) {
+        if (poll_agent_relay() > 0 && !g_quit) redraw();
+        if (g_quit) break;
+        fd_set fds; FD_ZERO(&fds);
+        int xfd = ConnectionNumber(dpy); FD_SET(xfd, &fds);
+        struct timeval tv = { 0, 150000 };
+        select(xfd + 1, &fds, NULL, NULL, &tv);
+
+        while (XPending(dpy)) {
+            XEvent ev; XNextEvent(dpy, &ev);
+            if (ev.type == Expose) redraw();
+            else if (ev.type == ButtonPress) {
+                struct timespec now;
+                clock_gettime(CLOCK_MONOTONIC, &now);
+                long ms_since_map = (now.tv_sec - g_map_time.tv_sec) * 1000L
+                                   + (now.tv_nsec - g_map_time.tv_nsec) / 1000000L;
+                if (ms_since_map < PHANTOM_CLICK_GUARD_MS) continue;
+                for (int i = 0; i < g_n_nav; i++) {
+                    Elem *it = g_nav[i];
+                    if (ev.xbutton.x >= it->x && ev.xbutton.x < it->x + it->w &&
+                        ev.xbutton.y >= it->y && ev.xbutton.y < it->y + it->h) {
+                        g_focus_nav = it->nav_index;
+                        activate_focused();
+                        break;
+                    }
+                }
+                if (!g_quit) redraw();
+            } else if (ev.type == KeyPress) {
+                char buf8[8]; KeySym ks;
+                int n = XLookupString(&ev.xkey, buf8, sizeof(buf8) - 1, &ks, NULL);
+                buf8[n > 0 ? n : 0] = '\0';
+                handle_key(ks, buf8[0]);
+                if (!g_quit) redraw();
+            } else if (ev.type == ClientMessage && (Atom)ev.xclient.data.l[0] == wm_delete) {
+                g_quit = 1;
+            }
+        }
+    }
+
+    XftDrawDestroy(xftdraw_buf);
+    XFreeGC(dpy, gc);
+    XFreePixmap(dpy, buf);
+    XDestroyWindow(dpy, win);
+    XCloseDisplay(dpy);
+    return 0;
+}

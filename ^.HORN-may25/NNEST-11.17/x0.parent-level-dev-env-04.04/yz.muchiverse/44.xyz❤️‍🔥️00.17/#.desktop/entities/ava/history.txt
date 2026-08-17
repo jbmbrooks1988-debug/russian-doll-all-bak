@@ -519,3 +519,12 @@
 [2026-08-11 07:16:29] WINDOW_OPEN
 [2026-08-11 07:16:29] LIVEDESK_INDEX=9
 [2026-08-11 07:16:38] CLICK method=Events (ez) action=sh -c 'cd "$0" && H="$(cd ../../.. && pwd)" && exec env EZ_PKG_NAME=ava-$(cat "$0/instance_id.txt") EZ_PKG_DIR="$H/@.apps/asa-&-ava/pieces/ava/event_pkg" sh "$H/&.widgits/event-ez/button.sh" run-widget'
+[2026-08-16 17:33:04] WINDOW_OPEN
+[2026-08-16 17:33:04] LIVEDESK_INDEX=9
+[2026-08-16 17:34:39] INJECTED: CLOSE
+[2026-08-16 18:58:10] WINDOW_OPEN
+[2026-08-16 18:58:10] LIVEDESK_INDEX=9
+[2026-08-16 18:58:44] CLICK method=Play action=sh -c 'cd "$0" && H="$(cd ../../.. && pwd)" && test -f "$H/@.apps/asa-&-ava/pieces/ava/event_pkg/pages/page_1/event.pal" && exec "$H/101.mutaclsym🧟‍♂️️+18.01/system/prisc+x" "$H/@.apps/asa-&-ava/pieces/ava/event_pkg/pages/page_1/event.pal"'
+[2026-08-16 18:58:56] CLICK method=Cancel action=void
+[2026-08-16 19:00:28] CLICK method=Cancel action=void
+[2026-08-16 19:00:33] INJECTED: CLOSE

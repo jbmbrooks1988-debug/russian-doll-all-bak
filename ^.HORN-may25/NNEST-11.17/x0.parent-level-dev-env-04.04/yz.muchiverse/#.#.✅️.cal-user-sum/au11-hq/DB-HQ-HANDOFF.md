@@ -1,6 +1,13 @@
 # 🔧 DB Cell Implementation Handoff
 
-**Status:** BROKEN / INCOMPLETE  
+**SUPERSEDED — this doc is now purely historical.** db-hq went real/working
+later in the 2026-08-12 session, then on 2026-08-16 was merged into the
+shared `khtpm_entity_menu_render.c` binary (Stage 5 of the khtpm merge —
+see `khtpm-merge-how2.md` §5d.10 for current, real status). Do not trust
+this file's "BROKEN/INCOMPLETE" framing below — kept as a historical
+record of the original bug only.
+
+**Status (historical, as of 2026-08-12):** BROKEN / INCOMPLETE  
 **Date:** 2026-08-12  
 **Problem:** db cell (cell 9) is not showing a menu when clicked. Previous agent added db-ez + db-hq rows but handler incomplete.
 

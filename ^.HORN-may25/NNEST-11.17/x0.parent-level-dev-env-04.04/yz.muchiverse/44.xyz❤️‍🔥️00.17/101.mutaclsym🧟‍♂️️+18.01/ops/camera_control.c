@@ -4,14 +4,23 @@
  * move_player (which ONLY handles hero/cursor movement via arrow keys
  * and hero Z level via x/z).
  *
+ * ARCHITECTURE (2026-08-17, ported from piececraft/board-viewer's own
+ * pattern): camera state lives in its OWN dedicated file
+ * (cam_state.txt), not in hero/state.txt. Only THIS op writes
+ * cam_state.txt. compose_rgb_frame.c reads camera from cam_state.txt.
+ * move_player.c and choice.c never touch camera fields at all.
+ * This eliminates the multi-writer race that caused the "clamps after
+ * 1 move" bug (move_player/choice clobbering camera fields they never
+ * should have been writing).
+ *
  * Camera keys are mode-dependent (see pov-cam.md for the full spec):
  *
  *   Mode 1 (first person): FIXED at hero eye level. Only look: q/e
- *   rotate yaw, r/t pitch up/down, f reset to default facing.
+ *   rotate yaw, r pitch down / t pitch up, f reset to default facing.
  *   No pan, no Z level - camera stays locked to hero position.
  *
  *   Mode 2 (third person): FIXED behind+above hero, looking down.
- *   Only look: q/e rotate yaw, r/t pitch up/down, f reset to default.
+ *   Only look: q/e rotate yaw, r pitch down / t pitch up, f reset.
  *   No pan, no Z level - camera stays locked behind hero.
  *
  *   Mode 3 (free roam): all keys active - w/a/s/d pan,
@@ -81,16 +90,42 @@ int main(int argc, char **argv) {
     char path[PATH_BUF];
     snprintf(path, sizeof(path), "%s/pieces/world_01/map_start/hero/state.txt", project_root);
 
+    /* Camera state lives in its OWN file (cam_state.txt), not hero/
+     * state.txt - ported from piececraft/board-viewer's own pattern
+     * (bv_state.txt). Only THIS op writes it. This eliminates the
+     * multi-writer race (move_player/choice clobbering camera fields
+     * on every keypress). */
+    char cam_path[PATH_BUF];
+    snprintf(cam_path, sizeof(cam_path), "%s/pieces/world_01/map_start/hero/cam_state.txt", project_root);
+
     int render_mode = read_kv_int(path, "render_mode", 0);
     if (render_mode != 1) return 0;
 
+    /* Bootstrap cam_state.txt with defaults if missing - first time
+     * entering 3D mode, or fresh session. Only camera_control.c
+     * creates this file. */
+    {
+        FILE *test = fopen(cam_path, "r");
+        if (test) { fclose(test); }
+        else {
+            FILE *init = fopen(cam_path, "w");
+            if (init) {
+                fprintf(init, "cam_pan_x=0.00\ncam_pan_y=0.00\ncam_pan_z=0.00\n");
+                fprintf(init, "cam_yaw=0.00\ncam_pitch=6.00\ncam_z_level=0\n");
+                fclose(init);
+            }
+        }
+    }
+
+    /* camera_mode is set via menu in hero/state.txt, read from there.
+     * All other camera fields come from cam_state.txt (our own file). */
     int camera_mode = read_kv_int(path, "camera_mode", 1);
-    double cam_pan_x = read_kv_double(path, "cam_pan_x", 0.0);
-    double cam_pan_y = read_kv_double(path, "cam_pan_y", 0.0);
-    double cam_pan_z = read_kv_double(path, "cam_pan_z", 0.0);
-    double cam_yaw = read_kv_double(path, "cam_yaw", 0.0);
-    double cam_pitch = read_kv_double(path, "cam_pitch", 6.0);
-    int cam_z_level = read_kv_int(path, "cam_z_level", 0);
+    double cam_pan_x = read_kv_double(cam_path, "cam_pan_x", 0.0);
+    double cam_pan_y = read_kv_double(cam_path, "cam_pan_y", 0.0);
+    double cam_pan_z = read_kv_double(cam_path, "cam_pan_z", 0.0);
+    double cam_yaw = read_kv_double(cam_path, "cam_yaw", 0.0);
+    double cam_pitch = read_kv_double(cam_path, "cam_pitch", 6.0);
+    int cam_z_level = read_kv_int(cam_path, "cam_z_level", 0);
 
     int changed = 0;
 
@@ -99,13 +134,13 @@ int main(int argc, char **argv) {
         if (key == 'q' || key == 'Q') { cam_yaw -= YAW_STEP; changed = 1; }
         else if (key == 'e' || key == 'E') { cam_yaw += YAW_STEP; changed = 1; }
         else if (key == 'r' || key == 'R') {
-            cam_pitch += PITCH_STEP;
-            if (cam_pitch > 89.0) cam_pitch = 89.0;
+            cam_pitch -= PITCH_STEP;
+            if (cam_pitch < -89.0) cam_pitch = -89.0;
             changed = 1;
         }
         else if (key == 't' || key == 'T') {
-            cam_pitch -= PITCH_STEP;
-            if (cam_pitch < -89.0) cam_pitch = -89.0;
+            cam_pitch += PITCH_STEP;
+            if (cam_pitch > 89.0) cam_pitch = 89.0;
             changed = 1;
         }
         else if (key == 'f' || key == 'F') {
@@ -119,13 +154,13 @@ int main(int argc, char **argv) {
         if (key == 'q' || key == 'Q') { cam_yaw -= YAW_STEP; changed = 1; }
         else if (key == 'e' || key == 'E') { cam_yaw += YAW_STEP; changed = 1; }
         else if (key == 'r' || key == 'R') {
-            cam_pitch += PITCH_STEP;
-            if (cam_pitch > 89.0) cam_pitch = 89.0;
+            cam_pitch -= PITCH_STEP;
+            if (cam_pitch < -89.0) cam_pitch = -89.0;
             changed = 1;
         }
         else if (key == 't' || key == 'T') {
-            cam_pitch -= PITCH_STEP;
-            if (cam_pitch < -89.0) cam_pitch = -89.0;
+            cam_pitch += PITCH_STEP;
+            if (cam_pitch > 89.0) cam_pitch = 89.0;
             changed = 1;
         }
         else if (key == 'f' || key == 'F') {
@@ -143,13 +178,13 @@ int main(int argc, char **argv) {
         else if (key == 'q' || key == 'Q') { cam_yaw -= YAW_STEP; changed = 1; }
         else if (key == 'e' || key == 'E') { cam_yaw += YAW_STEP; changed = 1; }
         else if (key == 'r' || key == 'R') {
-            cam_pitch += PITCH_STEP;
-            if (cam_pitch > 89.0) cam_pitch = 89.0;
+            cam_pitch -= PITCH_STEP;
+            if (cam_pitch < -89.0) cam_pitch = -89.0;
             changed = 1;
         }
         else if (key == 't' || key == 'T') {
-            cam_pitch -= PITCH_STEP;
-            if (cam_pitch < -89.0) cam_pitch = -89.0;
+            cam_pitch += PITCH_STEP;
+            if (cam_pitch > 89.0) cam_pitch = 89.0;
             changed = 1;
         }
         else if (key == 'c' || key == 'C') { cam_z_level++; changed = 1; }
@@ -186,16 +221,18 @@ int main(int argc, char **argv) {
 
     if (!changed) return 0;
 
-    /* Read all lines for passthrough write-back, same pattern as
-     * move_player.c. */
-    FILE *f = fopen(path, "r");
-    if (!f) return 1;
-    char lines[32][MAX_LINE];
+    /* Write camera fields to cam_state.txt ONLY - our own dedicated
+     * file. No more read-patch-write of hero/state.txt for camera
+     * fields. This eliminates the multi-writer race entirely. */
+    FILE *f = fopen(cam_path, "r");
+    char lines[128][MAX_LINE];
     int nlines = 0;
-    while (nlines < 32 && fgets(lines[nlines], MAX_LINE, f)) nlines++;
-    fclose(f);
+    if (f) {
+        while (nlines < 128 && fgets(lines[nlines], MAX_LINE, f)) nlines++;
+        fclose(f);
+    }
 
-    f = fopen(path, "w");
+    f = fopen(cam_path, "w");
     if (!f) return 1;
     int panx_found = 0, pany_found = 0, panz_found = 0;
     int yaw_found = 0, pitch_found = 0, zlv_found = 0;

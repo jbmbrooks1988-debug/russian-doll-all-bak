@@ -350,7 +350,7 @@ int main(int argc, char **argv) {
                              * mr_change_gold.+x itself moved from the
                              * legacy per-game dev folder
                              * (*.monads/*.muchi-pet/ops/+x/) to
-                             * xyzfs/bin/muchi-pet/ops/+x/ - a shared,
+                             * *.monads/*.muchi-pet/ops/+x/ - a shared,
                              * house-wide location (not per-user, not
                              * per-session), matching the stated direction
                              * that ops/code should be shared across all
@@ -369,7 +369,7 @@ int main(int argc, char **argv) {
                             fprintf(wf, "ENT=\"$PWD\"\n");
                             fprintf(wf, "D=\"$ENT\"\n");
                             fprintf(wf, "while [ \"$D\" != \"/\" ] && [ ! -d \"$D/xyzfs\" ]; do D=\"$(dirname \"$D\")\"; done\n");
-                            fprintf(wf, "exec \"$D/xyzfs/bin/muchi-pet/ops/+x/mr_change_gold.+x\" \"$ENT\" '%s'\n", amt);
+                            fprintf(wf, "exec \"$D/*.monads/*.muchi-pet/ops/+x/mr_change_gold.+x\" \"$ENT\" '%s'\n", amt);
                             fclose(wf);
                             chmod(wrapper_path, 0755);
                         }
@@ -581,9 +581,9 @@ int main(int argc, char **argv) {
                             fprintf(wf, "D=\"$ENT\"\n");
                             fprintf(wf, "while [ \"$D\" != \"/\" ] && [ ! -d \"$D/xyzfs\" ]; do D=\"$(dirname \"$D\")\"; done\n");
                             if (spk[0]) {
-                                fprintf(wf, "exec \"$D/xyzfs/bin/muchi-pet/ops/+x/mr_show_text.+x\" \"$ENT\" '%s' '%s'\n", txt, spk);
+                                fprintf(wf, "exec \"$D/*.monads/*.muchi-pet/ops/+x/mr_show_text.+x\" \"$ENT\" '%s' '%s'\n", txt, spk);
                             } else {
-                                fprintf(wf, "exec \"$D/xyzfs/bin/muchi-pet/ops/+x/mr_show_text.+x\" \"$ENT\" '%s'\n", txt);
+                                fprintf(wf, "exec \"$D/*.monads/*.muchi-pet/ops/+x/mr_show_text.+x\" \"$ENT\" '%s'\n", txt);
                             }
                             fclose(wf);
                             chmod(wrapper_path, 0755);
@@ -679,7 +679,7 @@ int main(int argc, char **argv) {
                             fprintf(wf, "ENT=\"$PWD\"\n");
                             fprintf(wf, "D=\"$ENT\"\n");
                             fprintf(wf, "while [ \"$D\" != \"/\" ] && [ ! -d \"$D/xyzfs\" ]; do D=\"$(dirname \"$D\")\"; done\n");
-                            fprintf(wf, "exec \"$D/xyzfs/bin/muchi-pet/ops/+x/mr_show_choices.+x\" \"$ENT\" '%s' %d\n", ch, def);
+                            fprintf(wf, "exec \"$D/*.monads/*.muchi-pet/ops/+x/mr_show_choices.+x\" \"$ENT\" '%s' %d\n", ch, def);
                             fclose(wf);
                             chmod(wrapper_path, 0755);
                         }

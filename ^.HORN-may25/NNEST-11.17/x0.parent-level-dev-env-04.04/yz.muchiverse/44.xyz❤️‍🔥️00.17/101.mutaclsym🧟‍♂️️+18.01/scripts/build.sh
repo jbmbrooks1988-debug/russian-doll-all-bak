@@ -58,6 +58,14 @@ else
     rm -f /tmp/gl_mirror_build.log
 fi
 
+echo "-- x11_mirror (REAL SHARED BINARY, khtpm-merge-how2.md §5c.6,"
+echo "   legacy-shared-fix.md §3 - no longer built locally, see"
+echo "   &.widgits/_shared-lib/ops/build_x11_mirror.sh. orchestrator.c/"
+echo "   button.sh launch the shared copy; gl_mirror stays as a real"
+echo "   fallback, not deleted. This project's own OLD local"
+echo "   system/x11_mirror.c is the pilot source that was promoted to"
+echo "   the shared location - kept as reference, no longer built here.)"
+
 echo "-- ops"
 $CC $CFLAGS -o ops/+x/move_player.+x ops/move_player.c
 $CC $CFLAGS -o ops/+x/camera_control.+x ops/camera_control.c

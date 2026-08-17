@@ -1,13 +1,50 @@
-header.focus=0[type=button label=HQ onClick=ACTIVATE:1] header.active=-1 bottom.focus=-1 unified_nav_focus=0 has_real_x11_focus=0 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=25
-header.focus=43[type=button label=Open h-ai onClick=HQITEM:0] header.active=41 bottom.focus=0 unified_nav_focus=13 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=52
-header.focus=20[type=button label=h-ai onClick=ACTIVATE:14] header.active=-1 bottom.focus=0 unified_nav_focus=13 has_real_x11_focus=0 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=25
-header.focus=43[type=button label=Open h-ai onClick=HQITEM:0] header.active=41 bottom.focus=0 unified_nav_focus=13 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=52
-header.focus=20[type=button label=h-ai onClick=ACTIVATE:14] header.active=-1 bottom.focus=0 unified_nav_focus=13 has_real_x11_focus=0 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=25
-header.focus=43[type=button label=Open h-ai onClick=HQITEM:0] header.active=41 bottom.focus=0 unified_nav_focus=13 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=52
-header.focus=20[type=button label=h-ai onClick=ACTIVATE:14] header.active=-1 bottom.focus=0 unified_nav_focus=13 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=25
-header.focus=43[type=button label=Open h-ai onClick=HQITEM:0] header.active=41 bottom.focus=0 unified_nav_focus=13 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=52
-header.focus=20[type=button label=h-ai onClick=ACTIVATE:14] header.active=-1 bottom.focus=0 unified_nav_focus=13 has_real_x11_focus=0 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=25
-header.focus=43[type=button label=Open h-ai onClick=HQITEM:0] header.active=41 bottom.focus=0 unified_nav_focus=13 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=52
-header.focus=20[type=button label=h-ai onClick=ACTIVATE:14] header.active=-1 bottom.focus=0 unified_nav_focus=13 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=25
-header.focus=2[type=button label=$.restart onClick=HQITEM:0] header.active=0 bottom.focus=0 unified_nav_focus=0 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=88
-header.focus=0[type=button label=HQ onClick=ACTIVATE:1] header.active=-1 bottom.focus=0 unified_nav_focus=0 has_real_x11_focus=0 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=25
+header.focus=0[type=button label=HQ onClick=ACTIVATE:1] header.active=-1 bottom.focus=-1 unified_nav_focus=0 has_real_x11_focus=0 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=27
+header.focus=0[type=button label=HQ onClick=ACTIVATE:1] header.active=-1 bottom.focus=-1 unified_nav_focus=0 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=27
+header.focus=12[type=button label=New User... onClick=HQITEM:0] header.active=10 bottom.focus=1 unified_nav_focus=1 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=107
+header.focus=2[type=button label=${username} onClick=ACTIVATE:2] header.active=-1 bottom.focus=1 unified_nav_focus=1 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=27
+header.focus=2[type=button label=${username} onClick=ACTIVATE:2] header.active=-1 bottom.focus=-1 unified_nav_focus=1 has_real_x11_focus=0 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=27
+header.focus=47[type=button label=Open h-ai onClick=HQITEM:0] header.active=45 bottom.focus=0 unified_nav_focus=13 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=57
+header.focus=21[type=button label=h-ai onClick=ACTIVATE:14] header.active=-1 bottom.focus=0 unified_nav_focus=13 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=27
+header.focus=19[type=button label=store onClick=ACTIVATE:12] header.active=19 bottom.focus=0 unified_nav_focus=11 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=27
+header.focus=19[type=button label=store onClick=ACTIVATE:12] header.active=-1 bottom.focus=0 unified_nav_focus=0 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=27
+header.focus=19[type=button label=store onClick=ACTIVATE:12] header.active=19 bottom.focus=0 unified_nav_focus=11 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=27
+header.focus=54[type=button label=Mutaclysm onClick=HQITEM:0] header.active=52 bottom.focus=0 unified_nav_focus=-1 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=77
+header.focus=17[type=button label=toys onClick=ACTIVATE:11] header.active=-1 bottom.focus=0 unified_nav_focus=-1 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=27
+header.focus=54[type=button label=Mutaclysm onClick=HQITEM:0] header.active=52 bottom.focus=0 unified_nav_focus=10 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=77
+header.focus=17[type=button label=toys onClick=ACTIVATE:11] header.active=-1 bottom.focus=0 unified_nav_focus=10 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=27
+header.focus=34[type=button label=play onClick=HQITEM:0] header.active=32 bottom.focus=0 unified_nav_focus=7 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=67
+header.focus=12[type=button label=player onClick=ACTIVATE:8] header.active=-1 bottom.focus=1 unified_nav_focus=7 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=27
+header.focus=54[type=button label=Mutaclysm onClick=HQITEM:0] header.active=52 bottom.focus=1 unified_nav_focus=10 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=77
+header.focus=54[type=button label=Mutaclysm onClick=HQITEM:0] header.active=52 bottom.focus=1 unified_nav_focus=0 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=77
+header.focus=17[type=button label=toys onClick=ACTIVATE:11] header.active=-1 bottom.focus=1 unified_nav_focus=0 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=27
+header.focus=29[type=button label=desk_01 onClick=HQITEM:0] header.active=27 bottom.focus=1 unified_nav_focus=3 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=97
+header.focus=6[type=button label=${desks_label} onClick=ACTIVATE:4] header.active=-1 bottom.focus=1 unified_nav_focus=3 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=27
+header.focus=34[type=button label=play onClick=HQITEM:0] header.active=32 bottom.focus=1 unified_nav_focus=7 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=67
+header.focus=12[type=button label=player onClick=ACTIVATE:8] header.active=-1 bottom.focus=1 unified_nav_focus=7 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=27
+header.focus=29[type=button label=desk_01 onClick=HQITEM:0] header.active=27 bottom.focus=1 unified_nav_focus=3 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=97
+header.focus=6[type=button label=${desks_label} onClick=ACTIVATE:4] header.active=-1 bottom.focus=1 unified_nav_focus=3 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=27
+header.focus=54[type=button label=Mutaclysm onClick=HQITEM:0] header.active=52 bottom.focus=1 unified_nav_focus=10 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=77
+header.focus=17[type=button label=toys onClick=ACTIVATE:11] header.active=-1 bottom.focus=1 unified_nav_focus=10 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=27
+header.focus=54[type=button label=Mutaclysm onClick=HQITEM:0] header.active=52 bottom.focus=1 unified_nav_focus=10 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=77
+header.focus=17[type=button label=toys onClick=ACTIVATE:11] header.active=-1 bottom.focus=1 unified_nav_focus=10 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=27
+header.focus=54[type=button label=Mutaclysm onClick=HQITEM:0] header.active=52 bottom.focus=1 unified_nav_focus=10 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=77
+header.focus=17[type=button label=toys onClick=ACTIVATE:11] header.active=-1 bottom.focus=1 unified_nav_focus=10 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=27
+header.focus=54[type=button label=Mutaclysm onClick=HQITEM:0] header.active=52 bottom.focus=1 unified_nav_focus=10 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=77
+header.focus=17[type=button label=toys onClick=ACTIVATE:11] header.active=-1 bottom.focus=1 unified_nav_focus=10 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=27
+header.focus=54[type=button label=Mutaclysm onClick=HQITEM:0] header.active=52 bottom.focus=1 unified_nav_focus=10 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=77
+header.focus=17[type=button label=toys onClick=ACTIVATE:11] header.active=-1 bottom.focus=1 unified_nav_focus=10 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=27
+header.focus=54[type=button label=Mutaclysm onClick=HQITEM:0] header.active=52 bottom.focus=1 unified_nav_focus=10 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=77
+header.focus=17[type=button label=toys onClick=ACTIVATE:11] header.active=-1 bottom.focus=1 unified_nav_focus=10 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=27
+header.focus=54[type=button label=Mutaclysm onClick=HQITEM:0] header.active=52 bottom.focus=1 unified_nav_focus=10 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=77
+header.focus=17[type=button label=toys onClick=ACTIVATE:11] header.active=-1 bottom.focus=1 unified_nav_focus=10 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=27
+header.focus=54[type=button label=Mutaclysm onClick=HQITEM:0] header.active=52 bottom.focus=1 unified_nav_focus=10 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=77
+header.focus=17[type=button label=toys onClick=ACTIVATE:11] header.active=-1 bottom.focus=1 unified_nav_focus=10 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=27
+header.focus=54[type=button label=Mutaclysm onClick=HQITEM:0] header.active=52 bottom.focus=1 unified_nav_focus=10 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=77
+header.focus=17[type=button label=toys onClick=ACTIVATE:11] header.active=-1 bottom.focus=1 unified_nav_focus=10 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=27
+header.focus=2[type=button label=$.restart onClick=HQITEM:0] header.active=0 bottom.focus=1 unified_nav_focus=0 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=97
+header.focus=0[type=button label=HQ onClick=ACTIVATE:1] header.active=-1 bottom.focus=1 unified_nav_focus=0 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=27
+header.focus=19[type=button label=store onClick=ACTIVATE:12] header.active=19 bottom.focus=1 unified_nav_focus=11 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=27
+header.focus=54[type=button label=Mutaclysm onClick=HQITEM:0] header.active=52 bottom.focus=1 unified_nav_focus=-1 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=77
+header.focus=17[type=button label=toys onClick=ACTIVATE:11] header.active=-1 bottom.focus=1 unified_nav_focus=-1 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=27
+header.focus=54[type=button label=Mutaclysm onClick=HQITEM:0] header.active=52 bottom.focus=1 unified_nav_focus=10 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=0 element_count=77
+header.focus=17[type=button label=toys onClick=ACTIVATE:11] header.active=-1 bottom.focus=1 unified_nav_focus=10 has_real_x11_focus=1 cliio_active=0 nav_armed=0 digit_buf= hq_focus=-1 element_count=27

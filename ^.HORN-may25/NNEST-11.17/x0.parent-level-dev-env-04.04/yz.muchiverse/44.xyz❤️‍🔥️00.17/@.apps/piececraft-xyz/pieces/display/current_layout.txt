@@ -1,1 +1,1 @@
-main.chtpm
+pieces/chtpm/layouts/new_game.chtpm

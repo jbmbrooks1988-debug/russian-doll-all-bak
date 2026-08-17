@@ -187,7 +187,22 @@ EOSTATE
                 sleep 0.1
                 waited=$((waited + 1))
             done
-            if [ -x ./system/gl_mirror ]; then
+            # REAL SHARED BINARY (2026-08-17, khtpm-merge-how2.md §5c.6,
+            # legacy-shared-fix.md §3) - prefer the shared x11_mirror
+            # binary (plain Xlib, one copy shared by every legacy-GL
+            # project) over this project's own local gl_mirror. cwd is
+            # already SESSION_DIR here (see `cd "$SESSION_DIR"` above),
+            # so passing "." as project_root is correct - the shared
+            # binary's own derive_title() finds
+            # pieces/system/real_project_root.txt from there and uses
+            # the REAL project name, not the session dir's own
+            # timestamp-based name. FORCE_GL_MIRROR=1 to force the
+            # legacy GL path.
+            SHARED_MIRROR="$SCRIPT_DIR/../../&.widgits/_shared-lib/ops/+x/x11_mirror.+x"
+            if [ -z "$FORCE_GL_MIRROR" ] && [ -x "$SHARED_MIRROR" ]; then
+                "$SHARED_MIRROR" "$SESSION_DIR" >/dev/null 2>&1 &
+                GL_PID=$!
+            elif [ -x ./system/gl_mirror ]; then
                 ./system/gl_mirror >/dev/null 2>&1 &
                 GL_PID=$!
             fi
@@ -222,7 +237,19 @@ EOSTATE
         pkill -f "system/chtpm_parser_pal" 2>/dev/null
         pkill -f "system/chtpm_rgb_render" 2>/dev/null
         pkill -f "system/gl_mirror" 2>/dev/null
-        pkill -f "system/orchestrator" 2>/dev/null
+        # REAL SHARED BINARY (2026-08-17) - x11_mirror is shared across
+        # projects, match on THIS project's own session dir (passed as
+        # argv[1] via "." with cwd=SESSION_DIR, so the real cmdline is
+        # the resolved SESSION_DIR path), not the bare binary name.
+        pkill -f "x11_mirror.+x.*pieces/sessions" 2>/dev/null
+        # REAL FIX (2026-08-17, legacy-shared-fix.md §2.6) - a bare
+        # "system/orchestrator" match kills EVERY project's orchestrator
+        # process (confirmed live collateral kill during this session's
+        # own testing, killed mutaclysm's session). Every one of the 16
+        # legacy projects launches an absolute "$SCRIPT_DIR/system/
+        # orchestrator" path, indistinguishable in `ps` without it.
+        SCRIPT_DIR_RE=$(printf '%s' "$SCRIPT_DIR" | sed 's/[.[\*^$()+?{|]/\\&/g')
+        pkill -f "$SCRIPT_DIR_RE/system/orchestrator" 2>/dev/null
         kill_own_board_widget
         kill_own_clock_daemon
         echo "done"
@@ -236,6 +263,11 @@ EOSTATE
         for b in system/chtpm_rgb_render system/gl_mirror; do
             if [ -x "$SCRIPT_DIR/$b" ]; then echo "OK   $b (optional GL mirror)"; else echo "OPTIONAL-MISS $b"; fi
         done
+        if [ -x "$SCRIPT_DIR/../../&.widgits/_shared-lib/ops/+x/x11_mirror.+x" ]; then
+            echo "OK   shared x11_mirror (preferred display mirror)"
+        else
+            echo "SKIP shared x11_mirror (see &.widgits/_shared-lib/ops/build_x11_mirror.sh)"
+        fi
         ;;
     help|h|-h|--help)
         echo "piececraft-xyz button.sh"

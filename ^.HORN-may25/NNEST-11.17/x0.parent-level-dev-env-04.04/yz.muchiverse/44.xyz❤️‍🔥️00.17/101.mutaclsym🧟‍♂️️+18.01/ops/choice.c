@@ -801,7 +801,16 @@ int main(int argc, char **argv) {
     FILE *f = fopen(hero_path, "r");
     if (!f) return 1;
 
-    char lines[32][MAX_LINE];
+    /* REAL FIX (2026-08-17, direct live report: "wasd wont move camera
+     * around. it clamps after 1 move") - same real bug class as
+     * move_player.c/camera_control.c's own fix, same day: this cap was
+     * 32, but the real state.txt already has 35 real lines (cam_pan_x/
+     * y/z sit at lines 33-35, past the old cap). This op runs on EVERY
+     * keypress too (game_dispatch.c: move_player -> choice ->
+     * camera_control) and used this SAME array for its own field
+     * parsing - it never saw cam_pan_x/y/z, silently reset them to 0.0
+     * on every call. */
+    char lines[128][MAX_LINE];
     int nlines = 0;
     int action_cursor = -1, digit_accum = 0, panel_cursor = 0, panel_digit_accum = 0;
     int interact_mode = 0;
@@ -810,15 +819,12 @@ int main(int argc, char **argv) {
     int emoji_mode = 1;
     int render_mode = 0; /* 0=2D, 1=3D - '0' toggles, GL-only (no-op visually in ASCII) */
     int camera_mode = 1; /* 1=1st person, 2=3rd person, 3=free camera, 4=bird's eye */
-    double cam_pan_x = 0.0, cam_pan_y = 0.0, cam_pan_z = 0.0; /* camera position offsets */
-    double cam_yaw = 0.0, cam_pitch = 6.0; /* camera rotation state */
-    int cam_z_level = 0; /* camera vertical offset */
     int hero_z = 0; /* hero's own Z level */
     int hero_x = 0, hero_y = 0;
     int xlector_x = -1, xlector_y = -1; /* -1 = absent, filled from hero_x/y below */
     char map_id[64] = "map_start";
     char active_panel[32] = "none";
-    while (nlines < 32 && fgets(lines[nlines], MAX_LINE, f)) {
+    while (nlines < 128 && fgets(lines[nlines], MAX_LINE, f)) {
         char *eq = strchr(lines[nlines], '=');
         if (eq) {
             *eq = '\0';
@@ -840,12 +846,6 @@ int main(int argc, char **argv) {
             else if (strcmp(lines[nlines], "emoji_mode") == 0) emoji_mode = atoi(eq + 1);
             else if (strcmp(lines[nlines], "render_mode") == 0) render_mode = atoi(eq + 1);
             else if (strcmp(lines[nlines], "camera_mode") == 0) camera_mode = atoi(eq + 1);
-            else if (strcmp(lines[nlines], "cam_pan_x") == 0) cam_pan_x = atof(eq + 1);
-            else if (strcmp(lines[nlines], "cam_pan_y") == 0) cam_pan_y = atof(eq + 1);
-            else if (strcmp(lines[nlines], "cam_pan_z") == 0) cam_pan_z = atof(eq + 1);
-            else if (strcmp(lines[nlines], "cam_yaw") == 0) cam_yaw = atof(eq + 1);
-            else if (strcmp(lines[nlines], "cam_pitch") == 0) cam_pitch = atof(eq + 1);
-            else if (strcmp(lines[nlines], "cam_z_level") == 0) cam_z_level = atoi(eq + 1);
             else if (strcmp(lines[nlines], "hero_z") == 0) hero_z = atoi(eq + 1);
             else if (strcmp(lines[nlines], "pos_x") == 0) hero_x = atoi(eq + 1);
             else if (strcmp(lines[nlines], "pos_y") == 0) hero_y = atoi(eq + 1);
@@ -982,26 +982,26 @@ int main(int argc, char **argv) {
         /* Only reachable while render_mode==1 (see is_pov_key's own
          * definition above) - camera_mode is the only thing this
          * changes, matching is_3d_toggle's own "pure preference,
-         * touches nothing else" shape. */
+         * touches nothing else" shape.
+         * Camera fields are written to cam_state.txt (not hero/state.txt)
+         * - only camera_control.c and choice.c's mode-switch write to it. */
         camera_mode = key - '0';
-        /* Every mode switch resets to that mode's defaults. */
-        if (camera_mode == 1 || camera_mode == 2) {
-            cam_yaw = 180.0;
-            cam_pitch = 6.0;
-        }
-        if (camera_mode == 3) {
-            cam_yaw = 180.0;
-            cam_pitch = -90.0;
-            cam_pan_x = 0.0;
-            cam_pan_y = 0.0;
-            cam_pan_z = 0.0;
-        }
-        if (camera_mode == 4) {
-            cam_yaw = 180.0;
-            cam_pitch = -90.0;
-            cam_pan_x = 0.0;
-            cam_pan_y = 0.0;
-            cam_pan_z = 0.0;
+        /* Every mode switch resets camera to that mode's defaults.
+         * Write directly to cam_state.txt (our own file). */
+        {
+            char cam_path[PATH_BUF];
+            snprintf(cam_path, sizeof(cam_path), "%s/pieces/world_01/map_start/hero/cam_state.txt", project_root);
+            FILE *cf = fopen(cam_path, "w");
+            if (cf) {
+                if (camera_mode == 1 || camera_mode == 2) {
+                    fprintf(cf, "cam_pan_x=0.00\ncam_pan_y=0.00\ncam_pan_z=0.00\n");
+                    fprintf(cf, "cam_yaw=180.00\ncam_pitch=6.00\ncam_z_level=0\n");
+                } else {
+                    fprintf(cf, "cam_pan_x=0.00\ncam_pan_y=0.00\ncam_pan_z=0.00\n");
+                    fprintf(cf, "cam_yaw=180.00\ncam_pitch=-90.00\ncam_z_level=0\n");
+                }
+                fclose(cf);
+            }
         }
     } else if (in_panel && in_xlector_ctx) {
         /* Xlector context menu (defaults 1-5). Digits fire immediately.
@@ -1314,12 +1314,6 @@ int main(int argc, char **argv) {
             if (strcmp(lines[i], "emoji_mode") == 0) { fprintf(f, "emoji_mode=%d\n", emoji_mode); em_found = 1; *eq = '='; continue; }
             if (strcmp(lines[i], "render_mode") == 0) { fprintf(f, "render_mode=%d\n", render_mode); rm_found = 1; *eq = '='; continue; }
             if (strcmp(lines[i], "camera_mode") == 0) { fprintf(f, "camera_mode=%d\n", camera_mode); cm_found = 1; *eq = '='; continue; }
-            if (strcmp(lines[i], "cam_pan_x") == 0) { fprintf(f, "cam_pan_x=%.2f\n", cam_pan_x); *eq = '='; continue; }
-            if (strcmp(lines[i], "cam_pan_y") == 0) { fprintf(f, "cam_pan_y=%.2f\n", cam_pan_y); *eq = '='; continue; }
-            if (strcmp(lines[i], "cam_pan_z") == 0) { fprintf(f, "cam_pan_z=%.2f\n", cam_pan_z); *eq = '='; continue; }
-            if (strcmp(lines[i], "cam_yaw") == 0) { fprintf(f, "cam_yaw=%.2f\n", cam_yaw); *eq = '='; continue; }
-            if (strcmp(lines[i], "cam_pitch") == 0) { fprintf(f, "cam_pitch=%.2f\n", cam_pitch); *eq = '='; continue; }
-            if (strcmp(lines[i], "cam_z_level") == 0) { fprintf(f, "cam_z_level=%d\n", cam_z_level); *eq = '='; continue; }
             if (strcmp(lines[i], "hero_z") == 0) { fprintf(f, "hero_z=%d\n", hero_z); *eq = '='; continue; }
             if (strcmp(lines[i], "pos_x") == 0) { fprintf(f, "pos_x=%d\n", hero_x); px_found = 1; *eq = '='; continue; }
             if (strcmp(lines[i], "pos_y") == 0) { fprintf(f, "pos_y=%d\n", hero_y); py_found = 1; *eq = '='; continue; }

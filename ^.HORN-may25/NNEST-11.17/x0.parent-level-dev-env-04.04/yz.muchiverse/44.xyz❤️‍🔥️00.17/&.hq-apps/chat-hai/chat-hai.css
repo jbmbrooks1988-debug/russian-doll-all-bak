@@ -65,13 +65,13 @@
 }
 
 /* Messages area (scrollable, fills most of panel) */
-.messages-feed {
+.content {
   flex: 1;
   overflow-y: auto;
   padding: 8px;
 }
 
-.messages-feed .data-item {
+.content .data-item {
   color: #d6d9e3;
   font-size: 10px;
   margin-bottom: 4px;

@@ -22,7 +22,7 @@ work to Harnecient models (au11-hq/HARNESS-DELEGATION-PIPELINE.md).
                                    test: 2/4 wrong picking raw
                                    numbers, 3/3 correct describing by
                                    label). Live label source now
-                                   exists (ai-cell's receipt gained a
+                                   exists (open-hai's receipt gained a
                                    companion nav-labels.txt dump,
                                    2026-08-13) - tested end-to-end
                                    against a real running session.

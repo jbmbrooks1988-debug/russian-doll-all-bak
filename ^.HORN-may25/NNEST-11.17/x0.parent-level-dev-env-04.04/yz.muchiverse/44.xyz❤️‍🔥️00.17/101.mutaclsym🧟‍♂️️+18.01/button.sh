@@ -76,22 +76,34 @@ case "$ACTION" in
         ;;
     gl|mirror)
         cd "$SCRIPT_DIR"
-        if [ ! -x "system/gl_mirror" ]; then
-            echo "system/gl_mirror not built (GLUT/GL may not be available - see scripts/build.sh output)"
-            exit 1
-        fi
         mkdir -p pieces/display
         export PRISC_PROJECT_ROOT="$SCRIPT_DIR"
         export PRISC_PROJECT_ID="mutaclsym"
-        echo "Launching gl_mirror standalone - './button.sh run' launches the game"
-        echo "automatically (which includes gl_mirror if available), so you only need"
+        # REAL SHARED BINARY (2026-08-17, khtpm-merge-how2.md §5c.6,
+        # legacy-shared-fix.md §3) - prefer the shared x11_mirror binary
+        # (plain Xlib, one copy, launched by every legacy-GL project),
+        # same fallback order as orchestrator.c's own launch site.
+        # FORCE_GL_MIRROR=1 to force the legacy GL path.
+        SHARED_MIRROR="$SCRIPT_DIR/../&.widgits/_shared-lib/ops/+x/x11_mirror.+x"
+        MIRROR_ARG=""
+        if [ -z "$FORCE_GL_MIRROR" ] && [ -x "$SHARED_MIRROR" ]; then
+            MIRROR_BIN="$SHARED_MIRROR"
+            MIRROR_ARG="$SCRIPT_DIR"
+        elif [ -x "system/gl_mirror" ]; then
+            MIRROR_BIN="system/gl_mirror"
+        else
+            echo "no mirror binary built (neither the shared x11_mirror nor system/gl_mirror - see scripts/build.sh output)"
+            exit 1
+        fi
+        echo "Launching $MIRROR_BIN standalone - './button.sh run' launches the game"
+        echo "automatically (which includes the mirror if available), so you only need"
         echo "this verb to (re-)launch just the window on its own (e.g. after closing"
         echo "it without quitting the game). Make sure './button.sh run' is also running"
         echo "(or was run first) so pieces/display/rgb_frame.raw actually gets"
         echo "updated each tick. Correctness is verifiable via"
         echo "pieces/display/gl_display.receipt.txt and rgb_frame.receipt.txt"
         echo "without needing to see the window."
-        ./system/gl_mirror
+        if [ -n "$MIRROR_ARG" ]; then "$MIRROR_BIN" "$MIRROR_ARG"; else "$MIRROR_BIN"; fi
         ;;
     generate|gen)
         cd "$SCRIPT_DIR"
@@ -102,13 +114,32 @@ case "$ACTION" in
         ;;
     kill|k|stop)
         echo "=== Killing mutaclsym processes ==="
+        # REAL FIX (2026-08-17, khtpm-merge-how2.md §5c.6/legacy-shared-fix.md
+        # §2): SCRIPT_DIR contains a literal "+" (this project's own dir name
+        # has one), which pkill -f treats as a regex metacharacter ("one or
+        # more of preceding char") - unescaped, the x11_mirror kill pattern
+        # below silently never matched. Escape every regex metacharacter
+        # before building any pkill -f pattern that embeds this path.
+        SCRIPT_DIR_RE=$(printf '%s' "$SCRIPT_DIR" | sed 's/[.[\*^$()+?{|]/\\&/g')
         pkill -9 -f "system/keyboard_input" 2>/dev/null
         pkill -9 -f "system/renderer" 2>/dev/null
         pkill -9 -f "system/prisc" 2>/dev/null
         pkill -9 -f "system/gl_mirror" 2>/dev/null
+        # REAL SHARED BINARY (2026-08-17) - x11_mirror is now shared
+        # across projects, so match on THIS project's own path (passed
+        # as argv[1]) not the bare binary name, or this would kill
+        # every other project's mirror window too.
+        pkill -9 -f "x11_mirror.+x.*$SCRIPT_DIR_RE" 2>/dev/null
         pkill -9 -f "system/chtpm_parser_pal" 2>/dev/null
         pkill -9 -f "system/chtpm_rgb_render" 2>/dev/null
-        pkill -9 -f "system/orchestrator" 2>/dev/null
+        # REAL FIX (2026-08-17) - a bare "system/orchestrator" match kills
+        # EVERY project's orchestrator process (confirmed live collateral
+        # kill during piececraft-xyz/my-chara-txt testing this session) -
+        # every one of the 16 legacy projects launches a relative
+        # "system/orchestrator" path, indistinguishable in `ps` output
+        # without the project's own cwd/argv anchoring it. Scope to this
+        # project's own SCRIPT_DIR.
+        pkill -9 -f "$SCRIPT_DIR_RE/system/orchestrator" 2>/dev/null
         pkill -9 -f '\.pal$' 2>/dev/null
         pkill -9 -f "ops/+x/" 2>/dev/null
         sleep 0.2
@@ -130,8 +161,13 @@ case "$ACTION" in
                 echo "MISSING $b"
             fi
         done
+        if [ -x "$SCRIPT_DIR/../&.widgits/_shared-lib/ops/+x/x11_mirror.+x" ]; then
+            echo "OK   shared x11_mirror (&.widgits/_shared-lib/ops/+x/x11_mirror.+x, preferred display mirror)"
+        else
+            echo "SKIP shared x11_mirror (see &.widgits/_shared-lib/ops/build_x11_mirror.sh)"
+        fi
         if [ -x "$SCRIPT_DIR/system/gl_mirror" ]; then
-            echo "OK   system/gl_mirror"
+            echo "OK   system/gl_mirror (legacy fallback)"
         else
             echo "SKIP system/gl_mirror (optional - needs GLUT/GL, see scripts/build.sh output)"
         fi

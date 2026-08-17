@@ -16,8 +16,30 @@
      Common Events' sidebar rows are populated at runtime from
      <house_root>/common_events/ (see inject_sidebar_items() in
      khtpm_hq_render.c) - the literal <item> tags below exist only so the
-     tag survives an empty directory. -->
-<window class="database-window">
+     tag survives an empty directory.
+
+     <module> tag added 2026-08-16 (Stage 2d shell/manager split, real
+     mechanism this time - direct correction: "explain to me your plan
+     and why its different from the tpmos/wraith examples" - first pass
+     hardcoded the manager launch into open_db_hq.sh instead of having
+     the shell itself parse+launch it). Matches the real reference
+     exactly (1.TPMOS_c_+rmmp.0103.0001/projects/wraith-alpha/layouts/
+     alpha-shell.chtpm's own <module>path</module> - checked that
+     wraith_parser_alpha.c's own module tag ALSO supports a `src="..."`
+     attribute form as its primary path, inner-text as fallback - this
+     house's own simpler parser only supports attributes, not inner
+     text, so `src=` is used here, not a deviation from the real std).
+     khtpm_hq_render.c's own main() finds this tag after parsing and
+     fork()+execv()s it itself - open_db_hq.sh no longer launches the
+     manager directly. -->
+<window class="database-window db-hq">
+  <!-- REAL Stage 5 §5d.10 (2026-08-16, khtpm-merge-how2.md) - added
+       "db-hq" class alongside the original "database-window" - real,
+       data-driven mode detection for khtpm_entity_menu_render.+x's own
+       g_is_db_hq branch, same convention as taskbar-settings' own
+       "swatch-picker" class. "database-window" kept, still used by
+       dashboard.css selectors. -->
+  <module src="*.monads/*.livedesk-taskbar/ops/+x/khtpm_hq_manager.+x" />
   <tabbar class="tab-bar">
     <tab label="Actors"/>
     <tab label="Classes"/>

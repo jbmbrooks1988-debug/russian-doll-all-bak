@@ -9,6 +9,26 @@ via md5sum during the 2026-08-12 duplication-inventory pass):
   khtpm_strip_parser AND khtpm_hq_render/db-hq) and
   `&.widgits/events-hq/ops/`.
 - `stb_image_write.h` — same two consumers, PNG dump support.
+- `khtpm_render_core.c` — added 2026-08-16 (au11-hq/khtpm-merge-how2.md
+  Stage 2a): the `Elem` struct + `hit_test()`/`find_by_tag()`/
+  `find_by_id()`, verified byte-/functionally-identical across
+  `khtpm_hq_render.c` (db-hq), `khtpm_events_hq_render.c` (events-hq),
+  and `chat_hai_hq_render.c` (chat-hai) before being moved here.
+  **Different mechanism from the other files in this dir on purpose**:
+  this one is meant to be pulled in via `#include "khtpm_render_core.c"`
+  (a direct text-include of a `.c` file, NOT compiled+linked as its own
+  translation unit like `khtpm_css_parser.c` is) — the real house
+  convention checked against `1.TPMOS_c_+rmmp.0103.0001/projects/
+  wraith-alpha/ops/*.c` has ZERO in-house header files anywhere (only
+  system headers, with `#ifdef _WIN32`-shaped blocks as the sole
+  cross-OS-shim exception) — so sharing a real struct definition across
+  multiple standalone binaries without a header means text-including a
+  `.c` file, not writing a new `.h`. See that file's own header comment
+  for the full reasoning.
+  `khtpm_open_hai_render.c`/`khtpm_taskbar_settings_render.c`/
+  `khtpm_strip_parser.c` do NOT use this — they don't share the Elem/
+  CSS-parser architecture at all (confirmed, not assumed — see
+  khtpm-merge-how2.md's own STATUS section).
 
 **Convention (matches this house's existing pattern, not new):** this
 is a source-of-truth directory, not a shared runtime include path.

@@ -148,7 +148,11 @@ personas_dir() {
 }
 
 # --- config ---
-CONTEXT_LINES=12        # last N ledger lines fed as context to the speaker
+CONTEXT_LINES=20        # last N ledger lines fed as context to the speaker
+                        # (bumped 12→20 2026-08-16 to keep user messages in
+                        # scope longer — personas take 20-40s each, so a user
+                        # message from 2 minutes ago could be 3-5 persona
+                        # responses deep at 12 lines)
 MODERATOR_EVERY=0       # hook: >0 schedules the manager persona every N rounds (inert now)
 TRUNC_HOOK=0            # hook: cap ledger size (memory truncation) - not enabled
 
@@ -166,6 +170,24 @@ sleep_between() {
     local v
     v="$(awk -F'|' '$1 ~ /^SECTION/ {gsub(/ /,"",$2); if ($2=="sleep_between") {gsub(/ /,"",$3); print $3; exit}}' "$CONFIG_PDL" 2>/dev/null)"
     case "$v" in ''|*[!0-9]*) echo 6 ;; *) echo "$v" ;; esac
+}
+
+# Incoming-message tone (direct instruction 2026-08-16: "play a tone when
+# a message is posted" - incoming only, toggleable off via the Sound GUI
+# button). Same read-fresh-every-time contract as sleep_between() above:
+# the renderer writes sound_on back into the same .pdl when the button is
+# clicked, so a toggle goes live within one round, no restart. Missing
+# file = sound ON, never hard-fails. Assets stay local to the app - this
+# chain needs no temp files at all (real notification sound, falling back
+# to a synthesized beep through sox's play).
+sound_on() {
+    local v
+    v="$(awk -F'|' '$1 ~ /^SECTION/ {gsub(/ /,"",$2); if ($2=="sound_on") {gsub(/ /,"",$3); print $3; exit}}' "$CONFIG_PDL" 2>/dev/null)"
+    [ "$v" != "0" ]
+}
+play_incoming_tone() {
+    sound_on || return 0
+    canberra-gtk-play --id=message 2>/dev/null || play -n synth 0.12 sine 880 vol 0.2 2>/dev/null
 }
 
 mkdir -p "$STATE_DIR"
@@ -284,12 +306,28 @@ ledger_msg() {
     local speaker="$1" text="$2" note="${3:-}"
     printf '[%s] %s: %s%s | Trigger: chat-hai\n' \
         "$(date '+%Y-%m-%d %H:%M:%S')" "$speaker" "$text" "${note:+ | $note}" >> "$(ledger_path)"
+    # tone on incoming (agent) messages only - user input is appended by
+    # the renderer itself, never via ledger_msg(), so every call here is
+    # already an agent/posted message; still guard system notes for good
+    # measure. One-shot, output suppressed.
+    [ "$speaker" = "system" ] || play_incoming_tone
 }
 
 # last N ledger lines (text after '] ', minus the trailing ' | Trigger: ...')
 recent_context() {
     local n="$1"
     tail -n "$n" "$(ledger_path)" 2>/dev/null | sed -E 's/^\[[^]]*\] //; s/ \| Trigger: chat-hai$//'
+}
+
+# REAL FEATURE 2026-08-16 (direct instruction: "we should always bias my
+# input almost 75%"): extracts the most recent user message from the
+# ledger, stripped of timestamps and trigger suffix. Used by speak() to
+# PROMOTE user input to the top of the prompt — the user's short question
+# (typically 30-60 chars) is otherwise buried in 18KB of persona
+# monologue, where gemma3:270m cannot find it. This is deterministic
+# harness logic (chat-hack.md §7), not a model judgment call.
+last_user_msg() {
+    grep -E "^\[[^]]*\] user: " "$(ledger_path)" 2>/dev/null | tail -1 | sed -E 's/^\[[^]]*\] user: //; s/ \| Trigger: chat-hai$//'
 }
 
 # REAL FEATURE 2026-08-15 (direct instruction: "the more important thing
@@ -396,6 +434,21 @@ speak() {
     # last message's speaker (for addressing) - reuse the ledger's own tail
     prev_name="$(tail -n 1 "$(ledger_path)" 2>/dev/null | sed -E 's/^\[[^]]*\] //' | cut -d: -f1 | xargs)"
 
+    # REAL FEATURE 2026-08-16 (direct instruction: "we should always bias
+    # my input almost 75%"): extract the user's most recent message and
+    # build a prominent bias block that gets prepended to the prompt.
+    # The user's short questions (~30-60 chars) are 0.3% of the 18KB
+    # context string — gemma3:270m literally cannot find them without
+    # explicit promotion. This block ensures the persona sees the user's
+    # input FIRST, before any persona monologue context.
+    local user_msg user_bias="" user_addendum=""
+    user_msg="$(last_user_msg)"
+    if [ -n "$user_msg" ]; then
+        user_bias=">>> THE USER SAID: ${user_msg} <<<
+"
+        user_addendum=" The user asked something above — address it directly."
+    fi
+
     # REAL FEATURE 2026-08-15 (au11-hq/chat-hack.md §4): a real,
     # harness-computed FACT (co-occurrence count) folded into the
     # prompt as flavor context - the model never decides this, it's
@@ -435,19 +488,19 @@ speak() {
 
     local question
     if [ -n "$prev_name" ] && [ "$prev_name" != "$name" ]; then
-        question="$prompt
+        question="${user_bias}${prompt}
 
 Recent conversation:
 $ctx
 
-${glyph} You are $name.${relation_note}${angle_hint}${recall_note} Reply to ${prev_name} (and the group) now."
+${glyph} You are $name.${relation_note}${angle_hint}${recall_note}${user_addendum} Reply to ${prev_name} (and the group) now."
     else
-        question="$prompt
+        question="${user_bias}${prompt}
 
 Recent conversation:
 $ctx
 
-${glyph} You are $name.${angle_hint}${recall_note} Say something to the group now."
+${glyph} You are $name.${angle_hint}${recall_note}${user_addendum} Say something to the group now."
     fi
 
     # REAL FIX 2026-08-15 (direct instruction: "the start stop of chat

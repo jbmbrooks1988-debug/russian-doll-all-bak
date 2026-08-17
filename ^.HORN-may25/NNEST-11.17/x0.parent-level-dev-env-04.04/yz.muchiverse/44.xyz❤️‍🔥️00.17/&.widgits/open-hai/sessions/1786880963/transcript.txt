@@ -1,0 +1,30 @@
+U|Reply with exactly one word: pong
+A|pong
+U|Reply with exactly one word: pong
+A|pong
+U|List the files in &.widgits/ai-cell using your list_dir tool.
+A|[list_dir] cannot open: /home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/tool.
+U|List the files in &.widgits/ai-cell using your list_dir tool.
+A|[tool_call requested by model] list_dir({"path":"&.widgits/ai-cell"}) - real API-native tool call, NOT executed (detection only this pass)
+U|List the files in &.widgits/ai-cell using your list_dir tool.
+A|[list_dir] /home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/ai-cell:\n  code-tools-harness/\n  ops/\n  calculate_session_stats.sh\n  ONBOARDING.md\n  state/\n  haiku-hai-api-testing.md\n  open_session_stats.sh\n  progress-report-2026-08-12.txt\n  README.md\n  pieces/\n  sessions/\n  button.sh\n  ./\n  ../\n
+U|Reply with exactly one word: beep
+A|beep
+U|Reply with exactly one word: silence
+A|silence
+U|Reply with exactly one word: beep2
+A|beep2
+U|Reply with exactly one word: quiet
+A|quiet
+U|Reply with exactly one word: quiet2
+A|quiet2
+U|Reply with exactly one word: quiet3
+A|quiet3
+U|Reply with exactly one word: quiet4
+A|quiet4
+U|Reply with exactly one word: quiet5
+A|quiet5
+U|Reply with exactly one word: quiet6
+A|quiet6
+U|Reply with exactly one word: beep3
+A|beep3

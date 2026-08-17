@@ -26,7 +26,7 @@ User clicks "Stats" in hai menu
 ## Key Components
 
 ### 1. Session Stats Calculator
-**File**: `&.widgits/ai-cell/calculate_session_stats.sh`
+**File**: `&.widgits/open-hai/calculate_session_stats.sh`
 - Scans all hai session directories
 - Reads `transcript.txt` for each session
 - Extracts metrics:
@@ -54,17 +54,17 @@ User clicks "Stats" in hai menu
 - Rendered by existing `khtpm_hq_render.c` (no C changes needed)
 
 ### 4. Session Wrapper Script
-**File**: `&.widgits/ai-cell/open_session_stats.sh`
+**File**: `&.widgits/open-hai/open_session_stats.sh`
 - Convenience script to open stats for current or specified session
 - Finds latest session if none specified
 - Calls `open_stats_hq.sh` with proper parameters
 
 ### 5. Hai Menu Integration
-**File**: `&.widgits/ai-cell/ops/khtpm_ai_cell_render.c`
+**File**: `&.widgits/open-hai/ops/khtpm_open_hai_render.c`
 - Added `NAV_STATS` to navigation enum
 - Added "Stats" menu item in sidebar (below Model selector)
 - Click activates stats window for current session
-- Successfully compiled with `build_ai_cell.sh`
+- Successfully compiled with `build_open_hai.sh`
 
 ## Data Flow
 
@@ -121,11 +121,11 @@ Hai Chat Session
 
 | File | Type | Purpose |
 |------|------|---------|
-| `&.widgits/ai-cell/calculate_session_stats.sh` | NEW | Retroactive stats calculator |
-| `&.widgits/ai-cell/open_session_stats.sh` | NEW | Session stats launcher wrapper |
+| `&.widgits/open-hai/calculate_session_stats.sh` | NEW | Retroactive stats calculator |
+| `&.widgits/open-hai/open_session_stats.sh` | NEW | Session stats launcher wrapper |
 | `&.hq-apps/stats-hq/open_stats_hq.sh` | MODIFIED | Multi-session dashboard generator |
 | `&.hq-apps/stats-hq/dashboard.template.chtpm` | MODIFIED | Tab-based dashboard template |
-| `&.widgits/ai-cell/ops/khtpm_ai_cell_render.c` | MODIFIED | Added NAV_STATS menu item |
+| `&.widgits/open-hai/ops/khtpm_open_hai_render.c` | MODIFIED | Added NAV_STATS menu item |
 | `%.harnesses/harnecient-fsm/session-stats/` | NEW | Per-session stats storage |
 
 ## Future Enhancements

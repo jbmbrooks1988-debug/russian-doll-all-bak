@@ -57,6 +57,7 @@
 #include <errno.h>
 #include <dirent.h>
 #include <ctype.h>
+#include <sys/wait.h>
 
 /* ========================================================================
  * 2026-08-06 FOCUS-RECOVERY — option C (user chose):
@@ -137,6 +138,58 @@ static int WIN_PX = 64;
  * belongs right next to that entity's own other real state). */
 static char g_history_path[PATH_BUF];
 static char g_relay_path[PATH_BUF];
+
+/* Stage 2c PROOF (2026-08-16, direct instruction: "we wanna wire that
+ * new context to toolbar and right clik entity and get rid of legacy,
+ * so i can check it") - ONE-ENTITY test, see local-2do-15.txt's own
+ * entity-context-menu entry. Real integration point: every one of this
+ * file's ~20 open_context_menu() call sites already funnels through
+ * that ONE function - rather than touch all of them (real risk, this
+ * popup engine is deeply coupled to lock/lifecycle bookkeeping every
+ * caller assumes), open_context_menu() itself now HIDES the legacy
+ * popup (XUnmapWindow, right after its own real creation/lock/grab
+ * logic runs completely unchanged) and launches the new khtpm .chtpm-
+ * based renderer as the VISIBLE replacement, only when this entity's
+ * own <package_dir>/menu.chtpm exists. Every entity without a
+ * menu.chtpm keeps the exact original behavior, zero risk. */
+static int g_use_khtpm_menu = 0;
+static char g_khtpm_menu_pkg_dir[PATH_BUF] = "";
+static char g_khtpm_menu_house_root[PATH_BUF] = "";
+static pid_t g_khtpm_menu_pid = -1;
+
+static void launch_khtpm_menu(int px, int py) {
+    /* kill-then-relaunch, same real single-instance convention every
+     * khtpm app's own button.sh already uses - a page-nav GOTO could
+     * call open_context_menu() again while a prior instance is still
+     * up (real for objects.pdl-style multi-page menus, not exercised
+     * by ava's own single-page menu.chtpm yet, but correct to guard
+     * for now rather than after it's hit live). */
+    if (g_khtpm_menu_pid > 0) {
+        kill(g_khtpm_menu_pid, SIGTERM);
+        waitpid(g_khtpm_menu_pid, NULL, WNOHANG);
+        g_khtpm_menu_pid = -1;
+    }
+    char bin_path[PATH_BUF];
+    snprintf(bin_path, sizeof(bin_path), "%s/*.monads/*.livedesk-taskbar/ops/+x/khtpm_entity_menu_render.+x", g_khtpm_menu_house_root);
+    /* REAL Stage 5 step 3/4 (2026-08-16, khtpm-merge-how2.md §5d.3) -
+     * real, unified <house_root> <chtpm_path> [x] [y] contract (was
+     * <package_dir> <house_root> [x] [y]) - khtpm_entity_menu_render's
+     * own main() now derives package_dir from dirname(chtpm_path)
+     * itself, so this caller just needs to build the real chtpm path
+     * once instead of passing the bare dir. */
+    char chtpm_path[PATH_BUF];
+    snprintf(chtpm_path, sizeof(chtpm_path), "%s/menu.chtpm", g_khtpm_menu_pkg_dir);
+    char px_str[16], py_str[16];
+    snprintf(px_str, sizeof(px_str), "%d", px);
+    snprintf(py_str, sizeof(py_str), "%d", py);
+    pid_t pid = fork();
+    if (pid == 0) {
+        execl(bin_path, bin_path, g_khtpm_menu_house_root, chtpm_path, px_str, py_str, (char *)NULL);
+        _exit(1);
+    } else if (pid > 0) {
+        g_khtpm_menu_pid = pid;
+    }
+}
 
 static void append_history(const char *fmt, ...) {
     FILE *f = fopen(g_history_path, "a");
@@ -1478,6 +1531,50 @@ static Window open_context_menu(Display *dpy, GC gc, int *root_x, int *root_y, i
      * XWayland ignores grab — not the old multi-entity focus war
      * (we never XSetInputFocus other processes' tile windows here). */
     popup_soft_focus(dpy, popup);
+
+    /* Stage 2c PROOF (2026-08-16) - see launch_khtpm_menu()'s own header
+     * comment. Everything above this point (window creation, lock
+     * acquire, grabs) runs completely unchanged - the legacy popup is a
+     * real, fully-alive X window, just never shown, so every downstream
+     * caller's lock/lifecycle bookkeeping keeps working exactly as
+     * before. Only the VISIBLE result changes. */
+    if (g_use_khtpm_menu) {
+        /* REAL FIX 2026-08-16, direct live report ("it also pops up
+         * instead of context menu when i rightclick ava" - the "Chat"
+         * item fired immediately instead of the menu showing): the
+         * XGrabPointer above (still active on this now-hidden popup) was
+         * delivering the initiating click's own trailing event straight
+         * through to whatever mapped next - the new renderer's window,
+         * landing on its first item. Explicitly release the grab before
+         * hiding the legacy popup, same real cause class as the
+         * window-ID-recycle phantom click fixed just above. */
+        XUngrabPointer(dpy, CurrentTime);
+        XUngrabKeyboard(dpy, CurrentTime);
+        XSync(dpy, False);
+        /* REAL FIX 2026-08-16, direct live report ("seems random" - Chat
+         * firing on ~every other right-click with no menu visible first):
+         * merely hiding (XUnmapWindow) left this a real, non-zero,
+         * still-alive X window - every ~20 call sites' own `popup_win`
+         * variable stayed set to it. The main event loop's real
+         * right-click handler is gated on `if (!popup_win)` (line ~2868)
+         * - a still-nonzero popup_win made the NEXT right-click get
+         * treated as "click INSIDE the already-open menu" (hit-tested
+         * against this stale, invisible popup's old geometry) instead of
+         * opening fresh, landing on whatever nav row happened to be
+         * nearest. Real fix: actually destroy the legacy popup (not just
+         * hide it) and return None/0 here, so the caller's popup_win
+         * genuinely goes back to 0 and the next right-click's own guard
+         * re-arms correctly - matching real "menu closed" semantics
+         * instead of a fake hidden-but-still-open one. Also release the
+         * lock acquired at the top of this function (popup_lock_acquire)
+         * since close_context_menu() - which normally balances it - is
+         * never reached on this path. */
+        XDestroyWindow(dpy, popup);
+        popup_lock_release();
+        launch_khtpm_menu(px, py);
+        return None;
+    }
+
     return popup;
 }
 
@@ -1623,6 +1720,16 @@ int main(int argc, char **argv) {
     char g_ops_dir[PATH_BUF], g_house_root[PATH_BUF];
     resolve_livedesk_paths(g_ops_dir, sizeof(g_ops_dir), g_house_root, sizeof(g_house_root));
     snprintf(g_house_root_for_lock, sizeof(g_house_root_for_lock), "%s", g_house_root);
+    /* Stage 2c PROOF - see launch_khtpm_menu()'s own header comment. */
+    {
+        char menu_chtpm_path[PATH_BUF];
+        snprintf(menu_chtpm_path, sizeof(menu_chtpm_path), "%s/menu.chtpm", package_dir);
+        if (access(menu_chtpm_path, F_OK) == 0) {
+            g_use_khtpm_menu = 1;
+            snprintf(g_khtpm_menu_pkg_dir, sizeof(g_khtpm_menu_pkg_dir), "%s", package_dir);
+            snprintf(g_khtpm_menu_house_root, sizeof(g_khtpm_menu_house_root), "%s", g_house_root);
+        }
+    }
     int g_livedesk_index = 0;
     if (g_house_root[0]) {
         g_livedesk_index = ensure_livedesk_index(package_dir, g_house_root);
@@ -2896,6 +3003,9 @@ int main(int argc, char **argv) {
     if (popup_win) close_context_menu(dpy, popup_win); /* e.g. closed via keypress while menu was still open */
     if (user_popup_win) close_context_menu(dpy, user_popup_win);
     if (input_popup_win) close_context_menu(dpy, input_popup_win);
+    /* Stage 2c PROOF - don't orphan the khtpm menu child if this entity's
+     * own window closes while the menu is still up. */
+    if (g_khtpm_menu_pid > 0) { kill(g_khtpm_menu_pid, SIGTERM); waitpid(g_khtpm_menu_pid, NULL, WNOHANG); }
     if (g_house_root[0]) {
         livedesk_registry_remove(g_house_root, getpid());
         nav_release_pid(g_house_root, getpid());

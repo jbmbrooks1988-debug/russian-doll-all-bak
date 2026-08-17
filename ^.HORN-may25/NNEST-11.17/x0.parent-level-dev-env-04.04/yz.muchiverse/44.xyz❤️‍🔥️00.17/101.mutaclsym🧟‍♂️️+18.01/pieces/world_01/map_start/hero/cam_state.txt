@@ -1,0 +1,7 @@
+cam_pan_x=1.00
+cam_pan_y=0.00
+cam_pan_z=1.00
+cam_yaw=0.00
+cam_pitch=6.00
+cam_z_level=0
+l=0

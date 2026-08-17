@@ -43,7 +43,7 @@ the definitive map. Reference implementation to check first when in doubt:
 | `net/qwen.sh` | connect_op (POST) + json_parser (parse) + curl (GET status) + ollama-lan.pdl (registry). No python/jq. |
 | my-lawyer workers | connect_op + json_parser (`message.content`) + personas (`pieces/registry/personas/`) |
 | agent45 (send_message/verify_cell) | connect_op + json_parser (dot-paths incl. `candidates[0]....`) |
-| h-ai (khtpm_ai_cell_render.c) | detached curl child + json_parser (check_pending) + detect_tool() deterministic dispatch |
+| h-ai (khtpm_open_hai_render.c) | detached curl child + json_parser (check_pending) + detect_tool() deterministic dispatch |
 | harnesses (nav.sh / run_plan.sh) | relay inject + json_parser + assert ops |
 | taskbar (khtpm runtime) | no model calls — pure C + sh + .pdl state files |
 

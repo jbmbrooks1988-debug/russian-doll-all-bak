@@ -4022,3 +4022,6 @@
 2026-08-07T03:23:22|1|chicken|wander|x:8,y:4
 2026-08-07T03:23:22|2|player|move|tick:2
 2026-08-07T03:23:22|2|chicken|wander|x:7,y:4
+2026-08-17T07:25:39|1|player|move|tick:1
+2026-08-17T07:25:39|2|player|move|tick:2
+2026-08-17T07:25:39|2|chicken|wander|x:9,y:6

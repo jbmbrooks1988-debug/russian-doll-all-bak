@@ -2,9 +2,9 @@
 # run_plan.sh — the FSM/verification layer for Harnecient delegation
 # (au11-hq/HARNESS-DELEGATION-PIPELINE.md §3.1's EXECUTE/VERIFIED loop).
 #
-# What this actually does, real not aspirational: drives h-ai (ai-cell)
+# What this actually does, real not aspirational: drives h-ai (open-hai)
 # via its EXISTING, unmodified relay + detect_tool() machinery - this
-# file adds ZERO new capability to ai-cell itself, it only sequences
+# file adds ZERO new capability to open-hai itself, it only sequences
 # and VERIFIES calls to what already works. Each step's real output is
 # captured to its own file so later steps' assertions can reference
 # EARLIER steps' actual results - this is the "verification layer"
@@ -77,12 +77,12 @@ if [ -z "$PLAN_FILE" ] || [ ! -f "$PLAN_FILE" ]; then
     exit 1
 fi
 
-AI_CELL_DIR="$HOUSE/&.widgits/ai-cell"
-RELAY="$HOUSE/#.desktop/ai_cell_agent_relay.txt"
-AUDIT="$AI_CELL_DIR/pieces/audit"
-RECEIPT="$AUDIT/ai-cell-frame.png.receipt.txt"
-NAV_LABELS="$AUDIT/ai-cell-frame.png.nav-labels.txt"
-SESSIONS="$AI_CELL_DIR/sessions"
+OPEN_HAI_DIR="$HOUSE/&.widgits/open-hai"
+RELAY="$HOUSE/#.desktop/open_hai_agent_relay.txt"
+AUDIT="$OPEN_HAI_DIR/pieces/audit"
+RECEIPT="$AUDIT/open-hai-frame.png.receipt.txt"
+NAV_LABELS="$AUDIT/open-hai-frame.png.nav-labels.txt"
+SESSIONS="$OPEN_HAI_DIR/sessions"
 RESOLVER="$SCRIPT_DIR/nav_intent_to_index.sh"
 
 # Stage 0 observation log (HARNESS-DELEGATION-PIPELINE.md §7.2). One
@@ -125,7 +125,7 @@ SIMPLE_TASK_MODEL="gemma3:1b"
 COMPLEX_TASK_MODEL="stable-code:latest"
 MODEL_CHOOSER_MODEL="gemma3:270m"  # classification is itself a simple task - use the cheapest model for it
 COMPLEXITY_THRESHOLD=2  # complexity_signal_count() (commas + "and"s in the model's DESCRIBE-style reply) at or above this -> COMPLEX_TASK_MODEL. First-pass value from 4 real trials, not extensively tuned - a real Stage 1 candidate.
-G_MODELS_ORDER=("stable-code:latest" "gemma3:1b" "gemma3:270m" "llama3-groq-tool-use:8b" "llama2:latest")  # MUST match g_models[] in khtpm_ai_cell_render.c exactly - order is how cycle_model() advances
+G_MODELS_ORDER=("stable-code:latest" "gemma3:1b" "gemma3:270m" "llama3-groq-tool-use:8b" "llama2:latest")  # MUST match g_models[] in khtpm_open_hai_render.c exactly - order is how cycle_model() advances
 
 TUNABLES_FILE="$SCRIPT_DIR/tunables.conf"
 if [ -f "$TUNABLES_FILE" ]; then
@@ -135,15 +135,15 @@ fi
 
 log() { echo "[fsm] $*" >&2; }
 
-# ---- ai-cell process lifecycle (button.sh's own single-instance guard
+# ---- open-hai process lifecycle (button.sh's own single-instance guard
 # - PITFALL 72) ----
-ensure_ai_cell() {
-    log "ensuring single ai-cell instance via button.sh..."
-    sh "$AI_CELL_DIR/button.sh" "$HOUSE" || { echo "ensure_ai_cell: launch failed" >&2; exit 1; }
+ensure_open_hai() {
+    log "ensuring single open-hai instance via button.sh..."
+    sh "$OPEN_HAI_DIR/button.sh" "$HOUSE" || { echo "ensure_open_hai: launch failed" >&2; exit 1; }
     sleep "$LAUNCH_SETTLE_S"
-    n="$(pgrep -f 'khtpm_ai_cell_render\.\+x' | grep -c . || true)"
+    n="$(pgrep -f 'khtpm_open_hai_render\.\+x' | grep -c . || true)"
     if [ "$n" != "1" ]; then
-        echo "ensure_ai_cell: expected 1 process, found $n - aborting" >&2
+        echo "ensure_open_hai: expected 1 process, found $n - aborting" >&2
         exit 1
     fi
 }
@@ -188,9 +188,9 @@ current_model_name() {
     grep '|Model: ' "$NAV_LABELS" 2>/dev/null | head -1 | sed 's/.*Model: //'
 }
 
-# ---- deterministic model switch: cycles ai-cell's REAL, LIVE model
+# ---- deterministic model switch: cycles open-hai's REAL, LIVE model
 # selector via the same nav+Enter action a human clicking "Model"
-# would use (cycle_model() in khtpm_ai_cell_render.c) - never edits
+# would use (cycle_model() in khtpm_open_hai_render.c) - never edits
 # sessions/model.txt directly (that's only read at process STARTUP,
 # an external edit wouldn't take effect on a running instance). Cycle
 # count is computed from G_MODELS_ORDER, which MUST mirror the app's
@@ -301,7 +301,7 @@ delegate_step() {
     # message SYNCHRONOUSLY (n_msgs +1 immediately), then the real
     # reply (chat completion OR a tool result - both go through
     # check_pending()'s async fork/curl-child polling in
-    # khtpm_ai_cell_render.c) lands LATER, asynchronously, as a
+    # khtpm_open_hai_render.c) lands LATER, asynchronously, as a
     # SEPARATE +1. The original poll here stopped on ANY change from
     # baseline - correct by accident for fast paths (a synchronous
     # tool_pending banner adds both +1s together, read-only tools often
@@ -390,7 +390,7 @@ navigate_step() {
     cp "$RECEIPT" "$pre_file" 2>/dev/null
 
     if [ ! -f "$NAV_LABELS" ]; then
-        echo "navigate_step: no nav-labels.txt - is ai-cell's binary the 2026-08-13+ build with dump_nav_labels()?" >&2
+        echo "navigate_step: no nav-labels.txt - is open-hai's binary the 2026-08-13+ build with dump_nav_labels()?" >&2
         return 1
     fi
     local labels_csv delegate_labels=()
@@ -727,7 +727,7 @@ run_plan_file() {
 }
 
 # ---- top-level entry ----
-ensure_ai_cell
+ensure_open_hai
 run_dir_out="$(run_plan_file "$PLAN_FILE" 0)"
 rc=$?
 cat "$run_dir_out/SUMMARY.txt" 2>/dev/null

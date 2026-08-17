@@ -363,7 +363,17 @@ int main(int argc, char **argv) {
     FILE *f = fopen(path, "r");
     if (!f) return 1;
 
-    char lines[32][MAX_LINE];
+    /* REAL FIX (2026-08-17, direct live report: "wasd wont move camera
+     * around. it clamps after 1 move") - this cap was 32, but the real
+     * state.txt already has 35 real lines (cam_pan_x/y/z sit at lines
+     * 33-35, past the old cap). This op runs BEFORE camera_control.c on
+     * every keypress and uses this SAME array for its own field parsing
+     * (not a separate unbounded read) - with the old 32-line cap it
+     * never saw cam_pan_x/y/z at all, silently kept them at the local
+     * 0.0 defaults below, and wrote that 0.0 back on every single call -
+     * resetting the camera pan right before camera_control.c could ever
+     * accumulate it. Real fix: real headroom past the actual file size. */
+    char lines[128][MAX_LINE];
     int nlines = 0;
     int px = 0, py = 0;
     char map_id[64] = "map_start";
@@ -376,10 +386,7 @@ int main(int argc, char **argv) {
     (void)camera_mode; /* read for passthrough; camera_control.c and choice.c own this field */
     int facing = 1002; /* last arrow direction pressed (ARROW_UP/DOWN/LEFT/RIGHT) - drives 1st-person view direction */
     int hero_z = 0; /* hero's own vertical Z level, adjusted by x/z keys */
-    double cam_pan_x = 0.0, cam_pan_y = 0.0, cam_pan_z = 0.0; /* camera position offsets (preserved, not modified by this op) */
-    double cam_yaw = 0.0, cam_pitch = 6.0; /* camera rotation state (preserved, not modified by this op) */
-    int cam_z_level = 0; /* camera vertical offset (preserved, not modified by this op) */
-    while (nlines < 32 && fgets(lines[nlines], MAX_LINE, f)) {
+    while (nlines < 128 && fgets(lines[nlines], MAX_LINE, f)) {
         char *eq = strchr(lines[nlines], '=');
         if (eq) {
             *eq = '\0';
@@ -419,22 +426,10 @@ int main(int argc, char **argv) {
                 render_mode = atoi(eq + 1);
             } else if (strcmp(lines[nlines], "camera_mode") == 0) {
                 camera_mode = atoi(eq + 1);
-            } else if (strcmp(lines[nlines], "cam_pan_x") == 0) {
-                cam_pan_x = atof(eq + 1);
-            } else if (strcmp(lines[nlines], "cam_pan_y") == 0) {
-                cam_pan_y = atof(eq + 1);
-            } else if (strcmp(lines[nlines], "cam_pan_z") == 0) {
-                cam_pan_z = atof(eq + 1);
             } else if (strcmp(lines[nlines], "facing") == 0) {
                 facing = atoi(eq + 1);
             } else if (strcmp(lines[nlines], "hero_z") == 0) {
                 hero_z = atoi(eq + 1);
-            } else if (strcmp(lines[nlines], "cam_yaw") == 0) {
-                cam_yaw = atof(eq + 1);
-            } else if (strcmp(lines[nlines], "cam_pitch") == 0) {
-                cam_pitch = atof(eq + 1);
-            } else if (strcmp(lines[nlines], "cam_z_level") == 0) {
-                cam_z_level = atoi(eq + 1);
             }
             *eq = '=';
         }
@@ -663,16 +658,9 @@ int main(int argc, char **argv) {
             }
             if (strcmp(lines[i], "map_id") == 0) { fprintf(f, "map_id=%s\n", map_id); *eq = '='; continue; }
             if (strcmp(lines[i], "facing") == 0) { fprintf(f, "facing=%d\n", facing); facing_found = 1; *eq = '='; continue; }
-            /* Preserve camera state fields owned by camera_control.c
-             * and compose_rgb_frame.c - we don't modify them, but we
-             * must not corrupt them during write-back. Also write
-             * hero_z which move_player.c owns. */
-            if (strcmp(lines[i], "cam_pan_x") == 0) { fprintf(f, "cam_pan_x=%.2f\n", cam_pan_x); *eq = '='; continue; }
-            if (strcmp(lines[i], "cam_pan_y") == 0) { fprintf(f, "cam_pan_y=%.2f\n", cam_pan_y); *eq = '='; continue; }
-            if (strcmp(lines[i], "cam_pan_z") == 0) { fprintf(f, "cam_pan_z=%.2f\n", cam_pan_z); *eq = '='; continue; }
-            if (strcmp(lines[i], "cam_yaw") == 0) { fprintf(f, "cam_yaw=%.2f\n", cam_yaw); *eq = '='; continue; }
-            if (strcmp(lines[i], "cam_pitch") == 0) { fprintf(f, "cam_pitch=%.2f\n", cam_pitch); *eq = '='; continue; }
-            if (strcmp(lines[i], "cam_z_level") == 0) { fprintf(f, "cam_z_level=%d\n", cam_z_level); *eq = '='; continue; }
+            /* Camera fields (cam_pan_x/y/z, cam_yaw, cam_pitch,
+             * cam_z_level) now live in cam_state.txt - owned by
+             * camera_control.c. move_player.c no longer touches them. */
             if (strcmp(lines[i], "hero_z") == 0) { fprintf(f, "hero_z=%d\n", hero_z); *eq = '='; continue; }
             *eq = '=';
         }

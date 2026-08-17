@@ -126,11 +126,28 @@ typedef struct {
      * placeholders - see khtpm_taskbar_manager.c's ktb_hq_open()). */
     char strip_user_cmd[KTB_PATH_BUF]; /* USER cell's command, from livedesk_taskbar.pdl's strip_user_cmd key - empty by default, matching legacy's load_strip_config() default (no user-switcher wired in the legacy itself either) */
     int strip_focus_cell; /* unified header-cell cursor: 0..14 = a strip cell, -1 = focus is on a tab instead (see ktb_nav_focus_delta()) */
+    /* REAL, NEW 2026-08-16, direct correction ("the cells aren't
+     * supposed to be hardcoded... that's an oversight") - real
+     * position(1-based)->id table, read once at startup from
+     * #.desktop/livedesk_header_cell_ids.txt (written by the SEPARATE
+     * strip_parser process, the only one with real access to
+     * khtpm_strip_header.chtpm's own parsed button id= attributes - see
+     * that file's own write_header_cell_ids() comment for the full
+     * real cross-process reasoning). Lets ktb_hq_open() check a cell's
+     * real, data-declared identity (e.g. "toys") before falling back to
+     * the existing which==N chain - additive, doesn't change any
+     * existing cell's own behavior. */
+    int cell_id_pos[15]; /* real literal, matches KTB_STRIP_N_CELLS (defined just below - can't use the macro itself before its own definition) */
+    char cell_id_str[15][64];
+    int n_cell_ids;
 } KtbState;
 
 #define KTB_STRIP_N_CELLS 15
 
 void ktb_init(KtbState *s, const char *house_root);
+/* REAL, NEW 2026-08-16 - see KtbState's own cell_id_pos/cell_id_str field comment. */
+void ktb_load_cell_ids(KtbState *s);
+const char *ktb_cell_id(const KtbState *s, int which);
 void ktb_write_pidfile(KtbState *s, int pid);
 void ktb_unlink_pidfile(const KtbState *s);
 

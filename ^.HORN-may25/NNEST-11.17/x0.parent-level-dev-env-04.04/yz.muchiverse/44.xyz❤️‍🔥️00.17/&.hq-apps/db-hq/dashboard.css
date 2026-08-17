@@ -2,57 +2,66 @@
    au11-hq/HQML-DESIGN+PLANS.md's own "start small" note). Ported from
    au11-hq/rpg-maker-database.html's .tab-bar / .sidebar / .settings-block
    / .block-title / .stat-bar rules, minus anything needing flex/grid
-   (out of scope until a section that needs it gets built). */
+   (out of scope until a section that needs it gets built).
+
+   REAL, DELIBERATE 2026-08-16: dark theme, direct instruction ("yes"
+   after being asked to confirm this as a real design change, not a
+   bug fix - db-hq's own light theme was intentional/matching the real
+   rpg-maker-database.html mockup until this point). Real palette
+   matches the same dark convention already used across open-hai/
+   chat-hai/khtpm_entity_menu_render.c/taskbar-settings this same
+   session (#141414 base / #1a1a1a-#2a2a2a panels / #eeeeee-#cccccc
+   text) - not a new, unrelated color scheme. */
 
 window {
-  background-color: #ececec;
+  background-color: #141414;
   font-family: Ubuntu;
   font-size: 10px;
 }
 
 .tab-bar {
-  background-color: #d8d8d8;
-  border-color: #999999;
-  border: 1px solid #999999;
+  background-color: #1a1a1a;
+  border-color: #444444;
+  border: 1px solid #444444;
 }
 
 .tab {
-  background-color: #d8d8d8;
-  color: #444444;
-  border: 1px solid #999999;
+  background-color: #1a1a1a;
+  color: #aaaaaa;
+  border: 1px solid #444444;
   font-size: 9px;
 }
 
 .tab.active {
-  background-color: #ffffff;
-  color: #000000;
+  background-color: #2a2a2a;
+  color: #ffffff;
   font-weight: bold;
 }
 
 .sidebar {
-  background-color: #f5f5f5;
-  border: 1px solid #999999;
+  background-color: #181818;
+  border: 1px solid #333333;
 }
 
 .data-item {
-  color: #222222;
+  color: #cccccc;
   font-size: 10px;
 }
 
 .data-item.active {
-  background-color: #cce5ff;
-  color: #000000;
+  background-color: #2f5f8f;
+  color: #ffffff;
 }
 
 .settings-block {
-  background-color: #fafafa;
-  border: 1px solid #999999;
+  background-color: #1c1c1c;
+  border: 1px solid #333333;
   border-width: 1;
 }
 
 .block-title {
-  background-color: #ffffff;
-  color: #444444;
+  background-color: #2a2a2a;
+  color: #eeeeee;
   font-weight: bold;
   font-size: 9px;
   position: absolute;
@@ -61,7 +70,7 @@ window {
 }
 
 .event-name {
-  color: #222222;
+  color: #dddddd;
   font-size: 12px;
 }
 
