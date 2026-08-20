@@ -111,7 +111,7 @@ static void item_registry_field(const char *item_id, int field_index, char *out,
  * status without actually consuming anything - this op only reads. */
 static int count_in_inventory(const char *item_id) {
     char inventory_dir[PATH_BUF];
-    snprintf(inventory_dir, sizeof(inventory_dir), "%s/pieces/world_01/map_start/hero/inventory", project_root);
+    snprintf(inventory_dir, sizeof(inventory_dir), "%s/pieces/hero_01/inventory", project_root);
     DIR *d = opendir(inventory_dir);
     if (!d) return 0;
     struct dirent *entry;
@@ -412,7 +412,7 @@ static void write_panel_gui_state(void) {
     if (buf_craft[0] == '\0') snprintf(buf_craft, sizeof(buf_craft), "<text label=\"(no recipes)\" /><br/>");
 
     char inventory_dir_panel[PATH_BUF];
-    snprintf(inventory_dir_panel, sizeof(inventory_dir_panel), "%s/pieces/world_01/map_start/hero/inventory", project_root);
+    snprintf(inventory_dir_panel, sizeof(inventory_dir_panel), "%s/pieces/hero_01/inventory", project_root);
     DIR *d = opendir(inventory_dir_panel);
     if (d) {
         struct dirent *entry;
@@ -543,7 +543,7 @@ int main(void) {
     resolve_root();
 
     char hero_path[PATH_BUF], out_path[PATH_BUF];
-    snprintf(hero_path, sizeof(hero_path), "%s/pieces/world_01/map_start/hero/state.txt", project_root);
+    snprintf(hero_path, sizeof(hero_path), "%s/pieces/hero_01/state.txt", project_root);
     /* ONE WRITER RULE (PITFALL #17/#36): compose_frame writes view.txt,
      * NOT current_frame.txt. Parser reads view.txt and composes the final
      * current_frame.txt via ${game_map} substitution. Writing directly to
@@ -959,7 +959,7 @@ int main(void) {
          * shows full detail rather than hiding it behind a selection. */
         int panel_cursor = read_kv_int(hero_path, "panel_cursor", 1);
         char inventory_dir_panel[PATH_BUF];
-        snprintf(inventory_dir_panel, sizeof(inventory_dir_panel), "%s/pieces/world_01/map_start/hero/inventory", project_root);
+        snprintf(inventory_dir_panel, sizeof(inventory_dir_panel), "%s/pieces/hero_01/inventory", project_root);
         char panel_rows[MAX_RECIPES_DISPLAY][BOX_TEXT_W + 1];
         int panel_row_count = 0;
         d = opendir(inventory_dir_panel);
@@ -1037,7 +1037,7 @@ int main(void) {
      * regardless of which map the hero is currently on - drawn as a
      * compact name list. */
     char inventory_dir[PATH_BUF];
-    snprintf(inventory_dir, sizeof(inventory_dir), "%s/pieces/world_01/map_start/hero/inventory", project_root);
+    snprintf(inventory_dir, sizeof(inventory_dir), "%s/pieces/hero_01/inventory", project_root);
     char inventory_line[256] = "Inventory: ";
     int have_items = 0;
     d = opendir(inventory_dir);

@@ -43,27 +43,3 @@ NO CHANGES NEEDED (already had 0 session symlinks):
   P2: 300.rpg-xyz
   P2: 300.rtp-xyz
   P2: _BACKUP_101.mutaclsym-old+18.01  (backup, skip)
-
-KNOWN ISSUE — TASKBAR LAUNCH OF MUTACLYSM:
-  The button.sh for 101.mutaclsym🧟‍♂️️19.00 changed PRISC_PROJECT_ROOT
-  from "$SESSION_DIR" to "$SCRIPT_DIR". The orchestrator is launched with:
-    export PRISC_PROJECT_ROOT="$SCRIPT_DIR"
-    "$SCRIPT_DIR/system/orchestrator" 2>>pieces/system/orchestrator.log &
-
-  If the taskbar launch path bypasses button.sh and sets PRISC_PROJECT_ROOT
-  differently (or not at all), the orchestrator won't find shared files.
-  The taskbar's launch command (khtpm_taskbar_manager.c) runs:
-    setsid nohup sh -c 'sh "button.sh" run'
-  This should go through button.sh normally, so PRISC_PROJECT_ROOT should
-  be set correctly. BUT: if there's a stale session directory with old
-  symlinks still present, the old behavior might conflict.
-
-  CHECK: Are there leftover session dirs with old symlinks?
-    find 101.mutaclsym🧟‍♂️️19.00/pieces/sessions/ -type l | head -20
-
-  CHECK: Is the orchestrator finding its files?
-    Look at pieces/system/orchestrator.log for file-not-found errors
-
-  CHECK: Does the taskbar use a different launch path than button.sh?
-    If it directly execs the orchestrator without going through button.sh,
-    PRISC_PROJECT_ROOT won't be set and the orchestrator falls back to CWD.

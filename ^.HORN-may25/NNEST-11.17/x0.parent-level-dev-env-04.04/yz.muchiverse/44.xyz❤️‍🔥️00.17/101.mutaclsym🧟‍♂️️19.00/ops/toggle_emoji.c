@@ -29,7 +29,7 @@ int main(void) {
     resolve_root();
 
     char hero_path[PATH_BUF];
-    snprintf(hero_path, sizeof(hero_path), "%s/pieces/world_01/map_start/hero/state.txt", project_root);
+    snprintf(hero_path, sizeof(hero_path), "%s/pieces/hero_01/state.txt", project_root);
 
     FILE *f = fopen(hero_path, "r");
     if (!f) return 1;

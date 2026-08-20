@@ -401,7 +401,7 @@ int main(void) {
     resolve_root();
 
     char hero_path[PATH_BUF];
-    snprintf(hero_path, sizeof(hero_path), "%s/pieces/world_01/map_start/hero/state.txt", project_root);
+    snprintf(hero_path, sizeof(hero_path), "%s/pieces/hero_01/state.txt", project_root);
     int hero_x = read_kv_int(hero_path, "pos_x", 0);
     int hero_y = read_kv_int(hero_path, "pos_y", 0);
     char map_id[64];

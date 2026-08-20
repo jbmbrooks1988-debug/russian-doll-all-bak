@@ -2,7 +2,7 @@
  * Scans pieces/world_01/<hero's map_id>/items/ for an item instance piece
  * whose pos_x/pos_y matches the hero's position, and physically MOVES
  * that piece's whole directory (rename()) into
- * pieces/world_01/map_start/hero/inventory/ - real russian-doll nesting,
+ * pieces/hero_01/inventory/ - real russian-doll nesting,
  * not a location field. An item's disposition is entirely encoded by
  * which directory it's physically sitting in: dropped means the
  * directory can be dragged into a different environment's tree at any
@@ -97,7 +97,7 @@ int main(void) {
     resolve_root();
 
     char hero_path[PATH_BUF];
-    snprintf(hero_path, sizeof(hero_path), "%s/pieces/world_01/map_start/hero/state.txt", project_root);
+    snprintf(hero_path, sizeof(hero_path), "%s/pieces/hero_01/state.txt", project_root);
     int hero_x = read_kv_int(hero_path, "pos_x", 0);
     int hero_y = read_kv_int(hero_path, "pos_y", 0);
     char map_id[64];
@@ -106,7 +106,7 @@ int main(void) {
     char items_dir[PATH_BUF + 64];
     snprintf(items_dir, sizeof(items_dir), "%s/pieces/world_01/%s/items", project_root, map_id);
     char inventory_dir[PATH_BUF + 64];
-    snprintf(inventory_dir, sizeof(inventory_dir), "%s/pieces/world_01/map_start/hero/inventory", project_root);
+    snprintf(inventory_dir, sizeof(inventory_dir), "%s/pieces/hero_01/inventory", project_root);
 
     DIR *d = opendir(items_dir);
     if (!d) { log_message("Nothing here to pick up."); return 0; }

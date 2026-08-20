@@ -123,9 +123,9 @@ int main(void) {
     resolve_root();
 
     char hero_path[PATH_BUF];
-    snprintf(hero_path, sizeof(hero_path), "%s/pieces/world_01/map_start/hero/state.txt", project_root);
+    snprintf(hero_path, sizeof(hero_path), "%s/pieces/hero_01/state.txt", project_root);
     char inventory_dir[PATH_BUF];
-    snprintf(inventory_dir, sizeof(inventory_dir), "%s/pieces/world_01/map_start/hero/inventory", project_root);
+    snprintf(inventory_dir, sizeof(inventory_dir), "%s/pieces/hero_01/inventory", project_root);
 
     DIR *d = opendir(inventory_dir);
     if (!d) { log_message("You have nothing to eat or drink."); return 0; }

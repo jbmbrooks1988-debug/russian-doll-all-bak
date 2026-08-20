@@ -185,7 +185,7 @@ static void item_registry_field(const char *item_id, int field_index, char *out,
  * ready/missing status. */
 static int count_in_inventory(const char *item_id) {
     char inventory_dir[PATH_BUF];
-    snprintf(inventory_dir, sizeof(inventory_dir), "%s/pieces/world_01/map_start/hero/inventory", project_root);
+    snprintf(inventory_dir, sizeof(inventory_dir), "%s/pieces/hero_01/inventory", project_root);
     DIR *d = opendir(inventory_dir);
     if (!d) return 0;
     struct dirent *entry;
@@ -1735,7 +1735,7 @@ int main(void) {
     load_glyphs();
 
     char hero_path[PATH_BUF], out_path[PATH_BUF], receipt_path[PATH_BUF], rgb_pulse_path[PATH_BUF];
-    snprintf(hero_path, sizeof(hero_path), "%s/pieces/world_01/map_start/hero/state.txt", project_root);
+    snprintf(hero_path, sizeof(hero_path), "%s/pieces/hero_01/state.txt", project_root);
     snprintf(out_path, sizeof(out_path), "%s/pieces/display/rgb_frame.raw", project_root);
     snprintf(receipt_path, sizeof(receipt_path), "%s/pieces/display/rgb_frame.receipt.txt", project_root);
     /* Real fix ported from shared-ops/chtpm_rgb_render.c's own
@@ -2385,7 +2385,7 @@ int main(void) {
     } else if (strcmp(active_panel, "inventory") == 0) {
         int panel_cursor = read_kv_int(hero_path, "panel_cursor", 1);
         char inventory_dir_panel[PATH_BUF];
-        snprintf(inventory_dir_panel, sizeof(inventory_dir_panel), "%s/pieces/world_01/map_start/hero/inventory", project_root);
+        snprintf(inventory_dir_panel, sizeof(inventory_dir_panel), "%s/pieces/hero_01/inventory", project_root);
         char panel_rows[MAX_RECIPES_DISPLAY][BOX_TEXT_W + 1];
         int panel_row_count = 0;
         DIR *pd = opendir(inventory_dir_panel);

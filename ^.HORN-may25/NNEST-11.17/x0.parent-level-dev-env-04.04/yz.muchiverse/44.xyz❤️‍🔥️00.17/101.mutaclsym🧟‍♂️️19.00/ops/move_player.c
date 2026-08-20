@@ -359,7 +359,7 @@ int main(int argc, char **argv) {
     }
 
     char path[PATH_BUF];
-    snprintf(path, sizeof(path), "%s/pieces/world_01/map_start/hero/state.txt", project_root);
+    snprintf(path, sizeof(path), "%s/pieces/hero_01/state.txt", project_root);
     FILE *f = fopen(path, "r");
     if (!f) return 1;
 
@@ -656,7 +656,7 @@ int main(int argc, char **argv) {
         monster_name(monster_type, name, sizeof(name));
 
         char inventory_dir[PATH_BUF];
-        snprintf(inventory_dir, sizeof(inventory_dir), "%s/pieces/world_01/map_start/hero/inventory", project_root);
+        snprintf(inventory_dir, sizeof(inventory_dir), "%s/pieces/hero_01/inventory", project_root);
         char weapon_name[64];
         int attack_damage = hero_weapon_damage(inventory_dir, weapon_name, sizeof(weapon_name));
 

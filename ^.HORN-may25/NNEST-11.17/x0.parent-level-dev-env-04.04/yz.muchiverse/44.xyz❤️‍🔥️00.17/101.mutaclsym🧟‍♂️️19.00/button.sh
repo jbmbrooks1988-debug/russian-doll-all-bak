@@ -160,23 +160,24 @@ EOHEROEXTRA
             fi
         fi
 
-        # REAL PATH MISMATCH FIX (found live, 2026-08-17): ops/compose_frame.c
-        # (in ALL 5 of its own hero-data read sites, hardcoded, not something
-        # this session touched) reads hero state from the OLD 2D-map location
-        # pieces/world_01/map_start/hero/state.txt - the +18.0G-era convention.
-        # mua_generate_chunk.+x (the NEW voxel-world generator) writes to a
-        # DIFFERENT location, pieces/hero_01/state.txt. Neither file was ever
-        # updated to agree on one path when the voxel generator was added, so
-        # compose_frame.c was ALWAYS reading a nonexistent file and silently
-        # falling back to hardcoded defaults (hp=100, render_mode=0, etc) -
-        # this is why the MAP3D_MARKER (0x01 byte) that activates 3D
-        # rendering never got written, no matter what fields were set on
-        # hero_01/state.txt. Symlinking the OLD path at the NEW file is the
-        # minimal-risk fix: zero changes to compose_frame.c's own 5 call
-        # sites, both paths now resolve to the SAME real file.
+        # SIMLINK ELIMINATION 2026-08-20 (see SIMLINK_PITFALL.md): the OLD
+        # 2D-map-era path pieces/world_01/map_start/hero/state.txt used to be
+        # symlinked at pieces/hero_01/state.txt (the real, NEW voxel-world
+        # location) because ~14 ops files + the shared chtpm_parser_pal.c
+        # all hardcoded the OLD path. That symlink was recreated on EVERY
+        # launch, which meant it always came right back even after deleting
+        # it - a genuine blocker for Windows (which chokes on symlinks
+        # without Developer Mode + git symlink support). Real fix: every one
+        # of those ~14 ops files (and the shared chtpm_parser_pal.c's own
+        # set_interact_mode()) was updated to reference pieces/hero_01/
+        # state.txt / pieces/hero_01/inventory directly - hero_01 is the
+        # canonical, more-heavily-used convention (board-viewer's own
+        # possession-id system already keys off "hero_01" as an entity ID,
+        # not just a path), so redirecting the FEW old-path readers was less
+        # risk than redirecting the MANY hero_01 ones. No symlink needed at
+        # all now - pieces/world_01/map_start/hero/ is dead, unused.
+        mkdir -p "$SCRIPT_DIR/pieces/hero_01/inventory"
         if [ -f "$SCRIPT_DIR/pieces/hero_01/state.txt" ]; then
-            mkdir -p "$SCRIPT_DIR/pieces/world_01/map_start/hero/inventory"
-            ln -sf "$SCRIPT_DIR/pieces/hero_01/state.txt" "$SCRIPT_DIR/pieces/world_01/map_start/hero/state.txt"
             # REAL FIX 2026-08-18, direct user report ("keyboard input is
             # passing into interact move (from nav eat/pickup) unwantededly
             # ... non interact = menu nav, interact mode = map interact, no

@@ -79,7 +79,7 @@ int main(int argc, char **argv) {
     resolve_root();
 
     char path[PATH_BUF];
-    snprintf(path, sizeof(path), "%s/pieces/world_01/map_start/hero/state.txt", project_root);
+    snprintf(path, sizeof(path), "%s/pieces/hero_01/state.txt", project_root);
 
     /* REAL BUG FIX 2026-08-18, direct user report ("keys ment for interact
      * mode are still passsing thru menu when interact isn't active"):

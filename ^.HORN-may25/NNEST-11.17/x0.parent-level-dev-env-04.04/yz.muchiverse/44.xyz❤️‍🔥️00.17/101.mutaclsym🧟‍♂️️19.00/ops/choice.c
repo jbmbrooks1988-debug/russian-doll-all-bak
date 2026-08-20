@@ -316,7 +316,7 @@ static int load_recipe_ids(char ids[][MAX_LINE], int max_ids) {
  * commit - see this file's header comment. */
 static int load_inventory_ids(char ids[][MAX_LINE], int max_ids) {
     char inventory_dir[PATH_BUF];
-    snprintf(inventory_dir, sizeof(inventory_dir), "%s/pieces/world_01/map_start/hero/inventory", project_root);
+    snprintf(inventory_dir, sizeof(inventory_dir), "%s/pieces/hero_01/inventory", project_root);
     DIR *d = opendir(inventory_dir);
     if (!d) return 0;
     struct dirent *entry;
@@ -462,7 +462,7 @@ static int piece_pdl_state_int(const char *piece_pdl_path, const char *key, int 
 static int try_possess_at(int hero_x, int hero_y, int x, int y) {
     if (x != hero_x || y != hero_y) return 0;
     char pdl_path[PATH_BUF];
-    snprintf(pdl_path, sizeof(pdl_path), "%s/pieces/world_01/map_start/hero/piece.pdl", project_root);
+    snprintf(pdl_path, sizeof(pdl_path), "%s/pieces/hero_01/piece.pdl", project_root);
     if (!piece_pdl_state_int(pdl_path, "possessable", 1)) return 0;
 
     char log_path[PATH_BUF];
@@ -771,7 +771,7 @@ int main(int argc, char **argv) {
     resolve_root();
 
     char hero_path[PATH_BUF];
-    snprintf(hero_path, sizeof(hero_path), "%s/pieces/world_01/map_start/hero/state.txt", project_root);
+    snprintf(hero_path, sizeof(hero_path), "%s/pieces/hero_01/state.txt", project_root);
     FILE *f = fopen(hero_path, "r");
     if (!f) return 1;
 

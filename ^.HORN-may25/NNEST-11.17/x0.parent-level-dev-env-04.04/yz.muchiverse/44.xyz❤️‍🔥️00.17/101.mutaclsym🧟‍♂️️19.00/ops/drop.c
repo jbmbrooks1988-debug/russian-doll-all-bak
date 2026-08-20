@@ -1,7 +1,7 @@
 /* drop - one verb, one binary, no shared headers.
  * Drops one item (the first one found in hero/inventory/, v1 - no
  * item-selection UI yet) by physically MOVING its directory (rename())
- * from pieces/world_01/map_start/hero/inventory/ back out into
+ * from pieces/hero_01/inventory/ back out into
  * pieces/world_01/<hero's current map_id>/items/, and stamping the
  * hero's current pos_x/pos_y into its state.txt so it lands where the
  * hero is standing. Same real russian-doll nesting as pickup.c's
@@ -88,14 +88,14 @@ int main(void) {
     resolve_root();
 
     char hero_path[PATH_BUF];
-    snprintf(hero_path, sizeof(hero_path), "%s/pieces/world_01/map_start/hero/state.txt", project_root);
+    snprintf(hero_path, sizeof(hero_path), "%s/pieces/hero_01/state.txt", project_root);
     int hero_x = read_kv_int(hero_path, "pos_x", 0);
     int hero_y = read_kv_int(hero_path, "pos_y", 0);
     char map_id[64];
     read_kv_str(hero_path, "map_id", map_id, sizeof(map_id), "map_start");
 
     char inventory_dir[PATH_BUF + 64];
-    snprintf(inventory_dir, sizeof(inventory_dir), "%s/pieces/world_01/map_start/hero/inventory", project_root);
+    snprintf(inventory_dir, sizeof(inventory_dir), "%s/pieces/hero_01/inventory", project_root);
 
     DIR *d = opendir(inventory_dir);
     if (!d) { log_message("Nothing to drop."); return 0; }

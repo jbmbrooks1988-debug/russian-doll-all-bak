@@ -1735,7 +1735,7 @@ void inject_raw_key(int code) {
  * from TPMOS's own real is_map_control/session-state.txt mechanism
  * already used elsewhere in this file. Self-contained and safe for
  * every OTHER project on this shared baseline: the hardcoded path below
- * (pieces/world_01/map_start/hero/state.txt) simply doesn't exist for
+ * (pieces/hero_01/state.txt) simply doesn't exist for
  * projects that don't use mutaclysm's own real world/hero layout, so
  * fopen() fails and this is a real, harmless no-op for them - same
  * "zero side-effect unless applicable" shape as nav_debug() above.
@@ -1753,7 +1753,7 @@ void inject_raw_key(int code) {
  * ESC - see that call site's own real comment for why this matters. */
 static int set_interact_mode(int mode) {
     char path[MAX_PATH];
-    snprintf(path, sizeof(path), "%s/pieces/world_01/map_start/hero/state.txt", project_root_path);
+    snprintf(path, sizeof(path), "%s/pieces/hero_01/state.txt", project_root_path);
     FILE *f = fopen(path, "r");
     if (!f) return 0;
     /* REAL BUG FIX 2026-08-17 (found live, mutaclysm +18.01 session): this
