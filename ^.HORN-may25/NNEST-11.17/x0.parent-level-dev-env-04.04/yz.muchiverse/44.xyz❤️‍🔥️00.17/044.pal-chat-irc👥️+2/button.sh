@@ -42,18 +42,7 @@ case "$ACTION" in
                  "$SESSION_DIR/net" "$SESSION_DIR/projects/pal-chat-irc/manager" \
                  "$SESSION_DIR/debug"
         mkdir -p "$SCRIPT_DIR/users" "$SCRIPT_DIR/rooms" "$SCRIPT_DIR/data"
-        ln -s "$SCRIPT_DIR/system" "$SESSION_DIR/system"
-        ln -s "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"
-        ln -s "$SCRIPT_DIR/pal" "$SESSION_DIR/pal"
-        ln -s "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt"
-        ln -s "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm"
-        ln -s "$SCRIPT_DIR/projects/pal-chat-irc/pieces" "$SESSION_DIR/projects/pal-chat-irc/pieces"
-        ln -s "$SCRIPT_DIR/users" "$SESSION_DIR/users"
-        ln -s "$SCRIPT_DIR/rooms" "$SESSION_DIR/rooms"
-        # data/master_ledger.txt - global append-only source of truth,
-        # shared across sessions same as rooms/ and users/ above.
-        ln -s "$SCRIPT_DIR/data" "$SESSION_DIR/data"
-
+        # No symlinks — C processes resolve shared/persistent files via PRISC_PROJECT_ROOT env var
         cd "$SESSION_DIR"
         : > pieces/apps/player_app/interact_relay.txt
         : > pieces/keyboard/history.txt
@@ -74,7 +63,7 @@ project_id=pal-chat-irc
 active_target_id=login
 EOSTATE
 
-        export PRISC_PROJECT_ROOT="$SESSION_DIR"
+        export PRISC_PROJECT_ROOT="$SCRIPT_DIR"
         export PRISC_PROJECT_ID="pal-chat-irc"
         export PRISC_NET_ROOT="$SCRIPT_DIR/../net/presence"
 

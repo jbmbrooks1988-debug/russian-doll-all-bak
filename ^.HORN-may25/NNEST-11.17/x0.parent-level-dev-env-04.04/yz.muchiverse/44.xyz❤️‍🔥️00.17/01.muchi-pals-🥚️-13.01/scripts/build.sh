@@ -42,7 +42,7 @@ case "$(uname -s)" in
 esac
 
 echo "-- prisc+x (VM)"
-$CC $CFLAGS -o system/prisc+x system/prisc+x.c
+$CC $CFLAGS -o system/prisc+x $_SS/system/prisc+x.c
 
 echo "-- emoji_gen_atlas (FreeType color-bitmap emoji -> PNG)"
 $CC $CFLAGS $WIN_UNICODE_FLAGS -o system/emoji_gen_atlas system/emoji_gen_atlas.c $(pkg-config --cflags --libs freetype2) -lm
@@ -64,7 +64,7 @@ echo "   copy, not synced from shared-ops - see that file's own header"
 echo "   comment. -Wno-unused-result -Wno-stringop-truncation are"
 echo "   REQUIRED on this one file - confirmed via a real test build"
 echo "   this gets to zero warnings.)"
-$CC $CFLAGS -Wno-unused-result -Wno-stringop-truncation -o system/chtpm_parser_pal system/chtpm_parser_pal.c
+$CC $CFLAGS -Wno-unused-result -Wno-stringop-truncation -o system/chtpm_parser_pal $_SS/system/chtpm_parser_pal.c
 
 echo "-- ops"
 $CC $CFLAGS -o ops/+x/generate_egg.+x ops/generate_egg.c

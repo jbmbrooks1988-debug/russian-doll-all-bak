@@ -44,18 +44,7 @@ case "$ACTION" in
         # -p lets `ln -sfn` create the symlink directly at
         # SESSION_DIR/docs as originally intended.
 
-        ln -sfn "$SCRIPT_DIR/system" "$SESSION_DIR/system"
-        ln -sfn "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"
-        ln -sfn "$SCRIPT_DIR/pal" "$SESSION_DIR/pal"
-        ln -sfn "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt"
-        ln -sfn "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm"
-        # Required for chtpm_rgb_render to find glyph data — without this
-        # every character renders invisible (solid black GL window) even
-        # though the rest of the pipeline works fine. See fm-widget-fix.md.
-        ln -sfn "$SCRIPT_DIR/pieces/registry" "$SESSION_DIR/pieces/registry" 2>/dev/null || true
-        ln -sfn "$SCRIPT_DIR/projects/agy-editor/pieces" "$SESSION_DIR/projects/agy-editor/pieces"
-        # Durable docs live under install tree; session sees them via symlink
-        ln -sfn "$SCRIPT_DIR/docs" "$SESSION_DIR/docs"
+        # No symlinks — C processes resolve shared/persistent files via PRISC_PROJECT_ROOT env var
 
         cd "$SESSION_DIR"
         : > pieces/apps/player_app/interact_relay.txt
@@ -83,7 +72,7 @@ project_id=agy-editor
 active_target_id=editor
 EOSTATE
 
-        export PRISC_PROJECT_ROOT="$SESSION_DIR"
+        export PRISC_PROJECT_ROOT="$SCRIPT_DIR"
         export PRISC_PROJECT_ID="agy-editor"
 
         if [ -x "./ops/+x/editor_compose_frame.+x" ]; then
@@ -153,13 +142,13 @@ EOSTATE
             done
         }
 
-        trap 'if [ -x ./ops/+x/ledger_append.+x ]; then PRISC_PROJECT_ROOT="$SESSION_DIR" ./ops/+x/ledger_append.+x OFFLINE editor agy-editor "$SESSION_DIR" $$ "XYZ Editor" pieces/system/widget_cmds/inbox.txt >/dev/null 2>&1 || true; fi; kill "$RENDERER_PID" "$CHTPM_PID" "$GL_PID" "$RGB_PID" 2>/dev/null; kill_own_module; rm -rf "$SESSION_DIR"' EXIT INT TERM
+        trap 'if [ -x ./ops/+x/ledger_append.+x ]; then PRISC_PROJECT_ROOT="$SCRIPT_DIR" ./ops/+x/ledger_append.+x OFFLINE editor agy-editor "$SESSION_DIR" $$ "XYZ Editor" pieces/system/widget_cmds/inbox.txt >/dev/null 2>&1 || true; fi; kill "$RENDERER_PID" "$CHTPM_PID" "$GL_PID" "$RGB_PID" 2>/dev/null; kill_own_module; rm -rf "$SESSION_DIR"' EXIT INT TERM
 
         : > pieces/apps/player_app/history.txt
 
         # Register in xyzfs runtime ledger
         if [ -x ./ops/+x/ledger_append.+x ]; then
-            PRISC_PROJECT_ROOT="$SESSION_DIR" \
+            PRISC_PROJECT_ROOT="$SCRIPT_DIR" \
                 ./ops/+x/ledger_append.+x ONLINE editor agy-editor "$SESSION_DIR" $$ \
                 "XYZ Editor" pieces/system/widget_cmds/inbox.txt >/dev/null 2>&1 || true
         fi

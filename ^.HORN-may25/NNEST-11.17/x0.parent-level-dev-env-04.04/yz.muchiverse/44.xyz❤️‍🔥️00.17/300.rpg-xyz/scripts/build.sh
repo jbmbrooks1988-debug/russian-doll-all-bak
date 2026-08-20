@@ -20,11 +20,15 @@
 set -e
 cd "$(dirname "$0")/.."
 
+# Resolve shared-lib canonical source (symlink-free)
+_sr="$PWD"; while [ ! -d "$_sr/&.widgits/_shared-lib" ] && [ "$_sr" != "/" ]; do _sr="$(dirname "$_sr")"; done
+_SS="$_sr/&.widgits/_shared-lib"
+
 CC=${CC:-gcc}
 CFLAGS="-std=c11 -Wall -Wextra -O2"
 
 echo "-- prisc+x (VM)"
-$CC $CFLAGS -o system/prisc+x system/prisc+x.c
+$CC $CFLAGS -o system/prisc+x $_SS/system/prisc+x.c
 
 echo "-- keyboard_input (raw termios, no ncurses - local copy, see"
 echo "   system/keyboard_input.c's own header comment)"
@@ -38,14 +42,14 @@ echo "   chtpm-to-pal-layout-plan.txt and that file's own header"
 echo "   comment. -Wno-unused-result -Wno-stringop-truncation are"
 echo "   REQUIRED on this one file - confirmed via a real test build"
 echo "   this gets to zero warnings.)"
-$CC $CFLAGS -Wno-unused-result -Wno-stringop-truncation -o system/chtpm_parser_pal system/chtpm_parser_pal.c
+$CC $CFLAGS -Wno-unused-result -Wno-stringop-truncation -o system/chtpm_parser_pal $_SS/system/chtpm_parser_pal.c
 
 echo "-- chtpm_rgb_render (local copy, PERSISTENT daemon - real wraith_rgb_daemon.c"
 echo "   equivalent: font-rasterizes pieces/display/current_frame.txt"
 echo "   verbatim, zero .chtpm awareness - see that file's own header"
 echo "   comment. Writes the SAME rgb_frame.raw/receipt gl_mirror already"
 echo "   reads, sized to gl_mirror's own hardcoded 640x304 on purpose.)"
-$CC $CFLAGS -o system/chtpm_rgb_render system/chtpm_rgb_render.c
+$CC $CFLAGS -o system/chtpm_rgb_render $_SS/ops/chtpm_rgb_render.c
 
 echo "-- gl_mirror (optional GL/GLUT reader - only file allowed to call"
 echo "   GL primitives, see GOVERNING CONSTRAINT in"

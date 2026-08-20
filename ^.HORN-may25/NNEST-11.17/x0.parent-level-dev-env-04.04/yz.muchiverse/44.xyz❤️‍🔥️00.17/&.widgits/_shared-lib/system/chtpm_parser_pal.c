@@ -251,6 +251,7 @@ static int g_extra_module_count = 0;
 
 char* scratch_substituted = NULL;
 char project_root_path[MAX_PATH] = ".";
+char session_root_path[MAX_PATH] = ".";  /* CWD — session-specific writes */
 char interact_history_path[MAX_PATH] = "";  // From <interact> tag
 
 /* REAL MERGE (from mutaclysm's own chtpm_parser_pal.c, 2026-08-17
@@ -310,6 +311,7 @@ bool is_modern_layout(const char* layout);
 void parse_attributes(UIElement* el, const char* attr_str);
 void render_element(int idx, char* frame, int* p_global_counter, int* p_scoped_counter);
 char* build_path_malloc(const char* rel);
+char* build_session_path_malloc(const char* rel);
 char* trim_pmo(char *str);
 static void render_grid(UIElement *el, char *frame);
 /* Option B (2fix-july6.txt section 6): cli_io-only gui_state scoping fix,
@@ -432,7 +434,7 @@ static void sync_cli_input_from_gui_state(void) {
  * g_completion_return_gui_index pattern instead of a var that was never
  * wired up. */
 static void sync_focus_from_saved_active_index(void) {
-    char *agi_path = build_path_malloc("pieces/display/active_gui_index.txt");
+    char *agi_path = build_session_path_malloc("pieces/display/active_gui_index.txt");
     FILE *f = fopen(agi_path, "r");
     free(agi_path);
     if (!f) return;
@@ -566,17 +568,25 @@ static bool root_has_anchors(const char* root) {
 }
 
 void resolve_root() {
+    /* session_root_path is always CWD — session-specific files
+     * (pieces/display, pieces/keyboard) live here */
 #ifdef _WIN32
-    /* Prefer "." when CWD is the project/session — absolute getcwd with
-     * emoji/Unicode breaks ANSI fopen and MinGW opendir (wsr pitfall). */
     if (root_has_anchors(".")) {
-        snprintf(project_root_path, sizeof(project_root_path), ".");
+        snprintf(session_root_path, sizeof(session_root_path), ".");
     } else
 #endif
     {
-        if (!getcwd(project_root_path, sizeof(project_root_path)))
-            strncpy(project_root_path, ".", sizeof(project_root_path) - 1);
-        project_root_path[sizeof(project_root_path) - 1] = '\0';
+        if (!getcwd(session_root_path, sizeof(session_root_path)))
+            strncpy(session_root_path, ".", sizeof(session_root_path) - 1);
+        session_root_path[sizeof(session_root_path) - 1] = '\0';
+    }
+    /* project_root_path points at the persistent project root for shared/persistent
+     * files (system/, pal/, hero_01/, world_01/, projects/mutaclysm/pieces/, etc.) */
+    const char *env = getenv("PRISC_PROJECT_ROOT");
+    if (env && env[0]) {
+        snprintf(project_root_path, sizeof(project_root_path), "%s", env);
+    } else {
+        snprintf(project_root_path, sizeof(project_root_path), "%s", session_root_path);
     }
     FILE *kvp = fopen("pieces/locations/location_kvp", "r");
     if (kvp) {
@@ -622,6 +632,12 @@ char* build_path_malloc(const char* rel) {
     return p;
 }
 
+char* build_session_path_malloc(const char* rel) {
+    char* p = NULL;
+    if (asprintf(&p, "%s/%s", session_root_path, rel) == -1) return NULL;
+    return p;
+}
+
 /* clear_saved_active_index - PORTED 2026-07-31 (PITFALL 66) from the
  * real, house-wide fix in 014.wsr-pal's own chtpm_parser_pal.c (found+
  * fixed during &.widgits/file-menu's own PITFALL-65 rebuild). This
@@ -636,7 +652,7 @@ char* build_path_malloc(const char* rel) {
  * layout-transition site so there is no stale value left for
  * sync_focus_from_saved_active_index() to find. */
 static void clear_saved_active_index(void) {
-    char *agi_path = build_path_malloc("pieces/display/active_gui_index.txt");
+    char *agi_path = build_session_path_malloc("pieces/display/active_gui_index.txt");
     FILE *f = fopen(agi_path, "w");
     if (f) { fputs("0\n", f); fclose(f); }
     free(agi_path);
@@ -1740,9 +1756,23 @@ static int set_interact_mode(int mode) {
     snprintf(path, sizeof(path), "%s/pieces/world_01/map_start/hero/state.txt", project_root_path);
     FILE *f = fopen(path, "r");
     if (!f) return 0;
-    char lines[128][MAX_LINE];
+    /* REAL BUG FIX 2026-08-17 (found live, mutaclysm +18.01 session): this
+     * used to be `char lines[128][MAX_LINE]` with MAX_LINE=65536 - a fixed
+     * 128*65536=8MB LOCAL/STACK array. On a system with an 8MB stack ulimit
+     * (confirmed: `ulimit -s` = 8192 exactly), this overflows the stack and
+     * segfaults the instant this function is called (crash confirmed live
+     * via gdb backtrace: SIGSEGV inside set_interact_mode, called from
+     * process_key, called from main). This is a SHARED file
+     * (&.widgits/_shared-lib/system/chtpm_parser_pal.c, symlinked into ~12
+     * projects per legacy-shared-fix.md's own consolidation record) - any
+     * project whose own main.chtpm never had a real onClick="INTERACT"
+     * element never called this function, so the bug stayed latent/
+     * unexercised until now. state.txt lines are always short "key=value"
+     * pairs - 512 bytes/line is generous headroom, not a functional change
+     * for any real content. */
+    char lines[128][512];
     int nlines = 0;
-    while (nlines < 128 && fgets(lines[nlines], MAX_LINE, f)) nlines++;
+    while (nlines < 128 && fgets(lines[nlines], sizeof(lines[0]), f)) nlines++;
     fclose(f);
     f = fopen(path, "w");
     if (!f) return 0;
@@ -1876,7 +1906,7 @@ void inject_command(const char* cmd) {
      * <interact src=...> override (a real, deliberate authoring
      * choice) still wins. */
     if (is_pal_native_project()) {
-        char *path = build_path_malloc("pieces/display/pending_command.txt");
+        char *path = build_session_path_malloc("pieces/display/pending_command.txt");
         fp = fopen(path, "a");
         if (fp) { fprintf(fp, "%s\n", cmd); fclose(fp); }
         free(path);
@@ -2526,7 +2556,7 @@ void parse_chtm() {
     is_time_reactive = false; 
     
     /* EXPORT CURRENT LAYOUT FOR MODULE HEARTBEAT */
-    char *cl_path = build_path_malloc("pieces/display/current_layout.txt");
+    char *cl_path = build_session_path_malloc("pieces/display/current_layout.txt");
     FILE *cl_f = fopen(cl_path, "w");
     if (cl_f) { fprintf(cl_f, "%s\n", current_layout); fclose(cl_f); }
     free(cl_path);
@@ -2906,7 +2936,7 @@ void export_active_index() {
     if (active_index != -1) active_gui_idx = elements[active_index].interactive_idx;
     else active_gui_idx = elements[focus_index].interactive_idx;
 
-    char *agi_path = build_path_malloc("pieces/display/active_gui_index.txt");
+    char *agi_path = build_session_path_malloc("pieces/display/active_gui_index.txt");
     FILE *agi_f = fopen(agi_path, "w");
     if (agi_f) { fprintf(agi_f, "%d\n", active_gui_idx); fclose(agi_f); }
     free(agi_path);
@@ -2920,7 +2950,7 @@ void export_active_index() {
      * cli_io field is genuinely accepting keystrokes right now), "0" means
      * focus-only or nothing focused. See 2fix-july6.txt, bug 3. */
     {
-        char *typing_path = build_path_malloc("pieces/display/active_gui_is_typing.txt");
+        char *typing_path = build_session_path_malloc("pieces/display/active_gui_is_typing.txt");
         FILE *typing_f = fopen(typing_path, "w");
         if (typing_f) { fprintf(typing_f, "%d\n", active_index != -1 ? 1 : 0); fclose(typing_f); }
         free(typing_path);
@@ -3227,12 +3257,12 @@ void compose_frame() {
         }
     }
 
-    char* cur_f = build_path_malloc("pieces/display/current_frame.txt");
+    char* cur_f = build_session_path_malloc("pieces/display/current_frame.txt");
     FILE *out_f = fopen(cur_f, "w");
     if (out_f) {
         fprintf(out_f, "%s", frame);
         fclose(out_f);
-        char* renderer_pulse = build_path_malloc("pieces/display/renderer_pulse.txt");
+        char* renderer_pulse = build_session_path_malloc("pieces/display/renderer_pulse.txt");
         FILE *marker = fopen(renderer_pulse, "a"); if (marker) { fprintf(marker, "P\n"); fclose(marker); }
         free(renderer_pulse);
     }
@@ -3817,10 +3847,10 @@ int main(int argc, char **argv) {
      * ═══════════════════════════════════════════════════════════════ */
 
     char *master_frame_ch = build_path_malloc("pieces/master_ledger/frame_changed.txt");
-    char *display_frame_ch = build_path_malloc("pieces/display/frame_changed.txt");
+    char *display_frame_ch = build_session_path_malloc("pieces/display/frame_changed.txt");
     char *view_ch = build_path_malloc("pieces/apps/player_app/view_changed.txt");
-    char *hist_p = build_path_malloc("pieces/keyboard/history.txt");
-    char *layout_ch = build_path_malloc("pieces/display/layout_changed.txt");
+    char *hist_p = build_session_path_malloc("pieces/keyboard/history.txt");
+    char *layout_ch = build_session_path_malloc("pieces/display/layout_changed.txt");
     char *state_ch = build_path_malloc("pieces/apps/player_app/state_changed.txt");
     
     if (stat(master_frame_ch, &st) == 0) last_master_pulse_size = st.st_size;

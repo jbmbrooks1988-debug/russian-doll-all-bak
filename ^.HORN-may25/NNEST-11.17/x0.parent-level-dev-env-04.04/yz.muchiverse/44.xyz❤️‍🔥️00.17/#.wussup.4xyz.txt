@@ -1,6 +1,29 @@
 *tell agent , "always consider future agents, and write readme/testing and other helpful docs"
 ----------------------------------------------------------------------------
 
+📅️AUG 18  :
+⌚️⌚️⌚️⌚️
+<clox were started> 
+done much since then . 
+i actually really value the collab convos in sidebar. they need to be "widenable" 
+and user input needs 2 be assured. also forkable. dumpable etc.
+ (we need copy paste in x11, i also would like a "notebook" app in hq or wherever  but hq seems appropriate
+ (that keeps a calendar of notes, and master note for that month/year, in the visual 
+ shape of a calendar; with text audit availiable. )
+ <these could be made for different subjects so have macro of that as well. 
+ u shoudn't be asked 2 organize ur own notes. we know the best way is calendar based. 
+ 
+ either u get a calendar for each subject,
+ or u get a subject for each calendar day. 
+(and ofc u may skip days on a subject but u still get 2 see the subject
+and can ask a very basic agent 2 prune or compact the information 
+(this could even go under clock actually)
+
+>could it b3 1 apple app? < theres no need. ship all , they all need 'taskbar spine'but shure
+they coulds "START" with 1 app , and get more if they wanted, always having 'taskbar'+ ai helpers 
+(SUPER HARNESS) os/msft would have 2 rebuild os (which they may w/e)b
+but they will work on w/r os , right now
+  ⌚️⌚️⌚️⌚️
 📅️AUG 13  :
 wish 2 have 'clocks/cals' under time and realclock , gameclock0000 etc
 and can set reminders on real clock or on game clock

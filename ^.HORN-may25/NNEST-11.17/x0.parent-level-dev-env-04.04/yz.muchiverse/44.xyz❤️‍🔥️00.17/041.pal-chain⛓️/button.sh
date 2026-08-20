@@ -48,16 +48,7 @@ case "$ACTION" in
         mkdir -p "$SCRIPT_DIR/wallets" "$SCRIPT_DIR/data"
         # pieces/os/proc_list.txt (written by orchestrator at runtime) stays
         # REAL and session-local - see kill_all.sh's own header for why.
-        ln -s "$SCRIPT_DIR/pieces/os/kill_all.sh" "$SESSION_DIR/pieces/os/kill_all.sh"
-        ln -s "$SCRIPT_DIR/system" "$SESSION_DIR/system"
-        ln -s "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"
-        ln -s "$SCRIPT_DIR/pal" "$SESSION_DIR/pal"
-        ln -s "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt"
-        ln -s "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm"
-        ln -s "$SCRIPT_DIR/projects/pal-chain/pieces" "$SESSION_DIR/projects/pal-chain/pieces"
-        ln -s "$SCRIPT_DIR/wallets" "$SESSION_DIR/wallets"
-        ln -s "$SCRIPT_DIR/data" "$SESSION_DIR/data"
-
+        # No symlinks — C processes resolve shared/persistent files via PRISC_PROJECT_ROOT env var
         cd "$SESSION_DIR"
         : > pieces/apps/player_app/interact_relay.txt
         : > pieces/keyboard/history.txt
@@ -81,7 +72,7 @@ project_id=pal-chain
 active_target_id=login
 EOSTATE
 
-        export PRISC_PROJECT_ROOT="$SESSION_DIR"
+        export PRISC_PROJECT_ROOT="$SCRIPT_DIR"
         export PRISC_PROJECT_ID="pal-chain"
         # REAL BUG, LIVE-CAUGHT while building pal-chat-irc (2026-07-20,
         # PAL-NET-STANDARD.txt sec. 1/xyzos-standards.txt sec. 23's own

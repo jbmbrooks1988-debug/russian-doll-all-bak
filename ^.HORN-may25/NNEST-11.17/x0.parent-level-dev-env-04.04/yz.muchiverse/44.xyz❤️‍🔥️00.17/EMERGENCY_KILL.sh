@@ -51,7 +51,21 @@ echo "EMERGENCY KILL..."
 # short of this. gl_mirror itself (already on this list above) also now
 # has a real GL_MIRROR_BORDERLESS=1 mode (same binary/process name, no
 # separate entry needed - this list already covers it).
-NAMES='orchestrator keyboard_input chtpm_parser_pal chtpm_rgb_render gl_mirror egg_window avatar_window renderer prisc\+x agy_browser_manager rtp_manager yahoo_menu_input yahoo_compose_frame broker_menu_input broker_compose_frame deposit_withdraw tp_desktop_window tp_arm_placer tp_range_grid khtpm_strip_parser\.\+x khtpm_taskbar_manager_main\.\+x'
+# REAL ADDITION 2026-08-18, direct instruction (chat-hai window kept
+# running after being closed): khtpm_entity_menu_render.+x is the ONE
+# shared binary behind FIVE separate apps (chat-hai, db-hq, events-hq,
+# taskbar-settings, entity-menu) - each launch forks/execs its own real,
+# separate PID running this same executable file, mode-selected via a
+# class= arg at launch (e.g. class=chat-hai vs class=db-hq). They are
+# NOT one shared running process - each open window really is its own
+# live PID. But pkill -f here matches by the executable's PATH in
+# /proc/[pid]/cmdline, which is identical across all five - it has no
+# way to see the class= arg and tell "this PID is chat-hai" apart from
+# "this PID is db-hq". So adding this name here kills EVERY currently
+# running instance of the binary, whichever of the five apps each one
+# happens to be - there is no way to target just one of the five by
+# name alone.
+NAMES='orchestrator keyboard_input chtpm_parser_pal chtpm_rgb_render gl_mirror egg_window avatar_window renderer prisc\+x agy_browser_manager rtp_manager yahoo_menu_input yahoo_compose_frame broker_menu_input broker_compose_frame deposit_withdraw tp_desktop_window tp_arm_placer tp_range_grid khtpm_strip_parser\.\+x khtpm_taskbar_manager_main\.\+x khtpm_entity_menu_render\.\+x'
 
 pat() {
     # $1 = bare name (unescaped except prisc+x's own literal backslash

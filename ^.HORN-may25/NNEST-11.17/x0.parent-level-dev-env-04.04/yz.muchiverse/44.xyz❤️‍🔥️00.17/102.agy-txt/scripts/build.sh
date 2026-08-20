@@ -5,6 +5,10 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$SCRIPT_DIR"
 
+# Resolve shared-lib canonical source (symlink-free)
+_sr="$PWD"; while [ ! -d "$_sr/&.widgits/_shared-lib" ] && [ "$_sr" != "/" ]; do _sr="$(dirname "$_sr")"; done
+_SS="$_sr/&.widgits/_shared-lib"
+
 mkdir -p ops/+x system
 
 CFLAGS="-Wall -Wextra -O2"
@@ -20,7 +24,7 @@ if [ -d "$WSR" ]; then
     echo "copied system/ from wsr-pal"
 else
     echo "WARN: wsr-pal not found - building system/ from source instead"
-    gcc $CFLAGS "$WSR/system/prisc+x.c" -o "system/prisc+x" 2>/dev/null || true
+    gcc $CFLAGS "$_SS/system/prisc+x.c" -o "system/prisc+x" 2>/dev/null || true
 fi
 
 echo "--- Building agy-txt ops ---"

@@ -139,9 +139,34 @@ static void parse_attr_value(const char **p, char *out, size_t outsz) {
  * for why - real shell commands embed literal " for their own "$0"-style
  * var quoting). Decodes in place. */
 static void decode_entities(char *s) {
+    /* REAL BUG FIX 2026-08-18, direct live investigation (book-stack's
+     * "Read" menu item did nothing, no error, no menu - see
+     * bookstack-path-bug.txt): this function's own header comment
+     * claimed only &quot;/&amp; needed support, but book-stack's own
+     * real action= string (menu.chtpm) also uses &gt; (from its own
+     * "2>/dev/null" shell redirects inside nested $(find ...) command
+     * substitutions, HTML-attribute-encoded like everything else in
+     * that string). Undecoded &gt; fell through to the else branch
+     * UNCHANGED (literal 4-char text "&gt;", not ">"), corrupting
+     * "2>/dev/null" into "2&gt;/dev/null" - which /bin/sh parses as
+     * `find ... -type d 2` (extra literal arg "2", real find error) `&`
+     * (background) `gt` (nonexistent command) `/dev/null` (its arg) -
+     * a genuinely broken pipeline, not a cosmetic glitch. This silently
+     * emptied out both $(find "$H" ...) substitutions in book-stack's
+     * real Read action, so MUTA_ROOT/READER_PATH ended up empty and the
+     * final `exec` failed with nothing visible (backgrounded, stdout/
+     * stderr redirected to /dev/null by dispatch()'s own wrapper) -
+     * exactly matching the live, reported symptom. &amp; MUST be
+     * decoded LAST among the entities that start with '&' (matches the
+     * standard HTML-entity-decode ordering rule) so a real "&amp;gt;"
+     * sequence in source data isn't double-decoded into ">" - not a
+     * concern for this file's own real, hand-authored action strings
+     * today, but the safe, correct order regardless. */
     char *r = s, *w = s;
     while (*r) {
         if (strncmp(r, "&quot;", 6) == 0) { *w++ = '"'; r += 6; }
+        else if (strncmp(r, "&gt;", 4) == 0) { *w++ = '>'; r += 4; }
+        else if (strncmp(r, "&lt;", 4) == 0) { *w++ = '<'; r += 4; }
         else if (strncmp(r, "&amp;", 5) == 0) { *w++ = '&'; r += 5; }
         else *w++ = *r++;
     }

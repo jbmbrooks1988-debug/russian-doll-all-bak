@@ -317,6 +317,26 @@ static const ModelEntry g_models[] = {
      * onto these will fail per-message with a clear inline error
      * (send_to_openrouter()/send_to_tokenrouter() below), not silently. */
     { "google/gemma-4-26b-a4b-it:free", BACKEND_OPENROUTER },
+    /* REAL FIX 2026-08-18, direct live test (curl, real tool_calls
+     * response, not guessed): the entry above (gemma-4-26b-a4b-it:free)
+     * hit a real, live 429 - "temporarily rate-limited upstream...
+     * shared pool" (Google AI Studio's free-tier pool, congested at
+     * test time, not a key problem - confirmed by testing the SAME key
+     * against other free models seconds later, see below). Direct user
+     * report matches this exactly ("my key doesn't work with any
+     * openrouter agent apis for free"). Tested 3 other real, current
+     * (GET https://openrouter.ai/api/v1/models, 2026-08-18) ":free"
+     * models with the SAME real tools-array shape send_to_openrouter()
+     * already sends: z-ai/glm-5.2:free ALSO hit the same shared-pool
+     * 429; these two below both returned a real, live
+     * finish_reason:"tool_calls" response on the first try - added as
+     * more-reliable alternates, gemma entry kept (its congestion is
+     * plausibly temporary, not a reason to remove a previously-working
+     * model). Slugs, like the comment above already warns, rotate over
+     * time - re-verify with the same GET before assuming these are
+     * still live months from now. */
+    { "nvidia/nemotron-3.5-lightning:free", BACKEND_OPENROUTER },
+    { "cohere/north-mini-code:free", BACKEND_OPENROUTER },
     { "qwen/qwen3.8-max-free", BACKEND_TOKENROUTER }
 };
 static const int g_n_models = sizeof(g_models) / sizeof(g_models[0]);

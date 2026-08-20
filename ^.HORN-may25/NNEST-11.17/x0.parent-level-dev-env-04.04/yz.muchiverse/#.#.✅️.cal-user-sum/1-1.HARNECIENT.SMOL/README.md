@@ -62,6 +62,12 @@
 |---|---|---|
 | 16 | [DAY_19_THE_TELESCOPE.md](DAY_19_THE_TELESCOPE.md) | The Future — create events, move entities, fake time 0 A.D., endturn & ticker |
 
+### 🌐 Part VII — Working Without Claude's Tokens
+| Day | File | Subject |
+|---|---|---|
+| 25 | [DAY_25_BROWSER_PROMPTING.txt](DAY_25_BROWSER_PROMPTING.txt) | Browser Prompting — 3 files, 2 pages, no memory: the platform primer, delegation maps, a real worked example (the "cli" HQ row) |
+| 26 | [DAY_26_THE_LOCAL_FALLBACK.txt](DAY_26_THE_LOCAL_FALLBACK.txt) | The Local Fallback — gemma3:270m/1b + the Harnecient hack, measured 9/9, what to do when even free cloud APIs hit quota |
+
 ---
 
 ## 📜 The One-Line Dream (commit this to memory)

@@ -98,6 +98,10 @@
 .data-item.echo { color: #4dd0e1; }
 .data-item.nova { color: #e91e63; }
 .data-item.quill { color: #a1887f; }
+.data-item.theologian { color: #ff6b9d; }
+.data-item.daoist { color: #4dd0e1; }
+.data-item.evolutionist { color: #81c784; }
+.data-item.synthesist { color: #ba68c8; }
 
 /* Status indicator */
 .status-text {

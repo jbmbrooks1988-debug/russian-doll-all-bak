@@ -64,9 +64,22 @@
 
 #define SP_PATH_BUF KTB_PATH_BUF
 
-/* Matches tp_taskbar.c's own POLL_INTERVAL_USEC (300ms) for consistency
- * across all taskbar-family binaries, not an independently chosen value. */
-#define POLL_INTERVAL_USEC 300000
+/* REAL BUG FIX 2026-08-18 (same pass, same root cause as
+ * khtpm_taskbar_manager_main.c's own identical fix - see that file's own
+ * header comment for the full "staggering" investigation): a flat 300ms
+ * poll here chained with the manager's own flat 300ms poll meant a single
+ * agent-relay-injected action could take up to ~600ms round trip -
+ * confirmed live, ~173ms for this hop alone. TPMOS's real standard
+ * (!.TPMOS_ONBORD_BIBLE_10.md §3): usleep(16667) active / usleep(100000)
+ * idle - not a flat rate. NOTE this select() ALSO already blocks on the
+ * real X11 connection fd (xfd) below, so a REAL X11 keypress/click was
+ * NEVER affected by this constant at all (select() returns the instant an
+ * X event arrives, any Deadline notwithstanding) - this fix specifically
+ * speeds up the agent-relay/frame_changed_dirty() polling path, the one
+ * this session's own new ASCII taskbar mirror depends on. */
+#define POLL_INTERVAL_ACTIVE_USEC 16667
+#define POLL_INTERVAL_IDLE_USEC   100000
+#define ACTIVE_HOLD_TICKS 30 /* ~500ms held-active after the last real dispatch - same value/reasoning as the manager's own copy */
 
 /* ---------------------------------------------------------------------
  * strip_state.txt / strip_var_*.txt reader.
@@ -404,6 +417,45 @@ static void send_code(int code) {
     if (just_launched) usleep(150000);
     FILE *f = fopen(path, "a");
     if (f) { fprintf(f, "%d\n", code); fclose(f); }
+}
+
+/* REAL BUG FIX 2026-08-18, Phase 1 of the history.txt migration
+ * investigation (au11-hq/taskbar-history-txt-migration-investigation.md,
+ * direct user question: "we may even deprecate the relay in favor of same
+ * history.txt tpmos uses right?"): real X11 KeyPress/ButtonPress here
+ * still call dispatch_key_code()/hit-testing DIRECTLY, in-process,
+ * completely unchanged - this is an ADDITIVE, side-effect-only mirror
+ * write, nothing reads this file yet (confirmed by design in the
+ * investigation doc: "zero behavior risk"). Reuses the REAL, already-
+ * established KEY_PRESSED:/MOUSE_EVENT: format from pieces/keyboard/
+ * history.txt (confirmed via direct read of
+ * &.widgits/_shared-lib/system/chtpm_parser_pal.c's own poll loop) rather
+ * than inventing a new one - the ONE real addition is a window name field
+ * on MOUSE_EVENT (this parser owns 3 separate X11 windows simultaneously,
+ * unlike mutaclysm's single-window x11_mirror.c - see the investigation
+ * doc's own "three windows, not one" section), appended as a 5th field so
+ * a future reader can still parse the original 4-field mutaclysm format
+ * with %d %d %d %d and simply ignore trailing text if it doesn't care
+ * which window. Deliberately a NEW file
+ * (strip_input_history.txt), NOT livedesk_agent_relay.txt - writing real
+ * X11 input into the relay the ASCII mirror's poll_agent_relay() already
+ * consumes would immediately start feeding real keystrokes back through
+ * that consumer, which is explicitly NOT the intended shape. These
+ * functions are called on every real X11 event; poll_captured_input()
+ * reads them back once per tick. */
+static void mirror_key_history(int code) {
+    if (code <= 0) return;
+    char path[SP_PATH_BUF];
+    path_join2(path, sizeof(path), g_house_root, "#.desktop/strip_input_history.txt");
+    FILE *f = fopen(path, "a");
+    if (f) { fprintf(f, "KEY_PRESSED: %d\n", code); fclose(f); }
+}
+
+static void mirror_mouse_history(const char *window_name, int button, int x, int y) {
+    char path[SP_PATH_BUF];
+    path_join2(path, sizeof(path), g_house_root, "#.desktop/strip_input_history.txt");
+    FILE *f = fopen(path, "a");
+    if (f) { fprintf(f, "MOUSE_EVENT: %d %d %d 1 %s\n", button, x, y, window_name); fclose(f); }
 }
 
 static unsigned long parse_color(Display *dpy, const char *name, unsigned long fallback) {
@@ -822,6 +874,37 @@ static void dispatch_onclick(LayDoc *doc, int idx) {
  * ------------------------------------------------------------------- */
 static void dispatch_key_code(LayDoc *header_doc, LayDoc *bottom_doc, const SpState *st, int code) {
     if (code == KSC_ENTER) {
+        /* REAL BUG FIX 2026-08-18, found live-testing the ASCII taskbar
+         * mirror (debug-traced, not guessed - see this fix's own sibling
+         * comment on the KSC_HQ_HEADER_BASE branch below for the opening
+         * half of this same story): st->hq_open==1 (manager's real truth,
+         * confirmed via strip_state.txt) but header_doc->active_index==-1
+         * (this process's OWN local nav never got locally activated, since
+         * hq_open was set externally via the relay, not a local click) -
+         * yet header_doc->focus_index defaults to 0 (the header strip's
+         * own natural cursor position, pointing at the "HQ" cell button
+         * itself) and lay_is_navigable() on it returns true regardless.
+         * Without this guard, Enter fell all the way to the LAST existing
+         * branch below (dispatch_onclick(header_doc, 0)), which just
+         * re-sent KSC_HQ_HEADER_BASE+1 (re-opening cell 1) instead of
+         * activating whatever HQ item the manager's real hq_focus (set by
+         * relayed digits, see the KSC_HQ_HEADER_BASE branch's own comment)
+         * pointed at - confirmed live: hq_open stayed 1 forever, no
+         * command ever ran, no matter what digit was relayed first. This
+         * guard fires ONLY for exactly that mismatch (hq_open true, local
+         * active_index still -1) - a state a real X11 click can never
+         * produce (a real click that opens a cell ALWAYS also locally
+         * activates it via dispatch_onclick's own lay_activate() call) -
+         * so this is unreachable for real keyboard/mouse use, zero
+         * behavior change there. Forwards a bare KSC_ENTER the same
+         * unconditional way KSC_ESCAPE already does two branches down,
+         * letting the MANAGER's own dispatch_code() resolve it against
+         * ITS real state (hq_focus) instead of this process's stale local
+         * copy. */
+        if (st->hq_open && header_doc->active_index == -1) {
+            send_code(KSC_ENTER);
+            return;
+        }
         if (st->cliio_active) {
             send_code(KSC_ENTER); /* cli_io typing start/submit — manager-owned */
         } else if (header_doc->active_index != -1) {
@@ -842,6 +925,30 @@ static void dispatch_key_code(LayDoc *header_doc, LayDoc *bottom_doc, const SpSt
             dispatch_onclick(bottom_doc, bottom_doc->focus_index);
         } else if (lay_is_navigable(header_doc, header_doc->focus_index)) {
             dispatch_onclick(header_doc, header_doc->focus_index);
+        } else {
+            /* REAL BUG FIX 2026-08-18, same pass as the KSC_HQ_HEADER_BASE
+             * fix above, found live-testing the ASCII taskbar mirror:
+             * every branch above resolves Enter through THIS PROCESS's own
+             * LOCAL header_doc/bottom_doc navigation state (active_index/
+             * focus_index) - state that only a real X11 click/local nav
+             * keypress ever updates. An externally-injected
+             * KSC_HQ_HEADER_BASE+n code (the fix directly above) opens the
+             * HQ popup on the MANAGER side (hq_open becomes real, confirmed
+             * live via strip_state.txt) without ever touching this
+             * process's own local docs, so by the time Enter arrives every
+             * condition above is false and Enter was silently swallowed -
+             * confirmed live: hq_focus moved correctly via relayed digits,
+             * but activating that focused row via relayed Enter did
+             * nothing, no dispatch_onclick() call, no process launched.
+             * This final fallback ONLY fires when every real-X11-driven
+             * branch above would already have done nothing (zero behavior
+             * change for actual keyboard/mouse use) - forwards a bare
+             * KSC_ENTER the same unconditional way KSC_ESCAPE already does
+             * two branches down, letting the MANAGER's own dispatch_code()
+             * resolve it against ITS state (hq_open + hq_focus, or the
+             * bottom bar's own digit/focus state) instead of this
+             * process's now-known-to-be-out-of-sync local copy. */
+            send_code(KSC_ENTER);
         }
     } else if (code == KSC_ESCAPE) {
         send_code(KSC_ESCAPE); /* manager: closes cliio, or hq_open, or clears digit_buf */
@@ -851,6 +958,71 @@ static void dispatch_key_code(LayDoc *header_doc, LayDoc *bottom_doc, const SpSt
         }
     } else if (code == KSC_BACKSPACE) {
         send_code(KSC_BACKSPACE);
+    } else if (code == KSC_FOCUS_LEFT || code == KSC_FOCUS_RIGHT) {
+        /* REAL BUG FIX 2026-08-18, direct user request ("index input jump
+         * arrow control like chtpm parsers are used to having"): a REAL
+         * physical arrow key here NEVER reaches this function at all
+         * outside cli-io typing (confirmed by direct read of the KeyPress
+         * handler below - XK_Left/XK_Right/XK_Up/XK_Down call
+         * unified_step()/lay_focus_delta() DIRECTLY, entirely local to
+         * THIS process's own g_nav_focus - dispatch_key_code() is never
+         * involved for the real GUI's own arrow nav). The MANAGER's own
+         * dispatch_code() already has a fully correct, already-written
+         * KSC_FOCUS_LEFT/RIGHT branch (ktb_nav_focus_delta(), unifying
+         * strip_focus_cell/tab_focus_idx into one cursor exactly like this
+         * process's own g_nav_focus does locally) - it simply had no real
+         * caller before this fix (only reachable via cli-io typing, a
+         * different code path entirely). Forwarding here doesn't change
+         * ANY real-keyboard behavior (arrows still take the local
+         * unified_step() path for the GUI, unchanged) - it gives the
+         * ASCII taskbar mirror (which has no local doc/g_nav_focus of its
+         * own, only ever reads the MANAGER's published strip_state.txt) a
+         * real way to move strip_focus_cell, the exact field this
+         * project's own khtpm_strip_render_ascii.c already reads to draw
+         * "[>]" on the strip. */
+        send_code(code);
+        /* BUG FIX 2026-08-19 (direct live report, "arrow key still isn't
+         * moving visibly" in the CLI ASCII mirror): the send_code() above
+         * moves the MANAGER's own strip_focus_cell (published to
+         * strip_state.txt) - but the comment this branch was added under
+         * claimed that's "the exact field khtpm_strip_render_ascii.c
+         * already reads to draw [>]", which is FALSE (confirmed by direct
+         * read of that file - it never touches strip_focus_cell at all).
+         * The actual field the ASCII mirror's cursor comes from is
+         * header_doc/bottom_doc.focus_index, which is ONLY ever set by
+         * THIS process's own unified_apply(), which is ONLY ever driven
+         * by g_nav_focus - a variable send_code() never touches. Debugged
+         * live: injected KSC_FOCUS_LEFT via the relay, confirmed
+         * strip_focus_cell moved in strip_state.txt, confirmed
+         * strip_frame.cells.pdl's [>] mark did NOT move - two separate,
+         * unsynced "focus" trackers. Calling the SAME unified_step() a
+         * real X11 arrow keypress already calls (see the KeyPress handler
+         * below) closes the loop: both trackers now move together,
+         * regardless of whether the arrow came from a real keypress or
+         * the relay. */
+        unified_step(header_doc, bottom_doc, code == KSC_FOCUS_LEFT ? -1 : 1);
+    } else if (code >= KSC_HQ_HEADER_BASE && code < KSC_HQ_HEADER_BASE + KTB_STRIP_N_CELLS + 1) {
+        /* REAL BUG FIX 2026-08-18, direct user request (an ASCII terminal
+         * mirror of the taskbar, "fully interactive" per direct instruction)
+         * exposed a genuine, pre-existing gap: this function's own header
+         * comment ("Arrow-key nav... stays real-X11-only... digits are how
+         * the relay navigates") documents that the relay was deliberately
+         * scoped to ENTER/ESCAPE/BACKSPACE/printable only, with no way to
+         * open a header cell's HQ popup (KSC_HQ_HEADER_BASE+n) at all -
+         * dispatch_onclick()'s own ACTIVATE branch (~line 736-743) calls
+         * send_code(KSC_HQ_HEADER_BASE + n) directly, with NO local
+         * header_doc/bottom_doc state dependency, when a header cell is
+         * clicked/entered for real - so forwarding an agent-supplied code
+         * in this same range straight to send_code() is not a new
+         * capability being invented, it's exposing the exact same
+         * manager-bound call the real X11 path already makes, through the
+         * one relay that didn't yet carry it. The manager's own
+         * dispatch_code() (khtpm_taskbar_manager_main.c) already handles
+         * this range unconditionally regardless of current hq_open state
+         * (see its own KSC_HQ_HEADER_BASE branch, both inside and outside
+         * the hq_open block) - nothing on the manager side needed to
+         * change. */
+        send_code(code);
     } else if (code >= 0x20 && code < 0x7f) {
         send_code(code);
     }
@@ -1153,6 +1325,56 @@ static int format_cell(LayDoc *doc, int idx, int nav_n, char *out, size_t outsz)
     return w;
 }
 
+/* --- cells.pdl writer (2026-08-19, frame unification) ---
+ * Collects per-cell records during the draw pass and writes them
+ * atomically to #.desktop/strip_frame.cells.pdl for the ASCII
+ * renderer to consume. One CELL record per visible button/tab/popup
+ * row. Schema: CELL | idx=N region=... | ch=... fg=... bg=... focused=0|1 */
+#define CELLS_MAX 128
+#define CELL_CH_MAX 192
+typedef struct { int idx; int focused; char region[8]; char ch[CELL_CH_MAX]; } CellRec;
+static CellRec g_cells[CELLS_MAX];
+static int g_cells_n = 0;
+
+static void cell_append(int idx, const char *region, const char *ch, int focused) {
+    if (g_cells_n >= CELLS_MAX) return;
+    CellRec *c = &g_cells[g_cells_n++];
+    c->idx = idx;
+    c->focused = focused;
+    snprintf(c->region, sizeof(c->region), "%s", region);
+    snprintf(c->ch, sizeof(c->ch), "%s", ch);
+}
+
+static void flush_cells_pdl(const char *house_root) {
+    char tmp[SP_PATH_BUF], dst[SP_PATH_BUF];
+    path_join2(tmp, sizeof(tmp), house_root, "#.desktop/strip_frame.cells.pdl.tmp");
+    path_join2(dst, sizeof(dst), house_root, "#.desktop/strip_frame.cells.pdl");
+    FILE *f = fopen(tmp, "w");
+    if (!f) return;
+    for (int i = 0; i < g_cells_n; i++) {
+        CellRec *c = &g_cells[i];
+        fprintf(f, "CELL | idx=%d region=%s | ch=%s fg=default bg=default focused=%d\n",
+                c->idx, c->region, c->ch, c->focused);
+    }
+    fclose(f);
+    rename(tmp, dst);
+    /* Signal the ASCII renderer (size-append, matching existing convention).
+     * BUG FIX 2026-08-19: this used to touch strip_frame_changed.txt, which
+     * is ALSO the file frame_changed_dirty() polls to decide whether to
+     * reload/reparse the layout docs from disk. Since this function runs
+     * every tick, that collision made was_dirty true constantly, forcing a
+     * doc reload every tick — which silently wiped local, never-persisted
+     * arrow-key submenu focus (lay_focus_delta()) back to its reload-time
+     * default each cycle ("arrow nav in a submenu immediately jumps back
+     * to 1"). Digit/click dispatch survived because it round-trips through
+     * the manager's own published state instead of living only in memory.
+     * Renamed to a dedicated signal file so the two concerns don't collide. */
+    char sig[SP_PATH_BUF];
+    path_join2(sig, sizeof(sig), house_root, "#.desktop/strip_cells_changed.txt");
+    FILE *sf = fopen(sig, "a");
+    if (sf) { fputc('x', sf); fclose(sf); }
+}
+
 /* Dry-run width sum (root-level buttons only, cli_io excluded) — used both
  * for initial hq_win sizing and as the header_w basis inside the real draw
  * function, mirroring the old compute_header_width()/header_cell_width()
@@ -1259,6 +1481,7 @@ static void draw_header_win(Display *dpy, Window win, GC gc, LayDoc *doc, SpStat
             text_x = header_w + TAB_SPRITE_PX + 10;
         }
         strip_draw_utf8(dpy, DefaultScreen(dpy), g_hq_xft, fg, text_x, KTB_BAR_H / 2 + 4, disp, (int)strlen(disp));
+        cell_append(cell_n - 1, "header", disp, (i == doc->focus_index));
         if (g_header_hit_n < SP_MAX_HIT) {
             SpHitRect *r = &g_header_hits[g_header_hit_n++];
             r->x0 = header_w; r->x1 = header_w + cw; r->y0 = 0; r->y1 = KTB_BAR_H; r->elidx = i;
@@ -1409,6 +1632,7 @@ static int draw_popup_win(Display *dpy, Window win, GC gc, LayDoc *doc, SpState 
         else
             snprintf(row0, sizeof(row0), "%s %s: [%s]  (Enter=edit, Esc=cancel)", pref, st->cliio_label, st->cliio_buffer);
         strip_draw_utf8(dpy, DefaultScreen(dpy), g_popup_xft, fg, 8, KTB_BAR_H / 2 + 4, row0, (int)strlen(row0));
+        cell_append(doc->active_index, "popup", row0, 1);
         if (g_popup_hit_n < SP_MAX_HIT) {
             SpHitRect *r = &g_popup_hits[g_popup_hit_n++];
             r->x0 = 0; r->x1 = w; r->y0 = 0; r->y1 = KTB_BAR_H; r->elidx = doc->active_index;
@@ -1422,6 +1646,7 @@ static int draw_popup_win(Display *dpy, Window win, GC gc, LayDoc *doc, SpState 
             char lab[192];
             snprintf(lab, sizeof(lab), "%s %d. %s", lay_cursor_prefix(doc, row_elidx[r]), r + 1, label);
             strip_draw_utf8(dpy, DefaultScreen(dpy), g_popup_xft, fg, 12, row_y + KTB_BAR_H / 2 + 4, lab, (int)strlen(lab));
+            cell_append(row_elidx[r], "popup", lab, (row_elidx[r] == doc->focus_index));
             if (g_popup_hit_n < SP_MAX_HIT) {
                 SpHitRect *hr = &g_popup_hits[g_popup_hit_n++];
                 hr->x0 = 0; hr->x1 = w; hr->y0 = row_y; hr->y1 = row_y + KTB_BAR_H; hr->elidx = row_elidx[r];
@@ -1491,6 +1716,7 @@ static void draw_bottom(Display *dpy, Window win, GC gc, int sw, unsigned long b
                 text_x = x + 8 + TAB_SPRITE_PX;
             }
             strip_draw_utf8(dpy, DefaultScreen(dpy), g_strip_xft, fg, text_x, KTB_BAR_H / 2 + 4, lab, (int)strlen(lab));
+            cell_append(ci, "bottom", lab, (ci == doc->focus_index));
             if (g_bottom_hit_n < SP_MAX_HIT) {
                 SpHitRect *r = &g_bottom_hits[g_bottom_hit_n++];
                 r->x0 = x; r->x1 = x + w; r->y0 = 0; r->y1 = KTB_BAR_H; r->elidx = ci;
@@ -1653,7 +1879,139 @@ static void sync_popup_focus(LayDoc *header_doc, const SpState *st) {
     if (target >= 0) header_doc->focus_index = target;
 }
 
+/* ---------------------------------------------------------------------
+ * Capture→dispatch functions (extracted 2026-08-18, old inline dispatch
+ * path deleted 2026-08-19): faithful, verbatim extractions of the real
+ * KeyPress/ButtonPress handler logic that was live in main() (copied,
+ * not rewritten — including the real, existing ASYMMETRY between the
+ * three ButtonPress handlers: hq_win/popup_win's right-click is gated
+ * on `!g_st.cliio_active`, win's is NOT — preserved exactly, not
+ * "cleaned up", per this session's own established discipline of never
+ * silently fixing something while refactoring it).
+ * These are now the sole dispatch path: called from the deferred
+ * read-back pass over strip_input_history.txt (poll_captured_input()),
+ * matching TPMOS's "capture → replay → render once" shape.
+ * ------------------------------------------------------------------- */
+/* g_new_dispatch_mode removed 2026-08-19: old inline-dispatch path deleted,
+ * always-run capture→poll_captured_input() path is now the only path. */
+
+static void apply_captured_key(LayDoc *header_doc, LayDoc *bottom_doc, SpState *st, int code) {
+    if (code == KSC_FOCUS_LEFT) {
+        if (header_doc->active_index != -1) lay_focus_delta(header_doc, -1);
+        else unified_step(header_doc, bottom_doc, -1);
+    } else if (code == KSC_FOCUS_RIGHT) {
+        if (header_doc->active_index != -1) lay_focus_delta(header_doc, 1);
+        else unified_step(header_doc, bottom_doc, 1);
+    } else if (code == KSC_ENTER || code == KSC_ESCAPE || code == KSC_BACKSPACE ||
+               (code >= 0x20 && code < 0x7f)) {
+        dispatch_key_code(header_doc, bottom_doc, st, code);
+    }
+}
+
+static void apply_captured_mouse(LayDoc *header_doc, LayDoc *bottom_doc, SpState *st,
+                                  Display *dpy, Window hq_win, Window popup_win, Window win,
+                                  const char *window_name, int button, int x, int y) {
+    if (strcmp(window_name, "hq_win") == 0) {
+        if (button == 3) {
+            if (!st->cliio_active) { send_code(KSC_NAV_ARM); g_nav_focus = 0; unified_apply(header_doc, bottom_doc); taskbar_soft_focus(dpy, hq_win); }
+        } else {
+            int elidx = hit_test(g_header_hits, g_header_hit_n, x, y);
+            if (elidx >= 0) {
+                header_doc->focus_index = elidx;
+                g_nav_focus = root_nav_pos_of(header_doc, elidx);
+                dispatch_onclick(header_doc, elidx);
+                taskbar_soft_focus(dpy, hq_win);
+            }
+        }
+    } else if (strcmp(window_name, "popup_win") == 0) {
+        if (button == 3) {
+            if (!st->cliio_active) { send_code(KSC_NAV_ARM); g_nav_focus = 0; unified_apply(header_doc, bottom_doc); taskbar_soft_focus(dpy, popup_win); }
+        } else {
+            int elidx = hit_test(g_popup_hits, g_popup_hit_n, x, y);
+            if (elidx >= 0) {
+                if (strcmp(header_doc->elements[elidx].type, "cli_io") == 0) {
+                    send_code(KSC_ENTER);
+                } else {
+                    header_doc->focus_index = elidx;
+                    dispatch_onclick(header_doc, elidx);
+                }
+                taskbar_soft_focus(dpy, popup_win);
+            }
+        }
+    } else if (strcmp(window_name, "win") == 0) {
+        if (button == 3) {
+            /* REAL, EXISTING ASYMMETRY (preserved, not fixed): no
+             * !st->cliio_active guard here, unlike the two branches
+             * above - matches main()'s own current, live behavior
+             * exactly. */
+            send_code(KSC_NAV_ARM);
+            g_nav_focus = 0;
+            unified_apply(header_doc, bottom_doc);
+            taskbar_soft_focus(dpy, win);
+        } else {
+            int elidx = hit_test(g_bottom_hits, g_bottom_hit_n, x, y);
+            if (elidx >= 0) {
+                bottom_doc->focus_index = elidx;
+                g_nav_focus = root_nav_count(header_doc) + root_nav_pos_of(bottom_doc, elidx);
+                dispatch_onclick(bottom_doc, elidx);
+            }
+            }
+        }
+        if (g_cells_n > 0) flush_cells_pdl(g_house_root);
+    }
+
+/* Read-back pass: parses strip_input_history.txt's own KEY_PRESSED:/
+ * MOUSE_EVENT: lines (the exact format mirror_key_history()/
+ * mirror_mouse_history() write). Cursor/truncation-resync discipline
+ * matches poll_agent_relay()'s own real precedent (never replay backlog
+ * on first call, resync without replay on truncation). Returns the
+ * number of events applied so the caller knows whether a redraw is
+ * needed. */
+static long g_capture_cursor = -1;
+
+static int poll_captured_input(LayDoc *header_doc, LayDoc *bottom_doc, SpState *st,
+                                Display *dpy, Window hq_win, Window popup_win, Window win) {
+    char path[SP_PATH_BUF];
+    path_join2(path, sizeof(path), g_house_root, "#.desktop/strip_input_history.txt");
+    struct stat stt;
+    if (stat(path, &stt) != 0) return 0;
+    if (g_capture_cursor < 0) { g_capture_cursor = stt.st_size; return 0; }
+    if (stt.st_size < g_capture_cursor) { g_capture_cursor = stt.st_size; return 0; }
+    if (stt.st_size == g_capture_cursor) return 0;
+
+    FILE *f = fopen(path, "r");
+    if (!f) return 0;
+    fseek(f, g_capture_cursor, SEEK_SET);
+    char line[SP_PATH_BUF];
+    long consumed = g_capture_cursor;
+    int n_applied = 0;
+    while (fgets(line, sizeof(line), f)) {
+        char *nl = strchr(line, '\n');
+        if (!nl) break; /* partial line at EOF - wait for the rest next poll */
+        *nl = '\0';
+        long here = ftell(f);
+        char *kp = strstr(line, "KEY_PRESSED: ");
+        char *me = strstr(line, "MOUSE_EVENT: ");
+        if (kp) {
+            int code = atoi(kp + 13);
+            if (code > 0) { apply_captured_key(header_doc, bottom_doc, st, code); n_applied++; }
+        } else if (me) {
+            int button = 0, x = 0, y = 0, is_press = 0;
+            char wname[64] = "";
+            if (sscanf(me + 13, "%d %d %d %d %63s", &button, &x, &y, &is_press, wname) == 5 && is_press) {
+                apply_captured_mouse(header_doc, bottom_doc, st, dpy, hq_win, popup_win, win, wname, button, x, y);
+                n_applied++;
+            }
+        }
+        consumed = here;
+    }
+    fclose(f);
+    g_capture_cursor = consumed;
+    return n_applied;
+}
+
 int main(int argc, char **argv) {
+    /* KHTPM_NEW_DISPATCH_MODE removed 2026-08-19: old inline-dispatch path deleted */
     if (argc < 2) {
         fprintf(stderr, "Usage: khtpm_strip_parser <house_root>\n");
         return 1;
@@ -1797,6 +2155,7 @@ int main(int argc, char **argv) {
     set_window_opacity(dpy, popup_win, load_theme_opacity());
     int popup_mapped = 0;
 
+    g_cells_n = 0;
     draw_bottom(dpy, win, gc, sw, bg, &bottom_doc);
     draw_header_win(dpy, hq_win, gc, &header_doc, &g_st);
     if (draw_popup_win(dpy, popup_win, gc, &header_doc, &g_st, hq_win_x, hq_win_y)) {
@@ -1804,6 +2163,7 @@ int main(int argc, char **argv) {
         popup_mapped = 1;
         draw_popup_win(dpy, popup_win, gc, &header_doc, &g_st, hq_win_x, hq_win_y);
     }
+    if (g_cells_n > 0) flush_cells_pdl(g_house_root);
 
     taskbar_soft_focus(dpy, win);
 
@@ -1832,10 +2192,13 @@ int main(int argc, char **argv) {
     set_window_opacity(dpy, popup_win, relaunch_opacity);
     XFlush(dpy);
 
+    int active_ticks = ACTIVE_HOLD_TICKS; /* start hot, same reasoning as the manager's own copy */
     while (g_running) {
+        g_cells_n = 0;
         reap_manager_nonblocking();
 
-        if (frame_changed_dirty()) {
+        int was_dirty = frame_changed_dirty();
+        if (was_dirty) {
             load_state(&g_st);
             lay_reload_preserving_scope(&header_doc, header_path, sp_get_var, &g_st);
             lay_reload_preserving_scope(&bottom_doc, bottom_path, sp_get_var, &g_st);
@@ -1897,7 +2260,8 @@ int main(int argc, char **argv) {
          * necessity as the real KeyPress handler below: a relay-driven
          * LOCAL state change (lay_back()/dispatch_onclick()'s ACTIVATE
          * branch) doesn't touch strip_frame_changed.txt either. */
-        if (poll_agent_relay(g_house_root, &header_doc, &bottom_doc, &g_st) > 0) {
+        int n_relay_dispatched = poll_agent_relay(g_house_root, &header_doc, &bottom_doc, &g_st);
+        if (n_relay_dispatched > 0) {
             draw_bottom(dpy, win, gc, sw, bg, &bottom_doc);
             draw_header_win(dpy, hq_win, gc, &header_doc, &g_st);
             if (draw_popup_win(dpy, popup_win, gc, &header_doc, &g_st, hq_win_x, hq_win_y)) {
@@ -1912,65 +2276,27 @@ int main(int argc, char **argv) {
             }
         }
 
+        if (was_dirty || n_relay_dispatched > 0) active_ticks = ACTIVE_HOLD_TICKS;
+        else if (active_ticks > 0) active_ticks--;
+        int poll_interval = active_ticks > 0 ? POLL_INTERVAL_ACTIVE_USEC : POLL_INTERVAL_IDLE_USEC;
+
         fd_set fds;
         FD_ZERO(&fds);
         int xfd = ConnectionNumber(dpy);
         FD_SET(xfd, &fds);
-        struct timeval tv = { 0, POLL_INTERVAL_USEC };
+        struct timeval tv = { 0, poll_interval };
+        if (g_cells_n > 0) flush_cells_pdl(g_house_root);
         select(xfd + 1, &fds, NULL, NULL, &tv);
 
         while (XPending(dpy)) {
             XEvent ev;
             XNextEvent(dpy, &ev);
             if (ev.type == ButtonPress && ev.xbutton.window == hq_win) {
-                if (ev.xbutton.button == 3) {
-                    /* Matches tp_taskbar.c's own unconditional "nav_focus = 0"
-                     * on EITHER window's right-click (~lines 3694/3731,
-                     * direct comment: "header gets priority [>] focus") —
-                     * right-click always arms the UNIFIED cursor at
-                     * position 0 (header cell 1), regardless of which
-                     * window was clicked; the whole point of unifying
-                     * header+bottom into one index is that arrow keys can
-                     * then walk from there into the OTHER window too. */
-                    if (!g_st.cliio_active) { send_code(KSC_NAV_ARM); g_nav_focus = 0; unified_apply(&header_doc, &bottom_doc); taskbar_soft_focus(dpy, hq_win); }
-                } else {
-                    int elidx = hit_test(g_header_hits, g_header_hit_n, ev.xbutton.x, ev.xbutton.y);
-                    if (elidx >= 0) {
-                        header_doc.focus_index = elidx;
-                        g_nav_focus = root_nav_pos_of(&header_doc, elidx);
-                        dispatch_onclick(&header_doc, elidx);
-                        taskbar_soft_focus(dpy, hq_win);
-                    }
-                }
+                mirror_mouse_history("hq_win", ev.xbutton.button, ev.xbutton.x, ev.xbutton.y);
             } else if (ev.type == ButtonPress && ev.xbutton.window == popup_win) {
-                if (ev.xbutton.button == 3) {
-                    if (!g_st.cliio_active) { send_code(KSC_NAV_ARM); g_nav_focus = 0; unified_apply(&header_doc, &bottom_doc); taskbar_soft_focus(dpy, popup_win); }
-                } else {
-                    int elidx = hit_test(g_popup_hits, g_popup_hit_n, ev.xbutton.x, ev.xbutton.y);
-                    if (elidx >= 0) {
-                        if (strcmp(header_doc.elements[elidx].type, "cli_io") == 0) {
-                            send_code(KSC_ENTER); /* start/submit typing — manager-owned state */
-                        } else {
-                            header_doc.focus_index = elidx;
-                            dispatch_onclick(&header_doc, elidx);
-                        }
-                        taskbar_soft_focus(dpy, popup_win);
-                    }
-                }
+                mirror_mouse_history("popup_win", ev.xbutton.button, ev.xbutton.x, ev.xbutton.y);
             } else if (ev.type == ButtonPress && ev.xbutton.window == win) {
-                if (ev.xbutton.button == 3) {
-                    send_code(KSC_NAV_ARM);
-                    g_nav_focus = 0;
-                    unified_apply(&header_doc, &bottom_doc);
-                    taskbar_soft_focus(dpy, win);
-                } else {
-                    int elidx = hit_test(g_bottom_hits, g_bottom_hit_n, ev.xbutton.x, ev.xbutton.y);
-                    if (elidx >= 0) {
-                        bottom_doc.focus_index = elidx;
-                        g_nav_focus = root_nav_count(&header_doc) + root_nav_pos_of(&bottom_doc, elidx);
-                        dispatch_onclick(&bottom_doc, elidx);
-                    }
-                }
+                mirror_mouse_history("win", ev.xbutton.button, ev.xbutton.x, ev.xbutton.y);
             } else if (ev.type == FocusIn) {
                 g_has_real_focus = 1;
             } else if (ev.type == FocusOut) {
@@ -1978,51 +2304,33 @@ int main(int argc, char **argv) {
             } else if (ev.type == KeyPress) {
                 KeySym ks = XLookupKeysym(&ev.xkey, 0);
                 if (ks == XK_Left || ks == XK_Up) {
-                    if (header_doc.active_index != -1) lay_focus_delta(&header_doc, -1);
-                    else unified_step(&header_doc, &bottom_doc, -1);
+                    mirror_key_history(KSC_FOCUS_LEFT);
                 } else if (ks == XK_Right || ks == XK_Down) {
-                    if (header_doc.active_index != -1) lay_focus_delta(&header_doc, 1);
-                    else unified_step(&header_doc, &bottom_doc, 1);
+                    mirror_key_history(KSC_FOCUS_RIGHT);
                 } else if (ks == XK_Return) {
-                    /* Unified focus fix: Enter must dispatch against
-                     * whichever doc the unified cursor is CURRENTLY
-                     * derived onto — header OR bottom, not header always
-                     * (a tab reached by arrowing down from the header
-                     * needs Enter to activate the TAB, matching legacy's
-                     * own "empty digit_buf: activate focused button OR
-                     * tab" Enter branch). Shared with poll_agent_relay()
-                     * via dispatch_key_code() — see that function's own
-                     * header comment for why sharing (not duplicating,
-                     * unlike legacy) is the right call here. */
-                    dispatch_key_code(&header_doc, &bottom_doc, &g_st, KSC_ENTER);
+                    mirror_key_history(KSC_ENTER);
                 } else if (ks == XK_Escape) {
-                    dispatch_key_code(&header_doc, &bottom_doc, &g_st, KSC_ESCAPE);
+                    mirror_key_history(KSC_ESCAPE);
                 } else if (ks == XK_BackSpace) {
-                    dispatch_key_code(&header_doc, &bottom_doc, &g_st, KSC_BACKSPACE);
+                    mirror_key_history(KSC_BACKSPACE);
                 } else {
                     char buf[8] = {0};
-                    if (XLookupString(&ev.xkey, buf, sizeof(buf), &ks, NULL) > 0) {
+                    KeySym ks2;
+                    if (XLookupString(&ev.xkey, buf, sizeof(buf), &ks2, NULL) > 0) {
                         unsigned char c = (unsigned char)buf[0];
-                        if (c >= 0x20 && c < 0x7f) dispatch_key_code(&header_doc, &bottom_doc, &g_st, (int)c);
+                        if (c >= 0x20 && c < 0x7f) mirror_key_history((int)c);
                     }
                 }
-                /* Real bug fix (2026-08-11, direct live report: "nav has
-                 * focus but the selector isn't moving from arrow or
-                 * digits yet"): arrow/Escape/local-ACTIVATE-Enter key
-                 * handling above only ever changes header_doc's own
-                 * in-memory focus_index/active_index — a purely LOCAL
-                 * state change, no manager round-trip. But every redraw
-                 * call in this whole file lived inside the
-                 * frame_changed_dirty() block, gated entirely on the
-                 * MANAGER's own strip_frame_changed.txt signal — a local
-                 * key press never touched that file, so the screen never
-                 * updated to reflect the cursor's real (correct, in
-                 * memory) new position. Explicit redraw right here closes
-                 * the gap, matching the same draw+map/unmap pattern the
-                 * frame_changed_dirty() block already uses. draw_bottom()
-                 * included too now that unified_step() can move focus
-                 * into the bottom bar directly from a header-window key
-                 * press. */
+            }
+        }
+
+        /* Read-back-and-dispatch-all pass: runs ONCE per tick after ALL
+         * real XPending() events this tick have been captured (write-only,
+         * above) - matches game_dispatch.c's own real, proven "read all,
+         * dispatch each, render once" shape. */
+        {
+            int n_captured = poll_captured_input(&header_doc, &bottom_doc, &g_st, dpy, hq_win, popup_win, win);
+            if (n_captured > 0) {
                 draw_bottom(dpy, win, gc, sw, bg, &bottom_doc);
                 draw_header_win(dpy, hq_win, gc, &header_doc, &g_st);
                 if (draw_popup_win(dpy, popup_win, gc, &header_doc, &g_st, hq_win_x, hq_win_y)) {

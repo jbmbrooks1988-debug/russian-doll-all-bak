@@ -72,14 +72,7 @@ case "$ACTION" in
         # SAVE_AS into an ephemeral session-local directory that gets
         # rm -rf'd on exit instead of the durable house-level docs/.
 
-        ln -sfn "$SCRIPT_DIR/system" "$SESSION_DIR/system"
-        ln -sfn "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"
-        ln -sfn "$SCRIPT_DIR/pal" "$SESSION_DIR/pal"
-        ln -sfn "$SCRIPT_DIR/manager" "$SESSION_DIR/manager"
-        ln -sfn "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt"
-        ln -sfn "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm"
-        ln -sfn "$SCRIPT_DIR/pieces/registry" "$SESSION_DIR/pieces/registry" 2>/dev/null || true
-        ln -sfn "$SCRIPT_DIR/docs" "$SESSION_DIR/docs"
+        # No symlinks — C processes resolve shared/persistent files via PRISC_PROJECT_ROOT env var
 
         cd "$SESSION_DIR"
         : > pieces/apps/player_app/interact_relay.txt
@@ -112,7 +105,7 @@ project_id=agy-txt
 active_target_id=editor
 EOSTATE
 
-        export PRISC_PROJECT_ROOT="$SESSION_DIR"
+        export PRISC_PROJECT_ROOT="$SCRIPT_DIR"
         export PRISC_PROJECT_ID="agy-txt"
 
         if [ -x "./ops/+x/agy_compose_view.+x" ]; then

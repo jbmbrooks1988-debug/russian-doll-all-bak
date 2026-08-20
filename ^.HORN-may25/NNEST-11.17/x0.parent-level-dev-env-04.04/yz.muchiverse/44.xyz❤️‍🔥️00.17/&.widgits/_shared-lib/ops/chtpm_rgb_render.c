@@ -78,11 +78,17 @@
 #define MAX_TEXT_ROWS (FRAME_H / GLYPH_H)
 
 static char project_root[MAX_PATH] = ".";
+static char session_root[MAX_PATH] = ".";
 
 static void resolve_root(void) {
+    /* session_root is always CWD — session-specific files (pieces/display)
+     * live here, written by this daemon and chtpm_parser_pal.c */
+    if (!getcwd(session_root, sizeof(session_root))) snprintf(session_root, sizeof(session_root), ".");
+    /* project_root points at the persistent project root for shared/persistent
+     * files (pieces/registry, system/, pal/, hero_01/, world_01/, etc.) */
     const char *env = getenv("PRISC_PROJECT_ROOT");
     if (env && env[0]) { snprintf(project_root, sizeof(project_root), "%s", env); return; }
-    if (!getcwd(project_root, sizeof(project_root))) snprintf(project_root, sizeof(project_root), ".");
+    snprintf(project_root, sizeof(project_root), "%s", session_root);
 }
 
 /* Direct port of ops/compose_rgb_frame.c's own load_glyphs()/
@@ -640,8 +646,8 @@ static int read_kv_int_generic(const char *path, const char *key, int def) {
  * pure opt-in. */
 static void blit_overlay(unsigned char fb[FRAME_H][FRAME_W][4], int y0) {
     char overlay_path[PATH_BUF], receipt_path[PATH_BUF];
-    snprintf(overlay_path, sizeof(overlay_path), "%s/pieces/display/rgb_frame_3d_overlay.raw", project_root);
-    snprintf(receipt_path, sizeof(receipt_path), "%s/pieces/display/rgb_frame_3d_overlay.receipt.txt", project_root);
+    snprintf(overlay_path, sizeof(overlay_path), "%s/pieces/display/rgb_frame_3d_overlay.raw", session_root);
+    snprintf(receipt_path, sizeof(receipt_path), "%s/pieces/display/rgb_frame_3d_overlay.receipt.txt", session_root);
     int ov_w = read_kv_int_generic(receipt_path, "overlay_w", 0);
     int ov_h = read_kv_int_generic(receipt_path, "overlay_h", 0);
     if (ov_w <= 0 || ov_h <= 0) return;
@@ -706,7 +712,7 @@ static void render_once(unsigned char fb[FRAME_H][FRAME_W][4], const char *frame
             /* MAP3D_MARKER - see blit_overlay()'s own header comment.
              * Don't rasterize the marker itself. */
             char receipt_path[PATH_BUF];
-            snprintf(receipt_path, sizeof(receipt_path), "%s/pieces/display/rgb_frame_3d_overlay.receipt.txt", project_root);
+            snprintf(receipt_path, sizeof(receipt_path), "%s/pieces/display/rgb_frame_3d_overlay.receipt.txt", session_root);
             int ov_h = read_kv_int_generic(receipt_path, "overlay_h", 0);
             int skip_rows = (ov_h > 0) ? (ov_h + GLYPH_H - 1) / GLYPH_H : 0;
 
@@ -735,10 +741,10 @@ int main(void) {
 
     char frame_path[PATH_BUF], pulse_path[PATH_BUF];
     char out_path[PATH_BUF], receipt_path[PATH_BUF], rgb_pulse_path[PATH_BUF];
-    snprintf(frame_path, sizeof(frame_path), "%s/pieces/display/current_frame.txt", project_root);
-    snprintf(pulse_path, sizeof(pulse_path), "%s/pieces/display/frame_changed.txt", project_root);
-    snprintf(out_path, sizeof(out_path), "%s/pieces/display/rgb_frame.raw", project_root);
-    snprintf(receipt_path, sizeof(receipt_path), "%s/pieces/display/rgb_frame.receipt.txt", project_root);
+    snprintf(frame_path, sizeof(frame_path), "%s/pieces/display/current_frame.txt", session_root);
+    snprintf(pulse_path, sizeof(pulse_path), "%s/pieces/display/frame_changed.txt", session_root);
+    snprintf(out_path, sizeof(out_path), "%s/pieces/display/rgb_frame.raw", session_root);
+    snprintf(receipt_path, sizeof(receipt_path), "%s/pieces/display/rgb_frame.receipt.txt", session_root);
     /* REAL FIX (direct user redirect: "wraith creates a rgb file that
      * rgb parser simply reads. aren't we doing the same? if so, check
      * the receipts" - checking them found this): real wraith_gl.c
@@ -759,7 +765,7 @@ int main(void) {
      * fire again. Fixed by growing this SEPARATE file, matching
      * wraith's own naming, only once a real new rgb_frame.raw is
      * actually complete - gl_mirror.c now watches THIS instead. */
-    snprintf(rgb_pulse_path, sizeof(rgb_pulse_path), "%s/pieces/display/rgb_frame_changed.txt", project_root);
+    snprintf(rgb_pulse_path, sizeof(rgb_pulse_path), "%s/pieces/display/rgb_frame_changed.txt", session_root);
 
     /* REAL BUG FIX (user-reported "GL window lagged behind one frame for
      * transition" - wsr-pal): a module-driven screen change (chtpm
@@ -801,7 +807,7 @@ int main(void) {
      * handles the "is the write actually finished" concern for either
      * trigger identically. */
     char renderer_pulse_path[PATH_BUF];
-    snprintf(renderer_pulse_path, sizeof(renderer_pulse_path), "%s/pieces/display/renderer_pulse.txt", project_root);
+    snprintf(renderer_pulse_path, sizeof(renderer_pulse_path), "%s/pieces/display/renderer_pulse.txt", session_root);
 
     static unsigned char fb[FRAME_H][FRAME_W][4];
 

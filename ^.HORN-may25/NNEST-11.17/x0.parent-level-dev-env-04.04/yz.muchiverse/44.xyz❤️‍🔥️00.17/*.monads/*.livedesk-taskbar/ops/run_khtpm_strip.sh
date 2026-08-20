@@ -45,8 +45,11 @@ case "$ACTION" in
         sh "$SCRIPT_DIR/build_khtpm_strip.sh" || { echo "BUILD FAILED — not launching"; exit 1; }
         kill_khtpm
         rm -f "$KHTPM_LOG"
-        setsid env DISPLAY="${DISPLAY:-:0}" "$PARSER" "$HOUSE" \
-            > "$KHTPM_LOG" 2>&1 < /dev/null &
+        # cd into HOUSE first — the parser's own children (the manager)
+        # inherit this cwd, and relative menu commands (livedesk_taskbar.pdl)
+        # depend on it being house root, not wherever this script was invoked from.
+        (cd "$HOUSE" && setsid env DISPLAY="${DISPLAY:-:0}" "$PARSER" "$HOUSE" \
+            > "$KHTPM_LOG" 2>&1 < /dev/null &)
         sleep 2
         pids="$(khtpm_pids)"
         if [ -n "$pids" ]; then

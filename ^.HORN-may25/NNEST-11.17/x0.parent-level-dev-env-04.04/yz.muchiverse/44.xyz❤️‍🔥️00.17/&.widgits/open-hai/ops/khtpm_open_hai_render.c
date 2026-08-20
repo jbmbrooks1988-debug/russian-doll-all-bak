@@ -533,6 +533,13 @@ static const ModelEntry g_models[] = {
     { "llama3-groq-tool-use:8b", BACKEND_OLLAMA_RAW },
     { "llama2:latest", BACKEND_HARNECIENT },
     { "google/gemma-4-26b-a4b-it:free", BACKEND_OPENROUTER },
+    /* REAL FIX 2026-08-18, mirrored from khtpm_open_hai_manager.c's own
+     * g_models[] same-day fix (see that file's own comment for the
+     * live curl test that found these) - this file's own header
+     * comment two-hop-warns that BOTH copies must be updated by hand;
+     * done here in the SAME pass, not left to drift again. */
+    { "nvidia/nemotron-3.5-lightning:free", BACKEND_OPENROUTER },
+    { "cohere/north-mini-code:free", BACKEND_OPENROUTER },
     { "qwen/qwen3.8-max-free", BACKEND_TOKENROUTER }
 };
 static int g_model_idx = 0;

@@ -33,9 +33,33 @@
 #include <unistd.h>
 #endif
 
-/* Matches tp_taskbar.c's own POLL_INTERVAL_USEC (300ms) for consistency
- * across all taskbar-family binaries, not an independently chosen value. */
-#define POLL_INTERVAL_USEC 300000
+/* REAL BUG FIX 2026-08-18, direct user report ("its still staggering" /
+ * "u need a much tighter investigation of parity of the entire tpmos
+ * pipeline"): a flat 300ms poll here (this file) chained in series with
+ * khtpm_strip_parser.c's OWN flat 300ms poll (the relay it reads from)
+ * meant a single relay-injected action could take up to ~600ms to reach
+ * strip_state.txt - confirmed live via a timed round-trip test, ~173ms
+ * for one hop alone. TPMOS's real, canonical standard (read directly,
+ * not guessed - !.TPMOS_ONBORD_BIBLE_10.md §3 "Active Pulse Throttling"):
+ * "Active: usleep(16667) (~60 FPS) when input is detected or layout is in
+ * focus. Idle: usleep(100000) (10 FPS) when not active." A flat 300ms
+ * with no active/idle distinction at all was never the real standard -
+ * this file (and its parser sibling) had silently drifted from it.
+ * Fixed: dual-rate poll, matching TPMOS's own two constants exactly (not
+ * approximated), switching to the active rate for a short hold window
+ * after any real mutation - see ACTIVE_HOLD_TICKS below. */
+#define POLL_INTERVAL_ACTIVE_USEC 16667
+#define POLL_INTERVAL_IDLE_USEC   100000
+/* How many idle-checked ticks to keep polling at the ACTIVE rate after the
+ * last real mutation, before dropping back to IDLE - covers a burst of
+ * several quick keystrokes (e.g. digit-accumulation) without re-triggering
+ * per keystroke. 30 ticks * 16667us =~ 500ms of held-active polling after
+ * the last real state change, a real, deliberate value (not TPMOS's own -
+ * TPMOS's reference module loop doesn't need a hold window since it's
+ * driven by a live input stream every tick; this poll loop only sees
+ * DISCRETE mutation events, so a short hold avoids flapping instantly back
+ * to idle between two keystrokes ~100-200ms apart). */
+#define ACTIVE_HOLD_TICKS 30
 
 #ifdef _WIN32
 #  ifndef WIN32_LEAN_AND_MEAN
@@ -528,6 +552,23 @@ int main(int argc, char **argv) {
     }
     const char *house_root = argv[1];
 
+    /* REAL FIX 2026-08-19 (direct live report: taskbar HQ menu's "cli"
+     * row - and any other row whose command is a relative/portable path,
+     * e.g. ktb_action_portable()'s own rewritten &.widgits/$.crypts/
+     * @.apps paths - silently did nothing). Root cause: this process
+     * never chdir()'d to house_root, so its cwd was whatever directory
+     * launched it (confirmed live: /proc/<pid>/cwd was $HOME, not house
+     * root) - every system()/popen() call elsewhere in this file that
+     * passes a relative path (the entire point of ktb_action_portable(),
+     * plus raw relative commands like open_cli.sh's PDL row) has always
+     * silently depended on cwd already being house_root, with nothing
+     * enforcing it. One chdir() here, once, at startup, makes that
+     * assumption actually true regardless of how/from-where this binary
+     * gets launched. */
+#ifndef _WIN32
+    { int chdir_rc = chdir(house_root); (void)chdir_rc; }
+#endif
+
 #ifndef _WIN32
     signal(SIGTERM, on_sigterm);
     signal(SIGINT, on_sigterm);
@@ -584,6 +625,7 @@ int main(int argc, char **argv) {
      * in this taskbar (~400ms tick, same interval khtpm_taskbar_plat_x11.c
      * already uses for its select() timeout) — see design §5 "Poll
      * interval" decision. */
+    int active_ticks = ACTIVE_HOLD_TICKS; /* start hot - matches TPMOS's own "layout in focus" active default right after launch */
     while (g_running) {
         int mutated = poll_strip_history(&st, house_root);
         /* also periodically reload so external tab/shortcut/theme file
@@ -592,15 +634,19 @@ int main(int argc, char **argv) {
         int prev_n_tabs = st.n_tabs, prev_n_sc = st.n_shortcuts;
         int prev_focus = st.tab_focus_idx;
         ktb_reload(&st);
-        if (mutated || st.n_tabs != prev_n_tabs || st.n_shortcuts != prev_n_sc ||
-            st.tab_focus_idx != prev_focus)
+        int reload_changed = (st.n_tabs != prev_n_tabs || st.n_shortcuts != prev_n_sc ||
+                               st.tab_focus_idx != prev_focus);
+        if (mutated || reload_changed)
             publish_state(&st, house_root);
+        if (mutated || reload_changed) active_ticks = ACTIVE_HOLD_TICKS;
+        else if (active_ticks > 0) active_ticks--;
+        int interval = active_ticks > 0 ? POLL_INTERVAL_ACTIVE_USEC : POLL_INTERVAL_IDLE_USEC;
 
 #ifndef _WIN32
-        struct timeval tv = { 0, POLL_INTERVAL_USEC };
+        struct timeval tv = { 0, interval };
         select(0, NULL, NULL, NULL, &tv);
 #else
-        Sleep(POLL_INTERVAL_USEC / 1000);
+        Sleep(interval / 1000);
 #endif
     }
 

@@ -153,7 +153,7 @@ CONTEXT_LINES=20        # last N ledger lines fed as context to the speaker
                         # scope longer — personas take 20-40s each, so a user
                         # message from 2 minutes ago could be 3-5 persona
                         # responses deep at 12 lines)
-MODERATOR_EVERY=0       # hook: >0 schedules the manager persona every N rounds (inert now)
+MODERATOR_EVERY=3       # synthesist ♾️ speaks every 3 rounds (was 0 = inert)
 TRUNC_HOOK=0            # hook: cap ledger size (memory truncation) - not enabled
 
 # REAL FIX 2026-08-15 (direct instruction: "maybe we can have an input to
@@ -608,11 +608,10 @@ while true; do
     for pdl in "$(personas_dir)"/*.pdl; do
         [ -f "$pdl" ] || continue
         tier="$(persona_field "$pdl" tier)"
-        # moderator hook: skip manager-tier personas unless the round hits
-        # MODERATOR_EVERY (inert while 0)
-        if [ "$tier" = "manager" ]; then
-            [ "$MODERATOR_EVERY" -gt 0 ] && [ $((round % MODERATOR_EVERY)) -eq 0 ] || continue
-        fi
+    # moderator hook: manager-tier personas speak every MODERATOR_EVERY rounds
+    if [ "$tier" = "manager" ]; then
+        [ $((round % MODERATOR_EVERY)) -eq 0 ] || continue
+    fi
         speak "$pdl"
         sleep "$(sleep_between)"
     done

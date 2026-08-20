@@ -142,22 +142,7 @@ case "$ACTION" in
         touch "$SCRIPT_DIR/last_model.txt"
         apply_last_model "$SESSION_DIR/pieces/world_01/session_01/chat/state.txt"
 
-        # Blanket-symlink every top-level project entry into the session
-        for entry in "$SCRIPT_DIR"/*; do
-            name="$(basename "$entry")"
-            case "$name" in
-                pieces|projects) continue ;;
-            esac
-            ln -s "$entry" "$SESSION_DIR/$name"
-        done
-
-        for entry in "$SCRIPT_DIR/pieces"/*; do
-            name="$(basename "$entry")"
-            case "$name" in
-                apps|display|system|keyboard|sessions|world_01) continue ;;
-            esac
-            ln -s "$entry" "$SESSION_DIR/pieces/$name"
-        done
+        # Symlinks eliminated — C processes resolve shared/persistent files via PRISC_PROJECT_ROOT env var
 
         cd "$SESSION_DIR"
         : > pieces/apps/player_app/interact_relay.txt
@@ -176,7 +161,7 @@ project_id=muchi-pal-agent
 active_target_id=chat
 EOSTATE
 
-        export PRISC_PROJECT_ROOT="$SESSION_DIR"
+        export PRISC_PROJECT_ROOT="$SCRIPT_DIR"
         export PRISC_PROJECT_ID="muchi-pal-agent"
 
         if [ "$PAL_MODE" -eq 1 ]; then

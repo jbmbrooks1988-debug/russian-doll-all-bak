@@ -9,21 +9,25 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$SCRIPT_DIR"
 
+# Resolve shared-lib canonical source (symlink-free)
+_sr="$PWD"; while [ ! -d "$_sr/&.widgits/_shared-lib" ] && [ "$_sr" != "/" ]; do _sr="$(dirname "$_sr")"; done
+_SS="$_sr/&.widgits/_shared-lib"
+
 mkdir -p ops/+x system
 
 CFLAGS="-Wall -Wextra -O2"
 
 echo "--- Building system processes ---"
-gcc $CFLAGS "system/prisc+x.c" -o "system/prisc+x"
+gcc $CFLAGS "$_SS/system/prisc+x.c" -o "system/prisc+x"
 gcc $CFLAGS "system/keyboard_input.c" -o "system/keyboard_input"
 gcc $CFLAGS "system/renderer.c" -o "system/renderer"
 
 echo "--- Building chtpm_parser_pal (PERSISTENT process, -Wno-unused-result"
 echo "    -Wno-stringop-truncation required - see chtpm_parser_pal.c) ---"
-gcc $CFLAGS -Wno-unused-result -Wno-stringop-truncation "system/chtpm_parser_pal.c" -o "system/chtpm_parser_pal"
+gcc $CFLAGS -Wno-unused-result -Wno-stringop-truncation "$_SS/system/chtpm_parser_pal.c" -o "system/chtpm_parser_pal"
 
 echo "--- Building chtpm_rgb_render (local copy, PERSISTENT daemon) ---"
-gcc $CFLAGS "system/chtpm_rgb_render.c" -o "system/chtpm_rgb_render"
+gcc $CFLAGS "$_SS/ops/chtpm_rgb_render.c" -o "system/chtpm_rgb_render"
 
 echo "--- Building orchestrator (local copy, -Wno-unused-result) ---"
 gcc $CFLAGS -Wno-unused-result -o "system/orchestrator" "system/orchestrator.c"

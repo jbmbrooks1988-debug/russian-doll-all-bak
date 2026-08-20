@@ -124,25 +124,7 @@ case "$ACTION" in
         # for why a shared/symlinked proc_list.txt would let one session's
         # cleanup kill another session's tracked PIDs. kill_all.sh itself
         # is a static script, safe to symlink like everything else below.
-        ln -s "$SCRIPT_DIR/pieces/os/kill_all.sh" "$SESSION_DIR/pieces/os/kill_all.sh"
-        # SHARED (symlinked, never copied) - static definitions, never change per session:
-        ln -s "$SCRIPT_DIR/system" "$SESSION_DIR/system"
-        ln -s "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"
-        ln -s "$SCRIPT_DIR/pal" "$SESSION_DIR/pal"
-        ln -s "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt"
-        ln -s "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm"
-        ln -s "$SCRIPT_DIR/projects/muchi-pals/pieces" "$SESSION_DIR/projects/muchi-pals/pieces"
-        # SHARED (symlinked) - the REAL persistent game data (tokens/pet
-        # stats, species/skill registries, exported trading-card PNGs)
-        # every session must see and mutate together - registry/exports
-        # are static reads + real output respectively, not ephemeral
-        # session UI state, so they belong here alongside world_01, not
-        # inside the throwaway session directory (an exported card would
-        # otherwise vanish the moment that session exited and its
-        # directory got deleted).
-        ln -s "$SCRIPT_DIR/pieces/world_01" "$SESSION_DIR/pieces/world_01"
-        ln -s "$SCRIPT_DIR/pieces/registry" "$SESSION_DIR/pieces/registry"
-        ln -s "$SCRIPT_DIR/exports" "$SESSION_DIR/exports"
+        # No symlinks — C processes resolve shared/persistent files via PRISC_PROJECT_ROOT env var
 
         cd "$SESSION_DIR"
         : > pieces/apps/player_app/history.txt
@@ -177,7 +159,7 @@ project_id=muchi-pals
 active_target_id=main
 EOSTATE
 
-        export PRISC_PROJECT_ROOT="$SESSION_DIR"
+        export PRISC_PROJECT_ROOT="$SCRIPT_DIR"
         export PRISC_PROJECT_ID="muchi-pals"
         # Shared exchange directory for cross-game pet import/export
         export PRISC_EXCHANGE_ROOT="/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST-11.12/x0.parent-level-dev-env-04.03/yz.muchiverse/44.xyz❤️‍🔥️00.07/exchange"
@@ -262,19 +244,13 @@ EOSTATE
         SESSION_DIR="$SCRIPT_DIR/pieces/sessions/$SESSION_ID"
         mkdir -p "$SESSION_DIR/pieces/system" "$SESSION_DIR/pieces/display" \
                  "$SESSION_DIR/pieces/apps/player_app"
-        ln -s "$SCRIPT_DIR/system" "$SESSION_DIR/system"
-        ln -s "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"
-        ln -s "$SCRIPT_DIR/pal" "$SESSION_DIR/pal"
-        ln -s "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt"
-        ln -s "$SCRIPT_DIR/pieces/world_01" "$SESSION_DIR/pieces/world_01"
-        ln -s "$SCRIPT_DIR/pieces/registry" "$SESSION_DIR/pieces/registry"
-        ln -s "$SCRIPT_DIR/exports" "$SESSION_DIR/exports"
+        # No symlinks — C processes resolve shared/persistent files via PRISC_PROJECT_ROOT env var
 
         cd "$SESSION_DIR"
         : > pieces/system/quit_flag.txt
         : > pieces/apps/player_app/history.txt
 
-        export PRISC_PROJECT_ROOT="$SESSION_DIR"
+        export PRISC_PROJECT_ROOT="$SCRIPT_DIR"
         export PRISC_PROJECT_ID="muchi-pals"
         # spawn_egg_window's OWN detached child (system/egg_window) is
         # DESIGNED to outlive this whole session (self-ticking pets keep

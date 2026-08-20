@@ -69,15 +69,7 @@ case "$ACTION" in
                  "$SESSION_DIR/pieces/apps/player_app" "$SESSION_DIR/pieces/keyboard" \
                  "$SESSION_DIR/pieces/os" "$SESSION_DIR/net" "$SESSION_DIR/projects/pal-forum/manager"
         mkdir -p "$SCRIPT_DIR/users"  # shared, real - not session-scoped
-        ln -s "$SCRIPT_DIR/pieces/os/kill_all.sh" "$SESSION_DIR/pieces/os/kill_all.sh"
-        ln -s "$SCRIPT_DIR/system" "$SESSION_DIR/system"
-        ln -s "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"
-        ln -s "$SCRIPT_DIR/pal" "$SESSION_DIR/pal"
-        ln -s "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt"
-        ln -s "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm"
-        ln -s "$SCRIPT_DIR/projects/pal-forum/pieces" "$SESSION_DIR/projects/pal-forum/pieces"
-        ln -s "$SCRIPT_DIR/users" "$SESSION_DIR/users"
-
+        # No symlinks — C processes resolve shared/persistent files via PRISC_PROJECT_ROOT env var
         cd "$SESSION_DIR"
         : > pieces/apps/player_app/interact_relay.txt
         : > pieces/keyboard/history.txt
@@ -105,7 +97,7 @@ EOSTATE
         # STANDARD.txt sec. 4 for the design, kept documented but marked
         # reverted - login screen starts blank again.
 
-        export PRISC_PROJECT_ROOT="$SESSION_DIR"
+        export PRISC_PROJECT_ROOT="$SCRIPT_DIR"
         export PRISC_PROJECT_ID="pal-forum"
         # REAL BUG, LIVE-CAUGHT while building pal-chat-irc (2026-07-20):
         # palnet_peer.c's own resolve_presence_root() defaults to "one

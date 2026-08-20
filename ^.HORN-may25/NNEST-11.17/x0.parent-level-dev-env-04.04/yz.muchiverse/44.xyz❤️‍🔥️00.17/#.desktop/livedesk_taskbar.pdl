@@ -11,7 +11,9 @@ SECTION      | hq_menu_5_label     | settings
 SECTION      | hq_menu_5_cmd       | livedesk:open-settings
 SECTION      | hq_menu_6_label     | stats
 SECTION      | hq_menu_6_cmd       | livedesk:open-stats
-SECTION      | hq_menu_7_label     | cancel
+SECTION      | hq_menu_7_label     | cli
+SECTION      | hq_menu_7_cmd       | sh *.monads/*.livedesk-taskbar/ops/open_cli.sh
+SECTION      | hq_menu_8_label     | cancel
 
 # top-left command strip (2do task #4). Defaults match what's written
 # below, so editing here is the only thing needed to change labels or

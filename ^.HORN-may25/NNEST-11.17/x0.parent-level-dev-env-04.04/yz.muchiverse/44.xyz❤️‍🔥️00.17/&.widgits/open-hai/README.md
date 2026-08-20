@@ -82,22 +82,20 @@ navigate — always re-read the CURRENT nav/session counts (via a `'p'`
 live dump, see below) immediately before every jump, not once at the
 start.
 
-**Nav items beyond index 9 are currently UNREACHABLE via relay digit-
-jump once several sessions exist** (real confirmed bug, not yet
-fixed): `handle_key()`'s digit-jump logic checks single-digit validity
-(`d <= g_n_nav`) BEFORE its own multi-digit accumulation branch, so
-once `n_nav >= 9` (true almost immediately — a handful of saved chats
-does it), every single digit press ALWAYS wins immediately and the
-accumulator never fires. Pressing '2' then '6' sequentially jumps
-focus to item 2, then item 6 — never item 26. Relay's ASCII-only
-protocol also can't send arrow-key codes, so there is currently no
-relay-only way to reach a deep nav item once session count grows.
-Real keyboard arrow keys still work for a human. See
-`_.0.aigent-testing-k9.txt` "SCOPE ADDENDUM 2026-08-13" for the full
-finding; `handle_key()` (~line 1717) is where a real fix belongs
-(explicit accumulator with a commit trigger, e.g. only jump on Enter)
-— not fixed this session, flagged so nobody re-discovers it from
-scratch.
+**STALE WARNING, CORRECTED 2026-08-18** — this section used to say nav
+items beyond index 9 were unreachable via relay digit-jump. Direct
+re-check of the live code this session (`handle_key()`, ~line 1740)
+found this is **already fixed**: real greedy multi-digit accumulation
+("digit accumulation, ported from the house standard in chtpm_parser.c
+(~line 2621)") — a first digit sets the accumulator if valid, a second
+digit combines into a 2-digit jump if THAT'S valid, so "2" then "6"
+correctly reaches nav item 26, not item 2. The bug this section
+originally described is real bug-report history (see
+`_.0.aigent-testing-k9.txt` "SCOPE ADDENDUM 2026-08-13" for that), but
+the fix has since landed and this doc just never got updated — a real
+doc/code drift example, not a currently-open bug. Don't re-derive a
+fix for this from scratch; verify against the live code first if
+something still looks broken here.
 
 Backspace on a focused session row (not the composer) deletes that
 chat from disk for real. If you delete the currently-open one, a fresh
