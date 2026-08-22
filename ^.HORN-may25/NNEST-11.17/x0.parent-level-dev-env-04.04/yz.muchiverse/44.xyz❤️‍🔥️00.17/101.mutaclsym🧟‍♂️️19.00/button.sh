@@ -116,6 +116,17 @@ case "$ACTION" in
                  "$SESSION_DIR/pieces/apps/player_app" "$SESSION_DIR/pieces/keyboard" \
                  "$SESSION_DIR/pieces/os" "$SESSION_DIR/projects/mutaclysm/manager"
         mkdir -p "$SCRIPT_DIR/data"
+        # DEFENSIVE FIX 2026-08-20 (found while fixing the identical real
+        # bug in my-chara-txt's own button.sh, see SIMLINK_PITFALL.md):
+        # compose_frame.c and friends write into pieces/apps/player_app/
+        # via PRISC_PROJECT_ROOT (now $SCRIPT_DIR) - this directory was
+        # only ever created under $SESSION_DIR by this script, never at
+        # $SCRIPT_DIR itself. This project has been working by luck only
+        # (a pre-existing pieces/apps/player_app/ directory left over from
+        # before the symlink-elimination pass) - make it real/guaranteed
+        # rather than relying on that accident persisting.
+        mkdir -p "$SCRIPT_DIR/pieces/apps/player_app"
+        mkdir -p "$SCRIPT_DIR/pieces/display"
 
         # No symlinks — C processes resolve shared/persistent files via
         # PRISC_PROJECT_ROOT env var (set below), session-specific files

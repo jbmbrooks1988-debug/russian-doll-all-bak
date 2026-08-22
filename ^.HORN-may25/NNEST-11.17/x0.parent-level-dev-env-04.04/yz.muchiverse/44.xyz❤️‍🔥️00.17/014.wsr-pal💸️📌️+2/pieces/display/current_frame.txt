@@ -22,22 +22,7 @@
 +============================================================+
 +============================================================+
 
-[^] 1. [Actions ]    
-    [ ] 2. [File  ]    [ ] 3. [Game Options  ]    [ ] 4. [Settings  ]    [ ] 5. [Help  ]    
-    [ ] 6. [Select Player  ]    [ ] 7. [Culture  ]    [ ] 8. [Entity Info  ]    
-    [ ] 9. [Select Corp.  ]    [ ] 10. [History  ]    [ ] 11. [General  ]    
-    [ ] 12. [Tools  ]    [ ] 13. [Private  ]    [ ] 14. [Other Trans  ]    
-    [ ] 15. [End Turn  ]    [ ] 16. [Misc. Menu  ]    [ ] 17. [Chart  ]    [ ] 18. [Auto  ]    
-    [ ] 19. [Watchlist  ]    [ ] 20. [TICKER  ]    [ ] 21. [Research Report  ]    
-    [ ] 22. [List Portfolio  ]    [ ] 23. [Financial Profile  ]    
-    [ ] 24. [List Options  ]    [ ] 25. [Earnings Report  ]    
-    [ ] 26. [Shareholder List  ]    [ ] 27. [My Corporations  ]    [ ] 28. [New Game  ]    
-    --- Navigation ---    
-    [ ] 29. [Buy/Sell  ]    [ ] 30. [List Futures  ]    
-    [ ] 31. [Financing  ]    
-    [ ] 32. [Management  ]    [ ] 33. [DB Search  ]    
-    [ ] 34. [Back]    
-
+[>] 1. [Actions [+]]
 
 +=========================================================+
-Active [^]:  (ESC to exit)
+Nav > _

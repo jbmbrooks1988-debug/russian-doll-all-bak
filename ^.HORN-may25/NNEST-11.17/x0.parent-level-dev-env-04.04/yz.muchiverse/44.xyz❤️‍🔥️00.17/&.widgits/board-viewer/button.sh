@@ -48,15 +48,23 @@ run_widget_session() {
              "$SESSION_DIR/pieces/apps/player_app" "$SESSION_DIR/pieces/keyboard" \
              "$SESSION_DIR/projects/board-viewer/manager"
 
-    ln -sfn "$SCRIPT_DIR/system" "$SESSION_DIR/system" 2>/dev/null || true
-    ln -sfn "$SCRIPT_DIR/ops" "$SESSION_DIR/ops" 2>/dev/null || true
-    ln -sfn "$SCRIPT_DIR/pal" "$SESSION_DIR/pal" 2>/dev/null || true
-    ln -sfn "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm" 2>/dev/null || true
-    ln -sfn "$SCRIPT_DIR/pieces/registry" "$SESSION_DIR/pieces/registry" 2>/dev/null || true
-    ln -s "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt" 2>/dev/null || true
+    # Copy-based session isolation (2026-08-20, see sim-smell-fix.md's
+    # "THE SOLUTION" section) - symlinks break on Windows and were
+    # eliminated house-wide. PRISC_PROJECT_ROOT stays session-scoped
+    # (unchanged below), so plain copies are all that's needed here -
+    # unlike civ-txt/piececraft-xyz, board-viewer has NO persistent
+    # state files (config.txt/data/) symlinked in this block, only
+    # code, so no persist_session_state()/EXIT-trap copy-back is
+    # needed either.
+    cp -r "$SCRIPT_DIR/system" "$SESSION_DIR/system"
+    cp -r "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"
+    cp -r "$SCRIPT_DIR/pal" "$SESSION_DIR/pal"
+    cp -r "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm"
+    cp -r "$SCRIPT_DIR/pieces/registry" "$SESSION_DIR/pieces/registry" 2>/dev/null
+    cp -p "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt"
     mkdir -p "$SESSION_DIR/projects/board-viewer/pieces"
-    ln -sfn "$SCRIPT_DIR/projects/board-viewer/pieces/board_viewer" \
-            "$SESSION_DIR/projects/board-viewer/pieces/board_viewer" 2>/dev/null || true
+    cp -r "$SCRIPT_DIR/projects/board-viewer/pieces/board_viewer" \
+          "$SESSION_DIR/projects/board-viewer/pieces/board_viewer" 2>/dev/null
 
     cd "$SESSION_DIR"
     : > pieces/apps/player_app/interact_relay.txt

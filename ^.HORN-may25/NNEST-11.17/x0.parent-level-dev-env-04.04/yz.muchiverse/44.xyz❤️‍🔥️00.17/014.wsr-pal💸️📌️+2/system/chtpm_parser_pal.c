@@ -246,6 +246,25 @@ static int g_extra_module_count = 0;
 
 char* scratch_substituted = NULL;
 char project_root_path[MAX_PATH] = ".";
+/* session_root_path - PORTED 2026-08-21 from @.apps/my-chara-txt's own
+ * system/chtpm_parser_pal.c (see !.tpmos-vs-khtpm_pal.md's own "How to
+ * fix that bug" section for the full root-cause writeup and live
+ * reproduction). Real, confirmed bug this fixes: once a project switches
+ * PRISC_PROJECT_ROOT away from the session dir (the PRISC_PROJECT_ROOT=
+ * $SCRIPT_DIR strategy), a SINGLE project_root_path used for every path
+ * in this file silently mis-resolves genuinely session-local, ephemeral
+ * files (current_frame.txt, current_layout.txt, active_gui_index.txt,
+ * pending_command.txt, the frame_changed.txt/layout_changed.txt marker
+ * files, keyboard history.txt) against the wrong (real, non-session)
+ * root - confirmed to cause a module-relaunch bug where a `<button
+ * href>` navigating to a NEW `<module>` either gets silently stuck on
+ * the OLD screen's content, or fails to spawn a new module process at
+ * all. session_root_path is always the literal CWD (the true session
+ * dir); project_root_path keeps its existing meaning (persistent/shared
+ * root). build_session_path_malloc() (below) is the session-rooted
+ * counterpart to build_path_malloc() - use it for anything genuinely
+ * session-local. */
+char session_root_path[MAX_PATH] = ".";
 char interact_history_path[MAX_PATH] = "";  // From <interact> tag
 
 // Digit Accumulation State
@@ -279,6 +298,7 @@ bool is_modern_layout(const char* layout);
 void parse_attributes(UIElement* el, const char* attr_str);
 void render_element(int idx, char* frame, int* p_global_counter, int* p_scoped_counter);
 char* build_path_malloc(const char* rel);
+char* build_session_path_malloc(const char* rel);
 char* trim_pmo(char *str);
 static void render_grid(UIElement *el, char *frame);
 /* Option B (2fix-july6.txt section 6): cli_io-only gui_state scoping fix,
@@ -389,7 +409,7 @@ static void sync_cli_input_from_gui_state(void) {
  * g_completion_return_gui_index pattern instead of a var that was never
  * wired up. */
 static void sync_focus_from_saved_active_index(void) {
-    char *agi_path = build_path_malloc("pieces/display/active_gui_index.txt");
+    char *agi_path = build_session_path_malloc("pieces/display/active_gui_index.txt");
     FILE *f = fopen(agi_path, "r");
     free(agi_path);
     if (!f) return;
@@ -437,7 +457,7 @@ static void sync_focus_from_saved_active_index(void) {
  * no stale value left for sync_focus_from_saved_active_index() to
  * find. */
 static void clear_saved_active_index(void) {
-    char *agi_path = build_path_malloc("pieces/display/active_gui_index.txt");
+    char *agi_path = build_session_path_malloc("pieces/display/active_gui_index.txt");
     FILE *f = fopen(agi_path, "w");
     if (f) { fputs("0\n", f); fclose(f); }
     free(agi_path);
@@ -579,18 +599,35 @@ static bool root_has_anchors(const char* root) {
 }
 
 void resolve_root() {
+    /* session_root_path is always CWD - session-specific files
+     * (pieces/display, pieces/keyboard, etc.) live here. PORTED
+     * 2026-08-21 from my-chara-txt's own chtpm_parser_pal.c - see this
+     * file's own session_root_path declaration comment further up for
+     * the real bug this fixes. */
 #ifdef _WIN32
     /* Prefer relative "." when launched from project CWD. Absolute getcwd
      * paths that contain emoji/Unicode break ANSI fopen and MinGW opendir
      * on OneDrive (readdir returns zero entries). Linux path unchanged. */
     if (root_has_anchors(".")) {
-        snprintf(project_root_path, sizeof(project_root_path), ".");
+        snprintf(session_root_path, sizeof(session_root_path), ".");
     } else
 #endif
     {
-        if (!getcwd(project_root_path, sizeof(project_root_path)))
-            strncpy(project_root_path, ".", sizeof(project_root_path) - 1);
-        project_root_path[sizeof(project_root_path) - 1] = '\0';
+        if (!getcwd(session_root_path, sizeof(session_root_path)))
+            strncpy(session_root_path, ".", sizeof(session_root_path) - 1);
+        session_root_path[sizeof(session_root_path) - 1] = '\0';
+    }
+    /* project_root_path points at the persistent project root for shared/
+     * persistent files (system/, pal/, pieces/chtpm/, projects/<id>/pieces/,
+     * etc.) - defaults to session_root_path (old behavior, unchanged for
+     * any project that never sets PRISC_PROJECT_ROOT), overridden by the
+     * PRISC_PROJECT_ROOT env var when a project's own button.sh sets it
+     * (the PRISC_PROJECT_ROOT=$SCRIPT_DIR symlink-elimination strategy). */
+    const char *env = getenv("PRISC_PROJECT_ROOT");
+    if (env && env[0]) {
+        snprintf(project_root_path, sizeof(project_root_path), "%s", env);
+    } else {
+        snprintf(project_root_path, sizeof(project_root_path), "%s", session_root_path);
     }
     FILE *kvp = fopen("pieces/locations/location_kvp", "r");
     if (kvp) {
@@ -633,6 +670,19 @@ char* trim_pmo(char *str) {
 char* build_path_malloc(const char* rel) {
     char* p = NULL;
     if (asprintf(&p, "%s/%s", project_root_path, rel) == -1) return NULL;
+    return p;
+}
+
+/* build_session_path_malloc - PORTED 2026-08-21 from my-chara-txt's own
+ * chtpm_parser_pal.c. Session-rooted counterpart to build_path_malloc()
+ * above - use for genuinely session-local, ephemeral files (current
+ * frame/layout, marker files, keyboard history) that must stay correct
+ * even when project_root_path has been switched away from the session
+ * dir. See session_root_path's own declaration comment for the bug this
+ * exists to fix. */
+char* build_session_path_malloc(const char* rel) {
+    char* p = NULL;
+    if (asprintf(&p, "%s/%s", session_root_path, rel) == -1) return NULL;
     return p;
 }
 
@@ -1785,7 +1835,7 @@ void inject_command(const char* cmd) {
      * <interact src=...> override (a real, deliberate authoring
      * choice) still wins. */
     if (is_pal_native_project()) {
-        char *path = build_path_malloc("pieces/display/pending_command.txt");
+        char *path = build_session_path_malloc("pieces/display/pending_command.txt");
         fp = fopen(path, "a");
         if (fp) { fprintf(fp, "%s\n", cmd); fclose(fp); }
         free(path);
@@ -2427,10 +2477,32 @@ void parse_chtm() {
     is_time_reactive = false; 
     
     /* EXPORT CURRENT LAYOUT FOR MODULE HEARTBEAT */
-    char *cl_path = build_path_malloc("pieces/display/current_layout.txt");
+    char *cl_path = build_session_path_malloc("pieces/display/current_layout.txt");
     FILE *cl_f = fopen(cl_path, "w");
     if (cl_f) { fprintf(cl_f, "%s\n", current_layout); fclose(cl_f); }
     free(cl_path);
+    /* REAL BUG FIX, PORTED 2026-08-21 from my-chara-txt's own
+     * chtpm_parser_pal.c (see !.tpmos-vs-khtpm_pal.md's own "How to fix
+     * that bug" section): launch_module()/run_module_synchronous() both
+     * chdir() the module (and everything it spawns) to project_root_path
+     * - so any op that module spawns has NO way to independently
+     * discover the real session dir once a project's own button.sh has
+     * switched PRISC_PROJECT_ROOT away from the session dir. Confirmed
+     * live: a project's own compose_frame/menu_input ops need to know
+     * which chtpm layout is REALLY active to render the right screen,
+     * and only ever had the session-only copy of this file to read -
+     * silently stuck showing the previous screen forever after any real
+     * href navigation, even though the navigation itself worked
+     * correctly. Also write a project-root copy so ops spawned from a
+     * chdir'd module can still find it - harmless additive write, the
+     * session copy above remains the authoritative one for anything
+     * that hasn't been chdir'd away from the real session dir. */
+    if (project_root_path[0] != '\0' && strcmp(project_root_path, session_root_path) != 0) {
+        char *cl_path2 = build_path_malloc("pieces/display/current_layout.txt");
+        FILE *cl_f2 = fopen(cl_path2, "w");
+        if (cl_f2) { fprintf(cl_f2, "%s\n", current_layout); fclose(cl_f2); }
+        free(cl_path2);
+    }
 
     load_vars(); char* content = read_file_to_string(current_layout); if (!content) return;
     char* temp_substituted = malloc(MAX_BUFFER); 
@@ -2807,7 +2879,7 @@ void export_active_index() {
     if (active_index != -1) active_gui_idx = elements[active_index].interactive_idx;
     else active_gui_idx = elements[focus_index].interactive_idx;
 
-    char *agi_path = build_path_malloc("pieces/display/active_gui_index.txt");
+    char *agi_path = build_session_path_malloc("pieces/display/active_gui_index.txt");
     FILE *agi_f = fopen(agi_path, "w");
     if (agi_f) { fprintf(agi_f, "%d\n", active_gui_idx); fclose(agi_f); }
     free(agi_path);
@@ -2821,7 +2893,7 @@ void export_active_index() {
      * cli_io field is genuinely accepting keystrokes right now), "0" means
      * focus-only or nothing focused. See 2fix-july6.txt, bug 3. */
     {
-        char *typing_path = build_path_malloc("pieces/display/active_gui_is_typing.txt");
+        char *typing_path = build_session_path_malloc("pieces/display/active_gui_is_typing.txt");
         FILE *typing_f = fopen(typing_path, "w");
         if (typing_f) { fprintf(typing_f, "%d\n", active_index != -1 ? 1 : 0); fclose(typing_f); }
         free(typing_path);
@@ -3128,12 +3200,12 @@ void compose_frame() {
         }
     }
 
-    char* cur_f = build_path_malloc("pieces/display/current_frame.txt");
+    char* cur_f = build_session_path_malloc("pieces/display/current_frame.txt");
     FILE *out_f = fopen(cur_f, "w");
     if (out_f) {
         fprintf(out_f, "%s", frame);
         fclose(out_f);
-        char* renderer_pulse = build_path_malloc("pieces/display/renderer_pulse.txt");
+        char* renderer_pulse = build_session_path_malloc("pieces/display/renderer_pulse.txt");
         FILE *marker = fopen(renderer_pulse, "a"); if (marker) { fprintf(marker, "P\n"); fclose(marker); }
         free(renderer_pulse);
     }
@@ -3429,7 +3501,7 @@ void process_key(int key) {
                     cleanup_module();
                     active_index = -1;
                     focus_index = 0;
-                    // TEMP-DISABLED-FOR-TEST clear_saved_active_index();
+                    clear_saved_active_index(); /* RE-ENABLED 2026-08-21 - was left disabled with a "TEMP-DISABLED-FOR-TEST" marker at all 3 real call sites and never turned back on; this function's own header comment documents it as the fix for a real, house-wide stale-focus bug on layout transitions. See !.tpmos-vs-khtpm_pal.md for context on this pass. */
                     parse_chtm();
                     initialize_focus();
                     export_active_index();
@@ -3518,7 +3590,7 @@ void process_key(int key) {
                         cleanup_module();
                         active_index = -1;
                         focus_index = 0;
-                        // TEMP-DISABLED-FOR-TEST clear_saved_active_index();
+                        clear_saved_active_index(); /* RE-ENABLED 2026-08-21 - was left disabled with a "TEMP-DISABLED-FOR-TEST" marker at all 3 real call sites and never turned back on; this function's own header comment documents it as the fix for a real, house-wide stale-focus bug on layout transitions. See !.tpmos-vs-khtpm_pal.md for context on this pass. */
                         parse_chtm();
                         initialize_focus();
                         export_active_index();
@@ -3692,10 +3764,10 @@ int main(int argc, char **argv) {
      * ═══════════════════════════════════════════════════════════════ */
 
     char *master_frame_ch = build_path_malloc("pieces/master_ledger/frame_changed.txt");
-    char *display_frame_ch = build_path_malloc("pieces/display/frame_changed.txt");
+    char *display_frame_ch = build_session_path_malloc("pieces/display/frame_changed.txt");
     char *view_ch = build_path_malloc("pieces/apps/player_app/view_changed.txt");
-    char *hist_p = build_path_malloc("pieces/keyboard/history.txt");
-    char *layout_ch = build_path_malloc("pieces/display/layout_changed.txt");
+    char *hist_p = build_session_path_malloc("pieces/keyboard/history.txt");
+    char *layout_ch = build_session_path_malloc("pieces/display/layout_changed.txt");
     char *state_ch = build_path_malloc("pieces/apps/player_app/state_changed.txt");
     
     if (stat(master_frame_ch, &st) == 0) last_master_pulse_size = st.st_size;
@@ -3805,7 +3877,7 @@ int main(int argc, char **argv) {
                     strncpy(current_layout, last_line, MAX_PATH-1);
                     active_index = -1;
                     focus_index = 0;
-                    // TEMP-DISABLED-FOR-TEST clear_saved_active_index();
+                    clear_saved_active_index(); /* RE-ENABLED 2026-08-21 - was left disabled with a "TEMP-DISABLED-FOR-TEST" marker at all 3 real call sites and never turned back on; this function's own header comment documents it as the fix for a real, house-wide stale-focus bug on layout transitions. See !.tpmos-vs-khtpm_pal.md for context on this pass. */
                     parse_chtm(); initialize_focus(); dirty = 1;
                 }
                 fclose(lf); 

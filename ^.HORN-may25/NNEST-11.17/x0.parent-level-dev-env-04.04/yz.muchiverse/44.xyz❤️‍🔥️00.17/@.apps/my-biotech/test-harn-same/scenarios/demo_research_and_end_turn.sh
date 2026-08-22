@@ -66,7 +66,10 @@ game_state=playing
 EOCONFIG
 rm -f "$PROJECT_DIR/projects/my-biotech/pieces/mybiotech_menu/state.txt"
 
-bash button.sh run < /dev/null > /tmp/th_mybiotech_sess.log 2>&1 &
+# setsid: run the session in its OWN process group so the cleanup
+# sweep can't take THIS scenario down with it (same fix as qtc's
+# demo_signup_login_wallet.sh step-8 hang).
+setsid bash button.sh run < /dev/null > /tmp/th_mybiotech_sess.log 2>&1 &
 disown
 
 SESS=""
@@ -89,8 +92,12 @@ if [ -z "$SESS" ]; then
     exit 1
 fi
 FRAME="$SESS/pieces/display/current_frame.txt"
-LEDGER="$PROJECT_DIR/data/master_ledger.txt"
-CORPUS="$PROJECT_DIR/data/corpus/player.txt"
+# REAL FIX 2026-08-20 (sim-smell-fix.md's "mid-session-vs-post-session
+# assertion" writeup) - same fix as my-chara-txt's own demo_end_turn.sh:
+# real persistent state only lands at $PROJECT_DIR when the session ENDS,
+# not live during it. Assert against the SESSION's own live copy instead.
+LEDGER="$SESS/data/master_ledger.txt"
+CORPUS="$SESS/data/corpus/player.txt"
 echo "Session: $SESS"
 cp "$FRAME" "$PROOF_DIR/01_baseline.txt" 2>/dev/null
 check "$FRAME" "Corpus: 0 facts" "baseline corpus is empty"

@@ -5,6 +5,7 @@
 set -u
 AV="$(cd "$(dirname "$0")/../.." && pwd)"
 LOGIN="$(cd "$AV/../00.login-signup" 2>/dev/null && pwd || true)"
+HOUSE="$(cd "$LOGIN/../.." 2>/dev/null && pwd || true)"
 OPS_AV="$AV/ops/+x"
 FAIL=0
 pass() { echo "PASS: $1"; }
@@ -41,9 +42,9 @@ mkdir -p pieces/world_01/map_lobby/user_01 pieces/system pieces/display pieces/a
 printf 'name=user_01\ntype=user\ntokens=0\n' > pieces/world_01/map_lobby/user_01/state.txt
 : > pieces/world_01/map_lobby/user_01/inventory.txt
 if [ -n "$XYZ" ]; then
-    rm -rf "$LOGIN/$XYZ/home/avatars"
-    mkdir -p "$LOGIN/$XYZ/home"
-    printf 'tokens=0\n' > "$LOGIN/$XYZ/home/wallet.txt"
+    rm -rf "$HOUSE/$XYZ/home/avatars"
+    mkdir -p "$HOUSE/$XYZ/home"
+    printf 'tokens=0\n' > "$HOUSE/$XYZ/home/wallet.txt"
 fi
 printf 'last_message=\nselected_avatar=\nlast_screen=\n' > pieces/system/avatar_menu_state.txt
 
@@ -55,7 +56,7 @@ MSG=$(grep '^last_message=' pieces/system/avatar_menu_state.txt | cut -d= -f2-)
 echo "msg: $MSG"
 echo "$MSG" | grep -q 'Claimed' && pass "claim tokens" || fail "claim tokens ($MSG)"
 if [ -n "$XYZ" ]; then
-    TOK=$(grep '^tokens=' "$LOGIN/$XYZ/home/wallet.txt" | cut -d= -f2-)
+    TOK=$(grep '^tokens=' "$HOUSE/$XYZ/home/wallet.txt" | cut -d= -f2-)
     [ "${TOK:-0}" -ge 10 ] && pass "wallet tokens=$TOK" || fail "wallet tokens=$TOK"
 fi
 

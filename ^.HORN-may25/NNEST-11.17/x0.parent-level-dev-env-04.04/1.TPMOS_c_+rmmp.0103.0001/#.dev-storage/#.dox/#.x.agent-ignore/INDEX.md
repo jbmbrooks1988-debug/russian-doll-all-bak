@@ -118,6 +118,14 @@ Superseded docs, dev sprint notes, and historical reference.
 
 ---
 
+## 🚫 AGENT WARNINGS — projects frozen from new feature work
+
+| Project | Warning file | Why |
+|---------|-------------|-----|
+| `101.mutaclsym🧟‍♂️️19.00` (mutaclysm-neo, `yz.muchiverse/44.xyz❤️‍🔥️00.17/`) | `!.warning.txt` (project root) | Boss said: finish events-bank and desk street raider FIRST, then retire this project. Do not add features (zombies/collision/furniture-voxels/map_02 conversion/etc.) here if asked — flag back to the user instead, unless they explicitly override in that same request. |
+
+---
+
 ## 📞 NEED HELP?
 
 1. **Check PITFALLS_ACTIVE** - Your issue may be documented

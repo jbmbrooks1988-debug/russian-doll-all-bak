@@ -11,6 +11,10 @@
 set -u
 HARNESS_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 PROJECT_DIR="$(cd "$HARNESS_DIR/.." && pwd)"
+# Per-user xyzfs homes are HOUSE-level state (<house>/xyzfs/users/<uuid>,
+# matching ops' resolve_house_root() + button.sh's own HOUSE_ROOT export) -
+# NOT project-level, and NOT session-local.
+HOUSE_DIR="$(cd "$PROJECT_DIR/../.." && pwd)"
 OPS="$HARNESS_DIR/ops/+x"
 
 PROOF_DIR="$PROJECT_DIR/proof/harness-$(date +%Y%m%d-%H%M%S)"
@@ -31,8 +35,8 @@ cleanup() {
             uuid=$(grep '^uuid=' "$PROJECT_DIR/users/$u/profile.txt" 2>/dev/null | cut -d= -f2-)
             rm -rf "$PROJECT_DIR/users/$u"
             echo "removed test user dir users/$u"
-            if [ -n "$uuid" ] && [ -d "$PROJECT_DIR/xyzfs/users/$uuid" ]; then
-                rm -rf "$PROJECT_DIR/xyzfs/users/$uuid"
+            if [ -n "$uuid" ] && [ -d "$HOUSE_DIR/xyzfs/users/$uuid" ]; then
+                rm -rf "$HOUSE_DIR/xyzfs/users/$uuid"
                 echo "removed xyzfs/users/$uuid"
             fi
         fi
@@ -55,7 +59,11 @@ fill_field() {
 # Prints ONLY the uuid on stdout (for capture). Logs go to stderr.
 assert_user_xyzfs() {
     local user="$1" label="$2"
-    local profile="$PROJECT_DIR/users/$user/profile.txt"
+    # Mid-session: accounts live in the SESSION copy (copy-based strategy;
+    # button.sh's persist_session_state() only fans them back out to
+    # $PROJECT_DIR after the session ends - verified separately below).
+    local root="$SESS"
+    local profile="$root/users/$user/profile.txt"
     if [ ! -f "$profile" ]; then
         fail "$label: missing profile $profile" >&2
         return 1
@@ -75,21 +83,21 @@ assert_user_xyzfs() {
         fail "$label: xyzfs_path='$xyzfs_path' expected 'xyzfs/users/$uuid'" >&2
         return 1
     fi
-    if [ ! -d "$PROJECT_DIR/xyzfs/users/$uuid/home" ]; then
-        fail "$label: missing $PROJECT_DIR/xyzfs/users/$uuid/home" >&2
+    if [ ! -d "$HOUSE_DIR/xyzfs/users/$uuid/home" ]; then
+        fail "$label: missing $HOUSE_DIR/xyzfs/users/$uuid/home" >&2
         return 1
     fi
-    if [ ! -d "$PROJECT_DIR/xyzfs/users/$uuid/projects" ]; then
-        fail "$label: missing $PROJECT_DIR/xyzfs/users/$uuid/projects" >&2
+    if [ ! -d "$HOUSE_DIR/xyzfs/users/$uuid/projects" ]; then
+        fail "$label: missing $HOUSE_DIR/xyzfs/users/$uuid/projects" >&2
         return 1
     fi
-    if [ ! -f "$PROJECT_DIR/xyzfs/users/$uuid/meta.txt" ]; then
+    if [ ! -f "$HOUSE_DIR/xyzfs/users/$uuid/meta.txt" ]; then
         fail "$label: missing xyzfs meta.txt" >&2
         return 1
     fi
     pass "$label: uuid=$uuid xyzfs=$xyzfs_path" >&2
     cp "$profile" "$PROOF_DIR/${label}_profile.txt"
-    cp "$PROJECT_DIR/xyzfs/users/$uuid/meta.txt" "$PROOF_DIR/${label}_xyzfs_meta.txt"
+    cp "$HOUSE_DIR/xyzfs/users/$uuid/meta.txt" "$PROOF_DIR/${label}_xyzfs_meta.txt"
     printf '%s\n' "$uuid"
     return 0
 }
@@ -148,14 +156,14 @@ check "$FRAME" "Account created" "last_message reports account created"
 check "$FRAME" "uuid:" "frame shows uuid status line after signup"
 check "$FRAME" "xyzfs:" "frame shows xyzfs status line after signup"
 UUID_A=$(assert_user_xyzfs "$USER_A" "userA") || UUID_A=""
-if grep -q "current_user_id=$USER_A" "$PROJECT_DIR/current_login.txt" \
-   && grep -q "current_user_uuid=" "$PROJECT_DIR/current_login.txt" \
-   && grep -q "current_xyzfs=xyzfs/users/" "$PROJECT_DIR/current_login.txt"; then
+if grep -q "current_user_id=$USER_A" "$SESS/current_login.txt" \
+   && grep -q "current_user_uuid=" "$SESS/current_login.txt" \
+   && grep -q "current_xyzfs=xyzfs/users/" "$SESS/current_login.txt"; then
     pass "current_login.txt has user_id + uuid + xyzfs for A"
-    cp "$PROJECT_DIR/current_login.txt" "$PROOF_DIR/01_current_login_A.txt"
+    cp "$SESS/current_login.txt" "$PROOF_DIR/01_current_login_A.txt"
 else
     fail "current_login.txt incomplete after signup A"
-    cp "$PROJECT_DIR/current_login.txt" "$PROOF_DIR/01_current_login_A.txt" 2>/dev/null || true
+    cp "$SESS/current_login.txt" "$PROOF_DIR/01_current_login_A.txt" 2>/dev/null || true
 fi
 
 echo "--- log out ---"
@@ -170,7 +178,7 @@ focus "$SESS" "$FRAME" "Log In"; key "$SESS" 13
 sleep 0.8
 cp "$FRAME" "$PROOF_DIR/03_after_login_A.txt"
 check "$FRAME" "Logged in as: $USER_A" "re-login as $USER_A"
-if [ -n "$UUID_A" ] && grep -q "current_user_uuid=$UUID_A" "$PROJECT_DIR/current_login.txt"; then
+if [ -n "$UUID_A" ] && grep -q "current_user_uuid=$UUID_A" "$SESS/current_login.txt"; then
     pass "re-login restored same uuid $UUID_A"
 else
     fail "re-login did not restore uuid $UUID_A"
@@ -193,8 +201,8 @@ else
     fail "uuids not distinct (A='$UUID_A' B='$UUID_B')"
 fi
 if [ -n "$UUID_A" ] && [ -n "$UUID_B" ] \
-   && [ -d "$PROJECT_DIR/xyzfs/users/$UUID_A" ] \
-   && [ -d "$PROJECT_DIR/xyzfs/users/$UUID_B" ]; then
+   && [ -d "$HOUSE_DIR/xyzfs/users/$UUID_A" ] \
+   && [ -d "$HOUSE_DIR/xyzfs/users/$UUID_B" ]; then
     pass "both xyzfs/users/<uuid>/ trees coexist"
 else
     fail "multi-user xyzfs trees missing (A='$UUID_A' B='$UUID_B')"
@@ -209,6 +217,35 @@ sleep 0.8
 cp "$FRAME" "$PROOF_DIR/05_unknown_user.txt"
 check "$FRAME" "No such user" "unknown user refused"
 check "$FRAME" "Not logged in" "still not logged in"
+
+echo "--- session end: verify persistent state survived at the real roots ---"
+# Killing the session lets its own EXIT trap run persist_session_state(),
+# which fans users/ + current_login.txt + xyzfs/session.pdl back out to
+# $PROJECT_DIR. The xyzfs user trees never needed persisting - with
+# HOUSE_ROOT exported they were written straight to $HOUSE_DIR mid-session.
+# This is THE check this migration exists for: real save data must survive
+# the session dir being deleted. Poll briefly - the trap runs right after
+# keyboard_input dies, but it is a separate process, not synchronous.
+bash "$HARNESS_DIR/button.sh" kill >/dev/null 2>&1
+PERSISTED=0
+for i in $(seq 1 20); do
+    if [ -n "$UUID_A" ] && [ -n "$UUID_B" ] \
+       && [ -f "$PROJECT_DIR/users/$USER_A/profile.txt" ] \
+       && [ -f "$PROJECT_DIR/users/$USER_B/profile.txt" ] \
+       && [ -d "$HOUSE_DIR/xyzfs/users/$UUID_A" ] \
+       && [ -d "$HOUSE_DIR/xyzfs/users/$UUID_B" ]; then
+        PERSISTED=1
+        break
+    fi
+    sleep 0.5
+done
+if [ "$PERSISTED" = "1" ] \
+   && grep -q "^uuid=$UUID_A$" "$PROJECT_DIR/users/$USER_A/profile.txt" \
+   && grep -q "^uuid=$UUID_B$" "$PROJECT_DIR/users/$USER_B/profile.txt"; then
+    pass "users/ (persisted) + house xyzfs trees survived session end"
+else
+    fail "persistent state did NOT survive session end (save-data loss)"
+fi
 
 echo
 echo "=== proof saved to: $PROOF_DIR ==="

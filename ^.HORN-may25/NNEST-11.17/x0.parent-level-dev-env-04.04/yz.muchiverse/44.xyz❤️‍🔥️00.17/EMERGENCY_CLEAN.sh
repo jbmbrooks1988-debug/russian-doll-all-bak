@@ -80,4 +80,42 @@ else
     echo "Removed $FOUND null file(s) - safe to zip now; each will be"
     echo "regenerated fresh the next time its own project actually runs."
 fi
+
+# REAL, NEW 2026-08-20, direct user instruction - old pieces/sessions/*
+# directories are the OTHER real thing that breaks a zip/archive of the
+# house tree for Windows: several projects (mutaclysm-neo, board-viewer,
+# piececraft-xyz, my-chara-txt - real symlink-elimination pass this same
+# day, see SIMLINK_PITFALL.md) still create real per-launch symlinks
+# INSIDE their own pieces/sessions/<id>/ dirs even after their button.sh
+# stopped creating PERSISTENT ones, and old/stale session dirs from
+# earlier runs pile up holding those symlinks indefinitely once the
+# process that made them exits (a session dir is only ever cleaned up by
+# its OWN button.sh's own EXIT trap - if that process was killed instead
+# of exiting cleanly, or predates a later button.sh fix, the dir and its
+# symlinks are simply left behind forever). Same "kill first" ordering
+# as the null-file sweep above (already done, see top of this script) -
+# every pieces/sessions/<id>/ dir remaining at this point belongs to no
+# live process, safe to remove wholesale. Deliberately scoped to the
+# literal path segment "pieces/sessions/" one level deep (removes each
+# session's own subdirectory, not the parent pieces/sessions/ dir
+# itself) - never touches a project's own persistent pieces/<name>/ data
+# living outside that specific path shape.
+echo "Sweeping old pieces/sessions/ directories..."
+SESS_FOUND=0
+while IFS= read -r d; do
+    case "$d" in
+        */xyzfs/*) continue ;;
+    esac
+    rm -rf "$d"
+    echo "  removed stale session: $d"
+    SESS_FOUND=$((SESS_FOUND + 1))
+done <<EOF
+$(find "$SCRIPT_DIR" -maxdepth 8 -type d -path "*/pieces/sessions/*" ! -path "*/pieces/sessions/*/*" 2>/dev/null)
+EOF
+if [ "$SESS_FOUND" -eq 0 ]; then
+    echo "No stale session directories found."
+else
+    echo "Removed $SESS_FOUND stale session directorie(s)."
+fi
+
 echo "Done."

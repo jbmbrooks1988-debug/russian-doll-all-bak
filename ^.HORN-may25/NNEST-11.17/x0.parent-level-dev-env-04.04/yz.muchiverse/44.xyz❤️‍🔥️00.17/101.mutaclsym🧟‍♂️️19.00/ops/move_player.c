@@ -567,25 +567,17 @@ int main(int argc, char **argv) {
 
     int nx = px + dx, ny = py + dy;
 
-    /* REAL SIMPLIFICATION 2026-08-18, direct user instruction ("just copy
-     * piececraft xelector. we can add richness later"): board-viewer's own
-     * real, working possession model (bv_menu_input.c ~line 424-479) is
-     * much simpler than the collision/combat/transition logic below - the
-     * xlector ALWAYS moves unconditionally (clamped to map bounds only,
-     * no walkability check - "a cursor has no gravity/collision"), and
-     * possession just MIRRORS that same new position onto the possessed
-     * entity, no separate walkability/attack/transition pass on the
-     * entity's own move. Porting that exact pattern here: clamp nx/ny to
-     * map bounds, write BOTH xlector_pos_x/y AND the hero's own pos_x/y to
-     * the same clamped position, then return 0 (hero acted - triggers
-     * end_turn/tick_monsters same as any real move). The collision/
-     * combat/transition code below this block is NOT deleted - it's real,
-     * working richness (wall blocking, monster attacks, map transitions)
-     * that piececraft's own simpler xelector doesn't have at all - just
-     * bypassed for now via this early return, to restore basic movement
-     * first. Re-enabling it (removing this early return, letting control
-     * fall through to the collision-aware code below) is the concrete
-     * "add richness later" step. */
+    /* REVERTED 2026-08-20 (direct user report: "map disappeared when i
+     * moved" after re-enabling the collision/transition code below -
+     * most likely the map_02 transition, which has no voxel chunk data
+     * yet per todo-muta-0g+-.txt's own explicit "out of scope" flag,
+     * blanking the 3D view). Restored the 2026-08-18 simplified
+     * possessed-movement path: clamp nx/ny to map bounds only, mirror
+     * onto xlector, write back, return - matches board-viewer's own
+     * xelector model exactly. Direct instruction: rollback and don't
+     * dwell on root-causing it further right now. The real collision/
+     * combat/transition code is still intact below, just unreachable
+     * again via this same early return. */
     if (nx < 0) nx = 0;
     if (nx >= map_w) nx = map_w - 1;
     if (ny < 0) ny = 0;
@@ -615,35 +607,12 @@ int main(int argc, char **argv) {
     if (!xx_found2) fprintf(f, "xlector_pos_x=%d\n", xlector_x);
     if (!xy_found2) fprintf(f, "xlector_pos_y=%d\n", xlector_y);
     fclose(f);
-    /* REAL BUG FIX 2026-08-18, direct user report ("nav frames change
-     * but not player movement on map [in terminal], like it does in
-     * x11"): compose_frame.c's own replay_ledger_hero() (~line 489-511)
-     * reconstructs the hero's DRAWN position for the emoji map grid by
-     * replaying data/master_ledger.txt and matching ONLY
-     * action_type=="move" (strcmp, exact match) - it does NOT read
-     * pos_x/pos_y from hero/state.txt directly at all. This simplified
-     * possessed-movement path (added 2026-08-18, "just copy piececraft
-     * xelector") wrote action_type "hero_move" instead of "move" - a
-     * silent mismatch, not a crash, so nothing errored: every real
-     * keypress correctly updated pos_x/pos_y in state.txt (confirmed via
-     * direct diff), turns kept advancing, "Last key" kept updating in
-     * the composed frame - but replay_ledger_hero() never once matched
-     * a "hero_move" entry, so the 🧑 glyph stayed frozen at whatever
-     * position the last real "move"-typed ledger entry (from the now-
-     * unreachable old collision/combat/transition code path below,
-     * line ~775) last wrote, session after session. Confirmed live via
-     * direct diff of two frame_history.txt entries ~15 turns apart -
-     * identical map grid, identical 🧑 position, despite pos_x/pos_y in
-     * state.txt having genuinely changed. Renamed to "move" to match
-     * the real, established contract compose_frame.c already expects -
-     * not a new convention, restoring the one the unreachable code below
-     * already used. */
     append_ledger("hero", px, py, "move");
     return 0;
 
-    /* UNREACHABLE below this point until the early return above is
-     * removed - real collision/combat/transition richness, kept intact
-     * for the deliberate future "add richness later" step. */
+    /* UNREACHABLE below this point - collision/combat/transition richness,
+     * kept intact for a future re-attempt once map_02's own voxel chunk
+     * data (or an equivalent 3D fallback for un-converted maps) exists. */
 
     char msg[128] = "";
     char monster_state_path[PATH_BUF + 384];
@@ -720,25 +689,19 @@ int main(int argc, char **argv) {
         }
     }
 
-    /* MULTI-CHUNK SUPPORT: detect chunk boundary crossing and update
-     * board_manifest.txt to point to the active chunk. This allows the
-     * hero to walk from chunk_0_0 to chunk_1_0, etc. within a single map.
-     * Chunks are 16x16 in size: chunk_x = pos_x / 16, chunk_y = pos_y / 16. */
-    int new_chunk_x = px / 16;
-    int new_chunk_y = py / 16;
-    if (new_chunk_x != chunk_x || new_chunk_y != chunk_y) {
-        chunk_x = new_chunk_x;
-        chunk_y = new_chunk_y;
-        /* Update board_manifest.txt to point to the new chunk */
-        char manifest_path[PATH_BUF];
-        snprintf(manifest_path, sizeof(manifest_path), "%s/pieces/system/board_manifest.txt", project_root);
-        FILE *mf = fopen(manifest_path, "w");
-        if (mf) {
-            fprintf(mf, "z_base=pieces/system/chunks/chunk_%d_%d/chunk_%d_%d_z\n", chunk_x, chunk_y, chunk_x, chunk_y);
-            fprintf(mf, "z_count=32\n");
-            fclose(mf);
-        }
-    }
+    /* REMOVED 2026-08-20 (see todo-muta-0g+-.txt Step 2): this used to
+     * repoint pieces/system/board_manifest.txt to a per-16-tile
+     * chunk_<x>_<y> directory on every boundary crossing, matching an
+     * old separate-chunk-files layout. This session's own earlier work
+     * merged chunk_0_0/chunk_1_0/chunk_2_0 into a single 48-wide
+     * chunk_0_0 (the "full map" fix) specifically so the whole map
+     * renders at once - board_manifest.txt now permanently points at
+     * that one merged chunk and must never be rewritten again. Leaving
+     * this block in would silently re-break 3D rendering (pointing at
+     * chunk_1_0/chunk_2_0 directories that no longer exist) the instant
+     * px crossed 16 or 32 - exactly the two rooms that fix restored.
+     * chunk_x/chunk_y are still tracked below (informational only, not
+     * read by muta_render_3d.c) via their own state.txt write-back. */
 
     /* Facing tracks the hero's own last movement direction - drives the
      * 3D renderer's 1st-person view direction (see ops/compose_rgb_
@@ -750,6 +713,20 @@ int main(int argc, char **argv) {
     if (dx != 0 || dy != 0) facing = key;
 
     int facing_found = 0;
+    /* REAL BUG FIX 2026-08-20 (direct user report: "teleport puts player
+     * back at start instead of on a new map"): hero_01/state.txt (written
+     * by mua_generate_chunk.c) never had a map_id= line to begin with -
+     * this loop's replace-in-place branch below only fires when a
+     * matching line already exists, so a real transition's computed
+     * dest_map (see find_transition() above) was silently dropped every
+     * time, never reaching disk. Next read defaulted right back to
+     * "map_start" (this function's own hardcoded default), so the hero
+     * never actually left the start map even though pos_x/pos_y DID move
+     * to the destination coordinates within that same old map - looking
+     * exactly like "teleported back to start" since the destination
+     * happened to be near spawn. Same append-if-missing pattern already
+     * used below for facing/chunk_x/chunk_y. */
+    int map_id_found = 0;
     f = fopen(path, "w");
     if (!f) return 1;
     for (int i = 0; i < nlines; i++) {
@@ -764,7 +741,7 @@ int main(int argc, char **argv) {
                 if (strcmp(lines[i], "xlector_pos_x") == 0) { fprintf(f, "xlector_pos_x=%d\n", px); *eq = '='; continue; }
                 if (strcmp(lines[i], "xlector_pos_y") == 0) { fprintf(f, "xlector_pos_y=%d\n", py); *eq = '='; continue; }
             }
-            if (strcmp(lines[i], "map_id") == 0) { fprintf(f, "map_id=%s\n", map_id); *eq = '='; continue; }
+            if (strcmp(lines[i], "map_id") == 0) { fprintf(f, "map_id=%s\n", map_id); map_id_found = 1; *eq = '='; continue; }
             if (strcmp(lines[i], "facing") == 0) { fprintf(f, "facing=%d\n", facing); facing_found = 1; *eq = '='; continue; }
             /* Preserve camera state fields owned by camera_control.c
              * and compose_rgb_frame.c - we don't modify them, but we
@@ -784,6 +761,7 @@ int main(int argc, char **argv) {
         fputs(lines[i], f);
     }
     if (!facing_found) fprintf(f, "facing=%d\n", facing);
+    if (!map_id_found) fprintf(f, "map_id=%s\n", map_id);
     /* Ensure chunk_x and chunk_y are always present */
     int chunk_x_found = 0, chunk_y_found = 0;
     for (int i = 0; i < nlines; i++) {

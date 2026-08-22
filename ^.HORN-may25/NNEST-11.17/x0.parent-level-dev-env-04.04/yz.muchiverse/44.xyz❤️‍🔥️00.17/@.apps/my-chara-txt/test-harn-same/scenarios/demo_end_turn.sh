@@ -69,7 +69,12 @@ for i in $(seq 1 30); do
     # real compose_frame render - grep for actual screen content, or
     # this readiness check can spuriously succeed against a frame
     # that's about to be replaced a moment later.
-    if [ -n "$CANDIDATE" ] && grep -q "M Y - C H A R A" "${CANDIDATE}pieces/display/current_frame.txt" 2>/dev/null; then
+    # REAL FIX 2026-08-20: waiting for just the title banner was too
+    # early on a fast back-to-back rerun - it can render before the
+    # "Day 1 / 10" content line, racing the very next assertion below
+    # (same class of fix as civ-txt/tactics-txt's own scenarios). Wait
+    # for the actual content that assertion checks instead.
+    if [ -n "$CANDIDATE" ] && grep -q "Day 1 / 10" "${CANDIDATE}pieces/display/current_frame.txt" 2>/dev/null; then
         SESS="${CANDIDATE%/}"
         break
     fi
@@ -81,8 +86,19 @@ if [ -z "$SESS" ]; then
     exit 1
 fi
 FRAME="$SESS/pieces/display/current_frame.txt"
-LEDGER="$PROJECT_DIR/data/master_ledger.txt"
-CONFIG="$PROJECT_DIR/pieces/system/config.txt"
+# REAL FIX 2026-08-20 (sim-smell-fix.md's own "mid-session-vs-post-session
+# assertion" writeup): under the copy-based symlink-elimination strategy,
+# PRISC_PROJECT_ROOT stays session-scoped and real persistent state
+# (config.txt, data/) only gets copied back to $PROJECT_DIR by
+# persist_session_state() when the SESSION ENDS, not live during it. This
+# scenario asserts mid-session, so it must read the SESSION's own live
+# copy, not the (stale-until-exit) real-root copy - was $PROJECT_DIR/...,
+# which made every mid-session check here false-fail even on a fully
+# correct run (confirmed live: final config.txt at $PROJECT_DIR was
+# correct - day=3, health=90 - after the run finished; only the
+# mid-session reads were wrong).
+LEDGER="$SESS/data/master_ledger.txt"
+CONFIG="$SESS/pieces/system/config.txt"
 echo "Session: $SESS"
 cp "$FRAME" "$PROOF_DIR/before_end_turn.txt" 2>/dev/null
 

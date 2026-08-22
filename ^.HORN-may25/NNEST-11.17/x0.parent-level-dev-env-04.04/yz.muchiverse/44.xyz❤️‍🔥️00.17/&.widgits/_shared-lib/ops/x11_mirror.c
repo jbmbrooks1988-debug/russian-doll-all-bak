@@ -712,6 +712,24 @@ int main(int argc, char **argv) {
                     g_drag_last_y = ev.xmotion.y_root;
                 }
             } else if (ev.type == ClientMessage && (Atom)ev.xclient.data.l[0] == wm_delete) {
+                /* REAL BUG FIX 2026-08-20, direct user report ("shouldn't
+                 * be still running i closed gl. make sure it closes term
+                 * also"): closing the window via the WM's own [X] button/
+                 * close control only ever set g_shutdown_requested=1 -
+                 * this process's OWN loop exit and cleanup, but unlike
+                 * the Ctrl+C path a few lines above, it never wrote
+                 * quit_flag.txt - so nothing told the REST of the session
+                 * (orchestrator and everything it launched: renderer,
+                 * chtpm_parser_pal, chtpm_rgb_render, prisc+x,
+                 * keyboard_input, the launching button.sh itself) to shut
+                 * down. x11_mirror quietly exited alone, leaving every
+                 * other process running forever. Same write, same path
+                 * convention, as the existing Ctrl+C handler - real
+                 * parity, not a new mechanism. */
+                char path[512];
+                snprintf(path, sizeof(path), "%s/pieces/system/quit_flag.txt", project_root);
+                FILE *qf = fopen(path, "w");
+                if (qf) fclose(qf);
                 g_shutdown_requested = 1;
             }
         }

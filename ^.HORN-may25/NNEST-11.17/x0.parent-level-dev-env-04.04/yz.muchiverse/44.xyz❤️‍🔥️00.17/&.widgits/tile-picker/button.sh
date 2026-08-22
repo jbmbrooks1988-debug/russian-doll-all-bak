@@ -25,13 +25,13 @@ run_widget_session() {
     mkdir -p "$SESSION_DIR/pieces/system" "$SESSION_DIR/pieces/display" \
              "$SESSION_DIR/pieces/apps/player_app" "$SESSION_DIR/pieces/keyboard"
 
-    ln -sfn "$SCRIPT_DIR/system" "$SESSION_DIR/system" 2>/dev/null || true
-    ln -sfn "$SCRIPT_DIR/ops" "$SESSION_DIR/ops" 2>/dev/null || true
-    ln -sfn "$SCRIPT_DIR/pal" "$SESSION_DIR/pal" 2>/dev/null || true
-    ln -sfn "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm" 2>/dev/null || true
-    ln -sfn "$SCRIPT_DIR/pieces/registry" "$SESSION_DIR/pieces/registry" 2>/dev/null || true
-    ln -sfn "$SCRIPT_DIR/pieces/system/picker_items.txt" "$SESSION_DIR/pieces/system/picker_items.txt" 2>/dev/null || true
-    ln -s "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt" 2>/dev/null || true
+    cp -r "$SCRIPT_DIR/system" "$SESSION_DIR/system" 2>/dev/null || true
+    cp -r "$SCRIPT_DIR/ops" "$SESSION_DIR/ops" 2>/dev/null || true
+    cp -r "$SCRIPT_DIR/pal" "$SESSION_DIR/pal" 2>/dev/null || true
+    cp -r "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm" 2>/dev/null || true
+    cp -r "$SCRIPT_DIR/pieces/registry" "$SESSION_DIR/pieces/registry" 2>/dev/null || true
+    cp -r "$SCRIPT_DIR/pieces/system/picker_items.txt" "$SESSION_DIR/pieces/system/picker_items.txt" 2>/dev/null || true
+    cp -r "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt" 2>/dev/null || true
 
     cd "$SESSION_DIR"
     : > pieces/apps/player_app/history.txt
@@ -109,7 +109,17 @@ EOSTATE
         done
     }
 
-    trap 'kill "$RENDERER_PID" "$CHTPM_PID" "$GL_PID" "$RGB_PID" 2>/dev/null; kill_own_module; rm -rf "$SESSION_DIR"' EXIT INT TERM
+    # Step 2 symlink-migration fix: copy mutable session state back
+    # to the real project root before the session dir is deleted
+    # (the old symlinks made these writes land at the real root for
+    # free; cp -r sessions need this explicit copy-back). Merge
+    # semantics - adds/overwrites, never deletes. Volatile files
+    # (quit_flag, pids, history, relays, gui_state) are NOT copied.
+    persist_session_state() {
+        mkdir -p "$(dirname "$SCRIPT_DIR/pieces/system/picker_items.txt")" 2>/dev/null || true
+        cp -r "$SESSION_DIR/pieces/system/picker_items.txt" "$SCRIPT_DIR/pieces/system/picker_items.txt" 2>/dev/null || true
+    }
+    trap 'kill "$RENDERER_PID" "$CHTPM_PID" "$GL_PID" "$RGB_PID" 2>/dev/null; kill_own_module; persist_session_state; rm -rf "$SESSION_DIR"' EXIT INT TERM
 
     : > pieces/apps/player_app/history.txt
     ./system/keyboard_input

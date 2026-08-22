@@ -593,8 +593,20 @@ int main(int argc, char **argv) {
     snprintf(state_path, sizeof(state_path), "%s/projects/piececraft-xyz/pieces/pc_menu/state.txt", project_root);
     snprintf(config_path, sizeof(config_path), "%s/pieces/system/config.txt", project_root);
 
+    /* REAL BUG FIX 2026-08-20 (see sim-smell-fix.md's own widget_cmds/
+     * inbox.txt writeup): under the copy-based symlink-elimination
+     * strategy, PRISC_PROJECT_ROOT stays the disposable session dir, but
+     * board-viewer writes real inbox commands to the REAL (non-session)
+     * project root - see OPEN_BOARD_WIDGET's own real_root resolution
+     * above, board_widget_bridge.txt's inbox_path is resolved against
+     * board-viewer's own focused_project_root, which IS real_root, not
+     * the session dir. This op must drain the SAME real location board-
+     * viewer actually writes to, not its own session-local copy (which
+     * would silently never see new commands at all). */
+    char inbox_real_root[PATH_BUF];
+    resolve_real_root(project_root, inbox_real_root, sizeof(inbox_real_root));
     char inbox_path[PATH_BUF];
-    snprintf(inbox_path, sizeof(inbox_path), "%s/pieces/system/widget_cmds/inbox.txt", project_root);
+    snprintf(inbox_path, sizeof(inbox_path), "%s/pieces/system/widget_cmds/inbox.txt", inbox_real_root);
     char inbox_cmd_buf[MAX_LINE] = "";
     {
         FILE *ibf = fopen(inbox_path, "r");

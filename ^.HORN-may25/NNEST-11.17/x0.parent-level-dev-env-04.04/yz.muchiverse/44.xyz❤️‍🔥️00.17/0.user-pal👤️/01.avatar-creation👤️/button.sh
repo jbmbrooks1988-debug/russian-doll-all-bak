@@ -37,16 +37,16 @@ case "$ACTION" in
             printf 'name=user_01\ntype=user\ntokens=0\n' > "$SCRIPT_DIR/pieces/world_01/map_lobby/user_01/state.txt"
         fi
 
-        ln -sfn "$SCRIPT_DIR/system" "$SESSION_DIR/system"
-        ln -sfn "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"
-        ln -sfn "$SCRIPT_DIR/pal" "$SESSION_DIR/pal"
-        ln -sfn "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt"
-        ln -sfn "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm"
-        ln -sfn "$SCRIPT_DIR/pieces/registry" "$SESSION_DIR/pieces/registry"
-        ln -sfn "$SCRIPT_DIR/projects/avatar-creation/pieces" "$SESSION_DIR/projects/avatar-creation/pieces"
-        ln -sfn "$SCRIPT_DIR/pieces/world_01" "$SESSION_DIR/pieces/world_01"
-        ln -sfn "$KILL_ALL" "$SESSION_DIR/pieces/os/kill_all.sh"
-        ln -sfn "$SCRIPT_DIR/pieces/system/avatar_window_pids.txt" \
+        cp -r "$SCRIPT_DIR/system" "$SESSION_DIR/system"
+        cp -r "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"
+        cp -r "$SCRIPT_DIR/pal" "$SESSION_DIR/pal"
+        cp -r "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt"
+        cp -r "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm"
+        cp -r "$SCRIPT_DIR/pieces/registry" "$SESSION_DIR/pieces/registry"
+        cp -r "$SCRIPT_DIR/projects/avatar-creation/pieces" "$SESSION_DIR/projects/avatar-creation/pieces"
+        cp -r "$SCRIPT_DIR/pieces/world_01" "$SESSION_DIR/pieces/world_01"
+        cp -r "$KILL_ALL" "$SESSION_DIR/pieces/os/kill_all.sh"
+        cp -r "$SCRIPT_DIR/pieces/system/avatar_window_pids.txt" \
             "$SESSION_DIR/pieces/system/avatar_window_pids.txt" 2>/dev/null || true
 
         cd "$SESSION_DIR"
@@ -87,6 +87,20 @@ EOSTATE
         ./system/chtpm_parser_pal pieces/chtpm/layouts/main.chtpm >/dev/null 2>&1 &
         CHTPM_PID=$!
 
+        # Copy-back half of the copy-in/copy-out write-through emulation
+        # for pieces/world_01/ (clones minted, tokens claimed, DNA cycled,
+        # inventory changes - every gameplay op writes these via
+        # project_root = the session copy). Must run BEFORE rm -rf deletes
+        # the session dir. Identity (current_login/session.pdl/xyzfs homes)
+        # needs NO persisting here: those ops write via USERPAL_LOGIN_ROOT,
+        # which already points at the REAL 00.login-signup root.
+        # avatar_window_pids.txt is deliberately NOT persisted - the real
+        # root's copy is truncated at every launch by design (stale PIDs
+        # from a dead session are worse than none).
+        persist_session_state() {
+            cp -r "$SESSION_DIR/pieces/world_01/." "$SCRIPT_DIR/pieces/world_01/" 2>/dev/null
+        }
+
         session_cleanup() {
             # Order matters: soft stop -> kill windows (60fps) -> UI -> module -> session dir
             printf '1\n' > "$SESSION_DIR/pieces/system/quit_flag.txt" 2>/dev/null || true
@@ -110,6 +124,7 @@ EOSTATE
                         ;;
                 esac
             done
+            persist_session_state
             rm -rf "$SESSION_DIR"
         }
         trap 'session_cleanup' EXIT INT TERM HUP

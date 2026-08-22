@@ -1,6 +1,6 @@
 game_id=my-biotech-001
 player_name=Adam
-day=2
+day=1
 max_days=10
 health=100
 money=500

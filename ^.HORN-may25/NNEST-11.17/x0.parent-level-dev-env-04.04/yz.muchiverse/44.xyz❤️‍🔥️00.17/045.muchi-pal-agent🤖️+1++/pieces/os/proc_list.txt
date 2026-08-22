@@ -1,7 +1,0 @@
-17224 orchestrator
-17588 ./system/renderer
-17589 ./system/keyboard_input
-17590 ./system/chtpm_parser_pal
-17591 ./system/chtpm_rgb_render
-17592 ./system/gl_mirror
-17596 path_nav_manager

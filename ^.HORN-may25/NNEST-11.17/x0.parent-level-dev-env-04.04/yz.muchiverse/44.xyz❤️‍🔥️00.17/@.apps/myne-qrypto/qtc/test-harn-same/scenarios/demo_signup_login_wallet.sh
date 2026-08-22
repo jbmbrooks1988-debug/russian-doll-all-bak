@@ -97,7 +97,10 @@ sleep 1
 cd "$PROJECT_DIR"
 rm -rf "$PROJECT_DIR/pieces/sessions"
 
-bash button.sh run < /dev/null > /tmp/th_qtc_flow_sess.log 2>&1 &
+# setsid: run the session in its OWN process group, so the death-sweep
+# group-kill in the session's cleanup cascade can't take THIS scenario
+# down with it when we end the session in step 8.
+setsid bash button.sh run < /dev/null > /tmp/th_qtc_flow_sess.log 2>&1 &
 disown
 
 SESS=""
@@ -150,14 +153,19 @@ sleep 1
 cp "$FRAME" "$PROOF_DIR/05_after_signup_submit.txt" 2>/dev/null
 check "$FRAME" "created" "signup succeeded (real chain_create_wallet.+x ran)"
 
-echo "--- ground truth: real wallet dir on disk (not just UI text) ---"
+echo "--- ground truth: wallet dir on disk (not just UI text) ---"
 # wallets/<wallet_id>/ is a DIRECTORY containing wallet.txt (confirmed
 # live this session - NOT a flat wallets/<wallet_id> file, an earlier
 # draft of this assertion assumed).
-if [ -d "$PROJECT_DIR/wallets/$WALLET_ID" ] && [ -f "$PROJECT_DIR/wallets/$WALLET_ID/wallet.txt" ]; then
-    pass "real wallet dir+file exists: wallets/$WALLET_ID/wallet.txt"
+# Step 2 symlink-migration note: chain_create_wallet writes via
+# project_root = the SESSION copy, so mid-run disk truth lives under
+# $SESS/wallets/ (pre-migration the session dir was symlinks, so this
+# check against the real root passed incidentally). Real-root
+# persistence is asserted after exit in step 8 below.
+if [ -d "$SESS/wallets/$WALLET_ID" ] && [ -f "$SESS/wallets/$WALLET_ID/wallet.txt" ]; then
+    pass "wallet dir+file exists on disk (session): wallets/$WALLET_ID/wallet.txt"
 else
-    fail "no wallet dir/file found at wallets/$WALLET_ID/wallet.txt"
+    fail "no wallet dir/file found at session wallets/$WALLET_ID/wallet.txt"
 fi
 
 echo "--- step 5: back to Login ---"
@@ -198,6 +206,25 @@ if grep -q "Not logged in" "$FRAME" 2>/dev/null; then
     fail "wallet screen says 'Not logged in' - session did not actually carry through"
 else
     pass "wallet screen does NOT say 'Not logged in' - real session carried through"
+fi
+
+echo "--- step 8: exit session, verify wallet persisted to real root ---"
+# Step 2 symlink-migration: the session's wallets/ only reaches the real
+# root via button.sh's persist_session_state() copy-back at cleanup.
+# NOTE: do NOT use `button.sh kill` here - it sweeps everything under the
+# qtc project (kill_all.sh) and kills THIS scenario along with it. Kill
+# only this session's foreground keyboard_input (cwd match) so the run
+# action's own EXIT trap fires naturally.
+SDABS="$(cd "$SESS" && pwd)"
+for pid in $(pgrep -f "system/keyboard_input"); do
+    kcwd=$(readlink -f "/proc/$pid/cwd" 2>/dev/null)
+    [ "$kcwd" = "$SDABS" ] && kill -TERM "$pid" 2>/dev/null
+done
+sleep 3
+if [ -d "$PROJECT_DIR/wallets/$WALLET_ID" ] && [ -f "$PROJECT_DIR/wallets/$WALLET_ID/wallet.txt" ]; then
+    pass "wallet persisted to REAL wallets/ after session exit (Step 2 copy-back)"
+else
+    fail "wallet did NOT persist to real wallets/ after session exit"
 fi
 
 echo

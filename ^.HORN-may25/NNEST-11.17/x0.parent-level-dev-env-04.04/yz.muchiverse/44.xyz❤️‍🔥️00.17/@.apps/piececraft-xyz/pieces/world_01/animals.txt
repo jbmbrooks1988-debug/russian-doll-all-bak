@@ -1,1 +1,1 @@
-chicken,8,5,17
+chicken,7,5,17

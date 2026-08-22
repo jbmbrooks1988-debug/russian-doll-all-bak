@@ -87,15 +87,15 @@ case "$ACTION" in
                  "$SESSION_DIR/pieces/os" "$SESSION_DIR/projects/aomorai-editor/manager"
         mkdir -p "$SCRIPT_DIR/data"
 
-        ln -s "$SCRIPT_DIR/pieces/os/kill_all.sh" "$SESSION_DIR/pieces/os/kill_all.sh" 2>/dev/null
-        ln -s "$SCRIPT_DIR/system" "$SESSION_DIR/system"
-        ln -s "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"
-        ln -s "$SCRIPT_DIR/pal" "$SESSION_DIR/pal"
-        ln -s "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt"
-        ln -s "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm"
-        ln -s "$SCRIPT_DIR/pieces/registry" "$SESSION_DIR/pieces/registry" 2>/dev/null
-        ln -s "$SCRIPT_DIR/projects/aomorai-editor/pieces" "$SESSION_DIR/projects/aomorai-editor/pieces"
-        ln -s "$SCRIPT_DIR/data" "$SESSION_DIR/data"
+        cp -r "$SCRIPT_DIR/pieces/os/kill_all.sh" "$SESSION_DIR/pieces/os/kill_all.sh" 2>/dev/null
+        cp -r "$SCRIPT_DIR/system" "$SESSION_DIR/system"
+        cp -r "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"
+        cp -r "$SCRIPT_DIR/pal" "$SESSION_DIR/pal"
+        cp -r "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt"
+        cp -r "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm"
+        cp -r "$SCRIPT_DIR/pieces/registry" "$SESSION_DIR/pieces/registry" 2>/dev/null
+        cp -r "$SCRIPT_DIR/projects/aomorai-editor/pieces" "$SESSION_DIR/projects/aomorai-editor/pieces"
+        cp -r "$SCRIPT_DIR/data" "$SESSION_DIR/data"
 
         cd "$SESSION_DIR"
         : > pieces/apps/player_app/interact_relay.txt
@@ -128,18 +128,18 @@ city_count=1
 game_state=setup
 EOCONFIG
         fi
-        ln -sf "$SCRIPT_DIR/pieces/system/config.txt" "$SESSION_DIR/pieces/system/config.txt"
+        cp -r "$SCRIPT_DIR/pieces/system/config.txt" "$SESSION_DIR/pieces/system/config.txt"
         # board.txt is REAL PERSISTENT DATA (like config.txt), generated
         # by CONFIRM_START and read by the board-viewer widget from
         # aomorai-editor's own REAL (non-session) root - must be
         # symlinked into every session the same way config.txt is.
         touch "$SCRIPT_DIR/pieces/system/board.txt"
-        ln -sf "$SCRIPT_DIR/pieces/system/board.txt" "$SESSION_DIR/pieces/system/board.txt"
+        cp -r "$SCRIPT_DIR/pieces/system/board.txt" "$SESSION_DIR/pieces/system/board.txt"
         # entities.txt - real generic entity manifest board-viewer
         # reads. Not yet populated - aomorai-editor has no real
         # cities/units data yet in P1 clone phase.
         touch "$SCRIPT_DIR/pieces/system/entities.txt"
-        ln -sf "$SCRIPT_DIR/pieces/system/entities.txt" "$SESSION_DIR/pieces/system/entities.txt"
+        cp -r "$SCRIPT_DIR/pieces/system/entities.txt" "$SESSION_DIR/pieces/system/entities.txt"
 
         # widget_cmds/inbox.txt + board_widget_bridge.txt - real Phase 2
         # widget->host command delivery (phase2-plan.md §6 step 1 -
@@ -153,14 +153,14 @@ EOCONFIG
         # own pc_menu_input.c (running inside the session) can drain it.
         mkdir -p "$SCRIPT_DIR/pieces/system/widget_cmds"
         touch "$SCRIPT_DIR/pieces/system/widget_cmds/inbox.txt"
-        ln -sfn "$SCRIPT_DIR/pieces/system/widget_cmds" "$SESSION_DIR/pieces/system/widget_cmds"
+        cp -r "$SCRIPT_DIR/pieces/system/widget_cmds" "$SESSION_DIR/pieces/system/widget_cmds"
         cat > "$SCRIPT_DIR/pieces/system/board_widget_bridge.txt" << EOF
 inbox_path=pieces/system/widget_cmds/inbox.txt
 kind=board_game
 project_id=aomorai-editor
 display_name=Aomorai-editor
 EOF
-        ln -sf "$SCRIPT_DIR/pieces/system/board_widget_bridge.txt" "$SESSION_DIR/pieces/system/board_widget_bridge.txt"
+        cp -r "$SCRIPT_DIR/pieces/system/board_widget_bridge.txt" "$SESSION_DIR/pieces/system/board_widget_bridge.txt"
 
         cat > pieces/apps/player_app/state.txt << 'EOSTATE'
 module_path=system/prisc+x pal/new_game_module.pal
@@ -208,7 +208,25 @@ EOSTATE
             done
         }
 
-        trap 'kill "$ORCH_PID" "$GL_PID" "$RGB_PID" 2>/dev/null; wait "$ORCH_PID" 2>/dev/null; kill_own_module; kill_own_board_widget; kill_own_clock_daemon; rm -rf "$SESSION_DIR"' EXIT INT TERM
+        # Step 2 symlink-migration fix: copy mutable session state back
+        # to the real project root before the session dir is deleted
+        # (the old symlinks made these writes land at the real root for
+        # free; cp -r sessions need this explicit copy-back). Merge
+        # semantics - adds/overwrites, never deletes. Volatile files
+        # (quit_flag, pids, history, relays, gui_state) are NOT copied.
+        persist_session_state() {
+            mkdir -p "$(dirname "$SCRIPT_DIR/pieces/system/config.txt")" 2>/dev/null || true
+            cp -r "$SESSION_DIR/pieces/system/config.txt" "$SCRIPT_DIR/pieces/system/config.txt" 2>/dev/null || true
+            mkdir -p "$(dirname "$SCRIPT_DIR/pieces/system/board.txt")" 2>/dev/null || true
+            cp -r "$SESSION_DIR/pieces/system/board.txt" "$SCRIPT_DIR/pieces/system/board.txt" 2>/dev/null || true
+            mkdir -p "$(dirname "$SCRIPT_DIR/pieces/system/entities.txt")" 2>/dev/null || true
+            cp -r "$SESSION_DIR/pieces/system/entities.txt" "$SCRIPT_DIR/pieces/system/entities.txt" 2>/dev/null || true
+            mkdir -p "$SCRIPT_DIR/pieces/system/widget_cmds/" 2>/dev/null || true
+            cp -r "$SESSION_DIR/pieces/system/widget_cmds/." "$SCRIPT_DIR/pieces/system/widget_cmds/" 2>/dev/null || true
+            mkdir -p "$(dirname "$SCRIPT_DIR/pieces/system/board_widget_bridge.txt")" 2>/dev/null || true
+            cp -r "$SESSION_DIR/pieces/system/board_widget_bridge.txt" "$SCRIPT_DIR/pieces/system/board_widget_bridge.txt" 2>/dev/null || true
+        }
+        trap 'kill "$ORCH_PID" "$GL_PID" "$RGB_PID" 2>/dev/null; wait "$ORCH_PID" 2>/dev/null; kill_own_module; kill_own_board_widget; kill_own_clock_daemon; persist_session_state; rm -rf "$SESSION_DIR"' EXIT INT TERM
 
         ./system/keyboard_input
 

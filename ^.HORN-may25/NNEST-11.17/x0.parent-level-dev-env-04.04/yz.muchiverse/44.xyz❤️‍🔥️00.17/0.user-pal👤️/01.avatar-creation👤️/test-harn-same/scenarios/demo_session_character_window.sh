@@ -8,6 +8,7 @@
 set -u
 AV="$(cd "$(dirname "$0")/../.." && pwd)"
 LOGIN="$(cd "$AV/../00.login-signup" 2>/dev/null && pwd || true)"
+HOUSE="$(cd "$LOGIN/../.." 2>/dev/null && pwd || true)"
 FAIL=0
 pass() { echo "PASS: $1"; }
 fail() { echo "FAIL: $1"; FAIL=1; }
@@ -25,7 +26,7 @@ cleanup() {
     if [ -n "${TEST_USER:-}" ] && [ -n "$LOGIN" ] && [ -d "$LOGIN/users/$TEST_USER" ]; then
         uuid=$(grep '^uuid=' "$LOGIN/users/$TEST_USER/profile.txt" 2>/dev/null | cut -d= -f2-)
         rm -rf "$LOGIN/users/$TEST_USER"
-        [ -n "$uuid" ] && rm -rf "$LOGIN/xyzfs/users/$uuid"
+        [ -n "$uuid" ] && rm -rf "$HOUSE/xyzfs/users/$uuid"
         "$LOGIN/ops/+x/userpal_logout.+x" >/dev/null 2>&1 || true
     fi
 }
@@ -60,7 +61,7 @@ grep -q 'user_uuid' "$LOGIN/xyzfs/session.pdl" && pass "session.pdl has user_uui
 # Only the STATE row (not comments mentioning xyzfs_path)
 XYZ=$(awk -F'|' '/^STATE[[:space:]]*\|[[:space:]]*xyzfs_path/ {gsub(/^ +| +$/,"",$3); print $3; exit}' "$LOGIN/xyzfs/session.pdl")
 echo "xyzfs_path=[$XYZ]"
-[ -n "$XYZ" ] && [ -d "$LOGIN/$XYZ" ] && pass "user xyzfs tree exists" || fail "xyzfs tree missing ($LOGIN/$XYZ)"
+[ -n "$XYZ" ] && [ -d "$HOUSE/$XYZ" ] && pass "user xyzfs tree exists" || fail "xyzfs tree missing ($HOUSE/$XYZ)"
 
 echo "=== mint character via generate_clone (reads session.pdl) ==="
 export PRISC_PROJECT_ROOT="$AV"
@@ -70,14 +71,14 @@ AVATAR_UUID=$(echo "$AVATAR_UUID" | tr -d '\r\n' | tail -1)
 echo "avatar=$AVATAR_UUID"
 [ -n "$AVATAR_UUID" ] && [ ${#AVATAR_UUID} -ge 32 ] && pass "minted avatar uuid" || fail "bad uuid [$AVATAR_UUID]"
 [ -f "$AV/pieces/world_01/map_lobby/$AVATAR_UUID/state.txt" ] && pass "local lobby piece" || fail "no local piece"
-if [ -f "$LOGIN/$XYZ/home/avatars/$AVATAR_UUID/state.txt" ]; then
+if [ -f "$HOUSE/$XYZ/home/avatars/$AVATAR_UUID/state.txt" ]; then
     pass "xyzfs avatar state"
 else
     AP=$(awk -F'|' '/^STATE[[:space:]]*\|[[:space:]]*active_avatar_path/ {gsub(/^ +| +$/,"",$3); print $3; exit}' "$LOGIN/xyzfs/session.pdl")
-    if [ -n "$AP" ] && [ -f "$LOGIN/$AP/state.txt" ]; then
+    if [ -n "$AP" ] && [ -f "$HOUSE/$AP/state.txt" ]; then
         pass "xyzfs avatar state via session path"
     else
-        fail "no xyzfs avatar ($LOGIN/$XYZ/home/avatars/$AVATAR_UUID)"
+        fail "no xyzfs avatar ($HOUSE/$XYZ/home/avatars/$AVATAR_UUID)"
     fi
 fi
 
@@ -91,7 +92,7 @@ grep -q "active_avatar_path" "$LOGIN/xyzfs/session.pdl" \
 echo "=== open desktop GL window (avatar_window) ==="
 OUT=$("$AV/ops/+x/open_avatar_window.+x" "$AVATAR_UUID" 2>&1)
 echo "$OUT"
-echo "$OUT" | grep -qi 'Opened desktop window' && pass "open_avatar_window reported open" || fail "open failed: $OUT"
+echo "$OUT" | grep -qi 'Opened chara window' && pass "open_avatar_window reported open" || fail "open failed: $OUT"
 sleep 0.5
 WPID=""
 if [ -f "$AV/pieces/world_01/map_lobby/$AVATAR_UUID/window.pid" ]; then

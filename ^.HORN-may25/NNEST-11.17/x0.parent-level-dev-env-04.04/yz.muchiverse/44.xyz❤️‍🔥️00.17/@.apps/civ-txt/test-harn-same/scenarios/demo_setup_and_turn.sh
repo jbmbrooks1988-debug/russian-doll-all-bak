@@ -65,7 +65,13 @@ for i in $(seq 1 30); do
     # compose_frame render - grep for actual screen content, not just
     # file existence, or the very first assertion below can spuriously
     # fail against a frame that's about to be replaced a moment later.
-    if [ -n "$CANDIDATE" ] && grep -q "C I V - T X T" "${CANDIDATE}pieces/display/current_frame.txt" 2>/dev/null; then
+    # REAL FIX 2026-08-20: waiting for just the "C I V - T X T" title
+    # banner was STILL too early - that banner renders in an earlier
+    # frame than the setup screen's own "Victory condition:" field line,
+    # so the very next assertion below (which checks for that exact
+    # string) raced against it and false-failed. Wait for the actual
+    # content the first real assertion checks, not just the title.
+    if [ -n "$CANDIDATE" ] && grep -q "Victory condition:" "${CANDIDATE}pieces/display/current_frame.txt" 2>/dev/null; then
         SESS="${CANDIDATE%/}"
         break
     fi
@@ -77,8 +83,14 @@ if [ -z "$SESS" ]; then
     exit 1
 fi
 FRAME="$SESS/pieces/display/current_frame.txt"
-LEDGER="$PROJECT_DIR/data/master_ledger.txt"
-CONFIG="$PROJECT_DIR/pieces/system/config.txt"
+# REAL FIX 2026-08-20 (sim-smell-fix.md's "mid-session-vs-post-session
+# assertion" writeup, same fix applied to my-chara-txt's own
+# demo_end_turn.sh) - under the copy-based symlink-elimination strategy,
+# real persistent state only lands at $PROJECT_DIR when the session ENDS
+# (persist_session_state() in button.sh's EXIT trap), not live during it.
+# Assert against the SESSION's own live copy instead.
+LEDGER="$SESS/data/master_ledger.txt"
+CONFIG="$SESS/pieces/system/config.txt"
 echo "Session: $SESS"
 cp "$FRAME" "$PROOF_DIR/00_setup_screen.txt" 2>/dev/null
 

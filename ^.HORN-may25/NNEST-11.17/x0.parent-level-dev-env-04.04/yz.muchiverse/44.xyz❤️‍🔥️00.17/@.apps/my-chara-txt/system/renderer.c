@@ -69,6 +69,8 @@ static void resolve_root(void) {
     if (!getcwd(project_root, sizeof(project_root))) snprintf(project_root, sizeof(project_root), ".");
 }
 
+static char session_root[MAX_PATH] = ".";
+
 static long file_size(const char *path) {
     struct stat st;
     if (stat(path, &st) != 0) return -1;
@@ -110,8 +112,8 @@ static int is_history_on(void) {
 
 static void render_frame(void) {
     char frame_path[PATH_BUF], history_path[PATH_BUF];
-    snprintf(frame_path, sizeof(frame_path), "%s/pieces/display/current_frame.txt", project_root);
-    snprintf(history_path, sizeof(history_path), "%s/pieces/display/frame_history.txt", project_root);
+    snprintf(frame_path, sizeof(frame_path), "%s/pieces/display/current_frame.txt", session_root);
+    snprintf(history_path, sizeof(history_path), "%s/pieces/display/frame_history.txt", session_root);
 
     FILE *f = fopen(frame_path, "r");
     if (!f) return;
@@ -167,19 +169,21 @@ static int quit_requested(void) {
 
 int main(void) {
     resolve_root();
+    if (!getcwd(session_root, sizeof(session_root)))
+        snprintf(session_root, sizeof(session_root), ".");
 
     /* Watch ONLY renderer_pulse.txt - the authoritative post-compose
      * marker (mass-refactor 2026-07-26, matching 101.mutaclsym - see
      * this file's own top-of-file comment). */
     char renderer_pulse_path[PATH_BUF], frame_path[PATH_BUF];
-    snprintf(renderer_pulse_path, sizeof(renderer_pulse_path), "%s/pieces/display/renderer_pulse.txt", project_root);
-    snprintf(frame_path, sizeof(frame_path), "%s/pieces/display/current_frame.txt", project_root);
+    snprintf(renderer_pulse_path, sizeof(renderer_pulse_path), "%s/pieces/display/renderer_pulse.txt", session_root);
+    snprintf(frame_path, sizeof(frame_path), "%s/pieces/display/current_frame.txt", session_root);
 
     /* Clear the frame history log at the start of a new session, same
      * as TPMOS's renderer does - prevents old runs' frames piling up
      * under a fresh game's log. */
     char history_path[PATH_BUF];
-    snprintf(history_path, sizeof(history_path), "%s/pieces/display/frame_history.txt", project_root);
+    snprintf(history_path, sizeof(history_path), "%s/pieces/display/frame_history.txt", session_root);
     FILE *clear = fopen(history_path, "w");
     if (clear) fclose(clear);
 

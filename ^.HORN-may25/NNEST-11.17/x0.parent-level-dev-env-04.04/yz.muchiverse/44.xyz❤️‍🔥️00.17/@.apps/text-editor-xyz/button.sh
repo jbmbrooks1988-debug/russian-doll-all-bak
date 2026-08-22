@@ -71,19 +71,19 @@ run_app() {
              "$EDITOR_SESSION/projects/agy-editor/manager" \
              "$EDITOR_SESSION/docs"
 
-    ln -sfn "$EDITOR_DIR/system" "$EDITOR_SESSION/system"
-    ln -sfn "$EDITOR_DIR/ops" "$EDITOR_SESSION/ops"
-    ln -sfn "$EDITOR_DIR/pal" "$EDITOR_SESSION/pal"
-    ln -sfn "$EDITOR_DIR/default_op.txt" "$EDITOR_SESSION/default_op.txt"
-    ln -sfn "$EDITOR_DIR/pieces/chtpm" "$EDITOR_SESSION/pieces/chtpm"
+    cp -r "$EDITOR_DIR/system" "$EDITOR_SESSION/system"
+    cp -r "$EDITOR_DIR/ops" "$EDITOR_SESSION/ops"
+    cp -r "$EDITOR_DIR/pal" "$EDITOR_SESSION/pal"
+    cp -r "$EDITOR_DIR/default_op.txt" "$EDITOR_SESSION/default_op.txt"
+    cp -r "$EDITOR_DIR/pieces/chtpm" "$EDITOR_SESSION/pieces/chtpm"
     # Required for chtpm_rgb_render to find glyph data (PITFALL 52) —
     # without this every character renders invisible (checksummed but
     # visually blank GL window). This launcher builds its own separate
     # editor session rather than delegating to 102.editor's own
     # button.sh, so it needs this symlink added independently.
-    ln -sfn "$EDITOR_DIR/pieces/registry" "$EDITOR_SESSION/pieces/registry" 2>/dev/null || true
-    ln -sfn "$EDITOR_DIR/projects/agy-editor/pieces" "$EDITOR_SESSION/projects/agy-editor/pieces"
-    ln -sfn "$EDITOR_DIR/docs" "$EDITOR_SESSION/docs"
+    cp -r "$EDITOR_DIR/pieces/registry" "$EDITOR_SESSION/pieces/registry" 2>/dev/null || true
+    cp -r "$EDITOR_DIR/projects/agy-editor/pieces" "$EDITOR_SESSION/projects/agy-editor/pieces"
+    cp -r "$EDITOR_DIR/docs" "$EDITOR_SESSION/docs"
 
     cd "$EDITOR_SESSION"
 
@@ -231,7 +231,17 @@ EOSTATE
         if [ -f pieces/system/editor_buffer.txt ]; then
             cp pieces/system/editor_buffer.txt "$SCRIPT_DIR/sessions/autosave.txt" 2>/dev/null || true
         fi
-        rm -rf "$EDITOR_SESSION" 2>/dev/null || true
+        persist_session_state; rm -rf "$EDITOR_SESSION" 2>/dev/null || true
+    }
+    # Step 2 symlink-migration fix: copy mutable session state back
+    # to the real project root before the session dir is deleted
+    # (the old symlinks made these writes land at the real root for
+    # free; cp -r sessions need this explicit copy-back). Merge
+    # semantics - adds/overwrites, never deletes. Volatile files
+    # (quit_flag, pids, history, relays, gui_state) are NOT copied.
+    persist_session_state() {
+        mkdir -p "$EDITOR_DIR/docs/" 2>/dev/null || true
+        cp -r "$EDITOR_SESSION/docs/." "$EDITOR_DIR/docs/" 2>/dev/null || true
     }
     trap cleanup EXIT INT TERM
 

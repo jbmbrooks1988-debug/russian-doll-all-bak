@@ -255,7 +255,19 @@ static void ensure_directories(void) {
 
 static int quit_requested(void) {
     struct stat st;
+    /* REAL BUG FIX 2026-08-20 (direct user report: closing the GL window
+     * left every other process still running): x11_mirror.c (shared, its
+     * own project_root = argv[1] = the SESSION dir, unaffected by this
+     * project's own PRISC_PROJECT_ROOT=$SCRIPT_DIR post-symlink-
+     * elimination change) writes quit_flag.txt to the SESSION dir on
+     * both Ctrl+C and window-close - but this function was only ever
+     * checking the PROJECT-root copy (resolve_path()), a real path
+     * mismatch introduced by the same category-B refactor documented in
+     * SIMLINK_PITFALL.md. Check both: session-relative (CWD, matching
+     * x11_mirror.c's own real write target) first, then project-root
+     * (matching button.sh's own clear-at-launch site) as a fallback. */
     char qpath[2048];
+    if (stat("pieces/system/quit_flag.txt", &st) == 0 && st.st_size > 0) return 1;
     resolve_path(qpath, sizeof(qpath), "pieces/system/quit_flag.txt");
     if (stat(qpath, &st) != 0) return 0;
     return st.st_size > 0;

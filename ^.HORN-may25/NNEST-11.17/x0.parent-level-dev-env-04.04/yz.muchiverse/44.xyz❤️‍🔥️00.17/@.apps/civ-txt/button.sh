@@ -49,15 +49,15 @@ case "$ACTION" in
                  "$SESSION_DIR/pieces/os" "$SESSION_DIR/projects/civ-txt/manager"
         mkdir -p "$SCRIPT_DIR/data"
 
-        ln -s "$SCRIPT_DIR/pieces/os/kill_all.sh" "$SESSION_DIR/pieces/os/kill_all.sh" 2>/dev/null
-        ln -s "$SCRIPT_DIR/system" "$SESSION_DIR/system"
-        ln -s "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"
-        ln -s "$SCRIPT_DIR/pal" "$SESSION_DIR/pal"
-        ln -s "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt"
-        ln -s "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm"
-        ln -s "$SCRIPT_DIR/pieces/registry" "$SESSION_DIR/pieces/registry"
-        ln -s "$SCRIPT_DIR/projects/civ-txt/pieces" "$SESSION_DIR/projects/civ-txt/pieces"
-        ln -s "$SCRIPT_DIR/data" "$SESSION_DIR/data"
+        cp -r "$SCRIPT_DIR/pieces/os/kill_all.sh" "$SESSION_DIR/pieces/os/kill_all.sh" 2>/dev/null
+        cp -r "$SCRIPT_DIR/system" "$SESSION_DIR/system"
+        cp -r "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"
+        cp -r "$SCRIPT_DIR/pal" "$SESSION_DIR/pal"
+        cp -r "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt"
+        cp -r "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm"
+        cp -r "$SCRIPT_DIR/pieces/registry" "$SESSION_DIR/pieces/registry"
+        cp -r "$SCRIPT_DIR/projects/civ-txt/pieces" "$SESSION_DIR/projects/civ-txt/pieces"
+        cp -r "$SCRIPT_DIR/data" "$SESSION_DIR/data"
 
         cd "$SESSION_DIR"
         : > pieces/apps/player_app/interact_relay.txt
@@ -88,7 +88,7 @@ city_count=1
 game_state=setup
 EOCONFIG
         fi
-        ln -sf "$SCRIPT_DIR/pieces/system/config.txt" "$SESSION_DIR/pieces/system/config.txt"
+        cp -r "$SCRIPT_DIR/pieces/system/config.txt" "$SESSION_DIR/pieces/system/config.txt"
         # board.txt is REAL PERSISTENT DATA (like config.txt), generated
         # by CONFIRM_START and read by the board-viewer widget from
         # civ-txt's own REAL (non-session) root - must be symlinked into
@@ -97,7 +97,7 @@ EOCONFIG
         # exit (exact same bug class as my-chara-txt's own plots.txt
         # symlink omission, found and fixed earlier this session).
         touch "$SCRIPT_DIR/pieces/system/board.txt"
-        ln -sf "$SCRIPT_DIR/pieces/system/board.txt" "$SESSION_DIR/pieces/system/board.txt"
+        cp -r "$SCRIPT_DIR/pieces/system/board.txt" "$SESSION_DIR/pieces/system/board.txt"
         # terrain_legend.txt - real per-host data-bank board-viewer reads
         # instead of hardcoding civ-txt's own terrain in its C source
         # (Phase 0 of @.apps/piececraft-xyz/PIECECRAFT_XYZ_DESIGN.md §0a -
@@ -116,7 +116,7 @@ f|0.4|30|110|40|1F332|forest
 C|1.2|200|180|60|1F3F0|CAPITAL
 EOLEGEND
         fi
-        ln -sf "$SCRIPT_DIR/pieces/system/terrain_legend.txt" "$SESSION_DIR/pieces/system/terrain_legend.txt"
+        cp -r "$SCRIPT_DIR/pieces/system/terrain_legend.txt" "$SESSION_DIR/pieces/system/terrain_legend.txt"
         # widget_cmds/inbox.txt + board_widget_bridge.txt - real widget->
         # host command delivery (2026-08-03, Phase 0 follow-up per
         # @.apps/piececraft-xyz/PIECECRAFT_XYZ_DESIGN.md §4a). Bridge
@@ -128,14 +128,14 @@ EOLEGEND
         # and live now, so this is here ready for it, not speculative.
         mkdir -p "$SCRIPT_DIR/pieces/system/widget_cmds"
         touch "$SCRIPT_DIR/pieces/system/widget_cmds/inbox.txt"
-        ln -sfn "$SCRIPT_DIR/pieces/system/widget_cmds" "$SESSION_DIR/pieces/system/widget_cmds"
+        cp -r "$SCRIPT_DIR/pieces/system/widget_cmds" "$SESSION_DIR/pieces/system/widget_cmds"
         cat > "$SCRIPT_DIR/pieces/system/board_widget_bridge.txt" << EOF
 inbox_path=pieces/system/widget_cmds/inbox.txt
 kind=board_game
 project_id=civ-txt
 display_name=Civ-txt
 EOF
-        ln -sf "$SCRIPT_DIR/pieces/system/board_widget_bridge.txt" "$SESSION_DIR/pieces/system/board_widget_bridge.txt"
+        cp -r "$SCRIPT_DIR/pieces/system/board_widget_bridge.txt" "$SESSION_DIR/pieces/system/board_widget_bridge.txt"
         # entities.txt - same generic entity-render manifest tactics-txt's
         # own button.sh now writes (see that project's own ops/tactics_
         # menu_input.c CONFIRM_START comment for the format). Not yet
@@ -143,7 +143,7 @@ EOF
         # (see @.apps/PORTABLE_ENTITY_ARCHITECTURE.md) - wired up now so
         # the plumbing is ready once P2 gives it real content.
         touch "$SCRIPT_DIR/pieces/system/entities.txt"
-        ln -sf "$SCRIPT_DIR/pieces/system/entities.txt" "$SESSION_DIR/pieces/system/entities.txt"
+        cp -r "$SCRIPT_DIR/pieces/system/entities.txt" "$SESSION_DIR/pieces/system/entities.txt"
 
         cat > pieces/apps/player_app/state.txt << 'EOSTATE'
 module_path=system/prisc+x pal/new_game_module.pal
@@ -191,7 +191,27 @@ EOSTATE
             done
         }
 
-        trap 'kill "$ORCH_PID" "$GL_PID" "$RGB_PID" 2>/dev/null; wait "$ORCH_PID" 2>/dev/null; kill_own_module; kill_own_board_widget; rm -rf "$SESSION_DIR"' EXIT INT TERM
+        # Step 2 symlink-migration fix: copy mutable session state back
+        # to the real project root before the session dir is deleted
+        # (the old symlinks made these writes land at the real root for
+        # free; cp -r sessions need this explicit copy-back). Merge
+        # semantics - adds/overwrites, never deletes. Volatile files
+        # (quit_flag, pids, history, relays, gui_state) are NOT copied.
+        persist_session_state() {
+            mkdir -p "$(dirname "$SCRIPT_DIR/pieces/system/config.txt")" 2>/dev/null || true
+            cp -r "$SESSION_DIR/pieces/system/config.txt" "$SCRIPT_DIR/pieces/system/config.txt" 2>/dev/null || true
+            mkdir -p "$(dirname "$SCRIPT_DIR/pieces/system/board.txt")" 2>/dev/null || true
+            cp -r "$SESSION_DIR/pieces/system/board.txt" "$SCRIPT_DIR/pieces/system/board.txt" 2>/dev/null || true
+            mkdir -p "$(dirname "$SCRIPT_DIR/pieces/system/terrain_legend.txt")" 2>/dev/null || true
+            cp -r "$SESSION_DIR/pieces/system/terrain_legend.txt" "$SCRIPT_DIR/pieces/system/terrain_legend.txt" 2>/dev/null || true
+            mkdir -p "$(dirname "$SCRIPT_DIR/pieces/system/entities.txt")" 2>/dev/null || true
+            cp -r "$SESSION_DIR/pieces/system/entities.txt" "$SCRIPT_DIR/pieces/system/entities.txt" 2>/dev/null || true
+            mkdir -p "$SCRIPT_DIR/pieces/system/widget_cmds/" 2>/dev/null || true
+            cp -r "$SESSION_DIR/pieces/system/widget_cmds/." "$SCRIPT_DIR/pieces/system/widget_cmds/" 2>/dev/null || true
+            mkdir -p "$(dirname "$SCRIPT_DIR/pieces/system/board_widget_bridge.txt")" 2>/dev/null || true
+            cp -r "$SESSION_DIR/pieces/system/board_widget_bridge.txt" "$SCRIPT_DIR/pieces/system/board_widget_bridge.txt" 2>/dev/null || true
+        }
+        trap 'kill "$ORCH_PID" "$GL_PID" "$RGB_PID" 2>/dev/null; wait "$ORCH_PID" 2>/dev/null; kill_own_module; kill_own_board_widget; persist_session_state; rm -rf "$SESSION_DIR"' EXIT INT TERM
 
         ./system/keyboard_input
 

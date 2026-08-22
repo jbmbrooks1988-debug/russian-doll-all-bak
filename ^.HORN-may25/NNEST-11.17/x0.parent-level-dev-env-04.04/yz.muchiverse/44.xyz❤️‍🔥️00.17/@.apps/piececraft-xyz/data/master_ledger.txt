@@ -4047,3 +4047,7 @@
 2026-08-18T00:34:24|9|chicken|wander|x:10,y:3
 2026-08-18T00:34:24|10|player|move|tick:10
 2026-08-18T00:34:24|10|chicken|wander|x:10,y:4
+2026-08-20T20:44:23|1|player|move|tick:1
+2026-08-20T20:44:23|1|chicken|wander|x:9,y:6
+2026-08-20T20:44:23|2|player|move|tick:2
+2026-08-20T20:44:23|2|chicken|wander|x:9,y:7

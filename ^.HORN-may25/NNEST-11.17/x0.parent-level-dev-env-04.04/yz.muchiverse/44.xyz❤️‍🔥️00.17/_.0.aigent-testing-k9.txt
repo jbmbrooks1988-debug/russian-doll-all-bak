@@ -617,4 +617,65 @@ process reads) rather than its own private session dir. Real incident
 there, not in this file — this file stays scoped to injection/nav
 testing procedure only, per direct correction 2026-08-13).
 
+SCOPE ADDENDUM 2026-08-20 — testing "interact mode"-gated 2D/3D map
+systems (mutaclysm-family: real camera state updates correctly in a
+state file but the render never visibly follows). Full incident +
+root-cause writeup lives in `101.mutaclsym🧟‍♂️️19.00/SIMLINK_PITFALL.md`;
+this entry is the PROCEDURE distilled from it, for any future
+interact-mode/camera testing on this or a sibling project.
+
+**Rule 9 — a state-file diff is NOT proof a render pipeline picked
+something up.** `grep`-confirming `camera_mode=3` changed in a hero
+state file only proves the INPUT side worked. Multiple independent
+processes (a dispatcher, a 3D renderer, an RGB compositor, a window
+mirror) can each read/write "the same" relative filename while
+actually resolving to DIFFERENT real files if their working
+directories or root-env vars diverge even slightly — this produces
+a confirmed-changing state file next to a genuinely-frozen visible
+window, with zero errors anywhere. Always finish a camera/render test
+with a REAL pixel-level proof (`dump_rgb_png.+x`, which reads the raw
+frame buffer file directly — no window-capture race, no reliance on
+the GUI actually being visible on a shared desktop) and compare it
+against the PRIOR dump, not just against a text description of what
+"should" have changed.
+
+**Rule 10 — "interact mode" is usually a real, separate engagement
+gate, not just a label.** In this family, pressing a menu item's Enter
+(e.g. "Control Hero") sets a real `interact_mode=1`/`active_index`
+state that subsequent keys are checked against — some input ops (e.g.
+`camera_control.c`'s pan/look) hard-return no-op if that gate isn't
+genuinely on, while OTHER ops for the same game (e.g. plain movement)
+may respond regardless of the gate's state, which LOOKS like "input is
+working fine" even when the specific feature under test (camera) is
+silently blocked. Before concluding a specific control doesn't work,
+confirm via a fresh read of the actual gate field (`interact_mode`,
+`active_index`, whatever the project calls it) at the moment you send
+the test key — don't infer the gate state from whether an unrelated
+control (movement) responded.
+
+**Rule 11 — verify with the REAL capture path, not just a raw file
+write, when input capture itself is in question.** A bare file-append
+test (writing directly into a relay/history file) can produce a false
+PASS if it bypasses a real, separate bug in the actual X11-capture →
+relay-write chain (wrong keycode mapping, wrong window focus, a
+WM/global-hotkey interception). When the capture path itself is
+uncertain, prefer a REAL synthetic X11 keypress via an XTest injector
+(`&.widgits/tile-picker/ops/+x/tp_test_send_key.+x <window-name-
+substring> <keysym>` — confirmed working here against a live
+`x11_mirror`-family window by exact title-substring match) over a raw
+file write, so the test exercises the same code path a real human
+keypress would.
+
+**Rule 12 — a persistent (project-root) vs. session-local (CWD) file
+split, once introduced (e.g. by a symlink-elimination pass), silently
+breaks any writer/reader PAIR that doesn't agree on the same base.**
+Before trusting that a fix for one half of a pipeline (e.g. the
+dispatcher) is sufficient, explicitly check `/proc/<pid>/cwd` for
+EVERY long-lived process in the chain (dispatcher, renderer,
+compositor, mirror) — a library-level `chdir()` call you don't control
+(e.g. inside a shared parser before launching a persistent module) can
+silently move one process's own "relative path" resolution out from
+under an otherwise-correct fix, and this never produces an error, only
+a stale/frozen visible output next to correctly-updating state files.
+
 End of testing guide.

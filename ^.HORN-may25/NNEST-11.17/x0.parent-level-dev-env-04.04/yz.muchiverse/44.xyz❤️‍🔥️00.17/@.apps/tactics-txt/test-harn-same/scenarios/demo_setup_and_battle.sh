@@ -57,7 +57,12 @@ for i in $(seq 1 30); do
     # "[Map Loading...]" placeholder is also non-empty and would
     # otherwise pass a naive readiness check (real race, caught live
     # writing civ-txt's own equivalent scenario this same session).
-    if [ -n "$CANDIDATE" ] && grep -q "T A C T I C S - T X T" "${CANDIDATE}pieces/display/current_frame.txt" 2>/dev/null; then
+    # REAL FIX 2026-08-20: waiting for just the title banner was too
+    # early - it renders before the setup screen's own "Mode: (not
+    # set)" field line, racing the very next assertion below. Wait for
+    # the actual content that assertion checks instead (same class of
+    # fix as civ-txt's own demo_setup_and_turn.sh).
+    if [ -n "$CANDIDATE" ] && grep -q "Mode: (not set)" "${CANDIDATE}pieces/display/current_frame.txt" 2>/dev/null; then
         SESS="${CANDIDATE%/}"
         break
     fi
@@ -69,8 +74,12 @@ if [ -z "$SESS" ]; then
     exit 1
 fi
 FRAME="$SESS/pieces/display/current_frame.txt"
-LEDGER="$PROJECT_DIR/data/master_ledger.txt"
-CONFIG="$PROJECT_DIR/pieces/system/config.txt"
+# REAL FIX 2026-08-20 (sim-smell-fix.md's "mid-session-vs-post-session
+# assertion" writeup, same fix applied to my-chara-txt/civ-txt) - real
+# persistent state only lands at $PROJECT_DIR when the session ENDS, not
+# live during it. Assert against the SESSION's own live copy instead.
+LEDGER="$SESS/data/master_ledger.txt"
+CONFIG="$SESS/pieces/system/config.txt"
 echo "Session: $SESS"
 cp "$FRAME" "$PROOF_DIR/00_setup_screen.txt" 2>/dev/null
 
@@ -98,49 +107,42 @@ check "$FRAME" "warrior (hp: 20)" "side 1 roster shows warrior hp 20"
 check "$FRAME" "clown (hp: 15)" "side 2 roster shows clown hp 15"
 check "$CONFIG" "turn=1" "still turn 1 immediately after navigating"
 
-# REAL, REPRODUCIBLE QUIRK - found and confirmed while writing this
-# scenario (not simulated, not worked around): navigating from
-# setup.chtpm -> main.chtpm via the "Enter Battle" href causes exactly
-# ONE phantom END_TURN to fire automatically, flipping active_side
-# 1->2 before any real End Turn is pressed. Root cause not fully
-# chased down this session, but the shape strongly suggests
-# interact_relay.txt's own consumption-position isn't reset per new
-# screen's module - main_module.pal's fresh prisc+x process starts its
-# own read_history cursor at 0, re-reading (and re-dispatching) an
-# earlier relay entry from the JUST-LEFT setup screen against main's
-# own (much smaller) piece.pdl, where it happens to resolve to END_TURN
-# by coincidence of item-index overlap. The SAME mechanism is present
-# in civ-txt's own setup->main transition too (confirmed there this
-# same session) but is invisible/harmless there only because its
-# re-fired action (CONFIRM_START) is idempotent - tactics-txt's
-# END_TURN is not, which is what makes it visible here. This is a real
-# open item for a future session to root-cause in chtpm_parser_pal.c
-# proper (see HANDOFF_NEXT_SESSION.md) - asserting the REAL observed
-# sequence below, not an idealized one, so this harness still catches
-# genuine regressions without being blocked on that separate fix.
-check "$CONFIG" "active_side=2" "KNOWN QUIRK: one phantom END_TURN fires on screen entry, flipping to side 2 already"
+# UPDATE 2026-08-20: the phantom-END_TURN-on-screen-entry quirk this
+# scenario used to document/assert around (see git history for the
+# original comment - a chtpm_parser_pal.c interact_relay.txt cursor bug)
+# no longer reproduces. Confirmed live, manually, with generous settle
+# time (2s, double this scenario's own 1s) before checking - active_side
+# stayed 1, not 2, after "Enter Battle" navigation. Whatever fixed it was
+# incidental to unrelated work elsewhere in the shared engine, not this
+# session's own symlink-migration changes. Asserting the REAL,
+# CURRENT (quirk-free) behavior now, per tactics_menu_input.c's own
+# END_TURN handler: active_side 1<->2 each press, turn increments only
+# when wrapping 2->1. If this phantom quirk ever comes back, THIS
+# assertion is what will catch it as a regression.
+check "$CONFIG" "active_side=1" "no phantom END_TURN on screen entry - active_side still 1"
+check "$CONFIG" "turn=1" "no phantom END_TURN on screen entry - turn still 1"
 
-echo "--- End Turn #1 (item 1, a REAL press) - side 2->1, turn 1->2 (wrap) ---"
+echo "--- End Turn #1 (item 1, a REAL press) - side 1->2, turn stays 1 ---"
 key "$SESS" 49; key "$SESS" 13
 sleep 1
 cp "$FRAME" "$PROOF_DIR/02_after_end_turn_1.txt" 2>/dev/null
-check "$CONFIG" "active_side=1" "active_side wrapped 2->1 after this End Turn"
-check "$CONFIG" "turn=2" "turn incremented to 2 (side 2 was the wrap-completing side)"
+check "$CONFIG" "active_side=2" "active_side advanced 1->2 after this End Turn"
+check "$CONFIG" "turn=1" "turn stays 1 (side 2 alone doesn't complete a round)"
 check "$CONFIG" "actions_remaining_this_turn=5" "actions pool reset to 5"
 
-echo "--- End Turn #2 (item 1, a REAL press) - side 1->2, turn stays 2 ---"
+echo "--- End Turn #2 (item 1, a REAL press) - side 2->1, turn 1->2 (wrap) ---"
 key "$SESS" 49; key "$SESS" 13
 sleep 1
 cp "$FRAME" "$PROOF_DIR/03_after_end_turn_2.txt" 2>/dev/null
 cp "$LEDGER" "$PROOF_DIR/ledger_final.txt" 2>/dev/null
-check "$CONFIG" "active_side=2" "active_side advanced 1->2"
-check "$CONFIG" "turn=2" "turn stays 2 (side 1 alone doesn't complete a round)"
+check "$CONFIG" "active_side=1" "active_side wrapped 2->1 after this End Turn"
+check "$CONFIG" "turn=2" "turn incremented to 2 (side 1 was the wrap-completing side)"
 
 LEDGER_LINES=$(wc -l < "$LEDGER" 2>/dev/null || echo 0)
-if [ "$LEDGER_LINES" -eq 3 ]; then
-    pass "ledger has exactly 3 lines (1 phantom on screen-entry + 2 real presses) - matches the known quirk above, not silently more/fewer"
+if [ "$LEDGER_LINES" -eq 2 ]; then
+    pass "ledger has exactly 2 lines (one per real End Turn press, no phantom entry) - matches current quirk-free behavior"
 else
-    fail "ledger line count wrong: expected 3 (per the documented known quirk), got $LEDGER_LINES"
+    fail "ledger line count wrong: expected 2, got $LEDGER_LINES"
 fi
 
 echo "--- CPU sanity check (Pitfall 22/51 - keyboard_input must not be busy-spinning) ---"

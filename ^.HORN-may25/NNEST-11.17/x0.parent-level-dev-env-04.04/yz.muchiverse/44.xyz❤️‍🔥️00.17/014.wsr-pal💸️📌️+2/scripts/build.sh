@@ -22,7 +22,7 @@ cd "$SCRIPT_DIR"
 
 mkdir -p ops/+x
 
-CFLAGS="-Wall -Wextra -O2"
+CFLAGS="-Wall -Wextra -O2 -I/usr/include/freetype2"
 
 echo "--- Building system processes ---"
 gcc $CFLAGS "system/prisc+x.c" -o "system/prisc+x"
@@ -65,7 +65,7 @@ for src in ops/*.c; do
     name="$(basename "$src" .c)"
     [ "$name" = "dump_rgb_png" ] && continue
     echo "  Compiling $name..."
-    gcc $CFLAGS "$src" -o "ops/+x/$name.+x" -lm
+    gcc $CFLAGS "$src" -o "ops/+x/$name.+x" -lm -lfreetype
 done
 
 echo "--- Build Complete ---"

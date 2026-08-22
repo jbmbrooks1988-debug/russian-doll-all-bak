@@ -1,4 +1,0 @@
-module_path=system/prisc+x pal/main_loop_chtpm.pal
-active_target_id=hero
-last_click_x=273
-last_click_y=250

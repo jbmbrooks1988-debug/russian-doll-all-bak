@@ -67,14 +67,14 @@ _start_session() {
              "$SESSION_DIR/pieces/apps/player_app" "$SESSION_DIR/pieces/keyboard" \
              "$SESSION_DIR/projects/event-editor/manager" "$SESSION_DIR/pieces/os"
 
-    ln -sfn "$MUTA/system" "$SESSION_DIR/system"
-    ln -sfn "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"
-    ln -sfn "$SCRIPT_DIR/pal" "$SESSION_DIR/pal"
-    ln -sfn "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt"
-    ln -sfn "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm"
+    cp -r "$MUTA/system" "$SESSION_DIR/system"
+    cp -r "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"
+    cp -r "$SCRIPT_DIR/pal" "$SESSION_DIR/pal"
+    cp -r "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt"
+    cp -r "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm"
     # fonts for GL text (chtpm_rgb_render)
     if [ -d "$MUTA/pieces/registry" ]; then
-        ln -sfn "$MUTA/pieces/registry" "$SESSION_DIR/pieces/registry"
+        cp -r "$MUTA/pieces/registry" "$SESSION_DIR/pieces/registry"
     else
         echo "WARN: no $MUTA/pieces/registry — GL text will be blank"
     fi

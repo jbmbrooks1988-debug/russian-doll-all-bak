@@ -87,15 +87,29 @@ case "$ACTION" in
                  "$SESSION_DIR/pieces/os" "$SESSION_DIR/projects/piececraft-xyz/manager"
         mkdir -p "$SCRIPT_DIR/data"
 
-        ln -s "$SCRIPT_DIR/pieces/os/kill_all.sh" "$SESSION_DIR/pieces/os/kill_all.sh" 2>/dev/null
-        ln -s "$SCRIPT_DIR/system" "$SESSION_DIR/system"
-        ln -s "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"
-        ln -s "$SCRIPT_DIR/pal" "$SESSION_DIR/pal"
-        ln -s "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt"
-        ln -s "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm"
-        ln -s "$SCRIPT_DIR/pieces/registry" "$SESSION_DIR/pieces/registry" 2>/dev/null
-        ln -s "$SCRIPT_DIR/projects/piececraft-xyz/pieces" "$SESSION_DIR/projects/piececraft-xyz/pieces"
-        ln -s "$SCRIPT_DIR/data" "$SESSION_DIR/data"
+        # SIMLINK ELIMINATION 2026-08-20 (see SIMLINK_PITFALL.md /
+        # sim-smell-fix.md's own "THE SOLUTION" section) - copy-based
+        # strategy, same as my-chara-txt's own confirmed-working fix.
+        # PRISC_PROJECT_ROOT stays "$SESSION_DIR" (unchanged, below) -
+        # this project ALSO has two distinct <module> paths
+        # (new_game_module.pal / main_module.pal), so it's equally at
+        # risk of the shared engine's own module-relaunch crash if
+        # PRISC_PROJECT_ROOT were switched to $SCRIPT_DIR instead - see
+        # sim-smell-fix.md's own "REAL, UNRESOLVED shared-engine bug"
+        # section, don't attempt that strategy here.
+        cp -p "$SCRIPT_DIR/pieces/os/kill_all.sh" "$SESSION_DIR/pieces/os/kill_all.sh" 2>/dev/null
+        cp -r "$SCRIPT_DIR/system" "$SESSION_DIR/system"
+        cp -r "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"
+        cp -r "$SCRIPT_DIR/pal" "$SESSION_DIR/pal"
+        cp -p "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt"
+        cp -r "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm"
+        cp -r "$SCRIPT_DIR/pieces/registry" "$SESSION_DIR/pieces/registry" 2>/dev/null
+        mkdir -p "$SESSION_DIR/projects/piececraft-xyz"
+        cp -r "$SCRIPT_DIR/projects/piececraft-xyz/pieces" "$SESSION_DIR/projects/piececraft-xyz/pieces"
+        # data/ is real persistent state - copied back out in the EXIT
+        # trap below (persist_session_state()), same pattern as
+        # my-chara-txt's own working fix.
+        cp -r "$SCRIPT_DIR/data" "$SESSION_DIR/data"
 
         cd "$SESSION_DIR"
         : > pieces/apps/player_app/interact_relay.txt
@@ -128,39 +142,41 @@ city_count=1
 game_state=setup
 EOCONFIG
         fi
-        ln -sf "$SCRIPT_DIR/pieces/system/config.txt" "$SESSION_DIR/pieces/system/config.txt"
+        # config.txt is real persistent state - copied in here, copied
+        # back out by persist_session_state() in the EXIT trap below,
+        # same pattern as data/ and my-chara-txt's own working fix.
+        cp -p "$SCRIPT_DIR/pieces/system/config.txt" "$SESSION_DIR/pieces/system/config.txt"
         # board.txt is REAL PERSISTENT DATA (like config.txt), generated
-        # by CONFIRM_START and read by the board-viewer widget from
-        # piececraft-xyz's own REAL (non-session) root - must be
-        # symlinked into every session the same way config.txt is.
+        # by CONFIRM_START - same copy-in/copy-out treatment. NOTE
+        # 2026-08-20: nothing in ops/*.c actually writes board.txt yet
+        # (grepped clean - CONFIRM_START's board generation isn't wired
+        # up), so this is a placeholder file for now, but the pattern is
+        # future-proof for when it is.
         touch "$SCRIPT_DIR/pieces/system/board.txt"
-        ln -sf "$SCRIPT_DIR/pieces/system/board.txt" "$SESSION_DIR/pieces/system/board.txt"
+        cp -p "$SCRIPT_DIR/pieces/system/board.txt" "$SESSION_DIR/pieces/system/board.txt"
         # entities.txt - real generic entity manifest board-viewer
         # reads. Not yet populated - piececraft-xyz has no real
         # cities/units data yet in P1 clone phase.
         touch "$SCRIPT_DIR/pieces/system/entities.txt"
-        ln -sf "$SCRIPT_DIR/pieces/system/entities.txt" "$SESSION_DIR/pieces/system/entities.txt"
+        cp -p "$SCRIPT_DIR/pieces/system/entities.txt" "$SESSION_DIR/pieces/system/entities.txt"
 
         # widget_cmds/inbox.txt + board_widget_bridge.txt - real Phase 2
-        # widget->host command delivery (phase2-plan.md §6 step 1 -
-        # keybinds.txt is real now, JUMP/MINE/BUILD/MOVE all have real
-        # handlers in pc_menu_input.c). Same real shape civ-txt's own
-        # button.sh already uses - board-viewer's own bv_menu_input.c
-        # reads keybinds.txt + this bridge file directly from the REAL
-        # (non-session) project root, so nothing here needs session-
-        # symlinking for board-viewer's OWN reads, but civ-txt's own
-        # convention still symlinks the inbox itself so THIS project's
-        # own pc_menu_input.c (running inside the session) can drain it.
+        # widget->host command delivery. REAL BUG FIX 2026-08-20: under
+        # the copy-based strategy these no longer need session-symlinking
+        # at all - board-viewer already resolves both via real_root
+        # (open_board_widget()/resolve_real_root() in pc_menu_input.c),
+        # and pc_menu_input.c's own inbox drain was fixed today to read
+        # via resolve_real_root() too (see sim-smell-fix.md). Both files
+        # now live ONLY at the REAL project root, never copied into the
+        # session dir.
         mkdir -p "$SCRIPT_DIR/pieces/system/widget_cmds"
         touch "$SCRIPT_DIR/pieces/system/widget_cmds/inbox.txt"
-        ln -sfn "$SCRIPT_DIR/pieces/system/widget_cmds" "$SESSION_DIR/pieces/system/widget_cmds"
         cat > "$SCRIPT_DIR/pieces/system/board_widget_bridge.txt" << EOF
 inbox_path=pieces/system/widget_cmds/inbox.txt
 kind=board_game
 project_id=piececraft-xyz
 display_name=Piececraft-xyz
 EOF
-        ln -sf "$SCRIPT_DIR/pieces/system/board_widget_bridge.txt" "$SESSION_DIR/pieces/system/board_widget_bridge.txt"
 
         cat > pieces/apps/player_app/state.txt << 'EOSTATE'
 module_path=system/prisc+x pal/new_game_module.pal
@@ -223,7 +239,14 @@ EOSTATE
             done
         }
 
-        trap 'kill "$ORCH_PID" "$GL_PID" "$RGB_PID" 2>/dev/null; wait "$ORCH_PID" 2>/dev/null; kill_own_module; kill_own_board_widget; kill_own_clock_daemon; rm -rf "$SESSION_DIR"' EXIT INT TERM
+        persist_session_state() {
+            cp -r "$SESSION_DIR/data/." "$SCRIPT_DIR/data/" 2>/dev/null
+            cp -p "$SESSION_DIR/pieces/system/config.txt" "$SCRIPT_DIR/pieces/system/config.txt" 2>/dev/null
+            cp -p "$SESSION_DIR/pieces/system/board.txt" "$SCRIPT_DIR/pieces/system/board.txt" 2>/dev/null
+            cp -p "$SESSION_DIR/pieces/system/entities.txt" "$SCRIPT_DIR/pieces/system/entities.txt" 2>/dev/null
+        }
+
+        trap 'kill "$ORCH_PID" "$GL_PID" "$RGB_PID" 2>/dev/null; wait "$ORCH_PID" 2>/dev/null; kill_own_module; kill_own_board_widget; kill_own_clock_daemon; persist_session_state; rm -rf "$SESSION_DIR"' EXIT INT TERM
 
         ./system/keyboard_input
 

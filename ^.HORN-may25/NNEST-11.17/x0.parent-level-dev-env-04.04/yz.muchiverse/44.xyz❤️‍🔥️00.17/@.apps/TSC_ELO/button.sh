@@ -37,15 +37,15 @@ case "$ACTION" in
         mkdir -p "$SCRIPT_DIR/data"
         mkdir -p "$SCRIPT_DIR/net/presence"
 
-        ln -s "$SCRIPT_DIR/pieces/os/kill_all.sh" "$SESSION_DIR/pieces/os/kill_all.sh" 2>/dev/null
-        ln -s "$SCRIPT_DIR/system" "$SESSION_DIR/system"
-        ln -s "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"
-        ln -s "$SCRIPT_DIR/pal" "$SESSION_DIR/pal"
-        ln -s "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt"
-        ln -s "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm"
+        cp -r "$SCRIPT_DIR/pieces/os/kill_all.sh" "$SESSION_DIR/pieces/os/kill_all.sh" 2>/dev/null
+        cp -r "$SCRIPT_DIR/system" "$SESSION_DIR/system"
+        cp -r "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"
+        cp -r "$SCRIPT_DIR/pal" "$SESSION_DIR/pal"
+        cp -r "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt"
+        cp -r "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm"
         # Glyph bitmaps for chtpm_rgb_render/gl_mirror (PITFALL 52)
-        ln -s "$SCRIPT_DIR/pieces/registry" "$SESSION_DIR/pieces/registry" 2>/dev/null
-        ln -s "$SCRIPT_DIR/data" "$SESSION_DIR/data"
+        cp -r "$SCRIPT_DIR/pieces/registry" "$SESSION_DIR/pieces/registry" 2>/dev/null
+        cp -r "$SCRIPT_DIR/data" "$SESSION_DIR/data"
 
         cd "$SESSION_DIR"
         : > pieces/apps/player_app/interact_relay.txt
@@ -85,7 +85,7 @@ player_2_mana=0
 player_2_status=none
 EOCONFIG
         fi
-        ln -sf "$SCRIPT_DIR/pieces/system/config.txt" "$SESSION_DIR/pieces/system/config.txt"
+        cp -r "$SCRIPT_DIR/pieces/system/config.txt" "$SESSION_DIR/pieces/system/config.txt"
 
         # Persistent master ledger: seeded once if missing.
         if [ ! -f "$SCRIPT_DIR/data/master_ledger.txt" ]; then
@@ -171,7 +171,17 @@ EOSTATE
             wait "$ORCH_PID" 2>/dev/null
             kill_own_module
             [ -x "$SCRIPT_DIR/widgets/setup/button.sh" ] && bash "$SCRIPT_DIR/widgets/setup/button.sh" kill >/dev/null 2>&1 || true
-            rm -rf "$SESSION_DIR"
+            persist_session_state; rm -rf "$SESSION_DIR"
+        }
+        # Step 2 symlink-migration fix: copy mutable session state back
+        # to the real project root before the session dir is deleted
+        # (the old symlinks made these writes land at the real root for
+        # free; cp -r sessions need this explicit copy-back). Merge
+        # semantics - adds/overwrites, never deletes. Volatile files
+        # (quit_flag, pids, history, relays, gui_state) are NOT copied.
+        persist_session_state() {
+            mkdir -p "$(dirname "$SCRIPT_DIR/pieces/system/config.txt")" 2>/dev/null || true
+            cp -r "$SESSION_DIR/pieces/system/config.txt" "$SCRIPT_DIR/pieces/system/config.txt" 2>/dev/null || true
         }
         trap cleanup EXIT INT TERM
 

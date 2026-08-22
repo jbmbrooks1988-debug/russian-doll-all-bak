@@ -18,13 +18,12 @@ case "$ACTION" in
         # its own ephemeral UI state (keyboard history, interact_relay,
         # gui_state), deleted on exit.
         #
-        # SHARED, PERSISTENT, NEVER SESSION-SCOPED (symlinked in, never
-        # copied, never deleted on exit): users/ (the real identity
-        # registry) and current_login.txt (USER-PAL-STANDARD.txt sec. 2
-        # - deliberately NOT like pal-forum's own net/session.txt; this
-        # file must outlive any one session, or "save logged in user
-        # data in one place" would mean nothing the moment a terminal
-        # closes).
+        # SHARED, PERSISTENT, NEVER SESSION-SCOPED (copied in at launch,
+        # copied back out at exit): users/ (the real identity registry)
+        # and current_login.txt (USER-PAL-STANDARD.txt sec. 2 - deliberately
+        # NOT like pal-forum's own net/session.txt; this file must outlive
+        # any one session, or "save logged in user data in one place" would
+        # mean nothing the moment a terminal closes).
         SESSION_ID="$(date +%s)-$$"
         SESSION_DIR="$SCRIPT_DIR/pieces/sessions/$SESSION_ID"
         mkdir -p "$SESSION_DIR/pieces/system" "$SESSION_DIR/pieces/display" \
@@ -35,7 +34,7 @@ case "$ACTION" in
         # Shared + durable (never session-scoped). Created empty at first run;
         # per-user trees appear under users/<uuid>/ at signup.
         mkdir -p "$SCRIPT_DIR/xyzfs/bin" "$SCRIPT_DIR/xyzfs/users"
-        touch "$SCRIPT_DIR/current_login.txt"  # ensure the symlink target exists
+        touch "$SCRIPT_DIR/current_login.txt"  # ensure the real file exists
         # Ensure guest session.pdl exists until first real login
         if [ ! -f "$SCRIPT_DIR/xyzfs/session.pdl" ]; then
             cat > "$SCRIPT_DIR/xyzfs/session.pdl" << 'EOF'
@@ -53,16 +52,16 @@ STATE        | active_avatar_uuid   |
 STATE        | active_avatar_path   | 
 EOF
         fi
-        ln -sfn "$SCRIPT_DIR/xyzfs" "$SESSION_DIR/xyzfs" 2>/dev/null || true
-        ln -s "$SCRIPT_DIR/system" "$SESSION_DIR/system"
-        ln -s "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"
-        ln -s "$SCRIPT_DIR/pal" "$SESSION_DIR/pal"
-        ln -s "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt"
-        ln -s "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm"
-        ln -s "$SCRIPT_DIR/projects/user-pal/pieces" "$SESSION_DIR/projects/user-pal/pieces"
-        ln -s "$SCRIPT_DIR/users" "$SESSION_DIR/users"
-        ln -s "$SCRIPT_DIR/xyzfs" "$SESSION_DIR/xyzfs"
-        ln -s "$SCRIPT_DIR/current_login.txt" "$SESSION_DIR/current_login.txt"
+        cp -r "$SCRIPT_DIR/xyzfs" "$SESSION_DIR/xyzfs" 2>/dev/null || true
+        cp -r "$SCRIPT_DIR/system" "$SESSION_DIR/system"
+        cp -r "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"
+        cp -r "$SCRIPT_DIR/pal" "$SESSION_DIR/pal"
+        cp -r "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt"
+        cp -r "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm"
+        cp -r "$SCRIPT_DIR/projects/user-pal/pieces" "$SESSION_DIR/projects/user-pal/pieces"
+        cp -r "$SCRIPT_DIR/users" "$SESSION_DIR/users"
+        cp -r "$SCRIPT_DIR/xyzfs" "$SESSION_DIR/xyzfs"
+        cp -r "$SCRIPT_DIR/current_login.txt" "$SESSION_DIR/current_login.txt"
 
         cd "$SESSION_DIR"
         : > pieces/apps/player_app/interact_relay.txt
@@ -81,6 +80,12 @@ EOSTATE
 
         export PRISC_PROJECT_ROOT="$SESSION_DIR"
         export PRISC_PROJECT_ID="user-pal"
+        # Per-user xyzfs homes are HOUSE-level state (<house>/xyzfs/users/<uuid>,
+        # clean schema §9 - see ops' resolve_house_root()). Under symlinks the
+        # ops found the house root by realpath()-ing through the session links;
+        # plain copies break that walk (it would land on pieces/), so pin it
+        # explicitly - resolve_house_root() checks this env var FIRST.
+        export HOUSE_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
         # PRE-SEED view.txt BEFORE chtpm's first load_vars/compose_frame.
         # Real bug (live-caught 2026-07-27 via login harness): chtpm_parser
@@ -117,11 +122,28 @@ EOSTATE
             done
         }
 
+        # Copy-back half of the copy-in/copy-out write-through emulation
+        # for users/, current_login.txt and xyzfs/session.pdl (see their
+        # own copy-in comments above) - must run BEFORE rm -rf deletes
+        # the session dir, so accounts created / logins recorded this
+        # session aren't silently lost. Scope note: per-user xyzfs TREES
+        # are NOT persisted here - with HOUSE_ROOT exported above, the ops
+        # write those directly to the real house xyzfs mid-session (same
+        # as the symlink era); only session.pdl (login/logout state) is
+        # written into the session's own xyzfs copy.
+        persist_session_state() {
+            cp -r "$SESSION_DIR/users/." "$SCRIPT_DIR/users/" 2>/dev/null
+            cp -p "$SESSION_DIR/current_login.txt" "$SCRIPT_DIR/current_login.txt" 2>/dev/null
+            cp -p "$SESSION_DIR/xyzfs/session.pdl" "$SCRIPT_DIR/xyzfs/session.pdl" 2>/dev/null
+        }
+
         # Deletes ONLY this session's own private directory - never the
-        # real, shared system/ops/pal/users/current_login.txt (symlinks;
-        # `rm -rf` on the session dir removes the symlink itself, not
-        # its target).
-        trap 'kill "$RENDERER_PID" "$CHTPM_PID" 2>/dev/null; kill_own_module; rm -rf "$SESSION_DIR"' EXIT INT TERM
+        # real, shared system/ops/pal/users/current_login.txt (copies;
+        # `rm -rf` on the session dir only ever touched symlinked-in
+        # files back when they were symlinks; now everything here is a
+        # private copy, and persist_session_state has already fanned the
+        # real state back out).
+        trap 'kill "$RENDERER_PID" "$CHTPM_PID" 2>/dev/null; kill_own_module; persist_session_state; rm -rf "$SESSION_DIR"' EXIT INT TERM
 
         : > pieces/apps/player_app/history.txt
 

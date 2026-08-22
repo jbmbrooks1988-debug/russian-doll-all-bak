@@ -48,15 +48,15 @@ case "$ACTION" in
         mkdir -p "$SCRIPT_DIR/wallets" "$SCRIPT_DIR/data"
         # pieces/os/proc_list.txt (written by orchestrator at runtime) stays
         # REAL and session-local - see kill_all.sh's own header for why.
-        ln -s "$SCRIPT_DIR/pieces/os/kill_all.sh" "$SESSION_DIR/pieces/os/kill_all.sh"
-        ln -s "$SCRIPT_DIR/system" "$SESSION_DIR/system"
-        ln -s "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"
-        ln -s "$SCRIPT_DIR/pal" "$SESSION_DIR/pal"
-        ln -s "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt"
-        ln -s "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm"
-        ln -s "$SCRIPT_DIR/projects/pal-chain/pieces" "$SESSION_DIR/projects/pal-chain/pieces"
-        ln -s "$SCRIPT_DIR/wallets" "$SESSION_DIR/wallets"
-        ln -s "$SCRIPT_DIR/data" "$SESSION_DIR/data"
+        cp -r "$SCRIPT_DIR/pieces/os/kill_all.sh" "$SESSION_DIR/pieces/os/kill_all.sh"
+        cp -r "$SCRIPT_DIR/system" "$SESSION_DIR/system"
+        cp -r "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"
+        cp -r "$SCRIPT_DIR/pal" "$SESSION_DIR/pal"
+        cp -r "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt"
+        cp -r "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm"
+        cp -r "$SCRIPT_DIR/projects/pal-chain/pieces" "$SESSION_DIR/projects/pal-chain/pieces"
+        cp -r "$SCRIPT_DIR/wallets" "$SESSION_DIR/wallets"
+        cp -r "$SCRIPT_DIR/data" "$SESSION_DIR/data"
 
         cd "$SESSION_DIR"
         : > pieces/apps/player_app/interact_relay.txt
@@ -126,7 +126,19 @@ EOSTATE
         # Signaling ORCH_PID triggers its own full cascade cleanup
         # (renderer + chtpm_parser_pal + chtpm_rgb_render + palnet_peer +
         # a session-scoped kill_all.sh sweep).
-        trap 'kill "$ORCH_PID" 2>/dev/null; wait "$ORCH_PID" 2>/dev/null; kill_own_module; rm -rf "$SESSION_DIR"' EXIT INT TERM
+        # Step 2 symlink-migration fix: copy mutable session state back
+        # to the real project root before the session dir is deleted
+        # (the old symlinks made these writes land at the real root for
+        # free; cp -r sessions need this explicit copy-back). Merge
+        # semantics - adds/overwrites, never deletes. Volatile files
+        # (quit_flag, pids, history, relays, gui_state) are NOT copied.
+        persist_session_state() {
+            mkdir -p "$SCRIPT_DIR/wallets/" 2>/dev/null || true
+            cp -r "$SESSION_DIR/wallets/." "$SCRIPT_DIR/wallets/" 2>/dev/null || true
+            mkdir -p "$SCRIPT_DIR/data/" 2>/dev/null || true
+            cp -r "$SESSION_DIR/data/." "$SCRIPT_DIR/data/" 2>/dev/null || true
+        }
+        trap 'kill "$ORCH_PID" 2>/dev/null; wait "$ORCH_PID" 2>/dev/null; kill_own_module; persist_session_state; rm -rf "$SESSION_DIR"' EXIT INT TERM
 
         : > pieces/apps/player_app/history.txt
 

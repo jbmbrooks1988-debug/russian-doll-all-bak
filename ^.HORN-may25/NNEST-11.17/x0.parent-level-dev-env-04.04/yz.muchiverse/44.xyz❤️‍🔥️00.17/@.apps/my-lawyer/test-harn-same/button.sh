@@ -21,7 +21,14 @@ case "$ACTION" in
             echo "Ops not compiled yet - running compile first..."
             "$0" compile
         fi
-        bash "$SCRIPT_DIR/scenarios/demo_research_and_end_turn.sh"
+        # REAL FIX 2026-08-20: this used to point at
+        # demo_research_and_end_turn.sh, which was never actually
+        # written (empty scenarios/ dir, confirmed during the house-wide
+        # harness sweep - my-lawyer's harness was a stub the whole time).
+        # demo_ping.sh is an honest floor (does button.sh actually launch
+        # and render), not a fake stand-in for a real gameplay scenario -
+        # see its own header comment.
+        bash "$SCRIPT_DIR/scenarios/demo_ping.sh"
         ;;
     kill)
         (cd "$PROJECT_DIR" && bash button.sh kill 2>/dev/null)

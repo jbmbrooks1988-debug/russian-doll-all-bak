@@ -1,6 +1,0 @@
-1832575 orchestrator
-1832791 ./system/renderer
-1832792 ./system/keyboard_input
-1832793 ./system/chtpm_parser_pal
-1832794 ./system/chtpm_rgb_render
-1832795 ../&.widgits/_shared-lib/ops/+x/x11_mirror.+x

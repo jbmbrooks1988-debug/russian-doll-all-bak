@@ -138,3 +138,117 @@ static Elem *find_by_id(Elem *e, const char *id) {
     }
     return NULL;
 }
+
+/* REAL START 2026-08-16, Stage 3 (khtpm-merge-how2.md §5) - real box-
+ * model/flex layout engine, built against the real 9-pattern inventory
+ * in that doc's own §5.1b (all 3 real consumers' current layout_pass()
+ * functions read in full first, not guessed). Lives HERE (not
+ * khtpm_css_parser.c) because it operates on Elem, which only exists in
+ * this file - khtpm_css_parser.c knows nothing about trees, only flat
+ * per-element style computation (css_compute_style()).
+ *
+ * REAL, DELIBERATE DESIGN CONSTRAINT: this engine has ZERO access to
+ * real text measurement (Xft/font state is each app's own X11 global,
+ * not available at this shared-library level - see §5.1b pattern #2's
+ * own "measure_text_px()" note). Real contract: for any child whose
+ * real size should be its OWN NATURAL/measured content size (pattern
+ * #2's tab labels, footer buttons, etc) rather than an explicit CSS
+ * width/height, the CALLER must pre-populate that child's own e->w/e->h
+ * (via measure_text_px() or equivalent) BEFORE calling this function on
+ * its PARENT. This function treats an already-nonzero e->w/e->h as the
+ * real natural size for any child with no explicit style.has_width/
+ * has_height and no flex_grow - it never re-measures text.
+ *
+ * Real contract for position:absolute children (§5.1b pattern #5's
+ * <title> case): skipped entirely from normal flex flow (matches every
+ * real app's own existing `continue` in this exact spot today),
+ * positioned at parent_origin + top/left offset instead, using
+ * whatever e->w/e->h the caller already set (same pre-measured-size
+ * contract as above - position:absolute doesn't change that).
+ *
+ * Real contract for flex_grow (§5.1b pattern #3): a child with
+ * style.has_flex_grow set consumes a real weighted share of whatever
+ * main-axis space is left after every fixed/natural-sized sibling is
+ * accounted for - matches db-hq/events-hq's own real "sidebar fixed,
+ * panel gets the remainder" pattern with flex_grow:1 on the panel.
+ *
+ * Real contract for block (non-flex, the default): children are left
+ * completely untouched by this function - matches every real app's own
+ * existing pattern of positioning some elements by hand outside the
+ * normal stacking flow (chat-hai's own phantom settings elements,
+ * §5.1b pattern #9) - the engine only recurses into real flex
+ * containers, it does not silently reposition things a caller
+ * deliberately manages itself.
+ *
+ * NOT YET LIVE-TESTED against a real app as of this write - see
+ * khtpm-merge-how2.md §5.3 step 3/4 for the real, required standalone-
+ * test-then-port-db-hq-first sequence before this is trusted on a live
+ * window. */
+static void css_layout_pass(Elem *e, int x, int y, int avail_w, int avail_h) {
+    e->x = x;
+    e->y = y;
+    e->w = (e->style.has_width && !e->style.width_is_pct) ? e->style.width
+         : (e->style.has_width && e->style.width_is_pct) ? (avail_w * e->style.width) / 100
+         : (e->w > 0 ? e->w : avail_w);
+    e->h = (e->style.has_height && !e->style.height_is_pct) ? e->style.height
+         : (e->style.has_height && e->style.height_is_pct) ? (avail_h * e->style.height) / 100
+         : (e->h > 0 ? e->h : avail_h);
+
+    int is_flex = e->style.has_display && e->style.display_flex;
+    if (!is_flex) return; /* block: children untouched, caller manages them by hand */
+
+    int is_row = e->style.has_flex_direction ? e->style.flex_row : 0;
+    int n = e->n_children;
+    /* REAL 2026-08-16, added after db-hq's own real live tabbar port
+     * found the gap (see khtpm_css_parser.h's own header comment on
+     * these 2 fields for the full real story) - `padding` insets flow
+     * children on BOTH axes (real box-model padding, all 4 sides);
+     * `gap` is real, additive main-axis space BETWEEN consecutive flow
+     * children only (never before the first or after the last).
+     * position:absolute children are deliberately NOT inset by padding
+     * (matches this file's own already-tested/passing real behavior -
+     * db-hq's own <title> is positioned relative to the parent's raw
+     * x/y, not its padding box, and that's the real, already-verified
+     * contract, not something this change should alter). */
+    int pad = e->style.has_padding ? e->style.padding : 0;
+    int gap = e->style.has_gap ? e->style.gap : 0;
+
+    int fixed_total = 0, grow_total = 0, flow_count = 0;
+    for (int i = 0; i < n; i++) {
+        Elem *c = e->children[i];
+        if (c->style.has_position && c->style.position_absolute) continue; /* real pattern #5 - out of flow entirely */
+        flow_count++;
+        int c_grow = c->style.has_flex_grow ? c->style.flex_grow : 0;
+        if (c_grow > 0) { grow_total += c_grow; continue; }
+        int c_size = is_row
+            ? (c->style.has_width ? c->style.width : c->w)
+            : (c->style.has_height ? c->style.height : c->h);
+        fixed_total += c_size;
+    }
+    int gap_total = flow_count > 1 ? gap * (flow_count - 1) : 0;
+    int main_avail = (is_row ? e->w : e->h) - 2 * pad;
+    int remaining = main_avail - fixed_total - gap_total;
+    if (remaining < 0) remaining = 0;
+
+    int pos = (is_row ? e->x : e->y) + pad;
+    int cross_origin = (is_row ? e->y : e->x) + pad;
+    int cross_size = (is_row ? e->h : e->w) - 2 * pad;
+    for (int i = 0; i < n; i++) {
+        Elem *c = e->children[i];
+        if (c->style.has_position && c->style.position_absolute) {
+            int t = c->style.has_top ? c->style.top : 0;
+            int l = c->style.has_left ? c->style.left : 0;
+            css_layout_pass(c, e->x + l, e->y + t, c->w, c->h);
+            continue;
+        }
+        int c_grow = c->style.has_flex_grow ? c->style.flex_grow : 0;
+        int main_size;
+        if (c_grow > 0 && grow_total > 0) main_size = (remaining * c_grow) / grow_total;
+        else main_size = is_row
+            ? (c->style.has_width ? c->style.width : c->w)
+            : (c->style.has_height ? c->style.height : c->h);
+        if (is_row) css_layout_pass(c, pos, cross_origin, main_size, cross_size);
+        else css_layout_pass(c, cross_origin, pos, cross_size, main_size);
+        pos += main_size + gap;
+    }
+}

@@ -48,14 +48,14 @@ run_app() {
              "$BANK_SESSION/pieces/keyboard" "$BANK_SESSION/pieces/os" \
              "$BANK_SESSION/projects/yahoo-app/manager"
 
-    ln -sfn "$SCRIPT_DIR/system" "$BANK_SESSION/system"
-    ln -sfn "$SCRIPT_DIR/ops" "$BANK_SESSION/ops"
-    ln -sfn "$SCRIPT_DIR/pal" "$BANK_SESSION/pal"
-    ln -sfn "$SCRIPT_DIR/default_op.txt" "$BANK_SESSION/default_op.txt"
-    ln -sfn "$SCRIPT_DIR/pieces/chtpm" "$BANK_SESSION/pieces/chtpm"
-    ln -sfn "$SCRIPT_DIR/pieces/registry" "$BANK_SESSION/pieces/registry"
-    ln -sfn "$SCRIPT_DIR/projects/yahoo-app/pieces" "$BANK_SESSION/projects/yahoo-app/pieces"
-    ln -sfn "$SCRIPT_DIR/projects/yahoo-app/data" "$BANK_SESSION/data"
+    cp -r "$SCRIPT_DIR/system" "$BANK_SESSION/system"
+    cp -r "$SCRIPT_DIR/ops" "$BANK_SESSION/ops"
+    cp -r "$SCRIPT_DIR/pal" "$BANK_SESSION/pal"
+    cp -r "$SCRIPT_DIR/default_op.txt" "$BANK_SESSION/default_op.txt"
+    cp -r "$SCRIPT_DIR/pieces/chtpm" "$BANK_SESSION/pieces/chtpm"
+    cp -r "$SCRIPT_DIR/pieces/registry" "$BANK_SESSION/pieces/registry"
+    cp -r "$SCRIPT_DIR/projects/yahoo-app/pieces" "$BANK_SESSION/projects/yahoo-app/pieces"
+    cp -r "$SCRIPT_DIR/projects/yahoo-app/data" "$BANK_SESSION/data"
 
     cd "$BANK_SESSION"
 
@@ -142,7 +142,17 @@ EOBROKERS
         kill "$ORCH_PID" "$GL_PID" "$RGB_PID" 2>/dev/null || true
         kill_own_module
         pkill -f "manager/\+x/agy_browser_manager\.\+x" 2>/dev/null || true
-        rm -rf "$BANK_SESSION" 2>/dev/null || true
+        persist_session_state; rm -rf "$BANK_SESSION" 2>/dev/null || true
+    }
+    # Step 2 symlink-migration fix: copy mutable session state back
+    # to the real project root before the session dir is deleted
+    # (the old symlinks made these writes land at the real root for
+    # free; cp -r sessions need this explicit copy-back). Merge
+    # semantics - adds/overwrites, never deletes. Volatile files
+    # (quit_flag, pids, history, relays, gui_state) are NOT copied.
+    persist_session_state() {
+        mkdir -p "$SCRIPT_DIR/data/" 2>/dev/null || true
+        cp -r "$BANK_SESSION/data/." "$SCRIPT_DIR/data/" 2>/dev/null || true
     }
     trap cleanup EXIT INT TERM
 

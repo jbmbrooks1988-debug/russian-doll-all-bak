@@ -1,4 +1,0 @@
-2107640 orchestrator
-2107643 ./system/renderer
-2107644 ./system/chtpm_parser_pal
-2107645 ./system/chtpm_rgb_render

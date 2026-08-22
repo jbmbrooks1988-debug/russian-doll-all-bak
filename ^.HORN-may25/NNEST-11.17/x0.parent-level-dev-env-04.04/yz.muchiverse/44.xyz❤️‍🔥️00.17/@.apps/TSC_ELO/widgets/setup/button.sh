@@ -30,14 +30,14 @@ run_widget_session() {
              "$SESSION_DIR/pieces/apps/player_app" "$SESSION_DIR/pieces/keyboard" \
              "$SESSION_DIR/projects/setup/manager"
 
-    ln -sfn "$SCRIPT_DIR/system" "$SESSION_DIR/system" 2>/dev/null || true
-    ln -sfn "$SCRIPT_DIR/ops" "$SESSION_DIR/ops" 2>/dev/null || true
-    ln -sfn "$SCRIPT_DIR/pal" "$SESSION_DIR/pal" 2>/dev/null || true
-    ln -sfn "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm" 2>/dev/null || true
-    ln -sfn "$SCRIPT_DIR/pieces/registry" "$SESSION_DIR/pieces/registry" 2>/dev/null || true
-    ln -s "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt" 2>/dev/null || true
+    cp -r "$SCRIPT_DIR/system" "$SESSION_DIR/system" 2>/dev/null || true
+    cp -r "$SCRIPT_DIR/ops" "$SESSION_DIR/ops" 2>/dev/null || true
+    cp -r "$SCRIPT_DIR/pal" "$SESSION_DIR/pal" 2>/dev/null || true
+    cp -r "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm" 2>/dev/null || true
+    cp -r "$SCRIPT_DIR/pieces/registry" "$SESSION_DIR/pieces/registry" 2>/dev/null || true
+    cp -r "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt" 2>/dev/null || true
     mkdir -p "$SESSION_DIR/projects/setup/pieces"
-    ln -sfn "$SCRIPT_DIR/projects/setup/pieces/setup" \
+    cp -r "$SCRIPT_DIR/projects/setup/pieces/setup" \
             "$SESSION_DIR/projects/setup/pieces/setup" 2>/dev/null || true
 
     cd "$SESSION_DIR"
@@ -115,7 +115,17 @@ EOSTATE
         done
     }
 
-    trap 'kill "$RENDERER_PID" "$CHTPM_PID" "$GL_PID" "$RGB_PID" 2>/dev/null; kill_own_module; rm -rf "$SESSION_DIR"' EXIT INT TERM
+    # Step 2 symlink-migration fix: copy mutable session state back
+    # to the real project root before the session dir is deleted
+    # (the old symlinks made these writes land at the real root for
+    # free; cp -r sessions need this explicit copy-back). Merge
+    # semantics - adds/overwrites, never deletes. Volatile files
+    # (quit_flag, pids, history, relays, gui_state) are NOT copied.
+    persist_session_state() {
+        mkdir -p "$SCRIPT_DIR/projects/setup/pieces/setup/" 2>/dev/null || true
+        cp -r "$SESSION_DIR/projects/setup/pieces/setup/." "$SCRIPT_DIR/projects/setup/pieces/setup/" 2>/dev/null || true
+    }
+    trap 'kill "$RENDERER_PID" "$CHTPM_PID" "$GL_PID" "$RGB_PID" 2>/dev/null; kill_own_module; persist_session_state; rm -rf "$SESSION_DIR"' EXIT INT TERM
 
     if [ "$PROFILE" = "widget" ]; then
         # Widget profile: NO foreground keyboard_input (GL owns input via

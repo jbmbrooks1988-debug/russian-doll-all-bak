@@ -32,19 +32,45 @@ case "$ACTION" in
                  "$SESSION_DIR/pieces/os" "$SESSION_DIR/projects/my-chara-txt/manager"
         mkdir -p "$SCRIPT_DIR/data"
 
-        ln -s "$SCRIPT_DIR/pieces/os/kill_all.sh" "$SESSION_DIR/pieces/os/kill_all.sh" 2>/dev/null
-        ln -s "$SCRIPT_DIR/system" "$SESSION_DIR/system"
-        ln -s "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"
-        ln -s "$SCRIPT_DIR/pal" "$SESSION_DIR/pal"
-        ln -s "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt"
-        ln -s "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm"
+        # SIMLINK ELIMINATION 2026-08-20 (see SIMLINK_PITFALL.md /
+        # sim-smell-fix.md), DIFFERENT STRATEGY than mutaclysm/board-
+        # viewer/piececraft-xyz: this project's own shared engine
+        # (chtpm_parser_pal.c) crashes its per-screen module relaunch
+        # when PRISC_PROJECT_ROOT genuinely diverges from the session
+        # dir (real, reproduced bug - my-chara-txt is the only project
+        # of the four with a SEPARATE PAL module per screen, switched
+        # via <button href>, so it's the only one that exercises this
+        # crash path). Rather than risk destabilizing the shared engine
+        # for every other project that uses it, PRISC_PROJECT_ROOT stays
+        # "$SESSION_DIR" (unchanged, below) - real, static, read-only
+        # content is COPIED into the session dir instead of symlinked,
+        # eliminating every symlink without touching any downstream
+        # project_root/session_root assumption at all.
+        cp -p "$SCRIPT_DIR/pieces/os/kill_all.sh" "$SESSION_DIR/pieces/os/kill_all.sh" 2>/dev/null
+        cp -r "$SCRIPT_DIR/system" "$SESSION_DIR/system"
+        cp -r "$SCRIPT_DIR/ops" "$SESSION_DIR/ops"
+        cp -r "$SCRIPT_DIR/pal" "$SESSION_DIR/pal"
+        cp -p "$SCRIPT_DIR/default_op.txt" "$SESSION_DIR/default_op.txt"
+        cp -r "$SCRIPT_DIR/pieces/chtpm" "$SESSION_DIR/pieces/chtpm"
         # Required for chtpm_rgb_render/gl_mirror to find glyph bitmap
         # data (PITFALL 52, see text-editor-xyz's own button.sh) -
         # without this every character renders invisible in the GL
         # window (checksummed but visually blank).
-        ln -s "$SCRIPT_DIR/pieces/registry" "$SESSION_DIR/pieces/registry" 2>/dev/null
-        ln -s "$SCRIPT_DIR/projects/my-chara-txt/pieces" "$SESSION_DIR/projects/my-chara-txt/pieces"
-        ln -s "$SCRIPT_DIR/data" "$SESSION_DIR/data"
+        cp -r "$SCRIPT_DIR/pieces/registry" "$SESSION_DIR/pieces/registry" 2>/dev/null
+        mkdir -p "$SESSION_DIR/projects/my-chara-txt"
+        cp -r "$SCRIPT_DIR/projects/my-chara-txt/pieces" "$SESSION_DIR/projects/my-chara-txt/pieces"
+        # data/ is the REAL persistent ledger (mutated by real gameplay,
+        # meant to survive across relaunches) - copying it in is only
+        # half the story. Copied back out to the real location in the
+        # EXIT trap below, before the session dir gets deleted, so
+        # writes made this session aren't silently lost. Real,
+        # acknowledged trade-off vs. the old symlink's live write-
+        # through: two truly CONCURRENT sessions each mutating their own
+        # copy would clobber each other on exit instead of merging -
+        # acceptable here since this is a single-player game
+        # (NO_NET=1, per this file's own header comment), not a real
+        # concern for the actual, intended usage pattern.
+        cp -r "$SCRIPT_DIR/data" "$SESSION_DIR/data"
 
         # REAL, SAME CONVENTION as piececraft-xyz's own button.sh (2026-08-17,
         # khtpm-merge-how2.md §5c.6) - the real, non-session project dir,
@@ -99,8 +125,10 @@ plot_2_crop=
 plot_2_harvest_day=0
 EOPLOTS
         fi
-        ln -sf "$SCRIPT_DIR/pieces/system/config.txt" "$SESSION_DIR/pieces/system/config.txt"
-        ln -sf "$SCRIPT_DIR/pieces/system/plots.txt" "$SESSION_DIR/pieces/system/plots.txt"
+        # Same copy-in/copy-out-on-exit strategy as data/ above - real
+        # persistent state, write-through emulated via the EXIT trap.
+        cp -p "$SCRIPT_DIR/pieces/system/config.txt" "$SESSION_DIR/pieces/system/config.txt"
+        cp -p "$SCRIPT_DIR/pieces/system/plots.txt" "$SESSION_DIR/pieces/system/plots.txt"
 
         cat > pieces/apps/player_app/state.txt << 'EOSTATE'
 module_path=system/prisc+x pal/main_loop_chtpm.pal
@@ -159,7 +187,17 @@ EOSTATE
             done
         }
 
-        trap 'kill "$ORCH_PID" "$GL_PID" "$RGB_PID" 2>/dev/null; wait "$ORCH_PID" 2>/dev/null; kill_own_module; rm -rf "$SESSION_DIR"' EXIT INT TERM
+        # Copy-back half of the copy-in/copy-out write-through emulation
+        # for data/config.txt/plots.txt (see their own copy-in comments
+        # above) - must run BEFORE rm -rf deletes the session dir, so any
+        # real gameplay writes this session made aren't silently lost.
+        persist_session_state() {
+            cp -r "$SESSION_DIR/data/." "$SCRIPT_DIR/data/" 2>/dev/null
+            cp -p "$SESSION_DIR/pieces/system/config.txt" "$SCRIPT_DIR/pieces/system/config.txt" 2>/dev/null
+            cp -p "$SESSION_DIR/pieces/system/plots.txt" "$SCRIPT_DIR/pieces/system/plots.txt" 2>/dev/null
+        }
+
+        trap 'kill "$ORCH_PID" "$GL_PID" "$RGB_PID" 2>/dev/null; wait "$ORCH_PID" 2>/dev/null; kill_own_module; persist_session_state; rm -rf "$SESSION_DIR"' EXIT INT TERM
 
         ./system/keyboard_input
 
