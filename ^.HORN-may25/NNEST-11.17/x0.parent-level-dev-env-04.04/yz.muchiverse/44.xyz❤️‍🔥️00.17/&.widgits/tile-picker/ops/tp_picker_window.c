@@ -38,6 +38,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include "self_exe.h" /* macOS leg: portable /proc/self/exe replacement */
 
 #define WIN_W 220
 #define WIN_H 240
@@ -139,7 +140,7 @@ int main(int argc, char **argv) {
     const char *desk = argv[2];
 
     char self_path[PATH_BUF], ops_dir[PATH_BUF];
-    ssize_t len = readlink("/proc/self/exe", self_path, sizeof(self_path) - 1);
+    ssize_t len = self_exe_readlink(self_path, sizeof(self_path));
     if (len <= 0) { fprintf(stderr, "tp_picker_window: cannot resolve own path\n"); return 1; }
     self_path[len] = '\0';
     {

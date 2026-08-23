@@ -9,6 +9,8 @@
 
 #include <stddef.h>
 
+
+void read_key_value(const char *path, const char *key, char *out, size_t out_sz);
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -267,7 +269,10 @@ void ktb_nav_arm(KtbState *s);
  * focused tab), left completely untouched. */
 void ktb_nav_enter(KtbState *s);
 
+
+void read_key_value(const char *path, const char *key, char *out, size_t out_sz);
 #ifdef __cplusplus
 }
 #endif
+void read_key_value(const char *path, const char *key, char *out, size_t out_sz);
 #endif

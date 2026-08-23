@@ -1,2 +1,0 @@
-[1786527572] SHOW_TEXT speaker=TestNPC text=Hello from event!
-[1786527572] SHOW_CHOICES default=1 choices=Option A\nOption B\nOption C

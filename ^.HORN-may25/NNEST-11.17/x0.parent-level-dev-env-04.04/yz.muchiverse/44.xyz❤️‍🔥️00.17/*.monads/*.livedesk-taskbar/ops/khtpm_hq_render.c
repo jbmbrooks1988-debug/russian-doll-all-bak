@@ -22,14 +22,53 @@
 #include <ctype.h>
 #include <dirent.h>
 #include <sys/stat.h>
+#include <signal.h>
+#ifndef _WIN32
 #include <unistd.h>
 #include <sys/wait.h>
-#include <signal.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/keysym.h>
 #include <X11/Xft/Xft.h>
 #include <sys/select.h>
+#else
+#include "khtpm_strip_x11_win.h"
+#include <io.h>
+#include <direct.h>
+#ifndef S_ISDIR
+#  define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
+#endif
+#define mkdir(p, m) _mkdir(p)
+#ifndef WNOHANG
+#  define WNOHANG 1
+#endif
+static int hq_kill(pid_t p, int sig) {
+    (void)sig;
+    HANDLE h = OpenProcess(PROCESS_TERMINATE, FALSE, (DWORD)p);
+    if (!h) return -1;
+    TerminateProcess(h, 1);
+    CloseHandle(h);
+    return 0;
+}
+#define kill hq_kill
+static pid_t hq_waitpid(pid_t p, int *st, int fl) {
+    (void)st; (void)fl;
+    HANDLE h = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, (DWORD)p);
+    if (!h) return p;
+    DWORD code = 0;
+    GetExitCodeProcess(h, &code);
+    CloseHandle(h);
+    return (code == STILL_ACTIVE) ? 0 : p;
+}
+#define waitpid hq_waitpid
+static int hq_usleep(unsigned usec) {
+    DWORD ms = usec / 1000;
+    if (ms == 0) ms = 1;
+    Sleep(ms);
+    return 0;
+}
+#define usleep hq_usleep
+#endif
 
 /* debug PNG dump (press 'p') - Xlib/Xft equivalent of the house's own
  * chtpm-rgb-render + dump_rgb_png.c convention (which reads back a GL
@@ -91,6 +130,9 @@ static void launch_module(const char *src) {
     if (src[0] == '/') snprintf(full_path, sizeof(full_path), "%s", src);
     else snprintf(full_path, sizeof(full_path), "%s/%s", g_house_root, src);
 
+#ifdef _WIN32
+    (void)full_path; /* manager PE not required for first window paint */
+#else
     g_module_pid = fork();
     if (g_module_pid == 0) {
         execl(full_path, full_path, g_house_root, (char *)NULL);
@@ -99,6 +141,7 @@ static void launch_module(const char *src) {
         fprintf(stderr, "db-hq: launch_module: fork failed for %s\n", full_path);
         g_module_pid = -1;
     }
+#endif
 }
 
 /* wraith-alpha-standard index nav state (see Elem.nav_index comment) */
@@ -520,6 +563,21 @@ static void layout_pass(Elem *window) {
     window->h = content_total_h + g_chrome_h;
 
     g_close_w = scaled(56); g_close_h = g_chrome_h - scaled(6); /* wide enough for "[>NN] x" - badge + label both now, see draw_elem()'s own comment */
+    /* Win: 15 scaled tabs make a ~1340px window; at window_x=100 on a
+     * 1536-wide desk the [x] sits near the right edge and is easy to
+     * miss / clip. Cap to the work area and pin x so chrome stays on
+     * screen. Same helper idea for events-hq / chat-hai later. */
+#ifdef _WIN32
+    if (dpy) {
+        int maxw = DisplayWidth(dpy, DefaultScreen(dpy)) - 16;
+        int maxh = DisplayHeight(dpy, DefaultScreen(dpy)) - 16;
+        if (maxw > 400 && window->w > maxw) window->w = maxw;
+        if (maxh > 200 && window->h > maxh) window->h = maxh;
+        g_win_x = 8;
+        if (g_win_y < 8) g_win_y = 8;
+        if (g_win_y + window->h > maxh) g_win_y = 8;
+    }
+#endif
     g_close_x = window->w - g_close_w - scaled(4);
     g_close_y = scaled(3);
 
@@ -1033,8 +1091,14 @@ static void dump_frame_png(void) {
         }
     }
     XDestroyImage(img);
-    int ok = stbi_write_png("/tmp/db-hq-frame.png", w, h, 3, rgb, w * 3);
-    fprintf(stderr, ok ? "db-hq: wrote /tmp/db-hq-frame.png (%dx%d)\n" : "db-hq: dump_frame_png: write failed\n", w, h);
+    char dump_path[PATH_BUF];
+#ifdef _WIN32
+    snprintf(dump_path, sizeof(dump_path), "%s/#.desktop/db-hq-frame.png", g_house_root[0] ? g_house_root : ".");
+#else
+    snprintf(dump_path, sizeof(dump_path), "/tmp/db-hq-frame.png");
+#endif
+    int ok = stbi_write_png(dump_path, w, h, 3, rgb, w * 3);
+    fprintf(stderr, ok ? "db-hq: wrote %s (%dx%d)\n" : "db-hq: dump_frame_png: write failed %s\n", dump_path, w, h);
     free(rgb);
 }
 
@@ -1526,12 +1590,16 @@ int main(int argc, char **argv) {
             redraw();
         }
 
+#ifdef _WIN32
+        Sleep(150);
+#else
         fd_set fds;
         FD_ZERO(&fds);
         int xfd = ConnectionNumber(dpy);
         FD_SET(xfd, &fds);
         struct timeval tv = { 0, 150000 }; /* 150ms, matches this app's own scale (small window, infrequent redraws) */
         select(xfd + 1, &fds, NULL, NULL, &tv);
+#endif
 
         while (XPending(dpy)) {
             XEvent ev;

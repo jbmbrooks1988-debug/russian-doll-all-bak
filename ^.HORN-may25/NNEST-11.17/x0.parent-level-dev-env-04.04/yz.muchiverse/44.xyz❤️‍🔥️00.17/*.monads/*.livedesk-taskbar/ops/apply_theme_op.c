@@ -21,6 +21,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* macOS leg (2026-08-22): no `setsid` binary on macOS — drop the prefix
+ * there (nohup+& already detaches for this pattern); Linux byte-identical. */
+#ifdef __APPLE__
+#define KTB_SETSID ""
+#else
+#define KTB_SETSID "setsid "
+#endif
+
+
 #define PATH_BUF 4096
 
 int main(int argc, char **argv) {
@@ -73,7 +82,7 @@ int main(int argc, char **argv) {
     rename(tmp, path);
 
     char cmd[PATH_BUF * 2];
-    snprintf(cmd, sizeof(cmd), "setsid nohup sh '%s/*.monads/*.livedesk-taskbar/ops/run_khtpm_strip.sh' new >/dev/null 2>&1 &",
+    snprintf(cmd, sizeof(cmd), KTB_SETSID "nohup sh '%s/*.monads/*.livedesk-taskbar/ops/run_khtpm_strip.sh' new >/dev/null 2>&1 &",
              house_root);
     int rc = system(cmd);
     (void)rc;

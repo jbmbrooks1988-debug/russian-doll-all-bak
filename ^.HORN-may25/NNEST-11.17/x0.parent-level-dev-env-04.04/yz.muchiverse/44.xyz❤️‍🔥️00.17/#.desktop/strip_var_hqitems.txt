@@ -1,0 +1,1 @@
+<button label="$.restart" onClick="HQITEM:0"/><button label="hide/show" onClick="HQITEM:1"/><button label="dir" onClick="HQITEM:2"/><button label="X.quit" onClick="HQITEM:3"/><button label="settings" onClick="HQITEM:4"/><button label="stats" onClick="HQITEM:5"/><button label="cli" onClick="HQITEM:6"/><button label="cancel" onClick="HQITEM:7"/>

@@ -1,4 +1,0 @@
-SHOW_TEXT speaker=TestNPC text=Hello from event!
-SHOW_CHOICES default=1 choices=Option A
-Option B
-Option C

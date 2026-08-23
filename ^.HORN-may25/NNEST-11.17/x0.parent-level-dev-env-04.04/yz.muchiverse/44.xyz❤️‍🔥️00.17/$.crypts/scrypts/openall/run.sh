@@ -1,4 +1,10 @@
 #!/bin/bash
+
+# macOS leg (2026-08-23): macOS has no setsid(2) wrapper binary - expand
+# to nothing there, keep real setsid on Linux. Unquoted $SETSID so the
+# empty case vanishes from the command line entirely.
+SETSID="setsid"
+[ "$(uname)" = "Darwin" ] && SETSID=""
 # openall/run.sh - always-open the monads we want, no questions.
 # Launches the full desired desktop set unconditionally (ignores the
 # autostart.pdl STATE|enabled toggle). Idempotent: each target is only
@@ -46,7 +52,7 @@ launch_entity() {
         echo "MISSING tp_desktop_window: $TPWIN"
         return 1
     fi
-    setsid nohup "$TPWIN" "$ent" >/dev/null 2>&1 &
+    $SETSID nohup "$TPWIN" "$ent" >/dev/null 2>&1 &
     echo "opened: $(basename "$ent")"
 }
 
@@ -82,7 +88,7 @@ else
 fi
 
 if [ -x "$TASKBAR" ] && ! pgrep -f "$(escape_re "$TASKBAR")" >/dev/null 2>&1; then
-    setsid nohup "$TASKBAR" "$HOUSE_DIR" >/dev/null 2>&1 &
+    $SETSID nohup "$TASKBAR" "$HOUSE_DIR" >/dev/null 2>&1 &
     echo "opened: taskbar"
 fi
 

@@ -1,4 +1,10 @@
 #!/bin/bash
+
+# macOS leg (2026-08-23): macOS has no setsid(2) wrapper binary - expand
+# to nothing there, keep real setsid on Linux. Unquoted $SETSID so the
+# empty case vanishes from the command line entirely.
+SETSID="setsid"
+[ "$(uname)" = "Darwin" ] && SETSID=""
 # kpi4_boot.sh - KPI#4: a clean throwaway $HOME gets a full install v1, and the
 # INSTALLED login app boots to the signup screen (real key-injection-ready).
 # Also proves the dev tree was NOT modified (read-only copy).
@@ -93,7 +99,7 @@ fi
 
 echo "--- boot the INSTALLED os (top-level button.sh) ---"
 cd "$XYZ"
-setsid bash button.sh run > /tmp/th_install_kpi4.log 2>&1 </dev/null & disown
+$SETSID bash button.sh run > /tmp/th_install_kpi4.log 2>&1 </dev/null & disown
 sleep 3
 SESS=$(ls -dt "$XYZ/apps/00.login-signup/pieces/sessions/"*/ 2>/dev/null | head -1)
 SESS="${SESS%/}"

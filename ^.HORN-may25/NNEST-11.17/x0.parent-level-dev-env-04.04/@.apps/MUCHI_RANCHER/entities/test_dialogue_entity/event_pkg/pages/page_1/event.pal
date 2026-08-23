@@ -1,4 +1,0 @@
-# event.pal - real prisc+x opcodes, COMPILED from event.ir.pdl
-# pkg=test_dialogue_entity page=1
-exec cmd_1.sh
-halt

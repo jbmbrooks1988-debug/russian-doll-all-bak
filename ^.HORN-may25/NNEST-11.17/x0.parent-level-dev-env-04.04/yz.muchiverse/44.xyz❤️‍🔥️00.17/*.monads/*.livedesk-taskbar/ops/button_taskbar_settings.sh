@@ -1,4 +1,10 @@
 #!/bin/bash
+
+# macOS leg (2026-08-23): macOS has no setsid(2) wrapper binary - expand
+# to nothing there, keep real setsid on Linux. Unquoted $SETSID so the
+# empty case vanishes from the command line entirely.
+SETSID="setsid"
+[ "$(uname)" = "Darwin" ] && SETSID=""
 # button_taskbar_settings.sh — launch the taskbar HQ menu's "Settings"
 # window as its own detached X11 process, same launch shape (build-if-
 # missing, single-instance guard via pgrep -f full-cmdline match, TERM
@@ -59,7 +65,7 @@ if [ -n "$pids" ]; then
     fi
 fi
 
-setsid nohup "$BIN" "$HOUSE_ROOT" "$CHTPM_PATH" \
+$SETSID nohup "$BIN" "$HOUSE_ROOT" "$CHTPM_PATH" \
     >"$AUDIT_DIR/taskbar-settings.log" 2>&1 < /dev/null &
 disown 2>/dev/null || true
 sleep 1

@@ -1,4 +1,4 @@
-#define _POSIX_C_SOURCE 199309L /* CLOCK_MONOTONIC under -std=c11 strict mode */
+#define _POSIX_C_SOURCE 200809L /* CLOCK_MONOTONIC + snprintf (199309L hid snprintf's prototype under clang/macOS) */
 /* khtpm_choice_picker.c — real khtpm-based "Show Choices" picker window
  * (2026-08-16, direct instruction: "its very old lets fix it to use
  * khtpm. it should still show books and random verse"). Replaces the
@@ -31,8 +31,9 @@
  *
  * Usage: khtpm_choice_picker.+x <choices_file> <result_path> [x] [y]
  */
-#include "khtpm_css_parser.h" /* Elem's CssStyle field type - not otherwise used here, no runtime CSS needed for this flat single-page picker */
-#include "khtpm_render_core.c" /* real .c, not a header - see that file's own comment */
+/* macOS leg 2026-08-22: libc headers must precede the .c-include below
+ * (that file's own declaration order left snprintf undeclared at this
+ * unit's first use under clang's stricter implicit-function rules). */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -40,6 +41,8 @@
 #include <unistd.h>
 #include <time.h>
 #include <sys/select.h>
+#include "khtpm_css_parser.h" /* Elem's CssStyle field type - not otherwise used here, no runtime CSS needed for this flat single-page picker */
+#include "khtpm_render_core.c" /* real .c, not a header - see that file's own comment */
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/keysym.h>
@@ -220,6 +223,23 @@ int main(int argc, char **argv) {
     if (!dpy) { fprintf(stderr, "khtpm_choice_picker: cannot open display\n"); return 1; }
     screen = DefaultScreen(dpy);
     cmap = DefaultColormap(dpy, screen);
+
+    /* macOS leg (2026-08-22): a saved desktop_pos.txt can carry an x/y
+     * past this display's right/bottom edge (live: Linux grid parked
+     * book-stack at x=2320 on a 1680px screen - window mapped fully
+     * off-screen, unclickable). Clamp against the ACTUAL screen here so
+     * every caller gets an on-screen picker regardless of what it
+     * passes in. */
+    {
+        int scr_w = DisplayWidth(dpy, screen);
+        int scr_h = DisplayHeight(dpy, screen);
+        /* g_win_w/g_win_h are final here - assign_layout() ran above. */
+        if (g_win_x + (int)g_win_w > scr_w - 8) g_win_x = scr_w - (int)g_win_w - 8;
+        if (g_win_y + (int)g_win_h > scr_h - 8) g_win_y = scr_h - (int)g_win_h - 8;
+        if (g_win_x < 8) g_win_x = 8;
+        if (g_win_y < 8) g_win_y = 8;
+    }
+
     font_ui = XftFontOpenName(dpy, screen, "DejaVu Sans:pixelsize=12");
 
     XSetWindowAttributes swa;

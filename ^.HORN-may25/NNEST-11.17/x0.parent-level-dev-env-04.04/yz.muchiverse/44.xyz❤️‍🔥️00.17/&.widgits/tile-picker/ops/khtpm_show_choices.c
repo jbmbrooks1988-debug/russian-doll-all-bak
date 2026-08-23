@@ -39,9 +39,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <fcntl.h>
 #include <unistd.h>
 #include <limits.h>
 #include <sys/wait.h>
+#include "self_exe.h" /* macOS leg: portable /proc/self/exe replacement */
 
 #define PATH_BUF 4352
 #define POLL_TIMEOUT_SEC 120
@@ -84,7 +86,7 @@ int main(int argc, char **argv) {
      * uses everywhere - readlink /proc/self/exe, not a hardcoded
      * install path) to find the new picker binary next to this one. */
     char self_path[PATH_BUF];
-    ssize_t slen = readlink("/proc/self/exe", self_path, sizeof(self_path) - 1);
+    ssize_t slen = self_exe_readlink(self_path, sizeof(self_path));
     if (slen <= 0) { fprintf(stderr, "khtpm_show_choices: cannot resolve own path\n"); return 1; }
     self_path[slen] = '\0';
     char *last_slash = strrchr(self_path, '/');
@@ -95,6 +97,15 @@ int main(int argc, char **argv) {
 
     pid_t pid = fork();
     if (pid == 0) {
+        /* macOS leg (2026-08-22): the picker must NOT inherit this
+         * process's stdout. Callers capture our stdout with $(...) -
+         * the pipe only EOFs when EVERY holder exits, so a long-lived
+         * picker holding it left dispatch.sh (and every other caller)
+         * blocked forever even after we printed the pick and exited.
+         * Point the child's stdout at /dev/null; stderr stays for
+         * diagnostics. */
+        int devnull = open("/dev/null", O_WRONLY);
+        if (devnull >= 0) { dup2(devnull, STDOUT_FILENO); close(devnull); }
         if (pos_x >= 0 && pos_y >= 0)
             execl(picker_path, picker_path, choices_file, result_path, pos_x_str, pos_y_str, (char *)NULL);
         else

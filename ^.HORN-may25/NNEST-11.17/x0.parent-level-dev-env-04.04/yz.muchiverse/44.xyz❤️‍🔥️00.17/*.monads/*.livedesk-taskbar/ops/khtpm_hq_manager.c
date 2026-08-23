@@ -32,6 +32,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+/* macOS leg (2026-08-22): no `setsid` binary on macOS — drop the prefix
+ * there (nohup+& already detaches for this pattern); Linux byte-identical. */
+#ifdef __APPLE__
+#define KTB_SETSID ""
+#else
+#define KTB_SETSID "setsid "
+#endif
+
 #include <dirent.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -140,7 +149,7 @@ static void handle_action_request(void) {
         find_app_dir(g_house_root, "muchi-pet", muchi_pet_dir, sizeof(muchi_pet_dir));
         char sh[PATH_BUF * 3];
         snprintf(sh, sizeof(sh),
-            "setsid nohup sh -c 'sh \"%s/ops/open_event_ez.sh\" \"%s\" \"%s\"' >/dev/null 2>&1 &",
+            KTB_SETSID "nohup sh -c 'sh \"%s/ops/open_event_ez.sh\" \"%s\" \"%s\"' >/dev/null 2>&1 &",
             muchi_pet_dir, ce_path, g_house_root);
         int rc = system(sh);
         (void)rc;

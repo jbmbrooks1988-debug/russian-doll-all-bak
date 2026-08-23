@@ -1,4 +1,5 @@
 #!/bin/sh
+# Windows: EMERGENCY_CLOSE.ps1 (this file is Linux pgrep/kill; it will not run on Win).
 # Emergency close all desk-pals (entity windows)
 # Used when normal quit doesn't work
 # POSIX-compliant (works with sh and bash)

@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include "self_exe.h" /* macOS leg: portable /proc/self/exe replacement */
 
 #define MAX_LINE 2048
 #define MAX_PATH 4096
@@ -146,7 +147,7 @@ static void arm_placer_for_glyph(const char *glyph, char *status_out, size_t sta
     }
 
     char self_path[PATH_BUF], ops_dir[PATH_BUF];
-    ssize_t len = readlink("/proc/self/exe", self_path, sizeof(self_path) - 1);
+    ssize_t len = self_exe_readlink(self_path, sizeof(self_path));
     if (len <= 0) {
         snprintf(status_out, status_sz, "error: cannot resolve own path");
         return;

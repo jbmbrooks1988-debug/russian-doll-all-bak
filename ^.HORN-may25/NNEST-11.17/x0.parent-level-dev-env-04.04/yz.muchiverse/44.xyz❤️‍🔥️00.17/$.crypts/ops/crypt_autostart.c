@@ -31,6 +31,8 @@
 #    define WIN32_LEAN_AND_MEAN
 #  endif
 #  include <windows.h>
+#  include <shellapi.h>
+#  include <tlhelp32.h>
 #  include <process.h>
 #  include <direct.h>
 #  include <io.h>
@@ -60,6 +62,30 @@ static void path_norm_slashes(char *s) {
     (void)s;
 #endif
 }
+
+#ifdef _WIN32
+/* Linux dir names "*.monads" are "_.monads" on this Windows checkout
+ * (* is illegal in an NTFS component). Alias at resolve time so PDL
+ * keeps the Linux spelling. Do not call this on Linux. */
+static void win_star_alias(char *path) {
+    char tmp[PATH_BUF];
+    size_t o = 0;
+    int at_comp = 1;
+    const char *p;
+    if (!path || !path[0]) return;
+    for (p = path; *p && o + 1 < sizeof(tmp); p++) {
+        if (at_comp && p[0] == '*' && p[1] == '.') {
+            tmp[o++] = '_';
+            at_comp = 0;
+            continue;
+        }
+        tmp[o++] = *p;
+        at_comp = (*p == '/' || *p == '\\');
+    }
+    tmp[o] = '\0';
+    memcpy(path, tmp, o + 1);
+}
+#endif
 
 static void dirname_step(const char *in, char *out, size_t out_sz) {
     char tmp[PATH_BUF];
@@ -156,12 +182,12 @@ static void resolve_house_root_from_pdl(const char *pdl_path, char *out, size_t 
 static void make_rel_to_house(const char *house_root, const char *in, char *out, size_t out_sz) {
     if (!in || !in[0]) {
         out[0] = '\0';
-        return;
+        goto done;
     }
     /* Already relative */
     if (!is_abs_path(in)) {
         snprintf(out, out_sz, "%s", in);
-        return;
+        goto done;
     }
     /* Strip house_root if absolute path is under it */
     size_t hlen = strlen(house_root);
@@ -169,7 +195,21 @@ static void make_rel_to_house(const char *house_root, const char *in, char *out,
         const char *rest = in + hlen;
         while (*rest == '/' || *rest == '\\') rest++;
         snprintf(out, out_sz, "%s", rest[0] ? rest : ".");
-        return;
+        goto done;
+    }
+    /* After yz.muchiverse/<house-folder>/ keep the rest (xyzfs/..., *.monads/...). */
+    {
+        const char *yz = strstr(in, "/yz.muchiverse/");
+        if (!yz) yz = strstr(in, "\\yz.muchiverse\\");
+        if (yz) {
+            const char *after = yz + 15; /* strlen("/yz.muchiverse/") */
+            while (*after && *after != '/' && *after != '\\') after++;
+            if (*after == '/' || *after == '\\') after++;
+            if (*after) {
+                snprintf(out, out_sz, "%s", after);
+                goto done;
+            }
+        }
     }
     /* Strip trailing ".../44.xyz...00.10/" style: find "/$.crypts" or "/&.widgits"
      * or "/#.desktop" or "/@.apps" in the absolute path and keep from there+1. */
@@ -178,6 +218,9 @@ static void make_rel_to_house(const char *house_root, const char *in, char *out,
         "/#.desktop/", "\\#.desktop\\",
         "/@.apps/", "\\@.apps\\",
         "/$.crypts/", "\\$.crypts\\",
+        "/xyzfs/", "\\xyzfs\\",
+        "/*.monads/", "\\*.monads\\",
+        "/_.monads/", "\\_.monads\\",
         "/101.", "\\101.",
         NULL
     };
@@ -186,11 +229,16 @@ static void make_rel_to_house(const char *house_root, const char *in, char *out,
         if (m) {
             /* keep from after the leading slash of marker, so "&.widgits/..." */
             snprintf(out, out_sz, "%s", m + 1);
-            return;
+            goto done;
         }
     }
     /* Give up: keep absolute (will likely fail on wrong machine) */
     snprintf(out, out_sz, "%s", in);
+done:
+#ifdef _WIN32
+    win_star_alias(out);
+#endif
+    return;
 }
 
 static int path_exists(const char *p) {
@@ -280,7 +328,14 @@ static void resolve_arg(const char *house_root, const char *token, char *out, si
         snprintf(out, out_sz, "%s", rel);
         return;
     }
+#ifdef _WIN32
+    /* Keep house-relative so pal dirs stay ASCII (xyzfs/...) under CWD=house.
+     * Joining the emoji house folder makes MinGW fopen miss glyph/sprite. */
+    snprintf(out, out_sz, "%s", rel);
+    path_norm_slashes(out);
+#else
     join_path(out, out_sz, house_root, rel);
+#endif
 }
 
 /* Parse 'a' 'b' "c" or unquoted tokens from LAUNCH value */
@@ -354,17 +409,38 @@ static void kill_pid_win(DWORD pid) {
     CloseHandle(h);
 }
 
-/* Kill by image name only — never enumerate Process.Path (hang risk). */
-static void kill_by_name_win(const char *name) {
-    char img[128];
-    snprintf(img, sizeof(img), "%s.exe", name);
-    /* taskkill is fast and avoids WMI */
-    char cmd[256];
-    snprintf(cmd, sizeof(cmd), "taskkill /F /IM \"%s\" >nul 2>&1", img);
-    system(cmd);
-    snprintf(cmd, sizeof(cmd), "taskkill /F /IM \"%s\" >nul 2>&1", name);
-    system(cmd);
+/* Kill by image name via Toolhelp — never system(taskkill) (console flash)
+ * and never enumerate Process.Path (hang risk). */
+static int exe_name_match(const char *exe, const char *want) {
+    if (!exe || !want || !want[0]) return 0;
+    size_t wl = strlen(want);
+    if (_stricmp(exe, want) == 0) return 1;
+    if (wl > 4 && _stricmp(want + wl - 4, ".exe") == 0)
+        return _stricmp(exe, want) == 0;
+    char with[160];
+    snprintf(with, sizeof(with), "%s.exe", want);
+    return _stricmp(exe, with) == 0;
 }
+
+static void kill_by_name_win(const char *name) {
+    DWORD self = GetCurrentProcessId();
+    HANDLE snap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    if (snap == INVALID_HANDLE_VALUE) return;
+    PROCESSENTRY32 pe;
+    pe.dwSize = sizeof(pe);
+    if (Process32First(snap, &pe)) {
+        do {
+            if (pe.th32ProcessID == self) continue;
+            if (!exe_name_match(pe.szExeFile, name)) continue;
+            kill_pid_win(pe.th32ProcessID);
+        } while (Process32Next(snap, &pe));
+    }
+    CloseHandle(snap);
+}
+
+/* Match PowerShell Start-Process: no DETACHED, no CREATE_NO_WINDOW, no
+ * SW_HIDE. DETACHED+parent-exit was dropping rgb while strip survived. */
+#define SPAWN_GUI (CREATE_BREAKAWAY_FROM_JOB | CREATE_UNICODE_ENVIRONMENT)
 
 /* Prefer relative paths + CreateProcessW so emoji house roots work. */
 static int to_rel_under_house(const char *house_root, const char *abs_or_rel,
@@ -421,38 +497,53 @@ static int launch_detached_win(const char *exe, char args[][PATH_BUF], int nargs
     /* App name: relative exe under cwd, or full if strip failed */
     MultiByteToWideChar(CP_UTF8, 0, rel_exe, -1, wexe, (int)(sizeof(wexe) / sizeof(wexe[0])));
 
-    STARTUPINFOW si;
-    PROCESS_INFORMATION pi;
-    ZeroMemory(&si, sizeof(si));
-    si.cb = sizeof(si);
-    ZeroMemory(&pi, sizeof(pi));
+    /* Explorer-like launch (same survival as PowerShell Start-Process).
+     * Parameters = args after the exe. */
+    wchar_t wparams[PATH_BUF * 4];
+    wparams[0] = 0;
+    {
+        char rest[PATH_BUF * 4];
+        rest[0] = 0;
+        size_t rp = 0;
+        for (int i = 1; i < nargs && rp + 8 < sizeof(rest); i++) {
+            if (i > 1) rest[rp++] = ' ';
+            rp += (size_t)snprintf(rest + rp, sizeof(rest) - rp, "\"%s\"", rel_args[i]);
+        }
+        rest[rp] = 0;
+        MultiByteToWideChar(CP_UTF8, 0, rest, -1, wparams, (int)(sizeof(wparams) / sizeof(wparams[0])));
+    }
+    MultiByteToWideChar(CP_UTF8, 0, rel_exe, -1, wexe, (int)(sizeof(wexe) / sizeof(wexe[0])));
 
-    /* lpApplicationName NULL → parse from command line (relative to cwd) */
-    BOOL ok = CreateProcessW(
-        NULL,
-        wcmd,
-        NULL, NULL, FALSE,
-        CREATE_NEW_PROCESS_GROUP | DETACHED_PROCESS,
-        NULL,
-        wcwd,
-        &si, &pi);
-    if (!ok) {
-        /* Fallback: absolute app name via UTF-8→wide of original exe */
-        MultiByteToWideChar(CP_UTF8, 0, exe, -1, wexe, (int)(sizeof(wexe) / sizeof(wexe[0])));
+    SHELLEXECUTEINFOW sei;
+    ZeroMemory(&sei, sizeof(sei));
+    sei.cbSize = sizeof(sei);
+    sei.fMask = SEE_MASK_NOCLOSEPROCESS | SEE_MASK_FLAG_NO_UI;
+    sei.lpVerb = L"open";
+    sei.lpFile = wexe;
+    sei.lpParameters = wparams[0] ? wparams : NULL;
+    sei.lpDirectory = wcwd;
+    sei.nShow = SW_SHOWNOACTIVATE;
+    BOOL ok = ShellExecuteExW(&sei);
+    if (!ok || (INT_PTR)sei.hInstApp <= 32) {
+        STARTUPINFOW si;
+        PROCESS_INFORMATION pi;
         ZeroMemory(&si, sizeof(si));
         si.cb = sizeof(si);
         ZeroMemory(&pi, sizeof(pi));
-        ok = CreateProcessW(wexe, wcmd, NULL, NULL, FALSE,
-                            CREATE_NEW_PROCESS_GROUP | DETACHED_PROCESS,
-                            NULL, wcwd, &si, &pi);
+        ok = CreateProcessW(NULL, wcmd, NULL, NULL, FALSE, 0, NULL, wcwd, &si, &pi);
+        if (ok) {
+            if (pi.hThread) CloseHandle(pi.hThread);
+            if (pi.hProcess) CloseHandle(pi.hProcess);
+        } else {
+            fprintf(stderr, "crypt_autostart: spawn failed (%lu) exe=%s cmdline=%s cwd=%s\n",
+                    (unsigned long)GetLastError(), exe, cmdline_a, cwd);
+            return -1;
+        }
+    } else if (sei.hProcess) {
+        WaitForInputIdle(sei.hProcess, 1500);
+        CloseHandle(sei.hProcess);
     }
-    if (!ok) {
-        fprintf(stderr, "crypt_autostart: CreateProcessW failed (%lu) exe=%s cmdline=%s cwd=%s\n",
-                (unsigned long)GetLastError(), exe, cmdline_a, cwd);
-        return -1;
-    }
-    CloseHandle(pi.hThread);
-    CloseHandle(pi.hProcess);
+    Sleep(200);
     return 0;
 }
 #endif
@@ -563,8 +654,12 @@ static void quit_current_livedesk(const char *house_root) {
     kill_by_name_win("tp_taskbar.+x");
     kill_by_name_win("khtpm_strip_parser");
     kill_by_name_win("khtpm_strip_parser.+x");
+    kill_by_name_win("khtpm_taskbar_manager_main");
+    kill_by_name_win("khtpm_taskbar_manager_main.+x");
     kill_by_name_win("tp_desktop_window");
     kill_by_name_win("tp_desktop_window.+x");
+    kill_by_name_win("tp_desktop_window_rgb");
+    kill_by_name_win("tp_desktop_window_rgb.+x");
     Sleep(200);
 #else
     {
@@ -589,7 +684,9 @@ static void quit_current_livedesk(const char *house_root) {
                  * parser.+x is the real taskbar now — matched here too so
                  * a restart correctly clears a running khtpm instance
                  * (tp_taskbar kept as a harmless safety net). */
-                int is_tb = strstr(cmd, "tp_taskbar") != NULL || strstr(cmd, "khtpm_strip_parser") != NULL;
+                int is_tb = strstr(cmd, "tp_taskbar") != NULL
+                         || strstr(cmd, "khtpm_strip_parser") != NULL
+                         || strstr(cmd, "khtpm_taskbar_manager_main") != NULL;
                 int is_dw = strstr(cmd, "tp_desktop_window") != NULL;
                 if (!is_tb && !is_dw) continue;
                 if (!strstr(cmd, house_root)) continue;
@@ -772,10 +869,41 @@ int main(int argc, char **argv) {
 
     if (house_root[0]) quit_current_livedesk(house_root);
 
+#ifdef _WIN32
+    {
+        wchar_t ps1[PATH_BUF], psexe[PATH_BUF], wcmd[PATH_BUF * 2], wcwd[PATH_BUF];
+        MultiByteToWideChar(CP_UTF8, 0, house_root, -1, wcwd, PATH_BUF);
+        _snwprintf(ps1, PATH_BUF, L"%s\\$.crypts\\win-start-livedesk.ps1", wcwd);
+        if (ps1[0] == L'.' && (ps1[1] == L'\\' || ps1[1] == L'\0'))
+            _snwprintf(ps1, PATH_BUF, L".\\$.crypts\\win-start-livedesk.ps1");
+        wchar_t *root = _wgetenv(L"SystemRoot");
+        _snwprintf(psexe, PATH_BUF, L"%s\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                   root ? root : L"C:\\Windows");
+        _snwprintf(wcmd, PATH_BUF * 2 - 1,
+                   L"\"%s\" -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File \"%s\"",
+                   psexe, ps1);
+        STARTUPINFOW si; PROCESS_INFORMATION pi;
+        ZeroMemory(&si, sizeof(si)); si.cb = sizeof(si);
+        ZeroMemory(&pi, sizeof(pi));
+        DWORD fl = CREATE_BREAKAWAY_FROM_JOB | CREATE_UNICODE_ENVIRONMENT | CREATE_NO_WINDOW;
+        if (CreateProcessW(psexe, wcmd, NULL, NULL, FALSE, fl, NULL, wcwd, &si, &pi)) {
+            WaitForSingleObject(pi.hProcess, 20000);
+            CloseHandle(pi.hThread);
+            CloseHandle(pi.hProcess);
+        }
+        return 0;
+    }
+#endif
+
     for (int i = 0; i < n_launch; i++) {
         int rc = launch_one(house_root, launch_names[i], launch_cmds[i]);
         printf("crypt_autostart: launch '%s' done (rc=%d)\n", launch_names[i], rc);
     }
+#ifdef _WIN32
+    /* Stay alive until rgb/strip have mapped windows (PS Start-Process
+     * does not exit the parent console immediately in the same way). */
+    Sleep(800);
+#endif
 
     return 0;
 }

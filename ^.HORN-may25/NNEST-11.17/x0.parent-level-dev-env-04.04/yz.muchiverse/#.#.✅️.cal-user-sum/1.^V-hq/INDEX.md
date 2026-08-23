@@ -135,6 +135,8 @@ Stop here if you just need to know "what's going on."
 | `a11.focus-troubleshooting.md` | Closed-bug record | Rarely (historical) |
 | `maintenance-fixes.md` | Small non-blocking polish items | Whenever one is noticed |
 | `_.0.aigent-testing-k9.txt` (house root, not au11-hq) | House-wide testing guide across ALL program families, with a 2026-08-11 khtpm-specific addendum at the bottom | When a testing mechanism is discovered/corrected for a NEW family |
+| `44.xyz❤️‍🔥️00.17/LINUX_ROUNDTRIP.md` | Linux return-leg status: Mach-O quarantine (76 files), house-wide recompile (44/44 PASS), manual rebuilds (treetRace, hm_assert, apply_theme_op), verification, livedesk smoke-test | When returning from macOS to Linux (or any roundtrip); read before relaunching |
+| `yz.muchiverse/ROUNDTRIP_FIX.md` | Concise fix log + re-run recipe for future roundtrips (purge Mach-O → compile-runner → manual extras → verify → relaunch) | When re-running the purge+rebuild recipe; includes rollback instructions |
 | `EVENTS-HQ-RGB-HANDOFF.md` | 2026-08-12 session handoff: db-hq focus fix, events-hq built+wired, RGB Phase 0 result, next-step plans | When events-hq/db-hq/RGB work resumes and this doc's own "next steps" get done |
 | `!.chtpm-render-dedup-guidance.md` (house root) | Deferred: `chtpm_rgb_render.c`/`chtpm_parser_pal.c` duplication across 22/28 dirs, NOT byte-identical (real per-app divergence) - investigation plan for whenever this becomes relevant, not urgent | Only when someone actually starts that dedup pass |
 | `HARNECIENT-H-AI-RELAY.md` | **HIGH PRIORITY + LOAD-BEARING** - approved design to wire the Harnecient mode (`HARNECIENT-HACK.md`) into h-ai as a CHOOSABLE model, then demo + bake in a lasting reproducible harness for the full loop: relay injection into the real h-ai window → non-tooled model (270m/1b/3B) → deterministic read/write/run → **real control of the livedesk taskbar state files** (`strip_var_tabs.txt`, `strip_state.txt`). 4 phases (model switcher → `BACKEND_HARNECIENT` backend path → relay demo → `relay-harness/` N/N proof), success criteria + risks + milestones all in the doc. | Before starting any h-ai model-switcher / Harnecient-mode / relay-harness work |
@@ -174,7 +176,52 @@ the same fact across files — link instead (`see HANDOFF.md §X`).
 
 ---
 
-**Last updated:** 2026-08-21 (added session note for the 2026-08-21 symlink-migration Step 2
+## 🌐 Cross-Platform Compatibility (3 legs)
+
+**Doctrine: Linux is canonical. Other OSes = thin shims + resolve-time aliasing — never a second product, never per-OS file renames, never PDL content rewrites.**
+
+| Leg | Status | Doc |
+|---|---|---|
+| Linux (canonical) | ✅ always current | `44.xyz❤️‍🔥️00.17/!.HOUSE_STDS.md` |
+| Windows | ✅ taskbar + entity windows live; queue in doc | `yz.muchiverse/8.21.GROK-win.md` |
+| macOS (return leg) | ✅ **ROUNDTRIP FIXED 2026-08-23** — 76 Mach-O binaries quarantined + house-wide recompile (44/44 PASS) + livedesk smoke-test passed | `44.xyz❤️‍🔥️00.17/LINUX_ROUNDTRIP.md`, `yz.muchiverse/ROUNDTRIP_FIX.md` |
+
+**The round-trip problem (bites EVERY Windows trip, caught 2026-08-22):** NTFS cannot store
+names containing `*`, so the house's `*.monads` / `*.START_BUTTON` trees must be renamed to `_.`
+to travel; coming back they MUST be restored or every launch says "binary missing" (paths like
+`*.monads/*.livedesk-taskbar/ops/+x/...` stop resolving) and the whole tree comes back with
+stripped/locked permissions.
+
+**The fix — `$.crypts/win-trip.sh` (house root), run around every physical copy:**
+```
+$.crypts/win-trip.sh status     # which shape is the tree in right now?
+$.crypts/win-trip.sh to-win     # BEFORE copying to Windows: '*.' -> '_.', writes WIN-TRIP-MANIFEST.txt
+# ... copy to Windows, work there (Win binaries alias '*.'<->'_.' at RESOLVE time - no content changes) ...
+$.crypts/win-trip.sh to-linux   # AFTER copying back: restores '*.' names via manifest + chmod -R 777 whole tree
+```
+Manifest-driven: legitimately underscore-named entries (e.g. `_.0.aigent-testing-k9.txt`) are never
+touched; refuses to restore without a manifest rather than guessing. Verified by full sandbox
+round trip (content-identical).
+
+**If you just merged from a Windows checkout and things "randomly" broke:** run
+`win-trip.sh status` first. Symptom of an un-restored tree: `crypt_autostart: binary missing for ...`
+on every pal, nothing on screen. Also check exec bits if only *some* things fail.
+
+---
+
+**Last updated:** 2026-08-23 (Linux return leg roundtrip fixed: 76 Mach-O binaries quarantined, house-wide recompile 44/44 PASS, livedesk smoke-test passed; full trail in `44.xyz❤️‍🔥️00.17/LINUX_ROUNDTRIP.md` + `yz.muchiverse/ROUNDTRIP_FIX.md`) by Kilo
+
+**2026-08-22** (macOS leg started + critical path LIVE: taskbar and all entity
+windows verified running under XQuartz on the Intel Mac via new `$.crypts/mac-start-livedesk.command`
+(mirrors win-start-livedesk.ps1; bypasses /proc-dependent crypt_autostart); taskbar build scripts
+patched with guarded Darwin branches, zero C edits; full trail in
+`44.xyz❤️‍🔥️00.17/MAC-CONVERSION-STATUS.md`) by opencode (ox-alpha)
+
+**2026-08-22** (added 🌐 Cross-Platform Compatibility section: the Windows
+round-trip breakage + `$.crypts/win-trip.sh` fix — star-name aliasing + `chmod -R 777` on return;
+and `44.xyz❤️‍🔥️00.17/MAC_COMPAT.md`, the handoff brief for the macOS leg) by opencode (ox-alpha)
+
+**2026-08-21** (added session note for the 2026-08-21 symlink-migration Step 2
 session — `persist_session_state()` wired into 19 projects' button.sh across the house, 5 harness
 scenarios fixed, full trail in `44.xyz❤️‍🔥️00.17/completed-sym-list.md` + `sim-smell-fix.md`;
 see the new Document Roles row for what may bite later) by opencode (ox-alpha)

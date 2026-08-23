@@ -352,12 +352,32 @@ static void publish_state(const KtbState *s, const char *house_root) {
  * duplicated here (not called directly) since that function lives in the
  * X11-only plat file and this binary must build without libX11. */
 #ifndef _WIN32
+/* macOS leg (2026-08-22): macOS ships no `setsid` binary and no
+ * `xdg-open`. Every HQ-menu row (dir/cli/db/events/...) flows through
+ * here, so both are handled at runtime: drop the setsid prefix (nohup+&
+ * already detaches for this launcher shape — same thing the mac start
+ * script does) and translate xdg-open → open. Linux output is
+ * byte-identical; PDL stays canonical (no per-OS rewrites). */
+# ifdef __APPLE__
+#  define KTB_SETSID ""
+static void ktb_portable_darwin(char *cmd, size_t sz) {
+    if (strncmp(cmd, "xdg-open", 8) == 0 && (cmd[8] == ' ' || cmd[8] == '\0')) {
+        char rest[KTB_PATH_BUF];
+        snprintf(rest, sizeof(rest), "%s", cmd[8] ? cmd + 9 : "");
+        snprintf(cmd, sz, "open %s", rest);
+    }
+}
+# else
+#  define KTB_SETSID "setsid "
+static void ktb_portable_darwin(char *cmd, size_t sz) { (void)cmd; (void)sz; }
+# endif
 static void run_shortcut(const char *cmd) {
     if (!cmd || !cmd[0]) return;
     char portable[KTB_PATH_BUF];
     ktb_action_portable(cmd, portable, sizeof(portable));
+    ktb_portable_darwin(portable, sizeof(portable));
     char sh[KTB_PATH_BUF * 2];
-    snprintf(sh, sizeof(sh), "setsid nohup sh -c '%s' >/dev/null 2>&1 &", portable);
+    snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c '%s' >/dev/null 2>&1 &", portable);
     int rc = system(sh);
     (void)rc;
 }
@@ -565,7 +585,13 @@ int main(int argc, char **argv) {
      * enforcing it. One chdir() here, once, at startup, makes that
      * assumption actually true regardless of how/from-where this binary
      * gets launched. */
-#ifndef _WIN32
+#ifdef _WIN32
+    {
+        wchar_t wh[KTB_PATH_BUF];
+        if (MultiByteToWideChar(CP_UTF8, 0, house_root, -1, wh, KTB_PATH_BUF))
+            SetCurrentDirectoryW(wh);
+    }
+#else
     { int chdir_rc = chdir(house_root); (void)chdir_rc; }
 #endif
 

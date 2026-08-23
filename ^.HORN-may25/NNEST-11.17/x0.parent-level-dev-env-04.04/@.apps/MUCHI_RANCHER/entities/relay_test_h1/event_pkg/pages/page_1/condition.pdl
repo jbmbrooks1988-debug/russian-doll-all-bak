@@ -1,4 +1,0 @@
-SECTION      | KEY                | VALUE
-----------------------------------------
-META         | piece_id           | relay_test_h1
-COND         | trigger              | on_click

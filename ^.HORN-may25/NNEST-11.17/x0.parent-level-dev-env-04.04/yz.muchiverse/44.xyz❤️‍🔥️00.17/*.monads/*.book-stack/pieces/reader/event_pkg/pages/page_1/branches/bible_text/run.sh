@@ -22,7 +22,21 @@ if [ -z "$BIBLE_ROOT" ] || [ ! -d "$BIBLE_ROOT/bible.ch2en.ran" ]; then
     fi
 fi
 if [ -z "$BIBLE_ROOT" ] || [ ! -d "$BIBLE_ROOT/bible.ch2en.ran" ]; then
+    # macOS leg (2026-08-22, direct report "mac local bookstack books are
+    # in book-stack/ dir on this Desktop"): this Mac keeps its books at
+    # ~/Desktop/bible]as.DeathNote]0000/book-stack (different on every
+    # OS — win uses assets_root_win.txt above). Validate loudly per
+    # HOUSE_STDS §I.25 rather than silently showing nothing.
+    if [ -d "$HOME/Desktop/bible]as.DeathNote]0000/book-stack/bible-ench.twins+ai]b2/bible.ch2en.ran" ]; then
+        BIBLE_ROOT="$HOME/Desktop/bible]as.DeathNote]0000/book-stack/bible-ench.twins+ai]b2"
+    fi
+fi
+if [ -z "$BIBLE_ROOT" ] || [ ! -d "$BIBLE_ROOT/bible.ch2en.ran" ]; then
     BIBLE_ROOT="/media/no/b7ced73c-5231-4462-b98d-64e38fe2df9e/home/jbez/Desktop/^.📶️.SHARE]/^.🦾️]fullsharezip/💪🏾️].no-desk.sharezip/!.🫁️.BIBLE.📔️]z3+/bible-ench.twins+ai]b2"
+fi
+if [ ! -d "$BIBLE_ROOT/bible.ch2en.ran" ]; then
+    echo "ERROR: bible assets not found at $BIBLE_ROOT (set BIBLE_ASSET_ROOT?)" >&2
+    exit 1
 fi
 cd "$BIBLE_ROOT/bible.ch2en.ran" || exit 1
 if [ -x ./bible_verses ]; then

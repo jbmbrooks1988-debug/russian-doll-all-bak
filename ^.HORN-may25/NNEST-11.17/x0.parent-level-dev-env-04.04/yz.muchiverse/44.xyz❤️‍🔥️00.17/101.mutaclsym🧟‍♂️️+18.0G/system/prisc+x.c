@@ -171,6 +171,11 @@ CustomOp custom_ops[MAX_OPS];
 int label_count = 0, inst_count = 0, var_count = 0, op_count = 0;
 int next_var_addr = 0;
 char included_files[MAX_INCLUDES][64];
+/* Backport from the 19.00 tree (legacy-shared-fix.md §3.10, 2026-08-17;
+ * mac leg 2026-08-22 needed it for book-stack's reader): the pal
+ * script's own real directory, resolved from argv[1]'s realpath in
+ * main() below, used by OP_EXEC to resolve relative exec targets. */
+char g_pal_dir[MAX_PATH] = "";
 int include_count = 0;
 
 int find_custom_op(const char *name);
@@ -932,7 +937,31 @@ int main(int argc, char **argv) {
         fprintf(stderr, "[Prisc Error] Could not open program file: %s\n", argv[1]);
         return 1;
     }
-    
+
+    /* REAL, merged from mutaclysm's own prisc+x.c (2026-08-17,
+     * legacy-shared-fix.md §3.10; backported 2026-08-22) - resolves
+     * g_pal_dir from argv[1]'s own real absolute path, used below by
+     * the exec op to resolve relative exec targets against the pal
+     * script's own directory instead of the caller's cwd.
+     * macOS leg: /proc/self/exe doesn't exist here, so fall back to
+     * plain realpath(argv[1]) - same directory either way. */
+    {
+        char resolved[MAX_PATH];
+        char *r = REALPATH(argv[1], resolved);
+        if (r) {
+            char *last_slash = strrchr(r, '/');
+#ifdef _WIN32
+            if (!last_slash) last_slash = strrchr(r, '\\');
+#endif
+            if (last_slash) {
+                size_t n = (size_t)(last_slash - r);
+                if (n >= sizeof(g_pal_dir)) n = sizeof(g_pal_dir) - 1;
+                memcpy(g_pal_dir, r, n);
+                g_pal_dir[n] = '\0';
+            }
+        }
+    }
+
     char line[256];
     while (fgets(line, sizeof(line), f)) {
         char trimmed[256];
@@ -1037,10 +1066,31 @@ int main(int argc, char **argv) {
             else strcpy(arg1, i.literal_arg2);
             
             if (i.rs2 >= 0) sprintf(arg2, "%d", regs[i.rs2]);
-            
-            if (strlen(arg2) > 0) sprintf(cmd, "%s %s %s > /dev/null 2>&1", i.literal_arg, arg1, arg2);
-            else if (strlen(arg1) > 0) sprintf(cmd, "%s %s > /dev/null 2>&1", i.literal_arg, arg1);
-            else sprintf(cmd, "%s > /dev/null 2>&1", i.literal_arg);
+
+            /* REAL, merged from mutaclysm's own 19.00 tree (2026-08-17,
+             * legacy-shared-fix.md §3.10; backported here 2026-08-22
+             * after the mac leg found book-stack's reader silently
+             * no-op'ing through THIS older copy: its event.pal says
+             * `exec ./dispatch.sh`, resolved against the pal's own dir,
+             * but this build ran it against the caller's cwd). Resolves
+             * a relative exec target against g_pal_dir (the pal
+             * script's own real directory) when it exists there.
+             * No-op for absolute targets or targets that don't exist
+             * relative to g_pal_dir. */
+            char *exec_target = i.literal_arg;
+            char exec_target_buf[512];
+            int is_abs = (exec_target[0] == '/' || exec_target[0] == '\\');
+#ifdef _WIN32
+            if (!is_abs && exec_target[0] != '\0' && exec_target[1] == ':') is_abs = 1;
+#endif
+            if (!is_abs && exec_target[0] != '\0' && g_pal_dir[0] != '\0') {
+                snprintf(exec_target_buf, sizeof(exec_target_buf), "%s/%s", g_pal_dir, exec_target);
+                if (access(exec_target_buf, F_OK) == 0) exec_target = exec_target_buf;
+            }
+
+            if (strlen(arg2) > 0) sprintf(cmd, "%s %s %s > /dev/null 2>&1", exec_target, arg1, arg2);
+            else if (strlen(arg1) > 0) sprintf(cmd, "%s %s > /dev/null 2>&1", exec_target, arg1);
+            else sprintf(cmd, "%s > /dev/null 2>&1", exec_target);
 
             int exec_rc = system(cmd);
             (void)exec_rc; /* exec op's own exit status isn't consulted here */

@@ -6,6 +6,18 @@
 #endif
 #include "khtpm_taskbar_manager.h"
 
+/* macOS leg (2026-08-22): no `setsid` binary on macOS; every detached
+ * spawn in this file uses the "setsid nohup ..." shell shape, which
+ * silently fails (sh: setsid: command not found → /dev/null). nohup+&
+ * already detaches for this launcher pattern (the mac start script
+ * proves it), so the prefix becomes empty there — Linux byte-identical.
+ * Same rationale as run_shortcut()'s KTB_SETSID in the manager driver. */
+#ifdef __APPLE__
+#define KTB_SETSID ""
+#else
+#define KTB_SETSID "setsid "
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -21,7 +33,34 @@
 #    define WIN32_LEAN_AND_MEAN
 #  endif
 #  include <windows.h>
+#  include <shellapi.h>
+#  include <tlhelp32.h>
 #  include <io.h>
+#  include <dirent.h>
+#  include <direct.h>
+#  include <sys/stat.h>
+#  include <time.h>
+#  ifndef S_ISDIR
+#    define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
+#  endif
+#  define mkdir(path, mode) _mkdir(path)
+static char *strsep(char **stringp, const char *delim) {
+    char *s, *p;
+    if (!stringp || !*stringp) return NULL;
+    s = *stringp;
+    p = s;
+    while (*p && !strchr(delim, *p)) p++;
+    if (*p) { *p = '\0'; *stringp = p + 1; }
+    else *stringp = NULL;
+    return s;
+}
+static int ktb_nanosleep_win(long nsec) {
+    DWORD ms = (DWORD)(nsec / 1000000L);
+    if (ms == 0) ms = 1;
+    Sleep(ms);
+    return 0;
+}
+#  define nanosleep(ts, rem) ktb_nanosleep_win((ts) ? (ts)->tv_nsec : 0)
 static FILE *ktb_fopen(const char *path, const char *mode) {
     wchar_t wp[KTB_PATH_BUF], wm[16];
     if (!MultiByteToWideChar(CP_UTF8, 0, path, -1, wp, KTB_PATH_BUF) &&
@@ -29,6 +68,87 @@ static FILE *ktb_fopen(const char *path, const char *mode) {
         return fopen(path, mode);
     MultiByteToWideChar(CP_ACP, 0, mode, -1, wm, 16);
     return _wfopen(wp, wm);
+}
+static void win_star_alias(char *path) {
+    char tmp[KTB_PATH_BUF];
+    size_t o = 0;
+    int at_comp = 1;
+    const char *p;
+    if (!path || !path[0]) return;
+    for (p = path; *p && o + 1 < sizeof(tmp); p++) {
+        if (at_comp && p[0] == '*' && p[1] == '.') {
+            tmp[o++] = '_';
+            at_comp = 0;
+            continue;
+        }
+        tmp[o++] = *p;
+        at_comp = (*p == '/' || *p == '\\');
+    }
+    tmp[o] = '\0';
+    memcpy(path, tmp, o + 1);
+}
+static void win_exe_suffix(char *path) {
+    size_t n = strlen(path);
+    if (n > 3 && strcmp(path + n - 3, ".+x") == 0)
+        memcpy(path + n - 3, ".exe", 5);
+    else if (n > 4 && _stricmp(path + n - 4, ".exe") != 0)
+        strcat(path, ".exe");
+}
+static int win_spawn_n(const char *exe, const char **args, int nargs) {
+    char e[KTB_PATH_BUF];
+    snprintf(e, sizeof(e), "%s", exe);
+    win_star_alias(e);
+    win_exe_suffix(e);
+    for (char *p = e; *p; p++) if (*p == '/') *p = '\\';
+    wchar_t wcmd[KTB_PATH_BUF * 4];
+    wchar_t we[KTB_PATH_BUF];
+    MultiByteToWideChar(CP_UTF8, 0, e, -1, we, KTB_PATH_BUF);
+    wchar_t acc[KTB_PATH_BUF * 4];
+    _snwprintf(acc, (KTB_PATH_BUF * 4) - 1, L"\"%s\"", we);
+    for (int i = 0; i < nargs; i++) {
+        char a[KTB_PATH_BUF];
+        snprintf(a, sizeof(a), "%s", args[i] ? args[i] : ".");
+        win_star_alias(a);
+        for (char *p = a; *p; p++) if (*p == '/') *p = '\\';
+        wchar_t wa[KTB_PATH_BUF];
+        MultiByteToWideChar(CP_UTF8, 0, a, -1, wa, KTB_PATH_BUF);
+        wchar_t more[KTB_PATH_BUF * 4];
+        _snwprintf(more, (KTB_PATH_BUF * 4) - 1, L"%s \"%s\"", acc, wa);
+        wcsncpy(acc, more, (KTB_PATH_BUF * 4) - 1);
+        acc[(KTB_PATH_BUF * 4) - 1] = 0;
+    }
+    wcsncpy(wcmd, acc, (KTB_PATH_BUF * 4) - 1);
+    wcmd[(KTB_PATH_BUF * 4) - 1] = 0;
+    STARTUPINFOW si; PROCESS_INFORMATION pi;
+    ZeroMemory(&si, sizeof(si)); si.cb = sizeof(si);
+    ZeroMemory(&pi, sizeof(pi));
+    DWORD flags = CREATE_NEW_PROCESS_GROUP | CREATE_BREAKAWAY_FROM_JOB | DETACHED_PROCESS;
+    BOOL ok = CreateProcessW(NULL, wcmd, NULL, NULL, FALSE, flags, NULL, L".", &si, &pi);
+    if (!ok) {
+        flags = CREATE_NEW_PROCESS_GROUP | DETACHED_PROCESS;
+        ok = CreateProcessW(NULL, wcmd, NULL, NULL, FALSE, flags, NULL, L".", &si, &pi);
+    }
+    if (!ok) return 0;
+    CloseHandle(pi.hThread); CloseHandle(pi.hProcess);
+    return 1;
+}
+static int win_spawn_cwd(const char *exe, const char *arg) {
+    const char *a = arg ? arg : ".";
+    return win_spawn_n(exe, &a, 1);
+}
+static void ktb_kill_by_exe(const char *stem) {
+    HANDLE snap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    if (snap == INVALID_HANDLE_VALUE) return;
+    PROCESSENTRY32 pe; pe.dwSize = sizeof(pe);
+    if (Process32First(snap, &pe)) {
+        do {
+            if (strstr(pe.szExeFile, stem)) {
+                HANDLE h = OpenProcess(PROCESS_TERMINATE, FALSE, pe.th32ProcessID);
+                if (h) { TerminateProcess(h, 0); CloseHandle(h); }
+            }
+        } while (Process32Next(snap, &pe));
+    }
+    CloseHandle(snap);
 }
 #else
 #  include <sys/types.h>
@@ -263,7 +383,14 @@ static int load_tabs(KtbState *s) {
         s->tabs[s->n_tabs++] = t;
     }
     fclose(f);
+#ifdef _WIN32
+    /* Do not rewrite livedesk_open.txt here. remove+rename races rgb
+     * append and Win rename-cannot-replace, leaving one tab (asa).
+     * Prune is in-memory only; dead lines stay on disk until quit. */
+    if (w) { fclose(w); remove(tmp_path); }
+#else
     if (w) { fclose(w); remove(reg_path); rename(tmp_path, reg_path); }
+#endif
     registry_lock_release();
     return s->n_tabs;
 }
@@ -874,20 +1001,57 @@ static void livedesk_rel_path(const char *house_root, const char *abs, char *out
 }
 
 static void livedesk_join_path(const char *house_root, const char *rel, char *out, size_t sz) {
+#ifdef _WIN32
+    const char *xyz = strstr(rel, "xyzfs/");
+    if (!xyz) xyz = strstr(rel, "xyzfs\\");
+    if (xyz)
+        snprintf(out, sz, "%s/%s", house_root, xyz);
+    else if (rel[0] == '/' || (rel[0] && rel[1] == ':'))
+        snprintf(out, sz, "%s", rel);
+    else
+        snprintf(out, sz, "%s/%s", house_root, rel);
+#else
     if (rel[0] == '/')
         snprintf(out, sz, "%s", rel);
     else
         snprintf(out, sz, "%s/%s", house_root, rel);
+#endif
 }
 
 static int livedesk_login_root(const char *house_root, char *out, size_t sz) {
     out[0] = '\0';
-    DIR *d = opendir(house_root);
+#ifdef _WIN32
+    {
+        wchar_t pat[KTB_PATH_BUF];
+        wchar_t wh[KTB_PATH_BUF];
+        const char *hr = (house_root && house_root[0]) ? house_root : ".";
+        if (!MultiByteToWideChar(CP_UTF8, 0, hr, -1, wh, KTB_PATH_BUF))
+            MultiByteToWideChar(CP_ACP, 0, hr, -1, wh, KTB_PATH_BUF);
+        if (wcscmp(wh, L".") == 0)
+            _snwprintf(pat, KTB_PATH_BUF, L"0.user-pal*");
+        else
+            _snwprintf(pat, KTB_PATH_BUF, L"%s\\0.user-pal*", wh);
+        WIN32_FIND_DATAW fd;
+        HANDLE h = FindFirstFileW(pat, &fd);
+        if (h != INVALID_HANDLE_VALUE) {
+            char name_utf8[512];
+            WideCharToMultiByte(CP_UTF8, 0, fd.cFileName, -1, name_utf8, (int)sizeof(name_utf8), NULL, NULL);
+            FindClose(h);
+            if (!strcmp(hr, "."))
+                snprintf(out, sz, "%s/00.login-signup", name_utf8);
+            else
+                snprintf(out, sz, "%s/%s/00.login-signup", hr, name_utf8);
+            return out[0] != '\0';
+        }
+    }
+#endif
+    DIR *d = opendir(house_root && house_root[0] ? house_root : ".");
     if (!d) return 0;
     struct dirent *e;
     while ((e = readdir(d))) {
         if (strncmp(e->d_name, "0.user-pal", 10) == 0) {
-            snprintf(out, sz, "%s/%s/00.login-signup", house_root, e->d_name);
+            snprintf(out, sz, "%s/%s/00.login-signup",
+                     (house_root && house_root[0]) ? house_root : ".", e->d_name);
             break;
         }
     }
@@ -902,6 +1066,40 @@ static void livedesk_user_uuid(const char *house_root, char *out, size_t sz) {
     char p[KTB_PATH_BUF];
     snprintf(p, sizeof(p), "%s/current_login.txt", login_root);
     read_key_value(p, "current_user_uuid", out, sz);
+#ifdef _WIN32
+    if (!out[0]) {
+        char users[KTB_PATH_BUF];
+        snprintf(users, sizeof(users), "%s/xyzfs/users", house_root);
+        DIR *d = opendir(users);
+        int best_n = -1;
+        char best[128] = "";
+        if (d) {
+            struct dirent *e;
+            while ((e = readdir(d))) {
+                if (e->d_name[0] == '.') continue;
+                char pals[KTB_PATH_BUF];
+                snprintf(pals, sizeof(pals), "%s/%s/home/livedesk/pals", users, e->d_name);
+                DIR *pd = opendir(pals);
+                if (!pd) continue;
+                int n = 0, has_self = 0;
+                struct dirent *pe;
+                while ((pe = readdir(pd))) {
+                    if (pe->d_name[0] == '.') continue;
+                    n++;
+                    if (strcmp(pe->d_name, "self") == 0) has_self = 1;
+                }
+                closedir(pd);
+                int score = n + (has_self ? 1000 : 0);
+                if (score > best_n) {
+                    best_n = score;
+                    snprintf(best, sizeof(best), "%s", e->d_name);
+                }
+            }
+            closedir(d);
+        }
+        if (best[0]) snprintf(out, sz, "%s", best);
+    }
+#endif
 }
 
 static int livedesk_sessions_root(const char *house_root, char *out, size_t sz) {
@@ -978,6 +1176,45 @@ void ktb_get_username(const KtbState *s, char *out, size_t sz) {
     cached_at = now;
     snprintf(cached, sizeof(cached), "guest");
     snprintf(out, sz, "guest");
+    /* Win: do not popen userpal_whoami.+x (bash). Read current_login.txt. */
+    {
+        char login_root[KTB_PATH_BUF], login_file[KTB_PATH_BUF], uid[128] = "";
+        if (livedesk_login_root(s->house_root, login_root, sizeof(login_root))) {
+            snprintf(login_file, sizeof(login_file), "%s/current_login.txt", login_root);
+            read_key_value(login_file, "current_user_id", uid, sizeof(uid));
+        }
+#ifdef _WIN32
+        if (!uid[0]) {
+            wchar_t pat[KTB_PATH_BUF];
+            WIN32_FIND_DATAW fd;
+            _snwprintf(pat, KTB_PATH_BUF, L"0.user-pal*");
+            HANDLE h = FindFirstFileW(pat, &fd);
+            if (h != INVALID_HANDLE_VALUE) {
+                wchar_t wlogin[KTB_PATH_BUF];
+                _snwprintf(wlogin, KTB_PATH_BUF, L"%s\\00.login-signup\\current_login.txt", fd.cFileName);
+                FindClose(h);
+                FILE *lf = _wfopen(wlogin, L"r");
+                if (lf) {
+                    char line[256];
+                    while (fgets(line, sizeof(line), lf)) {
+                        if (strncmp(line, "current_user_id=", 16) == 0) {
+                            snprintf(uid, sizeof(uid), "%s", line + 16);
+                            uid[strcspn(uid, "\r\n")] = '\0';
+                            break;
+                        }
+                    }
+                    fclose(lf);
+                }
+            }
+        }
+#endif
+        if (uid[0] && strcmp(uid, "none") != 0) {
+            snprintf(out, sz, "%s", uid);
+            snprintf(cached, sizeof(cached), "%s", uid);
+            return;
+        }
+    }
+#ifndef _WIN32
     char userpal_root[KTB_PATH_BUF];
     snprintf(userpal_root, sizeof(userpal_root), "%s/0.user-pal👤️/00.login-signup", s->house_root);
     char whoami_cmd[KTB_PATH_BUF * 2];
@@ -998,6 +1235,7 @@ void ktb_get_username(const KtbState *s, char *out, size_t sz) {
         }
         pclose(wp);
     }
+#endif
 }
 
 /* Real gap fix, same request: live "file:<session>"/"desks:<desk>" labels
@@ -1151,8 +1389,44 @@ static int livedesk_desk_list(const char *sroot, const char *id, char out[][64],
     char sdir[KTB_PATH_BUF], desks[KTB_PATH_BUF];
     livedesk_session_dir(sroot, id, sdir, sizeof(sdir));
     snprintf(desks, sizeof(desks), "%s/desks", sdir);
-    DIR *d = opendir(desks);
     int n = 0;
+#ifdef _WIN32
+    {
+        wchar_t wdir[KTB_PATH_BUF], wpat[KTB_PATH_BUF];
+        if (!MultiByteToWideChar(CP_UTF8, 0, desks, -1, wdir, KTB_PATH_BUF))
+            MultiByteToWideChar(CP_ACP, 0, desks, -1, wdir, KTB_PATH_BUF);
+        _snwprintf(wpat, KTB_PATH_BUF, L"%s\\*.pdl", wdir);
+        WIN32_FIND_DATAW fd;
+        HANDLE h = FindFirstFileW(wpat, &fd);
+        if (h != INVALID_HANDLE_VALUE) {
+            do {
+                if (n >= max) break;
+                if (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) continue;
+                char name[64];
+                WideCharToMultiByte(CP_UTF8, 0, fd.cFileName, -1, name, 64, NULL, NULL);
+                char *dot = strrchr(name, '.');
+                if (dot && strcmp(dot, ".pdl") == 0) {
+                    *dot = '\0';
+                    snprintf(out[n], 64, "%s", name);
+                    n++;
+                }
+            } while (FindNextFileW(h, &fd));
+            FindClose(h);
+        }
+    }
+    if (n > 0) {
+        for (int i = 0; i < n - 1; i++)
+            for (int j = i + 1; j < n; j++)
+                if (strcmp(out[j], out[i]) < 0) {
+                    char t[64];
+                    snprintf(t, sizeof(t), "%s", out[i]);
+                    snprintf(out[i], sizeof(out[i]), "%s", out[j]);
+                    snprintf(out[j], sizeof(out[j]), "%s", t);
+                }
+        return n;
+    }
+#endif
+    DIR *d = opendir(desks);
     if (d) {
         struct dirent *e;
         while ((e = readdir(d))) {
@@ -1398,6 +1672,27 @@ static void livedesk_spawn_desk(const char *house_root, const char *sroot, const
     char sdir[KTB_PATH_BUF], dp[KTB_PATH_BUF];
     livedesk_session_dir(sroot, id, sdir, sizeof(sdir));
     snprintf(dp, sizeof(dp), "%s/desks/%s.pdl", sdir, desk);
+#ifdef _WIN32
+    /* desk_01.pdl is empty on this checkout; office.pdl holds the pals. */
+    {
+        FILE *probe = fopen(dp, "r");
+        int has = 0;
+        if (probe) {
+            char ln[KTB_PATH_BUF];
+            while (fgets(ln, sizeof(ln), probe))
+                if (strncmp(ln, "DESK", 4) == 0) { has = 1; break; }
+            fclose(probe);
+        }
+        if (!has) {
+            char alt[KTB_PATH_BUF];
+            snprintf(alt, sizeof(alt), "%s/desks/office.pdl", sdir);
+            if (access(alt, F_OK) == 0) {
+                snprintf(dp, sizeof(dp), "%s", alt);
+                desk = "office";
+            }
+        }
+    }
+#endif
     FILE *f = fopen(dp, "r");
     if (!f) return;
     /* REAL FIX 2026-08-12, direct instruction ("we may also get rid of
@@ -1415,6 +1710,11 @@ static void livedesk_spawn_desk(const char *house_root, const char *sroot, const
      * tb ops/+x/ dir instead of &.widgits/tile-picker/ops/+x/. */
     char exe[KTB_PATH_BUF];
     snprintf(exe, sizeof(exe), "%s/*.monads/*.livedesk-taskbar/ops/+x/tp_desktop_window_rgb.+x", house_root);
+#ifdef _WIN32
+    win_star_alias(exe);
+    win_exe_suffix(exe);
+    for (char *p = exe; *p; p++) if (*p == '/') *p = '\\';
+#endif
     if (access(exe, F_OK) != 0) {
         fclose(f);
         return;
@@ -1504,10 +1804,14 @@ static void livedesk_spawn_desk(const char *house_root, const char *sroot, const
             FILE *pw = fopen(posp, "w");
             if (pw) { fprintf(pw, "x=%d\ny=%d\n", x, y); fclose(pw); }
         }
+#ifdef _WIN32
+        win_spawn_cwd(exe, pal);
+#else
         char cmd[KTB_PATH_BUF * 2];
-        snprintf(cmd, sizeof(cmd), "setsid nohup '%s' '%s' >/dev/null 2>&1 < /dev/null &", exe, pal);
+        snprintf(cmd, sizeof(cmd), KTB_SETSID "nohup '%s' '%s' >/dev/null 2>&1 < /dev/null &", exe, pal);
         int rc = system(cmd);
         (void)rc;
+#endif
     }
     fclose(f);
 }
@@ -1711,7 +2015,32 @@ static int livedesk_build_session_menu(const char *house_root, HQMenuItem *menu,
     if (!livedesk_sessions_root(house_root, sroot, sizeof(sroot))) return 0;
     char ids[KTB_LIVEDESK_DYN_MAX][64];
     int n = 0;
-    DIR *d = opendir(sroot);
+#ifdef _WIN32
+    {
+        wchar_t wroot[KTB_PATH_BUF], wpat[KTB_PATH_BUF];
+        if (!MultiByteToWideChar(CP_UTF8, 0, sroot, -1, wroot, KTB_PATH_BUF))
+            MultiByteToWideChar(CP_ACP, 0, sroot, -1, wroot, KTB_PATH_BUF);
+        _snwprintf(wpat, KTB_PATH_BUF, L"%s\\*", wroot);
+        WIN32_FIND_DATAW fd;
+        HANDLE h = FindFirstFileW(wpat, &fd);
+        if (h != INVALID_HANDLE_VALUE) {
+            do {
+                if (n >= max || n >= KTB_LIVEDESK_DYN_MAX) break;
+                if (fd.cFileName[0] == L'.') continue;
+                if (!(fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) continue;
+                char id[64];
+                WideCharToMultiByte(CP_UTF8, 0, fd.cFileName, -1, id, 64, NULL, NULL);
+                wchar_t wsp[KTB_PATH_BUF];
+                _snwprintf(wsp, KTB_PATH_BUF, L"%s\\%s\\session.pdl", wroot, fd.cFileName);
+                if (GetFileAttributesW(wsp) == INVALID_FILE_ATTRIBUTES) continue;
+                snprintf(ids[n], sizeof(ids[n]), "%s", id);
+                n++;
+            } while (FindNextFileW(h, &fd));
+            FindClose(h);
+        }
+    }
+#endif
+    DIR *d = (n > 0) ? NULL : opendir(sroot);
     if (d) {
         struct dirent *e;
         while ((e = readdir(d))) {
@@ -1724,15 +2053,15 @@ static int livedesk_build_session_menu(const char *house_root, HQMenuItem *menu,
             n++;
         }
         closedir(d);
-        for (int i = 0; i < n - 1; i++)
-            for (int j = i + 1; j < n; j++)
-                if (strcmp(ids[j], ids[i]) < 0) {
-                    char t[64];
-                    snprintf(t, sizeof(t), "%s", ids[i]);
-                    snprintf(ids[i], sizeof(ids[i]), "%s", ids[j]);
-                    snprintf(ids[j], sizeof(ids[j]), "%s", t);
-                }
     }
+    for (int i = 0; i < n - 1; i++)
+        for (int j = i + 1; j < n; j++)
+            if (strcmp(ids[j], ids[i]) < 0) {
+                char t[64];
+                snprintf(t, sizeof(t), "%s", ids[i]);
+                snprintf(ids[i], sizeof(ids[i]), "%s", ids[j]);
+                snprintf(ids[j], sizeof(ids[j]), "%s", t);
+            }
     for (int i = 0; i < n && i < max; i++) {
         char name[256] = "";
         livedesk_session_name(sroot, ids[i], name, sizeof(name));
@@ -1792,7 +2121,9 @@ static int livedesk_build_pals_menu(const char *house_root, HQMenuItem *menu, in
             if (e->d_name[0] == '.') continue;
             char mp[KTB_PATH_BUF];
             snprintf(mp, sizeof(mp), "%s/%s/pal.pdl", pr, e->d_name);
-            if (access(mp, F_OK) != 0) continue;   /* only registered pals */
+            char gp[KTB_PATH_BUF];
+            snprintf(gp, sizeof(gp), "%s/%s/glyph.txt", pr, e->d_name);
+            if (access(mp, F_OK) != 0 && access(gp, F_OK) != 0) continue;
             snprintf(names[n], sizeof(names[n]), "%s", e->d_name);
             n++;
         }
@@ -1868,7 +2199,7 @@ static int livedesk_build_hq_menu(const char *house_root, HQMenuItem *menu, int 
      * resolve to the wrong thing regardless of this process's own cwd. */
     snprintf(menu[0].label, sizeof(menu[0].label), "$.restart");
     snprintf(menu[0].command, sizeof(menu[0].command),
-             "setsid nohup sh '%s/*.monads/*.livedesk-taskbar/ops/run_khtpm_strip.sh' new",
+             KTB_SETSID "nohup sh '%s/*.monads/*.livedesk-taskbar/ops/run_khtpm_strip.sh' new",
              house_root);
     snprintf(menu[1].label, sizeof(menu[1].label), "X.quit");
     snprintf(menu[1].command, sizeof(menu[1].command), "quit");
@@ -1955,12 +2286,20 @@ static void livedesk_place_pal(const char *house_root, const char *name) {
      * folder (moved out of tile-picker); GLX tp_desktop_window.+x name
      * retired 2026-08-12 - RGB is the only renderer. */
     snprintf(exe, sizeof(exe), "%s/*.monads/*.livedesk-taskbar/ops/+x/tp_desktop_window_rgb.+x", house_root);
+#ifdef _WIN32
+    win_star_alias(exe);
+    win_exe_suffix(exe);
+    for (char *p = exe; *p; p++) if (*p == '/') *p = '\\';
+    if (access(exe, F_OK) == 0)
+        win_spawn_cwd(exe, pal);
+#else
     if (access(exe, F_OK) == 0) {
         char cmd[KTB_PATH_BUF * 2];
-        snprintf(cmd, sizeof(cmd), "setsid nohup '%s' '%s' >/dev/null 2>&1 < /dev/null &", exe, pal);
+        snprintf(cmd, sizeof(cmd), KTB_SETSID "nohup '%s' '%s' >/dev/null 2>&1 < /dev/null &", exe, pal);
         int rc = system(cmd);
         (void)rc;
     }
+#endif
 }
 
 static int livedesk_desk_entity_count(const char *sroot, const char *id, const char *desk) {
@@ -2047,10 +2386,14 @@ void ktb_hq_close(KtbState *s) {
      * guard, not a new pattern) so ANY HQ-menu close - cancel, picking
      * another row, Esc - also closes the stray window. No-op if none
      * running. */
+#ifdef _WIN32
+    ktb_kill_by_exe("khtpm_taskbar_settings_render");
+#else
     int rc = system("pgrep -f 'khtpm_taskbar_settings_render\\.\\+x' >/dev/null 2>&1 "
                      "&& pgrep -f 'khtpm_taskbar_settings_render\\.\\+x' | xargs -r kill -TERM "
                      ">/dev/null 2>&1");
     (void)rc;
+#endif
 }
 
 /* Static file-cell submenu (new-desk/save/save-as/load), ported verbatim
@@ -2440,7 +2783,32 @@ static int livedesk_build_user_menu(const char *house_root, HQMenuItem *menu, in
 
         char ids[KTB_LIVEDESK_DYN_MAX][128];
         int nu = 0;
-        DIR *d = opendir(users_dir);
+#ifdef _WIN32
+        {
+            wchar_t wpat[KTB_PATH_BUF], wud[KTB_PATH_BUF];
+            if (!MultiByteToWideChar(CP_UTF8, 0, users_dir, -1, wud, KTB_PATH_BUF))
+                MultiByteToWideChar(CP_ACP, 0, users_dir, -1, wud, KTB_PATH_BUF);
+            _snwprintf(wpat, KTB_PATH_BUF, L"%s\\*", wud);
+            WIN32_FIND_DATAW fd;
+            HANDLE h = FindFirstFileW(wpat, &fd);
+            if (h != INVALID_HANDLE_VALUE) {
+                do {
+                    if (nu >= KTB_LIVEDESK_DYN_MAX - 2) break;
+                    if (fd.cFileName[0] == L'.') continue;
+                    if (!(fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) continue;
+                    char idutf[128];
+                    WideCharToMultiByte(CP_UTF8, 0, fd.cFileName, -1, idutf, (int)sizeof(idutf), NULL, NULL);
+                    wchar_t wprof[KTB_PATH_BUF];
+                    _snwprintf(wprof, KTB_PATH_BUF, L"%s\\%s\\profile.txt", wud, fd.cFileName);
+                    if (GetFileAttributesW(wprof) == INVALID_FILE_ATTRIBUTES) continue;
+                    snprintf(ids[nu], sizeof(ids[nu]), "%s", idutf);
+                    nu++;
+                } while (FindNextFileW(h, &fd));
+                FindClose(h);
+            }
+        }
+#endif
+        DIR *d = (nu > 0) ? NULL : opendir(users_dir);
         if (d) {
             struct dirent *e;
             while ((e = readdir(d))) {
@@ -2453,15 +2821,15 @@ static int livedesk_build_user_menu(const char *house_root, HQMenuItem *menu, in
                 nu++;
             }
             closedir(d);
-            for (int i = 0; i < nu - 1; i++)
-                for (int j = i + 1; j < nu; j++)
-                    if (strcmp(ids[j], ids[i]) < 0) {
-                        char t[128];
-                        snprintf(t, sizeof(t), "%s", ids[i]);
-                        snprintf(ids[i], sizeof(ids[i]), "%s", ids[j]);
-                        snprintf(ids[j], sizeof(ids[j]), "%s", t);
-                    }
         }
+        for (int i = 0; i < nu - 1; i++)
+            for (int j = i + 1; j < nu; j++)
+                if (strcmp(ids[j], ids[i]) < 0) {
+                    char t[128];
+                    snprintf(t, sizeof(t), "%s", ids[i]);
+                    snprintf(ids[i], sizeof(ids[i]), "%s", ids[j]);
+                    snprintf(ids[j], sizeof(ids[j]), "%s", t);
+                }
         for (int i = 0; i < nu && n < max; i++) {
             char prof[KTB_PATH_BUF], dname[128] = "";
             snprintf(prof, sizeof(prof), "%s/%s/profile.txt", users_dir, ids[i]);
@@ -2520,7 +2888,55 @@ static int livedesk_build_user_menu(const char *house_root, HQMenuItem *menu, in
  * @.apps/). Live, in-process directory scan every time this cell
  * opens - same real, established shape as livedesk_build_pals_menu()/
  * livedesk_build_desk_menu() above, not a new pattern. */
+static void toys_scan_add(HQMenuItem *menu, int max, int *n,
+                         const char *root, const char *d_name) {
+    if (*n >= max - 1) return;
+    if (!d_name || d_name[0] == '.' || d_name[0] == '\0') return;
+    char toy_pdl[KTB_PATH_BUF];
+    snprintf(toy_pdl, sizeof(toy_pdl), "%s/%s/toy.pdl", root, d_name);
+    char title[128] = "", launch[256] = "";
+    read_key_value(toy_pdl, "title", title, sizeof(title));
+    read_key_value(toy_pdl, "launch", launch, sizeof(launch));
+    if (!title[0]) snprintf(title, sizeof(title), "%s", d_name);
+    if (!launch[0]) snprintf(launch, sizeof(launch), "button.sh");
+    snprintf(menu[*n].label, sizeof(menu[*n].label), "%s", title);
+    snprintf(menu[*n].command, sizeof(menu[*n].command), "livedesk:open-toy:%s/%s/%s", root, d_name, launch);
+    (*n)++;
+}
+
 static void toys_scan_one_root(const char *root, HQMenuItem *menu, int max, int *n) {
+#ifdef _WIN32
+    /* MinGW opendir/readdir/_access are ANSI. House path has emoji, so
+     * readdir(".") returns 0 entries and toys stays Cancel-only.
+     * Same FindFirstFileW pattern as livedesk_build_user_menu(). */
+    {
+        char root_n[KTB_PATH_BUF];
+        wchar_t wroot[KTB_PATH_BUF], wpat[KTB_PATH_BUF];
+        snprintf(root_n, sizeof(root_n), "%s", (root && root[0]) ? root : ".");
+        win_star_alias(root_n);
+        for (char *p = root_n; *p; p++) if (*p == '/') *p = '\\';
+        if (!MultiByteToWideChar(CP_UTF8, 0, root_n, -1, wroot, KTB_PATH_BUF))
+            MultiByteToWideChar(CP_ACP, 0, root_n, -1, wroot, KTB_PATH_BUF);
+        _snwprintf(wpat, KTB_PATH_BUF, L"%s\\*", wroot);
+        WIN32_FIND_DATAW fd;
+        HANDLE h = FindFirstFileW(wpat, &fd);
+        if (h != INVALID_HANDLE_VALUE) {
+            do {
+                if (*n >= max - 1) break;
+                if (fd.cFileName[0] == L'.') continue;
+                if (!(fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) continue;
+                wchar_t wtoy[KTB_PATH_BUF];
+                _snwprintf(wtoy, KTB_PATH_BUF, L"%s\\%s\\toy.pdl", wroot, fd.cFileName);
+                if (GetFileAttributesW(wtoy) == INVALID_FILE_ATTRIBUTES) continue;
+                char nameutf[256];
+                WideCharToMultiByte(CP_UTF8, 0, fd.cFileName, -1, nameutf, (int)sizeof(nameutf), NULL, NULL);
+                toys_scan_add(menu, max, n, root, nameutf);
+            } while (FindNextFileW(h, &fd));
+            FindClose(h);
+            return;
+        }
+    }
+#endif
     DIR *d = opendir(root);
     if (!d) return;
     struct dirent *e;
@@ -2529,14 +2945,7 @@ static void toys_scan_one_root(const char *root, HQMenuItem *menu, int max, int 
         char toy_pdl[KTB_PATH_BUF];
         snprintf(toy_pdl, sizeof(toy_pdl), "%s/%s/toy.pdl", root, e->d_name);
         if (access(toy_pdl, F_OK) != 0) continue;
-        char title[128] = "", launch[256] = "";
-        read_key_value(toy_pdl, "title", title, sizeof(title));
-        read_key_value(toy_pdl, "launch", launch, sizeof(launch));
-        if (!title[0]) snprintf(title, sizeof(title), "%s", e->d_name);
-        if (!launch[0]) snprintf(launch, sizeof(launch), "button.sh");
-        snprintf(menu[*n].label, sizeof(menu[*n].label), "%s", title);
-        snprintf(menu[*n].command, sizeof(menu[*n].command), "livedesk:open-toy:%s/%s/%s", root, e->d_name, launch);
-        (*n)++;
+        toys_scan_add(menu, max, n, root, e->d_name);
     }
     closedir(d);
 }
@@ -2642,6 +3051,9 @@ static int find_app_dir(const char *house_root, const char *app_name, char *out,
     for (int i = 0; roots[i]; i++) {
         char parent[KTB_PATH_BUF];
         snprintf(parent, sizeof(parent), "%s/%s", house_root, roots[i]);
+#ifdef _WIN32
+        win_star_alias(parent);
+#endif
         DIR *d = opendir(parent);
         if (!d) continue;
         struct dirent *ent;
@@ -2690,21 +3102,29 @@ void ktb_hq_activate(KtbState *s, int row) {
              * logged in. Fixed the same way run_capture() in user-pal's
              * own userpal_menu_input.c already does it: `cd` into
              * login_root first so "." resolves there, no env var needed. */
+#ifndef _WIN32
             char sh[KTB_PATH_BUF * 2];
-            snprintf(sh, sizeof(sh), "setsid nohup sh -c 'cd \"%s\" && \"./ops/+x/userpal_login.+x\" \"%s\"' >/dev/null 2>&1 &",
+            snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c 'cd \"%s\" && \"./ops/+x/userpal_login.+x\" \"%s\"' >/dev/null 2>&1 &",
                      login_root, m->command + 12);
             int rc = system(sh);
             (void)rc;
+#else
+            (void)login_root;
+#endif
         }
         ktb_hq_close(s);
         return;
     } else if (strcmp(m->command, "user:logout") == 0) {
         char login_root[KTB_PATH_BUF];
         if (livedesk_login_root(s->house_root, login_root, sizeof(login_root))) {
+#ifndef _WIN32
             char sh[KTB_PATH_BUF * 2];
-            snprintf(sh, sizeof(sh), "setsid nohup sh -c 'cd \"%s\" && \"./ops/+x/userpal_logout.+x\"' >/dev/null 2>&1 &", login_root);
+            snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c 'cd \"%s\" && \"./ops/+x/userpal_logout.+x\"' >/dev/null 2>&1 &", login_root);
             int rc = system(sh);
             (void)rc;
+#else
+            (void)login_root;
+#endif
         }
         ktb_hq_close(s);
         return;
@@ -2783,17 +3203,49 @@ void ktb_hq_activate(KtbState *s, int row) {
     } else if (strcmp(m->command, "livedesk:db-ez-common-events-back") == 0) {
         ktb_hq_open(s, 101);
     } else if (strncmp(m->command, "livedesk:open-toy:", 18) == 0) {
-        /* REAL, NEW 2026-08-16, khtpm-merge-how2.md §5c.2 - launches a
-         * real toy project's own button.sh "run" action, same real
-         * setsid-nohup-detached shape every other real launch in this
-         * file uses. m->command + 18 is the full, real, absolute
-         * button.sh path already resolved by livedesk_build_toys_menu(). */
+        /* REAL, NEW 2026-08-16, khtpm-merge-how2.md 5c.2 - launches a
+         * real toy project's own button.sh "run" action. m->command + 18
+         * is the full path already resolved by livedesk_build_toys_menu().
+         * Win: button.sh -> button.ps1 via CreateProcessW (no bash). */
+#ifdef _WIN32
+        {
+            char launch[KTB_PATH_BUF];
+            snprintf(launch, sizeof(launch), "%s", m->command + 18);
+            win_star_alias(launch);
+            size_t ln = strlen(launch);
+            if (ln > 3 && strcmp(launch + ln - 3, ".sh") == 0)
+                memcpy(launch + ln - 3, ".ps1", 5);
+            for (char *p = launch; *p; p++) if (*p == '/') *p = '\\';
+            wchar_t wfile[KTB_PATH_BUF], wdir[KTB_PATH_BUF], wcmd[KTB_PATH_BUF * 2];
+            if (!MultiByteToWideChar(CP_UTF8, 0, launch, -1, wfile, KTB_PATH_BUF))
+                MultiByteToWideChar(CP_ACP, 0, launch, -1, wfile, KTB_PATH_BUF);
+            wcsncpy(wdir, wfile, KTB_PATH_BUF - 1);
+            wdir[KTB_PATH_BUF - 1] = 0;
+            wchar_t *slash = wcsrchr(wdir, L'\\');
+            if (slash) *slash = 0;
+            _snwprintf(wcmd, (KTB_PATH_BUF * 2) - 1,
+                       L"powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"%s\" run", wfile);
+            STARTUPINFOW si; PROCESS_INFORMATION pi;
+            ZeroMemory(&si, sizeof(si)); si.cb = sizeof(si);
+            ZeroMemory(&pi, sizeof(pi));
+            DWORD flags = CREATE_NEW_PROCESS_GROUP | CREATE_BREAKAWAY_FROM_JOB | CREATE_NO_WINDOW;
+            BOOL ok = CreateProcessW(NULL, wcmd, NULL, NULL, FALSE, flags, NULL,
+                                     wdir[0] ? wdir : NULL, &si, &pi);
+            if (!ok) {
+                flags = CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW;
+                ok = CreateProcessW(NULL, wcmd, NULL, NULL, FALSE, flags, NULL,
+                                     wdir[0] ? wdir : NULL, &si, &pi);
+            }
+            if (ok) { CloseHandle(pi.hThread); CloseHandle(pi.hProcess); }
+        }
+#else
         char sh[KTB_PATH_BUF * 2];
-        snprintf(sh, sizeof(sh), "setsid nohup sh -c 'sh \"%s\" run' >/dev/null 2>&1 &", m->command + 18);
+        snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c 'sh \"%s\" run' >/dev/null 2>&1 &", m->command + 18);
         int rc = system(sh);
         (void)rc;
+#endif
         ktb_hq_close(s);
-    } else if (strncmp(m->command, "livedesk:open-common-event:", 28) == 0) {
+        } else if (strncmp(m->command, "livedesk:open-common-event:", 28) == 0) {
         /* GLOBAL (house_root-wide) common event, not session-scoped - see
          * livedesk_build_db_common_events_menu()'s own header comment. */
         char ce_path[KTB_PATH_BUF];
@@ -2802,7 +3254,7 @@ void ktb_hq_activate(KtbState *s, int row) {
         char muchi_pet_dir[KTB_PATH_BUF];
         find_app_dir(s->house_root, "muchi-pet", muchi_pet_dir, sizeof(muchi_pet_dir));
         char sh[KTB_PATH_BUF * 3];
-        snprintf(sh, sizeof(sh), "setsid nohup sh -c 'sh \"%s/ops/open_event_ez.sh\" \"%s\" \"%s\"' >/dev/null 2>&1 &",
+        snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c 'sh \"%s/ops/open_event_ez.sh\" \"%s\" \"%s\"' >/dev/null 2>&1 &",
                  muchi_pet_dir, ce_path, s->house_root);
         int rc = system(sh);
         (void)rc;
@@ -2822,7 +3274,7 @@ void ktb_hq_activate(KtbState *s, int row) {
         char muchi_pet_dir[KTB_PATH_BUF];
         find_app_dir(s->house_root, "muchi-pet", muchi_pet_dir, sizeof(muchi_pet_dir));
         char sh[KTB_PATH_BUF * 3];
-        snprintf(sh, sizeof(sh), "setsid nohup sh -c 'sh \"%s/ops/open_event_ez.sh\" \"%s\" \"%s\"' >/dev/null 2>&1 &",
+        snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c 'sh \"%s/ops/open_event_ez.sh\" \"%s\" \"%s\"' >/dev/null 2>&1 &",
                  muchi_pet_dir, ce_path, s->house_root);
         int rc = system(sh);
         (void)rc;
@@ -2845,11 +3297,20 @@ void ktb_hq_activate(KtbState *s, int row) {
          * catch-all, see ktb_hq_activate()'s own closing branches). */
         char muchi_pet_dir[KTB_PATH_BUF];
         find_app_dir(s->house_root, "muchi-pet", muchi_pet_dir, sizeof(muchi_pet_dir));
+#ifdef _WIN32
+        char bin[KTB_PATH_BUF], chtpm[KTB_PATH_BUF];
+        snprintf(bin, sizeof(bin), "%s/*.monads/*.livedesk-taskbar/ops/+x/khtpm_hq_render.+x", s->house_root);
+        snprintf(chtpm, sizeof(chtpm), "%s/&.hq-apps/db-hq/dashboard.chtpm", s->house_root);
+        const char *aa[2] = { s->house_root, chtpm };
+        win_spawn_n(bin, aa, 2);
+        (void)muchi_pet_dir;
+#else
         char sh[KTB_PATH_BUF * 3];
-        snprintf(sh, sizeof(sh), "setsid nohup sh -c 'sh \"%s/ops/open_db_hq.sh\" \"%s\"' >/dev/null 2>&1 &",
+        snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c 'sh \"%s/ops/open_db_hq.sh\" \"%s\"' >/dev/null 2>&1 &",
                  muchi_pet_dir, s->house_root);
         int rc = system(sh);
         (void)rc;
+#endif
         ktb_hq_close(s);
     } else if (strcmp(m->command, "livedesk:open-open-hai") == 0) {
         /* ai cell (14) - real, wired 2026-08-12. Own separate X11
@@ -2857,20 +3318,35 @@ void ktb_hq_activate(KtbState *s, int row) {
          * launch pattern as db-hq/event-ez above, via open-hai's own
          * button.sh (mirrors open_db_hq.sh's own build-if-missing +
          * launch shape). */
+#ifdef _WIN32
+        char bin[KTB_PATH_BUF];
+        snprintf(bin, sizeof(bin), "%s/&.widgits/open-hai/ops/+x/khtpm_open_hai_render.+x", s->house_root);
+        const char *ha = s->house_root;
+        win_spawn_n(bin, &ha, 1);
+#else
         char sh[KTB_PATH_BUF * 3];
-        snprintf(sh, sizeof(sh), "setsid nohup sh -c 'sh \"%s/&.widgits/open-hai/button.sh\" \"%s\"' >/dev/null 2>&1 &",
+        snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c 'sh \"%s/&.widgits/open-hai/button.sh\" \"%s\"' >/dev/null 2>&1 &",
                  s->house_root, s->house_root);
         int rc = system(sh);
         (void)rc;
+#endif
         ktb_hq_close(s);
     } else if (strcmp(m->command, "livedesk:open-chat-hai") == 0) {
         /* chat-hai cell (14) - standalone X11 window for multi-model ambient chat.
          * Launched via button.sh (mirrors open-hai pattern exactly). */
+#ifdef _WIN32
+        char bin[KTB_PATH_BUF], chtpm[KTB_PATH_BUF];
+        snprintf(bin, sizeof(bin), "%s/*.monads/*.livedesk-taskbar/ops/+x/khtpm_entity_menu_render.+x", s->house_root);
+        snprintf(chtpm, sizeof(chtpm), "%s/&.hq-apps/chat-hai/chat-hai.chtpm", s->house_root);
+        const char *aa[2] = { s->house_root, chtpm };
+        win_spawn_n(bin, aa, 2);
+#else
         char sh[KTB_PATH_BUF * 3];
-        snprintf(sh, sizeof(sh), "setsid nohup sh -c 'sh \"%s/&.hq-apps/chat-hai/button.sh\" \"%s\"' >/dev/null 2>&1 &",
+        snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c 'sh \"%s/&.hq-apps/chat-hai/button.sh\" \"%s\"' >/dev/null 2>&1 &",
                  s->house_root, s->house_root);
         int rc = system(sh);
         (void)rc;
+#endif
         ktb_hq_close(s);
     } else if (strncmp(m->command, "livedesk:clock:", 15) == 0) {
         /* Cell 15 clock menu dispatch (15.clock-design.md §5.3). All
@@ -2911,10 +3387,10 @@ void ktb_hq_activate(KtbState *s, int row) {
                    strncmp(rest, "delete:", 7) == 0) {
             char sh[KTB_PATH_BUF * 3];
             if (strncmp(rest, "gamedate:", 9) == 0) {
-                snprintf(sh, sizeof(sh), "setsid nohup sh -c '\"%s\" \"%s\" gamedate %s' >/dev/null 2>&1 &",
+                snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c '\"%s\" \"%s\" gamedate %s' >/dev/null 2>&1 &",
                          lcbin, s->house_root, rest + 9);
             } else if (strncmp(rest, "endturn:", 8) == 0) {
-                snprintf(sh, sizeof(sh), "setsid nohup sh -c '\"%s\" \"%s\" endturn %s' >/dev/null 2>&1 &",
+                snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c '\"%s\" \"%s\" endturn %s' >/dev/null 2>&1 &",
                          lcbin, s->house_root, rest + 8);
             } else if (strncmp(rest, "ticker:", 7) == 0) {
                 /* toggle: read current running/ticker state -> on|off.
@@ -2923,20 +3399,20 @@ void ktb_hq_activate(KtbState *s, int row) {
                  * the ticker state = <id>.pdl rate != off (see daemon). */
                 char id[64]; snprintf(id, sizeof(id), "%s", rest + 7);
                 char *colon = strchr(id, ':'); if (colon) *colon = '\0';
-                snprintf(sh, sizeof(sh), "setsid nohup sh -c '\"%s\" \"%s\" ticker %s on' >/dev/null 2>&1 &",
+                snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c '\"%s\" \"%s\" ticker %s on' >/dev/null 2>&1 &",
                          lcbin, s->house_root, id);
             } else if (strncmp(rest, "rate:", 5) == 0) {
                 /* row is a fixed picker for now: cycle min->hour->day->off
                  * is P3; default to "min" (per design §4.1 default). */
                 char id[64]; snprintf(id, sizeof(id), "%s", rest + 5);
                 char *colon = strchr(id, ':'); if (colon) *colon = '\0';
-                snprintf(sh, sizeof(sh), "setsid nohup sh -c '\"%s\" \"%s\" rate %s min' >/dev/null 2>&1 &",
+                snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c '\"%s\" \"%s\" rate %s min' >/dev/null 2>&1 &",
                          lcbin, s->house_root, id);
             } else if (strncmp(rest, "pause:", 6) == 0) {
-                snprintf(sh, sizeof(sh), "setsid nohup sh -c '\"%s\" \"%s\" ticker %s off' >/dev/null 2>&1 &",
+                snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c '\"%s\" \"%s\" ticker %s off' >/dev/null 2>&1 &",
                          lcbin, s->house_root, rest + 6);
             } else if (strncmp(rest, "delete:", 7) == 0) {
-                snprintf(sh, sizeof(sh), "setsid nohup sh -c '\"%s\" \"%s\" del %s' >/dev/null 2>&1 &",
+                snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c '\"%s\" \"%s\" del %s' >/dev/null 2>&1 &",
                          lcbin, s->house_root, rest + 7);
             }
             int rc = system(sh);
@@ -2948,7 +3424,7 @@ void ktb_hq_activate(KtbState *s, int row) {
             char muchi_pet_dir[KTB_PATH_BUF];
             find_app_dir(s->house_root, "muchi-pet", muchi_pet_dir, sizeof(muchi_pet_dir));
             char sh[KTB_PATH_BUF * 3];
-            snprintf(sh, sizeof(sh), "setsid nohup sh -c 'sh \"%s/ops/open_event_ez.sh\" \"%s/#.desktop/clocks/%s\" \"%s\"' >/dev/null 2>&1 &",
+            snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c 'sh \"%s/ops/open_event_ez.sh\" \"%s/#.desktop/clocks/%s\" \"%s\"' >/dev/null 2>&1 &",
                      muchi_pet_dir, s->house_root, rest + 9, s->house_root);
             int rc = system(sh);
             (void)rc;
@@ -2969,7 +3445,7 @@ void ktb_hq_activate(KtbState *s, int row) {
         char launcher[KTB_PATH_BUF];
         if (ktb_hq_launcher_path(s->house_root, "settings", launcher, sizeof(launcher))) {
             char sh[KTB_PATH_BUF * 3];
-            snprintf(sh, sizeof(sh), "setsid nohup sh -c 'bash \"%s\" \"%s\"' >/dev/null 2>&1 &",
+            snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c 'bash \"%s\" \"%s\"' >/dev/null 2>&1 &",
                      launcher, s->house_root);
             int rc = system(sh);
             (void)rc;
@@ -2999,7 +3475,7 @@ void ktb_hq_activate(KtbState *s, int row) {
         char launcher[KTB_PATH_BUF];
         if (ktb_hq_launcher_path(s->house_root, "stats", launcher, sizeof(launcher))) {
             char sh[KTB_PATH_BUF * 3];
-            snprintf(sh, sizeof(sh), "setsid nohup sh -c 'bash \"%s\" \"%s\"' >/dev/null 2>&1 &",
+            snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c 'bash \"%s\" \"%s\"' >/dev/null 2>&1 &",
                      launcher, s->house_root);
             int rc = system(sh);
             (void)rc;
@@ -3035,7 +3511,7 @@ void ktb_hq_activate(KtbState *s, int row) {
          * `livedesk_open_sessions_popup()` branch: replaces the current
          * (file) row list in place with the session picker, same
          * "keep_open" shape run_popup_row() uses for load->sessions. */
-        ktb_hq_open(s, 13);
+        ktb_hq_open(s, 100); /* session picker (13 is an inert cell and would close the popup) */
     } else if (strcmp(m->command, "quit") == 0) {
         /* Real HQ menu's "X.quit" row (which==1, see ktb_hq_open()) -
          * mirrors tp_taskbar.c's agent_relay_dispatch() "quit" branch. Can't
@@ -3047,7 +3523,7 @@ void ktb_hq_activate(KtbState *s, int row) {
     } else if (m->command[0]) {
         /* Any other non-empty, non-livedesk-prefixed, non-"quit" command
          * (e.g. the real HQ menu's "$.restart" row) is a real shell command
-         * - mirrors tp_taskbar.c's agent_relay_dispatch() "setsid nohup ...
+         * - mirrors tp_taskbar.c's agent_relay_dispatch() "setsid nohup ..."
          * &" fallback for any HQ/strip menu row that isn't a reserved
          * command. This file already shells out directly elsewhere
          * (livedesk_copy_full/livedesk_spawn_desk etc, see this file's own
@@ -3070,10 +3546,45 @@ void ktb_hq_activate(KtbState *s, int row) {
         } else {
             snprintf(cmd, sizeof(cmd), "%s", portable);
         }
+#ifdef _WIN32
+        /* No bash. dir -> Explorer. cli -> open_cli.ps1 (visible console). */
+        if (strstr(portable, "xdg-open") || strstr(m->command, "xdg-open")) {
+            char abs[KTB_PATH_BUF];
+            snprintf(abs, sizeof(abs), "%s", s->house_root[0] ? s->house_root : ".");
+            win_star_alias(abs);
+            for (char *p = abs; *p; p++) if (*p == '/') *p = '\\';
+            ShellExecuteA(NULL, "open", abs, NULL, NULL, SW_SHOWNORMAL);
+        } else if (strstr(portable, "open_cli") || strstr(m->command, "open_cli")) {
+            char cli[KTB_PATH_BUF];
+            snprintf(cli, sizeof(cli), "%s/*.monads/*.livedesk-taskbar/ops/open_cli.ps1", s->house_root);
+            win_star_alias(cli);
+            for (char *p = cli; *p; p++) if (*p == '/') *p = '\\';
+            wchar_t wfile[KTB_PATH_BUF], wh[KTB_PATH_BUF], wcmd[KTB_PATH_BUF * 2];
+            if (!MultiByteToWideChar(CP_UTF8, 0, cli, -1, wfile, KTB_PATH_BUF))
+                MultiByteToWideChar(CP_ACP, 0, cli, -1, wfile, KTB_PATH_BUF);
+            if (!MultiByteToWideChar(CP_UTF8, 0, s->house_root, -1, wh, KTB_PATH_BUF))
+                MultiByteToWideChar(CP_ACP, 0, s->house_root, -1, wh, KTB_PATH_BUF);
+            _snwprintf(wcmd, (KTB_PATH_BUF * 2) - 1,
+                       L"powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"%s\" \"%s\"",
+                       wfile, wh);
+            STARTUPINFOW si; PROCESS_INFORMATION pi;
+            ZeroMemory(&si, sizeof(si)); si.cb = sizeof(si);
+            ZeroMemory(&pi, sizeof(pi));
+            DWORD flags = CREATE_NEW_PROCESS_GROUP | CREATE_BREAKAWAY_FROM_JOB | CREATE_NEW_CONSOLE;
+            BOOL ok = CreateProcessW(NULL, wcmd, NULL, NULL, FALSE, flags, NULL, wh[0] ? wh : NULL, &si, &pi);
+            if (!ok) {
+                flags = CREATE_NEW_CONSOLE;
+                ok = CreateProcessW(NULL, wcmd, NULL, NULL, FALSE, flags, NULL, wh[0] ? wh : NULL, &si, &pi);
+            }
+            if (ok) { CloseHandle(pi.hThread); CloseHandle(pi.hProcess); }
+        }
+        (void)cmd;
+#else
         char sh[KTB_PATH_BUF * 3];
-        snprintf(sh, sizeof(sh), "setsid nohup sh -c '%s' >/dev/null 2>&1 &", cmd);
+        snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c '%s' >/dev/null 2>&1 &", cmd);
         int rc = system(sh);
         (void)rc;
+#endif
         ktb_hq_close(s);
     } else {
         ktb_hq_close(s); /* "cancel" row or empty command */
@@ -3206,7 +3717,7 @@ void ktb_cliio_submit(KtbState *s) {
              * test log for the full trace. */
             char sh[KTB_PATH_BUF * 2];
             snprintf(sh, sizeof(sh),
-                     "setsid nohup sh -c 'cd \"%s\" && \"./ops/+x/userpal_create_account.+x\" \"%s\" \"%s\" && \"./ops/+x/userpal_login.+x\" \"%s\"' >/dev/null 2>&1 &",
+                     KTB_SETSID "nohup sh -c 'cd \"%s\" && \"./ops/+x/userpal_create_account.+x\" \"%s\" \"%s\" && \"./ops/+x/userpal_login.+x\" \"%s\"' >/dev/null 2>&1 &",
                      login_root, s->cliio_id, s->cliio_buffer, s->cliio_id);
             int rc = system(sh);
             (void)rc;
@@ -3242,7 +3753,7 @@ void ktb_strip_user_activate(KtbState *s) {
     char portable[KTB_PATH_BUF];
     ktb_action_portable(s->strip_user_cmd, portable, sizeof(portable));
     char sh[KTB_PATH_BUF * 2];
-    snprintf(sh, sizeof(sh), "setsid nohup sh -c '%s' >/dev/null 2>&1 &", portable);
+    snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c '%s' >/dev/null 2>&1 &", portable);
     int rc = system(sh);
     (void)rc;
 }

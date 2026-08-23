@@ -63,3 +63,9 @@
 [2026-08-12 14:20:43] ASSIGN INDEX=3 ENTITY=m9_missingno PATH=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/xyzfs/users/0a9558a7-7c74-4358-833c-2d5b21edc421/home/livedesk/pals/m9_missingno
 [2026-08-14 22:23:57] ASSIGN INDEX=4 ENTITY=self PATH=44.xyz❤️‍🔥️00.17/xyzfs/users/0a9558a7-7c74-4358-833c-2d5b21edc421/home/livedesk/pals/self
 [2026-08-16 05:17:41] ASSIGN INDEX=5 ENTITY=m9_missingno PATH=xyzfs/users/0a9558a7-7c74-4358-833c-2d5b21edc421/home/livedesk/pals/m9_missingno
+[2026-08-21 22:36:30] ASSIGN INDEX=6 ENTITY=self PATH=xyzfs\users\0a9558a7-7c74-4358-833c-2d5b21edc421\home\livedesk\pals\self
+[2026-08-21 22:36:30] ASSIGN INDEX=7 ENTITY=m8_redhorned PATH=xyzfs\users\0a9558a7-7c74-4358-833c-2d5b21edc421\home\livedesk\pals\m8_redhorned
+[2026-08-21 22:36:30] ASSIGN INDEX=8 ENTITY=book-stack PATH=xyzfs\users\0a9558a7-7c74-4358-833c-2d5b21edc421\home\livedesk\pals\book-stack
+[2026-08-21 22:36:30] ASSIGN INDEX=8 ENTITY=m1_ninjadragon PATH=xyzfs\users\0a9558a7-7c74-4358-833c-2d5b21edc421\home\livedesk\pals\m1_ninjadragon
+[2026-08-21 22:36:30] ASSIGN INDEX=9 ENTITY=asa PATH=xyzfs\users\0a9558a7-7c74-4358-833c-2d5b21edc421\home\livedesk\pals\asa
+[2026-08-21 22:36:30] ASSIGN INDEX=10 ENTITY=ava PATH=xyzfs\users\0a9558a7-7c74-4358-833c-2d5b21edc421\home\livedesk\pals\ava

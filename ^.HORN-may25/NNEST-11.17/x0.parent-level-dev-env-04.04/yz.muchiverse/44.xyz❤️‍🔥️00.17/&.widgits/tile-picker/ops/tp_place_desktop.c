@@ -11,6 +11,7 @@
 #include <libgen.h>
 #include <unistd.h>
 #include <limits.h>
+#include "self_exe.h" /* macOS leg: portable /proc/self/exe replacement */
 
 #define PATH_BUF 4352
 #define MAX_LINE 2048
@@ -165,7 +166,7 @@ int main(int argc, char **argv) {
          * taskbar runtime +x/ (same folder as the entity binary). Resolve
          * the house root via marker-walk, same as the spawn step below. */
         char self_path[PATH_BUF];
-        ssize_t len = readlink("/proc/self/exe", self_path, sizeof(self_path) - 1);
+        ssize_t len = self_exe_readlink(self_path, sizeof(self_path));
         if (len > 0) {
             self_path[len] = '\0';
             char step[PATH_BUF];
@@ -231,7 +232,7 @@ int main(int argc, char **argv) {
          * install dir) until a dir holding BOTH #.desktop/ and &.widgits/
          * is found - same marker-walk khtpm_vars.sh uses. */
         char self_path[PATH_BUF];
-        ssize_t len = readlink("/proc/self/exe", self_path, sizeof(self_path) - 1);
+        ssize_t len = self_exe_readlink(self_path, sizeof(self_path));
         if (len > 0) {
             self_path[len] = '\0';
             char step[PATH_BUF];

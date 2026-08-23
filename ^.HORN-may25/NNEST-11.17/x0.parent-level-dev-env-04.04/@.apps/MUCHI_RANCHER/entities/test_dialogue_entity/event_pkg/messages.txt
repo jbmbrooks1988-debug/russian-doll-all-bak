@@ -1,2 +1,0 @@
-[1786527118] SHOW_TEXT speaker=NPC text=Hello world
-[1786527150] SHOW_CHOICES default=0 choices=Alice\nBob\nCharlie

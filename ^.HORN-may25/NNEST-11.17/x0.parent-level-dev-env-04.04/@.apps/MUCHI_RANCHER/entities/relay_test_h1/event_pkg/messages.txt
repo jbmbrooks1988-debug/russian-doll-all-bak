@@ -1,2 +1,0 @@
-[1786528005] SHOW_TEXT speaker=TestNPC text=Test message
-[1786528235] SHOW_CHOICES default=0 choices=Fight\nFly\nTalk

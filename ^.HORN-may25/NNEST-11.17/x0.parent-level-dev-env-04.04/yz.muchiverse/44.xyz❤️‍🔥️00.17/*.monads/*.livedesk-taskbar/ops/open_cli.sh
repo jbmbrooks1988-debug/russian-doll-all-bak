@@ -31,4 +31,17 @@
 set -u
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 . "$SCRIPT_DIR/khtpm_vars.sh"
+# macOS leg (2026-08-22): no gnome-terminal here. Same renderer-&-
+# keyboard-fg split, hosted by Terminal.app via a throwaway .command
+# wrapper (Terminal executes .command files directly; a temp copy keeps
+# star-names and quoting out of the osascript/Tell layer entirely).
+if [ "$(uname -s)" = "Darwin" ]; then
+    TMP_SH="${TMPDIR:-/tmp}/khtpm_cli_$$.command"
+    printf '%s\n' '#!/bin/sh' \
+        "\"$SCRIPT_DIR/+x/khtpm_strip_render_ascii.+x\" \"$KHTPM_HOUSE\" &" \
+        "\"$SCRIPT_DIR/+x/khtpm_strip_keyboard_ascii.+x\" \"$KHTPM_HOUSE\"" > "$TMP_SH"
+    chmod +x "$TMP_SH"
+    open -a Terminal "$TMP_SH"
+    exit 0
+fi
 exec gnome-terminal -- sh -c "\"$SCRIPT_DIR/+x/khtpm_strip_render_ascii.+x\" \"$KHTPM_HOUSE\" & \"$SCRIPT_DIR/+x/khtpm_strip_keyboard_ascii.+x\" \"$KHTPM_HOUSE\""

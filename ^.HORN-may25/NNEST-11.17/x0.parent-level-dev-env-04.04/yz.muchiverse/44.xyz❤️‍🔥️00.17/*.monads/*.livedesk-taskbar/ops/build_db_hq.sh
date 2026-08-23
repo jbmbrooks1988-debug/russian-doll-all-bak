@@ -9,6 +9,15 @@ set -e
 cd "$(dirname "$0")"
 mkdir -p +x
 CC=${CC:-gcc}
+# macOS leg: XQuartz's Xft.pc lives under /opt/X11/lib/pkgconfig, invisible
+# to brew's pkg-config by default; guarded — Linux behavior unchanged.
+if [ "$(uname -s)" = "Darwin" ]; then
+    PKG_CONFIG_PATH="/opt/X11/lib/pkgconfig:/usr/local/lib/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"
+    export PKG_CONFIG_PATH
+    X11_FLAGS="-I/opt/X11/include -L/opt/X11/lib"
+else
+    X11_FLAGS=""
+fi
 CFLAGS="-std=c11 -Wall -O2 $(pkg-config --cflags xft)"
 LIBS="-lX11 $(pkg-config --libs xft) -lm"
 
@@ -22,7 +31,7 @@ mkdir -p lib
 cp "$SHARED/stb_image_write.h" lib/stb_image_write.h
 
 echo "-- db-hq renderer -> +x/khtpm_hq_render.+x"
-$CC $CFLAGS -o +x/khtpm_hq_render.+x \
+$CC $CFLAGS $X11_FLAGS -o +x/khtpm_hq_render.+x \
   khtpm_hq_render.c khtpm_css_parser.c khtpm_taskbar_manager.c $LIBS
 
 echo "OK +x/khtpm_hq_render.+x"

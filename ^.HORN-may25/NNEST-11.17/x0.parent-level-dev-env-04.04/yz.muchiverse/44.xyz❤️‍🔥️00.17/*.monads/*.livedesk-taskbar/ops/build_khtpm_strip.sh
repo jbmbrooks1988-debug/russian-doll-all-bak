@@ -17,6 +17,26 @@ mkdir -p +x
 CC=${CC:-gcc}
 CFLAGS="-std=c11 -Wall -O2"
 
+# macOS leg (2026-08-22): XQuartz owns X11/Xft under /opt/X11 — brew's
+# pkg-config doesn't search there by default, and clang won't find
+# Xlib headers/libs without explicit -I/-L. Prebuilt emoji-helper
+# binaries are Linux ELF, so on Darwin they build from wsr-pal source
+# instead of being copied. Guarded: on Linux every added var stays
+# empty and behavior is unchanged.
+OS_TYPE="$(uname -s)"
+X11_FLAGS=""
+FT_CFLAGS=""
+FT_LIBS=""
+if [ "$OS_TYPE" = "Darwin" ]; then
+    PKG_CONFIG_PATH="/opt/X11/lib/pkgconfig:/usr/local/lib/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"
+    export PKG_CONFIG_PATH
+    X11_FLAGS="-I/opt/X11/include -L/opt/X11/lib"
+    if command -v pkg-config >/dev/null 2>&1; then
+        FT_CFLAGS=$(pkg-config --cflags freetype2)
+        FT_LIBS=$(pkg-config --libs freetype2)
+    fi
+fi
+
 # Sync shared files from the single canonical source (2026-08-12
 # dedup pass - see &.widgits/_shared-lib/README.md for why this is a
 # build-time copy, not a runtime shared include path).
@@ -34,7 +54,7 @@ echo "-- khtpm strip parser (Xlib + layout engine + hit-testing + manager fork/e
 # text rendering this session (see that file's own header comment on
 # its Xft include), replacing plain XDrawString which could only
 # render Latin-1 correctly.
-$CC $CFLAGS $(pkg-config --cflags xft) -o +x/khtpm_strip_parser.+x \
+$CC $CFLAGS $X11_FLAGS $(pkg-config --cflags xft) -o +x/khtpm_strip_parser.+x \
   khtpm_strip_parser.c khtpm_strip_layout.c khtpm_taskbar_manager.c \
   -lX11 $(pkg-config --libs xft) -lm
 
@@ -43,7 +63,7 @@ $CC $CFLAGS $(pkg-config --cflags xft) -o +x/khtpm_strip_parser.+x \
 # entity window is a livedesk-taskbar concern, not a tile-picker one).
 # Built here now so the whole runtime is one folder + one build script.
 echo "-- entity renderer tp_desktop_window_rgb.c -> +x/tp_desktop_window_rgb.+x"
-$CC $CFLAGS -o +x/tp_desktop_window_rgb.+x tp_desktop_window_rgb.c -lX11 -lXext
+$CC $CFLAGS $X11_FLAGS -o +x/tp_desktop_window_rgb.+x tp_desktop_window_rgb.c -lX11 -lXext
 
 echo "-- emoji->sprite helper tp_asset_to_sprite.c -> +x/tp_asset_to_sprite.+x"
 $CC $CFLAGS -o +x/tp_asset_to_sprite.+x tp_asset_to_sprite.c -lm
@@ -56,7 +76,19 @@ echo "-- emoji atlas helpers emoji_gen_atlas/emoji_xtract (copied from wsr-pal)"
 WSR="$(cd "$(dirname "$0")/../../../014.wsr-pal💸️📌️+2" 2>/dev/null && pwd)"
 for t in emoji_gen_atlas emoji_xtract; do
     if [ ! -x "+x/$t.+x" ]; then
-        if [ -n "$WSR" ] && [ -x "$WSR/ops/+x/$t.+x" ]; then
+        if [ "$OS_TYPE" = "Darwin" ]; then
+            # macOS: prebuilt copies are Linux ELF — compile from source.
+            # emoji_gen_atlas needs freetype; emoji_xtract doesn't.
+            if [ -n "$WSR" ] && [ -f "$WSR/ops/$t.c" ]; then
+                if $CC $CFLAGS -I"$WSR/ops" $FT_CFLAGS -o "+x/$t.+x" "$WSR/ops/$t.c" $FT_LIBS -lm 2>/dev/null; then
+                    echo "    $t.+x built from wsr-pal source"
+                else
+                    echo "WARN: $t.+x failed to build from source"
+                fi
+            else
+                echo "WARN: +x/$t.+x missing (no wsr-pal source to build)"
+            fi
+        elif [ -n "$WSR" ] && [ -x "$WSR/ops/+x/$t.+x" ]; then
             cp "$WSR/ops/+x/$t.+x" "+x/$t.+x"
             chmod +x "+x/$t.+x"
             echo "    $t.+x copied from wsr-pal"
@@ -67,7 +99,7 @@ for t in emoji_gen_atlas emoji_xtract; do
 done
 
 echo "-- window-position/range-grid helper tp_range_grid.c -> +x/tp_range_grid.+x"
-$CC $CFLAGS -o +x/tp_range_grid.+x tp_range_grid.c -lX11 -lXext
+$CC $CFLAGS $X11_FLAGS -o +x/tp_range_grid.+x tp_range_grid.c -lX11 -lXext
 
 # 2026-08-18: taskbar's terminal ASCII mirror (HQ menu "cli" row) - two
 # binaries, matching TPMOS's real renderer.c/keyboard_input.c split

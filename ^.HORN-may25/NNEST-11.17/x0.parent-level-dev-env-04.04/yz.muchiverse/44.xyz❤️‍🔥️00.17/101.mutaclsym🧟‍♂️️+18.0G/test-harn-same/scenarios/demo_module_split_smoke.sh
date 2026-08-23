@@ -1,4 +1,10 @@
 #!/bin/bash
+
+# macOS leg (2026-08-23): macOS has no setsid(2) wrapper binary - expand
+# to nothing there, keep real setsid on Linux. Unquoted $SETSID so the
+# empty case vanishes from the command line entirely.
+SETSID="setsid"
+[ "$(uname)" = "Darwin" ] && SETSID=""
 # demo_module_split_smoke.sh - real K3-style smoke test for mutaclsym's
 # own Phase 2 per-screen module split (2026-07-31, #.haiku+/!.xyzos-
 # standards+1.txt §41), the first real harness this project has ever

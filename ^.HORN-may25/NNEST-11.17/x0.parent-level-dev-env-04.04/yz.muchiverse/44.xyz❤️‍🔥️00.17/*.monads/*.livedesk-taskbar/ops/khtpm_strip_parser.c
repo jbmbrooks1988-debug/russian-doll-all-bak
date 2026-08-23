@@ -31,32 +31,71 @@
 #ifndef _WIN32
 #define _DEFAULT_SOURCE /* strtok_r()/kill() under -std=c11 strict mode, matches
                           * khtpm_taskbar_manager.c's own convention for the same issue */
-
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/Xatom.h>
 #include <X11/keysym.h>
-#include <X11/Xft/Xft.h> /* REAL FIX 2026-08-13 (direct live report:
- * "used to show chinese but theres a bug" - the datetime cell showed
- * garbled glyphs, not Chinese text): every draw call in this file used
- * plain XDrawString(), the legacy X11 8-bit/Latin-1 text function -
- * it treats each byte of a multi-byte UTF-8 string (e.g. Chinese
- * "2026年08月13日") as a SEPARATE Latin-1 codepoint, producing garbage,
- * not tofu/missing-glyph boxes. khtpm_hq_render.c (same ops/ dir,
- * db-hq's own renderer) already solves this correctly with
- * XftDrawStringUtf8 - ported that exact pattern here rather than
- * inventing a new one. See font_for_strip()/xft_color_strip() below. */
+#include <X11/Xft/Xft.h> /* REAL FIX 2026-08-13: XftDrawStringUtf8 for UTF-8 */
+#else
+#include "khtpm_strip_x11_win.h"
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
+#include <sys/stat.h>
+#include <time.h>
+#include <signal.h>
+#ifndef _WIN32
 #include <unistd.h>
 #include <signal.h>
-#include <errno.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/select.h>
-#include <sys/stat.h>
-#include <time.h>
+#else
+#include <io.h>
+#include <direct.h>
+#define strtok_r strtok_s
+#define WNOHANG 1
+#ifndef S_ISDIR
+#  define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
+#endif
+#define mkdir(p, m) _mkdir(p)
+#define localtime_r(t, out) (localtime_s((out), (t)) == 0 ? (out) : NULL)
+static int ktb_usleep(unsigned usec) {
+    DWORD ms = usec / 1000;
+    if (ms == 0) ms = 1;
+    Sleep(ms);
+    return 0;
+}
+#define usleep ktb_usleep
+#define getpid() ((int)GetCurrentProcessId())
+static int kill(pid_t p, int sig) {
+    (void)sig;
+    HANDLE h = OpenProcess(PROCESS_TERMINATE, FALSE, (DWORD)p);
+    if (!h) return -1;
+    TerminateProcess(h, 1);
+    CloseHandle(h);
+    return 0;
+}
+static pid_t waitpid(pid_t p, int *st, int fl) {
+    (void)st; (void)fl;
+    HANDLE h = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, (DWORD)p);
+    if (!h) return p;
+    DWORD code = 0;
+    GetExitCodeProcess(h, &code);
+    CloseHandle(h);
+    return (code == STILL_ACTIVE) ? 0 : p;
+}
+static int ktb_truncate(const char *path, long len) {
+    FILE *f = fopen(path, "r+b");
+    if (!f) return -1;
+    int rc = _chsize(_fileno(f), len);
+    fclose(f);
+    return rc;
+}
+#define truncate ktb_truncate
+#endif
 
 #include "khtpm_taskbar_manager.h" /* KTB_* constants only (window sizing, tab/shortcut caps) */
 #include "khtpm_strip_codes.h"
@@ -158,6 +197,22 @@ static void path_join2(char *out, size_t n, const char *root, const char *rel) {
         snprintf(out, n, "%s%s", root, rel);
     else
         snprintf(out, n, "%s/%s", root, rel);
+#ifdef _WIN32
+    {
+        char tmp[SP_PATH_BUF];
+        size_t o = 0;
+        int at = 1;
+        const char *p;
+        for (p = out; *p && o + 1 < sizeof(tmp); p++) {
+            if (at && p[0] == '*' && p[1] == '.') { tmp[o++] = '_'; at = 0; continue; }
+            tmp[o++] = *p;
+            at = (*p == '/' || *p == '\\');
+        }
+        tmp[o] = '\0';
+        memcpy(out, tmp, o + 1);
+        for (char *q = out; *q; q++) if (*q == '/') *q = '\\';
+    }
+#endif
 }
 
 static void read_small_file(const char *rel_path, char *out, size_t outsz) {
@@ -169,6 +224,8 @@ static void read_small_file(const char *rel_path, char *out, size_t outsz) {
     size_t n = fread(out, 1, outsz - 1, f);
     out[n] = '\0';
     fclose(f);
+    while (n > 0 && (out[n - 1] == '\n' || out[n - 1] == '\r' || out[n - 1] == ' ' || out[n - 1] == '\t'))
+        out[--n] = '\0';
 }
 
 static char *trim_field(char *s) {
@@ -250,6 +307,7 @@ static char g_build_uid[64] = "";
  * digits render fine in any font, no sprite needed there; only the
  * clock-face glyph needs the real sprite treatment. */
 static char g_build_uid_sprite_dir[SP_PATH_BUF] = "";
+static Window g_hq_win_handle = 0; /* actual header HWND/XID after clamp */
 
 static const char *sp_get_var(const char *name, void *ctx) {
     SpState *st = (SpState *)ctx;
@@ -311,8 +369,12 @@ static void build_uid_init(char *out, size_t outsz, const char *house_root) {
              house_root, glyph, atlas);
     snprintf(gen_xtract, sizeof(gen_xtract), "'%s/*.monads/*.livedesk-taskbar/ops/+x/emoji_xtract.+x' '%s' 0 64 '%s' >/dev/null 2>&1",
              house_root, atlas, csv);
+#ifndef _WIN32
     if (system(gen_atlas) == 0 && system(gen_xtract) == 0)
         snprintf(g_build_uid_sprite_dir, sizeof(g_build_uid_sprite_dir), "%s", dir);
+#else
+    (void)gen_atlas; (void)gen_xtract;
+#endif
 }
 
 /* ---------------------------------------------------------------------
@@ -330,6 +392,39 @@ static void launch_manager(void) {
      * Live-caught: the manager silently failed to fork (execl() against
      * a binary that no longer existed), so digit/Enter input reached the
      * parser but never got forwarded anywhere. */
+#ifdef _WIN32
+    /* Same relative manager binary as Linux, Win star-alias + .exe suffix. */
+    {
+        wchar_t self[SP_PATH_BUF], cmd[SP_PATH_BUF + 32];
+        DWORD n = GetModuleFileNameW(NULL, self, SP_PATH_BUF);
+        if (n == 0 || n >= SP_PATH_BUF) return;
+        wchar_t *slash = wcsrchr(self, L'\\');
+        if (!slash) return;
+        wcscpy(slash + 1, L"khtpm_taskbar_manager_main.exe");
+        wchar_t housew[SP_PATH_BUF];
+        MultiByteToWideChar(CP_UTF8, 0, g_house_root, -1, housew, SP_PATH_BUF);
+        _snwprintf(cmd, SP_PATH_BUF + 31, L"\"%s\" \"%s\"", self, housew);
+        STARTUPINFOW si; PROCESS_INFORMATION pi;
+        ZeroMemory(&si, sizeof(si)); si.cb = sizeof(si);
+        si.dwFlags = STARTF_USESHOWWINDOW;
+        si.wShowWindow = SW_HIDE;
+        ZeroMemory(&pi, sizeof(pi));
+        DWORD flags = CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW |
+                      CREATE_BREAKAWAY_FROM_JOB | DETACHED_PROCESS;
+        wchar_t cwd[8] = L".";
+        if (!CreateProcessW(NULL, cmd, NULL, NULL, FALSE, flags, NULL, cwd, &si, &pi)) {
+            flags = CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW | DETACHED_PROCESS;
+            if (!CreateProcessW(NULL, cmd, NULL, NULL, FALSE, flags, NULL, cwd, &si, &pi)) {
+                fprintf(stderr, "strip_parser: CreateProcessW manager failed (%lu)\n",
+                        (unsigned long)GetLastError());
+                return;
+            }
+        }
+        g_manager_pid = (pid_t)pi.dwProcessId;
+        CloseHandle(pi.hThread);
+        CloseHandle(pi.hProcess);
+    }
+#else
     path_join2(exe, sizeof(exe), g_house_root,
                "*.monads/*.livedesk-taskbar/ops/+x/khtpm_taskbar_manager_main.+x");
 
@@ -342,6 +437,7 @@ static void launch_manager(void) {
     } else {
         fprintf(stderr, "strip_parser: fork() failed: %s\n", strerror(errno));
     }
+#endif
 }
 
 static int ensure_manager_running(void) {
@@ -1087,6 +1183,13 @@ typedef struct {
 static SpHitRect g_header_hits[SP_MAX_HIT];
 static int g_header_hit_n = 0;
 static int g_header_row_w = 0;
+/* macOS leg (2026-08-22): the header's natural strlen*8 content width can
+ * exceed a Mac display, so the window is clamped to the screen and the
+ * buffer is downscaled at present time; clicks are mapped back up to
+ * natural coordinates before hit-testing (same proportional shape the
+ * Win leg uses for popup anchors). */
+static int g_hq_win_w = 0;         /* real on-screen header width */
+static int g_header_natural_w = 0; /* natural (unscaled) content width */
 
 static SpHitRect g_popup_hits[SP_MAX_HIT];
 static int g_popup_hit_n = 0;
@@ -1112,7 +1215,21 @@ static XftDraw *g_hq_xft = NULL, *g_popup_xft = NULL, *g_strip_xft = NULL;
 
 static XftFont *strip_font(Display *dpy, int screen) {
     if (g_strip_font) return g_strip_font;
+#if defined(__APPLE__)
+    /* macOS leg (2026-08-23, order fix): this Mac has no Noto CJK and
+     * NO DejaVu - fontconfig silently substitutes whatever it has
+     * (live: both names resolved to ADTNumeric.ttc, which has ZERO CJK
+     * coverage -> hollow tofu boxes in the datetime). Worse, that
+     * substitution makes XftFontOpenName SUCCEED, so a fallback chain
+     * ordered Noto-first never reached the real CJK font below.
+     * Verified via FcCharSetHasChar(U+4E2D): only Heiti SC
+     * (STHeiti Light.ttc) actually covers Han here - try it FIRST,
+     * before any name that can be substituted away. */
+    g_strip_font = XftFontOpenName(dpy, screen, "Heiti SC:pixelsize=13");
+    if (!g_strip_font) g_strip_font = XftFontOpenName(dpy, screen, "Noto Sans CJK SC:pixelsize=13");
+#else
     g_strip_font = XftFontOpenName(dpy, screen, "Noto Sans CJK SC:pixelsize=13");
+#endif
     if (!g_strip_font) g_strip_font = XftFontOpenName(dpy, screen, "DejaVu Sans:pixelsize=13");
     return g_strip_font;
 }
@@ -1176,6 +1293,44 @@ static void present_rgb(Display *dpy, Pixmap buf, Window win, GC gc, int w, int 
     XDestroyImage(img);
 }
 
+/* macOS leg (2026-08-22): fit-to-screen header present. Same capture the
+ * generic present_rgb() does, but when the natural-width buffer is wider
+ * than the on-screen window, squeeze it horizontally with a nearest-
+ * neighbor resample so every cell stays visible instead of being clipped
+ * at the right edge (the "tb is too big for the mac screen" report).
+ * Height is unchanged (single bar row). Falls back to plain present when
+ * no squeeze is needed or capture fails — identical behavior on Linux,
+ * where the window is always sized to the natural width. */
+static void present_rgb_fit(Display *dpy, Pixmap buf, Window win, GC gc, int bw, int bh, int ww) {
+    if (ww >= bw || ww < 1 || bw < 1 || bh < 1) {
+        present_rgb(dpy, buf, win, gc, bw, bh);
+        return;
+    }
+    XSync(dpy, False);
+    XImage *src = XGetImage(dpy, buf, 0, 0, (unsigned)bw, (unsigned)bh, AllPlanes, ZPixmap);
+    if (!src) { XCopyArea(dpy, buf, win, gc, 0, 0, (unsigned)bw, (unsigned)bh, 0, 0); return; }
+    Visual *vis = DefaultVisual(dpy, DefaultScreen(dpy));
+    int depth = DefaultDepth(dpy, DefaultScreen(dpy));
+    XImage *dst = XCreateImage(dpy, vis, depth, ZPixmap, 0, NULL,
+                               (unsigned)ww, (unsigned)bh, 32, 0);
+    if (!dst) { XPutImage(dpy, win, gc, src, 0, 0, 0, 0, (unsigned)bw, (unsigned)bh); XDestroyImage(src); return; }
+    dst->data = malloc((size_t)dst->bytes_per_line * (size_t)bh);
+    if (!dst->data) { XDestroyImage(dst); XPutImage(dpy, win, gc, src, 0, 0, 0, 0, (unsigned)bw, (unsigned)bh); XDestroyImage(src); return; }
+    for (int y = 0; y < bh; y++) {
+        const char *srow = src->data + (size_t)y * src->bytes_per_line;
+        char *drow = dst->data + (size_t)y * dst->bytes_per_line;
+        for (int x = 0; x < ww; x++) {
+            int sx = (int)((long)x * (long)bw / (long)ww);
+            memcpy(drow + (size_t)x * dst->bits_per_pixel / 8,
+                   srow + (size_t)sx * src->bits_per_pixel / 8,
+                   (size_t)dst->bits_per_pixel / 8);
+        }
+    }
+    XPutImage(dpy, win, gc, dst, 0, 0, 0, 0, (unsigned)ww, (unsigned)bh);
+    XDestroyImage(dst);
+    XDestroyImage(src);
+}
+
 /* One header cell's drawn string + pixel width, matching the old
  * header_cell_width() formula exactly (strlen*8+20, min 40) so drawn
  * pixels and hit-test rects can never drift apart.
@@ -1217,11 +1372,24 @@ static TabSprite g_sprite_cache[KTB_MAX_TABS];
 
 static TabSprite *tab_sprite(const char *path) {
     if (!path || !path[0]) return NULL;
+    char pth[SP_PATH_BUF];
+    snprintf(pth, sizeof(pth), "%s", path);
+    size_t pl = strlen(pth);
+    while (pl > 0 && (pth[pl - 1] == '\n' || pth[pl - 1] == '\r' || pth[pl - 1] == ' ' || pth[pl - 1] == '\t'))
+        pth[--pl] = '\0';
+    if (!pth[0]) return NULL;
+#ifdef _WIN32
+    for (char *q = pth; *q; q++) if (*q == '/') *q = '\\';
+#endif
     for (int i = 0; i < KTB_MAX_TABS; i++) {
-        if (g_sprite_cache[i].rgba && strcmp(g_sprite_cache[i].path, path) == 0) return &g_sprite_cache[i];
+        if (g_sprite_cache[i].rgba && strcmp(g_sprite_cache[i].path, pth) == 0) return &g_sprite_cache[i];
     }
     char csv_path[SP_PATH_BUF];
-    snprintf(csv_path, sizeof(csv_path), "%s/sprite.csv", path);
+#ifdef _WIN32
+    snprintf(csv_path, sizeof(csv_path), "%s\\sprite.csv", pth);
+#else
+    snprintf(csv_path, sizeof(csv_path), "%s/sprite.csv", pth);
+#endif
     FILE *f = fopen(csv_path, "r");
     if (!f) return NULL;
     char line[256];
@@ -1247,7 +1415,7 @@ static TabSprite *tab_sprite(const char *path) {
     if (count != res * res) { free(pixels); return NULL; }
     for (int i = 0; i < KTB_MAX_TABS; i++) {
         if (!g_sprite_cache[i].rgba) {
-            snprintf(g_sprite_cache[i].path, sizeof(g_sprite_cache[i].path), "%s", path);
+            snprintf(g_sprite_cache[i].path, sizeof(g_sprite_cache[i].path), "%s", pth);
             g_sprite_cache[i].rgba = pixels;
             g_sprite_cache[i].res = res;
             return &g_sprite_cache[i];
@@ -1357,6 +1525,9 @@ static void flush_cells_pdl(const char *house_root) {
                 c->idx, c->region, c->ch, c->focused);
     }
     fclose(f);
+#ifdef _WIN32
+    remove(dst);
+#endif
     rename(tmp, dst);
     /* Signal the ASCII renderer (size-append, matching existing convention).
      * BUG FIX 2026-08-19: this used to touch strip_frame_changed.txt, which
@@ -1521,8 +1692,11 @@ static void draw_header_win(Display *dpy, Window win, GC gc, LayDoc *doc, SpStat
         break;
     }
     g_header_row_w = header_w;
+    g_header_natural_w = w_guess;
 
-    present_rgb(dpy, g_hq_buf, win_real, g_hq_buf_gc, w_guess, h);
+    /* macOS fit-to-screen: squeeze the natural-width buffer into the
+     * clamped on-screen window instead of clipping its right edge. */
+    present_rgb_fit(dpy, g_hq_buf, win_real, g_hq_buf_gc, w_guess, h, g_hq_win_w);
     XFlush(dpy);
 }
 
@@ -1600,6 +1774,18 @@ static int draw_popup_win(Display *dpy, Window win, GC gc, LayDoc *doc, SpState 
     } else {
         win_x = hq_win_x + anchor_x0;
         win_y = hq_win_y + KTB_BAR_H;
+        /* Sit under the *real* header HWND (Win clamp/stretch can slide
+         * or shrink it; PDL strip_x_offset/strip_y_offset then diverge). */
+        if (g_hq_win_handle) {
+            Window dummy = 0;
+            int hx = 0, hy = 0;
+            unsigned hw = 0, hh = 0, bw = 0, depth = 0;
+            if (XGetGeometry(dpy, g_hq_win_handle, &dummy, &hx, &hy, &hw, &hh, &bw, &depth) && hw > 0) {
+                int layout_w = g_header_row_w > 0 ? g_header_row_w : (int)hw;
+                win_x = hx + (int)((long)anchor_x0 * (long)hw / (long)layout_w);
+                win_y = hy + (int)hh;
+            }
+        }
     }
     if (w < 1) w = 1;
     if (h < 1) h = 1;
@@ -1915,7 +2101,15 @@ static void apply_captured_mouse(LayDoc *header_doc, LayDoc *bottom_doc, SpState
         if (button == 3) {
             if (!st->cliio_active) { send_code(KSC_NAV_ARM); g_nav_focus = 0; unified_apply(header_doc, bottom_doc); taskbar_soft_focus(dpy, hq_win); }
         } else {
-            int elidx = hit_test(g_header_hits, g_header_hit_n, x, y);
+            /* macOS fit-to-screen inverse map (2026-08-22): the header is
+             * presented downscaled when its natural width exceeds the
+             * window, so translate click x back to buffer coordinates
+             * before hit-testing (mirrors draw_popup_win()'s own
+             * anchor_x0*hw/layout_w proportional mapping). */
+            int hit_x = x;
+            if (g_header_natural_w > 0 && g_hq_win_w > 0 && g_hq_win_w < g_header_natural_w)
+                hit_x = (int)((long)x * (long)g_header_natural_w / (long)g_hq_win_w);
+            int elidx = hit_test(g_header_hits, g_header_hit_n, hit_x, y);
             if (elidx >= 0) {
                 header_doc->focus_index = elidx;
                 g_nav_focus = root_nav_pos_of(header_doc, elidx);
@@ -2020,9 +2214,30 @@ int main(int argc, char **argv) {
     frame_history_init();
     int hq_win_x = 0, hq_win_y = 40;
     load_strip_offset(&hq_win_x, &hq_win_y);
+#ifdef _WIN32
+    /* PDL strip_y_offset is GNOME top-panel pad. Win work area is already
+     * below OS chrome — keep x scoot, drop the y pad so HQ popups sit flush. */
+    hq_win_y = 0;
+#endif
 
+#ifdef __APPLE__
+    /* macOS leg (2026-08-22): under rootless XQuartz, y=0 sits just below
+     * the macOS menu bar, so PDL strip_y_offset=50 (GNOME top-panel pad,
+     * Linux-canonical) renders "a bit too low" — unbias 40px per direct
+     * instruction so the strip hugs the menu bar. Same for x: PDL
+     * strip_x_offset=200 scoots the full 15-cell strip off the right edge
+     * of Mac displays — bias back toward the left edge (same dimensional
+     * left-bias the Win leg applied). Runtime-only unbias: do NOT rewrite
+     * the Linux PDL. */
+    hq_win_y -= 40;
+    if (hq_win_y < 0) hq_win_y = 0;
+    hq_win_x = 0;
+#endif
+
+#ifndef _WIN32
     signal(SIGTERM, on_sigterm);
     signal(SIGINT, on_sigterm);
+#endif
 
     /* REAL FIX 2026-08-16, direct live report ("toy cell opens no
      * submenu yet"): real, confirmed race condition found live - the
@@ -2139,6 +2354,8 @@ int main(int argc, char **argv) {
                                   hq_win_x, hq_win_y, hq_real_w, KTB_BAR_H, 0,
                                   CopyFromParent, InputOutput, CopyFromParent,
                                   CWOverrideRedirect | CWBackPixel | CWEventMask, &hq_swa);
+    g_hq_win_handle = hq_win;
+    g_hq_win_w = hq_real_w;
     taskbar_set_wm_class(dpy, hq_win);
     XMapRaised(dpy, hq_win);
     set_window_opacity(dpy, hq_win, load_theme_opacity());
@@ -2280,13 +2497,19 @@ int main(int argc, char **argv) {
         else if (active_ticks > 0) active_ticks--;
         int poll_interval = active_ticks > 0 ? POLL_INTERVAL_ACTIVE_USEC : POLL_INTERVAL_IDLE_USEC;
 
-        fd_set fds;
-        FD_ZERO(&fds);
-        int xfd = ConnectionNumber(dpy);
-        FD_SET(xfd, &fds);
-        struct timeval tv = { 0, poll_interval };
         if (g_cells_n > 0) flush_cells_pdl(g_house_root);
-        select(xfd + 1, &fds, NULL, NULL, &tv);
+#ifdef _WIN32
+        x11_wait(dpy, poll_interval);
+#else
+        {
+            fd_set fds;
+            FD_ZERO(&fds);
+            int xfd = ConnectionNumber(dpy);
+            FD_SET(xfd, &fds);
+            struct timeval tv = { 0, poll_interval };
+            select(xfd + 1, &fds, NULL, NULL, &tv);
+        }
+#endif
 
         while (XPending(dpy)) {
             XEvent ev;
@@ -2355,5 +2578,3 @@ int main(int argc, char **argv) {
     cleanup_manager();
     return 0;
 }
-
-#endif /* !_WIN32 */

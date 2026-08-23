@@ -23,10 +23,15 @@
  * a future --remove flag, or a human rm -rf), this window closes itself
  * instead of floating forever pointing at nothing.
  */
+#ifndef _WIN32
 #define _DEFAULT_SOURCE
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <X11/extensions/shape.h>
+#else
+#include "khtpm_strip_x11_win.h"
+#include <shellapi.h>
+#endif
 /* RGB compose->present fork (2026-08-12, direct instruction: "we should
  * do it with a new entity... full GLX->Xlib rewrite for this one
  * entity"). tp_desktop_window.c's GLX usage was fully contained to
@@ -39,25 +44,113 @@
  * this is the ONE entity binary using this pattern, not a global
  * replacement of tp_desktop_window.c (that one's still GLX, unchanged,
  * still what every other entity spawns). No GL headers needed anymore. */
-#include <sys/select.h>
-#include <sys/time.h>
 #include <sys/stat.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
-#include <libgen.h>
 #include <stdarg.h>
 #include <time.h>
 #include <signal.h>
 #include <sys/types.h>
 #include <locale.h>
-#include <sys/file.h>
 #include <fcntl.h>
 #include <errno.h>
-#include <dirent.h>
 #include <ctype.h>
+#ifndef _WIN32
+#include <sys/select.h>
+#include <sys/time.h>
+#include <unistd.h>
+#include <libgen.h>
+#include <sys/file.h>
+#include <dirent.h>
 #include <sys/wait.h>
+#ifdef __APPLE__
+/* macOS leg (2026-08-22): no /proc/self/exe here — _NSGetExecutablePath()
+ * is the Apple equivalent for the self-binary lookups below. */
+#include <mach-o/dyld.h>
+#endif
+#else
+#include <io.h>
+#include <direct.h>
+#include <sys/time.h>
+static int flock(int fd, int op) { (void)fd; (void)op; return 0; }
+#define LOCK_EX 2
+#define LOCK_UN 8
+#define LOCK_NB 4
+#define strtok_r strtok_s
+#ifndef WNOHANG
+#define WNOHANG 1
+#endif
+#ifndef SIGTERM
+#define SIGTERM 15
+#endif
+static pid_t waitpid(pid_t p, int *st, int fl) {
+    HANDLE h = OpenProcess(SYNCHRONIZE | PROCESS_QUERY_LIMITED_INFORMATION, FALSE, (DWORD)p);
+    if (!h) { if (st) *st = 0; return -1; }
+    DWORD wait = (fl & WNOHANG) ? 0 : INFINITE;
+    DWORD w = WaitForSingleObject(h, wait);
+    DWORD code = 0;
+    GetExitCodeProcess(h, &code);
+    CloseHandle(h);
+    if (w == WAIT_TIMEOUT) return 0;
+    if (st) *st = (int)code;
+    return p;
+}
+static struct tm *localtime_r(const time_t *t, struct tm *out) {
+    if (localtime_s(out, t) != 0) return NULL;
+    return out;
+}
+#ifndef S_ISDIR
+#  define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
+#endif
+#define mkdir(p, m) _mkdir(p)
+static int ktb_usleep(unsigned usec) {
+    DWORD ms = usec / 1000; if (!ms) ms = 1; Sleep(ms); return 0;
+}
+#define usleep ktb_usleep
+#define getpid() ((int)GetCurrentProcessId())
+static int kill(pid_t p, int sig) {
+    (void)sig;
+    HANDLE h = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, (DWORD)p);
+    if (!h) return -1;
+    if (sig == 0) { DWORD c=0; GetExitCodeProcess(h,&c); CloseHandle(h); return c==STILL_ACTIVE?0:-1; }
+    CloseHandle(h);
+    h = OpenProcess(PROCESS_TERMINATE, FALSE, (DWORD)p);
+    if (!h) return -1;
+    TerminateProcess(h, 1); CloseHandle(h); return 0;
+}
+static char *basename(char *p) {
+    char *s = strrchr(p, '\\'); char *f = strrchr(p, '/');
+    if (f && (!s || f > s)) s = f;
+    return s ? s + 1 : p;
+}
+static ssize_t readlink(const char *path, char *buf, size_t n) {
+    (void)path;
+    wchar_t w[4352];
+    DWORD k = GetModuleFileNameW(NULL, w, 4352);
+    if (!k) return -1;
+    int m = WideCharToMultiByte(CP_UTF8, 0, w, -1, buf, (int)n, NULL, NULL);
+    return m > 0 ? (ssize_t)(m - 1) : -1;
+}
+static void win_package_rel(char *path) {
+    char *m = strstr(path, "xyzfs/");
+    if (!m) m = strstr(path, "xyzfs\\");
+    if (!m) m = strstr(path, "/#.desktop/");
+    if (!m) m = strstr(path, "\\#.desktop\\");
+    if (m && m != path) {
+        if (*m == '/' || *m == '\\') m++;
+        memmove(path, m, strlen(m) + 1);
+    }
+    for (char *p = path; *p; p++) if (*p == '/') *p = '\\';
+}
+static char *dirname(char *p) {
+    char *s = strrchr(p, '\\'); char *f = strrchr(p, '/');
+    if (f && (!s || f > s)) s = f;
+    if (!s) return ".";
+    *s = '\0';
+    return p;
+}
+#endif
 
 /* ========================================================================
  * 2026-08-06 FOCUS-RECOVERY — option C (user chose):
@@ -182,6 +275,7 @@ static void launch_khtpm_menu(int px, int py) {
     char px_str[16], py_str[16];
     snprintf(px_str, sizeof(px_str), "%d", px);
     snprintf(py_str, sizeof(py_str), "%d", py);
+#ifndef _WIN32
     pid_t pid = fork();
     if (pid == 0) {
         execl(bin_path, bin_path, g_khtpm_menu_house_root, chtpm_path, px_str, py_str, (char *)NULL);
@@ -189,6 +283,14 @@ static void launch_khtpm_menu(int px, int py) {
     } else if (pid > 0) {
         g_khtpm_menu_pid = pid;
     }
+#else
+    (void)bin_path;
+    (void)chtpm_path;
+    (void)px_str;
+    (void)py_str;
+    /* Entity-menu CHTPM renderer is a later Win pass; keep legacy popup. */
+    g_khtpm_menu_pid = -1;
+#endif
 }
 
 static void append_history(const char *fmt, ...) {
@@ -248,10 +350,81 @@ static void dispatch_action(const char *action, const char *package_dir, const c
     } else if (strcmp(action, "OPEN_USER") == 0) {
         /* not supported via relay injection - see comment above */
     } else {
+#ifdef _WIN32
+        /* Do not system() bash. Dir → Explorer. Read → prisc+x.exe + event.pal
+         * (Choose-Read/Hear/Tao lives in that pal, not meta.pdl). */
+        if (strstr(action, "xdg-open") || strstr(action, "explorer")) {
+            ShellExecuteA(NULL, "open", package_dir, NULL, NULL, SW_SHOWNORMAL);
+            return;
+        }
+        if (strstr(action, "prisc") || strstr(action, "pieces/reader")) {
+            const char *hr = (house_root && house_root[0]) ? house_root : ".";
+            wchar_t wpat[PATH_BUF], wprisc[PATH_BUF], wev[PATH_BUF];
+            char ev_a[PATH_BUF];
+            snprintf(ev_a, sizeof(ev_a), "%s\\_.monads\\_.book-stack\\pieces\\reader\\event_pkg\\pages\\page_1\\event.pal", hr);
+            for (char *q = ev_a; *q; q++) if (*q == '/') *q = '\\';
+            MultiByteToWideChar(CP_UTF8, 0, ev_a, -1, wev, PATH_BUF);
+            _snwprintf(wpat, PATH_BUF, L"%hs\\101.mutaclsym*", hr);
+            WIN32_FIND_DATAW fd;
+            HANDLE h = FindFirstFileW(wpat, &fd);
+            wprisc[0] = 0;
+            if (h != INVALID_HANDLE_VALUE) {
+                do {
+                    if (!(fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) continue;
+                    wchar_t cand[PATH_BUF];
+                    _snwprintf(cand, PATH_BUF, L"%hs\\%s\\system\\prisc+x.exe", hr, fd.cFileName);
+                    if (GetFileAttributesW(cand) != INVALID_FILE_ATTRIBUTES) {
+                        wcsncpy(wprisc, cand, PATH_BUF - 1);
+                        wprisc[PATH_BUF - 1] = 0;
+                    }
+                } while (FindNextFileW(h, &fd));
+                FindClose(h);
+            }
+            if (wprisc[0] && GetFileAttributesW(wev) != INVALID_FILE_ATTRIBUTES) {
+                wchar_t cmd[PATH_BUF * 2];
+                _snwprintf(cmd, PATH_BUF * 2 - 1, L"\"%s\" \"%s\"", wprisc, wev);
+                STARTUPINFOW si; PROCESS_INFORMATION pi;
+                ZeroMemory(&si, sizeof(si)); si.cb = sizeof(si);
+                ZeroMemory(&pi, sizeof(pi));
+                CreateProcessW(NULL, cmd, NULL, NULL, FALSE,
+                               CREATE_NEW_PROCESS_GROUP | CREATE_BREAKAWAY_FROM_JOB | DETACHED_PROCESS,
+                               NULL, NULL, &si, &pi);
+                if (pi.hThread) CloseHandle(pi.hThread);
+                if (pi.hProcess) CloseHandle(pi.hProcess);
+            }
+            return;
+        }
+        (void)house_root;
+        return;
+#else
         char cmd[PATH_BUF * 3];
+        /* macOS leg (2026-08-22): METHOD actions are canonical Linux
+         * shell strings (book-stack's Dir row is literally
+         * `sh -c 'exec xdg-open "$0"'`); macOS has no xdg-open. Rewrite
+         * occurrences to the native `open` at runtime — the same
+         * translate-at-runtime-not-PDL shape as run_shortcut()'s
+         * ktb_portable_darwin() in the manager driver. */
+#ifdef __APPLE__
+        {
+            char fixed[PATH_BUF * 3];
+            const char *rd = action;
+            char *wr = fixed;
+            size_t n = 0;
+            while (*rd && n < sizeof(fixed) - 6) {
+                if (strncmp(rd, "xdg-open", 8) == 0 &&
+                    (rd == action || rd[-1] == ' ' || rd[-1] == '\'' || rd[-1] == '"')) {
+                    memcpy((char *)wr, "open", 4); wr += 4; rd += 8; n += 4;
+                } else { *wr++ = *rd++; n++; }
+            }
+            *wr = '\0';
+            snprintf(cmd, sizeof(cmd), "%s '%s' '%s' >/dev/null 2>&1 &", fixed, package_dir, house_root);
+        }
+#else
         snprintf(cmd, sizeof(cmd), "%s '%s' '%s' >/dev/null 2>&1 &", action, package_dir, house_root);
+#endif
         int rc = system(cmd);
         (void)rc;
+#endif
     }
 }
 
@@ -277,6 +450,26 @@ static void dirname_step(const char *in, char *out, size_t out_sz) {
     snprintf(out, out_sz, "%s", d);
 }
 
+/* Portable self-binary path (macOS leg 2026-08-22): /proc/self/exe does
+ * not exist on macOS; _NSGetExecutablePath() is the Apple equivalent and
+ * may return a relative path when the binary was launched by bare name,
+ * so resolve through realpath(). Linux/other keep readlink(/proc/self/exe)
+ * byte-for-byte as before. Returns 1 on success. */
+static int self_exe_path(char *out, size_t out_sz) {
+#ifdef __APPLE__
+    uint32_t sz = (uint32_t)out_sz;
+    if (_NSGetExecutablePath(out, &sz) != 0) return 0;
+    char resolved[PATH_BUF];
+    if (realpath(out, resolved)) snprintf(out, out_sz, "%s", resolved);
+    return 1;
+#else
+    ssize_t slen = readlink("/proc/self/exe", out, out_sz - 1);
+    if (slen <= 0) return 0;
+    out[slen] = '\0';
+    return 1;
+#endif
+}
+
 /* House-root discovery: walk UP from this binary's own real install dir
  * (found via /proc/self/exe) until a directory containing BOTH #.desktop/
  * and &.widgits/ is found - the same marker-walk khtpm_vars.sh uses, so it
@@ -288,9 +481,7 @@ static void resolve_livedesk_paths(char *ops_dir_out, size_t ops_sz, char *house
     ops_dir_out[0] = '\0';
     house_root_out[0] = '\0';
     char self_path[PATH_BUF];
-    ssize_t slen = readlink("/proc/self/exe", self_path, sizeof(self_path) - 1);
-    if (slen <= 0) return;
-    self_path[slen] = '\0';
+    if (!self_exe_path(self_path, sizeof(self_path))) return;
     char step[PATH_BUF];
     dirname_step(self_path, step, sizeof(step)); /* .../ops/+x */
     snprintf(ops_dir_out, ops_sz, "%s", step);
@@ -299,14 +490,26 @@ static void resolve_livedesk_paths(char *ops_dir_out, size_t ops_sz, char *house
         char desk[PATH_BUF], widg[PATH_BUF];
         snprintf(desk, sizeof(desk), "%s/#.desktop", step);
         snprintf(widg, sizeof(widg), "%s/&.widgits", step);
+#ifdef _WIN32
+        for (char *p = desk; *p; p++) if (*p == '/') *p = '\\';
+        for (char *p = widg; *p; p++) if (*p == '/') *p = '\\';
+#endif
         if (access(desk, F_OK) == 0 && access(widg, F_OK) == 0) {
             snprintf(house_root_out, house_sz, "%s", step);
             return;
         }
         char *slash = strrchr(step, '/');
+#ifdef _WIN32
+        char *bslash = strrchr(step, '\\');
+        if (bslash && (!slash || bslash > slash)) slash = bslash;
+#endif
         if (!slash || slash == step) break; /* reached root, give up */
         *slash = '\0';
     }
+#ifdef _WIN32
+    if (!house_root_out[0] && access("#.desktop", F_OK) == 0 && access("&.widgits", F_OK) == 0)
+        snprintf(house_root_out, house_sz, ".");
+#endif
 }
 
 /* Real, stable index: scans the ledger for a prior ASSIGN row whose
@@ -416,6 +619,15 @@ static void livedesk_registry_add(const char *house_root, const char *package_di
     char *ent_name = basename(pkgcopy);
 
     registry_lock_acquire(house_root);
+#ifdef _WIN32
+    {
+        FILE *w = fopen(reg_path, "a");
+        if (w) {
+            fprintf(w, "PID=%d|INDEX=%d|ENTITY=%s|PATH=%s\n", (int)pid, index, ent_name, package_dir);
+            fclose(w);
+        }
+    }
+#else
     FILE *f = fopen(reg_path, "r");
     FILE *w = fopen(tmp_path, "w");
     if (f && w) {
@@ -433,6 +645,7 @@ static void livedesk_registry_add(const char *house_root, const char *package_di
         fclose(w);
         rename(tmp_path, reg_path);
     }
+#endif
     registry_lock_release();
 }
 
@@ -475,6 +688,17 @@ static void livedesk_registry_remove(const char *house_root, pid_t pid) {
  * not via ops_dir (which would have wrongly implied "lives next to
  * tp_desktop_window.c"). */
 static void ensure_taskbar_running(const char *house_root) {
+#ifdef _WIN32
+    if (x11_process_running("khtpm_strip_parser")) return;
+    char exe[PATH_BUF];
+    DWORD n = GetModuleFileNameA(NULL, exe, PATH_BUF);
+    if (!n) return;
+    char *slash = strrchr(exe, '\\');
+    if (!slash) return;
+    snprintf(slash + 1, PATH_BUF - (size_t)(slash + 1 - exe), "khtpm_strip_parser.exe");
+    x11_spawn_cwd(exe, house_root && house_root[0] ? house_root : ".");
+    return;
+#else
     char pid_path[PATH_BUF];
     snprintf(pid_path, sizeof(pid_path), "%s/#.desktop/livedesk_taskbar.pid", house_root);
     int alive = 0;
@@ -540,6 +764,7 @@ static void ensure_taskbar_running(const char *house_root) {
         int rc = system(cmd);
         (void)rc;
     }
+#endif /* !_WIN32 */
 }
 
 /* REAL, 2026-08-05, direct correction (see TILE_PICKER_DESIGN.md §13 -
@@ -1538,6 +1763,13 @@ static Window open_context_menu(Display *dpy, GC gc, int *root_x, int *root_y, i
      * real, fully-alive X window, just never shown, so every downstream
      * caller's lock/lifecycle bookkeeping keeps working exactly as
      * before. Only the VISIBLE result changes. */
+#ifdef _WIN32
+    /* khtpm_entity_menu_render.exe is not a Win PE yet. Linux hides the
+     * legacy popup and forks that binary; doing the same here destroyed
+     * the menu and launched nothing. Keep the Xlib menu until that app
+     * has its own shim. */
+    (void)0;
+#else
     if (g_use_khtpm_menu) {
         /* REAL FIX 2026-08-16, direct live report ("it also pops up
          * instead of context menu when i rightclick ava" - the "Chat"
@@ -1574,6 +1806,7 @@ static Window open_context_menu(Display *dpy, GC gc, int *root_x, int *root_y, i
         launch_khtpm_menu(px, py);
         return None;
     }
+#endif
 
     return popup;
 }
@@ -1680,12 +1913,20 @@ static void apply_asset_override(const char *package_dir, const char *ops_dir) {
         } else {
             snprintf(resolved, sizeof(resolved), "%s/assets/%s", package_dir, asset_path_raw);
         }
+#ifndef _WIN32
         char cmd[PATH_BUF * 2];
         snprintf(cmd, sizeof(cmd), "'%s/tp_asset_to_sprite.+x' '%s' 64 '%s' >/dev/null 2>&1",
                  ops_dir, resolved, sprite_path);
         int rc = system(cmd);
         (void)rc;
+#else
+        (void)ops_dir;
+        (void)resolved;
+        /* Existing sprite.csv is used. Do not system() Linux .+x via cmd.exe
+         * (0x800700E8 / pipe closed) — that was killing rgb at startup. */
+#endif
     } else if (glyph_override[0]) {
+#ifndef _WIN32
         char atlas_path[PATH_BUF], cmd[PATH_BUF * 2];
         snprintf(atlas_path, sizeof(atlas_path), "%s/atlas_override.png", package_dir);
         snprintf(cmd, sizeof(cmd),
@@ -1694,6 +1935,9 @@ static void apply_asset_override(const char *package_dir, const char *ops_dir) {
                  ops_dir, glyph_override, atlas_path, ops_dir, atlas_path, sprite_path);
         int rc = system(cmd);
         (void)rc;
+#else
+        (void)ops_dir;
+#endif
     }
 }
 
@@ -1713,12 +1957,20 @@ int main(int argc, char **argv) {
     }
     signal(SIGTERM, handle_shutdown_signal);
     signal(SIGINT, handle_shutdown_signal);
-    const char *package_dir = argv[1];
+    char package_buf[PATH_BUF];
+    snprintf(package_buf, sizeof(package_buf), "%s", argv[1]);
+#ifdef _WIN32
+    win_package_rel(package_buf);
+#endif
+    const char *package_dir = package_buf;
     snprintf(g_history_path, sizeof(g_history_path), "%s/history.txt", package_dir);
     snprintf(g_relay_path, sizeof(g_relay_path), "%s/interact_relay.txt", package_dir);
     append_history("WINDOW_OPEN");
     char g_ops_dir[PATH_BUF], g_house_root[PATH_BUF];
     resolve_livedesk_paths(g_ops_dir, sizeof(g_ops_dir), g_house_root, sizeof(g_house_root));
+#ifdef _WIN32
+    if (!g_house_root[0]) snprintf(g_house_root, sizeof(g_house_root), ".");
+#endif
     snprintf(g_house_root_for_lock, sizeof(g_house_root_for_lock), "%s", g_house_root);
     /* Stage 2c PROOF - see launch_khtpm_menu()'s own header comment. */
     {
@@ -1827,9 +2079,7 @@ int main(int argc, char **argv) {
      * sprite.+x/emoji_gen_atlas.+x/emoji_xtract.+x next to this binary. */
     {
         char self_path[PATH_BUF];
-        ssize_t slen = readlink("/proc/self/exe", self_path, sizeof(self_path) - 1);
-        if (slen > 0) {
-            self_path[slen] = '\0';
+        if (self_exe_path(self_path, sizeof(self_path))) {
             char *ops_dir = dirname(self_path);
             apply_asset_override(package_dir, ops_dir);
         }
@@ -1843,11 +2093,14 @@ int main(int argc, char **argv) {
      * see build_shape_mask()'s own header comment for why GL_BLEND
      * alone wasn't enough. */
     if (g_has_sprite) {
+#ifndef _WIN32
         Pixmap shape_mask = XCreatePixmap(dpy, win, WIN_PX, WIN_PX, 1);
         GC shape_gc = XCreateGC(dpy, shape_mask, 0, NULL);
         build_shape_mask(dpy, win, shape_gc, shape_mask);
         XFreeGC(dpy, shape_gc);
         XFreePixmap(dpy, shape_mask);
+#endif
+        /* Win: per-pixel alpha via UpdateLayeredWindow in XPutImage (XShape shim). */
     }
 
     int screen_w = DisplayWidth(dpy, DefaultScreen(dpy));
@@ -1868,8 +2121,42 @@ int main(int argc, char **argv) {
             if (gy < 0) gy = 0; if (gy > max_row) gy = max_row;
             win_x = gx * GRID_CELL_PX;
             win_y = gy * GRID_CELL_PX;
-            XMoveWindow(dpy, win, win_x, win_y);
         }
+#ifdef _WIN32
+        /* Linux pos can sit past this monitor. Keep on the primary work
+         * area, below the strip. */
+        {
+            int pad_top = 40, g = 8;
+            if (win_x < g) win_x = g;
+            if (win_y < pad_top) win_y = pad_top;
+            if (win_x + WIN_PX > screen_w - g) win_x = screen_w - WIN_PX - g;
+            if (win_y + WIN_PX > screen_h - g) win_y = screen_h - WIN_PX - g;
+            if (win_x < g) win_x = g;
+            if (win_y < pad_top) win_y = pad_top;
+        }
+#endif
+#ifdef __APPLE__
+        /* macOS leg (2026-08-22): mirror of the _WIN32 work-area clamp.
+         * Saved Linux grid positions can sit past this display's right
+         * edge (live: tiles parked at x=1600 on a 1680px screen, mostly
+         * invisible). XQuartz rootless maps y=0 to just under the macOS
+         * menu bar, so pad_top only needs to clear the taskbar strip. */
+        {
+            int pad_top = 40, g = 8;
+            if (win_x < g) win_x = g;
+            if (win_y < pad_top) win_y = pad_top;
+            if (win_x + WIN_PX > screen_w - g) win_x = screen_w - WIN_PX - g;
+            if (win_y + WIN_PX > screen_h - g) win_y = screen_h - WIN_PX - g;
+            if (win_x < g) win_x = g;
+            if (win_y < pad_top) win_y = pad_top;
+        }
+#endif
+        XMoveWindow(dpy, win, win_x, win_y);
+        /* macOS leg (2026-08-22): persist the CLAMPED position - the
+         * saved Linux grid value can sit past this display's edge, and
+         * downstream consumers (khtpm_show_choices.c's picker spawn
+         * reads this same file) must not inherit an off-screen x/y. */
+        write_pos(package_dir, win_x, win_y);
     }
     MethodItem methods[MAX_METHODS];
     int n_methods = load_methods(package_dir, methods, MAX_METHODS);
@@ -1946,13 +2233,21 @@ int main(int argc, char **argv) {
     struct timeval last_frame = { 0, 0 };
 
     while (running && !g_shutdown_requested) {
+#ifdef _WIN32
+        x11_wait(dpy, POLL_INTERVAL_USEC);
+        (void)xfd;
+#else
         fd_set fds;
         FD_ZERO(&fds);
         FD_SET(xfd, &fds);
         struct timeval tv = { 0, POLL_INTERVAL_USEC };
         select(xfd + 1, &fds, NULL, NULL, &tv);
+#endif
 
         int need_redraw = 0;
+#ifdef _WIN32
+        if (last_frame.tv_sec == 0) need_redraw = 1;
+#endif
 
         /* REAL, 2026-08-05: poll interact_relay.txt for an injected
          * command - the "AI-injection power" half of this window's own
@@ -2602,11 +2897,7 @@ int main(int argc, char **argv) {
                          * to also read $2 (sh scripts) / $1-after-$0 (sh -c
                          * lines, since $0 is already package_dir there)
                          * gain house_root. */
-                        char cmd[PATH_BUF * 3];
-                        snprintf(cmd, sizeof(cmd), "%s '%s' '%s' >/dev/null 2>&1 &",
-                                 methods[row].action, package_dir, g_house_root);
-                        int rc = system(cmd);
-                        (void)rc;
+                        dispatch_action(methods[row].action, package_dir, g_house_root, &running);
                     }
                 }
                 need_redraw = 1;
@@ -2789,9 +3080,7 @@ int main(int argc, char **argv) {
                     int gx = win_x + WIN_PX / 2 - grid_size / 2;
                     int gy = win_y + WIN_PX / 2 - grid_size / 2;
                     char self_path[PATH_BUF];
-                    ssize_t slen = readlink("/proc/self/exe", self_path, sizeof(self_path) - 1);
-                    if (slen > 0) {
-                        self_path[slen] = '\0';
+                    if (self_exe_path(self_path, sizeof(self_path))) {
                         char *ops_dir = dirname(self_path);
                         char cmd[PATH_BUF * 2];
                         snprintf(cmd, sizeof(cmd), "'%s/tp_range_grid.+x' %d %d >/dev/null 2>&1 &",
@@ -2919,7 +3208,9 @@ int main(int argc, char **argv) {
                     popup_y = xev.xbutton.y_root;
                     popup_win = open_context_menu(dpy, popup_gc, &popup_x, &popup_y, n_methods, methods);
                     popup_nav_base = nav_claim_rows(g_house_root, getpid(), package_dir, methods, n_methods);
-                                        popup_focus_row = 0; popup_digit_accum = 0;
+                    popup_focus_row = 0; popup_digit_accum = 0;
+                    if (popup_win)
+                        draw_context_menu(dpy, popup_win, popup_gc, methods, n_methods, popup_nav_base, popup_focus_row);
                 }
             } else if (xev.type == MotionNotify && dragging) {
                 int dx = xev.xmotion.x_root - drag_start_x;
@@ -2940,12 +3231,16 @@ int main(int argc, char **argv) {
                      * killed the whole tile window. Menus stay open until
                      * the user clicks Cancel or presses Escape/Enter. */
                 } else {
+#ifndef _WIN32
                     running = 0; /* no menu open: any key closes the tile, as before */
+#endif
                 }
             }
         }
         if (!running) break;
+#ifndef _WIN32
         if (!package_still_exists(package_dir)) break; /* package gone -> stop pointing at nothing */
+#endif
 
         /* REAL FIX 2026-08-04, direct instruction ("dont render more
          * than 30fps etc, cpu is getting hot"): explicit, measured frame
@@ -2957,21 +3252,16 @@ int main(int argc, char **argv) {
          * does zero GL work between polls. */
         struct timeval now;
         gettimeofday(&now, NULL);
-        long elapsed_usec = (now.tv_sec - last_frame.tv_sec) * 1000000L +
-                             (now.tv_usec - last_frame.tv_usec);
-        /* REAL FIX 2026-08-06: bare continue spun the CPU when X events
-         * arrived faster than MAX_FPS (drag/motion floods). Sleep the
-         * remainder of the frame budget instead.
-         * Also: static tiles used to glXSwapBuffers every frame even when
-         * need_redraw==0 (need_redraw was cast void) — 4 entities * 30fps
-         * of useless GL. Skip the swap when nothing changed; still honor
-         * the frame budget when a redraw is pending. */
+        /* Win long is 32-bit: (tv_sec * 1000000) overflows, goes negative,
+         * and this skip never presents a frame. Linux long is 64-bit. */
+        long long elapsed_usec =
+            ((long long)now.tv_sec - last_frame.tv_sec) * 1000000LL +
+            ((long long)now.tv_usec - last_frame.tv_usec);
         if (!need_redraw) {
-            /* Idle: select() already waited up to POLL_INTERVAL; no GL. */
             continue;
         }
-        if (elapsed_usec < MIN_FRAME_USEC) {
-            long rem = MIN_FRAME_USEC - elapsed_usec;
+        if (last_frame.tv_sec != 0 && elapsed_usec < MIN_FRAME_USEC) {
+            long rem = (long)(MIN_FRAME_USEC - elapsed_usec);
             if (rem > 0 && rem < 1000000L) usleep((useconds_t)rem);
             continue;
         }

@@ -1,9 +1,25 @@
 $.crypts Windows port notes
 ==========================
-Date: 2026-08-06
+Date: 2026-08-21 (supersedes 2026-08-06 stub claims)
 
-What works (Phase 1 + minimal Phase 2)
---------------------------------------
+Current (livedesk strip)
+------------------------
+  powershell -ExecutionPolicy Bypass -File .\button.ps1 compile
+  powershell -ExecutionPolicy Bypass -File .\button.ps1 run
+  powershell -ExecutionPolicy Bypass -File .\button.ps1 kill
+  powershell -ExecutionPolicy Bypass -File .\button.ps1 install-desktop
+
+  Desktop: livedesk-start-button.exe (+ livedesk-house-root.txt)
+
+  autostart.pdl pal args are HOUSE-RELATIVE (xyzfs/users/.../pals/<name>).
+  Linux spelling *.monads stays; Win aliases to _.monads.
+  Taskbar = khtpm_strip_parser.c + x11_win shim, not tp_taskbar / parser_win sketch.
+  Entity rgb.exe not built yet.
+
+See house 8.21.GROK-win.md and #.WIN-COMPAT-RULE.md.
+
+What worked 2026-08-06 (history)
+--------------------------------
   powershell -ExecutionPolicy Bypass -File .\button.ps1 compile
   powershell -ExecutionPolicy Bypass -File .\button.ps1 check
   powershell -ExecutionPolicy Bypass -File .\button.ps1 on|off|status

@@ -1,4 +1,10 @@
 #!/bin/bash
+
+# macOS leg (2026-08-23): macOS has no setsid(2) wrapper binary - expand
+# to nothing there, keep real setsid on Linux. Unquoted $SETSID so the
+# empty case vanishes from the command line entirely.
+SETSID="setsid"
+[ "$(uname)" = "Darwin" ] && SETSID=""
 # kpi5_account_flow.sh - KPI#5: full identity flow on the INSTALLED apps via
 # real key injection: create account -> auto-login -> logout -> login (same
 # uuid) -> whoami -> assert the xyzfs/users/<uuid>/home-🏠️ tree appears.
@@ -95,7 +101,7 @@ pass "installer ran (exit 0)"
 
 echo "--- boot installed login ---"
 cd "$DEST/xyzos"
-setsid bash button.sh run > /tmp/th_install_kpi5.log 2>&1 </dev/null & disown
+$SETSID bash button.sh run > /tmp/th_install_kpi5.log 2>&1 </dev/null & disown
 sleep 3
 SESS=$(ls -dt "$LOGIN_ROOT/pieces/sessions/"*/ 2>/dev/null | head -1)
 SESS="${SESS%/}"

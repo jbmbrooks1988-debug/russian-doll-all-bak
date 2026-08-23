@@ -41,13 +41,14 @@
 #include <string.h>
 #include <unistd.h>
 #include <dirent.h>
+#include "self_exe.h" /* macOS leg: portable /proc/self/exe replacement */
 
 #define PATH_BUF 4352
 #define MAX_LINE 2048
 
 static void resolve_ops_dir(char *out, size_t out_sz) {
     char self_path[PATH_BUF];
-    ssize_t len = readlink("/proc/self/exe", self_path, sizeof(self_path) - 1);
+    ssize_t len = self_exe_readlink(self_path, sizeof(self_path));
     if (len <= 0) { out[0] = '\0'; return; }
     self_path[len] = '\0';
     char *slash = strrchr(self_path, '/');

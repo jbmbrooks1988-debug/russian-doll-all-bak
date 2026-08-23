@@ -1,4 +1,10 @@
 #!/bin/sh
+
+# macOS leg (2026-08-23): macOS has no setsid(2) wrapper binary - expand
+# to nothing there, keep real setsid on Linux. Unquoted $SETSID so the
+# empty case vanishes from the command line entirely.
+SETSID="setsid"
+[ "$(uname)" = "Darwin" ] && SETSID=""
 # run_khtpm_strip.sh — manual runner for the khtpm strip parser/manager
 # pair (khtpm_strip_parser.c + khtpm_taskbar_manager_main.c), same spirit
 # as $.crypts/button.sh but scoped to this one taskbar system.
@@ -48,7 +54,7 @@ case "$ACTION" in
         # cd into HOUSE first — the parser's own children (the manager)
         # inherit this cwd, and relative menu commands (livedesk_taskbar.pdl)
         # depend on it being house root, not wherever this script was invoked from.
-        (cd "$HOUSE" && setsid env DISPLAY="${DISPLAY:-:0}" "$PARSER" "$HOUSE" \
+        (cd "$HOUSE" && $SETSID env DISPLAY="${DISPLAY:-:0}" "$PARSER" "$HOUSE" \
             > "$KHTPM_LOG" 2>&1 < /dev/null &)
         sleep 2
         pids="$(khtpm_pids)"
