@@ -2275,7 +2275,26 @@ int main(int argc, char **argv) {
                 line[strcspn(line, "\n")] = '\0';
                 if (line[0]) {
                     append_history("INJECTED: %s", line);
-                    if (strncmp(line, "RUN_METHOD:", 11) == 0) {
+                    if (strcmp(line, "RAISE") == 0) {
+                        /* Single-instance spawn support (2026-08-24,
+                         * cursword HQ row): the taskbar writes RAISE into
+                         * this relay instead of spawning a second
+                         * tp_desktop_window_rgb when this entity is
+                         * already open. Raise own main window to the top
+                         * of the stack - stacking manipulation from the
+                         * entity's own X connection, no cross-process
+                         * window plumbing. Deliberately NO
+                         * XSetInputFocus/XGrabKeyboard here: this is an
+                         * override_redirect window, exempt from WM focus
+                         * handling entirely (see db-hq's main() header
+                         * comment for the full Mutter investigation) -
+                         * real keyboard focus was never achievable for
+                         * these windows; raise-to-top IS the whole
+                         * observable "focus" behavior, and a human click
+                         * still lands keyboard where Mutter allows it. */
+                        XRaiseWindow(dpy, win);
+                        XFlush(dpy);
+                    } else if (strncmp(line, "RUN_METHOD:", 11) == 0) {
                         const char *label = line + 11;
                         for (int i = 0; i < n_methods; i++) {
                             if (strcmp(methods[i].label, label) != 0) continue;
@@ -2602,12 +2621,31 @@ int main(int argc, char **argv) {
                                 }
                             }
                             XMapRaised(dpy, text_popup_win);
-                            if (g_grab_pointer)
-                                XGrabPointer(dpy, text_popup_win, True, ButtonPressMask, GrabModeAsync, GrabModeAsync,
-                                             None, None, CurrentTime);
-                            if (g_grab_keyboard)
-                                XGrabKeyboard(dpy, text_popup_win, True, GrabModeAsync, GrabModeAsync, CurrentTime);
-                            popup_soft_focus(dpy, text_popup_win);
+                            /* REAL FIX 2026-08-24, direct user report ("i
+                             * want text to stay on screen till clicked...
+                             * it closes very aggressively, when i press a
+                             * key when its open"): this popup used to copy
+                             * the context-menu's input policy wholesale -
+                             * XGrabPointer/XGrabKeyboard whenever the pal's
+                             * own STATE rows say grab_pointer/grab_keyboard
+                             * (cursword's do) plus popup_soft_focus().
+                             * Consequences: every keystroke ANYWHERE landed
+                             * in this process and the old dismiss-on-any-
+                             * KeyPress branch ate it (user's screenshot
+                             * shortcuts died while a verse was up), every
+                             * click anywhere was both swallowed by the grab
+                             * AND dismissed the popup, and focused apps lost
+                             * their keys while it stayed open. A Show Text
+                             * box is not a modal menu: NO grabs, NO input
+                             * focus. It now receives exactly what falls on
+                             * it - a click directly on the box (its own
+                             * ButtonPressMask; override_redirect keeps it
+                             * topmost under the cursor so the click lands
+                             * here without any grab) - everything else
+                             * passes through to whatever the user actually
+                             * aimed at. Dismissal itself is tightened in
+                             * the event loop: ButtonPress ON THIS WINDOW
+                             * only, keys never dismiss. */
                             /* REAL FIX 2026-08-06, direct-caught bug (a
                              * NAV_KEY-opened SHOW_TEXT_FILE popup
                              * self-dismissed a few seconds after opening,
@@ -3143,11 +3181,22 @@ int main(int argc, char **argv) {
                 for (int li = 0; li < g_text_popup_n_lines; li++) {
                     popup_draw_text(dpy, text_popup_win, popup_gc, 8, (li + 1) * POPUP_ROW_H - 6, g_text_popup_lines[li]);
                 }
-            } else if (text_popup_win && (xev.type == ButtonPress || xev.type == KeyPress)) {
-                /* REAL, 2026-08-05: Show Text is dismiss-only (real RPG
-                 * Maker "Show Text" also just waits for any confirm
-                 * press) - any click or key closes it, no state to
-                 * commit. */
+            } else if (text_popup_win && xev.type == ButtonPress &&
+                       xev.xany.window == text_popup_win) {
+                /* REAL FIX 2026-08-24, direct user report ("i dont want it
+                 * to close unless i click it exactly (not even if i click
+                 * something else)"): this used to be
+                 * `(ButtonPress || KeyPress)` with NO window check - any
+                 * key anywhere or any click anywhere dismissed the box
+                 * (and, while its input grabs were still in play, ate the
+                 * event out from under whichever app it belonged to).
+                 * Real RPG Maker "Show Text" waits for a confirm press,
+                 * but this house's real use is screenshot-and-inspect:
+                 * the box is now a passive overlay. ONLY a ButtonPress
+                 * delivered ON the popup window itself closes it; keys of
+                 * any kind never do; clicks on other windows are none of
+                 * this process's business (no grab is taken at creation -
+                 * see the creation-site fix above). */
                 close_context_menu(dpy, text_popup_win);
                 text_popup_win = 0;
                 append_history("SHOW_TEXT_DISMISSED");

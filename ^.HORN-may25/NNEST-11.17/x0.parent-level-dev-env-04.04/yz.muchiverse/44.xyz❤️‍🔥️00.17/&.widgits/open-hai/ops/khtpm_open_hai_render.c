@@ -88,6 +88,11 @@ static char g_house_root[PATH_BUF];
 static char g_sessions_root[PATH_BUF];
 static char g_audit_dir[PATH_BUF];
 static char g_pid_path[PATH_BUF];
+/* PER-INSTANCE DATA ROOT (2026-08-24, cursword chat): non-empty means
+ * this instance runs redirected (sessions/state/audit/pid under
+ * <data_root>) - launch_module() forwards it to the manager and
+ * init_ipc_paths() roots its state files there. Empty = plain open-hai. */
+static char g_data_root[PATH_BUF];
 static char g_emoji_dir[PATH_BUF];
 static int g_running = 1; /* global so the real nav-indexed close button (NAV_CLOSE) can set it from activate_focused() */
 static unsigned g_frame = 0; /* redraw counter - drives the thinking animation */
@@ -294,7 +299,8 @@ static time_t g_pending_tool_state_mtime = 0;
 static time_t g_busy_state_mtime = 0;
 
 static void init_ipc_paths(void) {
-    snprintf(g_state_dir, sizeof(g_state_dir), "%s/&.widgits/open-hai/state", g_house_root);
+    if (g_data_root[0]) snprintf(g_state_dir, sizeof(g_state_dir), "%s/state", g_data_root);
+    else snprintf(g_state_dir, sizeof(g_state_dir), "%s/&.widgits/open-hai/state", g_house_root);
     snprintf(g_request_path, sizeof(g_request_path), "%s/request.txt", g_state_dir);
     snprintf(g_sessions_state_path, sizeof(g_sessions_state_path), "%s/sessions.state.txt", g_state_dir);
     snprintf(g_active_session_path, sizeof(g_active_session_path), "%s/active_session.txt", g_state_dir);
@@ -1856,7 +1862,16 @@ static void launch_module(const char *src) {
 
     g_module_pid = fork();
     if (g_module_pid == 0) {
-        execl(full_path, full_path, g_house_root, (char *)NULL);
+        /* PER-INSTANCE DATA ROOT (2026-08-24): forward --data-root to the
+         * manager child so both halves of one instance agree on where
+         * sessions/state live; plain launches pass nothing extra. */
+        char *cargs[8];
+        int n = 0;
+        cargs[n++] = full_path;
+        cargs[n++] = g_house_root;
+        if (g_data_root[0]) { cargs[n++] = "--data-root"; cargs[n++] = g_data_root; }
+        cargs[n] = NULL;
+        execv(full_path, cargs);
         _exit(1);
     } else if (g_module_pid < 0) {
         fprintf(stderr, "open-hai: launch_module: fork failed for %s\n", full_path);
@@ -1881,11 +1896,42 @@ static void unlink_pidfile(void) {
 }
 
 int main(int argc, char **argv) {
-    if (argc < 2) { fprintf(stderr, "usage: khtpm_open_hai_render.+x <house_root>\n"); return 1; }
+    if (argc < 2) { fprintf(stderr, "usage: khtpm_open_hai_render.+x <house_root> [--data-root <dir>] [--title <label>] [--dump-and-exit]\n"); return 1; }
     snprintf(g_house_root, sizeof(g_house_root), "%s", argv[1]);
-    snprintf(g_sessions_root, sizeof(g_sessions_root), "%s/&.widgits/open-hai/sessions", g_house_root);
-    snprintf(g_audit_dir, sizeof(g_audit_dir), "%s/%s", g_house_root, AUDIT_DIR_REL);
-    snprintf(g_pid_path, sizeof(g_pid_path), "%s/%s", g_house_root, AUDIT_DIR_REL "/open-hai.pid");
+    /* PER-INSTANCE DATA ROOT (2026-08-24, cursword chat): optional
+     * --data-root redirects sessions/state/audit/pidfile to one
+     * self-contained dir so a SECOND instance of this same shared binary
+     * can run next to plain open-hai with its OWN session history (same
+     * interface/binary rule). --title only names the X window. Emoji tile
+     * registry stays house-shared (assets, not data). Forwarded to the
+     * manager via launch_module()'s own arg pass-through below; plain
+     * button.sh launches (no flags) are byte-for-byte unchanged behavior. */
+    char data_root[PATH_BUF] = "";
+    const char *title_override = NULL;
+    int dump_and_exit = 0;
+    for (int i = 2; i < argc; i++) {
+        if (strcmp(argv[i], "--dump-and-exit") == 0) dump_and_exit = 1;
+        else if (strcmp(argv[i], "--data-root") == 0 && i + 1 < argc) snprintf(data_root, sizeof(data_root), "%s", argv[++i]);
+        else if (strcmp(argv[i], "--title") == 0 && i + 1 < argc) title_override = argv[++i];
+    }
+    int per_instance = data_root[0] == '/';
+    if (per_instance) {
+        snprintf(g_data_root, sizeof(g_data_root), "%s", data_root);
+        snprintf(g_sessions_root, sizeof(g_sessions_root), "%s/sessions", data_root);
+        snprintf(g_audit_dir, sizeof(g_audit_dir), "%s/audit", data_root);
+        snprintf(g_pid_path, sizeof(g_pid_path), "%s/audit/open-hai.pid", data_root);
+    } else {
+        snprintf(g_sessions_root, sizeof(g_sessions_root), "%s/&.widgits/open-hai/sessions", g_house_root);
+        snprintf(g_audit_dir, sizeof(g_audit_dir), "%s/%s", g_house_root, AUDIT_DIR_REL);
+        snprintf(g_pid_path, sizeof(g_pid_path), "%s/%s", g_house_root, AUDIT_DIR_REL "/open-hai.pid");
+    }
+    /* flag-parse smoke test: resolve paths, print them, touch nothing */
+    if (dump_and_exit) {
+        printf("house=%s\nsessions=%s\naudit=%s\npidfile=%s\ntitle=%s\n",
+               g_house_root, g_sessions_root, g_audit_dir, g_pid_path,
+               title_override ? title_override : "open-hai");
+        return 0;
+    }
     signal(SIGTERM, handle_sigterm);
     signal(SIGINT, handle_sigterm);
     snprintf(g_emoji_dir, sizeof(g_emoji_dir), "%s/%s", g_house_root, AUDIT_EMOJI_REL);
@@ -1910,7 +1956,7 @@ int main(int argc, char **argv) {
     win = XCreateWindow(dpy, RootWindow(dpy, screen), g_win_x, g_win_y, (unsigned)g_win_w, (unsigned)g_win_h,
                          0, depth, InputOutput, vis,
                          CWColormap | CWEventMask | CWBackPixel | CWBorderPixel, &swa);
-    XStoreName(dpy, win, "open-hai");
+    XStoreName(dpy, win, title_override ? title_override : "open-hai");
 
     /* Managed window + _MOTIF_WM_HINTS, decorations=0 - the real
      * keyboard-focus fix (HOUSE_STDS #21), NOT override_redirect. */

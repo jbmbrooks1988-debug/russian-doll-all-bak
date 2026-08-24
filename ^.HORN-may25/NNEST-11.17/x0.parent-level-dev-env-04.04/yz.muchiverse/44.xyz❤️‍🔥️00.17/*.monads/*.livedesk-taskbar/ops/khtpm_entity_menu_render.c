@@ -56,6 +56,7 @@
 #include <signal.h> /* REAL, db-hq mode only - handle_term_signal() */
 #include <time.h>
 #include <X11/Xlib.h>
+#include <X11/Xatom.h> /* 2026-08-24 - XA_WINDOW for the XdndAware property (XDND drop support) */
 #include <X11/Xutil.h>
 #include <X11/keysym.h>
 #include <X11/Xft/Xft.h>
@@ -173,6 +174,27 @@ static void decode_entities(char *s) {
     *w = '\0';
 }
 
+/* 2026-08-24 - data-driven X11 XDND drop support (first consumer:
+ * bookmarks' drag-a-dir-onto-the-window). A <window drop_action="...">
+ * attribute opts THIS window into being a real XDND drop target: on a
+ * drop of a text/uri-list selection, the first dropped path is
+ * exported as $DROP_PATH and drop_action is run exactly like dispatch()
+ * runs item actions (same "$0"=package_dir/"$1"=house_root positional
+ * convention) - but WITHOUT setting g_quit, because a drop should not
+ * end the window's session the way picking an item does. Windows
+ * without the attribute never attach XdndAware and are byte-for-byte
+ * unchanged (zero risk to the 7 existing menu.chtpm entities).
+ *
+ * House-history note (why real XDND is safe HERE when gl_mirror.c
+ * removed it): gl_mirror's real-Xdnd block died for two documented
+ * reasons - GLUT+WM-reparenting broke its own window self-lookup for
+ * attaching XdndAware, and its check_xdnd_events() idle poll had no
+ * CPU throttle (crashed the machine once). Neither hazard exists in
+ * this renderer: we create and keep our own Window id directly (no
+ * lookup), and the popup loop below is a blocking select()+XNextEvent
+ * with a 150ms cap - attaching XDND costs zero idle CPU. */
+static char g_drop_action[1024] = "";
+
 static void apply_attr(Elem *e, const char *name, const char *val) {
     if (strcmp(name, "id") == 0 || strcmp(name, "name") == 0) {
         snprintf(e->id, sizeof(e->id), "%s", val);
@@ -197,6 +219,15 @@ static void apply_attr(Elem *e, const char *name, const char *val) {
          * real, wraith_parser_alpha.c convention. Reused e->label to
          * hold it - <module> elements are never drawn, safe reuse. */
         snprintf(e->label, sizeof(e->label), "%s", val);
+    } else if (strcmp(name, "drop_action") == 0) {
+        /* 2026-08-24 - see the g_drop_action block comment above.
+         * Window-level attr; decoded through the SAME entity decoder
+         * action= uses, so &quot;/&amp;/&gt;/&lt; all behave
+         * identically for shell quoting inside drop actions. */
+        char decoded[sizeof(g_drop_action)];
+        snprintf(decoded, sizeof(decoded), "%s", val);
+        decode_entities(decoded);
+        snprintf(g_drop_action, sizeof(g_drop_action), "%s", decoded);
     }
 }
 
@@ -4105,6 +4136,119 @@ static int poll_agent_relay(void) {
     return n;
 }
 
+/* ---- XDND drop target (see the g_drop_action block comment) ---- */
+static Atom ga_xdnd_aware, ga_xdnd_enter, ga_xdnd_position, ga_xdnd_leave,
+            ga_xdnd_drop, ga_xdnd_selection, ga_xdnd_status, ga_xdnd_finished,
+            ga_xdnd_action_copy, ga_uri_list;
+static Window g_xdnd_source = None;
+static int g_xdnd_awaiting = 0;
+
+static void xdnd_init_atoms(Display *dpy) {
+    ga_xdnd_aware      = XInternAtom(dpy, "XdndAware", False);
+    ga_xdnd_enter      = XInternAtom(dpy, "XdndEnter", False);
+    ga_xdnd_position   = XInternAtom(dpy, "XdndPosition", False);
+    ga_xdnd_leave      = XInternAtom(dpy, "XdndLeave", False);
+    ga_xdnd_drop       = XInternAtom(dpy, "XdndDrop", False);
+    ga_xdnd_selection  = XInternAtom(dpy, "XdndSelection", False);
+    ga_xdnd_status     = XInternAtom(dpy, "XdndStatus", False);
+    ga_xdnd_finished   = XInternAtom(dpy, "XdndFinished", False);
+    ga_xdnd_action_copy = XInternAtom(dpy, "XdndActionCopy", False);
+    ga_uri_list        = XInternAtom(dpy, "text/uri-list", False);
+}
+
+/* Advertise XDND v5 support - only when the loaded .chtpm actually
+ * declared a drop_action. Called right after the popup window maps. */
+static void xdnd_attach_if_needed(Display *dpy, Window w) {
+    if (!g_drop_action[0]) return;
+    long ver = 5;
+    XChangeProperty(dpy, w, ga_xdnd_aware, XA_WINDOW, 32, PropModeReplace,
+                    (unsigned char *)&ver, 1);
+    XSync(dpy, False);
+}
+
+/* In-place %XX decode for file:// URIs (spaces etc arrive escaped). */
+static void uri_decode_inplace(char *s) {
+    char *r = s, *w = s;
+    while (*r) {
+        if (r[0] == '%' && isxdigit((unsigned char)r[1]) && isxdigit((unsigned char)r[2])) {
+            char hex[3] = { r[1], r[2], 0 };
+            *w++ = (char)strtol(hex, NULL, 16);
+            r += 3;
+        } else {
+            *w++ = *r++;
+        }
+    }
+    *w = '\0';
+}
+
+/* SelectionNotify arrived: read the uri-list property, take the first
+ * entry that names an EXISTING DIRECTORY (falling back to the first
+ * existing path of any kind), export it as $DROP_PATH and run
+ * g_drop_action with dispatch()'s exact positional convention. Does
+ * NOT quit the window. Always answers XdndFinished so the source's
+ * drag cursor doesn't stick. */
+static void xdnd_handle_selection(Display *dpy, Window win) {
+    Atom actual = None; int fmt = 0; unsigned long n = 0, left = 0;
+    unsigned char *data = NULL;
+    char path[PATH_BUF] = "";
+    char first_any[PATH_BUF] = "";
+    if (XGetWindowProperty(dpy, win, ga_uri_list, 0, 65536, True /*delete*/,
+                           AnyPropertyType, &actual, &fmt, &n, &left, &data) == Success && data && n > 0) {
+        char *line = (char *)data, *end = (char *)data + n;
+        while (line < end && !path[0]) {
+            char *nl = memchr(line, '\n', (size_t)(end - line));
+            size_t len = nl ? (size_t)(nl - line) : (size_t)(end - line);
+            char item[PATH_BUF];
+            if (len >= sizeof(item)) len = sizeof(item) - 1;
+            memcpy(item, line, len); item[len] = '\0';
+            size_t L = strlen(item);
+            while (L > 0 && (item[L-1] == '\r' || item[L-1] == ' ')) item[--L] = '\0';
+            if (L > 0) {
+                char *p = item;
+                if (strncmp(p, "file://", 7) == 0) {
+                    p += 7;
+                    char *slash = strchr(p, '/');          /* skip host part */
+                    p = slash ? slash : p + strlen(p);
+                }
+                uri_decode_inplace(p);
+                struct stat st;
+                if (p[0] && stat(p, &st) == 0) {
+                    /* prefer the first dropped DIRECTORY; remember the
+                     * first existing path of any kind as a fallback so
+                     * a stray-file drop still lands somewhere useful
+                     * (the handler script decides what's valid). */
+                    if (S_ISDIR(st.st_mode)) snprintf(path, sizeof(path), "%s", p);
+                    else if (!first_any[0]) snprintf(first_any, sizeof(first_any), "%s", p);
+                }
+            }
+            line = nl ? nl + 1 : end;
+        }
+        XFree(data);
+    }
+    if (!path[0] && first_any[0]) snprintf(path, sizeof(path), "%s", first_any);
+    if (path[0]) {
+        setenv("DROP_PATH", path, 1);
+        char cmd[PATH_BUF * 3];
+        snprintf(cmd, sizeof(cmd), "%s '%s' '%s' >/dev/null 2>&1 &",
+                 g_drop_action, g_package_dir, g_house_root);
+        int rc = system(cmd);
+        (void)rc;
+    } else {
+        unsetenv("DROP_PATH");
+    }
+    if (g_xdnd_source != None) {
+        XEvent fin;
+        memset(&fin, 0, sizeof(fin));
+        fin.xclient.type = ClientMessage;
+        fin.xclient.window = g_xdnd_source;
+        fin.xclient.message_type = ga_xdnd_finished;
+        fin.xclient.format = 32;
+        fin.xclient.data.l[0] = (long)win;
+        XSendEvent(dpy, g_xdnd_source, False, NoEventMask, &fin);
+    }
+    g_xdnd_source = None;
+}
+
 int main(int argc, char **argv) {
     /* REAL Stage 5 step 3/4 (2026-08-16, khtpm-merge-how2.md §5d.3) -
      * was <package_dir> <house_root> [x] [y] (house_root NOT first,
@@ -4787,6 +4931,10 @@ int main(int argc, char **argv) {
 
     XMapRaised(dpy, win);
     XSync(dpy, False);
+    /* 2026-08-24 - XDND drop-target opt-in (no-op unless this .chtpm
+     * declared a window-level drop_action= attribute). */
+    xdnd_init_atoms(dpy);
+    xdnd_attach_if_needed(dpy, win);
     /* override_redirect windows aren't given focus by the WM - grab it
      * ourselves so KeyPress nav works immediately (soft, matches the
      * legacy popup's own popup_soft_focus - RevertToPointerRoot so focus
@@ -4849,6 +4997,44 @@ int main(int argc, char **argv) {
                 buf8[n > 0 ? n : 0] = '\0';
                 handle_key(ks, buf8[0]);
                 if (!g_quit) redraw();
+            } else if (ev.type == SelectionNotify && g_xdnd_awaiting) {
+                /* 2026-08-24 - XDND drop data arrived; run drop_action
+                 * with $DROP_PATH set (window stays open - see the
+                 * g_drop_action block comment). */
+                g_xdnd_awaiting = 0;
+                xdnd_handle_selection(dpy, win);
+                if (!g_quit) redraw();
+            } else if (ev.type == ClientMessage && g_drop_action[0] &&
+                       (Atom)ev.xclient.message_type == ga_xdnd_enter) {
+                g_xdnd_source = (Window)ev.xclient.data.l[0];
+            } else if (ev.type == ClientMessage && g_drop_action[0] &&
+                       (Atom)ev.xclient.message_type == ga_xdnd_position &&
+                       g_xdnd_source != None) {
+                /* Answer Status immediately so the drag source shows an
+                 * accept cursor and is allowed to release here. */
+                XEvent st;
+                memset(&st, 0, sizeof(st));
+                st.xclient.type = ClientMessage;
+                st.xclient.window = g_xdnd_source;
+                st.xclient.message_type = ga_xdnd_status;
+                st.xclient.format = 32;
+                st.xclient.data.l[0] = (long)win;
+                st.xclient.data.l[1] = 1;              /* bit0: we accept */
+                st.xclient.data.l[2] = 0;              /* full-window rect */
+                st.xclient.data.l[3] = (long)ga_xdnd_action_copy;
+                st.xclient.data.l[4] = (long)ga_xdnd_action_copy;
+                XSendEvent(dpy, g_xdnd_source, False, NoEventMask, &st);
+            } else if (ev.type == ClientMessage && g_drop_action[0] &&
+                       (Atom)ev.xclient.message_type == ga_xdnd_leave) {
+                g_xdnd_source = None;
+            } else if (ev.type == ClientMessage && g_drop_action[0] &&
+                       (Atom)ev.xclient.message_type == ga_xdnd_drop &&
+                       g_xdnd_source != None) {
+                /* Request the uri-list payload; SelectionNotify above
+                 * finishes the handshake. */
+                XConvertSelection(dpy, ga_xdnd_selection, ga_uri_list,
+                                  ga_uri_list, win, (Time)ev.xclient.data.l[2]);
+                g_xdnd_awaiting = 1;
             } else if (ev.type == ClientMessage && (Atom)ev.xclient.data.l[0] == wm_delete) {
                 g_quit = 1;
             }

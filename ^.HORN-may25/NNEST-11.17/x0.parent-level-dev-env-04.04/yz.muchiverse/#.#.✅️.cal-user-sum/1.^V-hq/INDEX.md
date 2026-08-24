@@ -115,6 +115,7 @@ Stop here if you just need to know "what's going on."
 | File | Purpose | Update when |
 |---|---|---|
 | `INDEX.md` | This file — pure routing, no content | New doc added/removed |
+| `44.xyz❤️‍🔥️00.17/!.HOUSE_STDS.md` (house root) | **THE general house standards doc** ("from zero", §A–§K): CHTPM/PAL mechanics, session isolation/symlink ban, digit-dispatch, marker discipline, runtime-config-over-hardcode, rendering pipeline, CPU/testing discipline, widgets, 3D/raymarch, pitfalls F-18/F-19/#20/#21 (window focus/managed-window standards), §J two-parser-families warning, and **§K UI-authoring standards (2026-08-24): no hardcoded UIs ever (store→generated-artifact rule), context windows OLD vs NEW (`khtpm_entity_menu_render` is THE standard), generic renderer mechanisms (onClick open:/exec:, live reload) with honest port-status caveat, SHOW_PAGE chooser contract, bookmarks spec** | Whenever a standing house standard is set, corrected, or superseded |
 | `HANDOFF.md` | Living architecture + status snapshot, "hand this to a fresh agent" doc | Architecture changes, status changes |
 | `livedesk-dir-map.md` | Real, current directory map of everything meaningful to the livedesk toolbar (taskbar, the 5 merged window apps, `#.desktop/` runtime state, toys-cell targets, tile-picker test tooling, `xyzfs/`'s real current scope) - written 2026-08-17 to inform a real, still-undecided xyzfs migration question (only `muchi-pet`/`livedesk-clock` have moved into `xyzfs/bin/` so far; everything else, including mutaclysm/the taskbar, is still outside it) | When the directory structure meaningfully changes, or before deciding/acting on any xyzfs migration |
 | `legacy-shared-fix.md` | Separate leg of work from `khtpm-merge-how2.md`: consolidating all 16 legacy-GL projects' `system/`+`ops/` engine binaries. **AS OF 2026-08-17: `chtpm_parser_pal.c`/`prisc+x.c` consolidation is DONE - all 12 real participants (of 16 total; 4 have neither file) now on ONE shared baseline (`&.widgits/_shared-lib/system/`), see §3.10.** `chtpm_rgb_render.c` also consolidated (9 projects, §5c.7 in the other doc). `gl_mirror.c`→`x11_mirror.c` display-shim migration: 3 of 16 projects done (mutaclysm/piececraft-xyz/my-chara-txt), 13 remain - real, open work. Also covers a real mutaclysm interact-mode regression found+fixed post-consolidation (§3.11) and mutaclysm's own separate, deferred camera/3D work (§2.6, handed off to `opencode-mutafix-pie.md`). | Every time the remaining 13-project GL migration or mutaclysm's own deferred camera work advances |
@@ -137,6 +138,7 @@ Stop here if you just need to know "what's going on."
 | `_.0.aigent-testing-k9.txt` (house root, not au11-hq) | House-wide testing guide across ALL program families, with a 2026-08-11 khtpm-specific addendum at the bottom | When a testing mechanism is discovered/corrected for a NEW family |
 | `44.xyz❤️‍🔥️00.17/LINUX_ROUNDTRIP.md` | Linux return-leg status: Mach-O quarantine (76 files), house-wide recompile (44/44 PASS), manual rebuilds (treetRace, hm_assert, apply_theme_op), verification, livedesk smoke-test | When returning from macOS to Linux (or any roundtrip); read before relaunching |
 | `yz.muchiverse/ROUNDTRIP_FIX.md` | Concise fix log + re-run recipe for future roundtrips (purge Mach-O → compile-runner → manual extras → verify → relaunch) | When re-running the purge+rebuild recipe; includes rollback instructions |
+| `$.crypts/compile-runner.ps1` | Windows house-wide compile runner (PowerShell twin of compile-runner.sh). Finds every build.ps1 and runs each from its own directory. **Untested — needs Windows/MSYS2 verification.** | When compiling all projects on Windows natively (no WSL) |
 | `EVENTS-HQ-RGB-HANDOFF.md` | 2026-08-12 session handoff: db-hq focus fix, events-hq built+wired, RGB Phase 0 result, next-step plans | When events-hq/db-hq/RGB work resumes and this doc's own "next steps" get done |
 | `!.chtpm-render-dedup-guidance.md` (house root) | Deferred: `chtpm_rgb_render.c`/`chtpm_parser_pal.c` duplication across 22/28 dirs, NOT byte-identical (real per-app divergence) - investigation plan for whenever this becomes relevant, not urgent | Only when someone actually starts that dedup pass |
 | `HARNECIENT-H-AI-RELAY.md` | **HIGH PRIORITY + LOAD-BEARING** - approved design to wire the Harnecient mode (`HARNECIENT-HACK.md`) into h-ai as a CHOOSABLE model, then demo + bake in a lasting reproducible harness for the full loop: relay injection into the real h-ai window → non-tooled model (270m/1b/3B) → deterministic read/write/run → **real control of the livedesk taskbar state files** (`strip_var_tabs.txt`, `strip_state.txt`). 4 phases (model switcher → `BACKEND_HARNECIENT` backend path → relay demo → `relay-harness/` N/N proof), success criteria + risks + milestones all in the doc. | Before starting any h-ai model-switcher / Harnecient-mode / relay-harness work |
@@ -173,6 +175,11 @@ the same fact across files — link instead (`see HANDOFF.md §X`).
    game, i want u 2 use pallets, to make sure users can use it and that we have autonomous harnesses
    ready to sell." Palette population UI is on the 2do (Task 4) but not yet built — building it may
    be a prerequisite for the first demo game, not an afterthought.
+7. **No hardcoded UIs, ever** (2026-08-24): every window/menu/layout is DATA and a GENERATED
+   ARTIFACT of some store (`.ir.pdl`→pal, `bookmarks.pdl`→chtpm, `meta.pdl`→menu rows); extend
+   generic renderer mechanisms instead of adding domain branches to renderers. New UI work rides
+   the NEW context-window standard (`khtpm_entity_menu_render`), not bespoke windows. Full rule +
+   mechanics: `44.xyz❤️‍🔥️00.17/!.HOUSE_STDS.md` §K.
 
 ---
 
@@ -183,7 +190,7 @@ the same fact across files — link instead (`see HANDOFF.md §X`).
 | Leg | Status | Doc |
 |---|---|---|
 | Linux (canonical) | ✅ always current | `44.xyz❤️‍🔥️00.17/!.HOUSE_STDS.md` |
-| Windows | ✅ taskbar + entity windows live; queue in doc | `yz.muchiverse/8.21.GROK-win.md` |
+| Windows | ✅ taskbar + entity windows live; **compile-runner.ps1 + 33 build.ps1 generated** (needs Windows/MSYS2 verification) | `yz.muchiverse/8.21.GROK-win.md`, `$.crypts/compile-runner.ps1` |
 | macOS (return leg) | ✅ **ROUNDTRIP FIXED 2026-08-23** — 76 Mach-O binaries quarantined + house-wide recompile (44/44 PASS) + livedesk smoke-test passed | `44.xyz❤️‍🔥️00.17/LINUX_ROUNDTRIP.md`, `yz.muchiverse/ROUNDTRIP_FIX.md` |
 
 **The round-trip problem (bites EVERY Windows trip, caught 2026-08-22):** NTFS cannot store
@@ -209,7 +216,15 @@ on every pal, nothing on screen. Also check exec bits if only *some* things fail
 
 ---
 
-**Last updated:** 2026-08-23 (Linux return leg roundtrip fixed: 76 Mach-O binaries quarantined, house-wide recompile 44/44 PASS, livedesk smoke-test passed; full trail in `44.xyz❤️‍🔥️00.17/LINUX_ROUNDTRIP.md` + `yz.muchiverse/ROUNDTRIP_FIX.md`) by Kilo
+**Last updated:** 2026-08-24 (pinned the no-hardcoded-UIs standing rule + added Standing Rule 7 +
+Document Roles row for `!.HOUSE_STDS.md`; wrote new **§K UI-authoring standards** into
+`44.xyz❤️‍🔥️00.17/!.HOUSE_STDS.md`: store→generated-artifact rule, context windows OLD vs NEW
+(`khtpm_entity_menu_render` = THE standard, opt-in via `<pkg>/menu.chtpm`), generic hq-renderer
+mechanisms with honest caveat they currently live only in the stats-hq legacy binary
+(`khtpm_hq_render.c`, port to merged binary open), SHOW_PAGE chooser contract, bookmarks spec;
+also verified live db-hq launches the MERGED binary via `open_db_hq.sh`) by opencode (ox-alpha)
+
+**2026-08-23** (Linux return leg roundtrip fixed: 76 Mach-O binaries quarantined, house-wide recompile 44/44 PASS, livedesk smoke-test passed; full trail in `44.xyz❤️‍🔥️00.17/LINUX_ROUNDTRIP.md` + `yz.muchiverse/ROUNDTRIP_FIX.md`) by Kilo
 
 **2026-08-22** (macOS leg started + critical path LIVE: taskbar and all entity
 windows verified running under XQuartz on the Intel Mac via new `$.crypts/mac-start-livedesk.command`

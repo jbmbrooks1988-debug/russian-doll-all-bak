@@ -7,6 +7,9 @@
  *     NODE row to event.ir.pdl, recompiles event.pal fresh from it)
  *   7=Clear All Commands on This Page (wipe NODE rows; keep trigger;
  *     recompile empty event.pal; remove cmd_*.sh wrappers)
+ *   8=Save Show Text (Show Text parameter screen - appends type=
+ *     show_text NODE, recompiles, materializes msg_<id>.txt + wrapper)
+ *   9=Save Show Choices (same pattern; runtime op still pending)
  *   idle 0 = no-op
  *
  * KEY:n is injected as the ASCII digit char ('5'==53, not integer 5) —
@@ -102,6 +105,65 @@ static void bump(void) {
 
 static void set_msg(const char *state, const char *msg) {
     write_kv(state, "last_message", msg);
+}
+
+/* Event-EZ IR rows are one line per NODE, but authored Show Text may
+ * contain real newlines (cli_io Ctrl+J, same trick Show Choices
+ * documents). Store newlines escaped as literal "\n" two-char sequences
+ * (and fold '|' to ':' - the pipe is the row's own field separator);
+ * decode back at compile time when materializing msg_<id>.txt. */
+static void ir_escape(char *buf, size_t sz) {
+    char tmp[MAX_LINE];
+    size_t j = 0;
+    for (size_t i = 0; buf[i] && j + 2 < sizeof(tmp); i++) {
+        if (buf[i] == '\n') { tmp[j++] = '\\'; tmp[j++] = 'n'; }
+        else if (buf[i] == '\r') { /* drop */ }
+        else if (buf[i] == '|') { tmp[j++] = ':'; }
+        else tmp[j++] = buf[i];
+    }
+    tmp[j] = '\0';
+    snprintf(buf, sz, "%s", tmp);
+}
+
+static void ir_unescape(const char *in, char *out, size_t sz) {
+    size_t j = 0;
+    for (size_t i = 0; in[i] && j + 1 < sz; i++) {
+        if (in[i] == '\\' && in[i + 1] == 'n') { out[j++] = '\n'; i++; }
+        else out[j++] = in[i];
+    }
+    out[j] = '\0';
+}
+
+/* Greedy word-wrap at ~38 columns - matches the 40-col box aesthetic
+ * every event-ez screen already uses. khtpm_show_text.c's documented
+ * contract is "caller wraps, op does not reflow"; event-ez is now a
+ * real caller/author, so the wrap lives HERE (compile step), not in
+ * the shared op. Explicit \n in input is preserved as a hard break. */
+static void wrap38(const char *in, char *out, size_t sz) {
+    size_t j = 0;
+    int col = 0;
+    const char *p = in;
+    while (*p && j + 1 < sz) {
+        while (*p == ' ') p++;
+        if (!*p) break;
+        if (*p == '\n') { out[j++] = '\n'; col = 0; p++; continue; }
+        char word[256];
+        size_t w = 0;
+        while (*p && *p != ' ' && *p != '\n' && w + 1 < sizeof(word)) word[w++] = *p++;
+        word[w] = '\0';
+        if (col == 0) {
+            /* word longer than a line stays whole - no mid-word split */
+        } else if (col + 1 + (int)w <= 38) {
+            out[j++] = ' ';
+            col += 1;
+        } else {
+            out[j++] = '\n';
+            col = 0;
+        }
+        for (size_t k = 0; k < w && j + 1 < sz; k++) out[j++] = word[k];
+        col += (int)w;
+    }
+    out[j] = '\0';
 }
 
 int main(int argc, char **argv) {
@@ -508,6 +570,27 @@ int main(int argc, char **argv) {
         read_kv(gui, "ez_st_speaker", speaker, sizeof(speaker));
         if (!text[0]) { set_msg(state, "Save failed: enter message text"); bump(); return 0; }
 
+        /* Debounce via state file (ez_menu_input is a one-shot process -
+         * static vars do NOT persist across presses). Same double-KEY
+         * injection protection KEY:6 already needed. */
+        {
+            char last_txt[64] = "";
+            char last_t_s[32] = "";
+            read_kv(state, "last_st_text", last_txt, sizeof(last_txt));
+            read_kv(state, "last_st_time", last_t_s, sizeof(last_t_s));
+            time_t now = time(NULL);
+            time_t last_t = (time_t)atol(last_t_s);
+            if (last_txt[0] && strncmp(last_txt, text, sizeof(last_txt) - 1) == 0 && last_t > 0 && (now - last_t) < 2) {
+                set_msg(state, "Already saved that message — not adding again");
+                bump();
+                return 0;
+            }
+            char ts[32];
+            snprintf(ts, sizeof(ts), "%ld", (long)now);
+            write_kv(state, "last_st_text", text);
+            write_kv(state, "last_st_time", ts);
+        }
+
         char pkg_dir[PATH_BUF];
         read_kv(state, "pkg_dir", pkg_dir, sizeof(pkg_dir));
         if (!pkg_dir[0]) { set_msg(state, "Save failed: no pkg_dir set"); bump(); return 0; }
@@ -526,10 +609,23 @@ int main(int argc, char **argv) {
             }
             fclose(rf2);
         }
+        /* REAL FIX 2026-08-24: raw newlines from cli_io's Ctrl+J would
+         * corrupt the single-line NODE row format (and '|' would split
+         * fields). Escape both before the row is written; compile side
+         * decodes them back when materializing msg files. */
+        ir_escape(text, sizeof(text));
+        ir_escape(speaker, sizeof(speaker));
         FILE *af = fopen(ir_path, "a");
         if (!af) { set_msg(state, "Save failed: could not open event.ir.pdl"); bump(); return 0; }
         if (speaker[0]) {
-            fprintf(af, "NODE         | id=%d type=show_text | text=%s speaker=%s\n", next_id, text, speaker);
+            /* REAL FIX 2026-08-24: was "text=%s speaker=%s" - a SPACE
+             * separator. Every reader of these rows extracts text via
+             * strcspn("\r\n|") i.e. up to the PIPE (change_gold's own
+             * rows are pipe-separated too), so the speaker suffix leaked
+             * into the message body both here at save time and in the
+             * materialized msg file. Pipe-separate like every other
+             * multi-field NODE row. */
+            fprintf(af, "NODE         | id=%d type=show_text | text=%s | speaker=%s\n", next_id, text, speaker);
         } else {
             fprintf(af, "NODE         | id=%d type=show_text | text=%s\n", next_id, text);
         }
@@ -558,33 +654,71 @@ int main(int argc, char **argv) {
                     type_buf[len] = '\0';
                     if (strcmp(type_buf, "show_text") == 0) {
                         char *txtp = strstr(line, "text=");
-                        char txt[512] = "";
+                        char raw[512] = "", txt[512] = "";
                         if (txtp) {
-                            snprintf(txt, sizeof(txt), "%s", txtp + 5);
-                            txt[strcspn(txt, "\r\n|")] = '\0';
+                            snprintf(raw, sizeof(raw), "%s", txtp + 5);
+                            raw[strcspn(raw, "\r\n|")] = '\0';
                         }
+                        ir_unescape(raw, txt, sizeof(txt));
                         char *spkp = strstr(line, "speaker=");
-                        char spk[128] = "";
+                        char spk_raw[128] = "", spk[128] = "";
                         if (spkp) {
-                            snprintf(spk, sizeof(spk), "%s", spkp + 8);
-                            spk[strcspn(spk, "\r\n|")] = '\0';
+                            snprintf(spk_raw, sizeof(spk_raw), "%s", spkp + 8);
+                            spk_raw[strcspn(spk_raw, "\r\n|")] = '\0';
+                            ir_unescape(spk_raw, spk, sizeof(spk));
                         }
                         char *idp = strstr(line, "id=");
                         int node_id = idp ? atoi(idp + 3) : 1;
+
+                        /* REAL FIX 2026-08-24, root-caused by comparing
+                         * this compiler's output against mr_show_text.+x's
+                         * own argv contract ("<package_dir> <text_file>"):
+                         * the OLD wrapper baked the LITERAL message in as
+                         * arg2 - which the op realpath()s and fopen()s as
+                         * a PATH - so unless the author happened to type a
+                         * valid relative path, resolution failed and
+                         * nothing ever displayed. It also forwarded an
+                         * optional 3rd "speaker" arg the op has never
+                         * accepted, and single-quoted the text into sh
+                         * (any apostrophe silently broke the script).
+                         *
+                         * Real fix, matching the house's own visual-
+                         * compiler semantics (event.pal and cmd_N.sh are
+                         * ALWAYS regenerated artifacts of event.ir.pdl):
+                         * this compile step now also MATERIALIZES
+                         * msg_<id>.txt from the IR row - speaker name as
+                         * its own first line when present, body word-
+                         * wrapped at 38 cols per khtpm_show_text.c's
+                         * documented caller-wraps contract - and the
+                         * wrapper hands that FILE to the op. No user text
+                         * ever touches shell quoting again. */
+                        char msg_path[PATH_BUF], wrapped[MAX_LINE];
+                        wrap38(txt, wrapped, sizeof(wrapped));
+                        snprintf(msg_path, sizeof(msg_path), "%s/msg_%d.txt", page_dir, node_id);
+                        FILE *mf = fopen(msg_path, "w");
+                        if (mf) {
+                            if (spk[0]) fprintf(mf, "%s\n", spk);
+                            fputs(wrapped, mf);
+                            fputc('\n', mf);
+                            fclose(mf);
+                        }
                         char wrapper_path[PATH_BUF];
                         snprintf(wrapper_path, sizeof(wrapper_path), "%s/cmd_%d.sh", page_dir, node_id);
                         FILE *wf = fopen(wrapper_path, "w");
                         if (wf) {
                             fprintf(wf, "#!/bin/sh\n");
-                            fprintf(wf, "cd \"$(dirname \"$0\")/../../..\" || exit 1\n");
+                            /* Capture this script's own absolute dir BEFORE
+                             * cd - $0 may be relative to the pal file's
+                             * own dir and meaningless after it. Same depth
+                             * math as change_gold's wrapper: cmd_N.sh sits
+                             * at <entity>/event_pkg/pages/page_N/, three
+                             * levels up is the entity root. */
+                            fprintf(wf, "HERE=\"$(cd \"$(dirname \"$0\")\" && pwd)\"\n");
+                            fprintf(wf, "cd \"$HERE/../../..\" || exit 1\n");
                             fprintf(wf, "ENT=\"$PWD\"\n");
                             fprintf(wf, "D=\"$ENT\"\n");
                             fprintf(wf, "while [ \"$D\" != \"/\" ] && [ ! -d \"$D/xyzfs\" ]; do D=\"$(dirname \"$D\")\"; done\n");
-                            if (spk[0]) {
-                                fprintf(wf, "exec \"$D/*.monads/*.muchi-pet/ops/+x/mr_show_text.+x\" \"$ENT\" '%s' '%s'\n", txt, spk);
-                            } else {
-                                fprintf(wf, "exec \"$D/*.monads/*.muchi-pet/ops/+x/mr_show_text.+x\" \"$ENT\" '%s'\n", txt);
-                            }
+                            fprintf(wf, "exec \"$D/*.monads/*.muchi-pet/ops/+x/mr_show_text.+x\" \"$ENT\" \"$HERE/msg_%d.txt\"\n", node_id);
                             fclose(wf);
                             chmod(wrapper_path, 0755);
                         }

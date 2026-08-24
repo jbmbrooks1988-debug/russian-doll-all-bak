@@ -36,6 +36,7 @@
 #include <X11/Xatom.h>
 #include <X11/keysym.h>
 #include <X11/Xft/Xft.h> /* REAL FIX 2026-08-13: XftDrawStringUtf8 for UTF-8 */
+#include <sys/stat.h> /* tab_sprite() mtime re-check (2026-08-24, see below) */
 #else
 #include "khtpm_strip_x11_win.h"
 #endif
@@ -1367,6 +1368,7 @@ typedef struct {
     char path[SP_PATH_BUF];
     unsigned char *rgba; /* res * res * 4 */
     int res;
+    time_t mtime; /* csv's mtime at load - see invalidation in tab_sprite() */
 } TabSprite;
 static TabSprite g_sprite_cache[KTB_MAX_TABS];
 
@@ -1376,20 +1378,36 @@ static TabSprite *tab_sprite(const char *path) {
     snprintf(pth, sizeof(pth), "%s", path);
     size_t pl = strlen(pth);
     while (pl > 0 && (pth[pl - 1] == '\n' || pth[pl - 1] == '\r' || pth[pl - 1] == ' ' || pth[pl - 1] == '\t'))
-        pth[--pl] = '\0';
+        pth[--pl] = 0;
     if (!pth[0]) return NULL;
 #ifdef _WIN32
     for (char *q = pth; *q; q++) if (*q == '/') *q = '\\';
 #endif
-    for (int i = 0; i < KTB_MAX_TABS; i++) {
-        if (g_sprite_cache[i].rgba && strcmp(g_sprite_cache[i].path, pth) == 0) return &g_sprite_cache[i];
-    }
     char csv_path[SP_PATH_BUF];
 #ifdef _WIN32
     snprintf(csv_path, sizeof(csv_path), "%s\\sprite.csv", pth);
 #else
     snprintf(csv_path, sizeof(csv_path), "%s/sprite.csv", pth);
 #endif
+    /* Live fix 2026-08-24 ("cursword icon in toolbar is still books"): the
+     * cache was once-per-path forever, so swapping an entity's atlas/sprite.csv
+     * in place never refreshed the tab icon until a full taskbar restart.
+     * Re-stat the csv on every lookup and drop the cached slot when its mtime
+     * moved - cursword animation work rewrites these files in place. stat()
+     * per render per tab is trivial (KTB_MAX_TABS slots, one syscall). */
+    struct stat st;
+    time_t mt = 0;
+    if (stat(csv_path, &st) == 0) mt = st.st_mtime;
+    for (int i = 0; i < KTB_MAX_TABS; i++) {
+        if (g_sprite_cache[i].rgba && strcmp(g_sprite_cache[i].path, pth) == 0) {
+            if (mt != g_sprite_cache[i].mtime) {
+                free(g_sprite_cache[i].rgba);
+                memset(&g_sprite_cache[i], 0, sizeof(TabSprite));
+                break; /* fall through to reload below */
+            }
+            return &g_sprite_cache[i];
+        }
+    }
     FILE *f = fopen(csv_path, "r");
     if (!f) return NULL;
     char line[256];
@@ -1418,6 +1436,7 @@ static TabSprite *tab_sprite(const char *path) {
             snprintf(g_sprite_cache[i].path, sizeof(g_sprite_cache[i].path), "%s", pth);
             g_sprite_cache[i].rgba = pixels;
             g_sprite_cache[i].res = res;
+            g_sprite_cache[i].mtime = mt;
             return &g_sprite_cache[i];
         }
     }

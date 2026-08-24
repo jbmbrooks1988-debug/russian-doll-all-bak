@@ -43,7 +43,16 @@ MR_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 D="$MR_ROOT"
 HOUSE_ROOT=""
 while [ "$D" != "/" ]; do
-  if [ -d "$D"/101.mutaclsym*/system ] 2>/dev/null; then HOUSE_ROOT="$D"; break; fi
+  # REAL FIX (2026-08-24, cursword): the house root now has TWO dirs
+  # matching 101.mutaclsym* (+18.0G and 19.00), so the old unquoted-glob
+  # [ -d "$D"/101.mutaclsym*/system ] test expanded to TWO words -> bash
+  # "binary operator expected" (swallowed by 2>/dev/null) at EVERY level,
+  # and the upward walk fell off the top of the house: every Play click
+  # died with "could not locate house root". Iterate the matches instead;
+  # first dir actually containing a system/ wins - same intent as before.
+  for cand in "$D"/101.mutaclsym*/system; do
+    if [ -d "$cand" ]; then HOUSE_ROOT="$D"; break 2; fi
+  done
   D="$(dirname "$D")"
 done
 if [ -z "$HOUSE_ROOT" ]; then

@@ -18,6 +18,13 @@ The macOS leg rebuilt ~75 binaries as **Mach-O**. On Linux return these cannot e
 4. **Verification:** `find | file | grep Mach-O` → 0 remain. Spot-checked all critical paths (ELF confirmed).
 5. **Smoke test:** `sh $.crypts/button.sh reset` → 1 strip parser + 1 taskbar manager + 6 entities spawned (rc=0 each).
 
+## Windows compile coverage (2026-08-23)
+
+- **`$.crypts/compile-runner.ps1`** — PowerShell twin of the bash runner. Finds every `build.ps1` / `scripts/build.ps1` and runs each from its own directory. Writes `build-reports/<timestamp>/REPORT.md`.
+- **33 `build.ps1` generated** — auto-translated from the corresponding `build.sh` scripts for projects that were missing them. 5 projects already had native `.ps1` (wsr-pal, mutaclsym 19.00, aomorai-editor, piececraft-xyz, board-viewer).
+- **Syntax fixes applied post-generation:** `${CC:-gcc}` → PowerShell default, `@PKG_` placeholders expanded, broken Darwin guards removed.
+- **Needs Windows/MSYS2 verification:** these are untested translations. Known risk areas: `pkg-config` array-splat in PowerShell, path separator handling in copy loops, `$(pkg-config ...)` subexpression syntax. Verify on a real Windows machine before relying on them for production builds.
+
 ## Why the house-wide recompile script is the right tool
 
 - `$.crypts/compile-runner.sh` finds every `scripts/build.sh` and `ops/build_*.sh` in the house and runs each from its own directory.

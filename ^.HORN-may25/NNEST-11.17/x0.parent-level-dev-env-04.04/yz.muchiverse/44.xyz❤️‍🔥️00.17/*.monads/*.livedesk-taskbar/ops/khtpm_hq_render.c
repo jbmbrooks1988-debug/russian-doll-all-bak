@@ -736,8 +736,34 @@ static void layout_pass(Elem *window) {
  * items, then panel buttons). Must run AFTER layout_pass() so it walks
  * exactly what's currently visible (placeholder tabs have no sidebar/
  * panel children to number). */
+static void clear_nav_indices(Elem *e) {
+    if (!e) return;
+    e->nav_index = 0;
+    for (int i = 0; i < e->n_children; i++) clear_nav_indices(e->children[i]);
+}
+
+static void assign_generic_onclick_nav(Elem *e) {
+    if (!e || g_n_nav >= MAX_ELEMS) return;
+    if (e->onclick[0] && e != g_close_elem) {
+        e->nav_index = ++g_n_nav;
+        g_nav[g_n_nav - 1] = e;
+    }
+    for (int i = 0; i < e->n_children && g_n_nav < MAX_ELEMS; i++)
+        assign_generic_onclick_nav(e->children[i]);
+}
+
 static void assign_nav_indices(Elem *window) {
     g_n_nav = 0;
+    /* REAL BUG FIX 2026-08-24 ("event-commands still doesn't have
+     * nav"): this pass runs EVERY redraw(), and g_n_nav restarts at 0
+     * each time - but elements kept their PREVIOUS frame's nav_index,
+     * so db-hq's own unconditional renumbering worked while anything
+     * numbered ONLY by the generic pass below was silently skipped on
+     * every frame after the first (stale index != 0), leaving it out
+     * of g_nav[] entirely - arrows/Enter couldn't reach it and its
+     * badge showed a dead number. Fix: zero the whole tree first, then
+     * renumber from scratch every pass - same invariant wraith-alpha's
+     * own text-grid relayout follows. */
     /* Chrome close control is now LAST, not nav 1 (direct instruction,
      * 2026-08-12: "u can give close button last nav index if that
      * helps") - its "[>N]" badge is deliberately suppressed (see
@@ -773,6 +799,17 @@ static void assign_nav_indices(Elem *window) {
             }
         }
     }
+    /* 2026-08-24 - GENERIC nav pass: any element carrying its own
+     * onClick= becomes a numbered, Up/Down + digit-jump + Enter-
+     * activatable row (activate_elem() already dispatches onClick
+     * first, and draw_elem()'s badge/focus-ring branches are already
+     * generic on nav_index > 0). Same list-navigation UX as open-hai's
+     * chat-session rows, zero domain code - first consumer: bookmarks'
+     * directory entries. db-hq's own assignments above keep their
+     * indices/precedence; these append after, and the chrome close
+     * control deliberately stays LAST (its own direct-instruction rule
+     * above). */
+    assign_generic_onclick_nav(window);
     if (g_n_nav < MAX_ELEMS) {
         g_close_elem->nav_index = ++g_n_nav;
         g_nav[g_n_nav - 1] = g_close_elem;
@@ -931,7 +968,16 @@ static void draw_elem(Elem *e, int hover_id_hash) {
         label_x += numext.width + 5;
         XftFontClose(dpy, numfont);
     }
-    if (e->label[0]) {
+    if (e->label[0] || e == g_input_elem) {
+        /* Armed input field renders its live buffer (with caret) in
+         * place of its own label - the visible "[^]-armed typing"
+         * state, same convention as every nav row's glyph. */
+        const char *draw_label = e->label;
+        char ibuf[sizeof(g_input_buf) + 8];
+        if (e == g_input_elem) {
+            snprintf(ibuf, sizeof(ibuf), "> %s _", g_input_buf);
+            draw_label = ibuf;
+        }
         XftFont *font = font_for(&e->style);
         /* REAL FIX 2026-08-16, direct live report ("the black text in
          * header is no longer visble"): default text-color fallback
@@ -949,10 +995,10 @@ static void draw_elem(Elem *e, int hover_id_hash) {
          * backgrounds). */
         XftColor col = xft_color(e->style.has_fg_color ? e->style.fg_color : "#cccccc");
         XGlyphInfo extents;
-        XftTextExtentsUtf8(dpy, font, (const FcChar8 *)e->label, (int)strlen(e->label), &extents);
+        XftTextExtentsUtf8(dpy, font, (const FcChar8 *)draw_label, (int)strlen(draw_label), &extents);
         int ty = e->y + (e->h + font->ascent - font->descent) / 2;
         if (ty < e->y + font->ascent) ty = e->y + font->ascent + pad / 2;
-        XftDrawStringUtf8(xftdraw_buf, &col, font, label_x, ty, (const FcChar8 *)e->label, (int)strlen(e->label));
+        XftDrawStringUtf8(xftdraw_buf, &col, font, label_x, ty, (const FcChar8 *)draw_label, (int)strlen(draw_label));
         XftColorFree(dpy, DefaultVisual(dpy, screen), cmap, &col);
         /* font_for() now returns a cached, shared handle - do not close it. */
     }
@@ -1219,6 +1265,106 @@ static void open_in_editor(const char *name) {
     fclose(f);
 }
 
+/* ---------- generic data-driven actions + live layout reload ----------
+ * REAL, 2026-08-24 (bookmarks-hq, direct user rule: "shouldn't ever be
+ * hardcoded" - layouts/behavior targets belong to the .chtpm, never to
+ * this renderer's code). Two small generic mechanisms any HQML window
+ * can now use, db-hq's own behavior untouched:
+ *
+ *   1. onClick="open:<path>" / onClick="exec:<shell command>" - honored
+ *      for EVERY element carrying the attribute (the shared parser in
+ *      khtpm_render_core.c already captured it into Elem.onclick;
+ *      db-hq simply never read it before). Double-fork so a slow
+ *      xdg-open/script can never stall the render loop; the orphaned
+ *      grandchild is init-reaped, so no zombie bookkeeping here and
+ *      launch_module()'s own child handling is unaffected.
+ *
+ *   2. Layout live reload - the .chtpm is mtime-gated each tick (same
+ *      cheap pattern as load_common_events()); a regenerated layout
+ *      swaps into the running window without a respawn. Deliberately
+ *      does NOT relaunch the <module> child on reload. */
+
+static char g_chtpm_path[PATH_BUF];
+static time_t g_chtpm_mtime = 0;
+
+/* 2026-08-24 - GENERIC single-line text-input mechanism (direct
+ * instruction: "new+ should allow input from <cli-io>"). Any element
+ * whose onClick starts with "input:" is an input field instead of an
+ * instant action: Enter/digit/click ARMS it ([^] armed state, same
+ * glyph convention as every nav row), typed printable chars accumulate
+ * in place, BackSpace edits, Enter COMMITS and Escape cancels. Commit
+ * APPENDS the line to the file named after "input:" (everything up to
+ * an optional '|'), then - if a '|' post-command is present - runs it
+ * detached, exactly like exec: actions. Data-driven like every other
+ * mechanism here: no domain code in the renderer; the layout file
+ * declares both where the line lands and what fires afterwards.
+ * First consumer: bookmarks' New+ path entry (replaces zenity).
+ * Known v1 limits: ASCII typing only (no IME), no clipboard paste -
+ * drag-a-dir or relay injection cover exotic paths for now. */
+static Elem *g_input_elem = NULL;
+static char g_input_buf[256];
+
+static void input_disarm(void) {
+    g_input_elem = NULL;
+    g_input_buf[0] = '\0';
+}
+
+static void hq_run_detached(int is_open, const char *arg) {
+    pid_t mid = fork();
+    if (mid < 0) return;
+    if (mid == 0) {
+        pid_t gc = fork();
+        if (gc < 0) _exit(127);
+        if (gc == 0) {
+            setsid();
+            if (is_open) {
+                setenv("GDK_BACKEND", "x11", 1);
+                execlp("xdg-open", "xdg-open", arg, (char *)NULL);
+            } else {
+                execl("/bin/sh", "sh", "-c", arg, (char *)NULL);
+            }
+            _exit(127);
+        }
+        _exit(0);
+    }
+    waitpid(mid, NULL, 0);
+}
+
+static void free_tree(Elem *e) {
+    if (!e) return;
+    for (int i = 0; i < e->n_children; i++) free_tree(e->children[i]);
+    free(e);
+}
+
+static void reload_if_changed(void) {
+    struct stat st;
+    if (stat(g_chtpm_path, &st) != 0) return;
+    if (st.st_mtime == g_chtpm_mtime) return;
+    Elem *nw = parse_chtpm(g_chtpm_path);
+    if (!nw) return; /* half-written file mid-regen: keep old tree */
+    g_chtpm_mtime = st.st_mtime;
+
+    /* Same post-parse domain glue main() runs, but guarded - generic
+     * windows carry no sidebar/module and must not touch it. */
+    Elem *sb = find_by_tag(nw, "sidebar");
+    if (sb) {
+        load_common_events();
+        inject_sidebar_items(sb);
+        Elem *panel_text = find_by_tag(nw, "text");
+        if (panel_text && g_selected_event >= 0)
+            snprintf(panel_text->label, sizeof(panel_text->label), "%s", g_events[g_selected_event]);
+    }
+
+    Elem *old = g_window;
+    g_window = nw;
+    free_tree(old);
+    /* The old tree is gone - an in-progress input field pointed into
+     * it. Disarm rather than risk typing into freed memory (the user
+     * just re-Enters the field; nothing else to do). */
+    if (g_input_elem) { input_disarm(); }
+    redraw();
+}
+
 /* shared dispatch for both mouse clicks and keyboard index-activation
  * (Enter on the focused nav_index) - wraith-alpha's own convention is
  * that a numbered element behaves identically whichever input method
@@ -1227,6 +1373,27 @@ static void activate_elem(Elem *hit) {
     if (!hit) return;
     if (strcmp(hit->tag, "closebtn") == 0) {
         g_quit = 1;
+        return;
+    }
+    /* Generic data-driven actions first (see the mechanisms block above):
+     * an element with its own onClick handles itself straight from the
+     * layout file; db-hq's domain branches below only run for elements
+     * WITHOUT onclick. */
+    if (hit->onclick[0]) {
+        if (strncmp(hit->onclick, "input:", 6) == 0) {
+            /* input: fields ARM instead of running anything now -
+             * handle_key()'s armed branch owns every key until Enter/
+             * Escape (see the g_input_elem block comment). */
+            g_input_elem = hit;
+            g_input_buf[0] = '\0';
+            redraw();
+            return;
+        }
+        if (strncmp(hit->onclick, "open:", 5) == 0)
+            hq_run_detached(1, hit->onclick + 5);
+        else if (strncmp(hit->onclick, "exec:", 5) == 0)
+            hq_run_detached(0, hit->onclick + 5);
+        redraw();
         return;
     }
     if (strcmp(hit->tag, "tab") == 0) {
@@ -1270,6 +1437,57 @@ static void handle_click(int px, int py) {
  * convention): digits move focus live as they're typed (do_jump), Enter
  * activates the focused element, any other key resets the accumulator. */
 static void handle_key(KeySym ks, char ch) {
+    /* Armed input field owns EVERY key first - digits must type, not
+     * jump nav; 'p' must type, not dump a png (see g_input_elem block
+     * comment). */
+    if (g_input_elem) {
+        if (ks == XK_Escape) {
+            input_disarm();
+            redraw();
+            return;
+        }
+        if (ks == XK_Return || ks == XK_KP_Enter) {
+            const char *spec = g_input_elem->onclick + 6;
+            char target[PATH_BUF] = "";
+            char post[1024] = "";
+            const char *bar = strchr(spec, '|');
+            if (bar) {
+                size_t tl = (size_t)(bar - spec);
+                if (tl >= sizeof(target)) tl = sizeof(target) - 1;
+                memcpy(target, spec, tl);
+                snprintf(post, sizeof(post), "%s", bar + 1);
+            } else {
+                snprintf(target, sizeof(target), "%s", spec);
+            }
+            if (target[0]) {
+                FILE *f = fopen(target, "a");
+                if (f) { fprintf(f, "%s\n", g_input_buf); fclose(f); }
+            }
+            input_disarm();
+            g_digit_accum = 0;
+            if (post[0]) hq_run_detached(0, post);
+            redraw();
+            return;
+        }
+        if (ks == XK_BackSpace) {
+            size_t L = strlen(g_input_buf);
+            if (L > 0) {
+                L--;
+                while (L > 0 && (g_input_buf[L] & 0xC0) == 0x80) L--; /* utf8-safe chop */
+                g_input_buf[L] = '\0';
+            }
+            redraw();
+            return;
+        }
+        if (ch >= 32 && ch <= 126 && strlen(g_input_buf) < sizeof(g_input_buf) - 2) {
+            size_t L = strlen(g_input_buf);
+            g_input_buf[L] = ch;
+            g_input_buf[L + 1] = '\0';
+            redraw();
+            return;
+        }
+        return; /* swallow arrows/digits/etc while armed */
+    }
     if (ch == 'p') { dump_frame_png(); return; }
     if (ks == XK_Return || ks == XK_KP_Enter) {
         if (g_digit_accum > 0 && g_digit_accum <= g_n_nav) g_focus_nav = g_digit_accum;
@@ -1375,6 +1593,11 @@ int main(int argc, char **argv) {
     snprintf(g_house_root, sizeof(g_house_root), "%s", argv[1]);
     snprintf(g_events_state_path, sizeof(g_events_state_path), "%s/#.desktop/db_hq_common_events.state.txt", g_house_root);
     snprintf(g_action_path, sizeof(g_action_path), "%s/#.desktop/db_hq_action.txt", g_house_root);
+    snprintf(g_chtpm_path, sizeof(g_chtpm_path), "%s", argv[2]);
+    {
+        struct stat st;
+        g_chtpm_mtime = (stat(g_chtpm_path, &st) == 0) ? st.st_mtime : 0;
+    }
     signal(SIGTERM, handle_term_signal); /* see handle_term_signal()'s own header comment */
     signal(SIGINT, handle_term_signal);
 
@@ -1582,6 +1805,9 @@ int main(int argc, char **argv) {
          * relay() call before the select()). */
         if (poll_agent_relay() > 0 && !g_quit) redraw();
         if (g_quit) break;
+        /* Generic live layout reload (mtime-gated, cheap every tick) -
+         * see the mechanisms block above. */
+        reload_if_changed();
         /* Stage 2d shell/manager split: pick up khtpm_hq_manager.c's
          * latest common_events publish (mtime-gated, cheap every tick). */
         if (load_common_events()) {

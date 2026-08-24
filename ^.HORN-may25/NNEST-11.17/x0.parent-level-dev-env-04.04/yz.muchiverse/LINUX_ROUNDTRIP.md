@@ -120,3 +120,4 @@ Via `$.crypts/button.sh reset`:
 4. **Remaining ELF backlog** — ~300 non-desk-app binaries were already ELF and untouched; no action needed.
 5. **GL z-order** — deferred; X11 `_NET_WM_STATE_ABOVE` behavior unchanged from Mac findings (not Linux-specific).
 6. **Remove quarantine** once confidence is high: `rm -rf /tmp/opencode/macho-quarantine` (or keep as rollback snapshot for 1–2 sessions).
+7. **Windows compile coverage:** generated `compile-runner.ps1` + 33 missing `build.ps1` twins (5 projects already had them). All auto-generated from bash originals — needs Windows/MSYS2 verification before trusting. See `ROUNDTRIP_FIX.md` for the full list.

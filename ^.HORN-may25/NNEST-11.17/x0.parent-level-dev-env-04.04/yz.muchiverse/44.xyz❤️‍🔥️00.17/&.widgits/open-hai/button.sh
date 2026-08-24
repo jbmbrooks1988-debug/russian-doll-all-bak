@@ -47,7 +47,25 @@ mkdir -p "$AUDIT_DIR"
 # the "killing existing instance" line, then just vanish with no
 # further output and no launched process, because set -e killed it
 # right after the post-kill pgrep found zero remaining PIDs).
-open_hai_pids() { pgrep -f "khtpm_open_hai_render\.\+x" 2>/dev/null || true; }
+# SCOPED 2026-08-24 (cursword chat): this launcher now kills ONLY plain
+# instances - any render process carrying its own `--data-root` (a
+# per-instance chat, e.g. the cursword pal's own session history, run by
+# the SAME shared binary via chat_button.sh) is left alone, so
+# restarting plain open-hai no longer murders entity chats (and
+# chat_button.sh symmetrically only kills instances bound to ITS data
+# root). /proc cmdline is NUL-separated: join tokens with spaces before
+# the substring check.
+open_hai_pids() {
+    local p joined
+    for p in $(pgrep -f "khtpm_open_hai_render\.\+x" 2>/dev/null || true); do
+        joined="$(tr '\0' ' ' < "/proc/$p/cmdline" 2>/dev/null || true)"
+        case "$joined" in
+            *--data-root\ *) ;;   # per-instance chat - not ours to kill
+            *) echo "$p" ;;
+        esac
+    done
+    return 0
+}
 
 pids="$(open_hai_pids)"
 if [ -n "$pids" ]; then

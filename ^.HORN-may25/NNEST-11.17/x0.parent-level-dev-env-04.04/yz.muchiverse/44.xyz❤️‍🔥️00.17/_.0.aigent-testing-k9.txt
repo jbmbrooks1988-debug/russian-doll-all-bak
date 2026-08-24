@@ -679,3 +679,50 @@ under an otherwise-correct fix, and this never produces an error, only
 a stale/frozen visible output next to correctly-updating state files.
 
 End of testing guide.
+
+UPDATE 2026-08-24 - PER-ENTITY RELAYS (tp_desktop_window_rgb.+x entity windows)
+-------------------------------------------------------------------------------
+The taskbar relay above is not the only agent surface anymore. Every entity
+window spawned by the taskbar (ops/+x/tp_desktop_window_rgb.+x, one process
+per <pal>) polls its OWN relay file on its main tick:
+
+    <package_dir>/interact_relay.txt        (i.e. <pal>/interact_relay.txt)
+
+Same write-once/consumed-and-truncated contract as every other house relay
+(one command per line; first line wins per poll; file truncated after read;
+every consumption logs "INJECTED: <cmd>" to that pal's own history.txt).
+Find a live entity's package_dir via #.desktop/livedesk_open.txt
+(PID=..|INDEX=..|ENTITY=..|PATH=..).
+
+Command vocabulary is WIDER than the taskbar's bare-decimal codes - these are
+string commands (case-sensitive):
+    OPEN_CONTEXT          open the entity's right-click METHOD menu
+    RUN_METHOD:<label>    dispatch meta.pdl row by LABEL directly (no menu
+                          needed; e.g. RUN_METHOD:Dir, RUN_METHOD:Chat)
+    CLOSE                 clean window close (removes DESK row + registry entry)
+    RAISE                 XRaiseWindow only - raise-to-top IS the whole
+                          observable focus model for these override_redirect
+                          windows (see big comment at the RAISE branch)
+    FOCUS_NAV:<n>         move [>] highlight inside an OPEN menu, no activate
+    ACTIVATE_NAV:<n>      activate row claimed as nav number n in the OPEN menu
+    (bare decimal codes also work where the entity reads keys itself)
+
+HANDS-FREE MENU WORKFLOW (proved live 2026-08-24 driving cursword's Dir row
+end-to-end without any mouse/XTest):
+    1. echo "OPEN_CONTEXT" > <pal>/interact_relay.txt ; sleep ~1s
+    2. read #.desktop/livedesk-nav-claims/livedesk_nav_claims.txt - each open
+       menu claims a contiguous NAV range: KIND=row|PID=<pid>|NAV=<n>|ROW=<i>|
+       LABEL=<label>|PATH=<pal>. Base = min NAV for that PID.
+    3. echo "ACTIVATE_NAV:<base+row>" > <pal>/interact_relay.txt
+    Prefer RUN_METHOD:<label> when you just want an action without caring
+    about menu visuals - no claims-file step needed.
+
+FAMILY MAP (all three coexist; they do NOT substitute for each other):
+    - pieces/keyboard/history.txt   chtpm_parser_pal family ONLY, and ONLY in
+      the [TIMESTAMP] KEY_PRESSED: N format (wraith-alpha flavor)
+    - player_app-style history.txt  bare-decimal inject_raw_key() convention
+    - interact_relay.txt / livedesk_agent_relay.txt   raw-Xlib programs grown
+      their own polling loop (taskbar + all entity windows); strings or
+      decimals per that program's dispatcher
+Rule unchanged: before picking an injection method for a NEW target, verify
+which family the target actually belongs to - don't assume.

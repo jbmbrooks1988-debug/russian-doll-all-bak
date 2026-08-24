@@ -1505,12 +1505,37 @@ static void handle_request(void) {
 }
 
 int main(int argc, char **argv) {
-    if (argc < 2) { fprintf(stderr, "khtpm_open_hai_manager: usage: <house_root>\n"); return 1; }
+    if (argc < 2) { fprintf(stderr, "khtpm_open_hai_manager: usage: <house_root> [--data-root <dir>]\n"); return 1; }
     snprintf(g_house_root, sizeof(g_house_root), "%s", argv[1]);
-    snprintf(g_sessions_root, sizeof(g_sessions_root), "%s/&.widgits/open-hai/sessions", g_house_root);
-    snprintf(g_audit_dir, sizeof(g_audit_dir), "%s/%s", g_house_root, AUDIT_DIR_REL);
+    /* PER-INSTANCE DATA ROOT (2026-08-24, cursword chat): optional
+     * --data-root redirects sessions/state/audit to one self-contained dir
+     * (the calling entity pal's own chat/ dir) so a SECOND instance of this
+     * same shared binary can run next to plain open-hai with its OWN session
+     * history - same interface, same binary, separate data. Personas and the
+     * emoji tile registry stay house-shared on purpose (assets, not data).
+     * The render shell parses and forwards this exact flag via launch_module(). */
+    char data_root[PATH_BUF] = "";
+    for (int i = 2; i < argc; i++) {
+        if (strcmp(argv[i], "--data-root") == 0 && i + 1 < argc) {
+            snprintf(data_root, sizeof(data_root), "%s", argv[++i]);
+        }
+    }
+    if (data_root[0] == '/') {
+        snprintf(g_sessions_root, sizeof(g_sessions_root), "%s/sessions", data_root);
+    } else {
+        snprintf(g_sessions_root, sizeof(g_sessions_root), "%s/&.widgits/open-hai/sessions", g_house_root);
+    }
+    if (data_root[0] == '/') {
+        snprintf(g_audit_dir, sizeof(g_audit_dir), "%s/audit", data_root);
+    } else {
+        snprintf(g_audit_dir, sizeof(g_audit_dir), "%s/%s", g_house_root, AUDIT_DIR_REL);
+    }
     mkdir(g_audit_dir, 0755);
-    snprintf(g_state_dir, sizeof(g_state_dir), "%s/&.widgits/open-hai/state", g_house_root);
+    if (data_root[0] == '/') {
+        snprintf(g_state_dir, sizeof(g_state_dir), "%s/state", data_root);
+    } else {
+        snprintf(g_state_dir, sizeof(g_state_dir), "%s/&.widgits/open-hai/state", g_house_root);
+    }
     mkdir(g_state_dir, 0755);
     init_openrouter_key_path(); /* REAL START 2026-08-16 - see this file's own BACKEND_OPENROUTER header comment */
     init_tokenrouter_key_path();

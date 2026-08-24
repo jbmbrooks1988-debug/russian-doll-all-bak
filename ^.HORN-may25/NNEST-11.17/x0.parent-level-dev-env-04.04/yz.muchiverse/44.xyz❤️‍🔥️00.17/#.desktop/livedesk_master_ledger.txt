@@ -69,3 +69,4 @@
 [2026-08-21 22:36:30] ASSIGN INDEX=8 ENTITY=m1_ninjadragon PATH=xyzfs\users\0a9558a7-7c74-4358-833c-2d5b21edc421\home\livedesk\pals\m1_ninjadragon
 [2026-08-21 22:36:30] ASSIGN INDEX=9 ENTITY=asa PATH=xyzfs\users\0a9558a7-7c74-4358-833c-2d5b21edc421\home\livedesk\pals\asa
 [2026-08-21 22:36:30] ASSIGN INDEX=10 ENTITY=ava PATH=xyzfs\users\0a9558a7-7c74-4358-833c-2d5b21edc421\home\livedesk\pals\ava
+[2026-08-24 01:17:56] ASSIGN INDEX=11 ENTITY=cursword PATH=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/xyzfs/users/0a9558a7-7c74-4358-833c-2d5b21edc421/home/livedesk/pals/cursword

@@ -2168,7 +2168,10 @@ static int livedesk_build_hq_menu(const char *house_root, HQMenuItem *menu, int 
     char pdl[KTB_PATH_BUF];
     snprintf(pdl, sizeof(pdl), "%s/#.desktop/livedesk_taskbar.pdl", house_root);
     int count = 0;
-    for (int i = 1; i <= max && i <= 8; i++) {
+    /* cap raised 8 -> 9 for the cursword row (2026-08-24, AU24-oc-handon.md
+     * §4.4): the .pdl now defines 9 real rows (cancel moved last to 9), and
+     * the old hardcoded i<=8 silently dropped row 9 entirely. */
+    for (int i = 1; i <= max && i <= 9; i++) {
         char lkey[32], ckey[32];
         snprintf(lkey, sizeof(lkey), "hq_menu_%d_label", i);
         snprintf(ckey, sizeof(ckey), "hq_menu_%d_cmd", i);
@@ -2230,6 +2233,14 @@ static void livedesk_place_pal(const char *house_root, const char *name) {
     snprintf(mp, sizeof(mp), "%s/pal.pdl", pal);
     read_key_value(mp, "glyph", glyph, sizeof(glyph));
     int max_idx = -1, used[KTB_LIVEDESK_MAX_OPEN][2], n_used = 0;
+    /* Live bug 2026-08-24: a mouse-click (5000+row) and a relay digit+Enter
+     * racing the same spawn both passed the open-registry check and each
+     * appended a DESK row - this function had no dedupe at all. A pal is one
+     * desktop instance: if its row is already on this desk, reuse that row's
+     * own grid slot/pos, skip ONLY the append, and still run everything below
+     * (desktop_pos.txt refresh + entity launch - a fresh spawn after a crash
+     * or manual close must still come up even though its old row persists). */
+    int have_dup = 0, dup_x = 0, dup_y = 0, dup_gx = 0, dup_gy = 0;
     FILE *f = fopen(dp, "r");
     if (f) {
         char line[KTB_PATH_BUF * 2];
@@ -2251,6 +2262,13 @@ static void livedesk_place_pal(const char *house_root, const char *name) {
                 }
             }
             int idx = tok[7] ? atoi(tok[7]) : -1;
+            if (!have_dup && tok[1] && strcmp(tok[1], prel) == 0) {
+                have_dup = 1;
+                dup_x = tok[2] ? atoi(tok[2]) : 0;
+                dup_y = tok[3] ? atoi(tok[3]) : 0;
+                dup_gx = tok[4] ? atoi(tok[4]) : 0;
+                dup_gy = tok[5] ? atoi(tok[5]) : 0;
+            }
             if (idx > max_idx) max_idx = idx;
             if (tok[4] && tok[5] && n_used < KTB_LIVEDESK_MAX_OPEN) {
                 used[n_used][0] = atoi(tok[4]);
@@ -2271,11 +2289,16 @@ static void livedesk_place_pal(const char *house_root, const char *name) {
     gx--; gy--;
     int idx = max_idx + 1;
     int x = gx * KTB_LIVEDESK_GRID_PX, y = gy * KTB_LIVEDESK_GRID_PX;
-    FILE *w = fopen(dp, "a");
-    if (w) {
-        fprintf(w, "DESK | %s | %s | %d | %d | %d | %d | %s | %d\n",
-                name, prel, x, y, gx, gy, glyph, idx);
-        fclose(w);
+    if (have_dup) {
+        /* Row already on this desk - keep its exact slot, no second row. */
+        x = dup_x; y = dup_y; gx = dup_gx; gy = dup_gy;
+    } else {
+        FILE *w = fopen(dp, "a");
+        if (w) {
+            fprintf(w, "DESK | %s | %s | %d | %d | %d | %d | %s | %d\n",
+                    name, prel, x, y, gx, gy, glyph, idx);
+            fclose(w);
+        }
     }
     char posp[KTB_PATH_BUF];
     snprintf(posp, sizeof(posp), "%s/desktop_pos.txt", pal);
@@ -3192,6 +3215,59 @@ void ktb_hq_activate(KtbState *s, int row) {
         livedesk_place_pal(s->house_root, m->command + 13);
         /* §4.9 (mirrored): keep the pals popup open so several pals can be
          * placed in a row - only Esc/cancel closes it. */
+    } else if (strcmp(m->command, "livedesk:spawn-cursword") == 0) {
+        /* CURSword personal-assistant entity (AU24-oc-handon.md §4.4),
+         * HQ-menu row "cursword" (#.desktop/livedesk_taskbar.pdl
+         * hq_menu_8_*). First click: copy the template entity
+         * (<house_root>/*.monads/*.cursword/entities/cursword - house-
+         * relative literal star-dir path, same convention as every other
+         * *.monads/*. reference in this file, no absolute paths) into the
+         * logged-in user's pals root, then place/spawn on the active desk
+         * via the exact same livedesk_place_pal() path the pals cell uses
+         * (DESK row append + livedesk_index assignment + desktop_pos.txt +
+         * tp_desktop_window_rgb spawn all inherited, nothing new invented).
+         *
+         * SINGLE-INSTANCE (direct instruction 2026-08-24: "clicking
+         * cursword shouldn't create a double. should only allow open of
+         * the 1 , or focus too"): a re-click while an instance is already
+         * open NEVER places again - it detects the live instance through
+         * the house-standard open-entities registry (livedesk_read_open(),
+         * which already filters dead PIDs) and writes RAISE into the
+         * entity's own interact_relay.txt; the running entity window
+         * raises itself to the top of the stack (see RAISE handling in
+         * tp_desktop_window_rgb.c's relay poll). Relay-only action, no
+         * new IPC, no Xlib here (this manager is deliberately pure
+         * logic). */
+        char pr[KTB_PATH_BUF];
+        if (livedesk_pals_root(s->house_root, pr, sizeof(pr))) {
+            char pal[KTB_PATH_BUF];
+            snprintf(pal, sizeof(pal), "%s/cursword", pr);
+            if (access(pal, F_OK) != 0) {
+                char tpl[KTB_PATH_BUF];
+                snprintf(tpl, sizeof(tpl), "%s/*.monads/*.cursword/entities/cursword", s->house_root);
+                if (access(tpl, F_OK) == 0)
+                    livedesk_copy_full(tpl, pal);
+            }
+            if (access(pal, F_OK) == 0) {
+                int pids[KTB_LIVEDESK_MAX_OPEN], idxs[KTB_LIVEDESK_MAX_OPEN];
+                char ents[KTB_LIVEDESK_MAX_OPEN][128];
+                char paths[KTB_LIVEDESK_MAX_OPEN][KTB_PATH_BUF];
+                int n = livedesk_read_open(s->house_root, pids, ents, paths, idxs, KTB_LIVEDESK_MAX_OPEN);
+                int already_open = 0;
+                for (int i = 0; i < n; i++) {
+                    if (strcmp(ents[i], "cursword") == 0) { already_open = 1; break; }
+                }
+                if (already_open) {
+                    char rp[KTB_PATH_BUF];
+                    snprintf(rp, sizeof(rp), "%s/interact_relay.txt", pal);
+                    FILE *w = fopen(rp, "w");
+                    if (w) { fputs("RAISE\n", w); fclose(w); }
+                } else {
+                    livedesk_place_pal(s->house_root, "cursword");
+                }
+            }
+        }
+        ktb_hq_close(s);
     } else if (strcmp(m->command, "livedesk:db-ez-sections") == 0) {
         /* db cell's "db-ez" row - drill into the 14-section list
          * (todo-a12.txt Phase A). */

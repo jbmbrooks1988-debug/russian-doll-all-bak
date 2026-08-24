@@ -101,7 +101,7 @@ static void read_pdl_value(const char *path, const char *key, char *out, size_t 
  * filename, read back via current_layout.txt" trick current_page_number()
  * already proves), so this reads current_layout.txt ONCE and classifies
  * which of 3 real screen kinds is active. */
-typedef enum { SCREEN_GALLERY, SCREEN_PAGE, SCREEN_CMDPICK, SCREEN_CMD_CHANGE_GOLD } ScreenKind;
+typedef enum { SCREEN_GALLERY, SCREEN_PAGE, SCREEN_CMDPICK, SCREEN_CMD_CHANGE_GOLD, SCREEN_CMD_SHOW_TEXT, SCREEN_CMD_SHOW_CHOICES } ScreenKind;
 
 static ScreenKind current_screen_kind(int *page_n_out) {
     char path[PATH_BUF];
@@ -117,6 +117,15 @@ static ScreenKind current_screen_kind(int *page_n_out) {
             *page_n_out = atoi(p + 5);
             if (strstr(line, "_cmdpick")) kind = SCREEN_CMDPICK;
             else if (strstr(line, "_cmd_change_gold")) kind = SCREEN_CMD_CHANGE_GOLD;
+            /* REAL FIX 2026-08-24: _cmd_show_text/_cmd_show_choices used
+             * to fall through to SCREEN_PAGE, so every compose tick while
+             * on those parameter screens overwrote view.txt with the
+             * PAGE screen's compose (the param layout file itself was
+             * never regenerated either). Classify them like Change
+             * Gold's own screen - static .chtpm, no per-tick view
+             * rewrite (see main()'s dispatch comment below). */
+            else if (strstr(line, "_cmd_show_text")) kind = SCREEN_CMD_SHOW_TEXT;
+            else if (strstr(line, "_cmd_show_choices")) kind = SCREEN_CMD_SHOW_CHOICES;
             else kind = SCREEN_PAGE;
         }
     }
@@ -163,12 +172,13 @@ static void write_page_layout(const char *layouts_dir, int n) {
 }
 
 /* Real, shared Command Picker screen for page N - lists real command
- * TYPES this house's own event.pal actually supports (currently just
- * Change Gold - Show Choices is a real, planned follow-up, not listed
- * yet so there's no dead/non-functional button). Picking one navigates
- * straight to that type's own Parameter screen for THIS page (plain
- * href, page number carried in the target filename, same trick every
- * other screen here already uses). */
+ * TYPES this house's own event.pal actually supports (Change Gold,
+ * Show Text - each has a real op binary and a real compile branch; Show
+ * Choices is a real, planned follow-up, not listed yet so there's no
+ * dead/non-functional button). Picking one navigates straight to that
+ * type's own Parameter screen for THIS page (plain href, page number
+ * carried in the target filename, same trick every other screen here
+ * already uses). */
 static void write_cmdpick_layout(const char *layouts_dir, int n) {
     char path[PATH_BUF];
     snprintf(path, sizeof(path), "%s/event_ez_page_%d_cmdpick.chtpm", layouts_dir, n);
@@ -183,10 +193,43 @@ static void write_cmdpick_layout(const char *layouts_dir, int n) {
         "    <text label=\"+==========================================+\" /><br/>\n"
         "    <text label=\"Choose a command type (RMMV-style list).\" /><br/>\n"
         "    <text label=\"Only working types are listed.\" /><br/>\n"
+        "    <button label=\"Show Text...\" href=\"pieces/chtpm/layouts/event_ez_page_%d_cmd_show_text.chtpm\" /><br/>\n"
         "    <button label=\"Change Gold...\" href=\"pieces/chtpm/layouts/event_ez_page_%d_cmd_change_gold.chtpm\" /><br/>\n"
         "    <button label=\"< Back\" href=\"pieces/chtpm/layouts/event_ez_page_%d.chtpm\" /><br/>\n"
         "</panel>\n",
-        n, n, n);
+        n, n, n, n);
+    fclose(f);
+}
+
+/* Real Show Text parameter screen for page N - literal message text plus
+ * optional speaker name. Save is KEY:8 (see ez_menu_input.c): appends a
+ * type=show_text NODE row to event.ir.pdl, recompiles event.pal fresh,
+ * materializes msg_<id>.txt (speaker line first, word-wrapped body) and
+ * a cmd_<id>.sh wrapper that hands the msg file to the shared
+ * mr_show_text.+x op. */
+static void write_cmd_show_text_layout(const char *layouts_dir, int n) {
+    char path[PATH_BUF];
+    snprintf(path, sizeof(path), "%s/event_ez_page_%d_cmd_show_text.chtpm", layouts_dir, n);
+    FILE *f = fopen(path, "w");
+    if (!f) return;
+    fprintf(f,
+        "<panel time_reactive=\"true\">\n"
+        "    <module>system/prisc+x pal/main_loop_chtpm.pal</module>\n"
+        "    <interact src=\"pieces/apps/player_app/interact_relay.txt\" />\n"
+        "    <text label=\"+==========================================+\" /><br/>\n"
+        "    <text label=\"| Show Text (page %d)                      |\" /><br/>\n"
+        "    <text label=\"+==========================================+\" /><br/>\n"
+        "    <text label=\"Show a message box to the player when\" /><br/>\n"
+        "    <text label=\"this event page runs.\" /><br/>\n"
+        "    <text label=\"HOW TO: Enter on field, type message,\" /><br/>\n"
+        "    <text label=\"Esc when done, then OK to save.\" /><br/>\n"
+        "    <cli_io id=\"ez_st_text\" label=\"Message text\" target_id=\"ez_st_text\" /><br/>\n"
+        "    <cli_io id=\"ez_st_speaker\" label=\"Speaker name (optional)\" target_id=\"ez_st_speaker\" /><br/>\n"
+        "    <button label=\"OK — Save Command\" onClick=\"KEY:8\" /><br/>\n"
+        "    <button label=\"< Back\" href=\"pieces/chtpm/layouts/event_ez_page_%d.chtpm\" /><br/>\n"
+        "    <text label=\"${last_message}\" /><br/>\n"
+        "</panel>\n",
+        n, n);
     fclose(f);
 }
 
@@ -334,21 +377,48 @@ static void build_command_list_rows(const char *pkg_dir, int page_n, char *rows_
             if (len >= sizeof(type_buf)) len = sizeof(type_buf) - 1;
             memcpy(type_buf, t, len);
             type_buf[len] = '\0';
-            if (strcmp(type_buf, "change_gold") != 0) continue; /* trigger/ret bookkeeping rows, skip */
-            char *ap = strstr(line, "amount=");
-            char amount[32] = "";
-            if (ap) {
-                snprintf(amount, sizeof(amount), "%s", ap + 7);
-                amount[strcspn(amount, "\r\n|")] = '\0';
+            if (strcmp(type_buf, "change_gold") == 0) {
+                char *ap = strstr(line, "amount=");
+                char amount[32] = "";
+                if (ap) {
+                    snprintf(amount, sizeof(amount), "%s", ap + 7);
+                    amount[strcspn(amount, "\r\n|")] = '\0';
+                }
+                shown++;
+                char label[96], clean[96];
+                snprintf(label, sizeof(label), "• Change Gold: %s", amount[0] ? amount : "?");
+                sanitize(label, clean, sizeof(clean));
+                int wrote = snprintf(rows_out + used, rows_out_sz - used,
+                                      "<text label=\"%s\" /><br/>", clean);
+                if (wrote < 0 || (size_t)wrote >= rows_out_sz - used) break;
+                used += (size_t)wrote;
+            } else if (strcmp(type_buf, "show_text") == 0) {
+                /* REAL FIX 2026-08-24: type=show_text NODE rows existed in
+                 * IR but were silently skipped here, so a saved Show Text
+                 * never appeared in the page's own command list. Render
+                 * first-line preview like Change Gold's row does. */
+                char *xp = strstr(line, "text=");
+                char txt[256] = "";
+                if (xp) {
+                    snprintf(txt, sizeof(txt), "%s", xp + 5);
+                    txt[strcspn(txt, "\r\n|")] = '\0';
+                }
+                /* collapse escaped newlines for the one-line preview */
+                for (char *q = txt; *q; q++) {
+                    if (q[0] == '\\' && q[1] == 'n') { q[0] = ' '; q[1] = ' '; }
+                }
+                shown++;
+                char label[128], clean[128];
+                snprintf(label, sizeof(label), "• Show Text: %.44s%s",
+                         txt, strlen(txt) > 44 ? "…" : "");
+                sanitize(label, clean, sizeof(clean));
+                int wrote = snprintf(rows_out + used, rows_out_sz - used,
+                                      "<text label=\"%s\" /><br/>", clean);
+                if (wrote < 0 || (size_t)wrote >= rows_out_sz - used) break;
+                used += (size_t)wrote;
+            } else {
+                continue; /* trigger/ret bookkeeping rows, skip */
             }
-            shown++;
-            char label[96], clean[96];
-            snprintf(label, sizeof(label), "• Change Gold: %s", amount[0] ? amount : "?");
-            sanitize(label, clean, sizeof(clean));
-            int wrote = snprintf(rows_out + used, rows_out_sz - used,
-                                  "<text label=\"%s\" /><br/>", clean);
-            if (wrote < 0 || (size_t)wrote >= rows_out_sz - used) break;
-            used += (size_t)wrote;
         }
         fclose(irf);
     }
@@ -378,6 +448,10 @@ static void compose_gallery(const char *state, const char *view, const char *gui
         write_page_layout(layouts_dir, i);
         write_cmdpick_layout(layouts_dir, i);
         write_cmd_change_gold_layout(layouts_dir, i);
+        /* REAL, 2026-08-24: generate the Show Text parameter screen too -
+         * previously only its stale hand-made page_1 file existed on
+         * disk and the picker never linked to it. */
+        write_cmd_show_text_layout(layouts_dir, i);
         char page_cmd_rows[4096];
         build_command_list_rows(pkg_dir, i, page_cmd_rows, sizeof(page_cmd_rows));
         int kv_wrote = snprintf(cmd_rows_kv_out + kv_used, cmd_rows_kv_out_sz - kv_used,
