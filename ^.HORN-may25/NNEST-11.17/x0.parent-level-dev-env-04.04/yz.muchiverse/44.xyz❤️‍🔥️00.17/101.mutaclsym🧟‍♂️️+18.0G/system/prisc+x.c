@@ -131,15 +131,15 @@ void handle_sigint(int sig) {
 #define MEM_SIZE 4096
 #define STRING_POOL_START 0xF00
 
-typedef enum { OP_ADDI, OP_BEQ, OP_LW, OP_SW, OP_JALR, OP_J, OP_HALT, OP_CUSTOM, OP_READ_HISTORY, OP_EXEC, OP_HIT_FRAME, OP_READ_STATE, OP_READ_ACTIVE_TARGET, OP_READ_ENV_KEY, OP_SLEEP, OP_READ_LAYOUT, OP_READ_POS, OP_ECALL } OpBase;
+typedef enum { OP_ADDI, OP_BEQ, OP_BNE, OP_LW, OP_SW, OP_JALR, OP_J, OP_HALT, OP_CUSTOM, OP_READ_HISTORY, OP_EXEC, OP_HIT_FRAME, OP_READ_STATE, OP_READ_ACTIVE_TARGET, OP_READ_ENV_KEY, OP_SLEEP, OP_READ_LAYOUT, OP_READ_POS, OP_ECALL } OpBase;
 
 typedef struct {
     OpBase op;
     int rd, rs1, rs2, imm;
     char label_ref[32];
     char custom_name[32];
-    char literal_arg[256];
-    char literal_arg2[256];
+    char literal_arg[1024];
+    char literal_arg2[1024];
 } Inst;
 
 typedef struct {
@@ -339,8 +339,9 @@ int is_variable_line(char *line) {
 }
 
 void parse_line(char *line, int pass) {
-    char original[128];
-    strncpy(original, line, 127);
+    char original[1024];
+    strncpy(original, line, sizeof(original) - 1);
+    original[sizeof(original) - 1] = '\0';
     trim(line);
     
     if (line[0] == '#' || line[0] == '\0') return;
@@ -402,7 +403,12 @@ void parse_line(char *line, int pass) {
                     i->rs1 = reg;
                 }
             } else {
-                /* Check for literal (quoted string or single word) */
+                /* Check for literal (quoted string or single word).
+                 * Support two quoted args: OP my_op "arg1" "arg2" —
+                 * first goes to literal_arg, second to literal_arg2.
+                 * This mirrors ecall's own two-arg parsing (line 626)
+                 * and lets custom ops like call_event receive both a
+                 * target name and a trigger without register hacks. */
                 char *quote = strchr(args, '"');
                 if (quote) {
                     quote++;
@@ -412,6 +418,20 @@ void parse_line(char *line, int pass) {
                         if (len > 255) len = 255;
                         strncpy(i->literal_arg, quote, len);
                         i->literal_arg[len] = '\0';
+                        /* Look for optional second quoted arg after first */
+                        char *after_q = end_q + 1;
+                        while (*after_q == ' ' || *after_q == '\t') after_q++;
+                        char *quote2 = strchr(after_q, '"');
+                        if (quote2) {
+                            quote2++;
+                            char *end_q2 = strchr(quote2, '"');
+                            if (end_q2) {
+                                int len2 = end_q2 - quote2;
+                                if (len2 > 255) len2 = 255;
+                                strncpy(i->literal_arg2, quote2, len2);
+                                i->literal_arg2[len2] = '\0';
+                            }
+                        }
                     }
                 } else {
                     /* Single arg: move_player x1 or move_player hero */
@@ -430,7 +450,8 @@ void parse_line(char *line, int pass) {
                         i->rs1 = reg;
                     } else {
                         /* Treat as literal piece name/arg */
-                        strncpy(i->literal_arg, arg_copy, 255);
+                        strncpy(i->literal_arg, arg_copy, 1023);
+                        i->literal_arg[1023] = '\0';
                     }
                 }
             }
@@ -593,6 +614,11 @@ void parse_line(char *line, int pass) {
             if (sscanf(line, "%*s r%d, r%d, %s", &r_rs1, &r_rs2, i->label_ref) == 3) { i->rs1 = r_rs1; i->rs2 = r_rs2; }
             else if (sscanf(line, "%*s x%d, x%d, %s", &i->rs1, &i->rs2, i->label_ref) == 3) {}
             i->op = OP_BEQ;
+        } else if (strcmp(part, "bne") == 0) {
+            int r_rs1, r_rs2;
+            if (sscanf(line, "%*s r%d, r%d, %s", &r_rs1, &r_rs2, i->label_ref) == 3) { i->rs1 = r_rs1; i->rs2 = r_rs2; }
+            else if (sscanf(line, "%*s x%d, x%d, %s", &i->rs1, &i->rs2, i->label_ref) == 3) {}
+            i->op = OP_BNE;
         } else if (strcmp(part, "li") == 0) {
             /* li rd, imm -> addi rd, x0, imm */
             int r_rd;
@@ -622,8 +648,8 @@ void parse_line(char *line, int pass) {
              * registers, carry these operations' string data. */
             char *args = strstr(original, part) + strlen(part);
             while (*args == ' ' || *args == '\t') args++;
-            if (sscanf(args, "\"%255[^\"]\" \"%255[^\"]\"", i->literal_arg, i->literal_arg2) != 2) {
-                sscanf(args, "\"%255[^\"]\"", i->literal_arg);
+            if (sscanf(args, "\"%1023[^\"]\" \"%1023[^\"]\"", i->literal_arg, i->literal_arg2) != 2) {
+                sscanf(args, "\"%1023[^\"]\"", i->literal_arg);
             }
             i->op = OP_ECALL;
         }
@@ -864,17 +890,42 @@ void exec_custom_op(Inst *i) {
                     fclose(rf);
                 }
             } else {
-                /* Pass literal arg if present, else pass register value */
+                /* Pass literal args if present, else pass register value.
+                 * If literal_arg2 is set (OP my_op "arg1" "arg2"), pass
+                 * both as separate shell arguments — mirrors ecall's own
+                 * two-path/ two-key contract (SYS_GET_KV_INT etc). */
+                int has_arg2 = strlen(i->literal_arg2) > 0;
+
+                /* For call_event, ensure MUCHI_CALLER_PKG is visible to
+                 * the child process.  play_event.sh sets it before
+                 * invoking prisc+x, so it's already in our environment;
+                 * system()/popen() inherit it.  No extra work needed here
+                 * — just pass both literal args through. */
+
                 if (strlen(i->literal_arg) > 0) {
-                    if (asprintf(&cmd, "%s \"%s\"",
-                             full_script_path, i->literal_arg) != -1) {
-                        FILE *pipe = popen(cmd, "r");
-                        if (pipe) {
-                            char result[256];
-                            while (fgets(result, sizeof(result), pipe)) printf("%s", result);
-                            pclose(pipe);
+                    if (has_arg2) {
+                        if (asprintf(&cmd, "%s \"%s\" \"%s\"",
+                                 full_script_path, i->literal_arg,
+                                 i->literal_arg2) != -1) {
+                            FILE *pipe = popen(cmd, "r");
+                            if (pipe) {
+                                char result[256];
+                                while (fgets(result, sizeof(result), pipe)) printf("%s", result);
+                                pclose(pipe);
+                            }
+                            free(cmd);
                         }
-                        free(cmd);
+                    } else {
+                        if (asprintf(&cmd, "%s \"%s\"",
+                                 full_script_path, i->literal_arg) != -1) {
+                            FILE *pipe = popen(cmd, "r");
+                            if (pipe) {
+                                char result[256];
+                                while (fgets(result, sizeof(result), pipe)) printf("%s", result);
+                                pclose(pipe);
+                            }
+                            free(cmd);
+                        }
                     }
                 } else {
                     if (asprintf(&cmd, "%s %d",
@@ -888,6 +939,7 @@ void exec_custom_op(Inst *i) {
                         free(cmd);
                     }
                 }
+
             }
             free(full_script_path);
         }
@@ -1145,6 +1197,13 @@ int main(int argc, char **argv) {
                     for (int l = 0; l < label_count; l++)
                         if (strcmp(labels[l].name, i.label_ref) == 0) target = labels[l].addr;
                     if (regs[i.rs1] == regs[i.rs2]) next_pc = target;
+                    break;
+                }
+                case OP_BNE: {
+                    int target = -1;
+                    for (int l = 0; l < label_count; l++)
+                        if (strcmp(labels[l].name, i.label_ref) == 0) target = labels[l].addr;
+                    if (regs[i.rs1] != regs[i.rs2]) next_pc = target;
                     break;
                 }
                 case OP_J: {

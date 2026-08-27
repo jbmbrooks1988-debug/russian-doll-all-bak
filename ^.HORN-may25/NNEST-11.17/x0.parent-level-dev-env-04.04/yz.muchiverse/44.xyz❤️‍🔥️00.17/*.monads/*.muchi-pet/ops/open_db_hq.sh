@@ -104,6 +104,14 @@ fi
 
 setsid nohup "$BIN" "$HOUSE_ROOT" "$CHTPM" \
     >/tmp/db-hq.log 2>&1 < /dev/null &
+# REAL FIX 2026-08-25 (au11-hq direct request: "why cant u write that
+# final pid to a file and reconsume it?") - the taskbar's own
+# ktb_system_recorded() wrapper only sees the PID of the setsid'd
+# `open_db_hq.sh` INVOCATION itself (this whole script), not the real
+# window binary it launches here - THIS script's own $! (the actual
+# `$BIN` process, its own real session/group leader since it's re-
+# setsid'd right above) is the one the kill-switch actually needs.
+echo $! >> "$HOUSE_ROOT/#.desktop/livedesk_launched_pids.txt" 2>/dev/null || true
 disown 2>/dev/null || true
 sleep 1
 

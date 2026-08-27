@@ -3,6 +3,15 @@
 **Author:** Kilo (on behalf of user)
 **Target agent:** Any agent picking this up cold. Read this entire file before doing anything else.
 
+> **STATUS NOTE (2026-08-24, added during doc-compaction pass):** §4 (CURSword entity) is
+> now PARTIALLY DONE — the spawn mechanism, entity template, and chat-HQ wiring described
+> in §4.1/4.2/4.4 and most of §4.3 are DONE and relay-verified, see `CURSWORD-HQ-SPAWN.md`
+> in this directory for the real current state (read that FIRST for §4, then come back here
+> for what's still open in it — minimize/windows-list/voice input-output per §4.3.1 are
+> NOT done yet). **§1, §2, §3, §5, §6, §7-10 are still live, open backlog, not superseded
+> by anything** — this doc was reviewed in full during compaction and kept intact on
+> purpose rather than shrunk to a stub.
+
 ---
 
 ## 0. WHERE WE ARE (do not overstate progress)
@@ -345,6 +354,21 @@ also later i will want to create video of the presentation , using tts plus fram
 - mr_show_choices.+x exists but is STALE vs SHOW_PAGE convention - ladder #2 is
   an alignment job, not a from-scratch op.
 - Remaining-events reference written to `44.xyz…17/#.ref/menu/event.commands.remaining.txt`.
-- Bookmarks: store/mirror/compose/newplus wired + tested headlessly on cursword;
-  window spawn click-through pending; target renderer corrected to the merged
-  entity_menu_render standard.
+- Bookmarks: store/mirror/compose wired + tested headlessly on cursword;
+  live db-hq-style window (USER-PINNED correction — "the old window it was
+  fine", NOT the entity-menu popup; DnD declined). Generic renderer upgrades
+  landed in khtpm_hq_render.c for it: onClick→nav-row pass (incl. real
+  stale-index bug fix) + native `input:` fields ("new+ should allow input
+  from <cli-io>", zenity retired; consumed-newplus verb). Full spec: §K.3/K.5.
+- Bookmarks final fixes: rows projected as <button> per fo-menu-sys.md #26
+  (user pointed at 1.TPMOS…/!.gem-flashlite--yolo/fuzz-op-r&d/fo-menu-sys.md);
+  REAL BUG: apply_attr() matched "onclick" case-SENSITIVELY vs house camelCase
+  onClick= → attr silently dropped, clicks dead; fixed via attr_ci_eq().
+  Symlink mirror REMOVED (user rule: symlinks disallowed for windows); rows
+  open real dirs like entity Dir button; bm-bookmark = black-on-yellow.
+- Plans-after-events pinned: pallets categories registered in
+  #.ref/menu/palletes/pallets-help.txt (chemistry-palette, tiling-rmmv,
+  minecraft-blocks, cdda-tiles, df-tiles from tiling-palettes-chemistry.txt);
+  db-hq↔events-hq event-op parity + db-coupling notes added to
+  event.commands.remaining.txt / db-tabs-remaining.txt; INDEX.md 🎯 section.
+  Next work item: events ladder #1 Wait op.

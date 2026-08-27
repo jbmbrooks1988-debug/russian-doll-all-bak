@@ -26,6 +26,46 @@
 #ifndef _WIN32
 #include <dirent.h>
 #include <sys/stat.h>
+
+/* REAL, NEW 2026-08-25 (direct request: a general "kill hq" menu row that
+ * covers EVERYTHING the taskbar launches, not just a fixed -hq binary
+ * name list — real live test proved the fixed-list kill_hq_windows.sh
+ * killed db-hq but did nothing for a toys-cell launch, e.g.
+ * mutaclysm-neo, because nothing ever recorded that launch's PID
+ * anywhere; see au11-hq/TPMOS-COMPLIANCE-DEBT.md's own toys-teardown
+ * gap note). Every real launch site in this file already ends its own
+ * built `cmd`/`sh` string in a trailing `&` (backgrounds under `setsid`,
+ * which makes that PID its OWN process-group leader — a real, existing
+ * property, not something added here). Wrapping the SAME already-built
+ * string with one more statement in the SAME shell invocation
+ * (`; echo $! >> "<registry>"`) records that PID for free, with zero
+ * change to how any individual site builds its own command. Swap
+ * `system(cmd)`/`system(sh)` call sites to go through this instead —
+ * see kill_hq_windows.sh's own now-generalized body for the reader side
+ * (kills the whole recorded process GROUP via `kill -TERM -$pid`, not
+ * just the one PID, since only killing the group leader itself would
+ * leave real descendants like a toy's own window process still
+ * running). Placed HERE (after <stdio.h>/<stdlib.h>, not before them -
+ * an earlier version of this comment+function sat above those includes
+ * and only "worked" via implicit int declarations of snprintf/system,
+ * a real bug caught by a real compiler warning during this same pass,
+ * not by inspection.
+ *
+ * SECOND real bug, also caught live (not by inspection) driving the real
+ * HQ menu's "stats" row through the real relay after this landed:
+ * `sh: 1: Syntax error: ";" unexpected`. Every `cmd` passed in already
+ * ends in ` &` (backgrounding IS a statement separator, same role as
+ * `;`) - the original `"%s; echo $! ..."` format put TWO separators back
+ * to back (`& ; echo`), which is an empty-statement syntax error in
+ * dash. Fix: no explicit `;` - a plain space after the caller's own
+ * trailing `&` is a valid, single separator (`cmd & echo $! ...`). */
+static int ktb_system_recorded(const char *house_root, const char *cmd) {
+    char wrapped[KTB_PATH_BUF * 4];
+    snprintf(wrapped, sizeof(wrapped),
+             "%s echo $! >> \"%s/#.desktop/livedesk_launched_pids.txt\"",
+             cmd, house_root);
+    return system(wrapped);
+}
 #endif
 
 #ifdef _WIN32
@@ -1809,7 +1849,7 @@ static void livedesk_spawn_desk(const char *house_root, const char *sroot, const
 #else
         char cmd[KTB_PATH_BUF * 2];
         snprintf(cmd, sizeof(cmd), KTB_SETSID "nohup '%s' '%s' >/dev/null 2>&1 < /dev/null &", exe, pal);
-        int rc = system(cmd);
+        int rc = ktb_system_recorded(house_root, cmd);
         (void)rc;
 #endif
     }
@@ -2157,6 +2197,34 @@ static int livedesk_build_pals_menu(const char *house_root, HQMenuItem *menu, in
     return n;
 }
 
+/* REAL, NEW 2026-08-24 - the "6.palettes" cell's own dropdown, direct
+ * instruction ("theres supposed to go under '6.palettes' see that on
+ * tb?"). Reads #.desktop/livedesk_taskbar.pdl's
+ * "SECTION | palettes_menu_N_label | value" / "_cmd" rows - deliberately
+ * the SAME PDL-driven pattern as livedesk_build_hq_menu() directly below,
+ * NOT the C-hardcoded cell-14 anti-pattern (see TASKBAR-MENU-ARCHITECTURE.md
+ * standing-debt section). Each row opens that palette category's own
+ * db-style tile window via &.widgits/palettes/palettes_menu.sh
+ * (design: #.ref/menu/palletes/pallette-design.txt). */
+static int livedesk_build_palettes_menu(const char *house_root, HQMenuItem *menu, int max) {
+    char pdl[KTB_PATH_BUF];
+    snprintf(pdl, sizeof(pdl), "%s/#.desktop/livedesk_taskbar.pdl", house_root);
+    int count = 0;
+    for (int i = 1; i <= max; i++) {
+        char lkey[40], ckey[40];
+        snprintf(lkey, sizeof(lkey), "palettes_menu_%d_label", i);
+        snprintf(ckey, sizeof(ckey), "palettes_menu_%d_cmd", i);
+        char lab[64] = "", cmd[KTB_PATH_BUF] = "";
+        read_key_value(pdl, lkey, lab, sizeof(lab));
+        read_key_value(pdl, ckey, cmd, sizeof(cmd));
+        if (!lab[0]) continue;
+        snprintf(menu[count].label, sizeof(menu[count].label), "%s", lab);
+        snprintf(menu[count].command, sizeof(menu[count].command), "%s", cmd);
+        count++;
+    }
+    return count;
+}
+
 /* Real HQ button's own menu ($.restart / X.quit / cancel), ported from
  * tp_taskbar.c's load_hq_config(): reads #.desktop/livedesk_taskbar.pdl's
  * "SECTION | hq_menu_N_label | value" / "SECTION | hq_menu_N_cmd | value"
@@ -2168,10 +2236,14 @@ static int livedesk_build_hq_menu(const char *house_root, HQMenuItem *menu, int 
     char pdl[KTB_PATH_BUF];
     snprintf(pdl, sizeof(pdl), "%s/#.desktop/livedesk_taskbar.pdl", house_root);
     int count = 0;
-    /* cap raised 8 -> 9 for the cursword row (2026-08-24, AU24-oc-handon.md
-     * §4.4): the .pdl now defines 9 real rows (cancel moved last to 9), and
-     * the old hardcoded i<=8 silently dropped row 9 entirely. */
-    for (int i = 1; i <= max && i <= 9; i++) {
+    /* cap history: 8 -> 9 for the cursword row (2026-08-24, AU24-oc-handon.md
+     * §4.4), 9 -> KTB_LIVEDESK_DYN_MAX same day for the palettes rows
+     * (direct instruction "pallets not opening drop down yet. look at hq
+     * and do the same"): the .pdl now defines 20 real rows (10 palette
+     * categories, cancel moved last to 20). The artificial literal cap
+     * silently dropped every row past it - the dynamic max is the real
+     * bound the caller already passes. */
+    for (int i = 1; i <= max; i++) {
         char lkey[32], ckey[32];
         snprintf(lkey, sizeof(lkey), "hq_menu_%d_label", i);
         snprintf(ckey, sizeof(ckey), "hq_menu_%d_cmd", i);
@@ -2319,7 +2391,7 @@ static void livedesk_place_pal(const char *house_root, const char *name) {
     if (access(exe, F_OK) == 0) {
         char cmd[KTB_PATH_BUF * 2];
         snprintf(cmd, sizeof(cmd), KTB_SETSID "nohup '%s' '%s' >/dev/null 2>&1 < /dev/null &", exe, pal);
-        int rc = system(cmd);
+        int rc = ktb_system_recorded(house_root, cmd);
         (void)rc;
     }
 #endif
@@ -2994,6 +3066,10 @@ void ktb_hq_open(KtbState *s, int which) {
      * unchanged to the existing chain. */
     const char *cid = ktb_cell_id(s, which);
     if (strcmp(cid, "toys") == 0) { n = livedesk_build_toys_menu(s->house_root, s->hq_menu, KTB_LIVEDESK_DYN_MAX); }
+    /* palettes (positional 6, "6.palettes") wired 2026-08-24 - cid branch
+     * first like toys; positional fallback while incremental adoption
+     * continues (livedesk_header_cell_ids.txt now declares 6|palettes). */
+    else if (strcmp(cid, "palettes") == 0 || which == 6) n = livedesk_build_palettes_menu(s->house_root, s->hq_menu, KTB_LIVEDESK_DYN_MAX);
     else if (which == 2) n = livedesk_build_user_menu(s->house_root, s->hq_menu, KTB_LIVEDESK_DYN_MAX);
     else if (which == 4) n = livedesk_build_desk_menu(s->house_root, s->hq_menu, KTB_LIVEDESK_DYN_MAX);
     else if (which == 5) n = livedesk_build_pals_menu(s->house_root, s->hq_menu, KTB_LIVEDESK_DYN_MAX);
@@ -3129,7 +3205,7 @@ void ktb_hq_activate(KtbState *s, int row) {
             char sh[KTB_PATH_BUF * 2];
             snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c 'cd \"%s\" && \"./ops/+x/userpal_login.+x\" \"%s\"' >/dev/null 2>&1 &",
                      login_root, m->command + 12);
-            int rc = system(sh);
+            int rc = ktb_system_recorded(s->house_root, sh);
             (void)rc;
 #else
             (void)login_root;
@@ -3143,7 +3219,7 @@ void ktb_hq_activate(KtbState *s, int row) {
 #ifndef _WIN32
             char sh[KTB_PATH_BUF * 2];
             snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c 'cd \"%s\" && \"./ops/+x/userpal_logout.+x\"' >/dev/null 2>&1 &", login_root);
-            int rc = system(sh);
+            int rc = ktb_system_recorded(s->house_root, sh);
             (void)rc;
 #else
             (void)login_root;
@@ -3215,6 +3291,25 @@ void ktb_hq_activate(KtbState *s, int row) {
         livedesk_place_pal(s->house_root, m->command + 13);
         /* §4.9 (mirrored): keep the pals popup open so several pals can be
          * placed in a row - only Esc/cancel closes it. */
+    } else if (strncmp(m->command, "livedesk:open-palette:", 22) == 0) {
+        /* palettes cell rows (2026-08-24, "6.palettes" dropdown): opens
+         * that category's db-style tile window via
+         * &.widgits/palettes/palettes_menu.sh (design:
+         * #.ref/menu/palletes/pallette-design.txt). Dispatch string +
+         * C-side quoted absolute path, the open-chat-hai/open_db_hq.sh
+         * proven shape - NOT a raw PDL shell command, because the
+         * house's literal "&.widgits/" dirs cannot survive unquoted in
+         * the generic sh -c fallback ('&' is a control operator: found
+         * live today via TB_PROOF touch test - raw row silently ran
+         * ".widgits/..." after backgrounding). Prefix length verified:
+         * printf '%s' "livedesk:open-palette:" | wc -c = 22. */
+        char sh[KTB_PATH_BUF * 3];
+        snprintf(sh, sizeof(sh),
+                 KTB_SETSID "nohup sh -c 'sh \"%s/&.widgits/palettes/palettes_menu.sh\" \"%s\"' >/dev/null 2>&1 &",
+                 s->house_root, m->command + 22);
+        int rc = ktb_system_recorded(s->house_root, sh);
+        (void)rc;
+        ktb_hq_close(s);
     } else if (strcmp(m->command, "livedesk:spawn-cursword") == 0) {
         /* CURSword personal-assistant entity (AU24-oc-handon.md §4.4),
          * HQ-menu row "cursword" (#.desktop/livedesk_taskbar.pdl
@@ -3317,7 +3412,7 @@ void ktb_hq_activate(KtbState *s, int row) {
 #else
         char sh[KTB_PATH_BUF * 2];
         snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c 'sh \"%s\" run' >/dev/null 2>&1 &", m->command + 18);
-        int rc = system(sh);
+        int rc = ktb_system_recorded(s->house_root, sh);
         (void)rc;
 #endif
         ktb_hq_close(s);
@@ -3332,7 +3427,7 @@ void ktb_hq_activate(KtbState *s, int row) {
         char sh[KTB_PATH_BUF * 3];
         snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c 'sh \"%s/ops/open_event_ez.sh\" \"%s\" \"%s\"' >/dev/null 2>&1 &",
                  muchi_pet_dir, ce_path, s->house_root);
-        int rc = system(sh);
+        int rc = ktb_system_recorded(s->house_root, sh);
         (void)rc;
         ktb_hq_close(s);
     } else if (strcmp(m->command, "livedesk:new-common-event") == 0) {
@@ -3352,7 +3447,7 @@ void ktb_hq_activate(KtbState *s, int row) {
         char sh[KTB_PATH_BUF * 3];
         snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c 'sh \"%s/ops/open_event_ez.sh\" \"%s\" \"%s\"' >/dev/null 2>&1 &",
                  muchi_pet_dir, ce_path, s->house_root);
-        int rc = system(sh);
+        int rc = ktb_system_recorded(s->house_root, sh);
         (void)rc;
         ktb_hq_close(s);
     } else if (strncmp(m->command, "livedesk:open-common-events-hq:", 31) == 0) {
@@ -3384,7 +3479,7 @@ void ktb_hq_activate(KtbState *s, int row) {
         char sh[KTB_PATH_BUF * 3];
         snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c 'sh \"%s/ops/open_db_hq.sh\" \"%s\"' >/dev/null 2>&1 &",
                  muchi_pet_dir, s->house_root);
-        int rc = system(sh);
+        int rc = ktb_system_recorded(s->house_root, sh);
         (void)rc;
 #endif
         ktb_hq_close(s);
@@ -3403,7 +3498,7 @@ void ktb_hq_activate(KtbState *s, int row) {
         char sh[KTB_PATH_BUF * 3];
         snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c 'sh \"%s/&.widgits/open-hai/button.sh\" \"%s\"' >/dev/null 2>&1 &",
                  s->house_root, s->house_root);
-        int rc = system(sh);
+        int rc = ktb_system_recorded(s->house_root, sh);
         (void)rc;
 #endif
         ktb_hq_close(s);
@@ -3420,7 +3515,7 @@ void ktb_hq_activate(KtbState *s, int row) {
         char sh[KTB_PATH_BUF * 3];
         snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c 'sh \"%s/&.hq-apps/chat-hai/button.sh\" \"%s\"' >/dev/null 2>&1 &",
                  s->house_root, s->house_root);
-        int rc = system(sh);
+        int rc = ktb_system_recorded(s->house_root, sh);
         (void)rc;
 #endif
         ktb_hq_close(s);
@@ -3491,7 +3586,7 @@ void ktb_hq_activate(KtbState *s, int row) {
                 snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c '\"%s\" \"%s\" del %s' >/dev/null 2>&1 &",
                          lcbin, s->house_root, rest + 7);
             }
-            int rc = system(sh);
+            int rc = ktb_system_recorded(s->house_root, sh);
             (void)rc;
             ktb_hq_close(s);
         } else if (strncmp(rest, "event-ez:", 9) == 0) {
@@ -3502,7 +3597,7 @@ void ktb_hq_activate(KtbState *s, int row) {
             char sh[KTB_PATH_BUF * 3];
             snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c 'sh \"%s/ops/open_event_ez.sh\" \"%s/#.desktop/clocks/%s\" \"%s\"' >/dev/null 2>&1 &",
                      muchi_pet_dir, s->house_root, rest + 9, s->house_root);
-            int rc = system(sh);
+            int rc = ktb_system_recorded(s->house_root, sh);
             (void)rc;
             ktb_hq_close(s);
         } else {
@@ -3523,7 +3618,7 @@ void ktb_hq_activate(KtbState *s, int row) {
             char sh[KTB_PATH_BUF * 3];
             snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c 'bash \"%s\" \"%s\"' >/dev/null 2>&1 &",
                      launcher, s->house_root);
-            int rc = system(sh);
+            int rc = ktb_system_recorded(s->house_root, sh);
             (void)rc;
         }
         ktb_hq_close(s);
@@ -3553,7 +3648,7 @@ void ktb_hq_activate(KtbState *s, int row) {
             char sh[KTB_PATH_BUF * 3];
             snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c 'bash \"%s\" \"%s\"' >/dev/null 2>&1 &",
                      launcher, s->house_root);
-            int rc = system(sh);
+            int rc = ktb_system_recorded(s->house_root, sh);
             (void)rc;
         }
         ktb_hq_close(s);
@@ -3658,7 +3753,7 @@ void ktb_hq_activate(KtbState *s, int row) {
 #else
         char sh[KTB_PATH_BUF * 3];
         snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c '%s' >/dev/null 2>&1 &", cmd);
-        int rc = system(sh);
+        int rc = ktb_system_recorded(s->house_root, sh);
         (void)rc;
 #endif
         ktb_hq_close(s);
@@ -3795,7 +3890,7 @@ void ktb_cliio_submit(KtbState *s) {
             snprintf(sh, sizeof(sh),
                      KTB_SETSID "nohup sh -c 'cd \"%s\" && \"./ops/+x/userpal_create_account.+x\" \"%s\" \"%s\" && \"./ops/+x/userpal_login.+x\" \"%s\"' >/dev/null 2>&1 &",
                      login_root, s->cliio_id, s->cliio_buffer, s->cliio_id);
-            int rc = system(sh);
+            int rc = ktb_system_recorded(s->house_root, sh);
             (void)rc;
         }
     }
@@ -3830,7 +3925,7 @@ void ktb_strip_user_activate(KtbState *s) {
     ktb_action_portable(s->strip_user_cmd, portable, sizeof(portable));
     char sh[KTB_PATH_BUF * 2];
     snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c '%s' >/dev/null 2>&1 &", portable);
-    int rc = system(sh);
+    int rc = ktb_system_recorded(s->house_root, sh);
     (void)rc;
 }
 

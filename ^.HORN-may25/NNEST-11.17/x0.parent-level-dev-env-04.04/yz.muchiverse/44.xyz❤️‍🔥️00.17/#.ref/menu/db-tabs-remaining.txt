@@ -11,6 +11,18 @@ sidebar list populated from <house_root>/<tab_name>/ AND an
 editable settings panel with all fields wired to save back to
 that tab's kv files. Only Common Events is live today.
 
+EVENTING COUPLING (2026-08-24, direct instruction): db-hq and
+events-hq share the SAME events runtime - every event op landed via
+event.commands.remaining.txt is wired into db-hq's global/common
+events in the same pass (parity rule recorded there). Also land
+db-side pieces IN STEP with the event commands that consume them:
+Game Progression kv state (switches.txt / variables.txt /
+self-switches / timer) feeds Control Switches/Variables and
+Conditional Branch; Items/Weapons/Armors tabs feed Change
+Items/Weapons/Armors; System tab pairs with save/menu/encounter
+access commands. Advanced eventing is only as real as the db rows
+it reads.
+
 STATUS LEGEND
 [DONE]     live end-to-end today
 [EZ-ONLY]  sidebar list exists in db-hq, settings panel is placeholder

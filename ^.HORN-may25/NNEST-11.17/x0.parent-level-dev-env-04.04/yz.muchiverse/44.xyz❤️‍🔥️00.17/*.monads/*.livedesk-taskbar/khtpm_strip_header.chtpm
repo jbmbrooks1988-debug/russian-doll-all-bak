@@ -98,7 +98,9 @@
   <button label="pals" onClick="ACTIVATE:5">
     <row>${strip_hq_items}</row>
   </button>
-  <button label="palettes" onClick="ACTIVATE:6"/>
+  <button label="palettes" onClick="ACTIVATE:6">
+    <row>${strip_hq_items}</row>
+  </button>
   <button label="edit" onClick="ACTIVATE:7"/>
   <button label="player" onClick="ACTIVATE:8">
     <row>${strip_hq_items}</row>

@@ -15,7 +15,31 @@ SECTION      | hq_menu_7_label     | cli
 SECTION      | hq_menu_7_cmd       | sh *.monads/*.livedesk-taskbar/ops/open_cli.sh
 SECTION      | hq_menu_8_label     | cursword
 SECTION      | hq_menu_8_cmd       | livedesk:spawn-cursword
-SECTION      | hq_menu_9_label     | cancel
+SECTION      | hq_menu_9_label     | !kill hq
+SECTION      | hq_menu_9_cmd       | sh *.monads/*.livedesk-taskbar/ops/kill_hq_windows.sh .
+SECTION      | hq_menu_10_label    | cancel
+
+SECTION      | palettes_menu_1_label  | my pallet
+SECTION      | palettes_menu_1_cmd    | livedesk:open-palette:user-pallet
+SECTION      | palettes_menu_2_label  | emojis
+SECTION      | palettes_menu_2_cmd    | livedesk:open-palette:emojis
+SECTION      | palettes_menu_3_label  | chemicals+compounds
+SECTION      | palettes_menu_3_cmd    | livedesk:open-palette:elements
+SECTION      | palettes_menu_4_label  | rpg maker tiles
+SECTION      | palettes_menu_4_cmd    | livedesk:open-palette:rmmv
+SECTION      | palettes_menu_5_label  | piececraft blocks
+SECTION      | palettes_menu_5_cmd    | livedesk:open-palette:piececraft
+SECTION      | palettes_menu_6_label  | cdda tiles
+SECTION      | palettes_menu_6_cmd    | livedesk:open-palette:cdda
+SECTION      | palettes_menu_7_label  | dwarf fortress
+SECTION      | palettes_menu_7_cmd    | livedesk:open-palette:df
+SECTION      | palettes_menu_8_label  | kenney 3d
+SECTION      | palettes_menu_8_cmd    | livedesk:open-palette:kenney
+SECTION      | palettes_menu_9_label  | paint colors
+SECTION      | palettes_menu_9_cmd    | livedesk:open-palette:paint
+SECTION      | palettes_menu_10_label | generate
+SECTION      | palettes_menu_10_cmd   | livedesk:open-palette:generate
+SECTION      | palettes_menu_11_label | cancel
 
 # top-left command strip (2do task #4). Defaults match what's written
 # below, so editing here is the only thing needed to change labels or

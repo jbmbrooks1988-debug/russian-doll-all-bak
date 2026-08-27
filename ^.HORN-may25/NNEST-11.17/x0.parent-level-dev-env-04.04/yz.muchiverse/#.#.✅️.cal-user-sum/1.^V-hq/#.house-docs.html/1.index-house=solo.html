@@ -935,6 +935,22 @@ tp_test_send_click.+x "&lt;window_name_substring&gt;" &lt;button:1|2|3&gt; [rel_
             label with no menu wired to it.
           </li>
           <li>
+            <strong><code>khtpm_hq_render.c</code>'s frame dump has no receipt and no
+            frame-history log</strong> — confirmed live 2026-08-24. Its <code>dump_frame_png()</code>
+            (called from the <code>'p'</code> key and <code>--dump-and-exit</code>, the shared
+            renderer behind db-hq/palettes/events-hq/chat-hai/entity-menu) writes only a PNG.
+            This is a real regression from the house's own standard: <code>ai-cell</code>'s own
+            renderer already writes a flat receipt file, and wraith-alpha's
+            <code>session/rgb/current_frame.receipt.pdl</code> — confirmed live and current,
+            not aspirational — goes further still (per-object bounds, checksum, focus/mouse
+            state, one line per rendered element). The gap means anything "verified" via a
+            <code>khtpm_hq_render</code> dump today is pixel-verified only, never
+            receipt-verified — see the "Confirm before you claim" callout above; this is exactly
+            the failure mode it warns about. Fix agreed but deliberately deferred until after a
+            documentation-compaction pass; full findings in
+            <code>au11-hq/house-compaction.md</code>.
+          </li>
+          <li>
             <strong>Documentation volume is outpacing per-task need.</strong>
             <code>au11-hq/</code> alone has 36+ files. Not stale — what got checked this session
             was accurate — but too much to hand a token-limited agent wholesale. See

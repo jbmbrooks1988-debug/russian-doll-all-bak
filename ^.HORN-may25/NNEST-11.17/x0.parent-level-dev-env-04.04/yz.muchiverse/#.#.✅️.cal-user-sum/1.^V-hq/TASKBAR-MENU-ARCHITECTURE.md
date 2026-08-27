@@ -239,6 +239,22 @@ wasting their time** for this specific cell — always check
 cells are genuinely PDL-driven vs. C-hardcoded before touching either
 file.
 
+**UPDATE 2026-08-24 (direct instruction):** the debt is NOT cell-14-only.
+User confirmed **none** of the cells' builders are supposed to be
+C-hardcoded — ALL of them must eventually follow the hq PDL-driven
+pattern (`livedesk_build_hq_menu()` reading `hq_menu_N_label/cmd`, and
+now `livedesk_build_palettes_menu()` reading `palettes_menu_N_label/cmd`
+— both read live from `#.desktop/livedesk_taskbar.pdl` at cell-open
+time, no recompile). Convert when touching each cell:
+`livedesk_build_user_menu()`, `_file_menu()`, `_desk_menu()`,
+ `_player_menu()`, `_db_menu()`, `_pals_menu()`, `_toys_menu()`,
+ `_clock_menu()`, `livedesk_build_ai_menu()` (cell 14). Each conversion =
+define `<cellname>_menu_N_label/_cmd` PDL rows + swap the builder body
+for the hq-style read loop; directory-scanning builders keep the scan,
+but emit its results into the same PDL rows (or keep scan-in-C as
+documented fallback only). Until converted, edit the C builder for that
+cell — its PDL rows are dead weight, exactly like cell 14's.
+
 ---
 
 ## 🏗️ Building a NEW sub-app from scratch (not just adding a menu item)

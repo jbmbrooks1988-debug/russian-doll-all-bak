@@ -61,6 +61,12 @@ fi
 
 setsid nohup "$BIN" "$HOUSE_ROOT" "$CHTPM" \
     >"$AUDIT_DIR/chat-hai.log" 2>&1 < /dev/null &
+# REAL FIX 2026-08-25 - see open_db_hq.sh's own identical line for the
+# full rationale (au11-hq direct request: "why cant u write that final
+# pid to a file and reconsume it?") - records THIS script's own $!, the
+# real window binary's own PID/session leader, not the outer taskbar
+# wrapper's.
+echo $! >> "$HOUSE_ROOT/#.desktop/livedesk_launched_pids.txt" 2>/dev/null || true
 disown 2>/dev/null || true
 sleep 1
 

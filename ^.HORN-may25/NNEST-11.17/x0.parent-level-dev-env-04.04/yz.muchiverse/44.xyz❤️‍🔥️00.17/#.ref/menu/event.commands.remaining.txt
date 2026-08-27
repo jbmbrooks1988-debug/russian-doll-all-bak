@@ -10,6 +10,22 @@ play_event.sh -> prisc+x -> cmd_N.sh wrapper -> shared op in
 *.monads/*.muchi-pet/ops/. A command is only "done" when it has BOTH an
 event-ez palette entry AND a real op binary.
 
+PARITY RULE (2026-08-24, direct instruction): every runtime op we land
+here is ALSO wired into db-hq's global/common events as we go - db-hq
+and events-hq run the SAME shared ops, so an op landing in one without
+the other counts as half-done.
+
+DB COUPLING (2026-08-24): advanced eventing leans on database-side
+state - Control Switches/Variables/Self-Switch/Timer want their kv
+files (switches.txt, variables.txt, etc.), Change Items/Weapons/Armors
+want the Items/Weapons/Armors tabs, Conditional Branch reads all of
+them. Land those db pieces IN STEP with the event commands that use
+them (see db-tabs-remaining.txt coupling note).
+
+AFTER EVENTS: the tiling + chemistry palettes are next
+(palletes/pallets-help.txt "ADDED 2026-08-24" section; sources:
+tiling-palettes-chemistry.txt).
+
 STATUS LEGEND
 [DONE]     live end-to-end today
 [EZ-ONLY]  save handler exists in event-ez, runtime op missing
