@@ -40,12 +40,13 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <ctype.h>
 #include <time.h>
 
 #define PATH_BUF 4096
 #define MAX_PAGES 16
 #define MAX_CMDS 64
-#define MAX_REGISTRY_CMDS 32
+#define MAX_REGISTRY_CMDS 48
 #define MAX_FIELDS 4
 
 static char g_house_root[PATH_BUF];
@@ -557,6 +558,63 @@ static void compile_page(int page_idx) {
             }
             continue;
         }
+        /* REAL, NEW 2026-08-29 - the remaining real Flow Control commands,
+         * same "tier-3 structural marker" shape as if/else/end/loop/
+         * break_loop/repeat_above just above - genuinely small additions,
+         * NOT new VM work: prisc+x already has real OP_J/OP_HALT/Label
+         * support (see prisc+x.c's own OpBase enum + Label struct),
+         * Conditional Branch and Loop already prove the pattern works.
+         * The gap-analysis doc that framed all of Flow Control as
+         * "needs real VM support" was written before this file's own
+         * if/else/end/loop code existed to check against - corrected
+         * here via direct reading, not guessed. */
+        if (strcmp(nd->type, "comment") == 0) {
+            /* Real no-op - a Comment is documentation for the event's
+             * own author, never emits any real instruction. */
+            continue;
+        }
+        if (strcmp(nd->type, "exit_event") == 0) {
+            /* Real RPG Maker MV semantics: stops executing the CURRENT
+             * event immediately, every remaining command in the page is
+             * skipped. Each page compiles to its own standalone .pal run
+             * per trigger, so a real `halt` here achieves exactly that -
+             * no new opcode needed, prisc+x already has OP_HALT. */
+            fprintf(pf, "halt\n");
+            continue;
+        }
+        if (strcmp(nd->type, "label") == 0) {
+            /* Real, user-named label - "user_" prefix keeps it from ever
+             * colliding with this compiler's own internal _endif_N/
+             * _loop_N/_else_N labels (which all start with "_"), no
+             * separate collision-tracking needed. Real label text comes
+             * from the node's own "name" field (Add-Command picker's
+             * field1); sanitize to the same safe charset labels/idents
+             * use elsewhere in this codebase (alnum + underscore) so a
+             * stray space/symbol in a user's label name can never
+             * corrupt the compiled .pal text. */
+            char raw[64] = "";
+            for (int pi = 0; pi < nd->n_params; pi++) if (strcmp(nd->keys[pi], "name") == 0) snprintf(raw, sizeof(raw), "%s", nd->vals[pi]);
+            char safe[64]; int sn = 0;
+            for (int ci = 0; raw[ci] && sn < (int)sizeof(safe) - 1; ci++) {
+                char c = raw[ci];
+                safe[sn++] = (isalnum((unsigned char)c) || c == '_') ? c : '_';
+            }
+            safe[sn] = '\0';
+            if (safe[0]) fprintf(pf, "user_%s:\n", safe);
+            continue;
+        }
+        if (strcmp(nd->type, "jump_to_label") == 0) {
+            char raw[64] = "";
+            for (int pi = 0; pi < nd->n_params; pi++) if (strcmp(nd->keys[pi], "name") == 0) snprintf(raw, sizeof(raw), "%s", nd->vals[pi]);
+            char safe[64]; int sn = 0;
+            for (int ci = 0; raw[ci] && sn < (int)sizeof(safe) - 1; ci++) {
+                char c = raw[ci];
+                safe[sn++] = (isalnum((unsigned char)c) || c == '_') ? c : '_';
+            }
+            safe[sn] = '\0';
+            if (safe[0]) fprintf(pf, "j user_%s\n", safe);
+            continue;
+        }
         /* Normal registry-driven compilation (existing code) */
         CommandDef *def = find_command_def(nd->type);
         char keys[MAX_FIELDS][32], vals[MAX_FIELDS][256]; int n = nd->n_params;
@@ -1002,8 +1060,15 @@ static void handle_action_request(void) {
             snprintf(entity_dir, sizeof(entity_dir), "%s", g_pkg_dir);
         }
 
+        /* REAL FIX 2026-08-29 ("mr was just one project using events
+         * (probably the first) but it doesn't own events"): play_event.sh
+         * moved from *.monads/*.muchi-pet/ops/ (muchi-pet's own project
+         * dir - false ownership, every entity/project uses Play, not just
+         * muchi-pet) to this manager's own events-hq/ops/ dir, right next
+         * to the manager that already drives every entity's event
+         * compilation. */
         char cmd[PATH_BUF * 2];
-        snprintf(cmd, sizeof(cmd), "sh -c 'exec sh \"%s/*.monads/*.muchi-pet/ops/play_event.sh\" \"%s\"' >/dev/null 2>&1 &",
+        snprintf(cmd, sizeof(cmd), "sh -c 'exec sh \"%s/&.widgits/events-hq/ops/play_event.sh\" \"%s\"' >/dev/null 2>&1 &",
                  g_house_root, entity_dir);
         system(cmd);
         FILE *cw = fopen(g_action_path, "w");
@@ -1048,6 +1113,44 @@ static void handle_action_request(void) {
                         if (all_len + nl < sizeof(all)) { memcpy(all + all_len, newl, nl); all_len += nl; }
                         continue;
                     }
+                }
+                size_t ll = strlen(l);
+                if (all_len + ll < sizeof(all)) { memcpy(all + all_len, l, ll); all_len += ll; }
+            }
+            fclose(rf);
+        }
+        FILE *wf = fopen(ir_path, "w");
+        if (wf) { fwrite(all, 1, all_len, wf); fclose(wf); }
+
+        compile_page(g_current_page);
+        publish_page_state();
+
+        FILE *cw = fopen(g_action_path, "w");
+        if (cw) fclose(cw);
+        return;
+    }
+
+    /* REAL, NEW 2026-08-29 (direct instruction: "trigger able from
+     * visual nav / index, as usual... just a nav for delete") -
+     * "delete:<id>" removes the matching NODE line entirely. Same real
+     * scan/rewrite shape as "edit:" just above (mirrored, not
+     * reinvented) - the only difference is this one skips the matching
+     * line instead of replacing it. */
+    if (strncmp(line, "delete:", 7) == 0) {
+        int del_id = atoi(line + 7);
+
+        char pd[PATH_BUF]; page_dir(pd, sizeof(pd), g_current_page);
+        char ir_path[PATH_BUF]; snprintf(ir_path, sizeof(ir_path), "%s/event.ir.pdl", pd);
+
+        char all[8192] = ""; size_t all_len = 0;
+        FILE *rf = fopen(ir_path, "r");
+        if (rf) {
+            char l[512];
+            while (fgets(l, sizeof(l), rf)) {
+                if (strncmp(l, "NODE", 4) == 0) {
+                    char *idp = strstr(l, "id=");
+                    int this_id = idp ? atoi(idp + 3) : -1;
+                    if (this_id == del_id) continue; /* real delete: just don't copy this line forward */
                 }
                 size_t ll = strlen(l);
                 if (all_len + ll < sizeof(all)) { memcpy(all + all_len, l, ll); all_len += ll; }

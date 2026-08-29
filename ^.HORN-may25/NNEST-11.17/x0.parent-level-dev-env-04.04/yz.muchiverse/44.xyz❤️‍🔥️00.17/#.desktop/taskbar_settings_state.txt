@@ -1,4 +1,4 @@
 phase=2
-bg=0
-fg=4
+bg=2
+fg=3
 apply=1

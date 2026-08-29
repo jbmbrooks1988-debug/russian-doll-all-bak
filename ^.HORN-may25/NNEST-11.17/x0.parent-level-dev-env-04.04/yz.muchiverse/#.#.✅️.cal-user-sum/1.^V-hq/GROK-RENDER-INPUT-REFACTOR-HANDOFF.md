@@ -2848,3 +2848,96 @@ the house** at `NNEST-11.17/` (zip parent). Read the path from
 per file; tilesets A–E crop stays). Full intended steps:
 `RMMV-IMG-DIR-TABS-PLAN.md` §10. Grok must not mkdir/mv until the
 human approves.
+
+============================================================
+🔓 EXECUTION RECORD + RELEASE — VS task #2 (Scratch view real blocks)
+finished end-to-end 2026-08-29 (Grok)
+============================================================
+
+Context: the "Deferred edits ... DO NOT APPLY" diff for the renderer
+(and the parallel manager extension) sat in
+`!.OPEN-2do-events-db-networking-2026-08-28.md`, and the renderer
+glue was already applied + committed (swept into `8dbfdf3`, author
+tearitco, 2026-08-29 00:00:50) — but the doc still claimed it was a
+"not applied" TODO, so this pass verified the true git state and
+corrected BOTH docs so nobody double-applies. Working tree == HEAD
+for both files below (git diff HEAD = 0 lines).
+
+### What was done this pass (2026-08-29)
+
+1. **Debugged + fixed the missing Change Gold blocks.** Post-regener
+   ation, Change Gold shims are `exec "$D/*.monads/*.muchi-pet/ops/
+   +x/mr_change_gold.+x" "$ENT" '10'` (FULL dynamic path). A standalone
+   harness replay of the exact C scanner showed the true bug: the shim
+   sscanf scan-set `%79[0-9A-Za-z_.-]` over-greedily captured `1.sh`
+   (letters + `.` are in the class), building `cmd_1.sh.sh`, opening
+   nothing, publishing nothing. Fixed to `%79[0-9_]` (page ids are
+   numeric), rebuilt, harness → `BLOCK|change_gold|10` /
+   `BLOCK|change_gold|25`.
+2. **Sandbox e2e green (real manager binary + real redhorn pal copy).**
+   `append:control_switch|...|probe...` produced, in order:
+   `TRIGGER|on-click`, `CMD|1|change_gold|amount=10`,
+   `CMD|2|change_gold|amount=25`, `CMD|3|control_switch|...`,
+   `SCRATCHBLOCK|probe|ON`, `SCRATCHBLOCK|change_gold|10`,
+   `SCRATCHBLOCK|change_gold|25`. Killed clean, zero stray processes.
+   (Double probe row = probe node appended twice across my two test
+   runs, not a bug.)
+3. **Renderer binary freshness confirmed:** source mtime 23:58, binary
+   rebuilt 23:59 — the deployed `+x/khtpm_entity_menu_render.+x`
+   contains both the VS#2 glue and the agent's `dbhq_paint_frame_line`
+   pipe-anchoring fix. Manager binary 23:22 is the one the e2e proved.
+4. **Docs corrected (append-only, matching house discipline):**
+   - `!.OPEN-2do-events-db-networking-2026-08-28.md`: marked the
+     "Deferred edits" section as SUPERSEDED/ALREADY-APPLIED and appended
+     a STATUS CORRECTION rebuking the "not applied, my open TODO" note,
+     with the current form (raw status, not ON/OFF), the `[0-9_]` fix,
+     and the sandbox proof.
+   - This record.
+
+### Files:
+- `&.widgits/events-hq/ops/khtpm_events_hq_manager.c` (M) — exec-shim
+  + switch SCRATCHBLOCK publishers; `[0-9_]` sscanf fix this pass.
+- `*.monads/*.livedesk-taskbar/ops/khtpm_entity_menu_render.c` (M) —
+  decls/parse/fill applied (raw-status form), verified in HEAD.
+
+🔓 RELEASED both files. Next-step note for anyone continuing: the
+visual window proof (events-hq window on DISPLAY against the sandbox
+pkg, screenshot of Scratch view) is the only remaining verification —
+implementation is done and committed.
+
+============================================================
+BREAKING CHANGE 2026-08-29 - history files are now per-PID, not
+per-mode. READ THIS BEFORE WRITING ANY MORE TEST INPUT.
+============================================================
+Real live incident: my own test relay input to the flat
+`db_hq_history.txt` was ALSO delivered to the user's separately-open,
+real db-hq window, corrupting its live nav state ("why isn't
+arrow/index nav working in db-hq anymore?"). Root cause: `history_
+path()` was keyed by MODE NAME ONLY - the exact "one canonical
+db_hq_history.txt" tradeoff this doc itself already flagged as a real
+risk earlier (see the per-pid discussion around line ~1468 above,
+"real added complexity" - it stopped being hypothetical).
+
+Fixed, direct user go-ahead ("yes do it now"): `history_path()` now
+mirrors `nav_tab`'s own existing per-PID convention exactly - every
+`#.desktop/<mode>_history.txt` flat file described earlier in this doc
+NO LONGER EXISTS as of this binary version. It is now
+`#.desktop/<mode>_history/<pid>.txt` (e.g. `db_hq_history/12345.txt`),
+one real file per PROCESS. Nothing reads the old flat paths anymore -
+writing to them is now a silent no-op from the reader's perspective.
+
+**Before writing any test input**, find the right pid for the specific
+window you mean to drive - do not guess or broadcast:
+- `nav_master_current.txt` publishes live `<pid> <tab_ordinal>
+  <nav_index> <id>` rows for every open window's current nav tree.
+- `nav_tab/<pid>` holds that same pid's real registered window title
+  (e.g. "db-hq", "events-hq").
+- Cross-reference the two to find "the events-hq window showing asa"
+  vs "the db-hq window on Common Events" before touching its history
+  file. This is not a new mechanism - both files already existed for
+  Tab-cycle; this just reuses them for a second real purpose.
+
+A window opened by a BINARY BUILT BEFORE this change still uses the
+old flat-file behavior in memory until it's closed and relaunched -
+don't assume every currently-running window has already picked this
+up.

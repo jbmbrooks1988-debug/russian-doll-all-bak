@@ -2,6 +2,16 @@
 
 **If you're a new agent picking this up cold, read in this order until you have enough context to act.**
 
+**🧭 `^.COMPACTION_HANDOFF_aug29.md` — read this ONE first, before
+even Tier 1 below.** Emoji-heavy, human-and-AI-readable, plain-language
+summary of the tail end of the Aug 29 session: what shipped, the real
+mistakes made (and the pattern behind them — shallow doc searches
+leading to redesigning things that already existed), where the real
+specs actually live now, genuinely new information from that session's
+conversation that isn't written down anywhere else yet, and real
+questions worth settling before the next session starts. Smaller and
+faster to read than working through Tier 1/2 cold.
+
 **`archive/` subfolder (added 2026-08-24):** lower-priority docs — closed-bug records,
 DONE/superseded handoffs, single-feature deep-dives, and the two `.ARCHIVE.md` full-history
 twins for compacted docs — live in `archive/` instead of cluttering this directory's
@@ -14,6 +24,17 @@ to the main directory and drop the `archive/` prefix here.
 ---
 
 ## Tier 1 — Always read (small context budget, ~2 min)
+-3. **SKILLS.md (2026-08-29)** — read this FIRST, before anything else in this
+   list. Not a task doc — a generalized "how to operate well in this house"
+   compaction: the core file-based-state philosophy, the rendering
+   architecture in one page, a landmines list of real bugs an agent will
+   otherwise re-discover the hard way (build scripts overwriting shared
+   source, per-mode files broadcasting to every open window of that mode,
+   desktop tiles being real live entities not fixtures, `xdotool click`
+   dangers, verification discipline, how to work alongside Grok/opencode
+   without duplicating effort), and a read on the user's own working style.
+   Everything below this entry is task/architecture detail; this one is
+   judgment.
 -2. **TPMOS-COMPLIANCE-DEBT.md — STANDING #1 PRIORITY, HIGH SEVERITY (2026-08-25),
    NOT YET FIXED, direct instruction: "this cant propagate forward into the codebase by
    naive agents"** — real, confirmed architecture violations found while migrating
@@ -315,13 +336,13 @@ Stop here if you just need to know "what's going on."
 10. **archive/DB-HQ-HANDOFF.md** — Implementation handoff for db cell (cell 9). Status: broken/incomplete
     AS OF BEFORE 2026-08-12 — db-hq itself got real, working this session, see #11 below for the
     current state before trusting this file's own "still-placeholder" framing.
-11. **EVENTS-HQ-RGB-HANDOFF.md** — 2026-08-12 session handoff (context ran full, new agent picking
-    up). db-hq's real focus fix (managed window + `_MOTIF_WM_HINTS`, NOT override_redirect — see
-    `!.HOUSE_STDS.md` #21-24 house-root), events-hq built real and wired to two entities (nav
-    confirmed working), RGB Phase 0 proven (compose→buffer→present is pixel-identical), and the
-    concrete next-step plan for both (events-hq's remaining event-ez-parity gaps, how to actually
-    refactor db-hq/taskbar to RGB). **Read this before starting ANY db-hq/events-hq/khtpm-window/
-    RGB work** — it points at exactly what's real vs. still-needed, don't re-derive.
+11. **archive/EVENTS-HQ-RGB-HANDOFF.md** — MOVED TO ARCHIVE 2026-08-29 (the file itself already
+    self-declared "SUPERSEDED, forward pointer" as of 2026-08-16 — events-hq/db-hq were merged into
+    the shared `khtpm_entity_menu_render.c` binary that same day, and the whole render/input stack
+    got substantially reworked again in the 2026-08-29 session; nothing here still describes current
+    architecture). 2026-08-12 db-hq focus-fix + original events-hq build/wire history — read only
+    for historical "how did this start," not current status. `khtpm-merge-how2.md` and
+    `EVENTS-HQ-RENDER-UNIFICATION-PLAN.md` are the current real references.
 12. **archive/OPENROUTER-INTEGRATION-HANDOFF.md** — 2026-08-16, real router API key work for open-hai.
     Status: **DONE for OpenRouter, TokenRouter marked a real confirmed paywalled non-starter**
     ($0 account credit blocks tool-calling even on free-labeled models — plain chat works fine).
@@ -377,7 +398,7 @@ Stop here if you just need to know "what's going on."
 | `44.xyz❤️‍🔥️00.17/LINUX_ROUNDTRIP.md` | Linux return-leg status: Mach-O quarantine (76 files), house-wide recompile (44/44 PASS), manual rebuilds (treetRace, hm_assert, apply_theme_op), verification, livedesk smoke-test | When returning from macOS to Linux (or any roundtrip); read before relaunching |
 | `yz.muchiverse/ROUNDTRIP_FIX.md` | Concise fix log + re-run recipe for future roundtrips (purge Mach-O → compile-runner → manual extras → verify → relaunch) | When re-running the purge+rebuild recipe; includes rollback instructions |
 | `$.crypts/compile-runner.ps1` | Windows house-wide compile runner (PowerShell twin of compile-runner.sh). Finds every build.ps1 and runs each from its own directory. **Untested — needs Windows/MSYS2 verification.** | When compiling all projects on Windows natively (no WSL) |
-| `EVENTS-HQ-RGB-HANDOFF.md` | 2026-08-12 session handoff: db-hq focus fix, events-hq built+wired, RGB Phase 0 result, next-step plans | When events-hq/db-hq/RGB work resumes and this doc's own "next steps" get done |
+| `archive/EVENTS-HQ-RGB-HANDOFF.md` | ARCHIVED 2026-08-29 (self-declared superseded since 2026-08-16). 2026-08-12 session handoff: db-hq focus fix, events-hq built+wired, RGB Phase 0 result | Historical only - `khtpm-merge-how2.md`/`EVENTS-HQ-RENDER-UNIFICATION-PLAN.md` are current |
 | `!.chtpm-render-dedup-guidance.md` (house root) | Deferred: `chtpm_rgb_render.c`/`chtpm_parser_pal.c` duplication across 22/28 dirs, NOT byte-identical (real per-app divergence) - investigation plan for whenever this becomes relevant, not urgent | Only when someone actually starts that dedup pass |
 | `HARNECIENT-H-AI-RELAY.md` | **HIGH PRIORITY + LOAD-BEARING** - approved design to wire the Harnecient mode (`HARNECIENT-HACK.md`) into h-ai as a CHOOSABLE model, then demo + bake in a lasting reproducible harness for the full loop: relay injection into the real h-ai window → non-tooled model (270m/1b/3B) → deterministic read/write/run → **real control of the livedesk taskbar state files** (`strip_var_tabs.txt`, `strip_state.txt`). 4 phases (model switcher → `BACKEND_HARNECIENT` backend path → relay demo → `relay-harness/` N/N proof), success criteria + risks + milestones all in the doc. | Before starting any h-ai model-switcher / Harnecient-mode / relay-harness work |
 | `chat-hai-design.md` | **HIGH PRIORITY** — design plan for a new side-bar multi-model conversation engine: 4 smol models (gemma270/qwen-ladder) constantly chatting with persistent memory, moderated by slower bigger models (qwen2.5:7b/haiku) that curate, reprompt, and delegate. Proof-of-concept ladder (Phase 0-5), memory/priority/FSM-recall architecture, relationship graphs, moderator loop, and roadmap. | Before starting any multi-agent / ambient-chat / side-bar conversation work |
@@ -494,6 +515,57 @@ The events ladders come first, then these land:
    `44.xyz❤️‍🔥️00.17/#.ref/menu/tiling-palettes-chemistry.txt`.
 
 ---
+
+**2026-08-29** (maps/tiles/z-levels documentation cleanup, direct
+request after a live, corrected investigation: "clean up the
+documentation... rerun by me the actual plan." Real finding chain, in
+order: a first design doc wrongly framed tile/map as a from-scratch 2D
+RPG-Maker-walk-around problem (retracted, never should have been
+written before checking for existing spec); direct user catch ("maybe
+its disparate?") led to `PIECECRAFT_XYZ_DESIGN.md`/`xelector-
+context.md`/`CURSWORD-SOUL-VISION.md` §5; a further direct catch ("do
+u see 101.drag-drop-test=ON🀄️?") found the desktop↔mutaclysm drag-drop
+transfer is real, BUILT, and TESTED (2026-07-26, X11 Xdnd + exchange-
+dir pet-import round-trip), not new as first assumed; a final direct
+catch ("recently edited docs mentioning xdnd?") surfaced the REAL
+primary doc this whole thread should have started from -
+`TILE-SYSTEM-DESIGN.md` (2026-08-27, same directory, real working
+verified code: autotile math pixel-verified against real RMMV assets,
+a real tileset registry, `desk_grid.pdl` in `tp_desktop_window_rgb.c`)
+- answers the core question (a placed tile is a real `tp_desktop_
+window_rgb.c` ENTITY, not a separate canvas) and cites the real 2D→3D
+bridge doc, `#.DOX/drag-drop-how2.md`. **Cleaned up, final state**:
+`MAPS-TILES-ZLEVELS-CONSOLIDATED-SPEC.md` is now a short real router
+doc (not a competing spec) pointing to `TILE-SYSTEM-DESIGN.md` for
+single-tile/autotile/palette mechanics and `PIECECRAFT_XYZ_DESIGN.md`
+for multi-tile chunked maps/Z-levels, records the 2 genuinely new
+integration gaps this session's conversation surfaced (cursword
+driving Z-level nav xelector-style; extending the drag-drop transfer
+to piececraft-xyz), and `GAME-READINESS-GAP-ANALYSIS-2026-08-27.md`'s
+own gap #1 is formally retired pointing here. Read `TILE-SYSTEM-
+DESIGN.md` FIRST for anything tile-related.) by claude
+
+**2026-08-29** (post-refactor audit, direct request: real explanation of
+"modes" + whether the 4-loop draw collapse held up at 9,950 lines -
+`*.monads/*.livedesk-taskbar/ops/parser-walkthru.md`, next to the
+renderer itself. Confirmed clean: draw_elem()/render_tree() each still
+exactly 1 real definition; per-mode layout/click/key/nav functions
+(77 dbhq_/50 chai_/49 evhq_) are separate on purpose, not regrown
+duplication - real reasoning why. One honest, acknowledged, not-yet-
+fixed piece of debt: the Add-Command picker overlay is still hand-
+drawn C, not a real .chtpm-declared generic element.) by claude
+
+**2026-08-29** (Part B done: Common Events shares events-hq's Scripting/
+Scratch/Blueprints tabs, 3 live bugs found+fixed along the way, plus the
+Part A ghosting regression finally root-caused+fixed - see
+`EVENTS-HQ-RENDER-UNIFICATION-PLAN.md`; a real in-picker "Delete" command
+action added, nav-driven, no keyboard shortcut; and a real, BREAKING
+input-relay fix - `history_path()` is now per-PID like `nav_tab` already
+was, not per-mode, after a live incident where test input to the old flat
+file also reached the user's own real window - see
+`HQ-WINDOW-MAP-AND-AGENT-INPUT.md` §3 and
+`GROK-RENDER-INPUT-REFACTOR-HANDOFF.md`'s own new end-of-file entry
+before writing any more test input) by claude
 
 **2026-08-25** (real manager rebuild for palettes/bookmarks + real grid scroll +
 keyboard-accessibility standard): `khtpm_hq_render.c` DELETED outright (stats-hq/
@@ -641,3 +713,4 @@ scenarios fixed, full trail in `44.xyz❤️‍🔥️00.17/completed-sym-list.m
 see the new Document Roles row for what may bite later) by opencode (ox-alpha)
 
 **Previously:** 2026-08-17 (`legacy-shared-fix.md`: full `chtpm_parser_pal.c`/`prisc+x.c` consolidation done, 12/12 real participants on one shared baseline; `chtpm_rgb_render.c` consolidated for 9 projects; GL→X11 display-shim migration 3/16 done (mutaclysm/piececraft-xyz/my-chara-txt), 13 remain; a real mutaclysm interact-mode regression and a real db-hq/chat-hai `[X]`-close-all-entities bug both found+fixed; mutaclysm's own camera/3D work deferred to `archive/opencode-mutafix-pie.md`. `!.HOUSE_STDS.md` also updated to point its own khtpm-window-reference mentions at the now-merged shared binary instead of the archived standalone files) by claude
+😀
