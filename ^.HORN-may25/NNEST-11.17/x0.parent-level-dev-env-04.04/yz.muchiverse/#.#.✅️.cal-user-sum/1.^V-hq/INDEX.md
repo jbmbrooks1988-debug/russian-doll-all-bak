@@ -111,6 +111,12 @@ Stop here if you just need to know "what's going on."
 
 **HQML-DESIGN+PLANS.md** — Vision for a web-like markup language (HTML/CSS-like syntax) that would enable prettier UIs while keeping .pal scripting. Covers events-hqml (prettier event editor), db-hq (modern database UI), AI applications, network applications (forum/IRC). Design phase, technical requirements, implementation roadmap. Read this if designing new UIs or considering how to modernize existing ones.
 
+**RENDER-FRAME-HISTORY-DRIFT-ASSESSMENT.md** (2026-08-28) — real, confirmed drift: khtpm_entity_menu_render.c (7742 lines, 7 hardcoded "modes": db-hq/events-hq/chat-hai/palettes/bookmarks/stats-hq/taskbar-settings) still carries per-mode layout/redraw/key-handling branches, a leftover from Stage 5's binary-merge (not a deliberate design), instead of being a truly generic engine with all app-specific behavior pushed into manager processes (the way generic onclick dispatch + several managers already prove works). Real end-goal: eliminate mode branches from the renderer entirely, one mode at a time. Design doc — read it once for the "why"; for live status, use the doc below instead.
+
+**RENDER-REFACTOR-2DO-PROGRESS.md** (2026-08-28, LIVE, updated as work happens) — the real status tracker for this same effort: what's actually done vs. not, the next concrete step (no re-deriving needed), and a decisions log. **If resuming this work cold (new session, or picking up after a break), read this file FIRST, before the assessment doc above.**
+
+**GROK-RENDER-INPUT-REFACTOR-HANDOFF.md** (2026-08-28, LIVE, async two-agent collaboration) — shared task/execution-record doc for this same effort, split between Sonnet and Grok working from different terminals. Has its own real hard-boundary/file-claim protocol (the shared render file can't be edited by both sides at once). Read before picking up any task from it.
+
 ---
 
 ## Tier 3 — Read only if working the specific task (large context budget)
@@ -149,6 +155,36 @@ Stop here if you just need to know "what's going on."
    Contains task-by-task KPIs, explicit STOP-AND-ALERT checkpoints, a Questions-for-Sonnet section,
    and a Progress Log opencode updates as it works. Check this file's own Progress Log for current
    status before assuming anything below it is stale.
+6h1a. **OPENCODE-CATCHUP-2026-08-27.md** — read this if you are opencode/
+   ox-alpha resuming `COMMON-EVENTS-MANAGER-HANDOFF.md` from your own last
+   log entry (line 2323, a premature "Task 3 DONE" claim). Tells you
+   exactly what happened since (the real bug found in that claim, its
+   fix, Tasks 4-7 all done, several new docs, two real PAL-authored
+   harness proofs, and the real next task queued) and exactly which line
+   to resume reading from (2617). A matching inline marker also sits at
+   line ~2401 of the handoff doc itself.
+6h2a. **PAL-VISUAL-SCRIPTING-PLAN.md** — vision doc for the events editor's
+   Scripting/Scratch/Blueprints tabs (Task 5 built the real stub toolbar;
+   real block/node rendering still unbuilt). Points at 6h2b for the
+   broader harness-authoring direction (moved there to keep this doc
+   scoped to visual-editor vision).
+6h2b. **HARNESS-AUTHORING-GUIDE.md** — the canonical doc for building/
+   updating ANY test/demo harness, single-feature or multi-feature.
+   Covers: the current real bash-harness convention (with real examples
+   to copy from); a grounded feasibility check for PAL/event-authored
+   harnesses against `prisc+x.c`'s actual syscalls (relay injection via
+   `SYS_OPEN`+`SYS_WRITE_LINE` already works today; polling frame-history
+   needs a small sibling-file fix, no VM change; no `SYS_SLEEP` exists
+   yet); a priority list of "harness-friendly" event commands worth
+   building next (Loop, Wait, a new Send-Input command); a per-feature
+   real launch-mechanism reference table (db-hq/events-hq/palettes/
+   entities/Mutaclysm/h-ai/chat-hai/my-lawyer/my-biotech/piececraft-xyz/
+   file-desk-switching); and camera/POV "director" guidance for anything
+   with real camera control (Mutaclysm, piececraft-xyz's board-viewer
+   map-view). Read this BEFORE designing any new harness — also
+   cross-referenced from `_.0.aigent-testing-k9.txt` (which stays scoped
+   to low-level injection/dump procedure, per its own stated rule) and
+   `PAL-VISUAL-SCRIPTING-PLAN.md`.
 6h3b. **CURSWORD-SOUL-VISION.md** — cursword's identity as the user's "SOUL":
    the account's first entity, free, always-there, unkillable, tied to the
    account — plus a capability roadmap (text chat real today; STT/TTS/image-
@@ -177,6 +213,59 @@ Stop here if you just need to know "what's going on."
    got missed — read this BEFORE scoping any future marketing/onboarding
    material so nothing gets missed again. Ends with a "not yet covered in
    any presentation" punch list.
+6h2c. **TILE-SYSTEM-DESIGN.md** — real, from-scratch design (no existing
+   tile/map canvas found anywhere in this codebase, verified by grep, not
+   assumed) for the tile system named in the "Confirmed next-steps order"
+   (autotiling + animated tiles, flagged 2026-08-27 as needing real
+   planning before implementation). **Major revision (§0a) after direct
+   correction**: a tile IS a real entity, spawned via the SAME
+   `tp_desktop_window_rgb.c` mechanism every desk-pal already uses
+   (confirmed: that binary already has the real `GRID_CELL_PX=80` grid
+   constant) — no separate map-canvas binary needed, that earlier draft
+   option was withdrawn. Covers: the tile/tileset/map data model (flat
+   PDL), the REAL RPG Maker MV autotile mechanism (§2, corrected
+   2026-08-27 against actual engine source — 48 shape slots per kind,
+   not 47, and each shape is composited from 4 real quadrant pieces,
+   not one whole pre-drawn tile — see 6h2d/6h2e below), the animated-
+   tile time function (pure function of wall-clock time), corrected
+   RPG Maker MV tile size (48px, not 32px), the tile-scaling decision
+   (48px assets scale up to fill the current grid cell), the hybrid
+   map-storage model (§4: no map-print file = live entities only;
+   map-print file = expanded on load; both = union — the SAME map-print
+   format is also what boardview loads for real play/sharing), and
+   (§4a) the real, confirmed requirement that tile entities drag-and-
+   drop into Mutaclysm/piececraft-xyz as their 3D equivalent —
+   extending a REAL, already-existing (but one-directional, pet-
+   specific) XDND mechanism documented in `#.DOX/drag-drop-how2.md`,
+   with a scoped "hook point" design pass (Phase 1.5) before the full
+   voxel/block conversion tables (Phase 2). **§4b (added 2026-08-27,
+   real mockup provided by the user)**: the actual tile-picker/
+   placement authoring UI, previously left undesigned — the real
+   integration point is `&.widgits/palettes/pallets.pdl`'s already-
+   reserved-but-currently-static `rmmv` category (confirmed the exact
+   real category the user meant by "6. palettes; 4. rpg maker tiles"),
+   becoming a real A/B/C/D/E-tabbed tile grid + a real multi-tileset
+   chooser (a genuinely new requirement — RPG Maker "tilesets" are
+   named bundles of images, not one fixed set), with click-to-select
+   arming a "current brush" that a subsequent real desktop click uses
+   to spawn/update a tile-entity there. Read before writing any
+   tile-placement or autotile code.
+6h2d. **RPG-CODE-INDEX-REF.md** — real findings extracted from an actual
+   deployed RPG Maker MV game's real, readable engine JS source
+   (`rpg_core.js` etc.) — the real `Tilemap` autotile mechanism (tile ID
+   encoding constants, the three real shape tables and their real sizes
+   48/16/4, the quadrant-compositing draw algorithm, and the honest gap
+   that neighbor→shape-index computation is editor-side/closed-source,
+   not in this runtime engine). Cited directly by TILE-SYSTEM-DESIGN.md
+   §2 for the real corrections made there. Add to this doc (don't
+   replace it) as more of the engine source gets read for other real
+   reasons later — it deliberately does not try to document the whole
+   engine up front.
+6h2e. **RMMV-ASSET-SOURCE-LOCATION.pdl** — records the real external
+   mount path to the RPG Maker MV game/engine source referenced above,
+   specifically so a future session can find it again if the drive/path
+   changes (direct instruction: "their location should be stored in a
+   related pdl file about tiles in case they move").
 6h3. **GAME-READINESS-GAP-ANALYSIS-2026-08-27.md** — real, grounded status check (code actually
    read, not guessed): what's genuinely done vs. missing before a real RPG-Maker-style game can be
    built on top of the events work above. Three real gaps, in build order: (1) palettes/tilesets/
@@ -271,6 +360,7 @@ Stop here if you just need to know "what's going on."
 | `AU24-oc-handon.md` | Live, still-open task backlog (2026-08-24): events ladder (Show Text/Choices/Input Number/Wait/Play SE), common events in db, CURSword's remaining chat features (minimize/windows-list/voice I/O — §4 spawn mechanics itself is DONE, see `archive/CURSWORD-HQ-SPAWN.md`), test-artifact + video-report generation, hum/idle animation, execution priority order, critical rules, event-runtime quick-reference diagram | Before starting ANY of the events-ladder or CURSword-chat-feature work — this is the real task list, not just a snapshot |
 | `archive/a11.focus-troubleshooting.md` | Closed-bug record | Rarely (historical) |
 | `maintenance-fixes.md` | Small non-blocking polish items | Whenever one is noticed |
+| `HQ-WINDOW-MAP-AND-AGENT-INPUT.md` (THIS directory, 2026-08-28) | Live 2026-08-28: `XMapRaised` on WM-managed chat-hai stole the human browser; override_redirect Settings/entity did not. Map HQ with `XMapWindow`. Do not gate history poll on X focus. Swatch leftover `PICK:` trap. | Opening or driving khtpm_entity_menu_render windows without stealing the human |
 | `_.0.aigent-testing-k9.txt` (THIS directory, moved here 2026-08-27) | House-wide testing guide across ALL program families, with a 2026-08-11 khtpm-specific addendum + the presentation-archive convention at the bottom | When a testing mechanism is discovered/corrected for a NEW family |
 | `44.xyz❤️‍🔥️00.17/LINUX_ROUNDTRIP.md` | Linux return-leg status: Mach-O quarantine (76 files), house-wide recompile (44/44 PASS), manual rebuilds (treetRace, hm_assert, apply_theme_op), verification, livedesk smoke-test | When returning from macOS to Linux (or any roundtrip); read before relaunching |
 | `yz.muchiverse/ROUNDTRIP_FIX.md` | Concise fix log + re-run recipe for future roundtrips (purge Mach-O → compile-runner → manual extras → verify → relaunch) | When re-running the purge+rebuild recipe; includes rollback instructions |
@@ -457,6 +547,36 @@ au11-hq's own documented receipt convention and unlike the live, confirmed
 TPMOS/wraith-alpha `.receipt.pdl` standard; wrote `house-compaction.md` with full findings
 + a doc-compaction candidate list for `1.^V-hq/`; agreed order is compact-docs-first, then
 fix the drift, then resume palettes T1-T6) by Claude (Haiku)
+
+**Last updated:** 2026-08-28 (added `RENDER-INPUT-REFACTOR-SUMMARY-2026-08-28.md`
+— readable summary of the full khtpm_entity_menu_render.c render+input refactor
+(frame-file paint, file-boundary input, marker-gated redraw, 4-loop collapse,
+popup conversion, focus-steal fix, cross-window Tab-cycle, LayDoc→Elem port);
+confirms mutaclysm-neo needed no work (it's the reference implementation);
+records 2 known open bugs (toys-launch PID/teardown gap, open-hai+gemma3 not
+responding, unrelated to tonight's changes). Full real-time trail in
+`GROK-RENDER-INPUT-REFACTOR-HANDOFF.md` + `RENDER-REFACTOR-2DO-PROGRESS.md` +
+`LAYDOC-ELEM-PORT-IMPLEMENTATION-PLAN.md`, this same directory) by Sonnet
+
+**2026-08-28 (docs-only correction pass, Grok — append, not rewrite):**
+- `HANDOFF.md` — HQ recipe still listed `XMapRaised`; appended WM-managed
+  HQ = `XMapWindow`, popups keep Raised. Cite `HQ-WINDOW-MAP-AND-AGENT-INPUT.md`.
+- `HQML-DESIGN+PLANS.md` — “new khtpm/-hq window → XMapRaised” was the
+  override_redirect/strip rule; appended that WM-managed HQ is MapWindow.
+- `_.0.aigent-testing-k9.txt` — entity_menu addendum: poll without X-focus
+  gate; map table; strip arrows via `livedesk_agent_relay.txt` 1002/1001.
+- `LAYDOC-ELEM-PORT-IMPLEMENTATION-PLAN.md` — Gap 7: do not build an Elem
+  synthetic root; strip already has unified_apply. (Gap 2 DEACTIVATE
+  correction was already appended by Sonnet.)
+Source trail: `GROK-RENDER-INPUT-REFACTOR-HANDOFF.md` Grok docs-only claim.
+
+**2026-08-28 (Q1–Q3 surfaces, Grok — after Sonnet ACK):**
+- `#.house-docs.html/1.index-house=solo.html` — Input/Map subsection + roadmap
+  bullet; links `HQ-WINDOW-MAP-AND-AGENT-INPUT.md`.
+- `!.co-work/c-htpm-agent-onboard-prompt.md` — one-line pointer to the helper
+  (no copy-paste of its body).
+- `0.browser-prompting/1.platform-primer-ALWAYS-ATTACH.md` — 5-line MapWindow /
+  unfocused-history note.
 
 **Last updated:** 2026-08-24 (added 🎯 Plans-after-events section: palettes
 categories registered in pallets-help.txt, db-hq↔events-hq event-op parity +

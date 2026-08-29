@@ -139,10 +139,75 @@ infrastructure consumed by h-ai/chat-hai, not something this taskbar cell
 itself opens or exposes to a user.
 
 ### menus / datetime / tools / (reserved)
-**Verdict: labels only, not requested for deep coverage** — `strip_btn_10`
+**Verdict: labels only for the bare header cells** — `strip_btn_10`
 through `strip_btn_13` have no `_cmd` rows in `livedesk_taskbar.pdl`
-beyond their bare labels; `strip_btn_13_label | (reserved)` is explicitly
-an unused slot.
+beyond their bare labels (`strip_btn_10_label | menus`,
+`strip_btn_13_label | (reserved)` explicitly an unused slot). **Real
+correction (2026-08-27)**: one of these header cells' dropdown reaches a
+genuinely real, live "Toys" feature — see dedicated section below. This
+was MISSED entirely in this doc's first pass; the exact submenu row that
+dispatches `cid="toys"` was not fully re-traced this pass (no
+`strip_btn_10_menu_*` rows exist in the checked-in `.pdl` either, so the
+dispatch path is reached some other way in `khtpm_taskbar_manager.c` —
+flagged honestly rather than guessed at further).
+
+### Toys (real, live-scanning menu — corrected 2026-08-27, previously
+missed entirely)
+**Verdict: real, not a stub.** `livedesk_build_toys_menu()`
+(`khtpm_taskbar_manager.c` ~line 3048) live-scans, every time the cell
+opens, for real `toy.pdl` identity files (`META|title`, `META|launch`)
+at the house root's own top level AND under `@.apps/`'s direct children
+— opt-in by file presence only, so it can never false-positive. Real,
+currently-registered toys (confirmed on disk right now):
+- **Mutaclysm-Neo** (`101.mutaclsym🧟‍♂️️19.00/toy.pdl`) — see the
+  dedicated Mutaclysm section below; real, drivable via injection.
+- **my-chara-txt** (`@.apps/my-chara-txt/`) — the base CHTPM game-shell
+  template my-biotech/my-lawyer both copy from.
+- **piececraft-xyz** (`@.apps/piececraft-xyz/`) — see its own dedicated
+  section below; real, with an honest partial-capability split.
+- **my-lawyer** (`@.apps/my-lawyer/`) — see its own section above;
+  reachable BOTH standalone (`button.sh run`) and via this Toys menu.
+
+Each entry dispatches `livedesk:open-toy:<path>/<launch>` (defaults to
+that project's own `button.sh` if no `META|launch` override is set) —
+confirmed real, not a placeholder command string.
+
+### piececraft-xyz — real two-phase toy, honest partial capability
+**Verdict: real, two real phases, one real capability gap disclosed in
+the code's own comments (not discovered by us — it says so itself).**
+1. **Terminal setup phase**: `@.apps/piececraft-xyz/button.sh run` in a
+   real terminal — world generation, `END_TURN`, `TOGGLE_AUTOTICK`,
+   `CYCLE_TICK_SPEED`, all real (`ops/pc_menu_input.c`).
+2. **Map-view phase**: a SEPARATE real GL window from the generic house
+   widget `&.widgits/board-viewer/` (own `chtpm_parser_pal`/
+   `keyboard_input`/`gl_mirror` binaries, same family as Mutaclysm/
+   my-lawyer/my-biotech). Reads its own real `pieces/keyboard/
+   history.txt` (`[TIMESTAMP] KEY_PRESSED: N` convention), gated by an
+   "INTERACT engaged" state — same class of gotcha as Mutaclysm's own
+   `interact_mode` (k9 doc Rule 10). Real camera control confirmed:
+   `ops/bv_render_3d.c`'s `camera_mode` (0/1/2), yaw/pitch, look-down
+   angle.
+3. **Cross-project bridge, real**: board-viewer writes the xelector's
+   position directly, then notifies piececraft-xyz's own terminal-side
+   process via `widget_cmds/inbox.txt`, which dispatches real `MOVE`/
+   `JUMP`/`MINE`/`BUILD` commands (`ops/pc_menu_input.c` ~line 798-850).
+
+**The honest capability split** (from the code's own comments, not
+inferred): **MOVE is fully real** — arrow keys move the xelector, write
+position cross-project, advance the shared world tick. **JUMP/MINE/
+BUILD are explicitly "real plumbing, honest stub mechanic"** — the full
+key→inbox→dispatch path works and produces a real ledger entry + tick
+advance, but there is NO actual jump physics, block removal, or block
+placement yet ("physics not implemented yet" — the code's own message
+string). A future demo of this must frame around what's real (MOVE, the
+ledger/tick proof for JUMP/MINE/BUILD) and never imply the stubbed
+actions have a visible in-world effect — see `HARNESS-AUTHORING-GUIDE.md`
+§2 for the camera-director guidance this game specifically needs
+(frame the xelector/terrain meaningfully, don't rely on the default
+camera angle).
+
+### h-ai (cell 14) — see dedicated section below
+Real, two distinct modes, both confirmed. See "h-ai" section.
 
 ### h-ai (cell 14) — see dedicated section below
 Real, two distinct modes, both confirmed. See "h-ai" section.
@@ -381,6 +446,13 @@ framing above.
 - **Chemistry palette** — real, minimal, but real precedent for
   domain-data pickers beyond UI theming/RPG tiles (flagged explicitly by
   the user as under-covered).
+- **Toys menu + piececraft-xyz** — the real "Toys" live-scanning menu
+  (Mutaclysm-Neo/my-chara-txt/piececraft-xyz/my-lawyer) was missed
+  entirely in the first pass. piececraft-xyz specifically needs an
+  honest demo: real MOVE + real camera control, but JUMP/MINE/BUILD are
+  disclosed-in-the-code stubs (plumbing works, no physics/block changes
+  yet) — see its own section above and `HARNESS-AUTHORING-GUIDE.md` §2
+  for the camera-director framing it needs.
 - **my-biotech** — real, LIVE-VERIFIED chemistry-research CHTPM game
   with a genuine local-LLM (`gemma3:270m`) loop, real FDA-verdict
   mechanic, DONE through P3. Not taskbar-wired; standalone `button.sh`.
