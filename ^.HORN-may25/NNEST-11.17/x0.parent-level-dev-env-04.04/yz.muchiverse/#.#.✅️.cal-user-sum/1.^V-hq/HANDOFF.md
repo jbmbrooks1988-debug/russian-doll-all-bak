@@ -16,10 +16,17 @@ We're building a playable game engine inside livedesk. **Current status:**
   per-game dev folders
 - ✅ Taskbar terminal ASCII mirror + a new capture/dispatch architecture (2026-08-18) - see
   `taskbar-tpmos-parallel-refactor.md` + `taskbar-history-txt-migration-investigation.md`
-- 🚧 **NEXT (2026-08-28, human instruction):** Superficial RPG Maker MV **layout copies**
-  for db-hq tabs + events-hq Options — **Terms first**, **leave Common Events alone**.
-  See **§ DB-HQ MV LAYOUT FILL-OUT** below this TL;DR. Event-runtime work still
-  exists (`EVENTS_RUNTIME.md`) but is **not** this queue.
+- ✅ **db-hq list tabs (2026-08-28):** Actors…Tilesets + Items + System + Types
+  are superficial PDL+inject (house nav). Default tab is Actors `[1]`. CE `[12]`
+  restores via inject. **Terms `[15]` still the old CE-sidebar layout — leave
+  until human says rebuild.** Spec: `DB-HQ-HOUSE.md`.
+- 🚧 **NEXT (palettes / RMMV img — AWAITING APPROVAL, do not start):**
+  Move **all** RMMV img (including **tilesets**) **out of the house**
+  to `NNEST-11.17/` (zip parent, not `palettes/assets` — that bloats).
+  Point `RMMV-ASSET-SOURCE-LOCATION.pdl` at that folder (path can
+  change / win/mac). Then wire non-tileset tabs to **real PNGs** from
+  those dirs and **place** them. Spec: `RMMV-IMG-DIR-TABS-PLAN.md` §10.
+  Do **not** copy more PNGs into `&.widgits/palettes/`.
 
 **Quick status check for "does X work":** Play/Change Gold works for exactly one case (a single
 `page_1`, `on-click` trigger, numeric state change). Nothing beyond that shape has been built or

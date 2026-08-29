@@ -43,10 +43,10 @@ to the main directory and drop the `archive/` prefix here.
    scoped (not over-built) recommendation for what livedesk's own receipt should contain:
    `house-compaction.md` Part 1 + Part 2. Compaction candidates (Part 3) are the
    immediate next step, not this.
-0. **palettes-handoff-2026-08-24.md — CURRENT ACTIVE HANDOFF (2026-08-24)** — if you were
-   handed THIS session's work: palettes dropdown+emoji sprite matrix is done and verified;
-   remaining tasks T1–T6 with per-task how-to AND how-to-check instructions inside. Start
-   there, then CREATOR_AGENT.md for background.
+0. **DB-HQ-HOUSE.md — CURRENT db-hq TAB WORK (2026-08-28)** — per-tab khtpm+house-nav
+   designs. **Leave Terms and Common Events alone.** Proof tab is **Actors**. Launch
+   default must be Actors `[1]`, not Common Events. Palettes T1–T6 is a separate
+   backlog (`palettes-handoff-2026-08-24.md`).
 1. **This file** — orientation, what exists, read order
 2. **HANDOFF.md → "⚡ TL;DR" + "🎯 Project State" sections only** — current status, what's next
 3. **$.claude-hai-budget.md — HIGH PRIORITY, direct instruction (2026-08-13)** — before doing scoped/mechanical work yourself, check whether it should be delegated to a Harnecient model (h-ai) instead, to save Claude token budget. Log delegation opportunities there, not just plans.
@@ -169,22 +169,34 @@ Stop here if you just need to know "what's going on."
    broader harness-authoring direction (moved there to keep this doc
    scoped to visual-editor vision).
 6h2b. **HARNESS-AUTHORING-GUIDE.md** — the canonical doc for building/
-   updating ANY test/demo harness, single-feature or multi-feature.
-   Covers: the current real bash-harness convention (with real examples
-   to copy from); a grounded feasibility check for PAL/event-authored
-   harnesses against `prisc+x.c`'s actual syscalls (relay injection via
-   `SYS_OPEN`+`SYS_WRITE_LINE` already works today; polling frame-history
-   needs a small sibling-file fix, no VM change; no `SYS_SLEEP` exists
-   yet); a priority list of "harness-friendly" event commands worth
-   building next (Loop, Wait, a new Send-Input command); a per-feature
-   real launch-mechanism reference table (db-hq/events-hq/palettes/
-   entities/Mutaclysm/h-ai/chat-hai/my-lawyer/my-biotech/piececraft-xyz/
-   file-desk-switching); and camera/POV "director" guidance for anything
-   with real camera control (Mutaclysm, piececraft-xyz's board-viewer
-   map-view). Read this BEFORE designing any new harness — also
-   cross-referenced from `_.0.aigent-testing-k9.txt` (which stays scoped
-   to low-level injection/dump procedure, per its own stated rule) and
-   `PAL-VISUAL-SCRIPTING-PLAN.md`.
+    updating ANY test/demo harness, single-feature or multi-feature.
+    Covers: the current real bash-harness convention (with real examples
+    to copy from); a grounded feasibility check for PAL/event-authored
+    harnesses against `prisc+x.c`'s actual syscalls (relay injection via
+    `SYS_OPEN`+`SYS_WRITE_LINE` already works today; polling frame-history
+    needs a small sibling-file fix, no VM change; no `SYS_SLEEP` exists
+    yet); a priority list of "harness-friendly" event commands worth
+    building next (Loop, Wait, a new Send-Input command); a per-feature
+    real launch-mechanism reference table (db-hq/events-hq/palettes/
+    entities/Mutaclysm/h-ai/chat-hai/my-lawyer/my-biotech/piececraft-xyz/
+    file-desk-switching); and camera/POV "director" guidance for anything
+    with real camera control (Mutaclysm, piececraft-xyz's board-viewer
+    map-view). Read this BEFORE designing any new harness — also
+    cross-referenced from `_.0.aigent-testing-k9.txt` (which stays scoped
+    to low-level injection/dump procedure, per its own stated rule) and
+    `PAL-VISUAL-SCRIPTING-PLAN.md`.
+6h2c. **!.OPEN-2do-events-db-networking-2026-08-28.md** — CURRENT opencode
+    task doc (2026-08-28, "renamed handoff" — the active successor to
+    COMMON-EVENTS-MANAGER-HANDOFF.md for opencode): Task 1 finish the
+    Events list (Message + Character commands, superficial-first per
+    direct user instruction tonight), Task 2 db-hq tab stubs, Task 3
+    Networking tab + pal-irc/pal-chain/pal-forum GUI mirrors. Carries the
+    HARD BOUNDARY (khtpm_entity_menu_render.c = claim/release via
+    GROK-RENDER-INPUT-REFACTOR-HANDOFF.md, deferred-edit protocol) plus
+    the ⛔ EXECUTION RECORD for Visual Scripting task #2 (Scratch view
+    real blocks from compiled Control Switch shapes) and that work's
+    deferred renderer glue. Read this FIRST as the current handoff for
+    opencode before touching events/db/networking work.
 6h3b. **CURSWORD-SOUL-VISION.md** — cursword's identity as the user's "SOUL":
    the account's first entity, free, always-there, unkillable, tied to the
    account — plus a capability roadmap (text chat real today; STT/TTS/image-
@@ -547,6 +559,27 @@ au11-hq's own documented receipt convention and unlike the live, confirmed
 TPMOS/wraith-alpha `.receipt.pdl` standard; wrote `house-compaction.md` with full findings
 + a doc-compaction candidate list for `1.^V-hq/`; agreed order is compact-docs-first, then
 fix the drift, then resume palettes T1-T6) by Claude (Haiku)
+
+**Last updated:** 2026-08-28 (added `ENTITY-MENU-LEGACY-DEPRECATION-
+PLAN.md` - real plan to finish the stalled 2026-08-16/18 entity-
+context-menu migration: only 7 of 45+ real entities are on the new
+shared Elem/CSS renderer today, the rest still use
+`tp_desktop_window_rgb.c`'s legacy built-in popup engine. Confirmed a
+live bug in the ALREADY-migrated path (book-stack's menu: first item
+invisible/jumbled with header) that must be fixed before mass-
+rollout. Real design fork flagged for confirmation: generate a static
+`menu.chtpm` per entity (current shape) vs. read `meta.pdl` directly
+at popup-open time (recommended - no staleness surface). End goal:
+archive `tp_desktop_window_rgb.c`'s popup engine once nothing depends
+on it) by Sonnet
+
+**Last updated:** 2026-08-28 (added `HOUSE_FAQ.md` 🏠️❓️ - real Q&A doc,
+emoji-heavy, append-only, for recurring "why does it work that way"
+questions the user asks mid-session. Check this FIRST before
+re-deriving an architecture explanation from scratch or re-asking an
+agent - if the question's already been answered here, link it instead
+of re-answering; if not, answer for real then append it here so it
+doesn't get re-asked cold next time) by Sonnet
 
 **Last updated:** 2026-08-28 (added `RENDER-INPUT-REFACTOR-SUMMARY-2026-08-28.md`
 — readable summary of the full khtpm_entity_menu_render.c render+input refactor
