@@ -17,7 +17,25 @@ SECTION      | hq_menu_8_label     | cursword
 SECTION      | hq_menu_8_cmd       | livedesk:spawn-cursword
 SECTION      | hq_menu_9_label     | !kill hq
 SECTION      | hq_menu_9_cmd       | sh *.monads/*.livedesk-taskbar/ops/kill_hq_windows.sh .
-SECTION      | hq_menu_10_label    | cancel
+SECTION      | hq_menu_10_label    | debug
+SECTION      | hq_menu_10_cmd      | livedesk:open-palette:debug
+SECTION      | hq_menu_11_label    | cancel
+
+SECTION      | file_menu_1_label   | new-desk
+SECTION      | file_menu_1_cmd     | livedesk:new-desk
+SECTION      | file_menu_2_label   | save
+SECTION      | file_menu_2_cmd     | livedesk:save
+SECTION      | file_menu_3_label   | save-as
+SECTION      | file_menu_3_cmd     | livedesk:save-as
+SECTION      | file_menu_4_label   | load
+SECTION      | file_menu_4_cmd     | livedesk:load
+SECTION      | file_menu_5_label   | Cancel
+
+SECTION      | desk_menu_action_1_label | edit
+SECTION      | desk_menu_action_1_cmd   | livedesk:edit-desk
+SECTION      | desk_menu_action_2_label | +new-desk
+SECTION      | desk_menu_action_2_cmd   | livedesk:new-desk
+SECTION      | desk_menu_action_3_label | cancel
 
 SECTION      | palettes_menu_1_label  | my pallet
 SECTION      | palettes_menu_1_cmd    | livedesk:open-palette:user-pallet

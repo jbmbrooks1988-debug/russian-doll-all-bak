@@ -166,8 +166,90 @@ set_rmmv() {
     log "rmmv active $_field set to '$_val' in $_pkg (tab=$_tab tileset=$_tileset dir=$_dir)"
 }
 
+# arm-rmmv <sprite_dir> <tileset_key> <category> <kind_label> - the real
+# "armed brush, click desktop to place" chain for RMMV tiles
+# (TILE-SYSTEM-DESIGN.md §4b.3/§6 item 6, built 2026-08-29). Arms the
+# brush (tp_set_brush_rmmv), then spawns tp_arm_placer_rmmv detached to
+# grab the next click anywhere on the real desktop - same real
+# global-grab technique the emoji brush's own tp_arm_placer.+x already
+# proved working, just without that op's board-viewer branch (RMMV
+# placement targets bare desktop only for now, see tp_arm_placer_rmmv.c's
+# own header for why).
+arm_rmmv() {
+    # $5-$8: the picker window's own real rect (x y w h), so the
+    # armed-click-capture window can tile AROUND it instead of over
+    # it - see tp_arm_placer_rmmv.c's own header for why.
+    _sdir="$1"; _key="$2"; _cat="$3"; _label="$4"
+    _winx="$5"; _winy="$6"; _winw="$7"; _winh="$8"
+    mkdir -p "$STATE_DIR" "$DESK_DIR/tiles"
+    "$TP_OPS/tp_set_brush_rmmv.+x" "$STATE_DIR" "$_sdir" "$_key" "$_cat" "$_label" >/dev/null 2>&1 || true
+    # REAL, NEW 2026-08-29, direct live report ("nothing happened when i
+    # tried it"): the picker's own hint text now shows this line while
+    # armed (khtpm_entity_menu_render.c polls rmmv_armed.txt).
+    #
+    # REAL FIX HISTORY, same day - this went through 3 real designs
+    # before landing on the right one:
+    #   1. tp_arm_placer_rmmv.+x (separate process, XGrabPointer) -
+    #      real hardware clicks never delivered under this Mutter/
+    #      XWayland setup (a real, known, still-open upstream bug).
+    #   2. In-process XGrabPointer + XQueryPointer polling
+    #      (khtpm_entity_menu_render.c's own g_pal_rmmv_armed) - fixed
+    #      synthetic clicks, NOT real ones either.
+    #   3. THE REAL FIX (direct instruction: "maybe we do need a screen
+    #      wide transparent click capture surface?") - confirmed via a
+    #      real, standalone diagnostic tool (tp_debug_click_watcher.c):
+    #      every real click ever captured fell INSIDE a real, already-
+    #      open khtpm window, never on genuinely bare desktop - this
+    #      Mutter/XWayland setup only makes real click state visible to
+    #      X11 at all when the click lands on a real XWayland surface.
+    #      tp_arm_placer_rmmv.+x REWRITTEN (same file, same real design
+    #      history kept in ITS OWN header) to create a real, full-
+    #      screen, InputOnly (genuinely invisible, no opacity trick
+    #      needed) window covering the whole screen and wait for a
+    #      NORMAL ButtonPress on it - no grab, no polling, a real
+    #      mapped surface everywhere the user could click. Spawned back
+    #      here again (was briefly moved in-process for design #2,
+    #      wrong call in hindsight - reverted).
+    printf '%s ARMED: %s/%s "%s" - click desktop to place, Esc to cancel\n' "$_key" "$_key" "$_cat" "$_label" > "$STATE_DIR/rmmv_armed.txt"
+    setsid "$TP_OPS/tp_arm_placer_rmmv.+x" "$STATE_DIR" "$DESK_DIR" "$_winx" "$_winy" "$_winw" "$_winh" >/dev/null 2>&1 < /dev/null &
+    log "armed rmmv brush tileset=$_key category=$_cat kind='$_label'"
+}
+
+# debug-toggle <op-index> - real, extensible debug-op start/stop
+# (2026-08-29, direct instruction: "give it ops i can start or stop
+# from list of ops we're trying to debug"). Index must match
+# DEBUG_OPS[] in palettes_manager.c's own publish_debug() exactly -
+# only one real op exists there so far (click-watcher, index 0).
+debug_toggle() {
+    _idx="$1"
+    _flag="$DESK_DIR/debug/debug_watch_enabled.txt"
+    mkdir -p "$DESK_DIR/debug"
+    if [ "$_idx" = "0" ]; then
+        _cur="0"
+        [ -f "$_flag" ] && _cur=$(cat "$_flag" 2>/dev/null || echo 0)
+        if [ "$_cur" = "1" ]; then
+            printf '0' > "$_flag"
+            log "debug op 0 (click-watcher) stopped"
+        else
+            printf '1' > "$_flag"
+            setsid "$TP_OPS/tp_debug_click_watcher.+x" "$HOUSE_DEFAULT" >/dev/null 2>&1 < /dev/null &
+            log "debug op 0 (click-watcher) started"
+        fi
+    fi
+}
+
+# debug-clear - real, direct instruction ("allow clearing of debug.txt").
+debug_clear() {
+    mkdir -p "$DESK_DIR/debug"
+    : > "$DESK_DIR/debug/debug.txt"
+    log "debug.txt cleared"
+}
+
 case "${1:-}" in
     place)             shift; place "$@"; exit 0 ;;
+    arm-rmmv)          shift; arm_rmmv "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8"; exit 0 ;;
+    debug-toggle)      shift; debug_toggle "$1"; exit 0 ;;
+    debug-clear)       debug_clear; exit 0 ;;
     list)              list_cats; exit 0 ;;
     set-rmmv-tab)      shift; set_rmmv tab "$1" "$2"; exit 0 ;;
     set-rmmv-tileset)  shift; set_rmmv tileset "$1" "$2"; exit 0 ;;

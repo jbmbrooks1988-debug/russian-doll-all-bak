@@ -598,9 +598,85 @@ the `livedesk:open-palette:<category>` action parse, and the manager
 launch itself - is genuinely PDL-driven end to end, zero hardcoded
 category lists anywhere in that chain. This was the real, pre-existing,
 already-correct precedent the new `rmmv` work was built to match.
-6. Wire the armed-brush "click desktop to place" interaction (§4b.3) —
-   spawns/updates a real `tp_desktop_window_rgb.c` tile-entity at the
-   clicked grid cell, per §0a.
+6. **DONE, file-level verified (2026-08-29)** — the armed-brush "click
+   desktop to place" interaction (§4b.3) is built: `tp_set_brush_rmmv.c`
+   (arms tileset+category+kind identity), `tp_arm_placer_rmmv.c` (global
+   pointer/keyboard grab, waits for the next real desktop click - same
+   proven technique as the emoji brush's `tp_arm_placer.c`, board-viewer
+   branch dropped since RMMV placement is desktop-only for now),
+   `tp_place_desktop_rmmv.c` (spawns/updates a real `tp_desktop_window_
+   rgb.c` tile-entity at the clicked point, per §0a). Rendering needed
+   ZERO changes to `tp_desktop_window_rgb.c` - it already draws any
+   entity's `sprite.csv` generically, and `palettes_manager.c`'s
+   `publish_rmmv()` already caches a real per-kind representative
+   sprite.csv, so placement just copies that cached file rather than
+   re-compositing. Renderer's tile-click onclick (`khtpm_entity_menu_
+   render.c`) fixed to route rmmv tiles to `arm-rmmv` instead of the
+   emoji `place` path (was previously sending a label string like "a2
+   kind 3,1" into the FreeType glyph pipeline - a real, now-fixed bug).
+   **LIVE-VERIFIED (2026-08-29, same day, follow-up session)**: real
+   X11 clicks (XTest-direct, no xdotool) through the actual open
+   picker window - click a tile (two-step click convention applied
+   here too, confirmed correct), click the bare desktop - produced a
+   real, correctly-rendered tile-entity on screen, screenshot-confirmed
+   (a floor/rug pattern matching the "Inside" a2 tileset kind clicked).
+   Two real bugs found and fixed along the way, both now fixed:
+   (1) `tp_desktop_window_rgb.c` (existing, unmodified code) silently
+   exits at startup - clean exit 0, zero output - if `glyph.txt` is
+   missing from the package dir, an undocumented dependency never hit
+   before since every prior spawner always wrote one; fixed in
+   `tp_place_desktop_rmmv.c` by writing a placeholder glyph.txt (its
+   presence is load-bearing, its content is cosmetic). (2) The
+   duplicate-spawn guard's `pgrep -f 'tp_desktop_window_rgb.+x ...'`
+   pattern was never actually matching the literal filename - `pgrep -f`
+   treats its argument as regex, and the unescaped `.`/`+` in the real
+   ".+x" binary-suffix convention made it match far more broadly than
+   intended (false "already running" on demonstrably fresh dirs);
+   fixed by escaping the regex metacharacters. Both fixes are in
+   `tp_place_desktop_rmmv.c` only - the same pre-existing pattern in
+   `tp_place_desktop.c` (the emoji brush) is a real, separate, known
+   issue, not fixed here (out of scope, working "well enough" in
+   practice for that flow so far). Also built along the way, as a
+   real, reusable fix for a house-wide testing gap: `tp_find_window_by_
+   navtab.c` (finds a khtpm window's real coords via its own self-
+   recorded xid in nav_tab_register()'s file, since `_NET_WM_PID`
+   structurally can't work on override_redirect windows) and
+   `tp_test_send_click_abs.c` (XTest click at absolute coords, for
+   windows with no WM_NAME).
+   Single representative kind-thumbnail only - no neighbor-aware
+   autotile blending yet, that's step 8 below, separately unbuilt.
+
+   **REAL-MOUSE-VERIFIED (2026-08-29, later same day, separate real
+   debugging arc)** - the "LIVE-VERIFIED" claim above turned out to
+   only be true for synthetic (XTest-injected) clicks, not real human
+   mouse clicks. Real root cause, found via a delegated subagent plus
+   a real, standalone diagnostic tool built specifically to isolate
+   it (`tp_debug_click_watcher.c` - still on disk, wired into a new
+   Debug HQ sidebar, `livedesk:open-palette:debug`): this Mutter/
+   XWayland setup only makes real hardware click state visible to an
+   XWayland client's X11 view when the click lands on a real,
+   already-mapped XWayland surface - genuinely bare Wayland-native
+   desktop space is invisible to X11 entirely, no matter the
+   technique (XGrabPointer event delivery AND XQueryPointer polling
+   both failed the same way, for the same reason). Real fix, direct
+   instruction ("maybe we do need a screen wide transparent click
+   capture surface?"): `tp_arm_placer_rmmv.c` REWRITTEN to create up
+   to 4 real windows tiled around the picker's own rect (not over it -
+   an earlier single-full-screen-window attempt silently ate clicks
+   meant for the picker itself) covering the rest of the screen, each
+   a real, visible (subtle amber tint, ~12% opacity - direct
+   instruction, so arming is visually confirmable) mapped XWayland
+   surface waiting for a normal ButtonPress. Confirmed working
+   end-to-end with the user's own real mouse: armed a tile, saw the
+   real overlay, clicked real desktop, a real tile appeared. Also
+   fixed along the way: `dbhq_redraw_content()` (khtpm_entity_menu_
+   render.c) composed live-polled content into its offscreen buffer
+   but never called `XCopyArea`/`XFlush` to present it - a real bug
+   affecting every live-polling-driven update in db-hq/palettes mode
+   (not just rmmv), found via the user's own precise diagnosis ("it
+   detects your clicks, but only updates when i reclick the window").
+   Full real investigation trail: `RMMV-CLICK-CAPTURE-INVESTIGATION-
+   2026-08-29.txt` in this same directory.
 7. Build the map-file loader (§1.2) as a plain C parsing function,
    matching every other flat-PDL loader already in this codebase
    (`read_key_value()`-style, not a new parsing paradigm) — expanding a

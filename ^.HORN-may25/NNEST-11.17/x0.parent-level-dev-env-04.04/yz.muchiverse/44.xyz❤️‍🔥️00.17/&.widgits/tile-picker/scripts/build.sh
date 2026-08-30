@@ -32,11 +32,36 @@ gcc $CFLAGS -o "ops/+x/tp_test_send_key.+x" "ops/tp_test_send_key.c" -lX11 -lXts
 # 101.drag-drop-test's own dd_drag_drop.c-shaped tools don't actually
 # run here: xdotool isn't installed on this machine).
 gcc $CFLAGS -o "ops/+x/tp_test_send_click.+x" "ops/tp_test_send_click.c" -lX11 -lXtst
+# Real sibling, 2026-08-29 - absolute-coordinate click, for windows
+# tp_test_send_click.+x's name-based lookup can't find (any
+# override_redirect khtpm window - see tp_test_send_click_abs.c's own
+# header). Pair with tp_find_window_by_navtab.+x to resolve coords first.
+gcc $CFLAGS -o "ops/+x/tp_test_send_click_abs.+x" "ops/tp_test_send_click_abs.c" -lX11 -lXtst
 gcc $CFLAGS -o "ops/+x/tp_find_window_by_pid.+x" "ops/tp_find_window_by_pid.c" -lX11
+# Real fix, 2026-08-29 - tp_find_window_by_pid.+x structurally cannot
+# work on ANY khtpm_entity_menu_render.c window (they're all
+# override_redirect, so the WM never sets _NET_WM_PID). This reads the
+# renderer's own self-recorded window ID from nav_tab_register()
+# instead - see tp_find_window_by_navtab.c's own header for the full
+# story.
+gcc $CFLAGS -o "ops/+x/tp_find_window_by_navtab.+x" "ops/tp_find_window_by_navtab.c" -lX11
 gcc $CFLAGS -o "ops/+x/tp_set_wm_pid.+x" "ops/tp_set_wm_pid.c" -lX11
 gcc $CFLAGS -o "ops/+x/ledger_peers.+x" "ops/ledger_peers.c"
 gcc $CFLAGS -o "ops/+x/tp_arm_placer.+x" "ops/tp_arm_placer.c" -lX11
 gcc -Wall -O2 -o "ops/+x/tp_rmmv_character_extract.+x" "ops/tp_rmmv_character_extract.c" -lm
+# Real RMMV-tile "armed brush, click desktop to place" chain
+# (TILE-SYSTEM-DESIGN.md §6 item 6, built 2026-08-29 - the one real
+# remaining gap the doc-audit pass identified, see that file's own
+# header comments for why these are separate ops, not a
+# generalization of the glyph-brush ones above).
+gcc $CFLAGS -o "ops/+x/tp_set_brush_rmmv.+x" "ops/tp_set_brush_rmmv.c"
+gcc $CFLAGS -o "ops/+x/tp_place_desktop_rmmv.+x" "ops/tp_place_desktop_rmmv.c"
+gcc $CFLAGS -o "ops/+x/tp_arm_placer_rmmv.+x" "ops/tp_arm_placer_rmmv.c" -lX11
+# Real standalone debug tool, 2026-08-29, direct instruction ("a simple
+# op that, when on, detects clicks on desktop, and writes them to
+# debug/debug.txt") - built to isolate the real Mutter/XWayland click-
+# delivery bug independent of the rmmv feature.
+gcc $CFLAGS -o "ops/+x/tp_debug_click_watcher.+x" "ops/tp_debug_click_watcher.c" -lX11
 
 # khtpm_choice_picker.+x + khtpm_show_choices.+x - REAL FIX 2026-08-16
 # ("its very old lets fix it to use khtpm"): the real khtpm-based Show

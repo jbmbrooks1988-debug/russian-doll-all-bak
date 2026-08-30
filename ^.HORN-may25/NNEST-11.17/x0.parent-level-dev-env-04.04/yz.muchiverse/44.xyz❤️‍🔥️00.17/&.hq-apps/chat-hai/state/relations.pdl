@@ -7,9 +7,9 @@ RELATION | echo-quill | 220
 RELATION | moxie-sage | 5
 RELATION | bravo-sage | 5
 RELATION | bravo-pip | 4
-RELATION | daoist-evolutionist | 110
-RELATION | evolutionist-theologian | 85
-RELATION | daoist-theologian | 92
-RELATION | evolutionist-synthesist | 6
-RELATION | synthesist-theologian | 11
-RELATION | daoist-synthesist | 3
+RELATION | daoist-evolutionist | 126
+RELATION | evolutionist-theologian | 124
+RELATION | daoist-theologian | 135
+RELATION | evolutionist-synthesist | 19
+RELATION | synthesist-theologian | 23
+RELATION | daoist-synthesist | 10

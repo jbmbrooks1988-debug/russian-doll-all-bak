@@ -75,6 +75,7 @@ static void nav_ledger_publish(void);
 static void popup_handle_click(int px, int py);
 static void history_unregister(void); /* REAL, NEW 2026-08-29 - see its own real definition/comment near history_path() */
 static void zero_nav_subtree(Elem *e); /* REAL, NEW 2026-08-29 - see its own real definition/comment near evhq_zero_subtree() */
+static void redraw(void); /* REAL, forward declaration needed for dispatch()'s OPACITY_MINUS/OPACITY_PLUS handlers (NEW 2026-08-29 TASK 2) */
 #define MAX_ELEMS 512
 #define MAX_PAGE_STACK 8
 
@@ -82,6 +83,125 @@ static Elem g_pool[MAX_ELEMS];
 static int g_n_elems = 0;
 static char g_package_dir[PATH_BUF];
 static char g_house_root[PATH_BUF];
+
+/* REAL, NEW 2026-08-29, direct instruction ("the tb has a
+ * transparency. but that should propagate to 'all entities' and menu
+ * screens (including tb dropdowns... context/hq etc) so player can
+ * still see thru their desktop a bit") - real, working opacity
+ * ALREADY exists (khtpm_strip_parser.c's own set_window_opacity()/
+ * load_theme_opacity(), the taskbar's own real _NET_WM_WINDOW_OPACITY
+ * + #.desktop/livedesk_theme.pdl "COLOR|opacity|N" convention) but was
+ * never ported into THIS file - the merged renderer that now handles
+ * db-hq/events-hq/chat-hai/popups/context-menus, i.e. everything the
+ * user is describing as "full opacity" today. Ported verbatim (same
+ * real logic, adapted to this file's own PATH_BUF/snprintf convention
+ * instead of khtpm_strip_parser.c's path_join2/SP_PATH_BUF) rather
+ * than sharing code across files for two small, pure functions with
+ * no other dependencies. */
+static void set_window_opacity(Display *d, Window w, double opacity) {
+    if (opacity < 0.0) opacity = 0.0;
+    if (opacity > 1.0) opacity = 1.0;
+    Atom opacity_atom = XInternAtom(d, "_NET_WM_WINDOW_OPACITY", False);
+    unsigned long val = (unsigned long)(opacity * (double)0xFFFFFFFFUL);
+    XChangeProperty(d, w, opacity_atom, XA_CARDINAL, 32, PropModeReplace, (unsigned char *)&val, 1);
+}
+
+static double load_theme_opacity(void) {
+    double opacity = 0.5;
+    char path[PATH_BUF];
+    snprintf(path, sizeof(path), "%s/#.desktop/livedesk_theme.pdl", g_house_root);
+    FILE *f = fopen(path, "r");
+    if (!f) return opacity;
+    char line[PATH_BUF];
+    while (fgets(line, sizeof(line), f)) {
+        if (strncmp(line, "COLOR", 5) != 0) continue;
+        char *p = strchr(line, '|');
+        if (!p) continue;
+        p++;
+        while (*p == ' ') p++;
+        char *end = strchr(p, '|');
+        if (!end) continue;
+        char *key_end = end;
+        while (key_end > p && key_end[-1] == ' ') key_end--;
+        char key[16];
+        size_t klen = (size_t)(key_end - p);
+        if (klen == 0 || klen >= sizeof(key)) continue;
+        memcpy(key, p, klen);
+        key[klen] = '\0';
+        if (strcmp(key, "opacity") != 0) continue;
+        char *v = end + 1;
+        while (*v == ' ') v++;
+        v[strcspn(v, "\r\n")] = '\0';
+        if (v[0] == '\0') continue;
+        double parsed = atof(v);
+        if (parsed >= 0.0 && parsed <= 1.0) opacity = parsed;
+    }
+    fclose(f);
+    return opacity;
+}
+
+/* REAL, NEW 2026-08-29 (TASK 2: opacity control) - write a new opacity value
+ * to the livedesk_theme.pdl file. Reads the entire file, updates the COLOR|
+ * opacity line, and rewrites the file (preserving all other lines intact). */
+static void write_theme_opacity(double opacity) {
+    if (opacity < 0.0) opacity = 0.0;
+    if (opacity > 1.0) opacity = 1.0;
+
+    char path[PATH_BUF];
+    snprintf(path, sizeof(path), "%s/#.desktop/livedesk_theme.pdl", g_house_root);
+
+    /* Read existing file to preserve all lines */
+    FILE *f = fopen(path, "r");
+    if (!f) return;
+
+    char lines[16][PATH_BUF];
+    int n_lines = 0;
+    char line[PATH_BUF];
+    int opacity_line_idx = -1;
+
+    while (fgets(line, sizeof(line), f) && n_lines < 16) {
+        if (strncmp(line, "COLOR", 5) == 0) {
+            char *p = strchr(line, '|');
+            if (p) {
+                p++;
+                while (*p == ' ') p++;
+                char *end = strchr(p, '|');
+                if (end) {
+                    char *key_end = end;
+                    while (key_end > p && key_end[-1] == ' ') key_end--;
+                    char key[16];
+                    size_t klen = (size_t)(key_end - p);
+                    if (klen > 0 && klen < sizeof(key)) {
+                        memcpy(key, p, klen);
+                        key[klen] = '\0';
+                        if (strcmp(key, "opacity") == 0) {
+                            opacity_line_idx = n_lines;
+                        }
+                    }
+                }
+            }
+        }
+        snprintf(lines[n_lines], sizeof(lines[n_lines]), "%s", line);
+        n_lines++;
+    }
+    fclose(f);
+
+    /* If no opacity line found, don't create one - only update existing */
+    if (opacity_line_idx < 0) return;
+
+    /* Write the file back with the updated opacity line */
+    FILE *fw = fopen(path, "w");
+    if (!fw) return;
+
+    for (int i = 0; i < n_lines; i++) {
+        if (i == opacity_line_idx) {
+            fprintf(fw, "COLOR        | opacity              | %.2f\n", opacity);
+        } else {
+            fputs(lines[i], fw);
+        }
+    }
+    fclose(fw);
+}
 /* REAL, db-hq mode only (§5d.10) - module launch, ported VERBATIM from
  * khtpm_hq_render.c (real fork()+execl(), already TPMOS-compliant - see
  * that file's own header comment, "explain to me your plan and why its
@@ -514,6 +634,22 @@ static int g_is_palettes = 0;
  * since bookmarks also needs the chtpm-live-reload + armed-input
  * mechanism palettes has no use for. */
 static int g_is_bookmarks = 0;
+/* REAL, NEW 2026-08-30 - piececraft-hq board-view khtpm conversion,
+ * direct instruction ("u should do it the same way the legacy chtpm
+ * parser does it. if possible steal code/ops w/e u have to"). Real,
+ * deliberate ISOLATION choice: unlike every other g_is_* mode flag
+ * above, this one is handled by its own fully separate function
+ * (run_pchq_board_mode(), see its own header comment near main()) that
+ * returns before any of this file's shared X11-window/Elem/CSS setup
+ * runs - zero shared state with the other 8 real modes, since this
+ * mode is fundamentally a raw-pixel blit (bv_render_3d.c's own 3D
+ * raymarch RGBA output), not an Elem/CSS-rendered window at all. Kept
+ * as its own real, low-risk addition rather than threaded through the
+ * existing giant shared main() - see PIECECRAFT-HQ-BOARD-KHTPM-
+ * CONVERSION-2026-08-30.md for the real proof-of-concept this ports
+ * (pchq_board_view_poc.c, already live-verified with a real
+ * screenshot before this port). */
+static int g_is_pchq_board = 0;
 static double g_dbhq_font_scale = 1.0;
 static int scaled(int base_px) {
     if (g_is_db_hq) return (int)(base_px * g_dbhq_font_scale + 0.5);
@@ -663,6 +799,35 @@ static int g_pal_layout_wide = 0;
 static Elem *g_pal_static_title = NULL;
 static Elem *g_pal_static_hint = NULL;
 static int g_pal_forced_h = 0;
+
+/* REAL, NEW 2026-08-29, direct live report ("nothing happened when i
+ * tried it" - the armed-brush flow had zero visible feedback, so a
+ * click that only moved nav focus (this house's real two-step click
+ * convention, see click_focus_then_activate) looked identical to one
+ * that silently did nothing). Polls rmmv_armed.txt (written by
+ * palettes_menu.sh's arm_rmmv(), cleared by tp_arm_placer_rmmv.c on
+ * exit) and swaps the picker's own hint text between this and the
+ * chtpm's real default, so arming state is always visibly true, not
+ * assumed. g_pal_default_hint captured once from the real chtpm-parsed
+ * label the first time the hint Elem is found - not hardcoded here,
+ * so a future wording change to palettes-rmmv.chtpm's own <text> still
+ * restores correctly. */
+static char g_pal_default_hint[256] = "";
+static char g_pal_armed_path[PATH_BUF] = "";
+static unsigned long g_pal_armed_checksum = 0;
+/* DEAD CODE, kept inert intentionally 2026-08-29 - this in-process
+ * XGrabPointer/XQueryPointer-polling click-capture design was tried
+ * and superseded same day (see tp_arm_placer_rmmv.c's own header for
+ * the real reason: real hardware clicks were never visible to this
+ * process either way, only to a real mapped XWayland surface - the
+ * real fix is that file's own full-screen InputOnly window instead).
+ * g_pal_rmmv_armed is never set to 1 anywhere anymore, so every branch
+ * below gated on it (hq_dispatch_xevent's ButtonPress/KeyPress
+ * handling, dbhq_rmmv_poll_pointer(), the shortened select() timeout
+ * in hq_run_event_loop()) is real but permanently unreachable - left
+ * in place rather than surgically removed under time pressure; safe
+ * to delete in a future pass, not load-bearing for anything. */
+static int g_pal_rmmv_armed = 0;
 
 /* Real, generic tab/chooser options for the rmmv tile picker
  * (2026-08-27) - published by palettes_manager.c's own publish_rmmv_
@@ -1272,7 +1437,46 @@ static void dbhq_inject_palette_tiles(Elem *panel) {
         if (wide) { snprintf(tile->classes[1], sizeof(tile->classes[1]), "pal-wide"); tile->n_classes = 2; }
         snprintf(tile->label, sizeof(tile->label), "%s", g_pal_label[i]);
         if (g_pal_sprite[i][0]) snprintf(tile->sprite, sizeof(tile->sprite), "%s", g_pal_sprite[i]);
-        snprintf(tile->onclick, sizeof(tile->onclick), "exec:'%s/&.widgits/palettes/palettes_menu.sh' place '%s'", g_house_root, g_pal_emoji[i]);
+        /* REAL FIX 2026-08-29 (TILE-SYSTEM-DESIGN.md §6 item 6, the
+         * doc-audit pass's identified real gap): before this fix, EVERY
+         * category's tile click - including rmmv - went through place()
+         * with g_pal_emoji[i], which for rmmv holds a label string like
+         * "a2 kind 3,1", not a real glyph. That sent garbage into the
+         * FreeType emoji_gen_atlas pipeline, which is why "sets a real
+         * current brush state on tile click" was still flagged pending
+         * in TILE-SYSTEM-DESIGN.md's own §6 item 5 note. rmmv now arms
+         * a real tileset/category/kind brush instead - g_pal_sprite[i]
+         * is already the manager's own real per-kind sprite.csv cache
+         * dir (publish_rmmv()), so no new rendering/compositing code is
+         * needed here, only correct routing. */
+        if (strcmp(g_pal_category, "rmmv") == 0) {
+            /* REAL, NEW 2026-08-29 - the armed-click-capture window's
+             * own rect is passed through so it can tile AROUND this
+             * picker window (not over it) - see tp_arm_placer_rmmv.c's
+             * own header for the full real design history/why. */
+            snprintf(tile->onclick, sizeof(tile->onclick),
+                     "exec:'%s/&.widgits/palettes/palettes_menu.sh' arm-rmmv '%s' '%s' '%s' '%s' '%d' '%d' '%d' '%d'",
+                     g_house_root, g_pal_sprite[i], g_pal_active_tileset, g_pal_active_category, g_pal_label[i],
+                     g_win_x, g_win_y, g_window->w, g_window->h);
+        } else if (strcmp(g_pal_category, "debug") == 0) {
+            /* REAL, NEW 2026-08-29 - debug_hq's own rows (publish_
+             * debug() in palettes_manager.c) carry a real action string
+             * in g_pal_emoji[i]: "toggle:<idx>", "clear", or "noop" for
+             * plain debug.txt content-display rows. "noop" gets no
+             * onclick at all - a real read-only row, not a dead button. */
+            if (strncmp(g_pal_emoji[i], "toggle:", 7) == 0) {
+                snprintf(tile->onclick, sizeof(tile->onclick),
+                         "exec:'%s/&.widgits/palettes/palettes_menu.sh' debug-toggle '%s'",
+                         g_house_root, g_pal_emoji[i] + 7);
+            } else if (strcmp(g_pal_emoji[i], "clear") == 0) {
+                snprintf(tile->onclick, sizeof(tile->onclick),
+                         "exec:'%s/&.widgits/palettes/palettes_menu.sh' debug-clear", g_house_root);
+            } else {
+                tile->onclick[0] = '\0';
+            }
+        } else {
+            snprintf(tile->onclick, sizeof(tile->onclick), "exec:'%s/&.widgits/palettes/palettes_menu.sh' place '%s'", g_house_root, g_pal_emoji[i]);
+        }
         row->children[row->n_children++] = tile;
     }
 
@@ -2773,6 +2977,21 @@ static void dbhq_redraw_content(void) {
     }
     dbhq_draw_chrome_bar();
     dbhq_append_frame_history();
+    /* REAL BUG FIX 2026-08-29, direct live report ("it detects your
+     * clicks, but only updates when i reclick the window! just need
+     * the window to update from when new entry to debug is read, not
+     * wait for my click") - this whole function only ever drew into
+     * the offscreen buffer (buf), never presented it to the real
+     * window (win) - it relied on some OTHER later redraw path (one
+     * triggered by the next real click) to actually push the buffer
+     * to screen. That's exactly the observed symptom: content was
+     * always correctly composed (a screenshot tool reading the buffer
+     * directly showed it), but nothing reached the screen until an
+     * unrelated event forced a real present. Every other real redraw
+     * path in this file (search XCopyArea) already does this - this
+     * one just never did. */
+    XCopyArea(dpy, buf, win, gc, 0, 0, (unsigned)g_window->w, (unsigned)g_window->h, 0, 0);
+    XFlush(dpy);
 }
 
 /* REAL, ported verbatim 2026-08-25 (Stage 3 bookmarks port) from
@@ -2968,6 +3187,23 @@ static void dbhq_activate_elem(Elem *hit) {
                 dbhq_inject_palette_tiles(panel);
             }
             hq_run_detached(0, hit->onclick + 5);
+            /* REAL DESIGN HISTORY 2026-08-29 - in-process XGrabPointer/
+             * XQueryPointer-polling click-capture (g_pal_rmmv_armed)
+             * was tried here and REMOVED again same day: fixed
+             * synthetic clicks, confirmed via a real standalone
+             * diagnostic tool (tp_debug_click_watcher.c) that it did
+             * NOT fix real ones either - every real click ever
+             * captured fell inside an already-open khtpm window, never
+             * on bare desktop (this Mutter/XWayland setup only makes
+             * real click state visible to X11 when the click lands on
+             * a real XWayland surface). Real fix, direct instruction
+             * ("maybe we do need a screen wide transparent click
+             * capture surface?"): tp_arm_placer_rmmv.+x (spawned via
+             * the exec above, palettes_menu.sh's own arm_rmmv())
+             * creates a real full-screen InputOnly window tiled AROUND
+             * this picker window and waits for a normal ButtonPress on
+             * it - no grab, no polling, in this process or any other.
+             * See that file's own header for the full history. */
         }
         /* Task 6 (2026-08-26) - the embedded Common Event editor's own
          * buttons (dbhq_ce_inject_panel()), dispatched the same generic
@@ -5655,6 +5891,13 @@ static int chai_drag_last_x = 0, chai_drag_last_y = 0;
  * motion deltas would drift wrong). Initialized to the window's real
  * creation position in main(). */
 static int chai_win_x = 100, chai_win_y = 100;
+
+/* REAL, NEW 2026-08-29 - TASK 1: popup window (entity-menu, swatch-picker)
+ * drag support. Same real pattern: ButtonPress on chrome (y < CHROME_H)
+ * records x_root/y_root, MotionNotify computes delta and XMoveWindow's,
+ * ButtonRelease clears the flag. Uses the shared g_win_x/g_win_y. */
+static int g_popup_dragging = 0;
+static int g_popup_drag_last_x = 0, g_popup_drag_last_y = 0;
 /* chat-hai's own forced window size (screen-relative, real fix for the
  * "chai_apply_css() clobbers a one-time override every chai_redraw" bug - see
  * chai_layout_pass()'s own header comment where these are applied). 0 = not
@@ -8048,9 +8291,13 @@ static void assign_nav_and_layout(void) {
             if (grid) break;
         }
         if (grid) {
-        /* Grid is data: any <item class="swatch">. Not g_is_swatch_picker. */
+        /* Grid is data: any <item class="swatch">. Not g_is_swatch_picker.
+         * REAL, NEW 2026-08-29 (TASK 2) - opacity control buttons (non-swatch
+         * items) are positioned below the grid, with dynamic height calculation. */
         int x0 = 16, y0 = CHROME_H + 44;
         int sw_i = 0;
+        int max_y = y0;
+        int other_y = CHROME_H + 180;  /* Start position for non-swatch items */
         for (i = 0; i < page->n_children; i++) {
             Elem *item = page->children[i];
             int is_sw = 0, is_close = 0, c;
@@ -8073,14 +8320,17 @@ static void assign_nav_and_layout(void) {
                 }
                 item->label[0] = '\0';
                 sw_i++;
+                if (item->y + item->h > max_y) max_y = item->y + item->h;
             } else {
-                item->x = 0; item->y = CHROME_H; item->w = g_win_w; item->h = ROW_H;
+                item->x = 0; item->y = other_y; item->w = g_win_w; item->h = ROW_H;
+                if (item->y + item->h > max_y) max_y = item->y + item->h;
+                other_y += ROW_H;
             }
             item->nav_index = ++g_n_nav;
             g_nav[g_n_nav - 1] = item;
             css_compute_style(&g_sheet, item->tag, item->id, item->classes, item->n_classes, 0, &item->style);
         }
-        g_win_h = 280;
+        g_win_h = max_y + 8;  /* Dynamic height to fit swatches + any other items */
         } else {
         int y = CHROME_H;
         for (int i = 0; i < page->n_children; i++) {
@@ -8118,6 +8368,27 @@ static void dispatch(const char *action) {
         snprintf(ap, sizeof(ap), "%s/#.desktop/taskbar_settings_action.txt", g_house_root);
         FILE *af = fopen(ap, "w");
         if (af) { fprintf(af, "seq=%u\n%s\n", ++g_swatch_action_seq, action); fclose(af); }
+        return;
+    }
+    /* REAL, NEW 2026-08-29 (TASK 2: opacity control) - OPACITY_MINUS/OPACITY_PLUS
+     * handlers. Read current opacity from theme, adjust by ±0.05, write back,
+     * and apply to the window immediately for live visual feedback. */
+    if (strcmp(action, "OPACITY_MINUS") == 0) {
+        double opacity = load_theme_opacity();
+        opacity -= 0.05;
+        if (opacity < 0.0) opacity = 0.0;
+        write_theme_opacity(opacity);
+        set_window_opacity(dpy, win, opacity);
+        redraw();
+        return;
+    }
+    if (strcmp(action, "OPACITY_PLUS") == 0) {
+        double opacity = load_theme_opacity();
+        opacity += 0.05;
+        if (opacity > 1.0) opacity = 1.0;
+        write_theme_opacity(opacity);
+        set_window_opacity(dpy, win, opacity);
+        redraw();
         return;
     }
     if (strcmp(action, "CLOSE") == 0) { g_quit = 1; return; }
@@ -9082,6 +9353,35 @@ static void hq_idle_tick(void) {
                 dbhq_redraw_content();
             }
         }
+        /* REAL, NEW 2026-08-29 - visible "armed" feedback for the rmmv
+         * brush, see g_pal_default_hint's own header comment for why.
+         * Same mtime-checksum-gated poll shape g_pal_state_path already
+         * uses (dbhq_file_checksum), not a fresh redraw every tick. */
+        if (g_is_palettes && g_pal_armed_path[0] && g_pal_static_title) {
+            struct stat ast;
+            unsigned long cksum = (stat(g_pal_armed_path, &ast) == 0) ? dbhq_file_checksum(g_pal_armed_path) : 0;
+            if (cksum != g_pal_armed_checksum) {
+                g_pal_armed_checksum = cksum;
+                char line[256] = "";
+                if (cksum) {
+                    FILE *af = fopen(g_pal_armed_path, "r");
+                    if (af) { if (fgets(line, sizeof(line), af)) line[strcspn(line, "\r\n")] = '\0'; fclose(af); }
+                }
+                snprintf(g_pal_static_title->label, sizeof(g_pal_static_title->label), "%s",
+                         line[0] ? line : g_pal_default_hint);
+                /* Adds a second class (doesn't replace block-title, which
+                 * other windows' titles also use) so armed reads as
+                 * unmistakably different - see .pal-hint-armed's own
+                 * header comment in palettes-rmmv.css. */
+                if (line[0]) {
+                    snprintf(g_pal_static_title->classes[1], sizeof(g_pal_static_title->classes[1]), "pal-hint-armed");
+                    g_pal_static_title->n_classes = 2;
+                } else {
+                    g_pal_static_title->n_classes = 1;
+                }
+                dbhq_redraw_content();
+            }
+        }
         if (!g_is_palettes && !g_is_bookmarks && g_dbhq_current_tab == DB_HQ_ACTORS_TAB) {
             if (dbhq_load_actors()) {
                 dbhq_show_actors();
@@ -9136,6 +9436,102 @@ static void popup_handle_click(int px, int py) {
     }
 }
 
+/* REAL, NEW 2026-08-29, direct instruction ("they should be separate
+ * functions when possible and not affect other functionality") -
+ * pulled out of hq_dispatch_xevent's own ButtonPress handling so the
+ * SAME real logic (bounds-check against the picker's own window vs.
+ * real desktop, ledger write, place-op invocation) can be called from
+ * two real callers: the event-based path (still works for synthetic/
+ * XTest clicks) and dbhq_rmmv_poll_pointer() below (the real fix for
+ * actual human mouse input - see RMMV-CLICK-CAPTURE-INVESTIGATION-
+ * 2026-08-29.txt for the full root-cause trail: real hardware pointer
+ * events are never delivered to an XGrabPointer-holding XWayland
+ * client under this Mutter version, a real, known, still-open upstream
+ * bug, not something fixable in this house's own code). Takes real
+ * root-relative coordinates; does not care which caller resolved them. */
+static void dbhq_rmmv_handle_desktop_click(int x_root, int y_root) {
+    if (x_root >= g_win_x && x_root < g_win_x + g_window->w &&
+        y_root >= g_win_y && y_root < g_win_y + g_window->h) {
+        /* Click landed back inside the picker's own window (e.g.
+         * picking a different tile to re-arm with) - ungrab and let
+         * the picker's own normal click handling take it from here
+         * (re-arms via the same onclick path if it lands on a tile). */
+        XUngrabPointer(dpy, CurrentTime);
+        XUngrabKeyboard(dpy, CurrentTime);
+        g_pal_rmmv_armed = 0;
+        return;
+    }
+
+    XUngrabPointer(dpy, CurrentTime);
+    XUngrabKeyboard(dpy, CurrentTime);
+    g_pal_rmmv_armed = 0;
+    char envx[32], envy[32];
+    snprintf(envx, sizeof(envx), "%d", x_root);
+    snprintf(envy, sizeof(envy), "%d", y_root);
+
+    /* Real master ledger (nav_master_ledger.txt), same real append-
+     * only convention nav_tab_register()/livedesk_registry_add()
+     * already use for this exact file - written synchronously, in
+     * this process, the instant the real click is resolved, decoupled
+     * from whether the placement subprocess call below ever succeeds. */
+    {
+        char led[PATH_BUF];
+        snprintf(led, sizeof(led), "%s/#.desktop/nav_master_ledger.txt", g_house_root);
+        FILE *lf = fopen(led, "a");
+        if (lf) {
+            fprintf(lf, "RMMV_CLICK pid=%d x=%s y=%s\n", (int)getpid(), envx, envy);
+            fclose(lf);
+        }
+        if (g_pal_static_title) {
+            snprintf(g_pal_static_title->label, sizeof(g_pal_static_title->label),
+                     "Clicked desktop at (%s,%s) - placing...", envx, envy);
+            snprintf(g_pal_static_title->classes[1], sizeof(g_pal_static_title->classes[1]), "pal-hint-armed");
+            g_pal_static_title->n_classes = 2;
+            dbhq_redraw_content();
+        }
+    }
+
+    /* tp_place_desktop_rmmv.+x reads its own click position straight
+     * from nav_master_ledger.txt (just written above) - a real,
+     * reusable, caller-agnostic op, not handed argv/env state here. */
+    char cmd[PATH_BUF * 3];
+    snprintf(cmd, sizeof(cmd),
+             "'%s/&.widgits/tile-picker/ops/+x/tp_place_desktop_rmmv.+x' '%s/&.widgits/palettes/state' '%s/#.desktop' >/dev/null 2>&1",
+             g_house_root, g_house_root, g_house_root);
+    int rc = system(cmd);
+    (void)rc;
+}
+
+/* REAL, NEW 2026-08-29 - the actual, human-usable fix for real mouse
+ * clicks (see dbhq_rmmv_handle_desktop_click's own header for the
+ * root-cause). XQueryPointer is a synchronous request/reply, not an
+ * asynchronously delivered event, so it sidesteps Mutter's Wayland-
+ * surface-focus input routing gap entirely - polls real button state
+ * directly rather than waiting for an event that real hardware clicks
+ * never generate for a grabbing XWayland client. Called once per
+ * event-loop tick (~150ms, see hq_run_event_loop) only while armed;
+ * detects a real 0->1 edge on Button1 so a single physical click
+ * triggers exactly once, not once per poll tick while held down. */
+static int g_pal_rmmv_button1_was_down = 0;
+
+static void dbhq_rmmv_poll_pointer(void) {
+    if (!g_pal_rmmv_armed) { g_pal_rmmv_button1_was_down = 0; return; }
+    Window root_ret, child_ret;
+    int root_x, root_y, win_x, win_y;
+    unsigned int mask;
+    if (!XQueryPointer(dpy, RootWindow(dpy, screen), &root_ret, &child_ret,
+                        &root_x, &root_y, &win_x, &win_y, &mask)) {
+        return;
+    }
+    int down = (mask & Button1Mask) ? 1 : 0;
+    if (down && !g_pal_rmmv_button1_was_down) {
+        g_pal_rmmv_button1_was_down = 1;
+        dbhq_rmmv_handle_desktop_click(root_x, root_y);
+    } else if (!down) {
+        g_pal_rmmv_button1_was_down = 0;
+    }
+}
+
 static void hq_dispatch_xevent(XEvent *ev, Atom wm_delete, int is_popup) {
 
     if (ev->type == Expose) {
@@ -9146,8 +9542,70 @@ static void hq_dispatch_xevent(XEvent *ev, Atom wm_delete, int is_popup) {
         g_quit = 1;
         return;
     }
+    /* REAL FIX 2026-08-29 - in-process rmmv armed-brush click capture,
+     * see g_pal_rmmv_armed's own header comment. Must run BEFORE any
+     * other ButtonPress handling below - while armed, this process
+     * holds a real root-window grab, so the NEXT ButtonPress anywhere
+     * on screen (x_root/y_root are absolute regardless of which window
+     * the grab reports as the event window) is this click, not
+     * whatever this window's own normal click logic would do with it.
+     * NOTE, same day, follow-up finding (RMMV-CLICK-CAPTURE-
+     * INVESTIGATION-2026-08-29.txt, root-caused by a delegated
+     * subagent): this ButtonPress path only ever fires for SYNTHETIC
+     * (XTest-injected) clicks - real hardware mouse clicks are never
+     * delivered here at all under this Mutter/XWayland setup (a real,
+     * known, still-open Mutter bug: gitlab.gnome.org/GNOME/mutter/-/
+     * issues/642 - XGrabPointer() succeeds at the X-protocol level but
+     * Mutter never routes real hardware pointer events to the grabbing
+     * client, only to whichever surface has Wayland-level focus;
+     * XTestFakeButtonEvent bypasses this by injecting directly into
+     * the X server's own protocol layer). The REAL, human-usable path
+     * is dbhq_rmmv_poll_pointer() below (XQueryPointer polling,
+     * unaffected by this Wayland routing gap) - this event-based path
+     * is kept only because it still works for synthetic/XTest testing
+     * and costs nothing to leave in. */
+    if (g_pal_rmmv_armed && ev->type == ButtonPress) {
+        dbhq_rmmv_handle_desktop_click(ev->xbutton.x_root, ev->xbutton.y_root);
+    }
+    if (g_pal_rmmv_armed && ev->type == KeyPress) {
+        KeySym ks = XLookupKeysym(&ev->xkey, 0);
+        if (ks == XK_Escape) {
+            XUngrabPointer(dpy, CurrentTime);
+            XUngrabKeyboard(dpy, CurrentTime);
+            g_pal_rmmv_armed = 0;
+            /* Same file the arm/place C ops already use for visible
+             * feedback - clear it so the picker's title reverts. */
+            char armed_path[PATH_BUF];
+            snprintf(armed_path, sizeof(armed_path), "%s/&.widgits/palettes/state/rmmv_armed.txt", g_house_root);
+            unlink(armed_path);
+            return;
+        }
+    }
     if (ev->type == ButtonPress) {
         if (is_popup) {
+            /* REAL, NEW 2026-08-29 (TASK 1: popup drag support) - check for
+             * drag-start on chrome area (y < CHROME_H), same pattern as
+             * db-hq/events-hq/chat-hai. Button 1 only, top CHROME_H pixels.
+             *
+             * REAL FIX 2026-08-29 (live report: "why isn't x quit button
+             * working for settings anymore?") - this window's own close
+             * button lives INSIDE that same top strip (dbhq_layout_pass's
+             * is_close block: x = g_win_w-60..g_win_w, y = 0..CHROME_H).
+             * Without an exclusion this unconditionally ate every click
+             * there as a drag-start before dbhq_capture_click() ever got a
+             * chance to hit-test the close element - exactly db-hq/events-
+             * hq's own already-solved problem (see their g_dbhq_close_elem/
+             * g_evhq_close_elem exclusion just below), never ported here
+             * since this popup path has no such named close-element global
+             * to check against; excluded the same top-right 60px rect by
+             * its own known real coordinates instead. */
+            if (ev->xbutton.button == 1 && ev->xbutton.y < CHROME_H &&
+                !(ev->xbutton.x >= g_win_w - 60 && ev->xbutton.x < g_win_w)) {
+                g_popup_dragging = 1;
+                g_popup_drag_last_x = ev->xbutton.x_root;
+                g_popup_drag_last_y = ev->xbutton.y_root;
+                return;
+            }
             struct timespec now;
             clock_gettime(CLOCK_MONOTONIC, &now);
             long ms_since_map = (now.tv_sec - g_map_time.tv_sec) * 1000L
@@ -9250,6 +9708,7 @@ static void hq_dispatch_xevent(XEvent *ev, Atom wm_delete, int is_popup) {
         g_pal_thumb_dragging = 0;
         g_evhq_dragging = 0;
         chai_dragging = 0;
+        g_popup_dragging = 0;  /* REAL, NEW 2026-08-29 (TASK 1) */
         return;
     }
     if (ev->type == MotionNotify) {
@@ -9282,6 +9741,18 @@ static void hq_dispatch_xevent(XEvent *ev, Atom wm_delete, int is_popup) {
             XMoveWindow(dpy, win, chai_win_x, chai_win_y);
             chai_drag_last_x = ev->xmotion.x_root;
             chai_drag_last_y = ev->xmotion.y_root;
+        } else if (is_popup && g_popup_dragging) {
+            /* REAL, NEW 2026-08-29 (TASK 1: popup drag-move) - same pattern
+             * as other modes: compute delta from last recorded x_root/y_root,
+             * update g_win_x/g_win_y, call XMoveWindow, clamp to WM_MANAGED_
+             * DRAG_MIN_Y to avoid overlap with taskbar header. */
+            int dx = ev->xmotion.x_root - g_popup_drag_last_x;
+            int dy = ev->xmotion.y_root - g_popup_drag_last_y;
+            g_win_x += dx; g_win_y += dy;
+            if (g_win_y < WM_MANAGED_DRAG_MIN_Y) g_win_y = WM_MANAGED_DRAG_MIN_Y;
+            XMoveWindow(dpy, win, g_win_x, g_win_y);
+            g_popup_drag_last_x = ev->xmotion.x_root;
+            g_popup_drag_last_y = ev->xmotion.y_root;
         }
         return;
     }
@@ -9392,16 +9863,593 @@ static void hq_run_event_loop(Atom wm_delete, int is_popup) {
         if (g_quit) break;
         fd_set fds; FD_ZERO(&fds);
         int xfd = ConnectionNumber(dpy); FD_SET(xfd, &fds);
-        struct timeval tv = { 0, 150000 };
+        /* REAL FIX 2026-08-29, found live-testing tp_debug_click_
+         * watcher.c (a standalone tool built to isolate this exact
+         * problem): a 150ms poll tick can genuinely miss a real click
+         * entirely - a synthetic XTest click's own button-down window
+         * is only ~50ms, and a real human click can be shorter still,
+         * so a 150ms sample interval has a real chance of landing
+         * entirely between press and release. Only shortened while
+         * g_pal_rmmv_armed (costs nothing otherwise - every other
+         * window/mode never sets this flag at all). */
+        struct timeval tv = g_pal_rmmv_armed ? (struct timeval){ 0, 15000 } : (struct timeval){ 0, 150000 };
         select(xfd + 1, &fds, NULL, NULL, &tv);
         while (XPending(dpy)) {
             XEvent ev; XNextEvent(dpy, &ev);
             hq_dispatch_xevent(&ev, wm_delete, is_popup);
         }
+        /* REAL, NEW 2026-08-29 - see dbhq_rmmv_poll_pointer's own
+         * header comment. A real, non-event, XQueryPointer-based
+         * fallback for real human mouse clicks, which a real Mutter/
+         * XWayland bug never delivers as ButtonPress events to this
+         * grabbing process. No-op (returns immediately) whenever not
+         * armed, so this costs nothing on every other tick of every
+         * other window's own event loop. */
+        dbhq_rmmv_poll_pointer();
         if (dbhq_marker_pilot()) dbhq_loop_paint_if_dirty();
     }
 }
 
+
+/* REAL, NEW 2026-08-30 - piececraft-hq board-view khtpm conversion. See
+ * g_is_pchq_board's own declaration comment for the real "why isolated"
+ * reasoning, and PIECECRAFT-HQ-BOARD-KHTPM-CONVERSION-2026-08-30.md for
+ * the full real writeup + the proven proof-of-concept
+ * (pchq_board_view_poc.c) this whole block ports, verbatim in spirit,
+ * into a real khtpm-family window (real chrome: title + close [X],
+ * matching every other khtpm window's own visual convention - itself a
+ * real, deliberate port of x11_mirror.c's own draw_chrome(), same
+ * "steal code, don't reinvent" instruction this whole feature was built
+ * under). */
+static unsigned long pchq_alloc_pixel(Display *dpy, Colormap cmap, const char *spec) {
+    XColor c;
+    if (XParseColor(dpy, cmap, spec, &c) && XAllocColor(dpy, cmap, &c)) return c.pixel;
+    return BlackPixel(dpy, DefaultScreen(dpy));
+}
+
+static int pchq_read_kv_int(const char *path, const char *key, int def) {
+    FILE *f = fopen(path, "r");
+    if (!f) return def;
+    char line[128];
+    size_t klen = strlen(key);
+    int val = def;
+    while (fgets(line, sizeof(line), f)) {
+        if (strncmp(line, key, klen) == 0 && line[klen] == '=') { val = atoi(line + klen + 1); break; }
+    }
+    fclose(f);
+    return val;
+}
+
+/* Real session discovery - a scoped-down port of pc_menu_input.c's own
+ * open_board_widget() peer lookup (ledger_peers.+x, real, live, already
+ * proven - not reinvented). Only finds the session dir; does NOT spawn
+ * a new board-viewer widget if none is running (this mode is a real
+ * DISPLAY for an already-live board-viewer session, launched
+ * separately by piececraft-hq's own real "View Board" - a genuinely
+ * separate concern from finding it). */
+static int pchq_find_board_session(const char *house_root, const char *host_project_id, char *out, size_t outsz) {
+    /* REAL FIX, found live testing this exact function - ledger_peers.+x
+     * hard-requires PRISC_PROJECT_ROOT (confirmed: "Error: PRISC_
+     * PROJECT_ROOT not set" running it bare) AND that dir's own real
+     * pieces/system/house_root.txt (ledger_peers.c's own
+     * resolve_house_root(), reads THAT file, not the env var directly).
+     * button.sh only ever writes house_root.txt into piececraft-hq's
+     * EPHEMERAL per-launch session dir (pieces/sessions/<id>/pieces/
+     * system/house_root.txt), never the static project root - confirmed
+     * live (real file only found under sessions/, real "no such file"
+     * at the static path). Since this khtpm process is launched
+     * independently of any one game session and has no real way to
+     * know which session is "the" current one just from house_root/
+     * host_project_id, write a real house_root.txt at the STATIC
+     * project root once (same real content button.sh's own session
+     * copy already has) so ledger_peers.+x can resolve it regardless of
+     * which session is live - harmless, idempotent, matches this
+     * file's own real content exactly. */
+    char static_root[PATH_BUF], hr_path[PATH_BUF];
+    snprintf(static_root, sizeof(static_root), "%s/@.apps/%s", house_root, host_project_id);
+    snprintf(hr_path, sizeof(hr_path), "%s/pieces/system/house_root.txt", static_root);
+    FILE *hrf = fopen(hr_path, "w");
+    if (hrf) { fprintf(hrf, "%s\n", house_root); fclose(hrf); }
+
+    char cmd[PATH_BUF * 2];
+    snprintf(cmd, sizeof(cmd),
+             "PRISC_PROJECT_ROOT='%s' '%s/&.widgits/board-viewer/ops/+x/ledger_peers.+x' widget 2>/dev/null",
+             static_root, house_root);
+    FILE *pf = popen(cmd, "r");
+    if (!pf) return 0;
+    char want[256];
+    snprintf(want, sizeof(want), "board-viewer:%s", host_project_id);
+    char line[1024];
+    int found = 0;
+    while (fgets(line, sizeof(line), pf)) {
+        line[strcspn(line, "\r\n")] = '\0';
+        char *save = NULL;
+        char *sess_tok = strtok_r(line, "|", &save);
+        strtok_r(NULL, "|", &save);
+        strtok_r(NULL, "|", &save);
+        char *proj_tok = strtok_r(NULL, "|", &save);
+        if (proj_tok && sess_tok && strcmp(proj_tok, want) == 0) {
+            snprintf(out, outsz, "%s", sess_tok);
+            found = 1;
+            break;
+        }
+    }
+    pclose(pf);
+    return found;
+}
+
+/* REAL, NEW 2026-08-30, direct live report ("there are 2 renders on
+ * screen") - confirmed via real xwininfo output: this mode's own
+ * window and the legacy x11_mirror.+x-based board-viewer widget window
+ * were both real, both mapped, at the EXACT SAME screen position -
+ * this mode never replaced the legacy display, it just sat alongside
+ * it. Direct instruction from earlier in this same session ("we are
+ * meant to get rid of 'board-view widget'... its the board view widget
+ * that needs to be converted to khtpm") - once this mode successfully
+ * finds and attaches to a live board-viewer session, kill THAT
+ * session's own x11_mirror.+x process (cwd-scoped, same real technique
+ * board-viewer's own button.sh already uses for its bv_set_wm_pid
+ * targeting - see that file's own real cwd-match pgrep loop). Leaves
+ * every OTHER real board-viewer process for that same session alone
+ * (chtpm_parser_pal/prisc+x/bv_render_3d.c/bv_compose_frame.c) - those
+ * are what actually GENERATE the real rgb_frame_3d_overlay.raw this
+ * mode reads, killing them would break the real data source, not just
+ * the redundant legacy display. */
+static void pchq_kill_legacy_display(const char *bv_session) {
+    char cmd[PATH_BUF * 2];
+    snprintf(cmd, sizeof(cmd),
+             "for p in $(pgrep -f 'x11_mirror\\.\\+x'); do "
+             "cwd=$(readlink -f /proc/$p/cwd 2>/dev/null); "
+             "if [ \"$cwd\" = '%s' ]; then kill $p; fi; done",
+             bv_session);
+    int rc = system(cmd);
+    (void)rc;
+}
+
+/* REAL, NEW 2026-08-30, direct instruction: "thats not what the legacy
+ * chtpm peice board-view did u need to stick as closely to that model
+ * as possible. absolute parity. research it and see where u went
+ * wrong." Real research finding (see PIECECRAFT-HQ-BOARD-KHTPM-
+ * CONVERSION-2026-08-30.md for the full writeup):
+ *   1. board_viewer.chtpm has a real, declarative <interact src="..."/>
+ *      + a reserved onClick="INTERACT" button - the ENGINE
+ *      (chtpm_parser_pal.c) handles ALL real nav/focus/arrow-relay/ESC
+ *      natively, with zero app-side code - this is the real "for free"
+ *      system, and it lives entirely in the legacy engine, not
+ *      anything this file can reimplement locally with real parity.
+ *   2. system/chtpm_rgb_render.c (a real, shared compositor daemon,
+ *      NOT the same thing as the window-display step) already reads
+ *      BOTH the real text chrome chtpm_parser_pal renders into
+ *      current_frame.txt AND the real 3D overlay bv_render_3d.c
+ *      writes, and blits them into ONE real, fully-composited
+ *      rgb_frame.raw (see that file's own blit_overlay()/MAP3D_MARKER
+ *      header comment) - x11_mirror.c only ever needed to blit THAT
+ *      one file and forward every real key/click into board-viewer's
+ *      own real relay files, letting the real engine do everything
+ *      else. The earlier version of this function read rgb_frame_3d_
+ *      overlay.raw DIRECTLY (skipping the real compositor's own output
+ *      entirely) and hand-drew its own separate chrome/nav on top -
+ *      real parity means NOT doing either of those things.
+ * Real fix: blit rgb_frame.raw (the same file x11_mirror.c blits,
+ * already containing the real "[>] N. Interact Mode..." chrome text),
+ * and forward EVERY real key/click into board-viewer's own real
+ * relay files (keyboard/history.txt, player_app/history.txt,
+ * player_app/state.txt's last_click_x/y) via a direct, deliberate port
+ * of x11_mirror.c's own append_key()/write_click_kv()/map_special_key()
+ * - zero local nav logic of this file's own, matching x11_mirror.c's
+ * own real "steal everything, reimplement nothing" shape exactly.
+ * board-viewer/button.sh's own NO_RGB_COMPOSITOR/NO_GL split (same
+ * date) is what makes rgb_frame.raw available here with no real GL
+ * window of board-viewer's own ever needing to map. */
+#define PCHQ_ARROW_LEFT  1000
+#define PCHQ_ARROW_RIGHT 1001
+#define PCHQ_ARROW_UP    1002
+#define PCHQ_ARROW_DOWN  1003
+
+static int pchq_map_special_key(KeySym ks) {
+    if (ks == XK_Left) return PCHQ_ARROW_LEFT;
+    if (ks == XK_Right) return PCHQ_ARROW_RIGHT;
+    if (ks == XK_Up) return PCHQ_ARROW_UP;
+    if (ks == XK_Down) return PCHQ_ARROW_DOWN;
+    return 0;
+}
+
+/* Direct port of x11_mirror.c's own append_key() - dual-write, same
+ * real target files, same real format. */
+static void pchq_append_key(const char *history1, const char *history2, int key) {
+    FILE *f = fopen(history1, "a");
+    if (f) { fprintf(f, "%d\n", key); fclose(f); }
+    FILE *cf = fopen(history2, "a");
+    if (cf) { fprintf(cf, "KEY_PRESSED: %d\n", key); fclose(cf); }
+}
+
+/* Direct port of x11_mirror.c's own write_click_kv() - real read-
+ * modify-write of board-viewer's own real player_app/state.txt. */
+static void pchq_write_click_kv(const char *bv_session, const char *key, int value) {
+    char path[PATH_BUF];
+    snprintf(path, sizeof(path), "%s/pieces/apps/player_app/state.txt", bv_session);
+    char lines[128][512];
+    int n = 0, replaced = 0;
+    FILE *rf = fopen(path, "r");
+    if (rf) {
+        char line[512];
+        size_t klen = strlen(key);
+        while (n < 128 && fgets(line, sizeof(line), rf)) {
+            if (strncmp(line, key, klen) == 0 && line[klen] == '=') {
+                snprintf(lines[n], sizeof(lines[0]), "%s=%d\n", key, value);
+                replaced = 1;
+            } else {
+                snprintf(lines[n], sizeof(lines[0]), "%s", line);
+            }
+            n++;
+        }
+        fclose(rf);
+    }
+    FILE *wf = fopen(path, "w");
+    if (!wf) return;
+    for (int i = 0; i < n; i++) fputs(lines[i], wf);
+    if (!replaced) fprintf(wf, "%s=%d\n", key, value);
+    fclose(wf);
+}
+
+static int run_pchq_board_mode(const char *house_root, const char *host_project_id) {
+    char bv_session[PATH_BUF] = "";
+    if (!pchq_find_board_session(house_root, host_project_id, bv_session, sizeof(bv_session))) {
+        fprintf(stderr, "run_pchq_board_mode: no live board-viewer session found for %s "
+                        "(open View Board from the game first)\n", host_project_id);
+        return 1;
+    }
+    pchq_kill_legacy_display(bv_session);
+
+    /* REAL RESTYLE 2026-08-30, direct live report ("why doesn't it use
+     * the text and button styles of hq style windows? it looks like
+     * ascii from terminal") - direct instruction, given the trade-off,
+     * was to restyle the content itself rather than keep blitting
+     * chtpm_rgb_render.c's own plain white-on-black rasterized
+     * rgb_frame.raw verbatim. Real, scoped approach that keeps 100%
+     * parity with the legacy engine's own NAV/INTERACT STATE (that
+     * lives entirely inside chtpm_parser_pal, untouched): read the SAME
+     * real source chtpm_rgb_render.c itself reads - pieces/display/
+     * current_frame.txt, the engine's own real per-line text output,
+     * PLUS the same real MAP3D_MARKER protocol (a bare 0x01 byte line
+     * -> blit pieces/display/rgb_frame_3d_overlay.raw at that row, see
+     * chtpm_rgb_render.c's own blit_overlay()/render_once() header
+     * comments) - and draw each line ourselves through khtpm's own
+     * real Xft font/color system (house convention: focused="#ff8c00",
+     * unfocused="#888888"/"#9a9a9a", from db-hq/events-hq/chat-hai's
+     * own nav-row styling) instead of the compositor's plain rasterized
+     * bitmap. This is a pure DISPLAY transform of output the engine
+     * already produced - zero new local nav/interact logic, same real
+     * source of truth, just styled instead of blitted raw. */
+    char current_frame_path[PATH_BUF];
+    char overlay_path[PATH_BUF], overlay_receipt_path[PATH_BUF];
+    snprintf(current_frame_path, sizeof(current_frame_path), "%s/pieces/display/current_frame.txt", bv_session);
+    snprintf(overlay_path, sizeof(overlay_path), "%s/pieces/display/rgb_frame_3d_overlay.raw", bv_session);
+    snprintf(overlay_receipt_path, sizeof(overlay_receipt_path), "%s/pieces/display/rgb_frame_3d_overlay.receipt.txt", bv_session);
+    /* Real, fixed layout constants - same real values chtpm_rgb_render.c
+     * itself uses (GLYPH_W=8/GLYPH_H=16/FRAME_W=640/FRAME_H=768, see
+     * that file's own #define block) - this project's board-viewer
+     * text grid is a fixed real size, not something this window needs
+     * to rediscover per-frame. */
+#define PCHQ_GLYPH_W 8
+#define PCHQ_GLYPH_H 16
+#define PCHQ_COLS 80
+#define PCHQ_ROWS 48
+
+    char bv_history1[PATH_BUF], bv_history2[PATH_BUF];
+    snprintf(bv_history1, sizeof(bv_history1), "%s/pieces/apps/player_app/history.txt", bv_session);
+    snprintf(bv_history2, sizeof(bv_history2), "%s/pieces/keyboard/history.txt", bv_session);
+
+    Display *dpy = XOpenDisplay(NULL);
+    if (!dpy) { fprintf(stderr, "run_pchq_board_mode: cannot open display\n"); return 1; }
+    /* REAL FIX 2026-08-30 - this mode returns before main()'s own
+     * XSetErrorHandler(evhq_nonfatal_x_error) call (line ~10655), so an
+     * XSetInputFocus() landing before the WM has finished reparenting/
+     * mapping this now-WM-managed window (see the override_redirect
+     * removal above) throws an uncaught BadMatch and crashes the whole
+     * process (confirmed live - "X Error of failed request: BadMatch
+     * ... Major opcode ... X_SetInputFocus"). Same real non-fatal
+     * handler already used elsewhere in this file. */
+    XSetErrorHandler(evhq_nonfatal_x_error);
+    int screen = DefaultScreen(dpy);
+    Visual *visual = DefaultVisual(dpy, screen);
+    int depth = DefaultDepth(dpy, screen);
+    Colormap cmap = DefaultColormap(dpy, screen);
+
+    int frame_w = PCHQ_COLS * PCHQ_GLYPH_W, frame_h = PCHQ_ROWS * PCHQ_GLYPH_H;
+#define PCHQ_CLOSE_W 26
+    int win_x = 140, win_y = 90;
+    int dragging = 0, drag_last_x = 0, drag_last_y = 0;
+    int win_w = frame_w, win_h = frame_h + CHROME_H;
+
+    /* REAL FIX 2026-08-30, direct live report ("its not geting mouse /
+     * kbd input") - this window was override_redirect=True. That is the
+     * real bug: x11_mirror.c (the file this whole function claims
+     * "absolute parity" with) deliberately keeps override_redirect OFF
+     * for exactly this reason (see its own header comment) - Mutter's
+     * real XWayland focus routing only ever gives real keyboard focus to
+     * WM-MANAGED windows. XSetInputFocus/XGetInputFocus report success
+     * at the raw X11-protocol level even on an override_redirect window
+     * (which is why synthetic XTest-based testing looked like it worked)
+     * but Mutter never actually routes real hardware key/click events to
+     * an unmanaged surface. Fixed the same real way x11_mirror.c does:
+     * normal WM-managed window, decorations stripped via
+     * _MOTIF_WM_HINTS instead of override_redirect. */
+    Window win = XCreateSimpleWindow(dpy, RootWindow(dpy, screen), win_x, win_y,
+                                      (unsigned)win_w, (unsigned)win_h, 0,
+                                      BlackPixel(dpy, screen), pchq_alloc_pixel(dpy, cmap, "#1c1c1c"));
+    {
+        Atom motif_hints = XInternAtom(dpy, "_MOTIF_WM_HINTS", False);
+        long hints[5] = { 2, 0, 0, 0, 0 }; /* flags=MWM_HINTS_DECORATIONS, decorations=0 */
+        XChangeProperty(dpy, win, motif_hints, motif_hints, 32, PropModeReplace, (unsigned char *)hints, 5);
+    }
+    XStoreName(dpy, win, "Piececraft-HQ Board (khtpm)");
+    Atom pchq_wm_delete = XInternAtom(dpy, "WM_DELETE_WINDOW", False);
+    XSetWMProtocols(dpy, win, &pchq_wm_delete, 1);
+    XSelectInput(dpy, win, ExposureMask | ButtonPressMask | ButtonReleaseMask | ButtonMotionMask | KeyPressMask | StructureNotifyMask);
+    /* PPosition - without this most WMs ignore the requested x/y (same
+     * real fix x11_mirror.c needs for the same reason). */
+    {
+        XSizeHints *shints = XAllocSizeHints();
+        if (shints) { shints->flags = PPosition; shints->x = win_x; shints->y = win_y; XSetWMNormalHints(dpy, win, shints); XFree(shints); }
+    }
+    XMapRaised(dpy, win);
+    /* REAL FIX 2026-08-30, direct live report ("also is missing
+     * transparency") - every other khtpm window in this file applies
+     * the real theme opacity on map (set_window_opacity()/
+     * load_theme_opacity(), same real _NET_WM_WINDOW_OPACITY mechanism
+     * db-hq/events-hq use) - this mode never called it. */
+    set_window_opacity(dpy, win, load_theme_opacity());
+    GC gc = XCreateGC(dpy, win, 0, NULL);
+    for (int attempt = 0; attempt < 5; attempt++) {
+        XSetInputFocus(dpy, win, RevertToParent, CurrentTime);
+        XSync(dpy, False);
+        Window focused; int revert;
+        XGetInputFocus(dpy, &focused, &revert);
+        if (focused == win) break;
+        usleep(5000);
+    }
+
+    Pixmap buf = XCreatePixmap(dpy, win, (unsigned)win_w, (unsigned)win_h, (unsigned)depth);
+    XftDraw *xftdraw = XftDrawCreate(dpy, buf, visual, cmap);
+    XftFont *ui_font = XftFontOpenName(dpy, screen, "Ubuntu-10");
+    XftFont *pchq_body_font = XftFontOpenName(dpy, screen, "DejaVu Sans Mono:pixelsize=13");
+    if (!pchq_body_font) pchq_body_font = ui_font;
+
+    /* REAL overlay (3D content) image cache - separate from the old
+     * whole-frame ximg, since the text portion is now drawn directly,
+     * not blitted. Same real RGBA-file-to-XImage load x11_mirror.c's
+     * own load_frame() uses, scoped to just the overlay rectangle. */
+    XImage *ov_img = NULL;
+    unsigned char *ov_buf = NULL;
+    int ov_w_cur = 0, ov_h_cur = 0;
+
+    /* REAL PERF FIX 2026-08-30, direct live report ("super laggy...
+     * cpu is really slow") right after the restyle landed - the first
+     * cut called XftColorAllocValue/XftColorFree AND pchq_alloc_pixel
+     * (an XParseColor+XAllocColor colormap round trip) fresh for EVERY
+     * line, EVERY frame, at 30fps (up to ~48 lines/frame) - real,
+     * unnecessary per-frame server round trips for colors that never
+     * change. Allocate all of them ONCE here instead, matching the
+     * house's own general Xft convention of caching colors/pixels
+     * outside the render loop. */
+    unsigned long pix_chrome = pchq_alloc_pixel(dpy, cmap, "#2a2a2a");
+    unsigned long pix_close = pchq_alloc_pixel(dpy, cmap, "#5a2020");
+    unsigned long pix_bg = pchq_alloc_pixel(dpy, cmap, "#111111");
+    unsigned long pix_rule = pchq_alloc_pixel(dpy, cmap, "#3a3a3a");
+    unsigned long pix_focus_fill = pchq_alloc_pixel(dpy, cmap, "#3a2a10");
+    unsigned long pix_focus_border = pchq_alloc_pixel(dpy, cmap, "#ff8c00");
+    unsigned long pix_unfocus_fill = pchq_alloc_pixel(dpy, cmap, "#2a2a2a");
+    unsigned long pix_unfocus_border = pchq_alloc_pixel(dpy, cmap, "#555555");
+    XftColor col_title, col_focus, col_unfocus, col_body;
+    { XRenderColor rc = {0xeeee, 0xeeee, 0xeeee, 0xffff}; XftColorAllocValue(dpy, visual, cmap, &rc, &col_title); }
+    { XRenderColor rc = {0xffff, 0x8c8c, 0x0000, 0xffff}; XftColorAllocValue(dpy, visual, cmap, &rc, &col_focus); }
+    { XRenderColor rc = {0xaaaa, 0xaaaa, 0xaaaa, 0xffff}; XftColorAllocValue(dpy, visual, cmap, &rc, &col_unfocus); }
+    { XRenderColor rc = {0xdddd, 0xdddd, 0xdddd, 0xffff}; XftColorAllocValue(dpy, visual, cmap, &rc, &col_body); }
+
+    int running = 1;
+    int pchq_focus_ok = 0;
+    while (running) {
+        if (!pchq_focus_ok) {
+            XSetInputFocus(dpy, win, RevertToParent, CurrentTime);
+            XSync(dpy, False);
+            Window focused; int revert;
+            XGetInputFocus(dpy, &focused, &revert);
+            if (focused == win) pchq_focus_ok = 1;
+        }
+
+        int ov_w = pchq_read_kv_int(overlay_receipt_path, "overlay_w", 0);
+        int ov_h = pchq_read_kv_int(overlay_receipt_path, "overlay_h", 0);
+        if (ov_w > 0 && ov_h > 0 && (ov_w != ov_w_cur || ov_h != ov_h_cur || !ov_img)) {
+            ov_w_cur = ov_w; ov_h_cur = ov_h;
+            free(ov_buf);
+            ov_buf = malloc((size_t)ov_w * ov_h * 4);
+            if (ov_img) { XDestroyImage(ov_img); ov_img = NULL; }
+            char *data = malloc((size_t)ov_w * ov_h * 4);
+            ov_img = XCreateImage(dpy, visual, (unsigned)depth, ZPixmap, 0, data,
+                                   (unsigned)ov_w, (unsigned)ov_h, 32, 0);
+        }
+        if (ov_img && ov_buf) {
+            FILE *of = fopen(overlay_path, "rb");
+            if (of) {
+                size_t got = fread(ov_buf, 1, (size_t)ov_w_cur * ov_h_cur * 4, of);
+                fclose(of);
+                if (got == (size_t)ov_w_cur * ov_h_cur * 4) {
+                    for (int y = 0; y < ov_h_cur; y++)
+                        for (int x = 0; x < ov_w_cur; x++) {
+                            size_t o = ((size_t)y * ov_w_cur + x) * 4;
+                            unsigned long px = ((unsigned long)ov_buf[o] << 16)
+                                              | ((unsigned long)ov_buf[o + 1] << 8)
+                                              | (unsigned long)ov_buf[o + 2];
+                            XPutPixel(ov_img, x, y, px);
+                        }
+                }
+            }
+        }
+
+        /* Real chrome (title + close [X]). Uses the colors/pixels
+         * cached once before the loop (see this function's own real
+         * perf-fix comment above). */
+        XSetForeground(dpy, gc, pix_chrome);
+        XFillRectangle(dpy, buf, gc, 0, 0, (unsigned)win_w, CHROME_H);
+        if (ui_font) {
+            const char *title = "Piececraft-HQ Board (khtpm)";
+            XftDrawStringUtf8(xftdraw, &col_title, ui_font, 8, 18, (const FcChar8 *)title, (int)strlen(title));
+        }
+        XSetForeground(dpy, gc, pix_close);
+        XFillRectangle(dpy, buf, gc, win_w - PCHQ_CLOSE_W, 0, PCHQ_CLOSE_W, CHROME_H);
+        if (ui_font) {
+            XftDrawStringUtf8(xftdraw, &col_title, ui_font, win_w - PCHQ_CLOSE_W + 9, 18, (const FcChar8 *)"X", 1);
+        }
+
+        /* Real content background. */
+        XSetForeground(dpy, gc, pix_bg);
+        XFillRectangle(dpy, buf, gc, 0, CHROME_H, (unsigned)win_w, (unsigned)frame_h);
+
+        /* REAL, styled read of chtpm_parser_pal's own current_frame.txt
+         * output - same real source chtpm_rgb_render.c rasterizes, read
+         * here directly and drawn via khtpm's own Xft font/color
+         * convention instead. Zero local nav/interact logic - this
+         * only classifies the ENGINE's own already-decided text
+         * ([>]/[ ]/[^] prefixes it already wrote) to pick a style. */
+        FILE *tf = fopen(current_frame_path, "r");
+        if (tf) {
+            char line[600];
+            int row = 0;
+            int y_px = CHROME_H;
+            while (row < PCHQ_ROWS && fgets(line, sizeof(line), tf)) {
+                line[strcspn(line, "\r\n")] = '\0';
+                if ((unsigned char)line[0] == 0x01) {
+                    /* MAP3D_MARKER - same real protocol chtpm_rgb_render.c
+                     * itself implements (see its blit_overlay()/
+                     * render_once() header comments) - blit the real 3D
+                     * overlay here, then skip the same number of source
+                     * rows its own producer reserved for it. */
+                    if (ov_img && ov_h_cur > 0)
+                        XPutImage(dpy, buf, gc, ov_img, 0, 0, 0, y_px, (unsigned)ov_w_cur, (unsigned)ov_h_cur);
+                    int skip_rows = (ov_h_cur > 0) ? (ov_h_cur + PCHQ_GLYPH_H - 1) / PCHQ_GLYPH_H : 0;
+                    y_px += ov_h_cur > 0 ? ov_h_cur : PCHQ_GLYPH_H;
+                    row += 1;
+                    for (int i = 1; i < skip_rows && row < PCHQ_ROWS; i++) {
+                        if (!fgets(line, sizeof(line), tf)) break;
+                        row++;
+                    }
+                    continue;
+                }
+
+                /* Classify this real line - same house nav-focus colors
+                 * every other khtpm window uses ("#ff8c00" focused,
+                 * "#888888" unfocused, see db-hq/events-hq/chat-hai's
+                 * own nav_index == g_focus_nav styling). */
+                char *trimmed = line;
+                while (*trimmed == ' ') trimmed++;
+                int is_rule = (trimmed[0] != '\0');
+                for (const char *p = trimmed; *p; p++) {
+                    if (*p != '+' && *p != '=' && *p != '-' && *p != ' ') { is_rule = 0; break; }
+                }
+                int is_focused_nav = (strncmp(trimmed, "[>]", 3) == 0 || strncmp(trimmed, "[^]", 3) == 0);
+                int is_unfocused_nav = (strncmp(trimmed, "[ ]", 3) == 0);
+                int is_panel = (trimmed[0] == '|');
+
+                if (is_rule) {
+                    XSetForeground(dpy, gc, pix_rule);
+                    XFillRectangle(dpy, buf, gc, 4, y_px + PCHQ_GLYPH_H / 2, (unsigned)(win_w - 8), 1);
+                } else if (is_focused_nav) {
+                    XSetForeground(dpy, gc, pix_focus_fill);
+                    XFillRectangle(dpy, buf, gc, 4, y_px + 1, (unsigned)(win_w - 8), PCHQ_GLYPH_H - 2);
+                    XSetForeground(dpy, gc, pix_focus_border);
+                    XDrawRectangle(dpy, buf, gc, 4, y_px + 1, (unsigned)(win_w - 8) - 1, PCHQ_GLYPH_H - 3);
+                    if (pchq_body_font)
+                        XftDrawStringUtf8(xftdraw, &col_focus, pchq_body_font, 10, y_px + PCHQ_GLYPH_H - 4, (const FcChar8 *)trimmed, (int)strlen(trimmed));
+                } else if (is_unfocused_nav) {
+                    XSetForeground(dpy, gc, pix_unfocus_fill);
+                    XFillRectangle(dpy, buf, gc, 4, y_px + 1, (unsigned)(win_w - 8), PCHQ_GLYPH_H - 2);
+                    XSetForeground(dpy, gc, pix_unfocus_border);
+                    XDrawRectangle(dpy, buf, gc, 4, y_px + 1, (unsigned)(win_w - 8) - 1, PCHQ_GLYPH_H - 3);
+                    if (pchq_body_font)
+                        XftDrawStringUtf8(xftdraw, &col_unfocus, pchq_body_font, 10, y_px + PCHQ_GLYPH_H - 4, (const FcChar8 *)trimmed, (int)strlen(trimmed));
+                } else {
+                    const char *text = trimmed;
+                    size_t tlen = strlen(text);
+                    if (is_panel) {
+                        text++; tlen = tlen > 0 ? tlen - 1 : 0;
+                        if (tlen > 0 && text[tlen - 1] == '|') tlen--;
+                    }
+                    if (tlen > 0 && pchq_body_font)
+                        XftDrawStringUtf8(xftdraw, &col_body, pchq_body_font, 10, y_px + PCHQ_GLYPH_H - 4, (const FcChar8 *)text, (int)tlen);
+                }
+                y_px += PCHQ_GLYPH_H;
+                row++;
+            }
+            fclose(tf);
+        }
+
+        XCopyArea(dpy, buf, win, gc, 0, 0, (unsigned)win_w, (unsigned)win_h, 0, 0);
+        XFlush(dpy);
+
+        struct timeval tv = {0, 33333}; /* same 30fps cap as x11_mirror.c's own real poll */
+        fd_set fds; FD_ZERO(&fds); int xfd = ConnectionNumber(dpy); FD_SET(xfd, &fds);
+        select(xfd + 1, &fds, NULL, NULL, &tv);
+        while (XPending(dpy)) {
+            XEvent ev; XNextEvent(dpy, &ev);
+            if (ev.type == Expose) {
+                XCopyArea(dpy, buf, win, gc, 0, 0, (unsigned)win_w, (unsigned)win_h, 0, 0);
+                XFlush(dpy);
+            } else if (ev.type == KeyPress) {
+                /* REAL, direct port of x11_mirror.c's own KeyPress
+                 * branch - printable chars forward verbatim, special
+                 * keys (arrows) map to the real ARROW_* codes and
+                 * forward too, Escape does NOT close this window
+                 * (removed - real parity means Escape is a real INPUT
+                 * the legacy engine's own real interact-mode handles
+                 * natively, e.g. exiting interact mode, not a window-
+                 * close shortcut this file invents). Zero local nav/
+                 * focus logic - the real engine owns all of that now. */
+                char kbuf[8]; KeySym ks;
+                int n = XLookupString(&ev.xkey, kbuf, sizeof(kbuf) - 1, &ks, NULL);
+                if (n > 0) {
+                    pchq_append_key(bv_history1, bv_history2, (int)(unsigned char)kbuf[0]);
+                } else {
+                    int mapped = pchq_map_special_key(ks);
+                    if (mapped > 0) pchq_append_key(bv_history1, bv_history2, mapped);
+                }
+            } else if (ev.type == ButtonPress && ev.xbutton.button == Button1) {
+                /* REAL, direct port of x11_mirror.c's own ButtonPress
+                 * branch - chrome-bar close/drag, everything below the
+                 * chrome forwards as a real click into board-viewer's
+                 * own real player_app/state.txt (last_click_x/y), same
+                 * y-offset-by-CHROME_H convention, letting the real
+                 * engine's own xelector/possess click-handling do
+                 * whatever it already does with a real click - zero
+                 * local click semantics of this file's own. */
+                if (ev.xbutton.y < CHROME_H && ev.xbutton.x >= win_w - PCHQ_CLOSE_W) {
+                    running = 0;
+                } else if (ev.xbutton.y < CHROME_H) {
+                    dragging = 1;
+                    drag_last_x = ev.xbutton.x_root;
+                    drag_last_y = ev.xbutton.y_root;
+                } else {
+                    pchq_write_click_kv(bv_session, "last_click_x", ev.xbutton.x);
+                    pchq_write_click_kv(bv_session, "last_click_y", ev.xbutton.y - CHROME_H);
+                }
+            } else if (ev.type == ButtonRelease && ev.xbutton.button == 1) {
+                dragging = 0;
+            } else if (ev.type == MotionNotify) {
+                if (dragging) {
+                    int dx = ev.xmotion.x_root - drag_last_x;
+                    int dy = ev.xmotion.y_root - drag_last_y;
+                    win_x += dx; win_y += dy;
+                    XMoveWindow(dpy, win, win_x, win_y);
+                    drag_last_x = ev.xmotion.x_root;
+                    drag_last_y = ev.xmotion.y_root;
+                }
+            }
+        }
+    }
+
+    XCloseDisplay(dpy);
+    return 0;
+}
 
 int main(int argc, char **argv) {
     /* REAL Stage 5 step 3/4 (2026-08-16, khtpm-merge-how2.md §5d.3) -
@@ -9477,6 +10525,22 @@ int main(int argc, char **argv) {
          * deprecated standalone khtpm_hq_render.c) - bm_menu.sh
          * composes <window class="database-window bookmarks">. */
         if (strcmp(g_window->classes[i], "bookmarks") == 0) { g_is_bookmarks = 1; g_is_db_hq = 1; break; }
+    }
+
+    /* REAL, NEW 2026-08-30 - piececraft-hq board-view mode, checked
+     * separately from the chain above (not folded in) since it early-
+     * returns before any of the shared X11/Elem/CSS setup below runs -
+     * see g_is_pchq_board's own declaration comment. argv[3] (optional,
+     * default "piececraft-hq") is the host project id whose live
+     * board-viewer session to display - kept as a real argument rather
+     * than hardcoded so this mode isn't accidentally piececraft-hq-only
+     * at the C level, only at the .chtpm launch site. */
+    for (int i = 0; i < g_window->n_classes; i++) {
+        if (strcmp(g_window->classes[i], "pchq-board") == 0) { g_is_pchq_board = 1; break; }
+    }
+    if (g_is_pchq_board) {
+        const char *host = (argc >= 4 && argv[3][0]) ? argv[3] : "piececraft-hq";
+        return run_pchq_board_mode(g_house_root, host);
     }
 
     /* REAL FIX 2026-08-16, direct live report ("doesn't open by her
@@ -9662,6 +10726,39 @@ int main(int argc, char **argv) {
             if (panel) {
                 g_pal_static_title = find_by_tag(panel, "title");
                 g_pal_static_hint = find_by_tag(panel, "text");
+                /* Capture the chtpm's own real default TITLE text ONCE,
+                 * before anything ever overwrites it - see g_pal_default_
+                 * hint's own header comment. REAL FIX, same testing pass:
+                 * originally targeted g_pal_static_hint (.pal-hint), but
+                 * live pixel-dump verification found that Elem never
+                 * renders at all even for its own unmodified default text
+                 * - a separate, pre-existing layout bug, not chased
+                 * further here. g_pal_static_title (.block-title) is
+                 * confirmed-rendering (it's the visible "palettes: RPG
+                 * Maker Tiles" line), so the armed note goes there
+                 * instead - variable name kept as "hint" throughout for
+                 * a smaller diff, but it now drives the title Elem. */
+                if (g_pal_static_title && !g_pal_default_hint[0]) {
+                    snprintf(g_pal_default_hint, sizeof(g_pal_default_hint), "%s", g_pal_static_title->label);
+                }
+                if (strcmp(g_pal_category, "rmmv") == 0) {
+                    snprintf(g_pal_armed_path, sizeof(g_pal_armed_path), "%s/state/rmmv_armed.txt", g_package_dir);
+                    /* REAL BUG FIX 2026-08-29, direct live report
+                     * ("window is opening auto armed, it shouldnt") -
+                     * a fresh window's g_pal_armed_checksum starts at
+                     * 0, but a stale rmmv_armed.txt left over from a
+                     * PREVIOUS session already has real content - the
+                     * first poll tick then sees checksum != 0, treats
+                     * that as a fresh "just armed" change, and shows
+                     * the old ARMED/Placed text even though this
+                     * process holds no real grab at all. A truly fresh
+                     * window session should never inherit armed state
+                     * from a previous one - delete it. */
+                    unlink(g_pal_armed_path);
+                } else {
+                    g_pal_armed_path[0] = '\0';
+                }
+                g_pal_armed_checksum = 0;
                 snprintf(g_pal_options_path, sizeof(g_pal_options_path), "%s/rmmv_options.txt", g_package_dir);
                 dbhq_load_palette_state();
                 dbhq_load_palette_options();
@@ -9831,28 +10928,52 @@ int main(int argc, char **argv) {
         XSetWindowAttributes swa;
         swa.background_pixel = alloc_pixel("#141414");
         swa.event_mask = ExposureMask | ButtonPressMask | ButtonReleaseMask | ButtonMotionMask | KeyPressMask | StructureNotifyMask | FocusChangeMask;
+        /* REAL FIX 2026-08-29 (OPACITY-PIPELINE-INVESTIGATION-2026-08-29.txt
+         * has the full research trail) - override_redirect was set on
+         * the struct but never in the value-mask below, so X11 silently
+         * ignored it and this was always a real WM-managed window, not
+         * override_redirect like the taskbar's own windows (and this
+         * file's own popup branch). That's why _NET_WM_WINDOW_OPACITY
+         * had zero visible effect despite being set correctly - most
+         * compositors, Mutter included, only reliably honor client-
+         * requested opacity on unmanaged surfaces. Manual keyboard
+         * focus (dbhq_grab_keyboard_retry()/dbhq_soft_focus() below,
+         * already real, already used) still applies the same way an
+         * override_redirect window gets focus - this doesn't remove or
+         * change that logic, just makes the window type match what
+         * this file already treats it as. */
+        swa.override_redirect = True;
         win = XCreateWindow(dpy, RootWindow(dpy, screen), g_win_x, g_win_y, (unsigned)ww, (unsigned)wh, 0,
                              CopyFromParent, InputOutput, CopyFromParent,
-                             CWBackPixel | CWEventMask, &swa);
+                             CWBackPixel | CWEventMask | CWOverrideRedirect, &swa);
         {
-            Atom motif_hints = XInternAtom(dpy, "_MOTIF_WM_HINTS", False);
-            long hints[5] = { 2, 0, 0, 0, 0 };
-            XChangeProperty(dpy, win, motif_hints, motif_hints, 32, PropModeReplace, (unsigned char *)hints, 5);
-
-            XWMHints *wmhints = XAllocWMHints();
-            if (wmhints) { wmhints->flags = InputHint; wmhints->input = True; XSetWMHints(dpy, win, wmhints); XFree(wmhints); }
-
-            Atom wm_delete = XInternAtom(dpy, "WM_DELETE_WINDOW", False);
-            XSetWMProtocols(dpy, win, &wm_delete, 1);
-
-            XSizeHints *shints = XAllocSizeHints();
-            if (shints) { shints->flags = PPosition; shints->x = g_win_x; shints->y = g_win_y; XSetWMNormalHints(dpy, win, shints); XFree(shints); }
+            /* REAL FIX 2026-08-29 (OPACITY-PIPELINE-INVESTIGATION-2026-08-29.txt
+             * + part2.txt, root-caused by a delegated Haiku subagent) -
+             * _MOTIF_WM_HINTS and WM_DELETE_WINDOW (via XSetWMProtocols)
+             * REMOVED, in addition to the XSetWMHints/XSetWMNormalHints
+             * already removed above. Live xprop diff against the
+             * taskbar's own real, visibly-transparent windows
+             * (khtpm_strip_parser.c, confirmed by direct user
+             * observation) showed these were the ONLY remaining
+             * property differences once override_redirect was added -
+             * both are real ICCCM/WM-cooperation signals telling
+             * Mutter "manage me," directly contradicting override_
+             * redirect="I'm unmanaged," which made the compositor fall
+             * back to its own WM-level opacity handling instead of
+             * honoring the client's _NET_WM_WINDOW_OPACITY. Neither
+             * property does anything useful on an undecorated
+             * override_redirect window (no titlebar/close button exists
+             * for the WM to route a close-request through anyway) -
+             * hq_run_event_loop()'s own wm_delete_loop atom comparison
+             * below is untouched and harmless if never matched. The
+             * taskbar's own real windows never set either property. */
         }
         {
             XClassHint *ch = XAllocClassHint();
             if (ch) { ch->res_name = (char *)"MuchiverseLivedesk"; ch->res_class = (char *)"MuchiverseLivedesk"; XSetClassHint(dpy, win, ch); XFree(ch); }
         }
         XMapWindow(dpy, win);
+        set_window_opacity(dpy, win, load_theme_opacity());
         XSync(dpy, False);
         { XWindowAttributes wa; if (XGetWindowAttributes(dpy, win, &wa)) { g_win_x = wa.x; g_win_y = wa.y; } }
         nav_tab_register(g_is_palettes ? "palettes" : g_is_bookmarks ? "bookmarks" : g_is_stats_hq ? "stats-hq" : "db-hq");
@@ -9866,6 +10987,20 @@ int main(int argc, char **argv) {
         g_buf_w = ww; g_buf_h = wh;
 
         redraw();
+        /* REAL FIX 2026-08-29 part 3 (OPACITY-PIPELINE-INVESTIGATION-2026-08-29-
+         * part3.txt) - khtpm_strip_parser.c's own taskbar has a documented
+         * "KISS opacity-on-reset fix" (its own comment near set_window_opacity()
+         * relaunch calls) - Mutter/XWayland does not reliably honor
+         * _NET_WM_WINDOW_OPACITY set at map-time on an override_redirect
+         * window's FIRST paint; it must be re-applied after the window has
+         * been visible/painted for at least one real frame. The taskbar
+         * already does this (XFlush + usleep(200000) + re-set opacity after
+         * its first real draw calls); this branch never did. Applying the
+         * exact same pattern here. */
+        XFlush(dpy);
+        usleep(200000);
+        set_window_opacity(dpy, win, load_theme_opacity());
+        XFlush(dpy);
         if (dbhq_marker_pilot()) {
             /* snapshot so a leftover marker file does not force a second paint */
             (void)consume_frame_changed();
@@ -9913,28 +11048,26 @@ int main(int argc, char **argv) {
         XSetWindowAttributes swa;
         swa.background_pixel = alloc_pixel("#141414");
         swa.event_mask = ExposureMask | ButtonPressMask | ButtonReleaseMask | ButtonMotionMask | KeyPressMask | StructureNotifyMask | FocusChangeMask;
+        /* REAL FIX 2026-08-29 - see db-hq branch's own identical
+         * comment above (OPACITY-PIPELINE-INVESTIGATION-2026-08-29.txt
+         * has the full research trail) - same real bug, same fix. */
+        swa.override_redirect = True;
         win = XCreateWindow(dpy, RootWindow(dpy, screen), g_win_x, g_win_y, (unsigned)ww, (unsigned)wh, 0,
                              CopyFromParent, InputOutput, CopyFromParent,
-                             CWBackPixel | CWEventMask, &swa);
+                             CWBackPixel | CWEventMask | CWOverrideRedirect, &swa);
         {
-            Atom motif_hints = XInternAtom(dpy, "_MOTIF_WM_HINTS", False);
-            long hints[5] = { 2, 0, 0, 0, 0 };
-            XChangeProperty(dpy, win, motif_hints, motif_hints, 32, PropModeReplace, (unsigned char *)hints, 5);
-
-            XWMHints *wmhints = XAllocWMHints();
-            if (wmhints) { wmhints->flags = InputHint; wmhints->input = True; XSetWMHints(dpy, win, wmhints); XFree(wmhints); }
-
-            Atom wm_delete = XInternAtom(dpy, "WM_DELETE_WINDOW", False);
-            XSetWMProtocols(dpy, win, &wm_delete, 1);
-
-            XSizeHints *shints = XAllocSizeHints();
-            if (shints) { shints->flags = PPosition; shints->x = g_win_x; shints->y = g_win_y; XSetWMNormalHints(dpy, win, shints); XFree(shints); }
+            /* REAL FIX 2026-08-29 - see db-hq branch's own identical
+             * comment above (OPACITY-PIPELINE-INVESTIGATION-2026-08-29.txt
+             * + part2.txt) - _MOTIF_WM_HINTS/WM_DELETE_WINDOW removed
+             * too, same reasoning: root-caused as the actual blocker by
+             * a delegated Haiku subagent's own live xprop diff. */
         }
         {
             XClassHint *ch = XAllocClassHint();
             if (ch) { ch->res_name = (char *)"MuchiverseLivedesk"; ch->res_class = (char *)"MuchiverseLivedesk"; XSetClassHint(dpy, win, ch); XFree(ch); }
         }
         XMapWindow(dpy, win);
+        set_window_opacity(dpy, win, load_theme_opacity());
         XSync(dpy, False);
         { XWindowAttributes wa; if (XGetWindowAttributes(dpy, win, &wa)) { g_win_x = wa.x; g_win_y = wa.y; } }
         nav_tab_register("events-hq");
@@ -9945,6 +11078,14 @@ int main(int argc, char **argv) {
         g_buf_w = ww; g_buf_h = wh;
 
         redraw();
+        /* REAL FIX 2026-08-29 part 3 - see db-hq branch's own identical
+         * comment above (OPACITY-PIPELINE-INVESTIGATION-2026-08-29-part3.txt)
+         * - same real "opacity-on-reset" quirk, same fix, ported from
+         * khtpm_strip_parser.c's own already-documented pattern. */
+        XFlush(dpy);
+        usleep(200000);
+        set_window_opacity(dpy, win, load_theme_opacity());
+        XFlush(dpy);
 
         Atom wm_delete_loop = XInternAtom(dpy, "WM_DELETE_WINDOW", False);
         hq_run_event_loop(wm_delete_loop, 0);
@@ -9972,22 +11113,19 @@ int main(int argc, char **argv) {
         XSetWindowAttributes swa;
         swa.background_pixel = alloc_pixel("#141414");
         swa.event_mask = ExposureMask | ButtonPressMask | ButtonReleaseMask | ButtonMotionMask | KeyPressMask | StructureNotifyMask | FocusChangeMask;
+        /* REAL FIX 2026-08-29 - see db-hq branch's own identical
+         * comment above (OPACITY-PIPELINE-INVESTIGATION-2026-08-29.txt
+         * has the full research trail) - same real bug, same fix. */
+        swa.override_redirect = True;
         win = XCreateWindow(dpy, RootWindow(dpy, screen), chai_win_x, chai_win_y, (unsigned)ww, (unsigned)wh, 0,
                              CopyFromParent, InputOutput, CopyFromParent,
-                             CWBackPixel | CWEventMask, &swa);
+                             CWBackPixel | CWEventMask | CWOverrideRedirect, &swa);
         {
-            Atom motif_hints = XInternAtom(dpy, "_MOTIF_WM_HINTS", False);
-            long hints[5] = { 2, 0, 0, 0, 0 };
-            XChangeProperty(dpy, win, motif_hints, motif_hints, 32, PropModeReplace, (unsigned char *)hints, 5);
-
-            XWMHints *wmhints = XAllocWMHints();
-            if (wmhints) { wmhints->flags = InputHint; wmhints->input = True; XSetWMHints(dpy, win, wmhints); XFree(wmhints); }
-
-            Atom wm_delete = XInternAtom(dpy, "WM_DELETE_WINDOW", False);
-            XSetWMProtocols(dpy, win, &wm_delete, 1);
-
-            XSizeHints *shints = XAllocSizeHints();
-            if (shints) { shints->flags = PPosition; shints->x = chai_win_x; shints->y = chai_win_y; XSetWMNormalHints(dpy, win, shints); XFree(shints); }
+            /* REAL FIX 2026-08-29 - see db-hq branch's own identical
+             * comment above (OPACITY-PIPELINE-INVESTIGATION-2026-08-29.txt
+             * + part2.txt) - _MOTIF_WM_HINTS/WM_DELETE_WINDOW removed
+             * too, same reasoning: root-caused as the actual blocker by
+             * a delegated Haiku subagent's own live xprop diff. */
         }
         {
             XClassHint *ch = XAllocClassHint();
@@ -9997,6 +11135,7 @@ int main(int argc, char **argv) {
          * activates MapRaised WM-managed windows and steals the human's
          * browser. File relay still drives this process. */
         XMapWindow(dpy, win);
+        set_window_opacity(dpy, win, load_theme_opacity());
         XSync(dpy, False);
         { XWindowAttributes wa; if (XGetWindowAttributes(dpy, win, &wa)) { chai_win_x = wa.x; chai_win_y = wa.y; } }
         nav_tab_register("chat-hai");
@@ -10009,6 +11148,14 @@ int main(int argc, char **argv) {
         g_buf_w = ww; g_buf_h = wh;
 
         redraw();
+        /* REAL FIX 2026-08-29 part 3 - see db-hq branch's own identical
+         * comment above (OPACITY-PIPELINE-INVESTIGATION-2026-08-29-part3.txt)
+         * - same real "opacity-on-reset" quirk, same fix, ported from
+         * khtpm_strip_parser.c's own already-documented pattern. */
+        XFlush(dpy);
+        usleep(200000);
+        set_window_opacity(dpy, win, load_theme_opacity());
+        XFlush(dpy);
 
         if (argc > 3 && strcmp(argv[3], "--dump-and-exit") == 0) { dump_frame_png(); g_quit = 1; }
 
@@ -10048,7 +11195,19 @@ int main(int argc, char **argv) {
      * entirely (same as any real popup/menu), so clicks are delivered
      * immediately - matches the legacy popup's own real behavior. */
     swa.override_redirect = True;
-    swa.event_mask = ExposureMask | ButtonPressMask | KeyPressMask | StructureNotifyMask | FocusChangeMask;
+    /* REAL FIX 2026-08-29 (live report: "toolbar doesn't allow drag
+     * repositioning") - this generic popup window (entity-menu popup AND
+     * swatch-picker/Settings) never requested ButtonReleaseMask or
+     * ButtonMotionMask, unlike db-hq/events-hq/chat-hai's own event masks
+     * just above, which all three DO include. TASK 1's drag code
+     * (g_popup_dragging, hq_dispatch_xevent's is_popup MotionNotify/
+     * ButtonRelease branches) was real and correctly wired, but X11 was
+     * never asked to deliver those event types to this window at all, so
+     * ButtonPress armed g_popup_dragging and then nothing ever moved or
+     * cleared it - same class of bug as the missing CWOverrideRedirect
+     * mask entry found earlier this session (a struct field set but the
+     * corresponding mask bit missing, so X11 silently ignores it). */
+    swa.event_mask = ExposureMask | ButtonPressMask | ButtonReleaseMask | ButtonMotionMask | KeyPressMask | StructureNotifyMask | FocusChangeMask;
     win = XCreateWindow(dpy, RootWindow(dpy, screen), g_win_x, g_win_y, (unsigned)g_win_w, (unsigned)g_win_h, 0,
                          CopyFromParent, InputOutput, CopyFromParent, CWBackPixel | CWOverrideRedirect | CWEventMask, &swa);
     Atom motif_hints = XInternAtom(dpy, "_MOTIF_WM_HINTS", False);
@@ -10063,6 +11222,7 @@ int main(int argc, char **argv) {
     if (shints) { shints->flags = PPosition; shints->x = g_win_x; shints->y = g_win_y; XSetWMNormalHints(dpy, win, shints); XFree(shints); }
 
     XMapRaised(dpy, win);
+    set_window_opacity(dpy, win, load_theme_opacity());
     XSync(dpy, False);
     /* 2026-08-24 - XDND drop-target opt-in (no-op unless this .chtpm
      * declared a window-level drop_action= attribute). */
@@ -10122,6 +11282,14 @@ int main(int argc, char **argv) {
     xftdraw_buf = XftDrawCreate(dpy, buf, DefaultVisual(dpy, screen), cmap);
 
     redraw();
+    /* REAL FIX 2026-08-29 part 3 - see db-hq branch's own identical
+     * comment above (OPACITY-PIPELINE-INVESTIGATION-2026-08-29-part3.txt)
+     * - same real "opacity-on-reset" quirk, same fix, ported from
+     * khtpm_strip_parser.c's own already-documented pattern. */
+    XFlush(dpy);
+    usleep(200000);
+    set_window_opacity(dpy, win, load_theme_opacity());
+    XFlush(dpy);
 
     if (g_is_swatch_picker) {
         /* Reset house action/state before the manager starts so a leftover
