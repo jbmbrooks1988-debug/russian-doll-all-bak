@@ -181,6 +181,38 @@ static char g_house_root[SP_PATH_BUF];
 static pid_t g_manager_pid = -1;
 static SpState g_st;
 
+/* REAL FIX 2026-08-30, direct live report ("why is tb and tb options
+ * 1 click to open... ofc its a bug... should we pursue the fix now" ->
+ * "i think we should pursue this") - #.desktop/hq_ui.pdl's own
+ * click_two_step setting (real, house-wide per its own comment:
+ * "Applies house-wide (db-hq/events-hq/chat-hai)") never actually
+ * included the taskbar strip itself - this file (khtpm_strip_parser.c)
+ * predates that convention and never read the setting at all, a real
+ * scope gap, not a partial/broken implementation. Same real default
+ * (1 = two-step ON) and same real load-from-PDL shape
+ * khtpm_entity_menu_render.c's own dbhq_load_font_scale() already
+ * uses - loaded once at startup, applied in apply_captured_mouse()'s
+ * three real dispatch branches (hq_win/popup_win/win) below. */
+static int g_click_two_step = 1;
+
+static void strip_load_click_two_step(void) {
+    char path[SP_PATH_BUF];
+    snprintf(path, sizeof(path), "%s/#.desktop/hq_ui.pdl", g_house_root);
+    FILE *f = fopen(path, "r");
+    if (!f) return;
+    char line[128];
+    while (fgets(line, sizeof(line), f)) {
+        char *eq = strchr(line, '=');
+        if (!eq) continue;
+        *eq = '\0';
+        char *val = eq + 1;
+        char *nl = strchr(val, '\n');
+        if (nl) *nl = '\0';
+        if (strcmp(line, "click_two_step") == 0) g_click_two_step = atoi(val) != 0;
+    }
+    fclose(f);
+}
+
 /* Real X11 keyboard focus tracking (2026-08-11, direct request: "does it
  * have focus? right click doesn't say... lets add a '^' in nav section if
  * it has focus, for sanity"). taskbar_soft_focus()'s XSetInputFocus() call
@@ -191,6 +223,28 @@ static SpState g_st;
  * KeyPress events never reach this process at all, which would fully
  * explain that symptom without needing a second investigation. */
 static int g_has_real_focus = 0;
+/* REAL FIX 2026-08-30, direct live report ("before my click would work
+ * on 'tap click' now i have to manually click harder... what changed?
+ * for single and double [click]") - a real side effect of the
+ * override_redirect -> WM-managed conversion (eb74b733): under
+ * override_redirect these windows were entirely exempt from Mutter's
+ * own click-to-focus handling (the WM never touches an unmanaged
+ * window at all). Now that they're real WM-managed windows, Mutter can
+ * intercept a click for its own focus-transfer/grab-replay handling
+ * when the target window doesn't already hold real input focus -
+ * taskbar_soft_focus() calling XSetInputFocus() unconditionally on
+ * EVERY click (even when the clicked window already has focus) forces
+ * an unnecessary repeated focus-transfer request into that same
+ * round-trip on every single click, which a fast/light trackpad tap's
+ * button-press-then-release may not survive as reliably as a
+ * deliberate, slightly longer hard press does. Tracks WHICH of the
+ * three real windows currently holds focus (from real FocusIn/FocusOut
+ * events) so taskbar_soft_focus() can skip the XSetInputFocus() call
+ * entirely when the target already has it - X11 delivers ButtonPress
+ * regardless of keyboard focus, so this call was only ever needed to
+ * support keyboard-driven interaction (arrow-nav/typing) after
+ * switching between windows, not on every plain click. */
+static Window g_focused_win = 0;
 
 static void path_join2(char *out, size_t n, const char *root, const char *rel) {
     size_t rl = strlen(root);
@@ -505,6 +559,34 @@ static int frame_changed_dirty(void) {
     return 0;
 }
 
+/* REAL, NEW 2026-08-30, direct instruction ("it only needs to happen
+ * on status change... what in house architecture can be used to
+ * support this") - same real cheap-marker convention as
+ * frame_changed_dirty() just above, applied to
+ * #.desktop/livedesk_theme_changed.txt (written by
+ * write_theme_opacity() in khtpm_entity_menu_render.c). Checked once
+ * per already-running tick in the main loop below - a single stat(),
+ * real work (reload+reapply opacity to all 3 real windows) only runs
+ * on an actual change. */
+static long g_theme_changed_cursor = 0;
+
+static int theme_changed_dirty(void) {
+    char path[SP_PATH_BUF];
+    path_join2(path, sizeof(path), g_house_root, "#.desktop/livedesk_theme_changed.txt");
+    struct stat st;
+    if (stat(path, &st) != 0) return 0;
+    /* REAL BUG FIX 2026-08-30, found live testing this exact function
+     * (a manual marker-append right after this process started never
+     * triggered a reapply): cursor starts at 0 (not -1) - the marker
+     * file usually doesn't exist yet at this process's own startup, so
+     * its first-ever real append (any size > 0) must count as a real
+     * change, not get silently absorbed as "just establishing a
+     * baseline" the way frame_changed_dirty()'s own -1 sentinel does
+     * for a file that's expected to already exist. */
+    if (st.st_size != g_theme_changed_cursor) { g_theme_changed_cursor = st.st_size; return 1; }
+    return 0;
+}
+
 /* Append a resolved decimal action code to strip_history.txt — UNCHANGED. */
 static void send_code(int code) {
     if (code <= 0) return;
@@ -641,6 +723,16 @@ static void load_strip_offset(int *out_x, int *out_y) {
     fclose(f);
 }
 
+/* Same real non-fatal-X-error-handler shape khtpm_entity_menu_render.c's
+ * evhq_nonfatal_x_error() already uses (see that function's own comment
+ * and 402c812b) - installed in main() right after XOpenDisplay(), before
+ * any window is made WM-managed. */
+static int ktb_strip_nonfatal_x_error(Display *d, XErrorEvent *e) {
+    char ebuf[128]; XGetErrorText(d, e->error_code, ebuf, sizeof(ebuf));
+    fprintf(stderr, "khtpm_strip_parser: X error (non-fatal): %s (request %d.%d)\n", ebuf, e->request_code, e->minor_code);
+    return 0;
+}
+
 static void taskbar_set_wm_class(Display *dpy, Window w) {
     XClassHint *ch = XAllocClassHint();
     if (!ch) return;
@@ -648,6 +740,50 @@ static void taskbar_set_wm_class(Display *dpy, Window w) {
     ch->res_class = (char *)"MuchiverseLivedesk";
     XSetClassHint(dpy, w, ch);
     XFree(ch);
+}
+
+/* REAL FIX 2026-08-30, direct live report ("sometimes when i press
+ * piececraft-hq it never opens... only thru mouse click sometimes")
+ * - win/hq_win/popup_win were all override_redirect=True. Confirmed
+ * same-day, same file, same real bug class already found and fixed
+ * for run_pchq_board_mode()'s own window (commit 402c812b, "its not
+ * geting mouse / kbd input"): Mutter's real XWayland focus routing
+ * only ever gives real hardware keyboard/pointer focus to WM-managed
+ * windows - XSetInputFocus() (taskbar_soft_focus() calls this
+ * directly on these very windows) reports success at the raw
+ * X11-protocol level even on an override_redirect window, but real
+ * clicks/keys are not reliably routed to it - exactly the class of
+ * intermittent failure reported ("works via direct history-file
+ * injection" - injection bypasses X11 entirely - "sometimes doesn't
+ * via a real click" - depends on Mutter's actual focus/stacking state
+ * at the moment, hence "sometimes"). Same real fix as 402c812b: normal
+ * WM-managed window, decorations stripped via _MOTIF_WM_HINTS instead
+ * of override_redirect - but ALSO, unlike that isolated utility
+ * window, this IS a real always-on-top docked taskbar, so real EWMH
+ * dock hints are added here to preserve that behavior under a real
+ * window manager (skip taskbar/pager listing, stay above normal
+ * windows) - 402c812b's own board-window fix didn't need these. */
+static void taskbar_make_wm_managed_dock(Display *dpy, Window w, int x, int y) {
+    Atom motif_hints = XInternAtom(dpy, "_MOTIF_WM_HINTS", False);
+    long hints[5] = { 2, 0, 0, 0, 0 }; /* flags=MWM_HINTS_DECORATIONS, decorations=0 */
+    XChangeProperty(dpy, w, motif_hints, motif_hints, 32, PropModeReplace, (unsigned char *)hints, 5);
+
+    Atom wm_state = XInternAtom(dpy, "_NET_WM_STATE", False);
+    Atom above = XInternAtom(dpy, "_NET_WM_STATE_ABOVE", False);
+    Atom skip_taskbar = XInternAtom(dpy, "_NET_WM_STATE_SKIP_TASKBAR", False);
+    Atom skip_pager = XInternAtom(dpy, "_NET_WM_STATE_SKIP_PAGER", False);
+    Atom sticky = XInternAtom(dpy, "_NET_WM_STATE_STICKY", False);
+    Atom states[4] = { above, skip_taskbar, skip_pager, sticky };
+    XChangeProperty(dpy, w, wm_state, XA_ATOM, 32, PropModeReplace, (unsigned char *)states, 4);
+
+    Atom win_type = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE", False);
+    Atom dock = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE_DOCK", False);
+    XChangeProperty(dpy, w, win_type, XA_ATOM, 32, PropModeReplace, (unsigned char *)&dock, 1);
+
+    /* PPosition - without this most WMs ignore the requested x/y (same
+     * real fix 402c812b needed for the same reason). */
+    XSizeHints *shints = XAllocSizeHints();
+    if (shints) { shints->flags = PPosition; shints->x = x; shints->y = y; XSetWMNormalHints(dpy, w, shints); XFree(shints); }
 }
 
 /* Real, permanent frame-history log (2026-08-11, direct request: "chtpm
@@ -698,7 +834,9 @@ static void append_frame_history(const LayDoc *header_doc, const LayDoc *bottom_
 static void taskbar_soft_focus(Display *dpy, Window w) {
     if (!w) return;
     XRaiseWindow(dpy, w);
-    XSetInputFocus(dpy, w, RevertToParent, CurrentTime);
+    /* Skip the redundant XSetInputFocus() call when w already holds
+     * real focus - see g_focused_win's own declaration comment. */
+    if (g_focused_win != w) XSetInputFocus(dpy, w, RevertToParent, CurrentTime);
     XFlush(dpy);
 }
 
@@ -2157,9 +2295,17 @@ static void apply_captured_mouse(LayDoc *header_doc, LayDoc *bottom_doc, SpState
                 hit_x = (int)((long)x * (long)g_header_natural_w / (long)g_hq_win_w);
             int elidx = hit_test(g_header_hits, g_header_hit_n, hit_x, y);
             if (elidx >= 0) {
+                /* REAL FIX 2026-08-30 - real house-wide click_two_step
+                 * (see its own declaration comment above): a click on
+                 * an unfocused nav element only focuses it; a second
+                 * click on the SAME, already-focused element activates
+                 * it - same real semantics
+                 * click_focus_then_activate()/db-hq's own click
+                 * handling already use. */
+                int activate = (!g_click_two_step) || (header_doc->focus_index == elidx);
                 header_doc->focus_index = elidx;
                 g_nav_focus = root_nav_pos_of(header_doc, elidx);
-                dispatch_onclick(header_doc, elidx);
+                if (activate) dispatch_onclick(header_doc, elidx);
                 taskbar_soft_focus(dpy, hq_win);
             }
         }
@@ -2170,10 +2316,17 @@ static void apply_captured_mouse(LayDoc *header_doc, LayDoc *bottom_doc, SpState
             int elidx = hit_test(g_popup_hits, g_popup_hit_n, x, y);
             if (elidx >= 0) {
                 if (strcmp(header_doc->elements[elidx].type, "cli_io") == 0) {
+                    /* Real, documented exception (hq_ui.pdl's own
+                     * click_two_step comment: "the chat-hai composer
+                     * text field... keeps its own separate real
+                     * toggle") - a text field always focuses-and-
+                     * activates-for-typing on one click, never
+                     * two-step. */
                     send_code(KSC_ENTER);
                 } else {
+                    int activate = (!g_click_two_step) || (header_doc->focus_index == elidx);
                     header_doc->focus_index = elidx;
-                    dispatch_onclick(header_doc, elidx);
+                    if (activate) dispatch_onclick(header_doc, elidx);
                 }
                 taskbar_soft_focus(dpy, popup_win);
             }
@@ -2191,9 +2344,10 @@ static void apply_captured_mouse(LayDoc *header_doc, LayDoc *bottom_doc, SpState
         } else {
             int elidx = hit_test(g_bottom_hits, g_bottom_hit_n, x, y);
             if (elidx >= 0) {
+                int activate = (!g_click_two_step) || (bottom_doc->focus_index == elidx);
                 bottom_doc->focus_index = elidx;
                 g_nav_focus = root_nav_count(header_doc) + root_nav_pos_of(bottom_doc, elidx);
-                dispatch_onclick(bottom_doc, elidx);
+                if (activate) dispatch_onclick(bottom_doc, elidx);
             }
             }
         }
@@ -2257,6 +2411,7 @@ int main(int argc, char **argv) {
         return 1;
     }
     snprintf(g_house_root, sizeof(g_house_root), "%s", argv[1]);
+    strip_load_click_two_step();
     frame_history_init();
     int hq_win_x = 0, hq_win_y = 40;
     load_strip_offset(&hq_win_x, &hq_win_y);
@@ -2317,6 +2472,16 @@ int main(int argc, char **argv) {
     wait_for_manager_first_publish();
 
     Display *dpy = XOpenDisplay(NULL);
+    /* REAL FIX 2026-08-30, same real bug class already found+fixed for
+     * run_pchq_board_mode() (commit 402c812b) - taskbar_soft_focus()
+     * calls XSetInputFocus() right after XMapRaised() (see win/hq_win's
+     * own setup below), and now that these windows are WM-managed (not
+     * override_redirect - see taskbar_make_wm_managed_dock()'s own
+     * header comment), that can legitimately throw BadMatch if called
+     * before the WM finishes reparenting/mapping the window. This file
+     * had NO real X error handler at all before this fix - an uncaught
+     * BadMatch here would crash the entire taskbar, not just one popup. */
+    if (dpy) XSetErrorHandler(ktb_strip_nonfatal_x_error);
     if (!dpy) {
         fprintf(stderr, "strip_parser: no display\n");
         cleanup_manager();
@@ -2376,14 +2541,14 @@ int main(int argc, char **argv) {
     unsigned long fg = parse_color(dpy, g_st.theme_fg, WhitePixel(dpy, DefaultScreen(dpy)));
 
     XSetWindowAttributes swa;
-    swa.override_redirect = True;
     swa.background_pixel = bg;
     swa.event_mask = ExposureMask | ButtonPressMask | KeyPressMask | FocusChangeMask;
     Window win = XCreateWindow(dpy, RootWindow(dpy, DefaultScreen(dpy)),
                                0, sh - KTB_BAR_H, sw, KTB_BAR_H, 0,
                                CopyFromParent, InputOutput, CopyFromParent,
-                               CWOverrideRedirect | CWBackPixel | CWEventMask, &swa);
+                               CWBackPixel | CWEventMask, &swa);
     taskbar_set_wm_class(dpy, win);
+    taskbar_make_wm_managed_dock(dpy, win, 0, sh - KTB_BAR_H);
     XMapRaised(dpy, win);
     set_window_opacity(dpy, win, load_theme_opacity());
     GC gc = XCreateGC(dpy, win, 0, NULL);
@@ -2393,28 +2558,28 @@ int main(int argc, char **argv) {
     int hq_real_w = header_total_width(&header_doc);
     if (hq_real_w > sw - hq_win_x) hq_real_w = sw - hq_win_x;
     XSetWindowAttributes hq_swa;
-    hq_swa.override_redirect = True;
     hq_swa.background_pixel = bg;
     hq_swa.event_mask = ExposureMask | ButtonPressMask | KeyPressMask | FocusChangeMask;
     Window hq_win = XCreateWindow(dpy, RootWindow(dpy, DefaultScreen(dpy)),
                                   hq_win_x, hq_win_y, hq_real_w, KTB_BAR_H, 0,
                                   CopyFromParent, InputOutput, CopyFromParent,
-                                  CWOverrideRedirect | CWBackPixel | CWEventMask, &hq_swa);
+                                  CWBackPixel | CWEventMask, &hq_swa);
     g_hq_win_handle = hq_win;
     g_hq_win_w = hq_real_w;
     taskbar_set_wm_class(dpy, hq_win);
+    taskbar_make_wm_managed_dock(dpy, hq_win, hq_win_x, hq_win_y);
     XMapRaised(dpy, hq_win);
     set_window_opacity(dpy, hq_win, load_theme_opacity());
 
     XSetWindowAttributes popup_swa;
-    popup_swa.override_redirect = True;
     popup_swa.background_pixel = bg;
     popup_swa.event_mask = ExposureMask | ButtonPressMask | KeyPressMask | FocusChangeMask;
     Window popup_win = XCreateWindow(dpy, RootWindow(dpy, DefaultScreen(dpy)),
                                      hq_win_x, hq_win_y + KTB_BAR_H, 200, KTB_BAR_H, 0,
                                      CopyFromParent, InputOutput, CopyFromParent,
-                                     CWOverrideRedirect | CWBackPixel | CWEventMask, &popup_swa);
+                                     CWBackPixel | CWEventMask, &popup_swa);
     taskbar_set_wm_class(dpy, popup_win);
+    taskbar_make_wm_managed_dock(dpy, popup_win, hq_win_x, hq_win_y + KTB_BAR_H);
     set_window_opacity(dpy, popup_win, load_theme_opacity());
     int popup_mapped = 0;
 
@@ -2459,6 +2624,17 @@ int main(int argc, char **argv) {
     while (g_running) {
         g_cells_n = 0;
         reap_manager_nonblocking();
+
+        /* REAL, NEW 2026-08-30 - real, cheap, event-driven opacity
+         * reapply (see theme_changed_dirty()'s own declaration
+         * comment) - only actually reloads+reapplies on a genuine
+         * change, riding this same already-running tick. */
+        if (theme_changed_dirty()) {
+            double new_opacity = load_theme_opacity();
+            set_window_opacity(dpy, win, new_opacity);
+            set_window_opacity(dpy, hq_win, new_opacity);
+            if (popup_win) set_window_opacity(dpy, popup_win, new_opacity);
+        }
 
         int was_dirty = frame_changed_dirty();
         if (was_dirty) {
@@ -2580,7 +2756,30 @@ int main(int argc, char **argv) {
         while (XPending(dpy)) {
             XEvent ev;
             XNextEvent(dpy, &ev);
-            if (ev.type == ButtonPress && ev.xbutton.window == hq_win) {
+            if (ev.type == Expose) {
+                /* REAL FIX 2026-08-30, direct live report ("text is no
+                 * longer showing up in the tb dropdowns (any) wtf!?") -
+                 * a real regression from the override_redirect ->
+                 * WM-managed fix just above (eb74b733). This file never
+                 * handled Expose at all - harmless under
+                 * override_redirect (those windows map synchronously,
+                 * so the one-time draw call right after XMapRaised
+                 * always landed on an already-visible drawable), but a
+                 * real WM-managed window's XMapRaised() is asynchronous
+                 * - content drawn before the WM actually finishes
+                 * mapping/backing it can be silently lost, with nothing
+                 * to ever redraw it since ExposureMask events (already
+                 * selected on all three windows) were being read and
+                 * discarded, unhandled, forever. Real fix: redraw the
+                 * correct doc on the LAST Expose in a batch
+                 * (ev.xexpose.count==0), same real convention every
+                 * other Xlib app uses. */
+                if (ev.xexpose.count == 0) {
+                    if (ev.xexpose.window == win) draw_bottom(dpy, win, gc, sw, bg, &bottom_doc);
+                    else if (ev.xexpose.window == hq_win) draw_header_win(dpy, hq_win, gc, &header_doc, &g_st);
+                    else if (ev.xexpose.window == popup_win) draw_popup_win(dpy, popup_win, gc, &header_doc, &g_st, hq_win_x, hq_win_y);
+                }
+            } else if (ev.type == ButtonPress && ev.xbutton.window == hq_win) {
                 mirror_mouse_history("hq_win", ev.xbutton.button, ev.xbutton.x, ev.xbutton.y);
             } else if (ev.type == ButtonPress && ev.xbutton.window == popup_win) {
                 mirror_mouse_history("popup_win", ev.xbutton.button, ev.xbutton.x, ev.xbutton.y);
@@ -2588,8 +2787,10 @@ int main(int argc, char **argv) {
                 mirror_mouse_history("win", ev.xbutton.button, ev.xbutton.x, ev.xbutton.y);
             } else if (ev.type == FocusIn) {
                 g_has_real_focus = 1;
+                g_focused_win = ev.xfocus.window;
             } else if (ev.type == FocusOut) {
                 g_has_real_focus = 0;
+                if (g_focused_win == ev.xfocus.window) g_focused_win = 0;
             } else if (ev.type == KeyPress) {
                 KeySym ks = XLookupKeysym(&ev.xkey, 0);
                 if (ks == XK_Left || ks == XK_Up) {

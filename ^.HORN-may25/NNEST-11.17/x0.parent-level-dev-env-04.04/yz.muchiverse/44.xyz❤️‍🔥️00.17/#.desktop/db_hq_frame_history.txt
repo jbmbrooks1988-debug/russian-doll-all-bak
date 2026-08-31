@@ -4948,3 +4948,13 @@ seq=30 focus_nav=1/9 tab=0 selected_event=-1
 seq=31 focus_nav=1/9 tab=0 selected_event=-1
 seq=1 focus_nav=1/46 tab=0 selected_event=0
 seq=2 focus_nav=1/46 tab=0 selected_event=0
+seq=1 focus_nav=1/46 tab=0 selected_event=0
+seq=2 focus_nav=1/46 tab=0 selected_event=0
+seq=1 focus_nav=1/46 tab=0 selected_event=0
+seq=2 focus_nav=1/46 tab=0 selected_event=0
+seq=1 focus_nav=1/26 tab=0 selected_event=0
+seq=2 focus_nav=1/38 tab=0 selected_event=0
+seq=3 focus_nav=1/38 tab=0 selected_event=0
+seq=1 focus_nav=1/26 tab=0 selected_event=0
+seq=2 focus_nav=1/38 tab=0 selected_event=0
+seq=3 focus_nav=1/38 tab=0 selected_event=0

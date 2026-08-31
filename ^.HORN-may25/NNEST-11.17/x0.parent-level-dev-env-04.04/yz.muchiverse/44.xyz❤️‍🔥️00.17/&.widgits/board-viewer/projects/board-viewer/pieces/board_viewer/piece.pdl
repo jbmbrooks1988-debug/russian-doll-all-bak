@@ -1,3 +1,14 @@
 SECTION      | KEY                | VALUE
 ----------------------------------------
 META         | piece_id           | board_viewer
+
+# REAL CORRECTION 2026-08-30 - File/Desk were first tried here as
+# METHOD-table rows (auto-generates numbered ${piece_methods} buttons
+# in board_viewer.chtpm). Direct correction: "they have nothing 2 do
+# with interact mode, they should show under toolbar" / "theres
+# supposed to be layout buttons" - METHOD rows lump into the SAME
+# numbered list Interact Mode occupies, the wrong shape. Real fix:
+# File/Desk are now hand-written <button> elements directly in
+# board_viewer.chtpm's own layout (its own real toolbar row, separate
+# from Interact Mode) - see that file's own header comment. No METHOD
+# rows needed here for them.

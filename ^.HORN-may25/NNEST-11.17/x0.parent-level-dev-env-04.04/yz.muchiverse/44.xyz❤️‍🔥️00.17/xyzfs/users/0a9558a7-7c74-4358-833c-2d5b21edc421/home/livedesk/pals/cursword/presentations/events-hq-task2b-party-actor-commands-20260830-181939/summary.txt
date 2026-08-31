@@ -1,0 +1,2 @@
+PASS: manager launched
+FAIL: event.pal not created

@@ -357,9 +357,12 @@ out of scope for this pass).
 
 ## 8. Real next steps (still no code until this section itself is acted on)
 
-1. Create `default-legacy` (copy chunk_0_0 + world_01 verbatim) and
-   `default-pdl` (author the real §6 BOARD-row + directory equivalent)
-   under piececraft-hq's own tree.
+1. ✅ DONE (2026-08-30) - Created `@.apps/piececraft-hq/defaults/
+   default-legacy/` (verbatim copy of `chunk_0_0` + `world_01`, parity
+   confirmed via real `diff -rq`, zero differences) and `defaults/
+   default-pdl/` (`default.pdl` - a real `BOARD` manifest row - pointing
+   at `desks/boards/default/`, holding the same real chunk/entity
+   files relocated per §6's convention). See `defaults/README.md`.
 2. Add real "File" and "Desk" nav rows to `board_viewer.chtpm`'s own
    layout/pal script, each opening a real picker listing what §7.3's
    fixtures (and any future saves) provide.
@@ -367,3 +370,231 @@ out of scope for this pass).
    chunk/entity data to the picked map's files.
 4. Everything else in this doc (desktop 3D, cursword controller, events)
    stays explicitly deferred, unchanged from §3b/§7.4 above.
+
+## 9. REAL DECISION RECORD (2026-08-30) - open question #3 resolved,
+   A/B kept as a documented fallback, remaining open questions
+
+Direct instruction: "definately note a/b optionality in docs incase we
+ever run into problems with a."
+
+**Open question #3 (§3b) is now decided: Option A.** Each desktop
+entity's own existing window (`tp_desktop_window_rgb.c`) re-renders
+itself in 3D mode independently, driven by a new shared camera-state
+file under `#.desktop/` - no new compositor process. Real reasoning,
+direct from the user: since every desktop entity is already its own
+separate, transparent-background X11 window, there is no true unified
+"scene" for a compositor to blend in the first place - inter-entity
+depth is already just normal WM window-stacking, not real 3D
+compositing between neighbors, so Option B's real payoff (centralized,
+correct cross-entity depth-sorting) doesn't actually apply here.
+Practical case for A: builds on the already-proven per-entity render
+loop, no new process to design/debug, and does NOT foreclose B later -
+the shared camera-state file is the same real mechanism either way, so
+a future compositor (if the transparent-independent-windows framing
+ever turns out wrong in practice) could be built against the exact
+same file with zero rework of the per-entity side.
+
+**Option B stays documented here as the explicit fallback**, per
+direct instruction - if Option A runs into a real problem (e.g. the
+"windows just look independent, that's fine" assumption turns out
+visually wrong once actually built, or real z-fighting/occlusion
+complaints show up in practice), the real pivot is Option B from §3b
+item 3 above: one new compositor process, closest analog
+`bv_render_3d.c`, owning a real unified raymarch pass across all
+armed/3D-mode entities at once. Re-read §3b item 3 in full before
+attempting that pivot - it already documents the real reason Option B
+needs a genuinely new process (board-viewer's own raymarcher only ever
+renders one project's board, not N independent desktop windows at
+arbitrary screen positions).
+
+**Other open questions from §3b - resolved by precedent, not asked,
+since the reasoning is confident:**
+
+- **#2 (desktop-wide vs per-entity scope) - RESOLVED, downstream of the
+  Option A choice itself**: since all entities poll the SAME shared
+  camera-state file, the switch is necessarily desktop-wide by
+  construction - there's no real way to make it "per-entity" without
+  contradicting the shared-file design just chosen. No separate
+  decision needed here.
+- **#4 (halo replace vs overlay) - adopting the doc's own leaning**:
+  overlay/ring around cursword's existing emoji sprite, never
+  replacing it - matches the "amber tint window"/".pal-hint-armed
+  bright title" precedents already cited in §3a, which never destroy
+  the underlying content either.
+- **#5 (armed-state file location) - adopting the doc's own cited
+  convention**: `#.desktop/cursword_armed.txt` (boolean-ish, matches
+  `rmmv_armed.txt`) for the arm/disarm flag, plus a new
+  `#.desktop/desktop_camera_mode.txt` (or similar name) for the real
+  shared 2D/3D + z-level/angle state every entity's own window polls -
+  both real, house-standard "small state file under #.desktop/" shape,
+  nothing new invented.
+- **#6 (real, non-colliding camera key set) - RESOLVED, downstream of
+  the doc's own §3a spec, not a new finding**: since real key capture
+  only begins once cursword is genuinely ARMED (§3a: "while armed, real
+  key capture begins... continues until real Escape"), this is the
+  exact same real dual-mode principle already proven and documented for
+  board-viewer's own `active_index==-1` model (`!.HOUSE_STDS.md` §A.9)
+  - armed-mode owns 100% of keyboard input exclusively, so board-
+  viewer's own real `1`-`4` camera_mode keys can be reused verbatim
+  with zero real collision risk, regardless of what those same physical
+  keys mean anywhere else on the UNARMED desktop. No new key list
+  needed - reuse `1`-`4` as-is.
+
+**Real, remaining open question - genuinely need your call, not
+resolvable by precedent:**
+
+1. **Click-vs-drag threshold, exact values.** §3b item 1's own
+   "standard real fix" (ButtonPress records start pos; ButtonRelease
+   within a small pixel radius AND short time = a real click/arm,
+   otherwise the existing drag continues) has no house precedent to
+   copy exact numbers from - a proposed default, not yet confirmed:
+   **5px movement AND under 300ms** counts as a click. Confirm, or give
+   real numbers to use instead.
+2. **Does arming cursword disable normal dragging, or do both coexist?**
+   §3b item 1's own framing leans "probably yes, both should coexist"
+   but says this explicitly needs a real decision. If both coexist: a
+   real ButtonPress on an ALREADY-armed cursword needs its own real
+   rule too (does it re-arm/no-op, or does it start a drag like today,
+   temporarily suspending armed key-capture until release?) - not
+   specified anywhere yet, needs an explicit answer alongside the
+   coexistence question itself.
+
+Not proceeding with any code until these two are answered, per this
+doc's own established discipline.
+
+## 10. REAL ANSWERS (2026-08-30) - both open questions from §9 resolved,
+    plus a real new feature added to scope: click-to-place movement
+
+Direct instruction, both confirmed:
+
+1. **Click-vs-drag threshold: the proposed 5px/300ms default is
+   confirmed.** No different numbers given - use as specified in §9
+   item 1.
+2. **Dragging and arming coexist, confirmed** ("i think dragging it is
+   fine too"). Real behavior for a ButtonPress on an already-armed
+   cursword still needs the same real rule §9 item 2 flagged (does it
+   start a drag, temporarily suspending key-capture until release, or
+   something else) - not separately re-asked this round, so the
+   original proposed answer stands as the real default to build:
+   a ButtonPress+drag on an armed cursword starts a REAL drag exactly
+   like today's existing behavior, suspending armed key-capture for
+   the duration (release re-arms/resumes key-capture, still armed
+   throughout - dragging doesn't disarm it).
+
+**Real, new feature added to scope, direct instruction**: in addition
+to the standard click-to-arm + arrow-key movement above, ALSO add a
+real **click-to-place** movement mode - once armed (halo visible), the
+NEXT click anywhere on the desktop moves cursword directly to that
+click's location (same real feel as placing a tile/token on a board,
+not a drag). Direct reasoning: "we do want that cursword click and
+place functionality anyways... so maybe both?" - both real movement
+styles (arrow-key nudge + click-to-place) are wanted, not a choice
+between them.
+
+**Real, house-standard way to keep this changeable while it's being
+tuned** (direct instruction: "we could add it in a pdl as optionally
+changeable till we figure out what actually works best in practice"):
+a new key in `#.desktop/hq_ui.pdl` (same real home as `click_two_step`/
+`opacity` - a house-wide, live-editable UI toggle, not buried in
+cursword's own pal-scoped config), proposed name
+`cursword_move_mode = click_place` (default) with `arrow_only` as the
+real fallback value if click-to-place turns out to feel wrong in
+practice - read the same way `click_two_step` already is (loaded once
+at startup via each real consumer's own `*_load_click_two_step()`-
+shaped function, no rebuild needed to change it, matches the "changed
+marker" live-reload pattern from `dc759f3c` if it ever needs to change
+value while a cursword window is already open, not just at next
+launch). Both real movement styles (arrow nudge, click-to-place) stay
+available as real code regardless of the PDL value - the setting picks
+which one is ACTIVE while armed, not which one exists.
+
+Real, still-open detail this doesn't yet answer (flag before building
+click-to-place specifically, not blocking arm/halo/arrow-nudge work):
+does click-to-place snap to the same real `GRID_CELL_PX` grid every
+desktop entity already uses for normal placement (matches "like
+placing a tile" framing most literally), or move to the exact raw
+pixel coordinate clicked? Leaning grid-snap given the "like placing a
+tile" wording, not yet explicitly confirmed.
+
+## 11. Real git-workflow note (2026-08-30) - for opencode, since we
+    share one git tree with no branch isolation
+
+Direct user question, worth a permanent, shared answer since we both
+work here: should Sonnet and opencode use separate branches to avoid
+losing work? **No - staying on one shared branch (current, ongoing
+practice) is the right call, not an oversight to fix.** Real reasoning:
+today's actual incident (a Sonnet-authored doc edit landing under an
+opencode commit, since a broad `git add` swept up both sets of
+changes) cost nothing real - `git commit` is purely additive, nothing
+was lost, just a commit-message/authorship mix-up. A real separate-
+branch-per-agent workflow trades that mild, harmless mix-up for real,
+ongoing overhead (merge coordination, rebasing, conflict resolution)
+that doesn't match how lightly our work actually overlaps file-by-
+file. The real risk worth actually avoiding, by either of us:
+destructive git commands run without checking `git status` first -
+`git reset --hard`, `git checkout -- <file>` (silently discards the
+OTHER agent's uncommitted edits to that file), or `git push --force`/
+`git commit --amend` on anything already pushed (rewrites shared
+history for real). Plain `git add`/`git commit`/`git push`, as often
+as either of us wants, stays fine and is the safer habit, not a risk -
+less uncommitted work sitting in the shared tree at any moment is
+real, active loss-prevention, not the other way around.
+
+## 12. REAL PROGRESS LOG (2026-08-30) - arm/halo/movement/camera-key
+    plumbing built and live-verified, still following §8's own
+    "no code ahead of the enabling mechanism" discipline
+
+Everything below is real, built, live-verified (screenshot/pixel-
+sampling and xdotool-driven testing), and committed - not a plan:
+
+- **Arm/disarm + halo** (`tp_desktop_window_rgb.c`): a real click
+  (§9/§10's 5px/300ms threshold) toggles `g_cursword_armed`, written
+  to `#.desktop/cursword_armed.txt`. Armed state draws a real, gap-
+  free halo ring around cursword's own sprite via a NEW
+  `cursword_update_shape()` that unions a ring into the window's own
+  X11 Shape Extension mask (`ShapeUnion`, not `ShapeSet`) - the
+  window's existing shape (sprite silhouette only, from
+  `build_shape_mask()`) was clipping anything drawn outside it before
+  this fix. Halo color: yellow/gold (`0xFFD400`), direct instruction
+  (originally built neon-blue per the doc's own original wording
+  above - since overridden).
+- **Real "stingy" keyboard capture while armed**: arming takes a real
+  `XGrabKeyboard` (not just relying on WM focus, which turned out
+  unreliable) so every key press anywhere lands on cursword's window
+  until Escape/disarm/placed releases it - direct report ("it should
+  be very stingy with focus till esc is pressed").
+- **Arrow-key nudge + click-to-place, coexisting** (§10): arrow keys
+  move cursword one `GRID_CELL_PX` while armed; click-to-place grabs
+  the pointer (`XGrabPointer`) on arm so the next click anywhere
+  snaps cursword to that grid cell and auto-disarms. New
+  `#.desktop/hq_ui.pdl` key `cursword_move_mode` (`click_place`
+  default / `arrow_only`) picks which is active, per §10's own spec.
+- **Cursword is always open, pinned at its own home spot** - real, new
+  requirement beyond this doc's original scope, direct instruction
+  ("cursword is an entity that should always be open... its the
+  users assistant. 1rst entity"): `livedesk_ensure_cursword()`
+  (`khtpm_taskbar_manager.c`) checks the live registry on every
+  taskbar-manager start and every desk (re)spawn, relaunching
+  cursword if it's ever found missing; exempted from both the normal
+  close-all sweep and the `/proc` stray-kill sweep, so a desk switch
+  or reset never closes it. Its spawn position is PINNED to `(0,0)`
+  (top-left corner) on every fresh spawn, unlike every other entity's
+  remembered last position - direct instruction ("it should always
+  start in the upper top left, where it used to auto start").
+- **§9 item #6's own real camera-mode key reuse, built**: while
+  armed, keys `1`-`4` write a new desktop-wide
+  `#.desktop/desktop_camera_mode.txt` with board-viewer's own exact
+  real semantics (1=first person, 2=third person, 3=free roam,
+  4=bird's eye - matches `bv_menu_input.c`'s own real key handling
+  verbatim). This is control-side plumbing ONLY - no entity actually
+  re-renders in 3D yet, that real per-entity raymarch/compose work
+  (§3b, §8 item 4) stays explicitly deferred, same discipline as
+  always. Live-verified: all four digits write the file correctly and
+  log a real `CURSWORD_CAMERA_<N>_<NAME>` history row each.
+
+**Still deferred, unstarted** (§8 item 4, unchanged): the actual
+per-entity 3D re-render loop that reads `desktop_camera_mode.txt` and
+switches an entity's own window between 2D sprite and 3D raymarch
+rendering. This is the real next substantial step whenever picked up
+- everything above is the enabling plumbing for it, not the feature
+itself.

@@ -1,0 +1,2 @@
+TRIGGER|(unset)
+CMD|1|change_items|item_id=1|amount=5|amount=5

@@ -81,3 +81,4 @@
 [2026-08-29 20:14:18] ASSIGN INDEX=20 ENTITY=tile_rmmv_Inside_a2_1788059658 PATH=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/#.desktop/tiles/tile_rmmv_Inside_a2_1788059658
 [2026-08-29 20:20:15] ASSIGN INDEX=21 ENTITY=tile_af98cbe0_1788059997 PATH=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/#.desktop/tiles/tile_af98cbe0_1788059997
 [2026-08-29 21:38:23] ASSIGN INDEX=22 ENTITY=tile_rmmv_Inside_a2_1788064703 PATH=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/#.desktop/tiles/tile_rmmv_Inside_a2_1788064703
+[2026-08-30 19:55:21] ASSIGN INDEX=23 ENTITY=cursword PATH=../*.cursword/entities/cursword

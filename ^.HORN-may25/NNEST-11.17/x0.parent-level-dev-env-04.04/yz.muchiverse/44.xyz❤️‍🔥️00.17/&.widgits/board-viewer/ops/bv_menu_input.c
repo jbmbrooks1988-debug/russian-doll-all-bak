@@ -834,6 +834,52 @@ int main(int argc, char **argv) {
         return 0;
     }
 
+    /* REAL, NEW 2026-08-30 (CURSWORD-DESKTOP-3D-AND-PIECECRAFT-INSCENE-
+     * DESKS-DESIGN.md §8 step 2) - File/Desk/Close are real UI/menu
+     * actions (which level/map is loaded, closing the khtpm chrome
+     * window), NOT hero abilities - the possession gate below
+     * ("user receives hero's move methods") is specifically scoped to
+     * things like JUMP/MINE/BUILD that only make sense while
+     * controlling the hero. These must work regardless of possession
+     * state, so they're dispatched here, BEFORE that gate.
+     *
+     * REAL BUG FOUND LIVE (2026-08-30, direct report "close button
+     * isnt' yet navable... why cant u fix that"): '2'/'3'/'4' looked
+     * free from a plain grep of single-char key literals, but this
+     * file ALSO has a real, pre-existing `if (key >= '1' && key <=
+     * '4')` camera-mode-switch range check (further down, matching the
+     * design doc's own real precedent: "1-4 = camera_mode") that
+     * returns BEFORE reaching this point - File/Desk/Close would have
+     * silently changed the camera mode instead of ever running this
+     * code, confirmed via direct instrumented testing (strace + inline
+     * debug prints), not guessed. Real, confirmed-free codes instead:
+     * '5'/'6'/'7' - checked the FULL real key list this file uses
+     * (0,1-4,8,9,z,x,f,q,e,r,t,w,s,a,d,c,v), genuinely nothing else
+     * claims 5/6. board_viewer.chtpm's own onClick values must match
+     * (KEY:5/KEY:6).
+     *
+     * REAL ARCHITECTURE CORRECTION (2026-08-30, direct instruction:
+     * "isn't it only that actual 2d/3d screen needs to be blitted?
+     * everything else can be just a typical hq window") - File/Desk
+     * still dispatch through this same real relay (khtpm's own File/
+     * Desk Elems call pchq_append_key() directly on click/Enter now,
+     * instead of a board_viewer.chtpm button existing for the legacy
+     * engine's own click-hit-testing to find - same end result here,
+     * unchanged). Close moved OUT of this file entirely - it's now a
+     * pure local khtpm action (no cross-process relay needed at all,
+     * since closing the khtpm chrome window is 100% local to that
+     * process) - the real flag-file mechanism this used is gone. */
+    if (focused_project_root[0] && key == '5') {
+        send_action_to_host(focused_project_root, "FILE_MENU");
+        bump_screen_changed(project_root);
+        return 0;
+    }
+    if (focused_project_root[0] && key == '6') {
+        send_action_to_host(focused_project_root, "DESK_MENU");
+        bump_screen_changed(project_root);
+        return 0;
+    }
+
     /* Real widget->host verb send - see this file's own header comment
      * (2026-08-03 addition). Every key reaching this point is already
      * confirmed inside real INTERACT/nav mode (render_mode==1, checked

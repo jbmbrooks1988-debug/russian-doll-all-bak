@@ -183,6 +183,54 @@ static char *dirname(char *p) {
  * defaults. Edit meta.pdl and the next right-click re-reads it - no
  * rebuild, no restart. */
 static int g_menu_stay_open = 1;
+/* REAL FIX 2026-08-30, direct live report ("the context windows dont
+ * seem to respect single/2 click option yet (just using single
+ * click)") - #.desktop/hq_ui.pdl's own click_two_step setting never
+ * reached this file at all (real, separate scope gap - same class of
+ * miss already found and fixed for khtpm_strip_parser.c/the taskbar
+ * itself, 1f8abc73). Same real default (1 = two-step ON) and same
+ * real load-from-PDL shape used everywhere else this setting is read. */
+static int g_click_two_step = 1;
+/* REAL, NEW 2026-08-30, direct instruction ("it only needs to happen
+ * on status change... what in house architecture can be used to
+ * support this") - same real cheap-marker convention this house
+ * already uses everywhere (frame_changed.txt et al) - a single
+ * stat() per already-running tick against
+ * #.desktop/livedesk_theme_changed.txt (written by
+ * write_theme_opacity() in khtpm_entity_menu_render.c), real work
+ * (reload+reapply opacity to this entity's own window) only runs on
+ * an actual change. */
+static long g_theme_changed_cursor = 0;
+static int theme_changed_dirty(const char *house_root) {
+    char path[4352];
+    snprintf(path, sizeof(path), "%s/#.desktop/livedesk_theme_changed.txt", house_root);
+    struct stat st;
+    if (stat(path, &st) != 0) return 0;
+    /* REAL BUG FIX 2026-08-30 - same fix as khtpm_strip_parser.c's own
+     * theme_changed_dirty() - cursor starts at 0, not -1, so the
+     * marker's first-ever real append (this file usually doesn't
+     * exist yet at process startup) counts as a real change. */
+    if (st.st_size != g_theme_changed_cursor) { g_theme_changed_cursor = st.st_size; return 1; }
+    return 0;
+}
+
+static void desktop_load_click_two_step(const char *house_root) {
+    char path[4352]; /* matches this file's own later PATH_BUF (not yet declared at this point) */
+    snprintf(path, sizeof(path), "%s/#.desktop/hq_ui.pdl", house_root);
+    FILE *f = fopen(path, "r");
+    if (!f) return;
+    char line[128];
+    while (fgets(line, sizeof(line), f)) {
+        char *eq = strchr(line, '=');
+        if (!eq) continue;
+        *eq = '\0';
+        char *val = eq + 1;
+        char *nl = strchr(val, '\n');
+        if (nl) *nl = '\0';
+        if (strcmp(line, "click_two_step") == 0) g_click_two_step = atoi(val) != 0;
+    }
+    fclose(f);
+}
 static int g_grab_pointer = LIVEDESK_USE_XGRAB_POINTER;
 static int g_grab_keyboard = LIVEDESK_USE_XGRAB_KEYBOARD;
 /* Soft focus fallback (option C 2026-08-06): set input focus on THIS
@@ -228,6 +276,101 @@ static int WIN_PX = 64;
 static int GRID_CELL_PX = 80;
 #define MAX_FPS 30
 #define MIN_FRAME_USEC (1000000 / MAX_FPS)
+
+/* REAL, NEW 2026-08-30 (CURSWORD-DESKTOP-3D-AND-PIECECRAFT-INSCENE-
+ * DESKS-DESIGN.md §3a/§9/§10, direct instruction confirmed across
+ * several rounds of Q&A - see that doc's own real decision record
+ * before touching any of this) - real arm-on-click for cursword
+ * specifically, NOT every desktop entity: a plain click (not a drag)
+ * arms it, showing a real glowing halo, same real visible-state
+ * principle as this house's other "armed" conventions
+ * (rmmv_armed.txt/.pal-hint-armed). This is step 1 of that doc's own
+ * scoped rollout (arm+halo only) - arrow-key movement, click-to-place,
+ * and the 2D/3D camera switch are explicitly deferred to a later pass,
+ * per the doc's own §8/§10 sequencing. */
+static int g_is_cursword = 0;
+static int g_cursword_armed = 0;
+
+/* Confirmed default (§9 item 1, confirmed as-is in §10): 5px movement
+ * AND under 300ms between ButtonPress and ButtonRelease counts as a
+ * real click (arm), not a drag. */
+#define CURSWORD_CLICK_MAX_PX 5
+#define CURSWORD_CLICK_MAX_MS 300
+
+/* Real, house-standard "small state file under #.desktop/" convention
+ * (§9 item 5's own cited precedent, rmmv_armed.txt) - the one real,
+ * visible-elsewhere signal for "is cursword currently armed right
+ * now," same shape khtpm_entity_menu_render.c's own
+ * pchq_is_interact_on()/etc. already use for cross-process real state. */
+static void cursword_write_armed(const char *house_root, int armed) {
+    char path[PATH_BUF];
+    snprintf(path, sizeof(path), "%s/#.desktop/cursword_armed.txt", house_root);
+    FILE *f = fopen(path, "w");
+    if (f) { fprintf(f, "%d\n", armed ? 1 : 0); fclose(f); }
+}
+
+/* REAL, NEW 2026-08-30, direct instruction ("i still dont have arrow
+ * control. would it help if we did a text display under cursword with
+ * pressed key history?"): a real, live-visible readout of the last
+ * few keys this window's own event loop actually received while armed
+ * - the direct, fastest way to tell "key never reached this window at
+ * all" apart from "key reached it but the move logic didn't fire,"
+ * without any indirect file/log inspection. Extends the window taller
+ * by CURSWORD_LOG_H (only while armed - see cursword_update_shape()'s
+ * own real shape-mask union for the matching visible-region rectangle)
+ * and draws the last CURSWORD_LOG_N short labels on one line via the
+ * existing popup fontset (load_popup_fontset(), already loaded
+ * unconditionally in main() - not new state). */
+#define CURSWORD_LOG_H 20
+#define CURSWORD_LOG_N 5
+static char g_cursword_log[CURSWORD_LOG_N][12];
+static int g_cursword_log_n = 0;
+static void cursword_log_key(const char *label) {
+    if (g_cursword_log_n < CURSWORD_LOG_N) {
+        snprintf(g_cursword_log[g_cursword_log_n], sizeof(g_cursword_log[0]), "%s", label);
+        g_cursword_log_n++;
+    } else {
+        for (int i = 1; i < CURSWORD_LOG_N; i++)
+            snprintf(g_cursword_log[i - 1], sizeof(g_cursword_log[0]), "%s", g_cursword_log[i]);
+        snprintf(g_cursword_log[CURSWORD_LOG_N - 1], sizeof(g_cursword_log[0]), "%s", label);
+    }
+}
+
+/* REAL, NEW 2026-08-30, step 2 of the design doc's own §8/§10
+ * sequencing (arrow-key movement + click-to-place, both real code,
+ * house-wide PDL toggle decides which is ACTIVE while armed - direct
+ * instruction: "we could add it in a pdl as optionally changeable
+ * till we figure out what actually works best in practice"). Same
+ * real home as click_two_step/opacity/cursword_move_mode itself -
+ * #.desktop/hq_ui.pdl, loaded once at startup, same shape every other
+ * real loader in this house uses. 0 = click_place (default), 1 =
+ * arrow_only. Arrow-key nudge is real, always-on baseline movement in
+ * EITHER mode (§3a's own core spec never made arrows conditional) -
+ * this toggle only decides whether click-to-place is ALSO active. */
+static int g_cursword_click_place = 1;
+static void cursword_load_move_mode(const char *house_root) {
+    char path[PATH_BUF];
+    snprintf(path, sizeof(path), "%s/#.desktop/hq_ui.pdl", house_root);
+    FILE *f = fopen(path, "r");
+    if (!f) return;
+    char line[256];
+    while (fgets(line, sizeof(line), f)) {
+        char *eq = strchr(line, '=');
+        if (!eq) continue;
+        *eq = '\0';
+        char *val = eq + 1;
+        val[strcspn(val, "\r\n")] = '\0';
+        if (strcmp(line, "cursword_move_mode") == 0)
+            g_cursword_click_place = (strcmp(val, "arrow_only") != 0);
+    }
+    fclose(f);
+}
+
+/* Real, one-shot "waiting for the placement click" state - set right
+ * after a successful real XGrabPointer on arm (click_place mode only),
+ * cleared on the next real ButtonPress (the placement click itself) or
+ * on Escape (real abort/disarm, must also ungrab). */
+static int g_cursword_awaiting_place = 0;
 
 /* REAL FIX 2026-08-05, direct instruction ("this is where we will
  * refactor the xwindow to be chtpm/master ledger compliant" -
@@ -1275,6 +1418,62 @@ static void build_shape_mask(Display *dpy, Window win, GC mask_gc, Pixmap mask) 
     XShapeCombineMask(dpy, win, ShapeBounding, 0, 0, mask, ShapeSet);
 }
 
+/* REAL FIX 2026-08-30, found live: the halo drawn to g_buf/win was
+ * completely invisible no matter what - traced to THIS real
+ * mechanism, build_shape_mask()'s own XShapeCombineMask(ShapeSet)
+ * above, which clips the window's real, server-enforced visible
+ * region down to just the sprite's own opaque silhouette. Anything
+ * drawn to the backing pixmap OUTSIDE that shape is real X11 protocol
+ * data that the server never composites - not a client-side bug, a
+ * real window-shape boundary. Real fix: when cursword arms, UNION a
+ * real ring-shaped mask onto the EXISTING sprite shape (ShapeUnion,
+ * not ShapeSet - adds to it rather than replacing it) so the halo's
+ * own pixels are inside the window's real visible region too; when it
+ * disarms, rebuild the shape from scratch (build_shape_mask() again,
+ * a real ShapeSet) to drop the ring and return to sprite-only. */
+static void cursword_update_shape(Display *dpy, Window win) {
+    if (!g_has_sprite) return;
+    /* REAL, NEW 2026-08-30 - the real key-log debug strip (see
+     * cursword_log_key()'s own header comment) needs the WINDOW
+     * itself taller while armed, or its own visible-region rectangle
+     * (unioned below) would just be empty space outside the window's
+     * real bounds. Resized back down to exactly WIN_PX on disarm. */
+    if (g_is_cursword)
+        XResizeWindow(dpy, win, (unsigned)WIN_PX, (unsigned)(WIN_PX + (g_cursword_armed ? CURSWORD_LOG_H : 0)));
+    Pixmap mask = XCreatePixmap(dpy, win, (unsigned)WIN_PX, (unsigned)WIN_PX, 1);
+    GC mask_gc = XCreateGC(dpy, mask, 0, NULL);
+    build_shape_mask(dpy, win, mask_gc, mask); /* real ShapeSet baseline - sprite only */
+    if (g_cursword_armed) {
+        XSetForeground(dpy, mask_gc, 0);
+        XFillRectangle(dpy, mask, mask_gc, 0, 0, WIN_PX, WIN_PX);
+        XSetForeground(dpy, mask_gc, 1);
+        int cx = WIN_PX / 2, cy = WIN_PX / 2;
+        int radius = WIN_PX / 2 - 5;
+        if (radius > 3) {
+            XSetLineAttributes(dpy, mask_gc, 9, LineSolid, CapButt, JoinMiter);
+            XDrawArc(dpy, mask, mask_gc, cx - radius, cy - radius, (unsigned)(radius * 2), (unsigned)(radius * 2), 0, 360 * 64);
+        }
+        XShapeCombineMask(dpy, win, ShapeBounding, 0, 0, mask, ShapeUnion);
+
+        /* Real key-log debug strip's own visible-region rectangle - a
+         * SEPARATE mask pixmap offset by (0, WIN_PX), unioned the same
+         * way as the ring just above. Deliberately separate from
+         * `mask` (WIN_PX x WIN_PX, build_shape_mask()'s own real
+         * contract) rather than resizing it, so that shared function's
+         * existing behavior for every other entity stays completely
+         * untouched. */
+        Pixmap strip_mask = XCreatePixmap(dpy, win, (unsigned)WIN_PX, (unsigned)CURSWORD_LOG_H, 1);
+        GC strip_gc = XCreateGC(dpy, strip_mask, 0, NULL);
+        XSetForeground(dpy, strip_gc, 1);
+        XFillRectangle(dpy, strip_mask, strip_gc, 0, 0, WIN_PX, CURSWORD_LOG_H);
+        XShapeCombineMask(dpy, win, ShapeBounding, 0, WIN_PX, strip_mask, ShapeUnion);
+        XFreeGC(dpy, strip_gc);
+        XFreePixmap(dpy, strip_mask);
+    }
+    XFreeGC(dpy, mask_gc);
+    XFreePixmap(dpy, mask);
+}
+
 /* Direct alpha-blended pixel blit into the compose buffer, nearest-
  * neighbor scaled sprite->window exactly like build_shape_mask()'s own
  * loop above (same sx/sy math, so the drawn pixels and the window's
@@ -2041,6 +2240,14 @@ int main(int argc, char **argv) {
     win_package_rel(package_buf);
 #endif
     const char *package_dir = package_buf;
+    /* Real, one-time identity check - see g_is_cursword's own
+     * declaration comment for why this is scoped to cursword only,
+     * not every desktop entity. */
+    {
+        char pkgcopy[PATH_BUF];
+        snprintf(pkgcopy, sizeof(pkgcopy), "%s", package_dir);
+        g_is_cursword = (strcmp(basename(pkgcopy), "cursword") == 0);
+    }
     snprintf(g_history_path, sizeof(g_history_path), "%s/history.txt", package_dir);
     snprintf(g_relay_path, sizeof(g_relay_path), "%s/interact_relay.txt", package_dir);
     append_history("WINDOW_OPEN");
@@ -2050,6 +2257,8 @@ int main(int argc, char **argv) {
     if (!g_house_root[0]) snprintf(g_house_root, sizeof(g_house_root), ".");
 #endif
     snprintf(g_house_root_for_lock, sizeof(g_house_root_for_lock), "%s", g_house_root);
+    if (g_house_root[0]) desktop_load_click_two_step(g_house_root);
+    if (g_house_root[0] && g_is_cursword) cursword_load_move_mode(g_house_root);
     /* REAL FIX 2026-08-27 (TILE-SYSTEM-DESIGN.md §0a) - read the real,
      * optional, house-wide grid cell size as early as possible (right
      * after g_house_root resolves, before anything below uses
@@ -2150,8 +2359,17 @@ int main(int argc, char **argv) {
 
     /* RGB compose buffer - all real drawing (background, glyph/sprite)
      * happens into this offscreen Pixmap, presented each frame via
-     * XGetImage+XPutImage below, same as db-hq/taskbar. */
-    Pixmap g_buf = XCreatePixmap(dpy, win, WIN_PX, WIN_PX, (unsigned)depth);
+     * XGetImage+XPutImage below, same as db-hq/taskbar. REAL, NEW
+     * 2026-08-30: cursword's own buffer reserves CURSWORD_LOG_H extra
+     * rows below WIN_PX for the real key-log debug strip (see
+     * cursword_log_key()'s own header comment) - always allocated for
+     * a cursword instance (cheap, ~80x20px), revealed only while armed
+     * via the window resize + shape-mask union in
+     * cursword_update_shape(). Every other entity is completely
+     * unaffected (g_is_cursword false, buffer stays exactly WIN_PX x
+     * WIN_PX as before). */
+    Pixmap g_buf = XCreatePixmap(dpy, win, (unsigned)WIN_PX,
+                                  (unsigned)(WIN_PX + (g_is_cursword ? CURSWORD_LOG_H : 0)), (unsigned)depth);
     GC g_buf_gc = XCreateGC(dpy, g_buf, 0, NULL);
     /* REAL FIX 2026-08-05, direct instruction ("context window should
      * have name/id of entity, so its addressable by others"): the
@@ -2336,6 +2554,15 @@ int main(int argc, char **argv) {
 
     int popup_x = 0, popup_y = 0; /* where the MAIN popup itself opened, for real submenu adjacency */
     int dragging = 0, drag_start_x = 0, drag_start_y = 0;
+    /* Real click-vs-drag distinction, cursword only (see
+     * g_is_cursword/CURSWORD_CLICK_MAX_PX/MS declaration comments) -
+     * press_root_x/y are the RAW screen coords at ButtonPress (never
+     * updated during a drag, unlike drag_start_x/y above which slides
+     * forward every MotionNotify) so ButtonRelease can measure total
+     * real distance traveled, and press_tv is the real press timestamp
+     * for the elapsed-time half of the same check. */
+    int press_root_x = 0, press_root_y = 0;
+    struct timeval press_tv = {0, 0};
     int running = 1;
     struct timeval last_frame = { 0, 0 };
 
@@ -2355,6 +2582,12 @@ int main(int argc, char **argv) {
 #ifdef _WIN32
         if (last_frame.tv_sec == 0) need_redraw = 1;
 #endif
+
+        /* Real, cheap, event-driven opacity reapply - see
+         * theme_changed_dirty()'s own declaration comment. */
+        if (theme_changed_dirty(g_house_root)) {
+            set_window_opacity(dpy, win, load_theme_opacity(g_house_root));
+        }
 
         /* REAL, 2026-08-05: poll interact_relay.txt for an injected
          * command - the "AI-injection power" half of this window's own
@@ -2918,6 +3151,19 @@ int main(int argc, char **argv) {
                     need_redraw = 1;
                     continue;
                 }
+                /* REAL FIX 2026-08-30 - real house-wide click_two_step
+                 * (see g_click_two_step's own declaration comment
+                 * above): a click on an unfocused row only focuses it
+                 * (same real semantics arrow-nav already uses via
+                 * popup_focus_row) - a second click on the SAME,
+                 * already-focused row is what actually activates it. */
+                if (g_click_two_step && popup_focus_row != row) {
+                    popup_focus_row = row;
+                    draw_context_menu(dpy, popup_win, popup_gc, methods, n_methods, popup_nav_base, popup_focus_row);
+                    popup_soft_focus(dpy, popup_win);
+                    need_redraw = 1;
+                    continue;
+                }
                 close_context_menu(dpy, popup_win);
                 popup_win = 0;
                 nav_release_pid(g_house_root, getpid());
@@ -3309,12 +3555,128 @@ int main(int argc, char **argv) {
                 append_history("SHOW_TEXT_DISMISSED");
             } else if (xev.type == Expose) {
                 need_redraw = 1;
+            } else if (xev.type == ButtonPress && xev.xbutton.button == 1 && g_is_cursword && g_cursword_awaiting_place) {
+                /* REAL, NEW 2026-08-30 - the real placement click,
+                 * step 2 of the design doc (§10 click-to-place). The
+                 * real XGrabPointer taken on arm (below) means ANY
+                 * real click anywhere on the screen lands HERE
+                 * regardless of which window it visually landed over -
+                 * x_root/y_root are real screen coordinates, snapped to
+                 * the same real desktop grid every entity already uses
+                 * (matches the existing drag's own real grid-snap
+                 * technique, just driven by the placement click's own
+                 * position instead of the window's dragged position). */
+                int gx = (xev.xbutton.x_root + GRID_CELL_PX / 2) / GRID_CELL_PX;
+                int gy = (xev.xbutton.y_root + GRID_CELL_PX / 2) / GRID_CELL_PX;
+                if (gx < 0) gx = 0;
+                if (gx > max_col) gx = max_col;
+                if (gy < 0) gy = 0;
+                if (gy > max_row) gy = max_row;
+                win_x = gx * GRID_CELL_PX;
+                win_y = gy * GRID_CELL_PX;
+                XMoveWindow(dpy, win, win_x, win_y);
+                write_pos(package_dir, win_x, win_y);
+                XUngrabPointer(dpy, CurrentTime);
+                XUngrabKeyboard(dpy, CurrentTime);
+                g_cursword_awaiting_place = 0;
+                g_cursword_armed = 0;
+                cursword_write_armed(g_house_root, 0);
+                append_history("CURSWORD_PLACED");
+                cursword_update_shape(dpy, win);
+                need_redraw = 1;
             } else if (xev.type == ButtonPress && xev.xbutton.button == 1) {
                 dragging = 1;
                 drag_start_x = xev.xbutton.x_root;
                 drag_start_y = xev.xbutton.y_root;
+                press_root_x = xev.xbutton.x_root;
+                press_root_y = xev.xbutton.y_root;
+                gettimeofday(&press_tv, NULL);
             } else if (xev.type == ButtonRelease && xev.xbutton.button == 1) {
                 dragging = 0;
+                /* Real click-vs-drag distinction, cursword only - see
+                 * g_is_cursword's own declaration comment
+                 * (CURSWORD-DESKTOP-3D-AND-PIECECRAFT-INSCENE-DESKS-
+                 * DESIGN.md §9/§10). A real click (small movement, real
+                 * quick release) arms/disarms cursword instead of
+                 * running the existing grid-snap-drag logic below -
+                 * every OTHER entity, and any real drag on cursword
+                 * itself, keeps the exact existing behavior unchanged. */
+                int was_real_click = 0;
+                if (g_is_cursword) {
+                    int dx2 = xev.xbutton.x_root - press_root_x;
+                    int dy2 = xev.xbutton.y_root - press_root_y;
+                    int dist2 = dx2 * dx2 + dy2 * dy2;
+                    struct timeval rel_tv; gettimeofday(&rel_tv, NULL);
+                    long elapsed_ms = (rel_tv.tv_sec - press_tv.tv_sec) * 1000L +
+                                       (rel_tv.tv_usec - press_tv.tv_usec) / 1000L;
+                    if (dist2 <= CURSWORD_CLICK_MAX_PX * CURSWORD_CLICK_MAX_PX && elapsed_ms <= CURSWORD_CLICK_MAX_MS)
+                        was_real_click = 1;
+                }
+                if (was_real_click) {
+                    g_cursword_armed = !g_cursword_armed;
+                    cursword_write_armed(g_house_root, g_cursword_armed);
+                    append_history(g_cursword_armed ? "CURSWORD_ARMED" : "CURSWORD_DISARMED");
+                    if (g_cursword_armed) g_cursword_log_n = 0; /* real, new 2026-08-30 - fresh key-log each new arm, see cursword_log_key()'s own header comment */
+                    cursword_update_shape(dpy, win);
+                    if (g_cursword_armed) {
+                        /* REAL FIX 2026-08-30, direct report ("its not
+                         * taking arrow keys yet? it should be very
+                         * stingy with focus till esc is pressed"):
+                         * arrow-key nudge was written assuming this
+                         * window already held real X11 input focus,
+                         * which nothing here ever guaranteed - normal
+                         * click-to-focus WM behavior is not reliable
+                         * enough for "stingy" key capture. A real
+                         * display-wide XGrabKeyboard on arm (same
+                         * retry-loop technique as the pre-existing
+                         * XGrabPointer just below, and this file's own
+                         * popup code ~line 2002) makes EVERY key press
+                         * anywhere land on this window's own event
+                         * queue regardless of focus, until the real
+                         * Escape/disarm/placed paths ungrab it. */
+                        for (int attempt = 0; attempt < 5; attempt++) {
+                            int rc = XGrabKeyboard(dpy, win, False, GrabModeAsync, GrabModeAsync, CurrentTime);
+                            if (rc == GrabSuccess) break;
+                            XSync(dpy, False);
+                            usleep(5000);
+                        }
+                    } else {
+                        /* Disarmed via a real click (only reachable in
+                         * arrow_only move_mode - click_place mode's own
+                         * pointer grab means a self-click can never
+                         * reach here, see the NOTE below). The keyboard
+                         * grab taken on arm above must be released
+                         * here too, same as the real Escape path. */
+                        XUngrabKeyboard(dpy, CurrentTime);
+                    }
+                    if (g_cursword_armed && g_cursword_click_place) {
+                        /* REAL, NEW 2026-08-30 - real click-to-place
+                         * arm: grab the pointer display-wide (same real
+                         * technique/retry-loop this file's own popup
+                         * code already uses, ~line 1957) so the VERY
+                         * NEXT real click anywhere is delivered to this
+                         * window as the placement click, not whatever
+                         * window it visually landed over. */
+                        for (int attempt = 0; attempt < 5; attempt++) {
+                            int rc = XGrabPointer(dpy, win, False, ButtonPressMask, GrabModeAsync, GrabModeAsync, None, None, CurrentTime);
+                            if (rc == GrabSuccess) { g_cursword_awaiting_place = 1; break; }
+                            XSync(dpy, False);
+                            usleep(5000);
+                        }
+                    }
+                    /* NOTE: re-clicking cursword's own window while
+                     * g_cursword_awaiting_place is true can NEVER reach
+                     * this toggle branch at all - the real pointer grab
+                     * above means EVERY real click, including one that
+                     * visually lands back on cursword itself, is routed
+                     * to the dedicated placement-click ButtonPress
+                     * branch first (it runs unconditionally on ANY
+                     * button-1 press while awaiting placement). Escape
+                     * is therefore the only real way to cancel a
+                     * pending placement - see that branch's own real
+                     * XUngrabPointer call. */
+                    need_redraw = 1;
+                } else {
                 /* REAL FIX 2026-08-04, direct instruction ("egg-pets
                  * snap to grid... do u see that logic"): same
                  * round-to-nearest-cell technique egg_window.c's own
@@ -3332,6 +3694,7 @@ int main(int argc, char **argv) {
                 XMoveWindow(dpy, win, win_x, win_y);
                 write_pos(package_dir, win_x, win_y);
                 need_redraw = 1;
+                }
             } else if (xev.type == ButtonPress && xev.xbutton.button == 3) {
                 /* REAL, NEW 2026-08-04: right-click now opens the real
                  * data-driven context menu (see load_methods() above)
@@ -3377,7 +3740,98 @@ int main(int argc, char **argv) {
                 drag_start_y = xev.xmotion.y_root;
                 need_redraw = 1;
             } else if (xev.type == KeyPress) {
-                if (popup_win || user_popup_win || input_popup_win || text_popup_win || input_active) {
+                if (g_is_cursword && g_cursword_armed) {
+                    /* Real, house-standard dual-mode boundary - while
+                     * armed, real key capture begins and continues
+                     * until real Escape (CURSWORD-DESKTOP-3D-AND-
+                     * PIECECRAFT-INSCENE-DESKS-DESIGN.md §3a, same
+                     * real principle as board-viewer's own
+                     * active_index==-1 model, !.HOUSE_STDS.md §A.9).
+                     * Without this branch, this file's own real
+                     * default ("no popup open -> any key closes the
+                     * tile," right below) would close cursword outright
+                     * the moment a key was pressed while armed -
+                     * confirmed by direct read, not assumed. */
+                    KeySym ks2 = XLookupKeysym(&xev.xkey, 0);
+                    cursword_log_key(
+                        ks2 == XK_Escape ? "ESC" :
+                        ks2 == XK_Left ? "LEFT" : ks2 == XK_Right ? "RIGHT" :
+                        ks2 == XK_Up ? "UP" : ks2 == XK_Down ? "DOWN" :
+                        (ks2 == XK_1 || ks2 == XK_2 || ks2 == XK_3 || ks2 == XK_4) ?
+                            (const char *[]){"1","2","3","4"}[ks2 - XK_1] :
+                        XKeysymToString(ks2) ? XKeysymToString(ks2) : "?");
+                    need_redraw = 1; /* real, unconditional - the log line above must always repaint, even for a key none of the branches below handle */
+                    if (ks2 == XK_Escape) {
+                        if (g_cursword_awaiting_place) {
+                            /* Real cancel of a pending click-to-place -
+                             * the pointer grab from arm-time must be
+                             * dropped here, this is the only real
+                             * cancel path (see the placement
+                             * ButtonPress branch's own comment for why
+                             * re-clicking cursword itself can't reach
+                             * this instead). */
+                            XUngrabPointer(dpy, CurrentTime);
+                            g_cursword_awaiting_place = 0;
+                        }
+                        XUngrabKeyboard(dpy, CurrentTime);
+                        g_cursword_armed = 0;
+                        cursword_write_armed(g_house_root, 0);
+                        append_history("CURSWORD_DISARMED");
+                        cursword_update_shape(dpy, win);
+                        need_redraw = 1;
+                    } else if (ks2 == XK_Left || ks2 == XK_Right || ks2 == XK_Up || ks2 == XK_Down) {
+                        /* REAL, NEW 2026-08-30, step 2 - real arrow-key
+                         * nudge (§3a: "Arrow keys move cursword itself
+                         * ... likely the same 80px GRID_CELL_PX every
+                         * entity already snaps to"). Real, always-on
+                         * baseline movement in EITHER move_mode - same
+                         * real grid-snap + write_pos + XMoveWindow
+                         * technique the existing drag-release code uses,
+                         * just stepping by one whole cell per press
+                         * instead of snapping a dragged pixel position. */
+                        int gx = win_x / GRID_CELL_PX, gy = win_y / GRID_CELL_PX;
+                        if (ks2 == XK_Left) gx--;
+                        else if (ks2 == XK_Right) gx++;
+                        else if (ks2 == XK_Up) gy--;
+                        else gy++;
+                        if (gx < 0) gx = 0;
+                        if (gx > max_col) gx = max_col;
+                        if (gy < 0) gy = 0;
+                        if (gy > max_row) gy = max_row;
+                        win_x = gx * GRID_CELL_PX;
+                        win_y = gy * GRID_CELL_PX;
+                        XMoveWindow(dpy, win, win_x, win_y);
+                        write_pos(package_dir, win_x, win_y);
+                        need_redraw = 1;
+                    } else if (ks2 == XK_1 || ks2 == XK_2 || ks2 == XK_3 || ks2 == XK_4) {
+                        /* REAL, NEW 2026-08-30 - desktop-wide camera-mode
+                         * switch, design doc §9 item #6: "since real key
+                         * capture only begins once cursword is genuinely
+                         * ARMED... board-viewer's own real 1-4 camera_mode
+                         * keys can be reused verbatim with zero real
+                         * collision risk." Same real key-set/semantics as
+                         * board-viewer's own bv_menu_input.c (1=first
+                         * person, 2=third person, 3=free roam, 4=bird's
+                         * eye) but written to a NEW, desktop-wide shared
+                         * state file (§9 item #5) rather than a
+                         * per-project one - every desktop entity's own
+                         * window can poll this to know the current
+                         * camera mode once real 3D re-rendering is wired
+                         * (still explicitly deferred, §8 item 4 - this is
+                         * only the real control-side plumbing, matching
+                         * the doc's own "no code until the enabling
+                         * mechanism exists" discipline). */
+                        int mode = ks2 - XK_0;
+                        char camp[PATH_BUF];
+                        snprintf(camp, sizeof(camp), "%s/#.desktop/desktop_camera_mode.txt", g_house_root);
+                        FILE *cf = fopen(camp, "w");
+                        if (cf) { fprintf(cf, "%d\n", mode); fclose(cf); }
+                        append_history(mode == 1 ? "CURSWORD_CAMERA_1_FIRSTPERSON" :
+                                       mode == 2 ? "CURSWORD_CAMERA_2_THIRDPERSON" :
+                                       mode == 3 ? "CURSWORD_CAMERA_3_FREEROAM" :
+                                                   "CURSWORD_CAMERA_4_BIRDSEYE");
+                    }
+                } else if (popup_win || user_popup_win || input_popup_win || text_popup_win || input_active) {
                     /* REAL FIX 2026-08-07, direct instruction ("print
                      * screen closes the context"): with a menu/popup open,
                      * an unhandled key (Print Screen, media keys, etc.) is
@@ -3425,9 +3879,81 @@ int main(int argc, char **argv) {
         {
             int bg_r = (int)(r * 255.0f), bg_g = (int)(g * 255.0f), bg_b = (int)(b * 255.0f);
             XSetForeground(dpy, g_buf_gc, ((unsigned long)bg_r << 16) | ((unsigned long)bg_g << 8) | (unsigned long)bg_b);
-            XFillRectangle(dpy, g_buf, g_buf_gc, 0, 0, WIN_PX, WIN_PX);
+            /* Real, new 2026-08-30: cursword's own buffer reserves
+             * CURSWORD_LOG_H extra rows (see the g_buf XCreatePixmap
+             * comment above) - cleared here too every frame so stale
+             * key-log text never lingers under a fresh background. */
+            XFillRectangle(dpy, g_buf, g_buf_gc, 0, 0, WIN_PX,
+                            (unsigned)(WIN_PX + (g_is_cursword ? CURSWORD_LOG_H : 0)));
+            /* Real, visible armed-state halo (§3a/§9 item 4: overlay/
+             * ring, never replacing the sprite). STALE NOTE, corrected
+             * 2026-08-30: originally drawn BEFORE the sprite here,
+             * relying on draw_sprite_rgb()'s own per-pixel alpha to
+             * "peek through" - moved AFTER the sprite instead (see the
+             * real fix comment right below) once this sprite was
+             * confirmed to have no real alpha transparency. Real color
+             * changed from the design doc's original neon-blue spec to
+             * a yellow glow, direct instruction. */
             if (g_has_sprite) draw_sprite_rgb(dpy, g_buf, g_buf_gc, bg_r, bg_g, bg_b);
             else if (g_font_loaded) draw_glyph_rgb(dpy, g_buf, g_buf_gc, glyph);
+            /* REAL FIX 2026-08-30, found live: the halo used to draw
+             * BEFORE the sprite, relying on draw_sprite_rgb()'s own
+             * per-pixel alpha to let it "peek through" transparent
+             * margins - confirmed live this specific sprite has no
+             * real alpha transparency (fully opaque square), so the
+             * halo was getting completely covered, invisible. Real
+             * fix: draw the halo AFTER the sprite instead, right at
+             * the window's own edge (inset only 1/4/7px) - a real,
+             * always-visible border-glow regardless of any given
+             * sprite's own opacity, still a real overlay/ring per §9
+             * item 4 (never replaces the sprite, just frames it). */
+            if (g_is_cursword && g_cursword_armed) {
+                int cx = WIN_PX / 2, cy = WIN_PX / 2;
+                /* REAL FIX 2026-08-30, found live: a 3-ring gradient
+                 * with thin arcs left real gaps between rings, letting
+                 * a few of the sprite's own semi-transparent edge
+                 * pixels (alpha 1-127, below build_shape_mask()'s own
+                 * >127 cutoff, normally never visible at all) show
+                 * through as stray off-color specks once the mask
+                 * newly included that span. Real fix: ONE solid ring,
+                 * geometry byte-identical to cursword_update_shape()'s
+                 * own mask ring (same radius, same line width) -
+                 * guaranteed zero gaps since it's the exact same shape,
+                 * not an approximation of it. */
+                int halo_radius = WIN_PX / 2 - 5;
+                if (halo_radius > 3) {
+                    /* Real, direct instruction ("i actually want to
+                     * change it to a 'yellow glowing look' instead of
+                     * blue") - matches this house's own real "amber
+                     * tint = armed" precedent (§3a) more closely than
+                     * blue ever did. */
+                    XSetForeground(dpy, g_buf_gc, 0xFFD400UL);
+                    XSetLineAttributes(dpy, g_buf_gc, 9, LineSolid, CapButt, JoinMiter);
+                    XDrawArc(dpy, g_buf, g_buf_gc, cx - halo_radius, cy - halo_radius, (unsigned)(halo_radius * 2), (unsigned)(halo_radius * 2), 0, 360 * 64);
+                    XSetLineAttributes(dpy, g_buf_gc, 0, LineSolid, CapButt, JoinMiter);
+                }
+
+                /* REAL, NEW 2026-08-30, direct instruction ("i still
+                 * dont have arrow control. would it help if we did a
+                 * text display under cursword with pressed key
+                 * history?") - a real, live-visible readout of the last
+                 * few keys THIS window's own event loop actually
+                 * received (cursword_log_key()'s own header comment has
+                 * the full reasoning: tells "key never arrived" apart
+                 * from "key arrived but didn't move it" at a glance,
+                 * no file/log digging needed). */
+                char logline[96] = "";
+                size_t loff = 0;
+                for (int li = 0; li < g_cursword_log_n; li++) {
+                    int wrote = snprintf(logline + loff, sizeof(logline) - loff, "%s%s",
+                                          li > 0 ? " " : "", g_cursword_log[li]);
+                    if (wrote < 0 || (size_t)wrote >= sizeof(logline) - loff) break;
+                    loff += (size_t)wrote;
+                }
+                XSetForeground(dpy, g_buf_gc, 0xFFFFFFUL);
+                popup_draw_text(dpy, g_buf, g_buf_gc, 2, WIN_PX + CURSWORD_LOG_H - 6,
+                                 logline[0] ? logline : "(no keys yet)");
+            }
 
             /* Present: same compose->present pattern as db-hq/taskbar -
              * one XGetImage capture off the buffer, XPutImage onto the
@@ -3435,12 +3961,16 @@ int main(int argc, char **argv) {
              * 0 test). Falls back to a direct XCopyArea if XGetImage
              * ever fails, matching the same safety fallback used there. */
             XSync(dpy, False);
-            XImage *frame = XGetImage(dpy, g_buf, 0, 0, WIN_PX, WIN_PX, AllPlanes, ZPixmap);
+            /* Real, new 2026-08-30: present the full reserved buffer
+             * height while cursword is armed (the key-log strip),
+             * exactly WIN_PX otherwise/for every other entity. */
+            int present_h = WIN_PX + (g_is_cursword && g_cursword_armed ? CURSWORD_LOG_H : 0);
+            XImage *frame = XGetImage(dpy, g_buf, 0, 0, WIN_PX, present_h, AllPlanes, ZPixmap);
             if (frame) {
-                XPutImage(dpy, win, g_buf_gc, frame, 0, 0, 0, 0, WIN_PX, WIN_PX);
+                XPutImage(dpy, win, g_buf_gc, frame, 0, 0, 0, 0, WIN_PX, present_h);
                 XDestroyImage(frame);
             } else {
-                XCopyArea(dpy, g_buf, win, g_buf_gc, 0, 0, WIN_PX, WIN_PX, 0, 0);
+                XCopyArea(dpy, g_buf, win, g_buf_gc, 0, 0, (unsigned)WIN_PX, (unsigned)present_h, 0, 0);
             }
         }
         last_frame = now;

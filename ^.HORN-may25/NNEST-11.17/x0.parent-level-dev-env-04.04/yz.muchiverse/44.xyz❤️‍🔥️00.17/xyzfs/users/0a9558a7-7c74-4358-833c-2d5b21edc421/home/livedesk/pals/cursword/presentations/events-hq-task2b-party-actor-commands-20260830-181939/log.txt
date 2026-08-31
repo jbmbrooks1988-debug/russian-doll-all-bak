@@ -1,0 +1,9 @@
+[18:19:39] === step 0: preflight ===
+[18:19:39] prisc=/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/101.mutaclsym🧟‍♂️️+18.0G/system/prisc+x
+[18:19:39] === clean stray processes ===
+[18:19:40] === step 1: sandbox package + IR with all 18 Party/Actor commands ===
+[18:19:40] === step 2: launch events-hq manager (standalone, real house root) ===
+[18:19:44] PASS: manager launched
+[18:19:44] === step 3: compile proof ===
+[18:19:44] FAIL: event.pal not created
+cleanup done

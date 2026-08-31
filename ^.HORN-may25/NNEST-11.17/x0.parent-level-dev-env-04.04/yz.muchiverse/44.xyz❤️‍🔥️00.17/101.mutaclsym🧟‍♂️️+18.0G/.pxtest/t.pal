@@ -1,0 +1,2 @@
+exec mk.sh
+halt

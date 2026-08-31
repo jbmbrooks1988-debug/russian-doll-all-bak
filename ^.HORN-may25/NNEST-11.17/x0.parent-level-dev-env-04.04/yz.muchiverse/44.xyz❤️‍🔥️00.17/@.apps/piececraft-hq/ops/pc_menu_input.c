@@ -558,6 +558,86 @@ static void resolve_real_root(const char *proj_root, char *out, size_t out_sz) {
     }
 }
 
+/* REAL, NEW 2026-08-30 (CURSWORD-DESKTOP-3D-AND-PIECECRAFT-INSCENE-
+ * DESKS-DESIGN.md §8 step 2) - File(level)/Desk(map) real switching.
+ * No opendir/dirent anywhere in this file yet (win_posix_shim.h has no
+ * cross-platform directory-listing shim) - avoided rather than adding
+ * one, since every real source/target filename here is already a
+ * known, fixed, predictable set (chunk_0_0_z0..z31.txt + 3 world
+ * files), so a plain fixed-name copy loop is both simpler and more
+ * portable than a directory scan would be. */
+static int copy_file(const char *src, const char *dst) {
+    FILE *sf = fopen(src, "rb");
+    if (!sf) return 0;
+    FILE *df = fopen(dst, "wb");
+    if (!df) { fclose(sf); return 0; }
+    char buf[8192];
+    size_t n;
+    while ((n = fread(buf, 1, sizeof(buf), sf)) > 0) fwrite(buf, 1, n, df);
+    fclose(sf);
+    fclose(df);
+    return 1;
+}
+
+/* Copies a real level/board's chunk+entity+state files (same fixed
+ * real filenames chunk_0_0's own 32 z-levels + world_01's 3 files
+ * always use, see defaults/README.md) from src_dir into the LIVE
+ * paths bv_render_3d.c/pc_compose_frame.c actually read
+ * (pieces/system/chunks/chunk_0_0/, pieces/world_01/) - this is the
+ * real mechanism that makes "loading a different level/map" actually
+ * change what's on screen, not just a state-var flip. */
+static void load_level_from_dir(const char *real_root, const char *src_dir) {
+    char dst_chunks[PATH_BUF];
+    snprintf(dst_chunks, sizeof(dst_chunks), "%s/pieces/system/chunks/chunk_0_0", real_root);
+    for (int z = 0; z <= 31; z++) {
+        char src[PATH_BUF], dst[PATH_BUF];
+        snprintf(src, sizeof(src), "%s/chunk_0_0_z%d.txt", src_dir, z);
+        snprintf(dst, sizeof(dst), "%s/chunk_0_0_z%d.txt", dst_chunks, z);
+        copy_file(src, dst);
+    }
+    static const char *world_files[] = { "animals.txt", "phymoji_entities.txt", "state.txt" };
+    for (size_t i = 0; i < sizeof(world_files) / sizeof(world_files[0]); i++) {
+        char src[PATH_BUF], dst[PATH_BUF];
+        snprintf(src, sizeof(src), "%s/%s", src_dir, world_files[i]);
+        snprintf(dst, sizeof(dst), "%s/pieces/world_01/%s", real_root, world_files[i]);
+        copy_file(src, dst);
+    }
+}
+
+/* Real §6 BOARD-row reader - reads defaults/default-pdl/default.pdl's
+ * own manifest row(s), returns the Nth board's name+path (1-based).
+ * Format: "BOARD | <name> | <path> | <cols> | <rows> | <z_min> |
+ * <z_max> | <emoji>" - only name/path matter for loading; the rest is
+ * real metadata for a future picker UI, not consumed yet. */
+static int read_board_row(const char *pdl_path, int want_idx, char *name_out, size_t name_sz, char *path_out, size_t path_sz) {
+    FILE *f = fopen(pdl_path, "r");
+    if (!f) return 0;
+    char line[MAX_LINE];
+    int idx = 0;
+    int found = 0;
+    while (fgets(line, sizeof(line), f)) {
+        if (strncmp(line, "BOARD", 5) != 0) continue;
+        idx++;
+        if (idx != want_idx) continue;
+        char *p = strchr(line, '|');
+        if (!p) continue;
+        p++;
+        char *name = strtok(p, "|");
+        char *path = strtok(NULL, "|");
+        if (!name || !path) continue;
+        while (*name == ' ') name++;
+        while (*path == ' ') path++;
+        char *ne = name + strlen(name); while (ne > name && (ne[-1] == ' ')) *--ne = '\0';
+        char *pe = path + strlen(path); while (pe > path && (pe[-1] == ' ')) *--pe = '\0';
+        snprintf(name_out, name_sz, "%s", name);
+        snprintf(path_out, path_sz, "%s", path);
+        found = 1;
+        break;
+    }
+    fclose(f);
+    return found;
+}
+
 static void tick_animals(const char *proj_root, int tick) {
     char real_root[PATH_BUF];
     resolve_real_root(proj_root, real_root, sizeof(real_root));
@@ -895,6 +975,90 @@ int main(int argc, char **argv) {
             ledger_append(project_root, tick, "player", "build", details);
             tick_animals(project_root, tick);
             snprintf(message, sizeof(message), "Build (tick %d) - block placement not implemented yet.", tick);
+        } else if (strcmp(cmd, "FILE_MENU") == 0) {
+            /* REAL, NEW 2026-08-30, §8 step 2 - the board window's
+             * "File" nav row (board_viewer.chtpm's own METHOD-table,
+             * forwarded here via bv_menu_input.c's real widget->host
+             * inbox mechanism, same path JUMP/MINE/BUILD already use).
+             * Real, honest MVP given this engine's real, native
+             * capability (no first-class submenu list exists) - a
+             * simple two-way cycle between the two real fixtures
+             * (defaults/README.md), each press actually swaps the live
+             * chunk/world files a new player would see. */
+            char real_root[PATH_BUF];
+            resolve_real_root(project_root, real_root, sizeof(real_root));
+            char level_state_path[PATH_BUF];
+            snprintf(level_state_path, sizeof(level_state_path), "%s/pieces/system/config.txt", real_root);
+            char active_level[64] = "";
+            read_kv_str_local(level_state_path, "active_level", active_level, sizeof(active_level));
+            const char *next_level = (strcmp(active_level, "default-pdl") == 0) ? "default-legacy" : "default-pdl";
+            char src_dir[PATH_BUF];
+            if (strcmp(next_level, "default-legacy") == 0) {
+                char chunk_src[PATH_BUF];
+                snprintf(chunk_src, sizeof(chunk_src), "%s/defaults/default-legacy/chunks/chunk_0_0", real_root);
+                char world_src[PATH_BUF];
+                snprintf(world_src, sizeof(world_src), "%s/defaults/default-legacy/world_01", real_root);
+                /* Two different real source dirs for chunk vs world
+                 * files in this fixture - load_level_from_dir() takes
+                 * one src_dir for both, so do the two halves directly. */
+                for (int z = 0; z <= 31; z++) {
+                    char src[PATH_BUF], dst[PATH_BUF];
+                    snprintf(src, sizeof(src), "%s/chunk_0_0_z%d.txt", chunk_src, z);
+                    snprintf(dst, sizeof(dst), "%s/pieces/system/chunks/chunk_0_0/chunk_0_0_z%d.txt", real_root, z);
+                    copy_file(src, dst);
+                }
+                static const char *wf[] = { "animals.txt", "phymoji_entities.txt", "state.txt" };
+                for (size_t i = 0; i < sizeof(wf) / sizeof(wf[0]); i++) {
+                    char src[PATH_BUF], dst[PATH_BUF];
+                    snprintf(src, sizeof(src), "%s/%s", world_src, wf[i]);
+                    snprintf(dst, sizeof(dst), "%s/pieces/world_01/%s", real_root, wf[i]);
+                    copy_file(src, dst);
+                }
+                write_kv(level_state_path, "active_board", "");
+            } else {
+                char pdl_path[PATH_BUF];
+                snprintf(pdl_path, sizeof(pdl_path), "%s/defaults/default-pdl/default.pdl", real_root);
+                char board_name[64] = "", board_rel[PATH_BUF] = "";
+                if (read_board_row(pdl_path, 1, board_name, sizeof(board_name), board_rel, sizeof(board_rel))) {
+                    snprintf(src_dir, sizeof(src_dir), "%s/%s", real_root, board_rel);
+                    load_level_from_dir(real_root, src_dir);
+                    write_kv(level_state_path, "active_board", board_name);
+                }
+            }
+            write_kv(level_state_path, "active_level", next_level);
+            snprintf(message, sizeof(message), "Level: %s.", next_level);
+        } else if (strcmp(cmd, "DESK_MENU") == 0) {
+            /* REAL, NEW 2026-08-30, same §8 step 2 pass - "Desk" cycles
+             * the map WITHIN the currently active level. default-legacy
+             * has no real BOARD manifest (it's the flat, original
+             * storage shape) - real, honest report rather than a fake
+             * action. default-pdl has exactly one real board today
+             * (defaults/README.md) - the real mechanism (read the
+             * manifest, reload the named board's files) is what
+             * matters here, not the count being >1 yet. */
+            char real_root[PATH_BUF];
+            resolve_real_root(project_root, real_root, sizeof(real_root));
+            char level_state_path[PATH_BUF];
+            snprintf(level_state_path, sizeof(level_state_path), "%s/pieces/system/config.txt", real_root);
+            char active_level[64] = "";
+            read_kv_str_local(level_state_path, "active_level", active_level, sizeof(active_level));
+            if (strcmp(active_level, "default-pdl") != 0) {
+                snprintf(message, sizeof(message), "No maps to switch - active level (%s) has no desk list.",
+                         active_level[0] ? active_level : "default-legacy");
+            } else {
+                char pdl_path[PATH_BUF];
+                snprintf(pdl_path, sizeof(pdl_path), "%s/defaults/default-pdl/default.pdl", real_root);
+                char board_name[64] = "", board_rel[PATH_BUF] = "";
+                if (read_board_row(pdl_path, 1, board_name, sizeof(board_name), board_rel, sizeof(board_rel))) {
+                    char src_dir[PATH_BUF];
+                    snprintf(src_dir, sizeof(src_dir), "%s/%s", real_root, board_rel);
+                    load_level_from_dir(real_root, src_dir);
+                    write_kv(level_state_path, "active_board", board_name);
+                    snprintf(message, sizeof(message), "Desk (map): %s.", board_name);
+                } else {
+                    snprintf(message, sizeof(message), "No boards found in default-pdl's manifest.");
+                }
+            }
         } else if (strcmp(cmd, "OPEN_BOARD_WIDGET") == 0) {
             open_board_widget(project_root, message, sizeof(message));
         } else if (strcmp(cmd, "OPEN_VIEW_EDITOR") == 0) {
