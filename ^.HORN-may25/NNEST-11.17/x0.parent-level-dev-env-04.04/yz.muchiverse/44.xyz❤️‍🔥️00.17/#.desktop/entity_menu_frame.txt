@@ -1,4 +1,8 @@
-item|||Read||sh -c 'export PACKAGE_DIR="$0"; H="$1"; exec "$(find "$H" -maxdepth 1 -name "101.mutaclsym🧟‍♂️️*" -type d 2>/dev/null | head -1)/system/prisc+x" "$(find "$H" -path "*monads/*book-stack/pieces/reader/event_pkg/pages/page_1/event.pal" 2>/dev/null | head -1)"'|1|0|0|24|260|24
-item|||Dir||sh -c 'exec xdg-open "$0"'|2|0|0|48|260|24
-item|||Close||CLOSE|3|0|0|72|260|24
-item|||Cancel||void|4|0|0|96|260|24
+text|status||model: stable-code:latest | sound: on | idle|||0|0|0|24|260|24||
+item|new||+ New session||'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/open-hai/ops/oh_write_request.sh' 'NEWSESSION' '/tmp/oh_test_data/state'|1|0|0|48|260|24||
+item|cyclemodel||Model: stable-code:latest (click to cycle)||'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/open-hai/ops/oh_write_request.sh' 'CYCLEMODEL' '/tmp/oh_test_data/state'|2|0|0|72|260|24||
+item|togglesound||Sound: on (click to toggle)||'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/open-hai/ops/oh_write_request.sh' 'TOGGLESOUND' '/tmp/oh_test_data/state'|3|0|0|96|260|24||
+text|msg0||you: |||0|0|0|120|260|24||
+text|msg1||hai: [error: no 'response' field in Ollama reply - check model name / endpoint]|||0|0|0|144|260|24||
+cli_io|composer||&gt; ||'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/open-hai/ops/oh_write_send.sh' '/tmp/oh_test_data/state'|4|0|0|168|260|24|composer|jiohi
+item|close||X (close)||CLOSE|5|0|0|192|260|24||

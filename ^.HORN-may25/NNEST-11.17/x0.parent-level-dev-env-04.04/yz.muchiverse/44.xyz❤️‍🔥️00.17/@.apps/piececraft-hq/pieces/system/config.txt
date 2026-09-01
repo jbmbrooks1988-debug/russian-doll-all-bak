@@ -7,5 +7,3 @@ combat_resolution=
 treasury=50
 city_count=1
 game_state=playing
-active_board=default
-active_level=default-pdl

@@ -2,6 +2,16 @@
 
 **If you're a new agent picking this up cold, read in this order until you have enough context to act.**
 
+**📋 `au-31/` (2026-08-31) — today's live, in-progress work directory**
+(`00-todo.md` is the real todo list, `01-manager-design.md` the real
+per-app manager design):
+factoring out real per-app managers (irc-chat/forum/chain) BEFORE
+building their HQ window shells, per a real compliance finding
+(`dbhq_load_actors()` in `khtpm_entity_menu_render.c` loads real data
+but from inline loader code in the shared file, not a separate manager
+- see `HOUSE_CODE_PITFALLS.md` #11). Nothing on this list has real code
+against it yet as of this entry.
+
 **🧭 `^.COMPACTION_HANDOFF_aug29.md` — read this ONE first, before
 even Tier 1 below.** Emoji-heavy, human-and-AI-readable, plain-language
 summary of the tail end of the Aug 29 session: what shipped, the real
@@ -11,6 +21,47 @@ specs actually live now, genuinely new information from that session's
 conversation that isn't written down anywhere else yet, and real
 questions worth settling before the next session starts. Smaller and
 faster to read than working through Tier 1/2 cold.
+
+**🪤 `44.xyz❤️‍🔥️00.17/HOUSE_CODE_PITFALLS.md` (2026-08-31)** — real,
+live-confirmed problems + fixes/diagnostic paths, general-purpose (not
+scoped to one feature): stale processes surviving `pkill -f` on this
+house's own emoji/star-globbed paths, runtime `#.desktop/*.txt` state
+surviving a source `git reset --hard`, external screenshot capture
+racing live redraws, timing-race false positives right after an
+edit+reset, relay files keyed by package PATH inheriting a stale
+command from a killed prior process, static entity lists drifting from
+the real active desk, `.chtpm` submenu nesting rules, verifying
+subagent root-cause claims before trusting them, and the real
+relay-injection testing order of preference. Read this whenever
+something "looks broken" right after a change — several of these
+produce symptoms indistinguishable from a real code regression.
+
+**🛑 `^.ONE-MAP-ATTEMPT-ABANDONED.md` (2026-08-31) — read this BEFORE
+touching camera modes, one-map, or per-desktop z-level stacking.**
+The "one map" shared-compositor 3D idea (single X11 window raymarching
+every entity together, transparent background like piececraft) was
+built, live-tested, and abandoned same day: a real, confirmed
+compositor limitation (`ShapeBounding` clips clicks but not actual
+painting for a continuously-reshaped override-redirect window) with no
+app-side fix found. A related z-level "stacking" experiment was
+reverted too, by direct instruction, independent of whether it worked.
+Also documents a real, subtle lesson: `#.desktop/*.txt` runtime state
+survives a source-code `git reset --hard` and can look exactly like a
+fresh regression if left dirty from testing. Don't re-attempt any of
+this without reading it first.
+
+**🔧 `NETWORK-CELL-HQ-WINDOWS-DESIGN.md` — Phase 1 done (2026-08-31),
+network cell is real and live.** opencode built the real
+`cli_io_window.c` console container + launcher scripts but ran out of
+tokens before wiring the taskbar menu itself; Sonnet wired it (PDL rows
++ `livedesk_build_network_menu()` + `livedesk:open-network:` dispatch)
+and found/fixed a real crash bug in `cli_io_window.c` along the way
+(fatal `BadMatch` from a misplaced `XSetInputFocus()`). Live-verified:
+all 4 rows (IRC Chat/Forum/Chain/Browser) dispatch correctly. One
+separate, NOT-yet-fixed cosmetic bug remains (the cli-io window renders
+nothing visible despite being stable) - see that doc's own "REAL PHASE
+1 WIRING" section. §10 Phase 2 (real khtpm windows per app, not just a
+terminal tab) is still not started.
 
 > **`archive/` DELETED (2026-08-29, direct instruction after the doc-audit
 > pass):** this folder existed 2026-08-24 through 2026-08-29 for
@@ -26,6 +77,98 @@ faster to read than working through Tier 1/2 cold.
 ---
 
 ## Tier 1 — Always read (small context budget, ~2 min)
+-4. **CENTROID_GOLD_STD.md — GOLD STANDARD, adopted 2026-08-31 (house root,
+   `44.xyz❤️‍🔥️00.17/`)** — the real, final rendering architecture for every
+   NEW window/app going forward: one real parsed/laid-out/styled `Elem`
+   tree (khtpm's own, real `x/y/w/h` + real `CssStyle`) is the single
+   source of truth; every display target (X11/RGB today, a new
+   `ascii_draw_elem()` ASCII/headless mirror tomorrow) is a thin, symmetric
+   renderer walking that SAME tree — never a second independently-composed
+   representation, never business logic inline in the shared renderer file.
+   Traces the real 4-stage history that led here (chtpm_parser_pal's
+   box-model-less text grid → the blind-rasterize RGB/GL mirror →
+   the game-tile double-composer's real, documented race → khtpm's own
+   Elem/CSS model getting the look right but losing headless parity and
+   picking up the `dbhq_load_actors()` inline-logic drift) and condemns
+   each stage's specific, real flaw honestly rather than glossing over it.
+   States explicitly: **no free retrofit** for existing chtpm-native apps
+   (IRC/forum/chain/mutaclysm/piececraft) — deliberate, opportunistic
+   migration only, one app at a time, when a real touch already justifies it.
+   Read this before designing ANY new taskbar window, HQ app, or renderer.
+   **First real proof case built 2026-08-31**: `&.hq-apps/network/` -
+   `network_browser_manager.c` (real manager: fetches a URL via curl,
+   does a real simple manual HTML title/text/link extraction, publishes
+   `#.desktop/network_browser_page.state.txt` + `..._status.state.txt`,
+   consumes `..._action.txt`'s `go:<url>`), `network_browser_render.c`
+   (real khtpm Elem-tree X11 window, live-tested/screenshot-verified),
+   `network_browser_render_ascii.c` (real interactive CLI mirror of the
+   SAME manager state - live-tested, including real link-follow).
+   `open_network_browser.sh` now launches this instead of the old
+   `cli_io_window.c` stub.
+   **CORRECTED 2026-08-31, direct instruction ("we still want to use
+   chtpm+layout module, we always should no matter what")**: this
+   entry originally described the chrome as legitimately hand-built in
+   C (citing `khtpm_choice_picker.c` as precedent) - that framing was
+   wrong and is struck; see `CENTROID_GOLD_STD.md` §3 rule 1 and
+   `TPMOS-COMPLIANCE-DEBT.md` §5 for the corrected rule and the same
+   real gap now flagged in `khtpm_choice_picker.c` itself.
+   `network_browser_render.c`/`network_browser_render_ascii.c` need a
+   real rewrite to actually parse `network-browser-hq.chtpm`/`.css` -
+   not yet done as of this correction. What IS done and real as of
+   2026-08-31: the manager, the live taskbar wiring (network cell →
+   Browser row → this app, relay-injection-verified via
+   `hqcell 13`/`row 4` on `livedesk_agent_relay.txt`/`strip_history.txt`),
+   and a real agent-relay (`network_browser_history.txt`) + frame-
+   history (`network_browser_frame_history.txt`) pair for the X11
+   renderer, matching every other khtpm app's own testing contract.
+   **SECOND CORRECTION, same day**: a follow-up attempt to give
+   network-browser a real khtpm mode INSIDE `khtpm_entity_menu_
+   render.c` (replacing the standalone `network_browser_render.c`)
+   was built the same way every existing mode already works - a new
+   `g_is_network_browser` global checked at ~15 scattered dispatch
+   points - and was caught + fully reverted (`git checkout`, confirmed
+   zero diff from `origin/main`) before being committed or compiled,
+   direct instruction: "the parser/renderer should have no knowledge
+   of new projects and be completely agnostic." See
+   `TPMOS-COMPLIANCE-DEBT.md` §6 and `xperiments/khtpm-generic-
+   dispatch-design.md` for the real design this produced - network-
+   browser-hq is now planned to be the FIRST mode built against a new,
+   generic `g_khtpm_modes[]` dispatch table, not the 8th copy of the
+   old per-project-hardcoded pattern. Not implemented yet.
+-3b. **xperiments/khtpm-generic-dispatch-design.md — READ BEFORE ADDING ANY
+   NEW MODE TO `khtpm_core_render.c`** (renamed from
+   `khtpm_entity_menu_render.c`), direct instruction ("write to
+   standards and index that this should never happen again, this is std
+   drift") — REAL PIVOT, 2026-08-31: the `g_khtpm_modes[]` dispatch-
+   table idea this entry used to describe was explicitly REJECTED
+   (direct instruction: "we dont use .so or linking or anything...
+   read/write to from external .txt file or .pdl from manager if you
+   need"). The real, adopted, DONE-AND-LIVE-TESTED answer instead:
+   - **Generic capability #1 (live `.chtpm` re-parse)** —
+     `reparse_chtpm_if_changed()` re-reads a `.chtpm` on mtime change;
+     any real manager process can keep regenerating a live `.chtpm`
+     projection (same "manager owns projection, renderer just re-
+     parses/renders it" philosophy `fo-menu-sys.md` already documents
+     for the ASCII/`chtpm_parser.c` family).
+   - **Generic capability #2 (`<cli_io>` text input)** — a real,
+     project-agnostic armed-text-field element (`target_id=`,
+     `input_buffer`, live-synced to `cli_io_state.txt`, Enter fires the
+     SAME `action="<cmd>"` dispatch every khtpm element already uses).
+     A real, non-obvious follow-up fix included: an armed `cli_io`
+     field now takes a real `XGrabKeyboard` (db-hq's own already-
+     existing `dbhq_grab_keyboard_retry()`, reused verbatim) for its
+     armed lifetime - without it, typing silently failed the instant
+     the mouse left the window under this desktop's focus-follows-
+     mouse WM policy (confirmed live: real `XGetInputFocus` was `0x0`/
+     None with the pointer far from the window). **Any new khtpm app
+     needing real text input should use `<cli_io>` for this reason -
+     it's the only input mechanism in this house proven immune to that
+     class of focus bug.**
+   Zero new `g_is_<project>` globals, zero per-project dispatch
+   branches for either capability - both are fully generic, used first
+   by open-hai's own real conversion (in progress). See
+   `CENTROID_GOLD_STD.md` §3 rule 7 and `TPMOS-COMPLIANCE-DEBT.md` §6
+   for the real incident this traces back to.
 -3. **SKILLS.md (2026-08-29)** — read this FIRST, before anything else in this
    list. Not a task doc — a generalized "how to operate well in this house"
    compaction: the core file-based-state philosophy, the rendering
@@ -37,17 +180,34 @@ faster to read than working through Tier 1/2 cold.
    without duplicating effort), and a read on the user's own working style.
    Everything below this entry is task/architecture detail; this one is
    judgment.
--2. **TPMOS-COMPLIANCE-DEBT.md — RESOLVED 2026-08-25 (was STANDING #1 PRIORITY;
-   corrected 2026-08-29 doc-audit pass, this entry had gone stale behind the doc's own
-   "Status update, 2026-08-25" section)** — real, confirmed architecture violations found
-   while migrating stats-hq: all 3 launcher scripts (`stats-hq`, `palettes`, `bookmarks`)
-   generated `.chtpm` UI markup via raw bash `printf` of XML tags, with no real manager
-   process and no compiled, testable Op — violated TPMOS §11/§12 directly, and stats-hq's
-   tabs were actually broken (labels never matched the renderer's own `TAB_LABELS[]`). All
-   3 now have real managers matching `khtpm_hq_manager.c`'s shape; see that doc's own
-   "Status update" section for the rebuild details. Read this BEFORE building or
-   extending ANY taskbar-launched window/menu — this pattern looks like it works and is
-   the nearest copy-paste example in the tree for exactly that reason. Full inventory,
+-2. **TPMOS-COMPLIANCE-DEBT.md — REOPENED 2026-08-31 (the original 3
+   printf-XML violations stay RESOLVED 2026-08-25; a real, DIFFERENT,
+   4th violation was found and condemned same day - `dbhq_load_actors()`
+   in `khtpm_entity_menu_render.c` itself reads real PDL data
+   (`&.widgits/db-hq/data/actors.pdl` - not hardcoded strings) but does
+   so INLINE in the shared "hard boundary" renderer file, instead of a
+   real, separate manager publishing a projection - the exact same
+   "Manager owns projection" violation this doc exists to name, just
+   with real file-backed data instead of fabricated content. Direct
+   instruction: "that being hardcoded... should be condemned... it
+   should have never happened" - not fixed yet, see the doc's own new
+   §4 + `au-31/00-todo.md` for the real remediation plan. **§5, same
+   day**: `khtpm_choice_picker.c` hand-builds its Elem tree instead of
+   parsing a real `.chtpm` - real, live infrastructure (used by
+   `tp_desktop_window_rgb.c`'s desktop-tile context menus and book-
+   stack's dialogue-choice flow), flagged for the same fix, not yet
+   done - see `CENTROID_GOLD_STD.md` §3 rule 1's own correction)** — real,
+   confirmed architecture violations found while migrating stats-hq:
+   all 3 launcher scripts (`stats-hq`, `palettes`, `bookmarks`)
+   generated `.chtpm` UI markup via raw bash `printf` of XML tags, with
+   no real manager process and no compiled, testable Op — violated
+   TPMOS §11/§12 directly, and stats-hq's tabs were actually broken
+   (labels never matched the renderer's own `TAB_LABELS[]`). All 3 now
+   have real managers matching `khtpm_hq_manager.c`'s shape; see that
+   doc's own "Status update" section for the rebuild details. Read this
+   BEFORE building or extending ANY taskbar-launched window/menu — this
+   pattern looks like it works and is the nearest copy-paste example in
+   the tree for exactly that reason. Full inventory,
    severity reasoning, the compliant reference pattern (db-hq/events-hq/open-hai's real
    manager binaries), and remediation priority in the doc itself.
 -1. **house-compaction.md — STANDING #1 PRIORITY (2026-08-24), NOT YET ACTED ON** —
@@ -368,7 +528,8 @@ Stop here if you just need to know "what's going on."
 |---|---|---|
 | `INDEX.md` | This file — pure routing, no content | New doc added/removed |
 | `#.house-docs.html/1.index-house=solo.html` | **The human-facing house doc — this is what the user actually reads**, not just an agent-routing file. Narrative "how the house actually works" page (Overview/Standards/Taskbar/Legacy Engines/Display/Input/AI Backends/Testing/Extending/Roadmap sections). Keep the "Known Issues & Roadmap" section in sync with real findings the same way `INDEX.md`'s own changelog is kept in sync — when you land a real fix or finding that changes user-facing state, update BOTH this file and INDEX.md, not just one. | Whenever a real, user-relevant finding or fix lands — added the khtpm_hq_render receipt/frame-history gap here 2026-08-24 |
-| `TPMOS-COMPLIANCE-DEBT.md` | **RESOLVED 2026-08-25** — the 3 real manager-pattern violations found (stats-hq/palettes/bookmarks generating `.chtpm` via raw bash `printf`, no manager, no testable Op; stats-hq's tabs were actually non-functional) all got real manager rebuilds, see the doc's own "Status update" section. | If the broader "not yet audited" sweep this doc originally flagged finds more instances elsewhere — update the inventory, don't just delete the doc |
+| `CENTROID_GOLD_STD.md` (house root) | **GOLD STANDARD, adopted 2026-08-31, §3 rule 1 CORRECTED same day** — the real, final rendering architecture for every new window/app: one real `Elem` tree, built by ACTUALLY PARSING a real `.chtpm`+CSS through the real layout pipeline (no exception for small/data-driven apps — a same-day correction struck an earlier draft that allowed hand-building one, citing `khtpm_choice_picker.c` as false precedent), N thin symmetric renderers (RGB now, ASCII/headless next) walking that SAME parsed tree, never a second composer or inline business logic. Condemns the real prior stages (text-grid-only chtpm_parser_pal, blind-rasterize RGB/GL mirror, the game-tile double-composer race, khtpm's own isolation-driven `dbhq_load_actors()` drift) by name, with the real flaw each one had. | Design every new taskbar window/HQ app against this doc's §3 rule — parse a real `.chtpm`, never hand-build the tree; build the real `ascii_draw_elem()` renderer described in §2 Stage 4 walking that same parsed tree whenever headless/CLI parity for a khtpm app is next asked for |
+| `TPMOS-COMPLIANCE-DEBT.md` | **REOPENED 2026-08-31** — the original 3 printf-XML violations (stats-hq/palettes/bookmarks) stay RESOLVED 2026-08-25, real manager rebuilds; a real, different 4th violation (`dbhq_load_actors()` loading real PDL data inline in the shared renderer instead of via a manager) found and condemned same day, NOT fixed yet — see the doc's own new §4. | Build the real `dbhq_actors_manager.c` (or equivalent) fix before/alongside any new window mode added to `khtpm_entity_menu_render.c`, per `au-31/00-todo.md`; audit Classes/Skills/Items/etc. for the same shape |
 | `house-compaction.md` | **STANDING #1 PRIORITY, undone** — the khtpm_hq_render receipt/frame-history compliance-drift finding vs. TPMOS/wraith-alpha standard, plus the doc-compaction candidate list for `1.^V-hq/` (44 files). Agreed order: compact docs first, THEN fix the compliance drift, THEN resume palettes T1-T6. | When the compliance fix lands, or a compaction item from Part 3 is acted on — tick it off, don't just delete the doc |
 | `44.xyz❤️‍🔥️00.17/!.HOUSE_STDS.md` (house root) | **THE general house standards doc** ("from zero", §A–§K): CHTPM/PAL mechanics, session isolation/symlink ban, digit-dispatch, marker discipline, runtime-config-over-hardcode, rendering pipeline, CPU/testing discipline, widgets, 3D/raymarch, pitfalls F-18/F-19/#20/#21 (window focus/managed-window standards), §J two-parser-families warning, and **§K UI-authoring standards (2026-08-24): no hardcoded UIs ever (store→generated-artifact rule), context windows OLD vs NEW (`khtpm_entity_menu_render` is THE standard), generic renderer mechanisms (onClick open:/exec:, live reload) with honest port-status caveat, SHOW_PAGE chooser contract, bookmarks spec (superseded 2026-08-25, see its own note), and §K.6 (2026-08-25): no UI element without a mirror keyboard path** | Whenever a standing house standard is set, corrected, or superseded |
 | `HANDOFF.md` | Living architecture + status snapshot, "hand this to a fresh agent" doc | Architecture changes, status changes |

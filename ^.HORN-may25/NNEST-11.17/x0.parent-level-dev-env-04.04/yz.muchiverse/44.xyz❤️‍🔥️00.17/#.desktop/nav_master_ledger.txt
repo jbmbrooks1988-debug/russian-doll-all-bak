@@ -19568,491 +19568,817 @@ SNAP pid=571091 tab=2 n=58
 571091 2 58 closebtn
 RMMV_CLICK pid=574233 x=1106 y=949
 REG pid=577667 tab=1 xid=1c00002 chat-hai
-SNAP pid=861841 tab=0 n=1
-861841 0 1 closebtn
-REG pid=861841 tab=1 xid=1200002 palettes
-SNAP pid=861841 tab=1 n=1
-861841 1 1 closebtn
-SNAP pid=861841 tab=1 n=9
-861841 1 1 scroll:up
-861841 1 2 scroll:down
-861841 1 3 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' place 'noop'
-861841 1 4 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' place 'noop'
-861841 1 5 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' place 'noop'
-861841 1 6 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' place 'noop'
-861841 1 7 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' place 'noop'
-861841 1 8 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' place 'noop'
-861841 1 9 closebtn
-SNAP pid=1318664 tab=0 n=46
-1318664 0 1 tab
-1318664 0 2 tab
-1318664 0 3 tab
-1318664 0 4 tab
-1318664 0 5 tab
-1318664 0 6 tab
-1318664 0 7 tab
-1318664 0 8 tab
-1318664 0 9 tab
-1318664 0 10 tab
-1318664 0 11 tab
-1318664 0 12 tab
-1318664 0 13 tab
-1318664 0 14 tab
-1318664 0 15 tab
-1318664 0 16 item
-1318664 0 17 item
-1318664 0 18 item
-1318664 0 19 item
-1318664 0 20 ce-add-event
-1318664 0 21 ACTIVATE
-1318664 0 22 ACTIVATE
-1318664 0 23 ACTIVATE
-1318664 0 24 ACTIVATE
-1318664 0 25 ACTIVATE
-1318664 0 26 ACTIVATE
-1318664 0 27 ACTIVATE
-1318664 0 28 ACTIVATE
-1318664 0 29 ACTIVATE
-1318664 0 30 ACTIVATE
-1318664 0 31 ACTIVATE
-1318664 0 32 ACTIVATE
-1318664 0 33 ACTIVATE
-1318664 0 34 ACTIVATE
-1318664 0 35 ACTIVATE
-1318664 0 36 ACTIVATE
-1318664 0 37 ACTIVATE
-1318664 0 38 ACTIVATE
-1318664 0 39 ACTIVATE
-1318664 0 40 ACTIVATE
-1318664 0 41 ACTIVATE
-1318664 0 42 ACTIVATE
-1318664 0 43 ACTIVATE
-1318664 0 44 scroll:up
-1318664 0 45 scroll:down
-1318664 0 46 closebtn
-REG pid=1318664 tab=1 xid=1000003 db-hq
-SNAP pid=1318664 tab=1 n=46
-1318664 1 1 tab
-1318664 1 2 tab
-1318664 1 3 tab
-1318664 1 4 tab
-1318664 1 5 tab
-1318664 1 6 tab
-1318664 1 7 tab
-1318664 1 8 tab
-1318664 1 9 tab
-1318664 1 10 tab
-1318664 1 11 tab
-1318664 1 12 tab
-1318664 1 13 tab
-1318664 1 14 tab
-1318664 1 15 tab
-1318664 1 16 item
-1318664 1 17 item
-1318664 1 18 item
-1318664 1 19 item
-1318664 1 20 ce-add-event
-1318664 1 21 ACTIVATE
-1318664 1 22 ACTIVATE
-1318664 1 23 ACTIVATE
-1318664 1 24 ACTIVATE
-1318664 1 25 ACTIVATE
-1318664 1 26 ACTIVATE
-1318664 1 27 ACTIVATE
-1318664 1 28 ACTIVATE
-1318664 1 29 ACTIVATE
-1318664 1 30 ACTIVATE
-1318664 1 31 ACTIVATE
-1318664 1 32 ACTIVATE
-1318664 1 33 ACTIVATE
-1318664 1 34 ACTIVATE
-1318664 1 35 ACTIVATE
-1318664 1 36 ACTIVATE
-1318664 1 37 ACTIVATE
-1318664 1 38 ACTIVATE
-1318664 1 39 ACTIVATE
-1318664 1 40 ACTIVATE
-1318664 1 41 ACTIVATE
-1318664 1 42 ACTIVATE
-1318664 1 43 ACTIVATE
-1318664 1 44 scroll:up
-1318664 1 45 scroll:down
-1318664 1 46 closebtn
-SNAP pid=3801642 tab=0 n=46
-3801642 0 1 tab
-3801642 0 2 tab
-3801642 0 3 tab
-3801642 0 4 tab
-3801642 0 5 tab
-3801642 0 6 tab
-3801642 0 7 tab
-3801642 0 8 tab
-3801642 0 9 tab
-3801642 0 10 tab
-3801642 0 11 tab
-3801642 0 12 tab
-3801642 0 13 tab
-3801642 0 14 tab
-3801642 0 15 tab
-3801642 0 16 item
-3801642 0 17 item
-3801642 0 18 item
-3801642 0 19 item
-3801642 0 20 ce-add-event
-3801642 0 21 ACTIVATE
-3801642 0 22 ACTIVATE
-3801642 0 23 ACTIVATE
-3801642 0 24 ACTIVATE
-3801642 0 25 ACTIVATE
-3801642 0 26 ACTIVATE
-3801642 0 27 ACTIVATE
-3801642 0 28 ACTIVATE
-3801642 0 29 ACTIVATE
-3801642 0 30 ACTIVATE
-3801642 0 31 ACTIVATE
-3801642 0 32 ACTIVATE
-3801642 0 33 ACTIVATE
-3801642 0 34 ACTIVATE
-3801642 0 35 ACTIVATE
-3801642 0 36 ACTIVATE
-3801642 0 37 ACTIVATE
-3801642 0 38 ACTIVATE
-3801642 0 39 ACTIVATE
-3801642 0 40 ACTIVATE
-3801642 0 41 ACTIVATE
-3801642 0 42 ACTIVATE
-3801642 0 43 ACTIVATE
-3801642 0 44 scroll:up
-3801642 0 45 scroll:down
-3801642 0 46 closebtn
-REG pid=3801642 tab=1 xid=c00003 db-hq
-SNAP pid=3801642 tab=1 n=46
-3801642 1 1 tab
-3801642 1 2 tab
-3801642 1 3 tab
-3801642 1 4 tab
-3801642 1 5 tab
-3801642 1 6 tab
-3801642 1 7 tab
-3801642 1 8 tab
-3801642 1 9 tab
-3801642 1 10 tab
-3801642 1 11 tab
-3801642 1 12 tab
-3801642 1 13 tab
-3801642 1 14 tab
-3801642 1 15 tab
-3801642 1 16 item
-3801642 1 17 item
-3801642 1 18 item
-3801642 1 19 item
-3801642 1 20 ce-add-event
-3801642 1 21 ACTIVATE
-3801642 1 22 ACTIVATE
-3801642 1 23 ACTIVATE
-3801642 1 24 ACTIVATE
-3801642 1 25 ACTIVATE
-3801642 1 26 ACTIVATE
-3801642 1 27 ACTIVATE
-3801642 1 28 ACTIVATE
-3801642 1 29 ACTIVATE
-3801642 1 30 ACTIVATE
-3801642 1 31 ACTIVATE
-3801642 1 32 ACTIVATE
-3801642 1 33 ACTIVATE
-3801642 1 34 ACTIVATE
-3801642 1 35 ACTIVATE
-3801642 1 36 ACTIVATE
-3801642 1 37 ACTIVATE
-3801642 1 38 ACTIVATE
-3801642 1 39 ACTIVATE
-3801642 1 40 ACTIVATE
-3801642 1 41 ACTIVATE
-3801642 1 42 ACTIVATE
-3801642 1 43 ACTIVATE
-3801642 1 44 scroll:up
-3801642 1 45 scroll:down
-3801642 1 46 closebtn
-SNAP pid=3814770 tab=0 n=46
-3814770 0 1 tab
-3814770 0 2 tab
-3814770 0 3 tab
-3814770 0 4 tab
-3814770 0 5 tab
-3814770 0 6 tab
-3814770 0 7 tab
-3814770 0 8 tab
-3814770 0 9 tab
-3814770 0 10 tab
-3814770 0 11 tab
-3814770 0 12 tab
-3814770 0 13 tab
-3814770 0 14 tab
-3814770 0 15 tab
-3814770 0 16 item
-3814770 0 17 item
-3814770 0 18 item
-3814770 0 19 item
-3814770 0 20 ce-add-event
-3814770 0 21 ACTIVATE
-3814770 0 22 ACTIVATE
-3814770 0 23 ACTIVATE
-3814770 0 24 ACTIVATE
-3814770 0 25 ACTIVATE
-3814770 0 26 ACTIVATE
-3814770 0 27 ACTIVATE
-3814770 0 28 ACTIVATE
-3814770 0 29 ACTIVATE
-3814770 0 30 ACTIVATE
-3814770 0 31 ACTIVATE
-3814770 0 32 ACTIVATE
-3814770 0 33 ACTIVATE
-3814770 0 34 ACTIVATE
-3814770 0 35 ACTIVATE
-3814770 0 36 ACTIVATE
-3814770 0 37 ACTIVATE
-3814770 0 38 ACTIVATE
-3814770 0 39 ACTIVATE
-3814770 0 40 ACTIVATE
-3814770 0 41 ACTIVATE
-3814770 0 42 ACTIVATE
-3814770 0 43 ACTIVATE
-3814770 0 44 scroll:up
-3814770 0 45 scroll:down
-3814770 0 46 closebtn
-REG pid=3814770 tab=1 xid=c00003 db-hq
-SNAP pid=3814770 tab=1 n=46
-3814770 1 1 tab
-3814770 1 2 tab
-3814770 1 3 tab
-3814770 1 4 tab
-3814770 1 5 tab
-3814770 1 6 tab
-3814770 1 7 tab
-3814770 1 8 tab
-3814770 1 9 tab
-3814770 1 10 tab
-3814770 1 11 tab
-3814770 1 12 tab
-3814770 1 13 tab
-3814770 1 14 tab
-3814770 1 15 tab
-3814770 1 16 item
-3814770 1 17 item
-3814770 1 18 item
-3814770 1 19 item
-3814770 1 20 ce-add-event
-3814770 1 21 ACTIVATE
-3814770 1 22 ACTIVATE
-3814770 1 23 ACTIVATE
-3814770 1 24 ACTIVATE
-3814770 1 25 ACTIVATE
-3814770 1 26 ACTIVATE
-3814770 1 27 ACTIVATE
-3814770 1 28 ACTIVATE
-3814770 1 29 ACTIVATE
-3814770 1 30 ACTIVATE
-3814770 1 31 ACTIVATE
-3814770 1 32 ACTIVATE
-3814770 1 33 ACTIVATE
-3814770 1 34 ACTIVATE
-3814770 1 35 ACTIVATE
-3814770 1 36 ACTIVATE
-3814770 1 37 ACTIVATE
-3814770 1 38 ACTIVATE
-3814770 1 39 ACTIVATE
-3814770 1 40 ACTIVATE
-3814770 1 41 ACTIVATE
-3814770 1 42 ACTIVATE
-3814770 1 43 ACTIVATE
-3814770 1 44 scroll:up
-3814770 1 45 scroll:down
-3814770 1 46 closebtn
-SNAP pid=3930428 tab=0 n=26
-3930428 0 1 0
-3930428 0 2 1
-3930428 0 3 2
-3930428 0 4 3
-3930428 0 5 4
-3930428 0 6 5
-3930428 0 7 6
-3930428 0 8 7
-3930428 0 9 8
-3930428 0 10 9
-3930428 0 11 10
-3930428 0 12 11
-3930428 0 13 12
-3930428 0 14 13
-3930428 0 15 14
-3930428 0 16 15
-3930428 0 17 16
-3930428 0 18 17
-3930428 0 19 18
-3930428 0 20 19
-3930428 0 21 20
-3930428 0 22 21
-3930428 0 23 22
-3930428 0 24 scroll:up
-3930428 0 25 scroll:down
-3930428 0 26 closebtn
-REG pid=3930428 tab=1 xid=1e00002 stats-hq
-SNAP pid=3930428 tab=1 n=26
-3930428 1 1 0
-3930428 1 2 1
-3930428 1 3 2
-3930428 1 4 3
-3930428 1 5 4
-3930428 1 6 5
-3930428 1 7 6
-3930428 1 8 7
-3930428 1 9 8
-3930428 1 10 9
-3930428 1 11 10
-3930428 1 12 11
-3930428 1 13 12
-3930428 1 14 13
-3930428 1 15 14
-3930428 1 16 15
-3930428 1 17 16
-3930428 1 18 17
-3930428 1 19 18
-3930428 1 20 19
-3930428 1 21 20
-3930428 1 22 21
-3930428 1 23 22
-3930428 1 24 scroll:up
-3930428 1 25 scroll:down
-3930428 1 26 closebtn
-SNAP pid=3930428 tab=1 n=38
-3930428 1 1 0
-3930428 1 2 1
-3930428 1 3 2
-3930428 1 4 3
-3930428 1 5 4
-3930428 1 6 5
-3930428 1 7 6
-3930428 1 8 7
-3930428 1 9 8
-3930428 1 10 9
-3930428 1 11 10
-3930428 1 12 11
-3930428 1 13 ACTIVATE
-3930428 1 14 ACTIVATE
-3930428 1 15 ACTIVATE
-3930428 1 16 ACTIVATE
-3930428 1 17 ACTIVATE
-3930428 1 18 ACTIVATE
-3930428 1 19 ACTIVATE
-3930428 1 20 ACTIVATE
-3930428 1 21 ACTIVATE
-3930428 1 22 ACTIVATE
-3930428 1 23 ACTIVATE
-3930428 1 24 ACTIVATE
-3930428 1 25 ACTIVATE
-3930428 1 26 ACTIVATE
-3930428 1 27 ACTIVATE
-3930428 1 28 ACTIVATE
-3930428 1 29 ACTIVATE
-3930428 1 30 ACTIVATE
-3930428 1 31 ACTIVATE
-3930428 1 32 ACTIVATE
-3930428 1 33 ACTIVATE
-3930428 1 34 ACTIVATE
-3930428 1 35 ACTIVATE
-3930428 1 36 scroll:up
-3930428 1 37 scroll:down
-3930428 1 38 closebtn
-SNAP pid=3932200 tab=0 n=26
-3932200 0 1 0
-3932200 0 2 1
-3932200 0 3 2
-3932200 0 4 3
-3932200 0 5 4
-3932200 0 6 5
-3932200 0 7 6
-3932200 0 8 7
-3932200 0 9 8
-3932200 0 10 9
-3932200 0 11 10
-3932200 0 12 11
-3932200 0 13 12
-3932200 0 14 13
-3932200 0 15 14
-3932200 0 16 15
-3932200 0 17 16
-3932200 0 18 17
-3932200 0 19 18
-3932200 0 20 19
-3932200 0 21 20
-3932200 0 22 21
-3932200 0 23 22
-3932200 0 24 scroll:up
-3932200 0 25 scroll:down
-3932200 0 26 closebtn
-REG pid=3932200 tab=1 xid=1e00002 stats-hq
-SNAP pid=3932200 tab=1 n=26
-3932200 1 1 0
-3932200 1 2 1
-3932200 1 3 2
-3932200 1 4 3
-3932200 1 5 4
-3932200 1 6 5
-3932200 1 7 6
-3932200 1 8 7
-3932200 1 9 8
-3932200 1 10 9
-3932200 1 11 10
-3932200 1 12 11
-3932200 1 13 12
-3932200 1 14 13
-3932200 1 15 14
-3932200 1 16 15
-3932200 1 17 16
-3932200 1 18 17
-3932200 1 19 18
-3932200 1 20 19
-3932200 1 21 20
-3932200 1 22 21
-3932200 1 23 22
-3932200 1 24 scroll:up
-3932200 1 25 scroll:down
-3932200 1 26 closebtn
-SNAP pid=3932200 tab=1 n=38
-3932200 1 1 0
-3932200 1 2 1
-3932200 1 3 2
-3932200 1 4 3
-3932200 1 5 4
-3932200 1 6 5
-3932200 1 7 6
-3932200 1 8 7
-3932200 1 9 8
-3932200 1 10 9
-3932200 1 11 10
-3932200 1 12 11
-3932200 1 13 ACTIVATE
-3932200 1 14 ACTIVATE
-3932200 1 15 ACTIVATE
-3932200 1 16 ACTIVATE
-3932200 1 17 ACTIVATE
-3932200 1 18 ACTIVATE
-3932200 1 19 ACTIVATE
-3932200 1 20 ACTIVATE
-3932200 1 21 ACTIVATE
-3932200 1 22 ACTIVATE
-3932200 1 23 ACTIVATE
-3932200 1 24 ACTIVATE
-3932200 1 25 ACTIVATE
-3932200 1 26 ACTIVATE
-3932200 1 27 ACTIVATE
-3932200 1 28 ACTIVATE
-3932200 1 29 ACTIVATE
-3932200 1 30 ACTIVATE
-3932200 1 31 ACTIVATE
-3932200 1 32 ACTIVATE
-3932200 1 33 ACTIVATE
-3932200 1 34 ACTIVATE
-3932200 1 35 ACTIVATE
-3932200 1 36 scroll:up
-3932200 1 37 scroll:down
-3932200 1 38 closebtn
+SNAP pid=27962 tab=0 n=58
+27962 0 1 scroll:up
+27962 0 2 scroll:down
+27962 0 3 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'tilesets'
+27962 0 4 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'characters'
+27962 0 5 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'faces'
+27962 0 6 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'sv_actors'
+27962 0 7 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'sv_enemies'
+27962 0 8 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'enemies'
+27962 0 9 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'battlebacks1'
+27962 0 10 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'battlebacks2'
+27962 0 11 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'parallaxes'
+27962 0 12 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'pictures'
+27962 0 13 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'animations'
+27962 0 14 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'system'
+27962 0 15 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'titles1'
+27962 0 16 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'titles2'
+27962 0 17 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-tab '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'A'
+27962 0 18 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-tab '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'B'
+27962 0 19 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-tab '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'C'
+27962 0 20 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/001' 'Inside' 'a2' 'a2 kind 0,0' '100' '160' '0' '0'
+27962 0 21 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/002' 'Inside' 'a2' 'a2 kind 1,0' '100' '160' '0' '0'
+27962 0 22 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/003' 'Inside' 'a2' 'a2 kind 2,0' '100' '160' '0' '0'
+27962 0 23 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/004' 'Inside' 'a2' 'a2 kind 3,0' '100' '160' '0' '0'
+27962 0 24 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/005' 'Inside' 'a2' 'a2 kind 4,0' '100' '160' '0' '0'
+27962 0 25 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/006' 'Inside' 'a2' 'a2 kind 5,0' '100' '160' '0' '0'
+27962 0 26 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/007' 'Inside' 'a2' 'a2 kind 6,0' '100' '160' '0' '0'
+27962 0 27 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/008' 'Inside' 'a2' 'a2 kind 7,0' '100' '160' '0' '0'
+27962 0 28 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/009' 'Inside' 'a2' 'a2 kind 0,1' '100' '160' '0' '0'
+27962 0 29 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/010' 'Inside' 'a2' 'a2 kind 1,1' '100' '160' '0' '0'
+27962 0 30 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/011' 'Inside' 'a2' 'a2 kind 2,1' '100' '160' '0' '0'
+27962 0 31 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/012' 'Inside' 'a2' 'a2 kind 3,1' '100' '160' '0' '0'
+27962 0 32 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/013' 'Inside' 'a2' 'a2 kind 4,1' '100' '160' '0' '0'
+27962 0 33 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/014' 'Inside' 'a2' 'a2 kind 5,1' '100' '160' '0' '0'
+27962 0 34 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/015' 'Inside' 'a2' 'a2 kind 6,1' '100' '160' '0' '0'
+27962 0 35 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/016' 'Inside' 'a2' 'a2 kind 7,1' '100' '160' '0' '0'
+27962 0 36 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/017' 'Inside' 'a2' 'a2 kind 0,2' '100' '160' '0' '0'
+27962 0 37 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/018' 'Inside' 'a2' 'a2 kind 1,2' '100' '160' '0' '0'
+27962 0 38 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/019' 'Inside' 'a2' 'a2 kind 2,2' '100' '160' '0' '0'
+27962 0 39 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/020' 'Inside' 'a2' 'a2 kind 3,2' '100' '160' '0' '0'
+27962 0 40 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/021' 'Inside' 'a2' 'a2 kind 4,2' '100' '160' '0' '0'
+27962 0 41 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/022' 'Inside' 'a2' 'a2 kind 5,2' '100' '160' '0' '0'
+27962 0 42 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/023' 'Inside' 'a2' 'a2 kind 6,2' '100' '160' '0' '0'
+27962 0 43 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/024' 'Inside' 'a2' 'a2 kind 7,2' '100' '160' '0' '0'
+27962 0 44 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/025' 'Inside' 'a2' 'a2 kind 0,3' '100' '160' '0' '0'
+27962 0 45 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/026' 'Inside' 'a2' 'a2 kind 1,3' '100' '160' '0' '0'
+27962 0 46 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/027' 'Inside' 'a2' 'a2 kind 2,3' '100' '160' '0' '0'
+27962 0 47 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/028' 'Inside' 'a2' 'a2 kind 3,3' '100' '160' '0' '0'
+27962 0 48 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/029' 'Inside' 'a2' 'a2 kind 4,3' '100' '160' '0' '0'
+27962 0 49 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/030' 'Inside' 'a2' 'a2 kind 5,3' '100' '160' '0' '0'
+27962 0 50 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/031' 'Inside' 'a2' 'a2 kind 6,3' '100' '160' '0' '0'
+27962 0 51 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/032' 'Inside' 'a2' 'a2 kind 7,3' '100' '160' '0' '0'
+27962 0 52 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-tileset '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'Dungeon'
+27962 0 53 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-tileset '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'Inside'
+27962 0 54 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-tileset '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'Outside'
+27962 0 55 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-tileset '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'SF_Inside'
+27962 0 56 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-tileset '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'SF_Outside'
+27962 0 57 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-tileset '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'World'
+27962 0 58 closebtn
+REG pid=27962 tab=1 xid=1800002 palettes
+SNAP pid=27962 tab=1 n=58
+27962 1 1 scroll:up
+27962 1 2 scroll:down
+27962 1 3 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'tilesets'
+27962 1 4 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'characters'
+27962 1 5 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'faces'
+27962 1 6 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'sv_actors'
+27962 1 7 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'sv_enemies'
+27962 1 8 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'enemies'
+27962 1 9 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'battlebacks1'
+27962 1 10 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'battlebacks2'
+27962 1 11 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'parallaxes'
+27962 1 12 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'pictures'
+27962 1 13 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'animations'
+27962 1 14 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'system'
+27962 1 15 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'titles1'
+27962 1 16 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'titles2'
+27962 1 17 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-tab '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'A'
+27962 1 18 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-tab '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'B'
+27962 1 19 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-tab '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'C'
+27962 1 20 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/001' 'Inside' 'a2' 'a2 kind 0,0' '100' '160' '0' '0'
+27962 1 21 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/002' 'Inside' 'a2' 'a2 kind 1,0' '100' '160' '0' '0'
+27962 1 22 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/003' 'Inside' 'a2' 'a2 kind 2,0' '100' '160' '0' '0'
+27962 1 23 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/004' 'Inside' 'a2' 'a2 kind 3,0' '100' '160' '0' '0'
+27962 1 24 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/005' 'Inside' 'a2' 'a2 kind 4,0' '100' '160' '0' '0'
+27962 1 25 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/006' 'Inside' 'a2' 'a2 kind 5,0' '100' '160' '0' '0'
+27962 1 26 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/007' 'Inside' 'a2' 'a2 kind 6,0' '100' '160' '0' '0'
+27962 1 27 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/008' 'Inside' 'a2' 'a2 kind 7,0' '100' '160' '0' '0'
+27962 1 28 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/009' 'Inside' 'a2' 'a2 kind 0,1' '100' '160' '0' '0'
+27962 1 29 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/010' 'Inside' 'a2' 'a2 kind 1,1' '100' '160' '0' '0'
+27962 1 30 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/011' 'Inside' 'a2' 'a2 kind 2,1' '100' '160' '0' '0'
+27962 1 31 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/012' 'Inside' 'a2' 'a2 kind 3,1' '100' '160' '0' '0'
+27962 1 32 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/013' 'Inside' 'a2' 'a2 kind 4,1' '100' '160' '0' '0'
+27962 1 33 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/014' 'Inside' 'a2' 'a2 kind 5,1' '100' '160' '0' '0'
+27962 1 34 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/015' 'Inside' 'a2' 'a2 kind 6,1' '100' '160' '0' '0'
+27962 1 35 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/016' 'Inside' 'a2' 'a2 kind 7,1' '100' '160' '0' '0'
+27962 1 36 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/017' 'Inside' 'a2' 'a2 kind 0,2' '100' '160' '0' '0'
+27962 1 37 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/018' 'Inside' 'a2' 'a2 kind 1,2' '100' '160' '0' '0'
+27962 1 38 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/019' 'Inside' 'a2' 'a2 kind 2,2' '100' '160' '0' '0'
+27962 1 39 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/020' 'Inside' 'a2' 'a2 kind 3,2' '100' '160' '0' '0'
+27962 1 40 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/021' 'Inside' 'a2' 'a2 kind 4,2' '100' '160' '0' '0'
+27962 1 41 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/022' 'Inside' 'a2' 'a2 kind 5,2' '100' '160' '0' '0'
+27962 1 42 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/023' 'Inside' 'a2' 'a2 kind 6,2' '100' '160' '0' '0'
+27962 1 43 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/024' 'Inside' 'a2' 'a2 kind 7,2' '100' '160' '0' '0'
+27962 1 44 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/025' 'Inside' 'a2' 'a2 kind 0,3' '100' '160' '0' '0'
+27962 1 45 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/026' 'Inside' 'a2' 'a2 kind 1,3' '100' '160' '0' '0'
+27962 1 46 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/027' 'Inside' 'a2' 'a2 kind 2,3' '100' '160' '0' '0'
+27962 1 47 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/028' 'Inside' 'a2' 'a2 kind 3,3' '100' '160' '0' '0'
+27962 1 48 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/029' 'Inside' 'a2' 'a2 kind 4,3' '100' '160' '0' '0'
+27962 1 49 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/030' 'Inside' 'a2' 'a2 kind 5,3' '100' '160' '0' '0'
+27962 1 50 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/031' 'Inside' 'a2' 'a2 kind 6,3' '100' '160' '0' '0'
+27962 1 51 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/032' 'Inside' 'a2' 'a2 kind 7,3' '100' '160' '0' '0'
+27962 1 52 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-tileset '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'Dungeon'
+27962 1 53 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-tileset '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'Inside'
+27962 1 54 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-tileset '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'Outside'
+27962 1 55 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-tileset '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'SF_Inside'
+27962 1 56 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-tileset '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'SF_Outside'
+27962 1 57 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-tileset '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'World'
+27962 1 58 closebtn
+SNAP pid=27962 tab=1 n=58
+27962 1 1 scroll:up
+27962 1 2 scroll:down
+27962 1 3 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'tilesets'
+27962 1 4 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'characters'
+27962 1 5 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'faces'
+27962 1 6 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'sv_actors'
+27962 1 7 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'sv_enemies'
+27962 1 8 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'enemies'
+27962 1 9 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'battlebacks1'
+27962 1 10 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'battlebacks2'
+27962 1 11 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'parallaxes'
+27962 1 12 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'pictures'
+27962 1 13 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'animations'
+27962 1 14 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'system'
+27962 1 15 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'titles1'
+27962 1 16 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-dir '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'titles2'
+27962 1 17 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-tab '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'A'
+27962 1 18 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-tab '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'B'
+27962 1 19 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-tab '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'C'
+27962 1 20 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/001' 'Inside' 'a2' 'a2 kind 0,0' '100' '160' '1125' '617'
+27962 1 21 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/002' 'Inside' 'a2' 'a2 kind 1,0' '100' '160' '1125' '617'
+27962 1 22 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/003' 'Inside' 'a2' 'a2 kind 2,0' '100' '160' '1125' '617'
+27962 1 23 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/004' 'Inside' 'a2' 'a2 kind 3,0' '100' '160' '1125' '617'
+27962 1 24 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/005' 'Inside' 'a2' 'a2 kind 4,0' '100' '160' '1125' '617'
+27962 1 25 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/006' 'Inside' 'a2' 'a2 kind 5,0' '100' '160' '1125' '617'
+27962 1 26 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/007' 'Inside' 'a2' 'a2 kind 6,0' '100' '160' '1125' '617'
+27962 1 27 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/008' 'Inside' 'a2' 'a2 kind 7,0' '100' '160' '1125' '617'
+27962 1 28 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/009' 'Inside' 'a2' 'a2 kind 0,1' '100' '160' '1125' '617'
+27962 1 29 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/010' 'Inside' 'a2' 'a2 kind 1,1' '100' '160' '1125' '617'
+27962 1 30 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/011' 'Inside' 'a2' 'a2 kind 2,1' '100' '160' '1125' '617'
+27962 1 31 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/012' 'Inside' 'a2' 'a2 kind 3,1' '100' '160' '1125' '617'
+27962 1 32 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/013' 'Inside' 'a2' 'a2 kind 4,1' '100' '160' '1125' '617'
+27962 1 33 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/014' 'Inside' 'a2' 'a2 kind 5,1' '100' '160' '1125' '617'
+27962 1 34 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/015' 'Inside' 'a2' 'a2 kind 6,1' '100' '160' '1125' '617'
+27962 1 35 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/016' 'Inside' 'a2' 'a2 kind 7,1' '100' '160' '1125' '617'
+27962 1 36 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/017' 'Inside' 'a2' 'a2 kind 0,2' '100' '160' '1125' '617'
+27962 1 37 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/018' 'Inside' 'a2' 'a2 kind 1,2' '100' '160' '1125' '617'
+27962 1 38 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/019' 'Inside' 'a2' 'a2 kind 2,2' '100' '160' '1125' '617'
+27962 1 39 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/020' 'Inside' 'a2' 'a2 kind 3,2' '100' '160' '1125' '617'
+27962 1 40 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/021' 'Inside' 'a2' 'a2 kind 4,2' '100' '160' '1125' '617'
+27962 1 41 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/022' 'Inside' 'a2' 'a2 kind 5,2' '100' '160' '1125' '617'
+27962 1 42 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/023' 'Inside' 'a2' 'a2 kind 6,2' '100' '160' '1125' '617'
+27962 1 43 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/024' 'Inside' 'a2' 'a2 kind 7,2' '100' '160' '1125' '617'
+27962 1 44 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/025' 'Inside' 'a2' 'a2 kind 0,3' '100' '160' '1125' '617'
+27962 1 45 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/026' 'Inside' 'a2' 'a2 kind 1,3' '100' '160' '1125' '617'
+27962 1 46 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/027' 'Inside' 'a2' 'a2 kind 2,3' '100' '160' '1125' '617'
+27962 1 47 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/028' 'Inside' 'a2' 'a2 kind 3,3' '100' '160' '1125' '617'
+27962 1 48 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/029' 'Inside' 'a2' 'a2 kind 4,3' '100' '160' '1125' '617'
+27962 1 49 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/030' 'Inside' 'a2' 'a2 kind 5,3' '100' '160' '1125' '617'
+27962 1 50 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/031' 'Inside' 'a2' 'a2 kind 6,3' '100' '160' '1125' '617'
+27962 1 51 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' arm-rmmv '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/sprites/rmmv/Inside_a2/032' 'Inside' 'a2' 'a2 kind 7,3' '100' '160' '1125' '617'
+27962 1 52 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-tileset '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'Dungeon'
+27962 1 53 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-tileset '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'Inside'
+27962 1 54 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-tileset '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'Outside'
+27962 1 55 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-tileset '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'SF_Inside'
+27962 1 56 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-tileset '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'SF_Outside'
+27962 1 57 exec:'/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes/palettes_menu.sh' set-rmmv-tileset '/home/no/Desktop/🤖️🪤️🏠️/🥡️🪜️/🪜️-00.00/NNEST_CLEAN_PARENT/NNEST-11.17/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz❤️‍🔥️00.17/&.widgits/palettes' 'World'
+27962 1 58 closebtn
+RMMV_CLICK pid=29019 x=1572 y=209
+SNAP pid=172015 tab=0 n=31
+172015 0 1 item
+172015 0 2 item
+172015 0 3 item
+172015 0 4 item
+172015 0 5 ce-add-event
+172015 0 6 ACTIVATE
+172015 0 7 ACTIVATE
+172015 0 8 ACTIVATE
+172015 0 9 ACTIVATE
+172015 0 10 ACTIVATE
+172015 0 11 ACTIVATE
+172015 0 12 ACTIVATE
+172015 0 13 ACTIVATE
+172015 0 14 ACTIVATE
+172015 0 15 ACTIVATE
+172015 0 16 ACTIVATE
+172015 0 17 ACTIVATE
+172015 0 18 ACTIVATE
+172015 0 19 ACTIVATE
+172015 0 20 ACTIVATE
+172015 0 21 ACTIVATE
+172015 0 22 ACTIVATE
+172015 0 23 ACTIVATE
+172015 0 24 ACTIVATE
+172015 0 25 ACTIVATE
+172015 0 26 ACTIVATE
+172015 0 27 ACTIVATE
+172015 0 28 ACTIVATE
+172015 0 29 scroll:up
+172015 0 30 scroll:down
+172015 0 31 closebtn
+REG pid=172015 tab=1 xid=1e00002 db-hq
+SNAP pid=172015 tab=1 n=31
+172015 1 1 item
+172015 1 2 item
+172015 1 3 item
+172015 1 4 item
+172015 1 5 ce-add-event
+172015 1 6 ACTIVATE
+172015 1 7 ACTIVATE
+172015 1 8 ACTIVATE
+172015 1 9 ACTIVATE
+172015 1 10 ACTIVATE
+172015 1 11 ACTIVATE
+172015 1 12 ACTIVATE
+172015 1 13 ACTIVATE
+172015 1 14 ACTIVATE
+172015 1 15 ACTIVATE
+172015 1 16 ACTIVATE
+172015 1 17 ACTIVATE
+172015 1 18 ACTIVATE
+172015 1 19 ACTIVATE
+172015 1 20 ACTIVATE
+172015 1 21 ACTIVATE
+172015 1 22 ACTIVATE
+172015 1 23 ACTIVATE
+172015 1 24 ACTIVATE
+172015 1 25 ACTIVATE
+172015 1 26 ACTIVATE
+172015 1 27 ACTIVATE
+172015 1 28 ACTIVATE
+172015 1 29 scroll:up
+172015 1 30 scroll:down
+172015 1 31 closebtn
+SNAP pid=7218 tab=0 n=46
+7218 0 1 tab
+7218 0 2 tab
+7218 0 3 tab
+7218 0 4 tab
+7218 0 5 tab
+7218 0 6 tab
+7218 0 7 tab
+7218 0 8 tab
+7218 0 9 tab
+7218 0 10 tab
+7218 0 11 tab
+7218 0 12 tab
+7218 0 13 tab
+7218 0 14 tab
+7218 0 15 tab
+7218 0 16 item
+7218 0 17 item
+7218 0 18 item
+7218 0 19 item
+7218 0 20 ce-add-event
+7218 0 21 ACTIVATE
+7218 0 22 ACTIVATE
+7218 0 23 ACTIVATE
+7218 0 24 ACTIVATE
+7218 0 25 ACTIVATE
+7218 0 26 ACTIVATE
+7218 0 27 ACTIVATE
+7218 0 28 ACTIVATE
+7218 0 29 ACTIVATE
+7218 0 30 ACTIVATE
+7218 0 31 ACTIVATE
+7218 0 32 ACTIVATE
+7218 0 33 ACTIVATE
+7218 0 34 ACTIVATE
+7218 0 35 ACTIVATE
+7218 0 36 ACTIVATE
+7218 0 37 ACTIVATE
+7218 0 38 ACTIVATE
+7218 0 39 ACTIVATE
+7218 0 40 ACTIVATE
+7218 0 41 ACTIVATE
+7218 0 42 ACTIVATE
+7218 0 43 ACTIVATE
+7218 0 44 scroll:up
+7218 0 45 scroll:down
+7218 0 46 closebtn
+REG pid=7218 tab=1 xid=a00003 db-hq
+SNAP pid=7218 tab=1 n=46
+7218 1 1 tab
+7218 1 2 tab
+7218 1 3 tab
+7218 1 4 tab
+7218 1 5 tab
+7218 1 6 tab
+7218 1 7 tab
+7218 1 8 tab
+7218 1 9 tab
+7218 1 10 tab
+7218 1 11 tab
+7218 1 12 tab
+7218 1 13 tab
+7218 1 14 tab
+7218 1 15 tab
+7218 1 16 item
+7218 1 17 item
+7218 1 18 item
+7218 1 19 item
+7218 1 20 ce-add-event
+7218 1 21 ACTIVATE
+7218 1 22 ACTIVATE
+7218 1 23 ACTIVATE
+7218 1 24 ACTIVATE
+7218 1 25 ACTIVATE
+7218 1 26 ACTIVATE
+7218 1 27 ACTIVATE
+7218 1 28 ACTIVATE
+7218 1 29 ACTIVATE
+7218 1 30 ACTIVATE
+7218 1 31 ACTIVATE
+7218 1 32 ACTIVATE
+7218 1 33 ACTIVATE
+7218 1 34 ACTIVATE
+7218 1 35 ACTIVATE
+7218 1 36 ACTIVATE
+7218 1 37 ACTIVATE
+7218 1 38 ACTIVATE
+7218 1 39 ACTIVATE
+7218 1 40 ACTIVATE
+7218 1 41 ACTIVATE
+7218 1 42 ACTIVATE
+7218 1 43 ACTIVATE
+7218 1 44 scroll:up
+7218 1 45 scroll:down
+7218 1 46 closebtn
+SNAP pid=15378 tab=0 n=46
+15378 0 1 tab
+15378 0 2 tab
+15378 0 3 tab
+15378 0 4 tab
+15378 0 5 tab
+15378 0 6 tab
+15378 0 7 tab
+15378 0 8 tab
+15378 0 9 tab
+15378 0 10 tab
+15378 0 11 tab
+15378 0 12 tab
+15378 0 13 tab
+15378 0 14 tab
+15378 0 15 tab
+15378 0 16 item
+15378 0 17 item
+15378 0 18 item
+15378 0 19 item
+15378 0 20 ce-add-event
+15378 0 21 ACTIVATE
+15378 0 22 ACTIVATE
+15378 0 23 ACTIVATE
+15378 0 24 ACTIVATE
+15378 0 25 ACTIVATE
+15378 0 26 ACTIVATE
+15378 0 27 ACTIVATE
+15378 0 28 ACTIVATE
+15378 0 29 ACTIVATE
+15378 0 30 ACTIVATE
+15378 0 31 ACTIVATE
+15378 0 32 ACTIVATE
+15378 0 33 ACTIVATE
+15378 0 34 ACTIVATE
+15378 0 35 ACTIVATE
+15378 0 36 ACTIVATE
+15378 0 37 ACTIVATE
+15378 0 38 ACTIVATE
+15378 0 39 ACTIVATE
+15378 0 40 ACTIVATE
+15378 0 41 ACTIVATE
+15378 0 42 ACTIVATE
+15378 0 43 ACTIVATE
+15378 0 44 scroll:up
+15378 0 45 scroll:down
+15378 0 46 closebtn
+REG pid=15378 tab=1 xid=1c00003 db-hq
+SNAP pid=15378 tab=1 n=46
+15378 1 1 tab
+15378 1 2 tab
+15378 1 3 tab
+15378 1 4 tab
+15378 1 5 tab
+15378 1 6 tab
+15378 1 7 tab
+15378 1 8 tab
+15378 1 9 tab
+15378 1 10 tab
+15378 1 11 tab
+15378 1 12 tab
+15378 1 13 tab
+15378 1 14 tab
+15378 1 15 tab
+15378 1 16 item
+15378 1 17 item
+15378 1 18 item
+15378 1 19 item
+15378 1 20 ce-add-event
+15378 1 21 ACTIVATE
+15378 1 22 ACTIVATE
+15378 1 23 ACTIVATE
+15378 1 24 ACTIVATE
+15378 1 25 ACTIVATE
+15378 1 26 ACTIVATE
+15378 1 27 ACTIVATE
+15378 1 28 ACTIVATE
+15378 1 29 ACTIVATE
+15378 1 30 ACTIVATE
+15378 1 31 ACTIVATE
+15378 1 32 ACTIVATE
+15378 1 33 ACTIVATE
+15378 1 34 ACTIVATE
+15378 1 35 ACTIVATE
+15378 1 36 ACTIVATE
+15378 1 37 ACTIVATE
+15378 1 38 ACTIVATE
+15378 1 39 ACTIVATE
+15378 1 40 ACTIVATE
+15378 1 41 ACTIVATE
+15378 1 42 ACTIVATE
+15378 1 43 ACTIVATE
+15378 1 44 scroll:up
+15378 1 45 scroll:down
+15378 1 46 closebtn
+SNAP pid=16011 tab=0 n=46
+16011 0 1 tab
+16011 0 2 tab
+16011 0 3 tab
+16011 0 4 tab
+16011 0 5 tab
+16011 0 6 tab
+16011 0 7 tab
+16011 0 8 tab
+16011 0 9 tab
+16011 0 10 tab
+16011 0 11 tab
+16011 0 12 tab
+16011 0 13 tab
+16011 0 14 tab
+16011 0 15 tab
+16011 0 16 item
+16011 0 17 item
+16011 0 18 item
+16011 0 19 item
+16011 0 20 ce-add-event
+16011 0 21 ACTIVATE
+16011 0 22 ACTIVATE
+16011 0 23 ACTIVATE
+16011 0 24 ACTIVATE
+16011 0 25 ACTIVATE
+16011 0 26 ACTIVATE
+16011 0 27 ACTIVATE
+16011 0 28 ACTIVATE
+16011 0 29 ACTIVATE
+16011 0 30 ACTIVATE
+16011 0 31 ACTIVATE
+16011 0 32 ACTIVATE
+16011 0 33 ACTIVATE
+16011 0 34 ACTIVATE
+16011 0 35 ACTIVATE
+16011 0 36 ACTIVATE
+16011 0 37 ACTIVATE
+16011 0 38 ACTIVATE
+16011 0 39 ACTIVATE
+16011 0 40 ACTIVATE
+16011 0 41 ACTIVATE
+16011 0 42 ACTIVATE
+16011 0 43 ACTIVATE
+16011 0 44 scroll:up
+16011 0 45 scroll:down
+16011 0 46 closebtn
+REG pid=16011 tab=1 xid=1c00003 db-hq
+SNAP pid=16011 tab=1 n=46
+16011 1 1 tab
+16011 1 2 tab
+16011 1 3 tab
+16011 1 4 tab
+16011 1 5 tab
+16011 1 6 tab
+16011 1 7 tab
+16011 1 8 tab
+16011 1 9 tab
+16011 1 10 tab
+16011 1 11 tab
+16011 1 12 tab
+16011 1 13 tab
+16011 1 14 tab
+16011 1 15 tab
+16011 1 16 item
+16011 1 17 item
+16011 1 18 item
+16011 1 19 item
+16011 1 20 ce-add-event
+16011 1 21 ACTIVATE
+16011 1 22 ACTIVATE
+16011 1 23 ACTIVATE
+16011 1 24 ACTIVATE
+16011 1 25 ACTIVATE
+16011 1 26 ACTIVATE
+16011 1 27 ACTIVATE
+16011 1 28 ACTIVATE
+16011 1 29 ACTIVATE
+16011 1 30 ACTIVATE
+16011 1 31 ACTIVATE
+16011 1 32 ACTIVATE
+16011 1 33 ACTIVATE
+16011 1 34 ACTIVATE
+16011 1 35 ACTIVATE
+16011 1 36 ACTIVATE
+16011 1 37 ACTIVATE
+16011 1 38 ACTIVATE
+16011 1 39 ACTIVATE
+16011 1 40 ACTIVATE
+16011 1 41 ACTIVATE
+16011 1 42 ACTIVATE
+16011 1 43 ACTIVATE
+16011 1 44 scroll:up
+16011 1 45 scroll:down
+16011 1 46 closebtn
+SNAP pid=17933 tab=0 n=46
+17933 0 1 tab
+17933 0 2 tab
+17933 0 3 tab
+17933 0 4 tab
+17933 0 5 tab
+17933 0 6 tab
+17933 0 7 tab
+17933 0 8 tab
+17933 0 9 tab
+17933 0 10 tab
+17933 0 11 tab
+17933 0 12 tab
+17933 0 13 tab
+17933 0 14 tab
+17933 0 15 tab
+17933 0 16 item
+17933 0 17 item
+17933 0 18 item
+17933 0 19 item
+17933 0 20 ce-add-event
+17933 0 21 ACTIVATE
+17933 0 22 ACTIVATE
+17933 0 23 ACTIVATE
+17933 0 24 ACTIVATE
+17933 0 25 ACTIVATE
+17933 0 26 ACTIVATE
+17933 0 27 ACTIVATE
+17933 0 28 ACTIVATE
+17933 0 29 ACTIVATE
+17933 0 30 ACTIVATE
+17933 0 31 ACTIVATE
+17933 0 32 ACTIVATE
+17933 0 33 ACTIVATE
+17933 0 34 ACTIVATE
+17933 0 35 ACTIVATE
+17933 0 36 ACTIVATE
+17933 0 37 ACTIVATE
+17933 0 38 ACTIVATE
+17933 0 39 ACTIVATE
+17933 0 40 ACTIVATE
+17933 0 41 ACTIVATE
+17933 0 42 ACTIVATE
+17933 0 43 ACTIVATE
+17933 0 44 scroll:up
+17933 0 45 scroll:down
+17933 0 46 closebtn
+REG pid=17933 tab=1 xid=1c00003 db-hq
+SNAP pid=17933 tab=1 n=46
+17933 1 1 tab
+17933 1 2 tab
+17933 1 3 tab
+17933 1 4 tab
+17933 1 5 tab
+17933 1 6 tab
+17933 1 7 tab
+17933 1 8 tab
+17933 1 9 tab
+17933 1 10 tab
+17933 1 11 tab
+17933 1 12 tab
+17933 1 13 tab
+17933 1 14 tab
+17933 1 15 tab
+17933 1 16 item
+17933 1 17 item
+17933 1 18 item
+17933 1 19 item
+17933 1 20 ce-add-event
+17933 1 21 ACTIVATE
+17933 1 22 ACTIVATE
+17933 1 23 ACTIVATE
+17933 1 24 ACTIVATE
+17933 1 25 ACTIVATE
+17933 1 26 ACTIVATE
+17933 1 27 ACTIVATE
+17933 1 28 ACTIVATE
+17933 1 29 ACTIVATE
+17933 1 30 ACTIVATE
+17933 1 31 ACTIVATE
+17933 1 32 ACTIVATE
+17933 1 33 ACTIVATE
+17933 1 34 ACTIVATE
+17933 1 35 ACTIVATE
+17933 1 36 ACTIVATE
+17933 1 37 ACTIVATE
+17933 1 38 ACTIVATE
+17933 1 39 ACTIVATE
+17933 1 40 ACTIVATE
+17933 1 41 ACTIVATE
+17933 1 42 ACTIVATE
+17933 1 43 ACTIVATE
+17933 1 44 scroll:up
+17933 1 45 scroll:down
+17933 1 46 closebtn
+SNAP pid=38605 tab=0 n=46
+38605 0 1 tab
+38605 0 2 tab
+38605 0 3 tab
+38605 0 4 tab
+38605 0 5 tab
+38605 0 6 tab
+38605 0 7 tab
+38605 0 8 tab
+38605 0 9 tab
+38605 0 10 tab
+38605 0 11 tab
+38605 0 12 tab
+38605 0 13 tab
+38605 0 14 tab
+38605 0 15 tab
+38605 0 16 item
+38605 0 17 item
+38605 0 18 item
+38605 0 19 item
+38605 0 20 ce-add-event
+38605 0 21 ACTIVATE
+38605 0 22 ACTIVATE
+38605 0 23 ACTIVATE
+38605 0 24 ACTIVATE
+38605 0 25 ACTIVATE
+38605 0 26 ACTIVATE
+38605 0 27 ACTIVATE
+38605 0 28 ACTIVATE
+38605 0 29 ACTIVATE
+38605 0 30 ACTIVATE
+38605 0 31 ACTIVATE
+38605 0 32 ACTIVATE
+38605 0 33 ACTIVATE
+38605 0 34 ACTIVATE
+38605 0 35 ACTIVATE
+38605 0 36 ACTIVATE
+38605 0 37 ACTIVATE
+38605 0 38 ACTIVATE
+38605 0 39 ACTIVATE
+38605 0 40 ACTIVATE
+38605 0 41 ACTIVATE
+38605 0 42 ACTIVATE
+38605 0 43 ACTIVATE
+38605 0 44 scroll:up
+38605 0 45 scroll:down
+38605 0 46 closebtn
+REG pid=38605 tab=1 xid=1e00003 db-hq
+SNAP pid=38605 tab=1 n=46
+38605 1 1 tab
+38605 1 2 tab
+38605 1 3 tab
+38605 1 4 tab
+38605 1 5 tab
+38605 1 6 tab
+38605 1 7 tab
+38605 1 8 tab
+38605 1 9 tab
+38605 1 10 tab
+38605 1 11 tab
+38605 1 12 tab
+38605 1 13 tab
+38605 1 14 tab
+38605 1 15 tab
+38605 1 16 item
+38605 1 17 item
+38605 1 18 item
+38605 1 19 item
+38605 1 20 ce-add-event
+38605 1 21 ACTIVATE
+38605 1 22 ACTIVATE
+38605 1 23 ACTIVATE
+38605 1 24 ACTIVATE
+38605 1 25 ACTIVATE
+38605 1 26 ACTIVATE
+38605 1 27 ACTIVATE
+38605 1 28 ACTIVATE
+38605 1 29 ACTIVATE
+38605 1 30 ACTIVATE
+38605 1 31 ACTIVATE
+38605 1 32 ACTIVATE
+38605 1 33 ACTIVATE
+38605 1 34 ACTIVATE
+38605 1 35 ACTIVATE
+38605 1 36 ACTIVATE
+38605 1 37 ACTIVATE
+38605 1 38 ACTIVATE
+38605 1 39 ACTIVATE
+38605 1 40 ACTIVATE
+38605 1 41 ACTIVATE
+38605 1 42 ACTIVATE
+38605 1 43 ACTIVATE
+38605 1 44 scroll:up
+38605 1 45 scroll:down
+38605 1 46 closebtn
+SNAP pid=45888 tab=0 n=46
+45888 0 1 tab
+45888 0 2 tab
+45888 0 3 tab
+45888 0 4 tab
+45888 0 5 tab
+45888 0 6 tab
+45888 0 7 tab
+45888 0 8 tab
+45888 0 9 tab
+45888 0 10 tab
+45888 0 11 tab
+45888 0 12 tab
+45888 0 13 tab
+45888 0 14 tab
+45888 0 15 tab
+45888 0 16 item
+45888 0 17 item
+45888 0 18 item
+45888 0 19 item
+45888 0 20 ce-add-event
+45888 0 21 ACTIVATE
+45888 0 22 ACTIVATE
+45888 0 23 ACTIVATE
+45888 0 24 ACTIVATE
+45888 0 25 ACTIVATE
+45888 0 26 ACTIVATE
+45888 0 27 ACTIVATE
+45888 0 28 ACTIVATE
+45888 0 29 ACTIVATE
+45888 0 30 ACTIVATE
+45888 0 31 ACTIVATE
+45888 0 32 ACTIVATE
+45888 0 33 ACTIVATE
+45888 0 34 ACTIVATE
+45888 0 35 ACTIVATE
+45888 0 36 ACTIVATE
+45888 0 37 ACTIVATE
+45888 0 38 ACTIVATE
+45888 0 39 ACTIVATE
+45888 0 40 ACTIVATE
+45888 0 41 ACTIVATE
+45888 0 42 ACTIVATE
+45888 0 43 ACTIVATE
+45888 0 44 scroll:up
+45888 0 45 scroll:down
+45888 0 46 closebtn
+REG pid=45888 tab=1 xid=1e00003 db-hq
+SNAP pid=45888 tab=1 n=46
+45888 1 1 tab
+45888 1 2 tab
+45888 1 3 tab
+45888 1 4 tab
+45888 1 5 tab
+45888 1 6 tab
+45888 1 7 tab
+45888 1 8 tab
+45888 1 9 tab
+45888 1 10 tab
+45888 1 11 tab
+45888 1 12 tab
+45888 1 13 tab
+45888 1 14 tab
+45888 1 15 tab
+45888 1 16 item
+45888 1 17 item
+45888 1 18 item
+45888 1 19 item
+45888 1 20 ce-add-event
+45888 1 21 ACTIVATE
+45888 1 22 ACTIVATE
+45888 1 23 ACTIVATE
+45888 1 24 ACTIVATE
+45888 1 25 ACTIVATE
+45888 1 26 ACTIVATE
+45888 1 27 ACTIVATE
+45888 1 28 ACTIVATE
+45888 1 29 ACTIVATE
+45888 1 30 ACTIVATE
+45888 1 31 ACTIVATE
+45888 1 32 ACTIVATE
+45888 1 33 ACTIVATE
+45888 1 34 ACTIVATE
+45888 1 35 ACTIVATE
+45888 1 36 ACTIVATE
+45888 1 37 ACTIVATE
+45888 1 38 ACTIVATE
+45888 1 39 ACTIVATE
+45888 1 40 ACTIVATE
+45888 1 41 ACTIVATE
+45888 1 42 ACTIVATE
+45888 1 43 ACTIVATE
+45888 1 44 scroll:up
+45888 1 45 scroll:down
+45888 1 46 closebtn

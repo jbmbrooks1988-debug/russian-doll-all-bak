@@ -26,6 +26,6 @@ cam_yaw=180.00
 cam_pitch=-90.00
 render_mode=1
 possessed_id=hero
-interact_mode=0
+interact_mode=1
 facing=1000
 map_id=map_start

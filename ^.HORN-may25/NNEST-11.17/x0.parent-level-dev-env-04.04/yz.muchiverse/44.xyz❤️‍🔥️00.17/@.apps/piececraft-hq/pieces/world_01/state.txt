@@ -1,7 +1,7 @@
 name=World 01
 type=world
 seed=1787971953
-tick=13
+tick=2
 active=1
 game_time_epoch_sec=1767268800
 autotick_enabled=0

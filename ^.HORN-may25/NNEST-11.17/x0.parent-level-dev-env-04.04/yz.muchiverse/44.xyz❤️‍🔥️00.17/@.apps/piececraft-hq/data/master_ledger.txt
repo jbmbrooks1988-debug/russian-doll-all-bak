@@ -4051,15 +4051,3 @@
 2026-08-20T20:44:23|1|chicken|wander|x:9,y:6
 2026-08-20T20:44:23|2|player|move|tick:2
 2026-08-20T20:44:23|2|chicken|wander|x:9,y:7
-2026-08-30T02:57:46|3|player|move|tick:3
-2026-08-30T02:57:46|3|chicken|wander|x:6,y:7
-2026-08-30T02:57:46|4|player|move|tick:4
-2026-08-30T02:57:46|4|chicken|wander|x:6,y:8
-2026-08-30T02:57:47|5|player|move|tick:5
-2026-08-30T02:57:47|5|chicken|wander|x:7,y:8
-2026-08-30T02:57:47|6|player|move|tick:6
-2026-08-30T02:57:47|7|player|move|tick:7
-2026-08-30T02:57:48|8|player|move|tick:8
-2026-08-30T02:57:48|8|chicken|wander|x:7,y:7
-2026-08-30T02:57:48|9|player|move|tick:9
-2026-08-30T02:57:48|9|chicken|wander|x:7,y:6

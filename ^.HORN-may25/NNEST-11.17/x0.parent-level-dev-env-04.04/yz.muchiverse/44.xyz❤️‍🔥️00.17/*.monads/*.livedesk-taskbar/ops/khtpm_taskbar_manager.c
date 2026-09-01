@@ -33,6 +33,18 @@
  * taskbar-manager start). */
 static void livedesk_ensure_cursword(const char *house_root);
 
+/* Forward decls - ktb_init() (below) needs these before their own real
+ * definitions, further down this file. livedesk_spawn_desk() is the core
+ * real logic for spawning all entities listed in a desk's PDL; reused by
+ * live desk switches and now also by livedesk_spawn_active_desk() on startup.
+ * livedesk_spawn_active_desk() itself reads the currently-active session's
+ * currently-active desk, then calls livedesk_spawn_desk() to relaunch its
+ * entities. This ensures that when button.sh reset rebuilds the manager,
+ * the active desk's real entity set (not a static autostart.pdl list that
+ * can drift) gets reliably relaunched. */
+static void livedesk_spawn_desk(const char *house_root, const char *sroot, const char *id, const char *desk);
+static void livedesk_spawn_active_desk(const char *house_root);
+
 /* REAL, NEW 2026-08-25 (direct request: a general "kill hq" menu row that
  * covers EVERYTHING the taskbar launches, not just a fixed -hq binary
  * name list — real live test proved the fixed-list kill_hq_windows.sh
@@ -267,6 +279,15 @@ void ktb_init(KtbState *s, const char *house_root) {
      * in this same file, forward-declared alongside livedesk_close_all
      * near the top) for the full real design. */
     livedesk_ensure_cursword(s->house_root);
+    /* Real, new 2026-08-31, direct instruction ("yes have the active desk
+     * be run from autostart"): on taskbar-manager start (when button.sh reset
+     * triggers), spawn the current active session's active desk entities
+     * using the same proven real logic as live desk switches. This closes the
+     * structural drift: instead of relying on a static, separately-maintained
+     * autostart.pdl list (which can become out-of-sync when entities are
+     * added/removed), we now relaunch the REAL, genuine active desk's entity
+     * set, the exact one the user left last session. */
+    livedesk_spawn_active_desk(s->house_root);
 }
 
 /* REAL, NEW 2026-08-16 - see KtbState's own cell_id_pos/cell_id_str
@@ -1832,6 +1853,32 @@ static void livedesk_ensure_cursword(const char *house_root) {
 #endif
 }
 
+/* Real fix, 2026-08-31: reads the currently-active session and desk,
+ * then reuses the proven livedesk_spawn_desk() logic to launch its real
+ * entity set. This replaces the prior static autostart.pdl-based approach
+ * with a real, drift-free mechanism: on button.sh reset, the ACTUAL active
+ * desk's ACTUAL entity list (whatever session/desk is genuinely current,
+ * not hardcoded) gets relaunched, the same way a live desk switch does.
+ * Missing/unreadable session metadata is a silent no-op (preserves prior
+ * behavior: if there's no active desk metadata, nothing spawns on reset,
+ * which is safer than trying to guess). */
+static void livedesk_spawn_active_desk(const char *house_root) {
+    char sroot[KTB_PATH_BUF];
+    if (!livedesk_sessions_root(house_root, sroot, sizeof(sroot))) return;
+
+    char active_session[64] = "";
+    livedesk_root_read(sroot, active_session, sizeof(active_session), NULL, 0);
+    if (!active_session[0]) return; /* no active session - nothing to spawn */
+
+    char active_desk[64] = "";
+    livedesk_active_desk(sroot, active_session, active_desk, sizeof(active_desk));
+    if (!active_desk[0]) return; /* no active desk - nothing to spawn */
+
+    /* Now spawn the real active desk using the same proven logic as
+     * livedesk_switch_desk() — the real, production-proven path. */
+    livedesk_spawn_desk(house_root, sroot, active_session, active_desk);
+}
+
 static void livedesk_spawn_desk(const char *house_root, const char *sroot, const char *id, const char *desk) {
     char sdir[KTB_PATH_BUF], dp[KTB_PATH_BUF];
     livedesk_session_dir(sroot, id, sdir, sizeof(sdir));
@@ -1947,6 +1994,17 @@ static void livedesk_spawn_desk(const char *house_root, const char *sroot, const
          * session entities copy) register their package into pals first. */
         char base[64];
         livedesk_base_name(path, base, sizeof(base));
+        /* REAL FIX 2026-08-31, direct live report ("cursword now shows
+         * up twice") - same real reason livedesk_close_all() already
+         * skips cursword by basename: it has its own dedicated spawn+
+         * dedup path (livedesk_ensure_cursword(), called right before
+         * livedesk_spawn_active_desk() in ktb_init()) - a plain DESK row
+         * for it in the active desk's own .pdl would otherwise race
+         * that just-backgrounded spawn (its own real "already_live"
+         * check below reads the registry BEFORE cursword's own process
+         * has necessarily self-registered yet), producing a real
+         * duplicate. */
+        if (strcmp(base, "cursword") == 0) continue;
         char pr[KTB_PATH_BUF];
         if (!livedesk_pals_root(house_root, pr, sizeof(pr))) continue;
         char pal[KTB_PATH_BUF];
@@ -1960,6 +2018,37 @@ static void livedesk_spawn_desk(const char *house_root, const char *sroot, const
             for (int i = 0; i < n_live; i++)
                 if (strcmp(live_paths[i], pal) == 0 && ktb_pid_alive(live_pids[i])) { already_live = 1; break; }
             if (already_live) continue; /* real process already running for this pal - never double-spawn it */
+        }
+        /* REAL FIX 2026-08-31, direct live report ("asa/ava/book-stack/
+         * tile all silently self-close within a second of spawning") -
+         * root cause: crypt_autostart.c's own quit_current_livedesk()
+         * writes a plain "CLOSE\n" into every registered pal's real
+         * interact_relay.txt as its graceful-shutdown attempt, BEFORE
+         * the hard-kill sweep that follows it. If the OLD process for
+         * this exact pal got killed before it ever polled and consumed
+         * that line (a real, confirmed race - not hypothetical, caught
+         * live via each closed pal's own history.txt: WINDOW_OPEN then
+         * INJECTED: CLOSE one second later), the stale CLOSE is still
+         * sitting in the file when THIS brand-new process starts - its
+         * own first poll tick reads it and dutifully closes itself,
+         * since interact_relay.txt is keyed by package PATH, not PID,
+         * with zero way for a fresh process to tell a genuinely-new
+         * command from a stale leftover one. Real, deterministic fix
+         * (direct instruction: "we should use a marker file that is
+         * house std" - not a timing delay, which would just narrow the
+         * race, not close it): truncate the relay file right here,
+         * immediately before this exact spawn, so any stale command
+         * from a prior incarnation of this same pal is cleared before
+         * the new process's own first poll ever runs. Matches this
+         * relay file's own already-existing real contract elsewhere in
+         * this house (write once, consumed once, truncated) - this is
+         * just enforcing that contract at the one real point it could
+         * otherwise be violated (a killed-before-consuming process). */
+        {
+            char relay[KTB_PATH_BUF];
+            snprintf(relay, sizeof(relay), "%s/interact_relay.txt", pal);
+            FILE *rf = fopen(relay, "w");
+            if (rf) fclose(rf);
         }
         int x = xs ? atoi(xs) : -1, y = ys ? atoi(ys) : -1;
         if (x >= 0 && y >= 0) {
@@ -2372,6 +2461,37 @@ static int livedesk_build_palettes_menu(const char *house_root, HQMenuItem *menu
         char lkey[40], ckey[40];
         snprintf(lkey, sizeof(lkey), "palettes_menu_%d_label", i);
         snprintf(ckey, sizeof(ckey), "palettes_menu_%d_cmd", i);
+        char lab[64] = "", cmd[KTB_PATH_BUF] = "";
+        read_key_value(pdl, lkey, lab, sizeof(lab));
+        read_key_value(pdl, ckey, cmd, sizeof(cmd));
+        if (!lab[0]) continue;
+        snprintf(menu[count].label, sizeof(menu[count].label), "%s", lab);
+        snprintf(menu[count].command, sizeof(menu[count].command), "%s", cmd);
+        count++;
+    }
+    return count;
+}
+
+/* REAL, NEW 2026-08-31 - the "network" cell (positional 13, click code
+ * 4000+13 per NETWORK-CELL-HQ-WINDOWS-DESIGN.md §2), wiring the real
+ * next step that doc's own "REAL HANDOFF STATUS" section documents:
+ * opencode had already built and tested the real launcher scripts
+ * (open_network_app.sh/open_network_browser.sh under &.hq-apps/
+ * network/) but never wired the taskbar menu itself. Same real
+ * PDL-driven pattern as livedesk_build_palettes_menu() right above
+ * (NOT the C-hardcoded livedesk_build_ai_menu() anti-pattern) -
+ * answers that doc's own still-open §11 reviewer question: the
+ * canonical row-writer is this dedicated-prefix PDL shape
+ * (`network_menu_N_label`/`_cmd`), same as palettes, not a literal
+ * `strip_btn_13_menu_N` guess. */
+static int livedesk_build_network_menu(const char *house_root, HQMenuItem *menu, int max) {
+    char pdl[KTB_PATH_BUF];
+    snprintf(pdl, sizeof(pdl), "%s/#.desktop/livedesk_taskbar.pdl", house_root);
+    int count = 0;
+    for (int i = 1; i <= max; i++) {
+        char lkey[40], ckey[40];
+        snprintf(lkey, sizeof(lkey), "network_menu_%d_label", i);
+        snprintf(ckey, sizeof(ckey), "network_menu_%d_cmd", i);
         char lab[64] = "", cmd[KTB_PATH_BUF] = "";
         read_key_value(pdl, lkey, lab, sizeof(lab));
         read_key_value(pdl, ckey, cmd, sizeof(cmd));
@@ -3288,7 +3408,11 @@ void ktb_hq_open(KtbState *s, int which) {
     else if (which == 100) n = livedesk_build_session_menu(s->house_root, s->hq_menu, KTB_LIVEDESK_DYN_MAX); /* 100 = internal-only "session picker", reached from the file cell's "load" row (livedesk:load), never a header click directly - see ktb_hq_activate() */
     else if (which == 101) n = livedesk_build_db_ez_sections_menu(s->hq_menu, KTB_LIVEDESK_DYN_MAX); /* 101 = internal-only db-ez 14-section list, reached from db cell's "db-ez" row */
     else if (which == 102) n = livedesk_build_db_common_events_menu(s->house_root, s->hq_menu, KTB_LIVEDESK_DYN_MAX); /* 102 = internal-only Common Events list (global, house_root-wide), reached from db-ez's "Common Events" row */
-    else { ktb_hq_close(s); return; } /* inert cell (6/7/10/11/12/13) or unknown - close any open popup, no-op otherwise, matching the legacy exactly */
+    /* network (13) - real, wired 2026-08-31, see livedesk_build_network_
+     * menu()'s own header comment. Was one of the bare inert cells this
+     * same catch-all comment below used to include. */
+    else if (which == 13) n = livedesk_build_network_menu(s->house_root, s->hq_menu, KTB_LIVEDESK_DYN_MAX);
+    else { ktb_hq_close(s); return; } /* inert cell (6/7/10/11/12) or unknown - close any open popup, no-op otherwise, matching the legacy exactly */
     if (n <= 0) {
         snprintf(s->hq_menu[0].label, sizeof(s->hq_menu[0].label), "(empty)");
         s->hq_menu[0].command[0] = '\0';
@@ -3498,6 +3622,39 @@ void ktb_hq_activate(KtbState *s, int row) {
         int rc = ktb_system_recorded(s->house_root, sh);
         (void)rc;
         ktb_hq_close(s);
+    } else if (strncmp(m->command, "livedesk:open-network:", 22) == 0) {
+        /* network cell rows (2026-08-31, "13.network" dropdown, see
+         * livedesk_build_network_menu()'s own header comment) - SAME
+         * real reason as livedesk:open-palette: right above: the real
+         * launcher scripts live under the house's literal "&.hq-apps/"
+         * dir, which cannot survive unquoted in the generic sh -c
+         * fallback ('&' is a control operator). Dispatch string +
+         * C-side quoted absolute path, not a raw PDL shell command.
+         * "browser" opens the real cli-io stub (open_network_browser.sh,
+         * no extra arg); irc/forum/chain open the matching app via
+         * open_network_app.sh's own real <app> key. Both scripts
+         * already exist, tested, under &.hq-apps/network/ - built by
+         * opencode, only the menu wiring itself was missing (see
+         * NETWORK-CELL-HQ-WINDOWS-DESIGN.md's own "REAL HANDOFF
+         * STATUS"). Prefix length verified: printf '%s'
+         * "livedesk:open-network:" | wc -c = 22. */
+        const char *key = m->command + 22;
+        char sh[KTB_PATH_BUF * 3];
+        if (strcmp(key, "browser") == 0) {
+            snprintf(sh, sizeof(sh),
+                     KTB_SETSID "nohup sh \"%s/&.hq-apps/network/open_network_browser.sh\" \"%s\" >/dev/null 2>&1 &",
+                     s->house_root, s->house_root);
+        } else {
+            const char *title = strcmp(key, "irc") == 0 ? "IRC Chat"
+                               : strcmp(key, "forum") == 0 ? "Forum"
+                               : strcmp(key, "chain") == 0 ? "Chain" : key;
+            snprintf(sh, sizeof(sh),
+                     KTB_SETSID "nohup sh \"%s/&.hq-apps/network/open_network_app.sh\" \"%s\" \"%s\" \"%s\" >/dev/null 2>&1 &",
+                     s->house_root, s->house_root, key, title);
+        }
+        int rc = ktb_system_recorded(s->house_root, sh);
+        (void)rc;
+        ktb_hq_close(s);
     } else if (strcmp(m->command, "livedesk:spawn-cursword") == 0) {
         /* CURSword personal-assistant entity (AU24-oc-handon.md §4.4),
          * HQ-menu row "cursword" (#.desktop/livedesk_taskbar.pdl
@@ -3695,7 +3852,7 @@ void ktb_hq_activate(KtbState *s, int row) {
          * Launched via button.sh (mirrors open-hai pattern exactly). */
 #ifdef _WIN32
         char bin[KTB_PATH_BUF], chtpm[KTB_PATH_BUF];
-        snprintf(bin, sizeof(bin), "%s/*.monads/*.livedesk-taskbar/ops/+x/khtpm_entity_menu_render.+x", s->house_root);
+        snprintf(bin, sizeof(bin), "%s/*.monads/*.livedesk-taskbar/ops/+x/khtpm_core_render.+x", s->house_root);
         snprintf(chtpm, sizeof(chtpm), "%s/&.hq-apps/chat-hai/chat-hai.chtpm", s->house_root);
         const char *aa[2] = { s->house_root, chtpm };
         win_spawn_n(bin, aa, 2);

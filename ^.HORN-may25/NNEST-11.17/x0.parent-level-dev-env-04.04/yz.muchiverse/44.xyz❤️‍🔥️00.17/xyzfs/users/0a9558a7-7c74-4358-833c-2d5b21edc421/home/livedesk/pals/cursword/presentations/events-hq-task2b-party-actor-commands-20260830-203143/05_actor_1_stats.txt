@@ -1,6 +1,0 @@
-profile=Guardian of the North
-nickname=Hel
-name=Officer Helena
-hp=20
-mp=5
-tp=8

@@ -169,6 +169,138 @@ mutaclysm, tile-picker, event-ez, the `045.muchi-pal-agent` family, etc.) use th
 real compiled parsers/engines, not bash-composed `.chtpm` — genuinely different
 architecture, not the same debt under a different name.
 
+## 4. NEW real finding, 2026-08-31 — `dbhq_load_actors()` in `khtpm_entity_menu_render.c`
+
+**A different, milder-but-real category from the printf-XML pattern above (the 2026-08-25
+audit's own "fully contained to 3 apps" conclusion still stands for THAT specific
+pattern — this is a genuinely separate violation, not a fourth instance of it).**
+
+Found while investigating why reusing `class="db-hq"` for an unrelated new window showed
+real Actor/RPG-database content instead. `dbhq_load_actors()` (in the shared, "hard
+boundary" `khtpm_entity_menu_render.c` itself) reads a real PDL file
+(`&.widgits/db-hq/data/actors.pdl`) and injects real rows directly — the CONTENT is real
+file-based data, not hardcoded strings (confirmed: the displayed text does not appear
+anywhere in the C source). **The violation is architectural, not data-fakery**: this is a
+real "Manager owns projection" violation (TPMOS §11/§12, cited above) — the shared
+renderer parses its own mode's sovereign data source inline, instead of a real, separate
+manager publishing a structured projection the renderer only ever reads. Exactly the same
+class of coupling risk this whole doc exists to name: every new mode tempted to add its
+own inline loader to the SAME shared file compounds a real, load-bearing file nobody owns
+end-to-end.
+
+**This should not have happened** — the compliant pattern (`khtpm_hq_manager.c` for
+Common Events) already existed in the SAME house, built the SAME week, for the SAME
+window (db-hq), and Actors/Classes/Skills/etc. simply never got the same treatment.
+**Condemned here explicitly, per direct instruction ("that being hardcoded... should be
+condemned... it should have never happened")** — this is not a judgment call, it's a real,
+avoidable miss.
+
+**Real fix, not yet done**: a real `dbhq_actors_manager.c` (or extend an existing
+manager's own scope) publishing a structured `db_hq_actors.state.txt` the shared renderer
+reads generically via `reusable_slot()` — same real shape as Common Events, Stats-hq,
+bookmarks, palettes already prove. See `au-31/00-todo.md`/`01-manager-design.md` for the
+real, dated todo this produced and the direct instruction to fix this class of thing
+BEFORE adding any new window mode to the shared file, so new work doesn't compound onto
+non-compliant precedent. **Real follow-up, not yet done**: audit whether Classes/Skills/
+Items/Weapons/etc. (db-hq's other tabs) have the same inline-loader shape — not checked
+yet, real gap, same as this doc's own "Not yet audited" section above.
+
+## 5. NEW real finding, 2026-08-31 — `khtpm_choice_picker.c` hand-builds its Elem tree, never parses a real `.chtpm`
+
+Found while building the network-browser-hq centroid proof app: I (the assistant)
+initially cited `khtpm_choice_picker.c` as real house precedent for a small,
+wholly data-driven khtpm app skipping `.chtpm` authoring/parsing entirely and
+constructing its `Elem` tree by hand in C. **Direct correction: "we still want
+to use chtpm+layout module, we always should no matter what"** — there is no
+size/complexity exception. See `CENTROID_GOLD_STD.md` §3 rule 1 (corrected same
+day) for the now-standing rule this produces, and the
+`khtpm-always-parse-chtpm-layout` memory for the full reasoning.
+
+**Real, confirmed callers as of the original finding** (grep-confirmed) — this
+was live, load-bearing infrastructure, not dead code:
+- `*.monads/*.book-stack/pieces/reader/event_pkg/pages/page_1/dispatch.sh` —
+  book-stack's own real dialogue/menu-choice flow generates a real
+  `choices_file` and calls `khtpm_show_choices.+x` to display it.
+- `khtpm_show_choices.+x` was the one real, direct caller of
+  `khtpm_choice_picker.+x` itself (confirmed by re-checking - the earlier
+  version of this entry also named `tp_desktop_window_rgb.c` as a direct
+  caller; that was wrong, it calls `khtpm_show_choices.+x`, not the picker
+  binary directly - corrected here, not silently).
+
+**RESOLVED, 2026-08-31** (direct instruction: "can we do the first 2 first?
+(open-hai) and choice parser?"): `khtpm_show_choices.c` no longer execs
+`khtpm_choice_picker.+x` at all. It now generates a real, temporary `.chtpm`
+file — one real `<item id=".." label=".." action="..">` per real choice row —
+and launches `khtpm_core_render.+x` (the shared renderer), the SAME real
+`parse_chtpm()` pipeline every other khtpm window uses. Each item's `action=`
+is a small real shell one-liner writing the caller's own real token to the
+real result-file path; the shared renderer's ALREADY-EXISTING generic
+`dispatch()` treats any unrecognized `action=` as a real shell command and
+unconditionally quits after running it - zero new C code was needed in the
+shared renderer itself. A synthesized `Cancel` row (`action="CLOSE"`) is
+still added when the caller's own `choices_file` doesn't include one, same
+real UX as before. Live-verified end to end: real window opened via the real
+launcher, real digit+Enter relay injection (`entity_menu_history/<pid>.txt`)
+picked a real choice, the real token (`read_book`) came back on stdout
+exactly as `dispatch.sh`'s own `$()` capture contract expects, both processes
+exited cleanly. `khtpm_choice_picker.c` itself is left in place, unused, as a
+real rollback reference (matching this house's own `khtpm_hq_render.c`
+precedent) - not deleted, not built into anything's live path anymore.
+
+## 6. NEW real finding, 2026-08-31, same session — the shared renderer keeps gaining per-project hardcoding, caught live before landing
+
+While building network-browser-hq's real X11 mode (immediately after
+§5 above), I (the assistant) began wiring it into
+`khtpm_entity_menu_render.c` the same way every existing mode already
+works: a new `g_is_network_browser` global, checked at ~15 scattered
+dispatch points (class detection, `assign_nav_and_layout()`,
+`redraw()`, `handle_key()`, `poll_agent_history()`'s click/key
+dispatch, the real X11 `ButtonPress`/`KeyPress`/`FocusIn`/`FocusOut`
+handlers, `history_dir()`, `frame_changed_path()`, the CSS-path
+condition, `hq_window_has_x_focus()`, `nav_tab_poll_active()`'s gate,
+`nav_tab_register()`, plus a new per-mode `nb_launch_module()` copy).
+**Direct correction, caught before any of it was committed or even
+compiled**: "that's still hardcoding u hardcoded network browser
+stuff. why cant u use existing conventions? we shouldn't hardcode...
+the parser/renderer should have no knowledge of new projects and be
+completely agnostic." Fully reverted (`git checkout` on the file,
+confirmed zero diff from `origin/main` afterward) before any further
+work.
+
+**Why this is real, not a false alarm**: every existing mode (db-hq,
+events-hq, chat-hai, palettes, bookmarks, stats-hq, swatch-picker)
+already has this exact same shape today. "Following existing
+convention" was not a defense — the convention itself is the debt,
+self-acknowledged in `khtpm_render_core.c`'s own header comment (the
+real, stated 2026-08-16 end goal: "one generic binary... ZERO per-app
+hardcoded C logic," never finished for any mode). This is the SAME
+severity class as §4's `dbhq_load_actors()` finding — a real,
+structural violation of "the renderer has no business logic" — just
+spread across dispatch sites instead of concentrated in one function,
+which is why it wasn't caught by the §4 audit.
+
+**"std drift" — direct instruction to prevent recurrence**: "write to
+standards and index that this should never happen again, this is std
+drift." Recorded here and in `CENTROID_GOLD_STD.md` §3 rule 7: the
+shared renderer file must never gain a new `g_is_<project>` global or
+new per-project dispatch branch again. A new mode registers in a real,
+generic dispatch table instead.
+
+**Real fix, design written, not yet implemented**:
+`xperiments/khtpm-generic-dispatch-design.md` — a real, ordered plan:
+(1) build a generic `launch_module()` (collapsing the 3 already-
+near-identical per-mode copies) + a generic `g_khtpm_modes[]`
+class-dispatch table; (2) network-browser-hq becomes the FIRST real
+mode registered through it, proving the pattern before touching
+anything existing; (3) migrate each of the 7 existing modes onto the
+table one at a time, smallest/lowest-risk first (swatch-picker), live-
+verifying each still works exactly as before; (4) only once every mode
+is migrated, delete the old `g_is_X` globals and their scattered
+branches. Full content/layout genericity (a `.chtpm` panel declaring
+its own data source, `css_layout_pass()` actually driving a real mode)
+is explicitly out of scope for this fix — flagged as a separate, larger,
+not-yet-designed problem in that doc's own §2c.
+
 ## Cross-references
 - `house-compaction.md` — the separate (also real, also HIGH priority) receipt/frame-
   history compliance gap found earlier this session in `khtpm_hq_render.c`. Different

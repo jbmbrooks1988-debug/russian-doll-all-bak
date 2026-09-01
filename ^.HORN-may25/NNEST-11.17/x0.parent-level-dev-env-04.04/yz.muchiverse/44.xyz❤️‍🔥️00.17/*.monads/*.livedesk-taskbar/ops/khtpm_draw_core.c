@@ -462,7 +462,31 @@ static void draw_elem(Elem *e, int hover_id_hash) {
     if (e->nav_index > 0) {
         int focused = (e->nav_index == g_focus_nav);
         char prefix[8];
-        int is_scope = (g_dbhq_active_scope_root && e == g_dbhq_active_scope_root);
+        /* REAL, NEW 2026-08-31 - a real, generic ARMED cli_io field
+         * reuses this SAME existing "[^]" active-scope visual (direct
+         * instruction: cli_io should show "^" once armed, not the plain
+         * "[>]" a merely-focused-but-not-yet-typing element gets) -
+         * not a new bespoke prefix state, the exact one db-hq's own
+         * scope root already uses. Real nav-blocking while armed is
+         * already handled separately, in handle_key()'s own real
+         * key-order check (g_default_input_elem is tested before any
+         * Up/Down/Enter dispatch reaches the generic nav code at all).
+         * REAL FIX 2026-08-31 (found live, same investigation as
+         * dbhq_serialize_frame_elem()'s own input_buffer fix): compared
+         * by POINTER at first, which can never match here - the default/
+         * popup mode's own real content draw (redraw()'s "now the
+         * shared, generic render_tree()" path) calls draw_elem() on a
+         * fresh, freshly-built temp Elem parsed from a text frame file
+         * (dbhq_paint_frame_line()), never on the live g_pool[] Elem a
+         * human is actually typing into - `e == g_default_input_elem`
+         * was comparing two different objects' addresses and could
+         * never be true from that path. Real fix: compare by id, the
+         * one identifying field the frame-file round trip already
+         * carries faithfully - safe because a real .chtpm's ids are
+         * already relied on to be unique per window (find_page()/
+         * dispatch() etc. all key off id the same way). */
+        int is_scope = (g_dbhq_active_scope_root && e == g_dbhq_active_scope_root) ||
+                       (g_default_input_elem && e->id[0] && strcmp(e->id, g_default_input_elem->id) == 0);
         elem_cursor_prefix(e, g_focus_nav, is_scope, prefix, sizeof(prefix));
         snprintf(nav_badge, sizeof(nav_badge), "%s%d.", prefix, e->nav_index);
         (void)focused;
@@ -516,14 +540,27 @@ static void draw_elem(Elem *e, int hover_id_hash) {
             }
         }
     }
-    if (!drew_sprite && e->label[0]) {
+    /* REAL, NEW 2026-08-31 (generic capability #2 - see Elem's own
+     * input_buffer field comment) - a real, generic cli_io tag shows
+     * its own live-typed input_buffer appended after its static label,
+     * with a real cursor glyph while it's the currently focused (armed)
+     * field - zero per-app code needed for any consumer of this shared
+     * draw path. */
+    char cli_io_shown[256 + 300];
+    const char *shown_label = e->label;
+    if (strcmp(e->tag, "cli_io") == 0) {
+        snprintf(cli_io_shown, sizeof(cli_io_shown), "%s%s%s", e->label, e->input_buffer,
+                 (e->nav_index > 0 && e->nav_index == g_focus_nav) ? "_" : "");
+        shown_label = cli_io_shown;
+    }
+    if (!drew_sprite && shown_label[0]) {
         XftFont *font = font_for(&e->style);
         XftColor col = xft_color(e->style.has_fg_color ? e->style.fg_color : "#cccccc");
         XGlyphInfo extents;
-        XftTextExtentsUtf8(dpy, font, (const FcChar8 *)e->label, (int)strlen(e->label), &extents);
+        XftTextExtentsUtf8(dpy, font, (const FcChar8 *)shown_label, (int)strlen(shown_label), &extents);
         int ty = e->y + (e->h + font->ascent - font->descent) / 2;
         if (ty < e->y + font->ascent) ty = e->y + font->ascent + pad / 2;
-        draw_text_emoji(font, &col, badge_label_x, ty, e->label);
+        draw_text_emoji(font, &col, badge_label_x, ty, shown_label);
         XftColorFree(dpy, DefaultVisual(dpy, screen), cmap, &col);
     }
     /* Badge draws LAST - see the big comment above. For sprite tiles,
