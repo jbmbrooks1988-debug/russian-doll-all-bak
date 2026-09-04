@@ -1,0 +1,3 @@
+tab=C
+tileset=Dungeon
+dir=tilesets

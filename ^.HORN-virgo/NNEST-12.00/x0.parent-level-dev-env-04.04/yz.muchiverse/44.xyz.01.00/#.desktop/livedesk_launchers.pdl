@@ -1,0 +1,16 @@
+# livedesk_launchers.pdl - house-standard launcher registry for the
+# taskbar HQ menu's window rows (settings/stats/open-hai/db-hq, etc.).
+# Each row maps a launcher key to a path RELATIVE to house_root; the
+# manager (khtpm_taskbar_manager.c) resolves it against house_root at
+# dispatch time, so these never depend on the manager's own cwd.
+# Mirrors the same "read the target from a .pdl, not hardcoded" rule
+# the livedesk_taskbar.pdl menu rows already follow.
+SECTION | launcher_settings | *.monads/*.livedesk-taskbar/ops/button_taskbar_settings.sh
+SECTION | launcher_stats    | &.hq-apps/stats-hq/open_stats_hq.sh
+SECTION | launcher_ai       | &.widgits/open-hai/button.sh
+# 2026-09-03: retargeted to the ported static-template db-hq-pal window
+# (dashboard.xhtpm + pal/dbhq_projector.pal). Record field EDITING is
+# still read-only in the -pal window; rollback = restore the old path:
+#   *.monads/*.muchi-pet/ops/open_db_hq.sh
+SECTION | launcher_db       | &.hq-apps/db-hq-pal/button.sh
+SECTION | launcher_signup   | &.hq-apps/signup-hq/button.sh
