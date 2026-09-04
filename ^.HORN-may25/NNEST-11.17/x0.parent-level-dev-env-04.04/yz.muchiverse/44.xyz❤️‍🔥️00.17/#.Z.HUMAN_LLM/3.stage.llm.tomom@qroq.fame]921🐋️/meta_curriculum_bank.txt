@@ -1,1 +1,0 @@
-./curriculum/corpus]similarity10/corpus]similarity10.txt

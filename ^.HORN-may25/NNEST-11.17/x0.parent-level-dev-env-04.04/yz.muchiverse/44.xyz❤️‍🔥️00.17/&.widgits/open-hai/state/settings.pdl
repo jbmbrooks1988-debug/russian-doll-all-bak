@@ -1,4 +1,0 @@
-# open-hai settings.pdl - edited via the Settings submenu
-# (topbar, next to Stats). The manager plays the incoming-
-# message tone only while sound_on is 1.
-SECTION | sound_on | 1

@@ -1,2 +1,0 @@
-HARNESS-LOAD-MARKER-109978-1785453646
-second line of the fixture

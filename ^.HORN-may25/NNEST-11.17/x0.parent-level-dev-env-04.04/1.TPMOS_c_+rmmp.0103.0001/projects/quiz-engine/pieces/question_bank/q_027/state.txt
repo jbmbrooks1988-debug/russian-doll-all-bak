@@ -1,5 +1,0 @@
-name=Isoleucine
-formula=Ile (I)
-type=(CH3)CHCH2CH(NH2)COOH
-groups=Amino Acid
-relevance=-NH2

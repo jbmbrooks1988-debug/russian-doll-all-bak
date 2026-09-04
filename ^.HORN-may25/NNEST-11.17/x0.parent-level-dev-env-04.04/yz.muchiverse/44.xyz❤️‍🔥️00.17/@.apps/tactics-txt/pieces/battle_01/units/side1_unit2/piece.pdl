@@ -1,6 +1,0 @@
-SECTION      | KEY                | VALUE
-----------------------------------------
-META         | piece_id           | side1_unit2
-
-METHOD       | Move                                | MOVE_UNIT:side1_unit2
-METHOD       | Attack                              | ATTACK_UNIT:side1_unit2

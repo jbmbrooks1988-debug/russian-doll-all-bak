@@ -1,2 +1,0 @@
-project_id=aomorai-editor
-active_target_id=main

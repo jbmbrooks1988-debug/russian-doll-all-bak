@@ -1,4 +1,0 @@
-last_cmd=NEW_GAME
-result=ok
-message=live reset from template
-at=1785436647

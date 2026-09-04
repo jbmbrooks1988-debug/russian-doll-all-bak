@@ -1,5 +1,0 @@
-SECTION      | KEY                | VALUE
-----------------------------------------
-META         | name               | door_guard
-META         | trigger            | action
-META         | cmds               | 10

@@ -1,6 +1,0 @@
-SECTION      | KEY                | VALUE
-----------------------------------------
-META         | piece_id           | mining_status
-META         | version            | 1.0
-
-METHOD       | Refresh                 | STUB

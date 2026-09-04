@@ -1,5 +1,0 @@
-liz_bulb | lizard
-rock_2 | rock
-liz_char | lizard
-liz_gen_5414 | lizard
-rock_1 | rock

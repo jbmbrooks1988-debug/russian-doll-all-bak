@@ -1,2 +1,0 @@
-EDITOR_SESSION=debug.txt
-FM_SESSION=debug.txt

@@ -1,6 +1,0 @@
-SECTION      | KEY                | VALUE
-----------------------------------------
-META         | piece_id           | post_compose
-META         | version            | 1.0
-
-METHOD       | Post                    | POST

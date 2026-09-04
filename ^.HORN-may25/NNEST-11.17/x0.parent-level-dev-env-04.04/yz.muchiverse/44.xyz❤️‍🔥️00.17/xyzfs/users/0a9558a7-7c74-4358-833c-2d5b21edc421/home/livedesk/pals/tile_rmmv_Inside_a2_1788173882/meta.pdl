@@ -1,9 +1,0 @@
-SECTION      | KEY                | VALUE
-----------------------------------------
-META         | piece_id           | tile_rmmv_Inside_a2_1788173882
-STATE        | kind                 | tile_rmmv
-STATE        | tileset              | Inside
-STATE        | category             | a2
-STATE        | kind_label           | a2 kind 7,0
-STATE        | created_at           | 1788173882
-METHOD       | Close                | CLOSE

@@ -1,2 +1,0 @@
-project_list=<text label="║  " /><button label="template" onClick="LOAD_PROJECT:template" /><text label="                                      ║" /><br/>
-piece_methods=

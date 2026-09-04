@@ -1,5 +1,0 @@
-SECTION      | KEY                | VALUE
-----------------------------------------
-META         | piece_id           | main
-
-METHOD       | End Turn (advance 1 day)               | END_TURN

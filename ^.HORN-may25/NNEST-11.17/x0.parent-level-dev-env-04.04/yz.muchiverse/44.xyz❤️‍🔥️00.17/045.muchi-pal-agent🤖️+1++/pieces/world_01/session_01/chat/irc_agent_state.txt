@@ -1,2 +1,0 @@
-joined_room=muchi-test
-last_line_count=3

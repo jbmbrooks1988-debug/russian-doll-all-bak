@@ -1,5 +1,0 @@
-dwarf_fortress
-.dwarf_fortress.pid
-saves/*/
-!saves/.gitkeep
-*.o

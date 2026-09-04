@@ -1,3 +1,0 @@
-[boot] browser scaffold ready
-BROWSER_NAV:js-lab.html
-BROWSER_JS:counter_inc

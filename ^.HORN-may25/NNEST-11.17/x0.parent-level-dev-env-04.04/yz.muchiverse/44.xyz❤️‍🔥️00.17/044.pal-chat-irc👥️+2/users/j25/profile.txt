@@ -1,3 +1,0 @@
-user_id=j25
-display_name=j25
-created_at=1785104097

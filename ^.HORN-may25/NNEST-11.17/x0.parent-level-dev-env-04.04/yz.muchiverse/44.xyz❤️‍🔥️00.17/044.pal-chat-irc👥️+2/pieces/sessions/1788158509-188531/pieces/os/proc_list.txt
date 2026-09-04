@@ -1,4 +1,0 @@
-188531 orchestrator
-188578 ./system/renderer
-188579 ./system/keyboard_input
-188580 ./system/chtpm_parser_pal

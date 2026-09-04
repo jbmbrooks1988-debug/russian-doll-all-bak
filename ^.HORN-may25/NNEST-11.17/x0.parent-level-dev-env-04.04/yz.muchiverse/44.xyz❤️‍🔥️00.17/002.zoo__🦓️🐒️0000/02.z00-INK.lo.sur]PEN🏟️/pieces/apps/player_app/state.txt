@@ -1,1 +1,0 @@
-module_path=system/prisc+x pal/main_loop_chtpm.pal

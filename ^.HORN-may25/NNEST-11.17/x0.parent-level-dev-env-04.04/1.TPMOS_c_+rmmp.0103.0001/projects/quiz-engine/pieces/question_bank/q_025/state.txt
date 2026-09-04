@@ -1,5 +1,0 @@
-name=Aspartic Acid
-formula=Asp (D)
-type=HOOCCH2CH(NH2)COOH
-groups=Amino Acid
-relevance=-NH2

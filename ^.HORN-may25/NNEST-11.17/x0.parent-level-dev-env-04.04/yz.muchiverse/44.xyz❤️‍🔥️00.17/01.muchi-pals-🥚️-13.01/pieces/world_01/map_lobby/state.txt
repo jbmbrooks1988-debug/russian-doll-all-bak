@@ -1,2 +1,0 @@
-id=map_lobby
-name=Lobby

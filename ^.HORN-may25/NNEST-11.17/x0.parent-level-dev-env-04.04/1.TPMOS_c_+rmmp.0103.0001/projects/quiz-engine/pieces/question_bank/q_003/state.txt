@@ -1,5 +1,0 @@
-name=Ethylene
-formula=C2H4
-type=Alkene
-groups=C=C
-relevance=Key in addition reactions; industrial precursor to polymers.

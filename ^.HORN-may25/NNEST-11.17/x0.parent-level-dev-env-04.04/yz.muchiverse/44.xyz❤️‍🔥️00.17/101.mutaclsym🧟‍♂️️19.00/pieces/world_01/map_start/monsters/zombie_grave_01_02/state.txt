@@ -1,5 +1,0 @@
-monster_type=zombie_child
-pos_x=27
-pos_y=12
-hp=1
-spawner_id=zombie_grave_01

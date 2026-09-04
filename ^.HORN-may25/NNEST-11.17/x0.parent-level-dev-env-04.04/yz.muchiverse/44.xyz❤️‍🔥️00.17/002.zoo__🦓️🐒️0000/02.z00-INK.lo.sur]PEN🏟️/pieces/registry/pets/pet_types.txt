@@ -1,3 +1,0 @@
-# zoo_0000 pet species registry - species|glyph
-dog|d
-cat|c

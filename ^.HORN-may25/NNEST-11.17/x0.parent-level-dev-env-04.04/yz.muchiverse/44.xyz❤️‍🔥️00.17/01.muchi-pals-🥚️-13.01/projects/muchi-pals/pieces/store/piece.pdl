@@ -1,6 +1,0 @@
-SECTION      | KEY                | VALUE
-----------------------------------------
-META         | piece_id           | store
-META         | version            | 1.0
-
-METHOD       | Buy Egg (cost: 20 tokens)              | BUY_EGG

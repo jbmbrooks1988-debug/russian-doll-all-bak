@@ -1,6 +1,0 @@
-name=console_log
-trigger=action
-x=12
-y=7
-sprite=K
-map=map_start

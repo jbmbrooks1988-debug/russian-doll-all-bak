@@ -1,3 +1,0 @@
-user_id=bob_36868
-display_name=Bob
-created_at=1785108799

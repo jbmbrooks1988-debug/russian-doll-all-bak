@@ -1,5 +1,0 @@
-name=Acetaldehyde
-formula=CH3CHO
-type=Aldehyde
-groups=-CHO
-relevance=Glycolysis/fermentation product; oxidizes to acetic acid.

@@ -1,1 +1,0 @@
-username=Guest\nsession_count=0

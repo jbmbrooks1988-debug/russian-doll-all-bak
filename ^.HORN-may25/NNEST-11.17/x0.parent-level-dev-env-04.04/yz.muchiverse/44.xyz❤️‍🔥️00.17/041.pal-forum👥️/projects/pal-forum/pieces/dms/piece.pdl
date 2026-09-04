@@ -1,6 +1,0 @@
-SECTION      | KEY                | VALUE
-----------------------------------------
-META         | piece_id           | dms
-META         | version            | 1.0
-
-METHOD       | Send DM                 | SEND_DM

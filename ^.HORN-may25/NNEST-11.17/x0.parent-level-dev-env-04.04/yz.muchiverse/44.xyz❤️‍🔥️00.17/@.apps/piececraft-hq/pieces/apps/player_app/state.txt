@@ -1,2 +1,0 @@
-project_id=piececraft-hq
-active_target_id=new_game

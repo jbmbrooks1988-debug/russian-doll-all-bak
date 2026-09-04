@@ -1,6 +1,0 @@
-SECTION      | KEY                | VALUE
-----------------------------------------
-META         | piece_id           | send_screen
-META         | version            | 1.0
-
-METHOD       | Send Cones              | SEND

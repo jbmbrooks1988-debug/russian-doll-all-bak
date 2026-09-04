@@ -1,4 +1,0 @@
-SECTION      | KEY                | VALUE
-----------------------------------------
-META         | piece_id           | book-stack
-COND         | trigger              | on_click

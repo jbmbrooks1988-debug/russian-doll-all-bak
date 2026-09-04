@@ -1,2 +1,0 @@
-current_user_id=uloginA_1629762
-logged_in_at=1785193093

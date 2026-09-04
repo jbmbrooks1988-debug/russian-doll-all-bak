@@ -1,2 +1,0 @@
-type | rock
-name | Rock 1

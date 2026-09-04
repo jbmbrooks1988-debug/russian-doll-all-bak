@@ -1,5 +1,0 @@
-kind=tile_glyph
-map_id=map_start
-pos_x=9
-pos_y=1
-glyph=.

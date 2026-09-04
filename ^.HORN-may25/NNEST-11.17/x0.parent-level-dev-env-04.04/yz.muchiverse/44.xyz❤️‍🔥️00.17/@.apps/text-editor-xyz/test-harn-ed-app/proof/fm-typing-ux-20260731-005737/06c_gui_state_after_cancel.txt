@@ -1,4 +1,0 @@
-file_path_input=hi
-search_query=
-search_query_val=
-file_path_input_val=

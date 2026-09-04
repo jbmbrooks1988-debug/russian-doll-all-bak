@@ -1,6 +1,0 @@
-name=return_pad
-trigger=action
-x=3
-y=3
-sprite=<
-map=factory_2

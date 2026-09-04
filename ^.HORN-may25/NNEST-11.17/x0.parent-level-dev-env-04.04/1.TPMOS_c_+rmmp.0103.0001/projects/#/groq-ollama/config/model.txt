@@ -1,1 +1,0 @@
-llama3-groq-tool-use:8b

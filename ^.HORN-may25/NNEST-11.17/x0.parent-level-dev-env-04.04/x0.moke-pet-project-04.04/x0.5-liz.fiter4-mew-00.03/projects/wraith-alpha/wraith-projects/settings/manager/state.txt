@@ -1,2 +1,0 @@
-settings_menu_markup=<button label="Window Geometry" onClick="SETTINGS_PAGE:window-geom" />
-settings_entry_count=1

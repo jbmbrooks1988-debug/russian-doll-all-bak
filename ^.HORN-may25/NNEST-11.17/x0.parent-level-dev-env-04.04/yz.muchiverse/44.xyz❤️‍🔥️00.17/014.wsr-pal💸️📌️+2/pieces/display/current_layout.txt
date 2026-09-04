@@ -1,1 +1,0 @@
-pieces/chtpm/layouts/wsr_main_menu.chtpm

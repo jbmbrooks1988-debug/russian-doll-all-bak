@@ -1,2 +1,0 @@
-type | lizard
-name | liz_gen_5414

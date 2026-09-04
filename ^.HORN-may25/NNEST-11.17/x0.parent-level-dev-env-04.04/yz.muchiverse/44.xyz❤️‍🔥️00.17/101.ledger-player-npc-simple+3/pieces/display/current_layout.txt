@@ -1,1 +1,0 @@
-pieces/chtpm/layouts/lpns_word_menu_pal.chtpm

@@ -1,3 +1,0 @@
-user_id_input=jb
-display_name_input=jb
-post_text_input=hi guys

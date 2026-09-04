@@ -1,1 +1,0 @@
-drink=ale,mead,water,wine

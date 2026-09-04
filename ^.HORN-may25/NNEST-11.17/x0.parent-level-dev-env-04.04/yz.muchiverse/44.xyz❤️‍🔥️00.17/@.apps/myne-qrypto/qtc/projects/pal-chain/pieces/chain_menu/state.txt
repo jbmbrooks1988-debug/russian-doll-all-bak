@@ -1,2 +1,0 @@
-active_menu_piece=wallet_main
-last_message=harnesstest1785653975 balance: 0 millicones (0.000 cones).

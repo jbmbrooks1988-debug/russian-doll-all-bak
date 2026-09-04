@@ -1,2 +1,0 @@
-type | food
-name | Pellet 1

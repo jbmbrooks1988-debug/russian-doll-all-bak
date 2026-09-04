@@ -1,6 +1,0 @@
-SECTION      | KEY                | VALUE
-----------------------------------------
-META         | piece_id           | login
-META         | version            | 1.0
-
-METHOD       | Log In                  | LOGIN

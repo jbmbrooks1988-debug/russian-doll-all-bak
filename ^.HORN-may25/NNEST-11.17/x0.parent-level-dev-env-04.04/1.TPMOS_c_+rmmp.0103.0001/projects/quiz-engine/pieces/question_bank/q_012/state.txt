@@ -1,5 +1,0 @@
-name=Formic Acid
-formula=HCOOH
-type=Carboxylic Acid
-groups=-COOH
-relevance=Simplest acid; in ant venom

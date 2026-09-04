@@ -1,3 +1,0 @@
-user_id=halice_44998
-display_name=HAlice
-created_at=1785109574

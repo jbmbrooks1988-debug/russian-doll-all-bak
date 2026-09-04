@@ -1,5 +1,0 @@
-path_buffer=
-browse_dir=
-search_text=
-status_line=
-last_layout=pieces/chtpm/layouts/file_menu_main.chtpm

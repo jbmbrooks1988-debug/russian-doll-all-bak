@@ -1,2 +1,0 @@
-hello from file-menu harness
-line2

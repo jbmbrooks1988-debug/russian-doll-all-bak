@@ -1,8 +1,0 @@
-black
-brown
-blonde
-red
-gray
-blue
-pink
-green

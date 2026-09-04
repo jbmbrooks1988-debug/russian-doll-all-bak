@@ -1,1 +1,0 @@
-timestamp|epoch|player|turn|action_data|action_type
