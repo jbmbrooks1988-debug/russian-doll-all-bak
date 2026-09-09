@@ -113,9 +113,6 @@ if [ -f "$SHARED/ops/build_sprite_phymoji_gen.sh" ]; then
     fi
 fi
 
-echo "-- window-position/range-grid helper tp_range_grid.c -> +x/tp_range_grid.+x"
-$CC $CFLAGS $X11_FLAGS -o +x/tp_range_grid.+x tp_range_grid.c -lX11 -lXext
-
 # 2026-08-18: taskbar's terminal ASCII mirror (HQ menu "cli" row) - two
 # binaries, matching TPMOS's real renderer.c/keyboard_input.c split
 # (never combined - see khtpm_strip_render_ascii.c's own header comment
@@ -125,5 +122,13 @@ $CC $CFLAGS -o +x/khtpm_strip_render_ascii.+x khtpm_strip_render_ascii.c
 
 echo "-- taskbar ASCII keyboard input (raw termios only, never prints) -> +x/khtpm_strip_keyboard_ascii.+x"
 $CC $CFLAGS -o +x/khtpm_strip_keyboard_ascii.+x khtpm_strip_keyboard_ascii.c
+
+# 2026-09-06: GENERIC (any-window) siblings of the two above -
+# TERMINAL-MIRROR-PARITY-all-windows.md steps 2 & 3. Same renderer/
+# keyboard split, path templated on a target PID.
+echo "-- generic window ASCII presenter -> +x/khtpm_render_ascii.+x"
+$CC $CFLAGS -o +x/khtpm_render_ascii.+x khtpm_render_ascii.c
+echo "-- generic window ASCII keyboard relay -> +x/khtpm_kbd_ascii.+x"
+$CC $CFLAGS -o +x/khtpm_kbd_ascii.+x khtpm_kbd_ascii.c
 
 echo "OK +x/khtpm_taskbar_manager_main.+x and +x/khtpm_core_render.+x (strip mode + entity/tile mode, plus helpers)"

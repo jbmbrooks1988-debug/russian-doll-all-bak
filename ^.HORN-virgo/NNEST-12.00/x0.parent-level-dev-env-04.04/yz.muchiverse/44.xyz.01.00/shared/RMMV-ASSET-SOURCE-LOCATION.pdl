@@ -1,0 +1,18 @@
+SECTION      | KEY                | VALUE
+----------------------------------------------------------------------
+SOURCE       | mount_point        | /media/no/b7ced73c-5231-4462-b98d-64e38fe2df9e
+SOURCE       | project_root       | /media/no/b7ced73c-5231-4462-b98d-64e38fe2df9e/home/jbez/Desktop/^.📶️.SHARE]/^.🦾️]fullsharezip/💪🏾️].no-desk.sharezip/💌️.consol.idate]📟/xv.👨🏽‍🚀️RMMV+sec]linux 🐧️]0001/RMMV_TSOTS]LINUX=elf?🧝🏽️/__.Tearrmv SpaceShop388.m
+SOURCE       | game_www_dir       | <project_root>/www
+SOURCE       | tile_assets_dir    | <project_root>/www/img/tilesets
+SOURCE       | engine_js_dir      | <project_root>/www/js
+SOURCE       | engine_core_file   | <project_root>/www/js/rpg_core.js
+SOURCE       | tilesets_dir       | <img_root>/tilesets
+NOTE         | img_root_added     | 2026-08-28
+NOTE         | img_root_moved     | 2026-08-28 (same day, second move) - relocated one level deeper, from `NNEST-11.17/rmmv-www-img` directly to `NNEST-11.17/#.NNEST_ASSETS/rmmv-www-img`, per direct instruction: `#.NNEST_ASSETS` is meant to be a general asset container at the zip-parent level so OTHER future asset types (not just RMMV) can live as siblings under it, not just this one RMMV-specific folder. `rmmv-www-img` keeps its own name as a subfolder of that general container - nothing about the RMMV-specific layout inside it changed, only its parent.
+SOURCE       | img_root           | /home/no/Desktop/github/work/NNEST-12.00/#.NNEST_ASSETS/rmmv-www-img
+NOTE         | added              | 2026-08-27
+NOTE         | why                | Real RPG Maker MV tile assets + real, readable engine JS source (a real deployed game, "SpaceShop388", not the community-download SDK) - referenced while designing TILE-SYSTEM-DESIGN.md's autotile algorithm. Location recorded here in case the drive/mount path changes, per direct instruction ("their location should be stored in a related pdl file about tiles in case they move").
+NOTE         | mount_is_external  | 1
+NOTE         | mount_fstype       | ext2 (confirmed via `mount` at time of writing - re-check if path resolution ever fails, the drive may not be mounted at session start)
+NOTE         | see_also           | RPG-CODE-INDEX-REF.md (HQ-IQ-BOOK design-docs) - findings from engine_core_file, cited in TILE-SYSTEM-DESIGN.md autotile
+NOTE         | pdl_home           | 2026-09-08 this file lives in 44.xyz.01.00/shared/ (house zip). img_root may point at optional #.NNEST_ASSETS clones.

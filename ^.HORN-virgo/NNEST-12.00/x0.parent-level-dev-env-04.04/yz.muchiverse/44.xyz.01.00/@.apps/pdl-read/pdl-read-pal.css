@@ -1,0 +1,56 @@
+/* pdl-read-pal.css - merged on top of entity_menu_default.css for the
+   pdl-read-pal window (same convention as bookmarks-pal.css/file-
+   explorer-pal.css: this loads because the renderer merges the .css
+   sitting next to the loaded .xhtpm, same stem). */
+
+window {
+    width: 560px;
+    height: 480px;
+}
+
+.sidebar {
+    background-color: #161616;
+    border-color: #333333;
+}
+
+.pdl-panel {
+    background-color: #181818;
+    border: 1px solid #2a2a2a;
+}
+
+.pdl-doc {
+    color: #cccccc;
+}
+
+.pdl-page-jump {
+    color: #cccccc;
+}
+
+.opacity-btn {
+    background-color: #444444;
+    color: #ffffff;
+    padding: 4px 8px;
+    border: 1px solid #666666;
+}
+
+/* REAL, NEW 2026-09-05 - real <tabbar> (see pdl-read-pal.xhtpm's own
+   header comment) needs its own visible bar/tab styling, same rule
+   names as stats-hq/dashboard.css's own real <tabbar> precedent. */
+.tab-bar {
+    background-color: #1a1a1a;
+    border-color: #444444;
+    border: 1px solid #444444;
+}
+
+.tab {
+    background-color: #1a1a1a;
+    color: #aaaaaa;
+    border: 1px solid #444444;
+    padding: 4px 8px;
+}
+
+.tab.active {
+    background-color: #2a2a2a;
+    color: #ffffff;
+    font-weight: bold;
+}

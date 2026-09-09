@@ -1,3 +1,3 @@
 tab=C
-tileset=Dungeon
-dir=tilesets
+tileset=SF_Inside
+dir=animations

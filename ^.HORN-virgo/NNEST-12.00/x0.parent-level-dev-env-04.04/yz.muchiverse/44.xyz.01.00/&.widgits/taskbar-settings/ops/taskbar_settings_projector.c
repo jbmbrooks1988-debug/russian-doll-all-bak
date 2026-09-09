@@ -38,13 +38,60 @@
 #ifndef PATH_MAX
 #define PATH_MAX 4096
 #endif
-#define UIBUF 8192
+#define UIBUF 16384
+#define MAX_SWATCHES 64
 
-/* palette names in swatch_picker_manager.c g_hex[] order */
-static const char *g_name[12] = {
-    "black","white","charcoal","silver","red","orange",
-    "yellow","green","cyan","blue","purple","pink"
-};
+/* REAL, NEW 2026-09-04, direct live request ("can we add grey and
+ * brown to swatch colors... that shouldn't be hardcoded, should be
+ * from layout/module") - name/hex list read from the same swatches.pdl
+ * swatch_picker_manager.c reads, instead of a compiled-in name array.
+ * Published per-index (sw_<i>_name / sw_<i>_hex) plus n_swatches so
+ * taskbar-settings-pal.xhtpm can drive a <repeat> instead of a fixed
+ * set of 12 hardcoded <item> tags. */
+static char g_name_buf[MAX_SWATCHES][32];
+static char g_hex_buf[MAX_SWATCHES][8];
+static int g_n_swatches = 0;
+
+static void load_swatches(const char *house) {
+    char path[PATH_MAX];
+    snprintf(path, sizeof(path), "%s/&.widgits/taskbar-settings/swatches.pdl", house);
+    FILE *f = fopen(path, "r");
+    if (!f) return;
+    char line[256];
+    while (g_n_swatches < MAX_SWATCHES && fgets(line, sizeof(line), f)) {
+        if (line[0] == '#' || line[0] == '\n' || line[0] == '\r') continue;
+        char *bar = strchr(line, '|');
+        if (!bar) continue;
+        *bar = '\0';
+        char *hex = bar + 1;
+        hex[strcspn(hex, "\r\n")] = '\0';
+        if (hex[0] != '#' || strlen(hex) != 7) continue; /* honest skip - malformed row */
+        snprintf(g_name_buf[g_n_swatches], sizeof(g_name_buf[0]), "%s", line);
+        snprintf(g_hex_buf[g_n_swatches], sizeof(g_hex_buf[0]), "%s", hex);
+        g_n_swatches++;
+    }
+    fclose(f);
+}
+
+/* REAL, NEW 2026-09-04, direct live request ("single click vs double
+ * click... was it added to settings yet") - reads the same house-wide
+ * click_two_step key khtpm_core_render.c's own desktop_load_click_
+ * two_step() reads, purely to publish a real, current-state label for
+ * the new CLICK_TWOSTEP_TOGGLE toggle button - never writes it (the
+ * renderer's own desktop_toggle_click_two_step() owns writing). */
+static int read_click_two_step(const char *house) {
+    char path[PATH_MAX];
+    snprintf(path, sizeof(path), "%s/#.desktop/hq_ui.pdl", house);
+    FILE *f = fopen(path, "r");
+    if (!f) return 1; /* same real compile-time default the renderer itself uses */
+    char line[128];
+    int val = 1;
+    while (fgets(line, sizeof(line), f)) {
+        if (strncmp(line, "click_two_step=", 15) == 0) { val = atoi(line + 15) != 0; break; }
+    }
+    fclose(f);
+    return val;
+}
 
 static void read_state(const char *path, int *phase, int *bg, int *fg, int *apply) {
     *phase = 0; *bg = -1; *fg = -1; *apply = 0;
@@ -60,7 +107,7 @@ static void read_state(const char *path, int *phase, int *bg, int *fg, int *appl
     fclose(f);
 }
 
-static void build_ui(char *ui, size_t cap, int phase, int bg, int fg) {
+static void build_ui(char *ui, size_t cap, int phase, int bg, int fg, int click_two_step) {
     const char *prompt =
         phase <= 0 ? "pick a background swatch" :
         phase == 1 ? "pick a text swatch"       :
@@ -69,18 +116,24 @@ static void build_ui(char *ui, size_t cap, int phase, int bg, int fg) {
     off += (size_t)snprintf(ui + off, cap - off, "prompt=%s\n", prompt);
     off += (size_t)snprintf(ui + off, cap - off, "phase=%d\n", phase);
     off += (size_t)snprintf(ui + off, cap - off, "bg_name=%s\n",
-                            (bg >= 0 && bg < 12) ? g_name[bg] : "-");
+                            (bg >= 0 && bg < g_n_swatches) ? g_name_buf[bg] : "-");
     off += (size_t)snprintf(ui + off, cap - off, "fg_name=%s\n",
-                            (fg >= 0 && fg < 12) ? g_name[fg] : "-");
-    for (int i = 0; i < 12 && off < cap; i++) {
+                            (fg >= 0 && fg < g_n_swatches) ? g_name_buf[fg] : "-");
+    off += (size_t)snprintf(ui + off, cap - off, "n_swatches=%d\n", g_n_swatches);
+    for (int i = 0; i < g_n_swatches && off < cap; i++) {
         const char *ring = (i == bg) ? "ring-bg" : (i == fg) ? "ring-fg" : "";
         off += (size_t)snprintf(ui + off, cap - off, "sw_%d_ring=%s\n", i, ring);
+        off += (size_t)snprintf(ui + off, cap - off, "sw_%d_name=%s\n", i, g_name_buf[i]);
+        off += (size_t)snprintf(ui + off, cap - off, "sw_%d_hex=%s\n", i, g_hex_buf[i]);
     }
+    off += (size_t)snprintf(ui + off, cap - off, "click_two_step_label=%s\n",
+                            click_two_step ? "Click: 2-step" : "Click: 1-step");
 }
 
 int main(int argc, char **argv) {
     const char *house = (argc > 1 && argv[1][0]) ? argv[1]
                       : (getenv("KHTPM_HOUSE") ? getenv("KHTPM_HOUSE") : ".");
+    load_swatches(house);
 
     char in_path[PATH_MAX], out_path[PATH_MAX], tmp_path[PATH_MAX];
     snprintf(in_path,  sizeof(in_path),  "%s/#.desktop/taskbar_settings_state.txt", house);
@@ -93,8 +146,9 @@ int main(int argc, char **argv) {
     for (;;) {
         int phase, bg, fg, apply;
         read_state(in_path, &phase, &bg, &fg, &apply);
+        int click_two_step = read_click_two_step(house);
         ui[0] = '\0';
-        build_ui(ui, sizeof(ui), phase, bg, fg);
+        build_ui(ui, sizeof(ui), phase, bg, fg, click_two_step);
 
         if (strcmp(ui, last) != 0) {              /* content-gated write */
             FILE *f = fopen(tmp_path, "w");

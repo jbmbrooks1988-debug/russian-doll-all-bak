@@ -1,0 +1,10 @@
+2026-09-08 — asset SOURCE PDLs are not in this docs tree.
+
+Canonical (in the house zip, always present):
+
+  44.xyz.01.00/shared/*-ASSET-SOURCE-LOCATION.pdl
+  44.xyz.01.00/shared/UNICODE-EMOJI-SOURCE-LOCATION.pdl
+  44.xyz.01.00/shared/VIDEO-ASSET-SOURCE-LOCATION.pdl
+
+C: house_root/shared/<name>.pdl
+Clone bytes (optional): NNEST-12.00/#.NNEST_ASSETS/ as named by img_root.

@@ -25,17 +25,20 @@ String/Object/Math, try/catch, prototypes). What is missing is the
 | `localStorage` / `sessionStorage` | no-op stubs |
 | `window` / `self` / `globalThis` | **BUG: alias the storage stub, not the JS global** |
 
-Pipeline: `network_browser_manager.c` `do_fetch()` strips `<script>`
-bodies out of the HTML (`~line 479-483, 723`), concatenates them into
-`tmp/page.js`, runs `nb_js_eval.+x page.js js.effects.txt <href>
-<title>` **once**, and merges `LOG\|`/`TEXT\|`/`TITLE\|` back into
-`page.state.txt`. There is no DOM tree, no document-order execution, no
-event loop, no XHR/fetch, no feedback from JS mutations to what is
-rendered.
+**Pipeline (as of Phase 1, 2026-09-05):** the manager's `do_fetch()`
+strips `<script>` bodies, concatenates them into `tmp/page.js`, and — when
+a `<script>` is present — spawns a **resident worker**
+(`ops/nb_js_worker.+x`) that loads the real DOM (`fetch.dom`), runs the
+page JS against it, and replies with `RENDER\n<rows>` which the manager
+overlays onto `page.state.txt` (see `NB-JS-ENGINE-WORKER-PLAN.md` + the
+phase-1 `PROGRESS-nb-js-worker-phase1.md`). The one-shot `nb_js_eval.+x`
+remains as the rollback/test path. Still missing (Phase 2): document-order
+script runs, event loop + timers (rung 3), XHR/fetch (rung 4), the
+rung-2/6 BOM remainder.
 
-So a page's scripts run in a vacuum: any `document.getElementById(x).y`
-throws `TypeError` (that is the `js: script error` noise — see
-`PROGRESS-network-browser-xhtpm.md`).
+> The table above is the *pre*-Phase-1 snapshot; `getElementById` /
+> `querySelector` and the rest became real accessors walking the worker's
+> C DOM tree in phase-1 steps 3-5.
 
 ---
 
@@ -92,6 +95,47 @@ Minimum node API to implement:
   (start with: `#id`, `.class`, `tag`, `tag.class`, descendant combos;
   punt on `:nth-child`, attribute selectors, `>` etc. at first)
 
+> **DONE (subset) — 2026-09-04, branch `chtpm-js-rungs`** (NB-JS worker
+> plan Phase 1, steps 1-3: `68df5763`, `1cb67da3`, + the step-3 DOM
+> commit). The tree lives in the **worker**, not the manager: `nb_dom.c`
+> parses/serializes to `fetch.dom`, `nb_dom_load()` rebuilds it in the
+> worker heap, and native Duktape accessors walk the C tree on demand
+> (numeric `_nbnode` index → `g_nodeindex[]`, reset per page). The step-3
+> debug landmark: Duktape's `this`-binding sits **above** the args
+> (`duk_push_this`, not `duk_get_this`) — all element natives were reading
+> `this` at arg 0; the `get_this()` helper fixed every accessor. Shipped:
+> `getElementById`, `getElementsByTagName`, `querySelector(All)`
+> (`#id` / `.class` / `tag` / `tag.class` / descendant combos),
+> `textContent`, `children` (element-only), `childNodes`, `parentNode`,
+> `firstChild`, `nextSibling`, `tagName`/`nodeName`,
+> `getAttribute`/`setAttribute`, `classList.add/remove/toggle/contains`,
+> `createElement`/`appendChild`, `innerHTML` get/set (set re-parses a
+> fragment into the tree), `document.documentElement`/`body`. Verified:
+> `tests/worker_dom_test.*` (81 assertions) PASS through the real O2
+> worker; 5 rung suites green through both eval AND worker. Details:
+> `09-appendix/handoff-2026-09-04-slave-nb-js-worker.md`.
+> **RENDER merge landed (plan phase-1 step 4, rung-5 glue):** the worker
+> now sends a `RENDER\n<rows>` frame (TITLE/TEXT/LINK/IMG, TITLE first)
+> after the page script quiesces, and the manager overlays those rows onto
+> `page.state.txt` via `merge_render_rows()` — the post-JS DOM
+> (`document.title=`, `el.textContent=`, `appendChild`, `innerHTML=`) is
+> now authoritative for scripted pages. A page with no `<script>` never
+> spawns the worker and renders byte-identically as before. Same commit.
+> **Step 5 guards landed (plan phase-1 step 5):** runaway scripts can no
+> longer take the browser down. Worker evals run under a 2 s CPU budget
+> (`alarm`/`SIGALRM` → `_exit`), JS-created element wrappers are capped at
+> 250000 handles, the manager time-bounds every worker read
+> (`poll`, 3 s) and `SIGKILL`s + reaps its child on close, and `SIGPIPE`
+> is ignored so a dying worker can't kill the manager. A `while(true){}`
+> page kills only the worker; the static rows stay and the next scripted
+> page gets a fresh worker. Same commit.
+> **Rung 2 remainder: LANDED 2026-09-07** — `head`, `createTextNode`,
+> `getElementsByClassName`, `removeChild`/`insertBefore`/`replaceChild`,
+> `removeAttribute`, `style.*`, `value` (form fields), plus a latched
+> wrapper-identity bug (`push_node` cached into the object instead of the
+> stash map, so per-node state like `style`/`value` never survived a
+> re-fetch). Rung 2 is now complete.
+
 ### Rung 3 — events + the event loop  *(1 pass, needs care for CPU)*
 - `EventTarget`: `addEventListener` / `removeEventListener` /
   `dispatchEvent`; an `Event` object (`type`, `target`,
@@ -116,6 +160,19 @@ Minimum node API to implement:
 - CORS/same-origin: keep permissive for a local browser; just note it.
 **Payoff:** SPAs that fetch JSON then render become usable.
 
+> **DONE (sync-first delivery) — 2026-09-06, branch `opencode`**:
+> worker-native blocking transport (`nb_fetch_sync` in
+> `ops/nb_js_worker.c`: curl child `--max-time 8`, body ≤512 kB,
+> `file:/file://` local reads, alarm-safed) + a prelude Promise polyfill
+> (this duktape build has no Promise builtin) driven by the real
+> `queueMicrotask`, `fetch()` and a minimal `XMLHttpRequest`. E2E on a
+> `file://` fixture gated on async data: `TEXT|fetched:hello-rung4` and
+> `TEXT|xhr:xhr-ok` merged into `page.state.txt`; http curl leg verified
+> (`httpStatus=200`, 559 B). All 5 rung suites still green through both
+> eval and worker. Plan + evidence: `design-docs/NB-JS-ENGINE-RUNG4-
+> NETWORK-XHR-FETCH.md`. **Follow-on:** async relay through the manager
+> (FETCH/FRESP frames) when a site needs slow-network tolerance.
+
 ### Rung 5 — render feedback loop  *(glue, ~1 pass)*
 After scripts + the event loop go quiescent, **re-serialize the
 mutated DOM tree** → `page.state.txt` (TITLE / TEXT / LINK / IMG rows),
@@ -123,6 +180,15 @@ exactly the format the projector already consumes. Now `innerHTML =`,
 `appendChild`, `document.write` after load, `el.textContent = ...`
 actually change what the window shows. This is the visible payoff of
 rungs 2-4.
+
+> **DONE (glue) — 2026-09-05** (plan phase-1 step 4, `ea864cea`): the
+> worker sends a single `RENDER\n<rows>` frame (`TITLE`/`TEXT`/`LINK`/
+> `IMG`, TITLE first, 60 kB cap) before `STATUS ok`; the manager overlays
+> those rows onto `page.state.txt` via `merge_render_rows()` (content rows
+> replaced wholesale, `URL|` passes through, atomic). The post-JS DOM is
+> now authoritative for scripted pages; no-`<script>` pages never spawn the
+> worker and render byte-identically. Details:
+> `09-appendix/PROGRESS-nb-js-worker-phase1.md`.
 
 ### Rung 6 — BOM odds & ends  *(incremental, as sites demand)*
 `history.pushState/replaceState` (→ manager updates the address bar
@@ -146,9 +212,26 @@ plausible stub, `MutationObserver` (can no-op then improve),
 > - `document.cookie` empty-jar getter/setter (no throw; file jar still
 >   a C job later) — `f5f86b4d`
 > **Still to do (needs C or the worker):** real `history`/`location`
-> navigation pushed to the manager, file-backed `document.cookie` jar,
-> a real timer/event loop (rung 3). Tests under `network/tests/rung6_*.js`
-> all +OK|1; 5 suites green.
+> navigation pushed to the manager, a real timer/event loop (rung 3).
+> Tests under `network/tests/rung6_*.js`
+> all +OK|1; 5 suites green. Since phase-1 step 2 the shared `nb_host.h`
+> carries these stubs into the resident worker too, so eval AND worker
+> both pass all 5 rung suites.
+>
+> **LANDED 2026-09-07 — file-backed `document.cookie` jar.** The resident
+> worker's `install_dom()` redefines the prelude's configurable cookie stub
+> with real C natives backed by a disk jar at `$NB_COOKIES_FILE` (fallback
+> `$HOME/.config/nbjs/nb_cookies.txt`). RFC 6265 subset: name=value +
+> Domain/Path/Expires/Max-Age/Secure; host-scoping + path-match on read;
+> max-age=0 and past Expires delete; IMF-fixdate parsing via days-from-civil
+> (no TZ deps); atomic tmp+rename writes; damage-tolerant reads. Each LOAD
+> runs a fresh heap, so the jar file is the ONLY cross-LOAD persistence.
+> Live in `ops/nb_js_worker.c`, new `make check` suite `wck`
+> (`tests/worker_cookie_test.c`, 3-LOAD set / fresh-heap get / cross-host
+> scope, + jar-content verification) — commit `1f943aba`. The manager will
+> later point the worker at its own `#.desktop/nb_cookies.txt` via
+> `NB_COOKIES_FILE`; **remaining rung-6 C piece:** real `history`/
+> `location` navigation to the manager.
 
 
 ### Rung 7 — CSS/layout awareness  *(optional, large, defer)*
@@ -174,6 +257,15 @@ rung must respect:
   render whatever `page.state.txt` has).
 - The one-shot / worker process still `usleep`s its idle loop; never
   a bare spin. (`aigent-testing-k9.txt`, `!.HOUSE_STDS.md §C`.)
+
+**Enforced as of Phase-1 step 5 (2026-09-05, `bba458ec`):** worker evals
+run under a 2 s `alarm`/`SIGALRM` CPU budget (deadly default `_exit`s the
+worker, never the browser); DOM node cap 50 k in `nb_dom.c` (parser +
+serializer); JS-created element wrappers capped at 250 k handles; the
+manager `poll()`s every worker read (3 s) and `SIGKILL`s + `waitpid`s its
+child on close; `SIGPIPE` ignored so a dying worker can't take the manager
+down. A stalled/dead worker just means `page.state.txt` keeps the static
+rows and the next `<script>` page respawns a fresh worker.
 
 ---
 
@@ -201,6 +293,16 @@ The **manager** owns: curl / network, tabs / history, and writing
 `page.state.txt` from the worker's `RENDER` payload. One worker per
 tab (or one shared, keyed by tab id). Kill + restart the worker on
 navigation or on budget overrun.
+
+> **BUILT — Phase-1 steps 1-5 (2026-09-04..05, `68df5763` .. `bba458ec`).**
+> The persistent worker is in: `socketpair` line-RPC (6-digit length +
+> payload + `\n`, dup2'd to stdin/stdout), lazy-spawned by the manager on
+> `<script>` presence, file-path `LOAD` (page.js + fetch.dom + href +
+> title), `RENDER\n<rows>` flows back and is merged into `page.state.txt`
+> (rung-5 glue), worker killed + respawned on death/budget/overrun. The
+> one-shot `nb_js_eval.+x` is kept (tests + rollback path). Rungs 3/4/7
+> remain; rungs 3-4 + the rung-2/6 BOM remainder are cued hand-off-ready
+> in `NB-JS-ENGINE-WORKER-PLAN.md` §8.
 
 Keep the current one-shot `nb_js_eval.+x` around as the rung-0/1
 fallback and for tests.
@@ -382,6 +484,29 @@ of work once you pick an engine, and most browsing never needs it.
   engine.
 - The ceiling is a *choice*, not a law: option B/C removes it entirely
   at the cost of one large dependency.
+
+---
+
+## 9. Bonus door: the engine as a node/bun-like CLI *(CLI-1/2/3 landed, OPEN-ITEMS #11)*
+
+None of the above rules out using the *same* engine outside the browser
+window. `duk file.js [args...]` is now the node-style runner (no browser
+globals, `process.argv/cwd/env/stdout/stderr.write/exit`, real exit codes
+0/1/2, 2 s CPU guard) with CommonJS `require()`/`module`/`exports`
+incl. JSON + circular-require handling (CLI-2), fs-lite `require('fs')`
+plus a piped-capable `-i` REPL (CLI-3), and source-level ESM
+(CLI-4): `import`/`export` → CJS transpile for entries, `require()`d
+files, and single REPL lines (default/named/namespace/side-effect
+imports, named/default/brace/from/star exports, `__esModule` interop).
+`duk --browser page.js [fetch.dom]` keeps the released DOM page runner
+(console + rendered rows to stdout), and bare `duk` on a terminal is the
+REPL. All modes are one binary; the manager daemon (no args, non-tty)
+is unchanged and `make check` covers dom/fetch/events + an 18-case
+`cli_test` suite.
+
+- Not too late: node mode was a *different* prelude installed on the
+  same host seam — additive, exactly the way the worker was.
+- Full scope/ladder: `design-docs/NB-JS-CLI-NODE-LIKE-MODE.md`.
 
 ---
 

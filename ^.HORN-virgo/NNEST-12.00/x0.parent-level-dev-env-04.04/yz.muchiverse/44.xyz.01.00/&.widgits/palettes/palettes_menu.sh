@@ -93,8 +93,32 @@ provision_stub() {
     fi
 }
 
+# picker_for <key> - column 4 (PICKER) of pallets.pdl. Same IFS='|'
+# parse shape as title_for().
+picker_for() {
+    grep '^CATEGORY' "$SELF_DIR/pallets.pdl" | while IFS='|' read -r _s _k _l _picker _rest; do
+        _k=$(printf '%s' "$_k" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+        [ "$_k" = "$1" ] || continue
+        printf '%s' "$_picker" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'
+        break
+    done
+}
+
 launch_cat() {  # launch_cat <house> <key>
     _h="$1"; _k="$2"
+
+    # A category whose PICKER is a real standalone HQ app just execs that
+    # app's own launcher (it forks the shared renderer + its <module>
+    # itself). 2026-09-06: the `user-pallet` row is now "canvas-craft"
+    # (PICKER canvascraft) and opens the Canvas-Craft crafting window
+    # (CANVAS-CRAFT-DESIGN.md). The `elements` / Chemicals+Compounds row
+    # is unchanged.
+    case "$(picker_for "$_k")" in
+        canvascraft)
+            exec sh "$_h/&.widgits/canvas-craft/open_canvas_craft.sh" "$_h"
+            ;;
+    esac
+
     _CHTPM="$SELF_DIR/palettes-$_k.chtpm"
     if [ ! -f "$_CHTPM" ]; then
         provision_stub "$_k"
@@ -123,6 +147,111 @@ list_cats() {
         k=$(printf '%s' "$k" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
         [ -n "$k" ] && printf '%s\n' "$k"
     done
+}
+
+
+set_pc() {
+    _field="$1"; _pkg="$2"; _val="$3"
+    _f="$_pkg/piececraft_active.txt"
+    mkdir -p "$_pkg"
+    _dir="ITEMS"; _tileset="mcl_core"
+    if [ -f "$_f" ]; then
+        _dir=$(grep "^dir=" "$_f" | head -1 | cut -d= -f2-)
+        _tileset=$(grep "^tileset=" "$_f" | head -1 | cut -d= -f2-)
+        [ -n "$_dir" ] || _dir="ITEMS"
+        [ -n "$_tileset" ] || _tileset="mcl_core"
+    fi
+    case "$_field" in
+        dir) _dir="$_val" ;;
+        tileset) _tileset="$_val" ;;
+    esac
+    {
+        printf 'dir=%s\n' "$_dir"
+        printf 'tileset=%s\n' "$_tileset"
+    } > "$_f"
+    log "piececraft active $_field=$_val pack=$_dir mod=$_tileset"
+}
+
+arm_pc() {
+    _sdir="$1"; _label="$2"
+    printf '%s\n' "$_sdir" > "$STATE_DIR/pc_brush.txt"
+    log "armed piececraft block $_label $_sdir"
+}
+
+set_cdda() {
+    _field="$1"; _pkg="$2"; _val="$3"
+    _f="$_pkg/cdda_active.txt"
+    mkdir -p "$_pkg"
+    _dir="pngs_normal_32x32"; _tileset="terrain"
+    if [ -f "$_f" ]; then
+        _dir=$(grep "^dir=" "$_f" | head -1 | cut -d= -f2-)
+        _tileset=$(grep "^tileset=" "$_f" | head -1 | cut -d= -f2-)
+        [ -n "$_dir" ] || _dir="pngs_normal_32x32"
+        [ -n "$_tileset" ] || _tileset="terrain"
+    fi
+    case "$_field" in
+        dir) _dir="$_val" ;;
+        tileset) _tileset="$_val" ;;
+    esac
+    {
+        printf 'dir=%s\n' "$_dir"
+        printf 'tileset=%s\n' "$_tileset"
+    } > "$_f"
+    log "cdda active $_field=$_val sheet=$_dir cat=$_tileset"
+}
+
+arm_cdda() {
+    _sdir="$1"; _label="$2"
+    printf '%s\n' "$_sdir" > "$STATE_DIR/cdda_brush.txt"
+    log "armed cdda tile $_label $_sdir"
+}
+
+set_stem() {
+    _stem="$1"; _field="$2"; _pkg="$3"; _val="$4"
+    _f="$_pkg/${_stem}_active.txt"
+    mkdir -p "$_pkg"
+    _dir=""; _tileset=""
+    if [ -f "$_f" ]; then
+        _dir=$(grep "^dir=" "$_f" | head -1 | cut -d= -f2-)
+        _tileset=$(grep "^tileset=" "$_f" | head -1 | cut -d= -f2-)
+    fi
+    case "$_field" in
+        dir) _dir="$_val" ;;
+        tileset) _tileset="$_val" ;;
+    esac
+    {
+        printf 'dir=%s\n' "$_dir"
+        printf 'tileset=%s\n' "$_tileset"
+    } > "$_f"
+    log "$_stem active $_field=$_val"
+}
+
+mypal_file() {
+    _h="$HOUSE_DEFAULT"
+    setsid sh "$_h/&.widgits/file-explorer/button.sh" run >/tmp/mypal-file-hq.log 2>&1 < /dev/null &
+    log "my-palettes launched file-explorer"
+}
+
+set_emoji() {
+    _field="$1"; _pkg="$2"; _val="$3"
+    _f="$_pkg/emojis_active.txt"
+    mkdir -p "$_pkg"
+    _dir="Smileys_Emotion"; _tileset="face-smiling"
+    if [ -f "$_f" ]; then
+        _dir=$(grep "^dir=" "$_f" | head -1 | cut -d= -f2-)
+        _tileset=$(grep "^tileset=" "$_f" | head -1 | cut -d= -f2-)
+        [ -n "$_dir" ] || _dir="Smileys_Emotion"
+        [ -n "$_tileset" ] || _tileset="face-smiling"
+    fi
+    case "$_field" in
+        dir) _dir="$_val" ;;
+        tileset) _tileset="$_val" ;;
+    esac
+    {
+        printf 'dir=%s\n' "$_dir"
+        printf 'tileset=%s\n' "$_tileset"
+    } > "$_f"
+    log "emojis active $_field=$_val group=$_dir sub=$_tileset"
 }
 
 # set_rmmv <field> <pkg_dir> <value> - real 2026-08-27/28 (tile-picker
@@ -266,6 +395,21 @@ case "${1:-}" in
     set-rmmv-tab)      shift; set_rmmv tab "$1" "$2"; exit 0 ;;
     set-rmmv-tileset)  shift; set_rmmv tileset "$1" "$2"; exit 0 ;;
     set-rmmv-dir)      shift; set_rmmv dir "$1" "$2"; exit 0 ;;
+    set-pc-dir)        shift; set_pc dir "$1" "$2"; exit 0 ;;
+    set-pc-mod)        shift; set_pc tileset "$1" "$2"; exit 0 ;;
+    arm-pc)            shift; arm_pc "${1:-}" "${2:-}"; exit 0 ;;
+    set-cdda-dir)      shift; set_cdda dir "$1" "$2"; exit 0 ;;
+    set-cdda-mod)      shift; set_cdda tileset "$1" "$2"; exit 0 ;;
+    arm-cdda)          shift; arm_cdda "${1:-}" "${2:-}"; exit 0 ;;
+    set-tiled-dir)     shift; set_stem tiled dir "$1" "$2"; exit 0 ;;
+    set-tiled-mod)     shift; set_stem tiled tileset "$1" "$2"; exit 0 ;;
+    set-ohr-dir)       shift; set_stem ohrrpgce dir "$1" "$2"; exit 0 ;;
+    set-ohr-mod)       shift; set_stem ohrrpgce tileset "$1" "$2"; exit 0 ;;
+    set-mypal-dir)     shift; set_stem my-palettes dir "$1" "$2"; exit 0 ;;
+    set-mypal-mod)     shift; set_stem my-palettes tileset "$1" "$2"; exit 0 ;;
+    mypal-file)        shift; mypal_file; exit 0 ;;
+    set-emoji-dir)     shift; set_emoji dir "$1" "$2"; exit 0 ;;
+    set-emoji-mod)     shift; set_emoji tileset "$1" "$2"; exit 0 ;;
 esac
 
 # Arg forms:

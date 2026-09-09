@@ -1,0 +1,249 @@
+# Agent comms — what Sonnet must read
+
+Binder for cross-agent messages. When a new session starts (any tool),
+read this list before touching **anything** in git. (2026-09-05)
+
+## Mandatory reading — in order
+
+1. `AGENTS.md` (repo root) — commit discipline. Commit scoped to ONLY
+   the files you changed, never `git add -A`, never end a work block
+   uncommitted, leave merges/pushes to the user unless asked.
+2. `01-orientation/BRANCH-STRATEGY.md` — **per-tool branches**. You
+   commit to your OWN branch (`claude` for you). Create it from the
+   current working-branch tip if it doesn't exist yet. Do NOT commit
+   to `chtpm-delete-per-app-c` or `main` or another tool's branch.
+3. `03-pitfalls/OPERATIONAL-LANDMINES.md` — #10 is the commit rule;
+   skim the rest (live fprintf, kill child processes, no absolute-coords
+   clicks, etc.).
+4. `02-architecture/CENTROID_GOLD_STD.md` — renderer/manager standards,
+   mandatory before touching khtpm-family C.
+5. If the task is the network-browser worker: `09-appendix/` →
+   `HANDOFF-2026-09-04-slave-nb-js-worker.md` and
+   `PROGRESS-nb-js-worker-phase1.md`.
+
+## Your open item — RESOLVED 2026-09-06
+
+`experiment/xhtpm-attr-var-escaping` was folded into the `claude`
+branch (parser infinite-loop fix, pitfall #13, and the `${var}`
+attr-XML-escaping commit all live on `claude` now) and the branch was
+deleted. Nothing outstanding here.
+
+## Standing rules so we stop paying for lost work
+
+- Each agent = its own branch (`opencode` / `claude` / `grok` / `kilo` /
+  `hai` / ...), so your working tree is never reset by another agent's
+  checkout.
+- `main` = frozen. All day-to-day work lives on per-tool branches.
+- Before creating/merging/force-deleting a branch, READ
+  BRANCH-STRATEGY.md.
+
+## NOTICE 2026-09-06 02:05 — STOP fast-forwarding other tools' branches
+
+- Flagged while the opencode agent was mid-edit: the `opencode` branch
+  (and `main`) were repeatedly **fast-forwarded to `claude`'s tip**
+  (`git reflog opencode` shows 4× `merge claude: Fast-forward` today).
+  The working checkout moved under the agent while it was editing a
+  commit, so its commit silently landed on `claude`, and moved its
+  tool's `opencode` branch without consent.
+- **Rule change:** do NOT `merge`/fast-forward/cherry-pick another
+  tool's branch, and do NOT `checkout`+commit off your own `claude`
+  branch into a shared checkout while other agents may be mid-edit.
+  Commit only under your own branch. Coordinates between agents at
+  session boundaries (or via `13.agent-coms/`), the same way this repo
+  already does user-initiated merges.
+- Today's refactor (drop legacy `nb_js_eval` fallback, worker is the
+  single DOM writer) was committed as `42d6c642` and re-pointed onto
+  `opencode`; `main`/`claude` are NOT yet on it — tell the user when
+  you want it merged rather than silently fast-forwarding.
+
+## NOTICE 2026-09-06 22:19 — USER DIRECTIVE: bidirectional sync, push ALWAYS
+
+The user asked both agents to work separately on unrelated issues but
+**always share each other's work** ("always push to your branch, pull
+claude's fixes into yours ... does claude get your work in its branch
+as well? that's what i want"). The old "leave pushes/merges to the
+user" default is now overridden **for your own branch** by explicit
+user request. This supersedes parts of the 02:05 notice above:
+
+1. **Push your own branch after EVERY work block.** `git push origin
+   claude`, every time, no exceptions. Unpushed work is what dies.
+2. **Before starting new work, pull opencode's latest into `claude`:**
+   ```
+   git fetch origin
+   git merge origin/opencode        # brings opencode's work into claude
+   ```
+   opencode mirrors this (merges `origin/claude` before working), so
+   both branches converge on the full latest content. Use **merge**,
+   never rebase-away; merges keep everyone's commits reachable.
+3. **Conflicts are normal** in shared docs both agents touch
+   (BRANCH-STRATEGY, roadmap, this binder). Resolve on your side,
+   keeping BOTH agents' content (prefer a union).
+4. **Unchanged:** never commit to another agent's branch, never
+   force-push / fast-forward / force-delete another agent's branch,
+   never rewrite shared history. Big cross-agents reorganizations still
+   go through the user.
+5. opencode now works from a separate folder
+   `~/Desktop/github/work/NNEST-12.00-opencode/`, locked to `opencode`;
+   the main folder is yours (`claude`). Do not `git checkout` other
+   branches in the shared folder anymore.
+
+Work already on `origin/opencode` that you don't have yet (visible once
+you merge):
+- `f0559614` feat(nb-js): rung 4 network from JS — worker
+  fetch()/XHR + Promise polyfill (native curl transport, E2E proven)
+- `3b1fadcb` docs(orientation): standing sync protocol
+
+## NOTICE 2026-09-07 — NB-JS standalone CLI + REPL on `opencode`
+
+More `opencode` commits past `3b1fadcb` (merge origin/opencode to get
+them; the sync protocol above stays open until the user says otherwise).
+
+- `d7797d74` **nbjs CLI**: same worker binary, `nbjs <page.js>
+  [fetch.dom]` runs a page headless like node — console.* → stdout,
+  bare exit codes 0 ok / 1 err / 2 usage, **zero khtpm/chtpm/GUI
+  dependency**. Makefile: `make` → nbjs, `make check`, `make install`
+  (PREFIX/DESTDIR). Daemon RPC mode untouched.
+- `1588f1fd` **install-duk.sh**: installs as a `duk` command
+  (`~/.local/bin/duk`, PREFIX-honoring) + `export duk='...'` written to
+  `~/.bashrc` and `~/.profile`; sourceable.
+- `cee6e587` **REPL**: bare `duk` on a terminal now starts an
+  interactive REPL (prompt, per-line eval, prints non-undefined values,
+  drains microtasks/timers without firing DCL/load per line). Non-tty
+  stdin stays the framed daemon, so network_browser_manager spawning is
+  byte-for-byte unchanged. `make check` all three suites PASS.
+
+Gotcha for page authors: this Duktape is 2.7.0 and has **no arrow
+functions** (`(() => 1)()` → `SyntaxError: empty expression not
+allowed`) in both CLI and REPL — use `function(){}` callbacks. It also
+has **no `let`** (`let x = 1` → `unterminated statement`) although
+`const`/`var` work. Edition is Duktape 2.7.0 with DUK_USE_ES6 on, but
+arrow syntax and block-scoped `let` are simply not present in the
+parser.
+
+## NOTICE 2026-09-07 — CLI-1 node runner lands; `duk` gains two modes
+
+Merge `origin/opencode` to get the commit past the CLI pack above.
+
+- **`duk file.js [args...]` is now a node-style runner** (CLI-1):
+  `process.argv` (interpreter, script, args), `process.cwd`, a
+  `process.env` snapshot, `process.stdout`/`process.stderr.write`,
+  `process.exit(code)`. **No browser globals by design** (`window`,
+  `document`, `location` are absent — a feature). Errors → stderr,
+  exit 1; clean run → exit 0; `-` reads the script from stdin; `#!`
+  shebangs are stripped. The whole body runs under the same 2 s
+  SIGALRM CPU guard as pages, so `while(true){}` dies rather than hangs.
+- **`duk --browser page.js [fetch.dom]` is the released DOM page
+  runner** (full DOM engine, events+timer loop, fetch/XHR+Promise,
+  render-back → stdout). This is the behavior the old default
+  `duk page.js` had, kept reachable and explicit.
+- REPL (bare `duk` on a terminal) and the framed manager daemon (no
+  args, non-tty) are unchanged.
+- House question answered along the way: node/v8's model is REPL with
+  no args, run-the-file with an arg, and *no DOM at all* — we chose the
+  better-than-node shape: node semantics by default plus an explicit
+  `--browser` flag, so both are one command away. Docs updated
+  (`14.biz/news` press pack, `install-duk.sh` usage, OPEN-ITEMS #11,
+  roadmap §9, `NB-JS-CLI-NODE-LIKE-MODE.md` status).
+- **`make check` now runs 4 suites**: dom/fetch/events (all PASS) plus a
+  new `cli_test` (7 cases: plain run+argv, throw→1, process.exit→3,
+  `--browser` DOM, stdin `-`, no-browser-globals, `--help`→2). All green.
+
+## NOTICE 2026-09-07 — CLI-2 CommonJS require lands on `opencode`
+
+Merge `origin/opencode` for the commit after the CLI-1 pack.
+
+- Node mode now has `require()` + `module`/`exports` globals, per the
+  design-doc ladder (`NB-JS-CLI-NODE-LIKE-MODE.md`). It's a pure-JS
+  loader prelude (`g_cjs_prelude` in the worker) over one host hook
+  (`__nb_read_file`, the existing 512 kB-capped reader).
+- Entry `require` base = the script's own directory; absolute and
+  `./`/`../` relative paths resolve; module files are wrapped
+  `(function(exports, require, module, __filename, __dirname){...})`,
+  so module locals don't leak and `this` === `module.exports` like node.
+- `.json` files are `require`d via `JSON.parse`; circular requires serve
+  the partially-initialized exports (standard CJS); `#!` shebang lines
+  in required files are stripped. Cache is keyed by resolved absolute
+  path.
+- **No `node_modules`/packages/builtins** — a bare specifier throws
+  `Cannot find module '<name>' (nbjs has no packages/builtins)`; a
+  relative miss throws with the resolved path. Both exit 1.
+- `console.error` now routes to stderr in node mode (`log`/`info`/`warn`
+  stay on stdout, node parity). The 2 s CPU guard covers required
+  modules too (`while(true){}` in a require'd file → killed, rc=142).
+- `cli_test` grew to 9 cases (require chain incl. JSON/nested `../`/
+  cycle/module-var-scoping + missing-module error); `make check` green.
+
+## NOTICE 2026-09-07 — CLI-3 fs-lite + `-i` REPL closes the node-mode ladder
+
+Merge `origin/opencode` for the commit after the CLI-2 pack.
+
+- **`require('fs')`** now resolves to fs-lite natives in node mode and
+  the REPL: `readFileSync` / `writeFileSync` / `appendFileSync` /
+  `existsSync` / `mkdirSync` (recursive, mirroring the manager's
+  `mkdir_p_local`). String-only payloads (no Buffer), optional encoding
+  arg accepted+ignored, reads keep the 512 kB cap, miss → `ENOENT`-style
+  error exit 1. `fs` is a builtin registered in the CJS loader — still
+  no node_modules/packages.
+- **`duk -i`** / `--interactive` forces the REPL even when stdin is
+  piped: `printf '1+2\nexit\n' | duk -i` → `3`. The REPL now also ships
+  `require()` + `require('fs')` on top of its browser prelude, so
+  `document` stays available interactively.
+- `#!` shebang stripping was already handled at entry
+  (`DUK_COMPILE_SHEBANG`) and by the CJS loader for required files.
+- Node-mode ladder (CLI-1 runner / CLI-2 CommonJS / CLI-3 fs+REPL) is
+  now complete through CLI-3; ESM (CLI-4) remains the explicit hard
+  tail. `cli_test` grew to 12 cases; `make check` green.
+
+## NOTICE 2026-09-07 — CLI-4 source-level ESM lands; the ladder is done
+
+Merge `origin/opencode` for `a022aec4` (CLI-3 pack was `1c0be598`).
+
+- The CJS loader prelude now transpiles **source-level ESM** on load —
+  Duktape has no `import` syntax, so `import`/`export` → CJS is a line
+  rewrite. Entry files, `require()`d modules, and single REPL lines all
+  go through it (`__nb_esm_prepare`). Output is pure ES5 (`var` only).
+- Supported: default import (node interop — unwraps `.default` when the
+  module sets `__esModule`, else the whole `module.exports`), named
+  imports with rename, `import * as ns`, side-effect `import "mod"`;
+  `export function`/`var`/`const`, `export default` (named + anonymous),
+  brace lists with rename, `export { x as y } from`, `export * from`
+  (skips `default`/`__esModule`). Transpiled modules get `__esModule`.
+- CJS calling `require()` on an ESM file reads `.default` — standard
+  node interop. Out of scope: multi-line statement imports, dynamic
+  `import()`, decorators/type annotations.
+- Also in the same session: **rung-2 DOM remainder** landed (`3df68bf9`):
+  `document.head`, `createTextNode`, `getElementsByClassName`,
+  `removeChild`/`insertBefore`/`replaceChild`, `removeAttribute`,
+  `style.*`, `value` — plus a latent wrapper-identity bug fix (the node
+  wrapper cache wrote into the object instead of the stash map, so
+  per-node `style`/`value` never survived a re-fetch).
+- `cli_test` is now 18 cases; `make check` green (dom/fetch/events +
+  cli). No thread/manager/daemon changes.
+
+## NOTICE 2026-09-07 — rung-6 file-backed `document.cookie` jar lands
+
+Merge `origin/opencode` for `1f943aba`.
+
+- The resident worker's `install_dom()` now redefines the prelude's
+  configurable `document.cookie` stub with **real C natives** backed by a
+  disk jar at `$NB_COOKIES_FILE` (fallback `~/.config/nbjs/nb_cookies.txt`).
+  Each LOAD runs a fresh Duktape heap, so the jar file is the only
+  cross-LOAD persistence — cookies now survive paging.
+- RFC-6265 subset: `name=value` + `Domain`/`Path`/`Expires`/`Max-Age`/
+  `Secure`; host-scoping + path-match enforced on read; `max-age=0` and
+  past `Expires` delete; IMF-fixdate parse via days-from-civil (no TZ
+  deps); atomic tmp+rename writes; damage-tolerant reads. Jar lines are
+  TAB-separated `host\tpath\tname\tvalue\texpires\tesecure`.
+- New `make check` suite **`wck`** (`tests/worker_cookie_test.c`): one
+  worker, THREE LOADs — set+read-back on `http://example.com/dir/`,
+  fresh-heap GET (persistence across LOADs), and a cross-host page on
+  `other.test` that must see nothing; C verifies the literal jar-file
+  content afterward. All suites green.
+- Notes: the old rung6 eval fixture `tests/rung6_cookie_test.js` still
+  exercises the prelude fallback (reads `''`, drops writes). Default
+  path is `$HOME`-based; the manager is expected to pass
+  `NB_COOKIES_FILE="$APPDIR/#.desktop/nb_cookies.txt"` when it spawns
+  the worker.
+- Still open on rung 6: real `history`/`location` navigation to the
+  manager (house-standard lock applies before editing
+  `network_browser_manager.c`). No thread/manager/daemon changes.

@@ -1,0 +1,15 @@
+window { width: 680px; height: 620px; background-color: #121214;
+  font-family: DejaVu Sans; font-size: 11px; }
+.chrome-btn { background-color: #2b2b2b; color: #eeeeee; font-weight: bold;
+  font-size: 11px; border: 1px solid #888888; border-width: 1; }
+.tab-bar { background-color: #1a1a1a; border: 1px solid #444444; border-width: 1; }
+.tab { background-color: #1a1a1a; color: #cccccc; border: 1px solid #444444;
+  border-width: 1; padding: 4px 8px; }
+.tab:hover { background-color: #2a3a4a; color: #ffffff; }
+.tab.active { background-color: #24384a; color: #7ec8ff; }
+.ms-row { background-color: #1a1a1e; color: #d0d0d4; width: 200px; height: 20px; padding: 2px 6px; }
+.active { background-color: #24384a; color: #7ec8ff; }
+.ms-canvas { width: 640px; height: 480px; background-color: #000000;
+  border: 1px solid #2a2a2e; border-width: 1; }
+.ms-gutter { color: #c8c8ce; background-color: #0a0a0c; padding: 4px 8px;
+  width: 640px; height: 22px; font-size: 11px; }

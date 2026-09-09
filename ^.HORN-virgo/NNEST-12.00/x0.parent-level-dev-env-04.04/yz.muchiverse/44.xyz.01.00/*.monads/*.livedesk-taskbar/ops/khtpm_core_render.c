@@ -97,6 +97,7 @@ static void nav_tab_unregister(void);
 static void nav_ledger_publish(void);
 static void popup_handle_click(int px, int py);
 static void handle_key(KeySym ks, char ch);
+static void grid_col_to_letters(int col, char *out, size_t outsz); /* defined near default_grid_handle_key() - needed earlier by dispatch()'s own CSVH_GRIDCOMMIT-style handlers */
 static void history_path(char *out, size_t outsz);
 static void history_unregister(void); /* REAL, NEW 2026-08-29 - see its own real definition/comment near history_path() */
 static void zero_nav_subtree(Elem *e); /* generic: recursively zero nav_index (see its definition) */
@@ -105,6 +106,10 @@ static void kh_capture_click(int x, int y, int button);
 static void kh_capture_key(KeySym ks, char ch);
 static void redraw(void); /* REAL, forward declaration needed for dispatch()'s OPACITY_MINUS/OPACITY_PLUS handlers (NEW 2026-08-29 TASK 2) */
 static void kh_raise_and_focus(Window w); /* fwd - dispatch()'s FOCUSWIN handler uses it, defined near hq_dispatch_xevent */
+static int kh_key_history_code(KeySym ks, char ch); /* fwd - handle_key()'s interact-relay forward uses it before its real definition, near kh_capture_key */
+static void desktop_toggle_click_two_step(const char *house_root); /* fwd - dispatch()'s CLICK_TWOSTEP_TOGGLE handler uses it before its real definition, near desktop_load_click_two_step */
+static void desktop_load_click_two_step(const char *house_root); /* fwd - hq_ui_pdl_reload_if_changed() (hq_idle_tick(), long-running dock strip) uses it before its real definition */
+static void kh_text_areas_reload(Elem *root); /* fwd - reparse_chtpm_if_changed() re-hydrates <text_area> buffers, defined near default_text_area_save */
 #define MAX_ELEMS 1024  /* 2026-09-02: page projection + chrome, was 512 */
 #define MAX_PAGE_STACK 8
 
@@ -265,14 +270,6 @@ static void apply_dock_window_hints(Display *dpy, Window w, int x, int y) {
         XFree(wh);
     }
 }
-/* REAL, NEW 2026-09-01 - remember which modes are real "windows" the
- * user toggles (open-hai, db-hq, events-hq, chat-hai) vs the transient
- * always-on-top chrome (entity-menu popup / taskbar-Settings swatch
- * picker). swatch-picker stays pinned regardless of the pdl - the one
- * dialog where the human IS the foreground actor, same reason the tile
- * popup menu keeps override_redirect=True. */
-static int g_is_swatch_picker = 0;
-
 /* REAL, NEW 2026-08-29, direct instruction ("the tb has a
  * transparency. but that should propagate to 'all entities' and menu
  * screens (including tb dropdowns... context/hq etc) so player can
@@ -725,14 +722,33 @@ static void apply_attr(Elem *e, const char *name, const char *val) {
         /* REAL FIX 2026-08-25 (Stage 2 palettes migration) - ported from
          * khtpm_hq_render.c's own apply_attr() (attr_ci_eq(name,
          * "sprite")) - was entirely missing here, so e->sprite never got
-         * set regardless of draw_elem()'s own sprite-blit support. */
-        snprintf(e->sprite, sizeof(e->sprite), "%s", val);
+         * set regardless of draw_elem()'s own sprite-blit support.
+         * REAL FIX 2026-09-08 (live report: "palettes tile sets no
+         * longer rendering"): sprite= is a filesystem path fed from a
+         * projector's ${t.sprite}, and this house's own dirs are named
+         * `&.widgits/` `&.hq-apps/`. Since experiment/xhtpm-attr-var-
+         * escaping, kh_substitute_vars() XML-escapes a ${var} spliced
+         * inside a quoted attribute, so that `&` arrives here as
+         * `&amp;` - `.../&amp;.widgits/...`, a path that does not exist,
+         * so every sprite blit silently failed. decode_entities() the
+         * same as label=/onclick=/action= already do; the escaping was
+         * artificial, undoing it restores the real path. */
+        char decoded[sizeof(e->sprite)];
+        snprintf(decoded, sizeof(decoded), "%s", val);
+        decode_entities(decoded);
+        snprintf(e->sprite, sizeof(e->sprite), "%s", decoded);
     } else if (strcmp(name, "src") == 0) {
         /* REAL Stage 5 §5d.10 (2026-08-16) - db-hq mode only, ported
          * from khtpm_hq_render.c's own apply_attr(): <module src="..."/>
          * real, wraith_parser_alpha.c convention. Reused e->label to
-         * hold it - <module> elements are never drawn, safe reuse. */
-        snprintf(e->label, sizeof(e->label), "%s", val);
+         * hold it - <module> elements are never drawn, safe reuse.
+         * 2026-09-08 - decode_entities() for the same reason sprite=
+         * does above (a ${var}-fed src path under &.widgits/ arrives
+         * XML-escaped since experiment/xhtpm-attr-var-escaping). */
+        char decoded[sizeof(e->label)];
+        snprintf(decoded, sizeof(decoded), "%s", val);
+        decode_entities(decoded);
+        snprintf(e->label, sizeof(e->label), "%s", decoded);
     } else if (strcmp(name, "args") == 0) {
         /* REAL, NEW 2026-08-25 (palettes manager port) - optional extra
          * static argv for a <module>, e.g. <module src="palettes_
@@ -757,10 +773,53 @@ static void apply_attr(Elem *e, const char *name, const char *val) {
         snprintf(decoded, sizeof(decoded), "%s", val);
         decode_entities(decoded);
         snprintf(e->backspace_action, sizeof(e->backspace_action), "%s", decoded);
+    } else if (strcmp(name, "relay") == 0) {
+        /* REAL, NEW 2026-09-04 - generic "Interact Mode" capability,
+         * ported from pc-hq's own hand-rolled run_pchq_board_mode()
+         * key-forward (see g_interact_relay_on's own declaration
+         * comment). Comma-separated target file path(s); this item's
+         * own class="interact-engaged" (data-driven, from a projector's
+         * ${var}, same convention every active/selected state in this
+         * house already uses) is what arms/disarms it - not a click. */
+        snprintf(e->relay, sizeof(e->relay), "%s", val);
     } else if (strcmp(name, "rows") == 0) {
         /* REAL, NEW 2026-09-01 - see Elem's own rows field comment in
          * khtpm_render_core.c. */
         e->rows = atoi(val);
+    } else if (strcmp(name, "content") == 0) {
+        /* REAL, NEW 2026-09-05 (pdl-read's own real "display a data-
+         * driven page of text" need, found live: putting multi-line
+         * content in label= broke the frame round-trip - label is
+         * never escaped for real newlines the way text_area_buffer
+         * is). A real, generic way to set a <text_area>'s initial
+         * buffer content from a template var - unlike live-typed
+         * content, `val` here has ALREADY had kh_substitute_vars()'s
+         * own "\n" -> real-newline conversion applied (this attribute
+         * value is substituted before the XML re-parse that calls
+         * apply_attr()), so a direct copy is correct. Only meaningful
+         * for text_area (cli_io stays single-line, unused by
+         * anything else) - harmless no-op attribute for any other tag. */
+        /* EXPERIMENT 2026-09-05 (experiment/xhtpm-attr-var-escaping):
+         * kh_substitute_vars() now XML-escapes a ${var} value spliced
+         * inside a quoted attribute, so a `"`/`<`/`>`/`&` in the doc
+         * page no longer breaks the re-parse. Undo that here, same as
+         * label=/action= already do. */
+        if (strcmp(e->tag, "text_area") == 0) {
+            char decoded[sizeof(e->text_area_buffer)];
+            snprintf(decoded, sizeof(decoded), "%s", val);
+            decode_entities(decoded);
+            snprintf(e->text_area_buffer, sizeof(e->text_area_buffer), "%s", decoded);
+        }
+    } else if (strcmp(name, "bg") == 0) {
+        /* REAL, NEW 2026-09-04, direct live request ("can we add grey
+         * and brown to swatch colors... that shouldn't be hardcoded,
+         * should be from layout/module") - see Elem.bg's own field
+         * comment (khtpm_render_core.c) and draw_elem()'s own
+         * consuming comment (khtpm_draw_core.c) for the full generic-
+         * capability rationale. `val` is typically a `${var}`-
+         * substituted hex string from a real manager/projector, same
+         * substitution pass every other attribute already gets. */
+        snprintf(e->bg, sizeof(e->bg), "%s", val);
     } else if (strcmp(name, "drop_action") == 0) {
         /* 2026-08-24 - see the g_drop_action block comment above.
          * Window-level attr; decoded through the SAME entity decoder
@@ -838,7 +897,34 @@ static const char *parse_element(const char *p, Elem *parent) {
             const char *end = strchr(p, '>');
             return end ? end + 1 : p + strlen(p);
         }
+        /* REAL FIX 2026-09-05, direct live report ("pdl-read window
+         * won't open from the tb-sub menu anymore ... WM related?").
+         * gdb-traced to a hard 100%-CPU infinite loop right here,
+         * BEFORE the window ever maps: parse_element()'s own first line
+         * is `if (*p != '<') return p;` - it returns p UNCHANGED for
+         * any byte that isn't a tag opener. This loop then calls it
+         * again on the same byte, forever.
+         *
+         * How stray non-'<' text ends up mid-stream: kh_substitute_vars()
+         * splices a ${var} value straight into the raw template text
+         * BEFORE parsing. pdl-read's manager publishes a doc page into
+         * `content="${page_text}"`, and that page text contains a bare
+         * `"` (e.g. a Markdown  "(CORRECT)"  quote). parse_attr_value()
+         * stops at that inner `"`, the rest of the page body spills out
+         * as raw inter-element text, and the first `>` in it (a Markdown
+         * `> ` blockquote) closes the mangled tag - leaving prose where
+         * a child element should be. Short pages happened not to contain
+         * a `>` after the break, which is why it looked intermittent.
+         *
+         * Guaranteeing forward progress here makes the parser robust to
+         * ANY malformed / not-well-formed input instead of spinning:
+         * a byte parse_element() can't consume is skipped. (The deeper
+         * correctness fix - escaping ${var} values spliced into quoted
+         * attributes so the content isn't truncated at the first `"` -
+         * is a separate change.) */
+        const char *before = p;
         p = parse_element(p, e);
+        if (p == before) p++;
     }
 }
 
@@ -1035,11 +1121,40 @@ static int kh_find_vars_attr(const char *buf, char *out, size_t outsz) {
 
 /* ${name} -> value; \$ \{ \\ pass the next char literally; a "\n"
  * sequence inside a value becomes a real newline (tpmos convention).
- * An unknown ${name} expands to nothing. */
+ * An unknown ${name} expands to nothing.
+ *
+ * EXPERIMENT 2026-09-05 (branch experiment/xhtpm-attr-var-escaping,
+ * follow-up to fix ea384825): substitution splices the value straight
+ * into the raw template text that parse_element() then re-parses. If
+ * the splice lands inside a double-quoted attribute value (`content=
+ * "${page_text}"`, `label="${x}"`, ...) and the value contains a
+ * literal `"` (or `<` `>` `&`), it breaks parse_attr_value() and the
+ * rest of the value corrupts the tag stream (the infinite loop
+ * ea384825 now merely survives, at the cost of truncating the value
+ * at the first `"`). Fix: track whether `o` is currently inside a
+ * template-level `"..."` and, when so, emit each char of a ${var}
+ * value XML-escaped - `decode_entities()` on the apply_attr() side
+ * (already run for label=/action=/...; content= gets it here too)
+ * restores the real text. Template-literal `"` chars still toggle the
+ * state; a ${var} value's own emitted `"` does not. */
+static void kh_sv_emit(char **o, char *end, char c, int esc) {
+    if (!esc) { if (*o < end) *(*o)++ = c; return; }
+    const char *rep = NULL;
+    switch (c) {
+        case '&': rep = "&amp;"; break;
+        case '"': rep = "&quot;"; break;
+        case '<': rep = "&lt;"; break;
+        case '>': rep = "&gt;"; break;
+        default:  if (*o < end) *(*o)++ = c; return;
+    }
+    while (*rep && *o < end) *(*o)++ = *rep++;
+}
+
 static void kh_substitute_vars(const char *src, char *dst, size_t max_len) {
     const char *p = src;
     char *o = dst;
     char *end = dst + max_len - 1;
+    int in_attr_quote = 0; /* o is inside a template-level "..." */
     while (*p && o < end) {
         if (strncmp(p, "<!--", 4) == 0) {
             const char *e = strstr(p, "-->");
@@ -1060,13 +1175,14 @@ static void kh_substitute_vars(const char *src, char *dst, size_t max_len) {
                 memcpy(name, p + 2, n); name[n] = '\0';
                 const char *v = kh_get_var(name);
                 while (*v && o < end) {
-                    if (v[0] == '\\' && v[1] == 'n') { *o++ = '\n'; v += 2; }
-                    else *o++ = *v++;
+                    if (v[0] == '\\' && v[1] == 'n') { kh_sv_emit(&o, end, '\n', 0); v += 2; }
+                    else kh_sv_emit(&o, end, *v++, in_attr_quote);
                 }
                 p = close + 1;
                 continue;
             }
         }
+        if (*p == '"') in_attr_quote = !in_attr_quote;
         *o++ = *p++;
     }
     *o = '\0';
@@ -1101,6 +1217,11 @@ static size_t kh_emit_repeat_body(const char *body, size_t blen,
                 int n;
                 if (strcmp(field, "#") == 0)
                     n = snprintf(o, (size_t)(oend - o), "%d", idx);
+                else if (strcmp(field, "##") == 0)
+                    /* REAL, NEW 2026-09-05 - 1-based index, for
+                     * human-facing counters (line numbers, "Page N")
+                     * where ${bind.#}'s 0-based value reads wrong. */
+                    n = snprintf(o, (size_t)(oend - o), "%d", idx + 1);
                 else
                     n = snprintf(o, (size_t)(oend - o), "${%s_%d_%s}", bind, idx, field);
                 if (n > 0) o += (n < (int)(oend - o) ? n : (int)(oend - o));
@@ -1321,6 +1442,26 @@ static Elem *find_page(const char *name) {
  * a stale armed-field pointer from the old tree is not just wrong, it
  * aliases whatever the new parse happens to write at that pool slot). */
 static Elem *g_default_input_elem;
+/* REAL, NEW 2026-09-05 (TEXT_AREA-SCROLL-GUTTER-SELECTION-DESIGN.md) -
+ * Shift-held state for the CURRENT key being dispatched. Set from
+ * ev->xkey.state at the physical KeyPress site and per-code in
+ * dispatch_relay_code() (relay codes 220-225 = shifted arrows/Home/
+ * End). default_cli_io_handle_key() reads it: Shift+move extends the
+ * text selection, an unshifted move collapses it. */
+static int g_key_shift = 0;
+/* REAL FIX 2026-09-05, direct live report ("tb and x11-hq windows no
+ * longer do double digit accumulation jump, ie 15 jumps to 5") -
+ * multi-digit nav-jump accumulator for the generic default-mode
+ * digit-jump (handle_key()'s own `ch >= '1'` branch), ported from
+ * tpmos chtpm_parser.c.bak's `digit_accum` (~line 1996): a pressed
+ * digit is `accum*10 + d`; take it if 1..g_n_nav, else restart the
+ * accumulator with just `d`. Reset to 0 on any arrow-nav, Enter, or
+ * any non-digit key (that last one is done once, at the top of the
+ * post-armed-field section of handle_key). Popup/entity-menu mode
+ * already has its own `popup_digit_accum`; the taskbar's own
+ * digit-jump is in khtpm_strip_parser.c / khtpm_taskbar_manager.c -
+ * a separate fix if it regressed there too. */
+static int g_nav_digit_accum = 0;
 /* REAL, NEW 2026-09-03 (direct request: "make menu dropdown... work for
  * all layouts", after live-checking that piececraft-hq's own File/Desk
  * dropdown is hand-built, mode-specific C predating CENTROID_GOLD_STD,
@@ -1356,6 +1497,11 @@ static int g_dock_drop_lo, g_dock_drop_hi;
  * ALL keyboard input house-wide to this one (now non-typing) window
  * until it closes, a real, much worse bug than the one being fixed. */
 static Display *dpy;
+static int g_headless;  /* fwd (real def near g_dump_and_exit) - referenced by the guards below */
+/* Every XUngrabKeyboard(dpy,...) in this file goes through here so a
+ * --headless run (dpy == NULL) can't segfault Xlib on a NULL Display,
+ * and so the call is a clean no-op before any display is open. */
+static void kh_ungrab_kbd(void) { if (dpy) XUngrabKeyboard(dpy, CurrentTime); }
 /* Forward declaration - real definition (with its own header comment)
  * lives in the generic sidebar+panel scroll section further down.
  * Needed here so a reparse (new manager content) can auto-scroll the
@@ -1431,7 +1577,7 @@ static int reparse_chtpm_if_changed(void) {
      * `dpy` above for why leaving it held would be a much worse bug
      * than the one this whole block fixes. A harmless no-op when
      * nothing was actually armed/grabbed. */
-    if (g_default_input_elem) XUngrabKeyboard(dpy, CurrentTime);
+    if (g_default_input_elem) kh_ungrab_kbd();
     g_default_input_elem = NULL;
     /* Same real dangling-pointer reasoning as g_default_input_elem just
      * above - a stale dropdown-open pointer into a freed/reused pool
@@ -1442,6 +1588,16 @@ static int reparse_chtpm_if_changed(void) {
     Elem *new_window = parse_chtpm(g_chtpm_path);
     if (!new_window) return 0;
     g_window = new_window;
+    /* REAL, NEW 2026-09-08 (sql-hq) - a <text_area> auto-saves its
+     * buffer to <pkg>/text_area_<id>.txt (default_text_area_save), but
+     * the fresh parse above resets every buffer to its content="" attr.
+     * For an app whose projector republishes state/ui.txt on Run
+     * (sql-hq: results grid changes -> reparse), that would wipe the
+     * user's in-progress SQL every time they hit Run. Re-hydrate any
+     * text_area from its saved file here, exactly the way the scope
+     * re-resolve just below restores nav state across the same reparse.
+     * No-op for any text_area whose save file doesn't exist yet. */
+    kh_text_areas_reload(new_window);
     if (g_dock_peer_path[0]) {
         g_dock_peer = parse_chtpm(g_dock_peer_path);
         { struct stat pst; if (g_dock_peer && stat(g_dock_peer_path, &pst) == 0) g_dock_peer_mtime = pst.st_mtim; }
@@ -1699,12 +1855,42 @@ static int g_win_pos_applied_x = INT_MIN, g_win_pos_applied_y = INT_MIN;
  * genuine but repeated FocusIn/FocusOut (mode NotifyNormal) only repaints
  * when the indicator would truly change. -1 = nothing painted yet. */
 static int g_focus_owned_painted = -1;
+/* Set at window-create for a <window class="managed"> non-dock window
+ * (pchq-board). hq_idle_tick() re-asserts XSetInputFocus while the
+ * pointer is over the window (legacy run_pchq_board_mode pchq_focus_ok).
+ * Not set for override_redirect windows (2026-09-03 flicker). */
+static int g_win_managed_focus = 0;
 /* Coalescing repaint flag for the generic (non-marker-pilot) window. N
  * repaint requests inside one event-loop iteration collapse to a single
  * redraw() at the tick boundary - the tpmos marker/dirty model
  * (chtpm_parser.c: triggers set the flag, compose_frame() runs once per
  * loop). Consumed at the bottom of hq_run_event_loop(). */
 static int g_frame_dirty = 0;
+static int g_has_canvas = 0;  /* set by assign_nav_and_layout when a <canvas> is present -> event loop ticks ~30fps for a live feed */
+/* REAL, NEW 2026-09-04 (direct instruction: "we should still use
+ * 'interact' mode... it is the same in old chtpm-parser for tpmos...
+ * should try to stick as close to that as possible") - generic port of
+ * tpmos chtpm_parser_pal.c's own onClick="INTERACT"/active_index dual-
+ * mode key routing: while a real, externally-owned process (piececraft-
+ * hq's board-viewer, first real consumer) has genuinely engaged, EVERY
+ * keypress here is raw game input, not this window's own nav - same
+ * real shape run_pchq_board_mode() hand-rolled per-app, now generic.
+ * Armed/disarmed by a template <item relay="path1,path2"> carrying
+ * class="interact-active" - a LIVE, projector-published state (not a
+ * local click guess), scanned once per layout pass. While armed, keys
+ * are appended verbatim to relay path(s) as bare-decimal (matches
+ * house convention: pieces/apps/player_app/history.txt) and "KEY_
+ * PRESSED: N" (pieces/keyboard/history.txt) - the SAME two-file dual
+ * write pchq_append_key() always did, just no longer app-specific C. */
+static int g_interact_relay_on = 0;
+static char g_interact_relay_paths[2][PATH_BUF];
+static int g_interact_relay_n = 0;
+static char g_interact_relay_raw[300] = "";  /* last-armed relay= string, for the re-arm check only */
+/* PC-HQ-FOCUS-AND-INTERACT-ACTIVATE.md: X11 focus vs Interact arm.
+ * handle_key forwards only when both are 1. Init 1 so first In works
+ * before the first FocusIn. */
+static int g_x11_window_focused = 1;
+static int g_interact_disengage_sent = 0;
 static int g_quit = 0;
 /* --dump-and-exit (any argv position): paint one frame, write the PNG +
  * .txt receipt via dump_frame_png(), then quit. Set once at startup,
@@ -1713,6 +1899,13 @@ static int g_quit = 0;
  * dump_frame_png() itself before entering the loop. */
 static int g_dump_and_exit = 0;
 static int g_dumped = 0;
+/* --headless (any argv position): run with NO X connection at all -
+ * parse, ${var}-sub, the real assign_nav_and_layout() (text metrics
+ * estimated, screen size a constant), then loop writing the per-PID
+ * ascii frame + consuming the per-PID input relay. For agents / CI /
+ * driving many IRC+chain windows from different ports with no display
+ * and no Xvfb. See TERMINAL-MIRROR-PARITY-all-windows.md step 4. */
+static int g_headless = 0;
 /* REAL FIX 2026-08-16, direct live report ("it breaks on events or just
  * when right clicking sometimes" - intermittent): the stale-event drain
  * right after XMapRaised only discards events already sitting in the X
@@ -1765,25 +1958,59 @@ static int g_click_two_step = 1;
 static int window_is_dock(void);
 static int elem_has_class(Elem *e, const char *cls);
 static int kh_elem_in_scope(Elem *e);
+/* Append one decimal code to the strip's input relay (the same file the
+ * terminal keyboard binary and agents write, that the manager's
+ * poll_strip_history() consumes). Used to tell the manager "the on-screen
+ * highlight just moved to nav N" (6000+N) so its strip_focus_cell - and
+ * with it the ASCII mirror - stays in exact lockstep with what the X11
+ * strip is showing. Dock only. 2026-09-06. */
+static void dock_relay_focus_code(int code) {
+    if (!window_is_dock() || code <= 0) return;
+    char hist[PATH_BUF];
+    snprintf(hist, sizeof(hist), "%s/#.desktop/strip_history.txt", g_house_root);
+    FILE *hf = fopen(hist, "a");
+    if (hf) { fprintf(hf, "%d\n", code); fclose(hf); }
+}
 static int click_focus_then_activate(Elem *hit) {
     if (!hit) return 0;
     /* Out-of-scope rows stay numbered and drawn, but a click must not
      * steal focus or fire — same as chtpm_parser.c is_navigable(). */
     if (!kh_elem_in_scope(hit)) return 0;
-    /* Dock menus: a mouse hit on ACTIVATE (HQ/File-style trigger) or a
-     * dropdown-child row opens/runs immediately. Other dock cells still
-     * honor #.desktop/hq_ui.pdl click_two_step. */
+    /* Dock menus: a mouse hit on a dropdown-child row opens/runs
+     * immediately. Bottom-strip HQ window cells (class hqwin /
+     * onclick FOCUSWIN:) are the same shape as a taskbar button —
+     * first click must raise/restore, not merely focus (Enter already
+     * activated; click_two_step made pc-hq look like it "only opens
+     * from nav"). ACTIVATE (HQ/File-style trigger) on dock cells honors
+     * #.desktop/hq_ui.pdl click_two_step: when click_two_step=0, ACTIVATE
+     * fires on first click; when click_two_step=1, it requires two-step
+     * (first click sets focus, second click activates). */
     if (window_is_dock() &&
-        (strcmp(hit->onclick, "ACTIVATE") == 0 || elem_has_class(hit, "dropdown-child"))) {
+        (elem_has_class(hit, "dropdown-child") ||
+         elem_has_class(hit, "hqwin") ||
+         (hit->onclick[0] && strncmp(hit->onclick, "FOCUSWIN:", 9) == 0) ||
+         (!g_click_two_step && strcmp(hit->onclick, "ACTIVATE") == 0))) {
         g_focus_nav = hit->nav_index;
         return 1;
     }
-    if (!g_click_two_step) {
+    /* A window can opt every click into single-click-activate with
+     * class="single-click" on <window> - regardless of the house-wide
+     * click_two_step. For pickers where one click == pick (the periodic
+     * table: click a tile -> inspect/place, no "focus first" step). */
+    if (!g_click_two_step || (g_window && elem_has_class(g_window, "single-click"))) {
         g_focus_nav = hit->nav_index;
         return 1;
     }
     if (hit->nav_index <= 0) return 1;
-    if (g_focus_nav != hit->nav_index) { g_focus_nav = hit->nav_index; return 0; }
+    if (g_focus_nav != hit->nav_index) {
+        g_focus_nav = hit->nav_index;
+        /* first click of a two-step: focus moved but nothing fired yet -
+         * tell the manager so the ASCII mirror + strip_focus_cell follow
+         * the click, not just arrow keys (dock, header/tab cells only). */
+        if (window_is_dock() && !elem_has_class(hit, "dropdown-child"))
+            dock_relay_focus_code(6000 + hit->nav_index);
+        return 0;
+    }
     return 1;
 }
 /* REAL Stage 5 §5d.10 (2026-08-16) - scaled() is now mode-aware: db-hq
@@ -1797,63 +2024,26 @@ static int click_focus_then_activate(Elem *hit) {
 /* LayDoc Gap 2: NULL = no ACTIVATE scope. Declared before draw_core
  * include so elem_cursor_prefix can show [^] on the scope root. */
 static Elem *g_dbhq_active_scope_root = NULL;
-/* PAUSED 2026-08-25 mid-migration - see the direct finding that stopped
- * this: stats-hq's real dashboard.chtpm DOES have a <tabbar> (real
- * session-timestamp tabs, e.g. "2026-08-13 22:53:37"), contradicting
- * this comment's own first-draft claim that it was tab-free generic
- * content. db-hq's own dbhq_*() tab-switching code matches tab clicks
- * against a FIXED TAB_LABELS[] array specific to db-hq's own Common
- * Events tabs - stats-hq's timestamp tabs would never match those
- * labels, so blindly aliasing g_is_stats_hq into g_is_db_hq's exact
- * path (the original plan here) would likely render fine but leave tab
- * click-switching silently broken. Flagged for the user before writing
- * any more of this - not resumed yet. */
-static const int g_is_stats_hq = 0;
-/* REAL, NEW 2026-08-25 (Stage 2 palettes migration off the deprecated
- * standalone khtpm_hq_render.c - au11-hq/TPMOS-COMPLIANCE-DEBT.md /
- * khtpm-merge-how2.md). Palettes' own .chtpm is fully static content
- * (composed once by palettes_menu.sh, no live state/manager needed,
- * unlike db-hq/stats-hq) - rides g_is_db_hq=1 too for the shared
- * chrome/dispatch machinery, but g_is_palettes gates its own generic,
- * UNCONDITIONAL nav pass (see dbhq_assign_nav_indices()'s own
- * g_is_palettes branch) - deliberately NOT the nav_index==0-guarded
- * assign_generic_onclick_nav() pattern khtpm_hq_render.c used, since
- * that pattern needed clear_nav_indices() to avoid a real, live bug
- * found+fixed there this same session (stale nav_index staying non-zero
- * after frame 1, silently skipping every element on frame 2+). Palettes
- * has no tabbar/sidebar/panel-button structure to avoid double-counting
- * against, so unconditional reassignment is both simpler and immune to
- * that whole bug class by construction. */
-static const int g_is_palettes = 0;
-/* REAL, NEW 2026-08-25 (Stage 3 bookmarks migration off khtpm_hq_render.c,
- * same debt entry as palettes above) - bookmarks is also a single
- * static panel of onClick-carrying <button> rows, no tabbar/sidebar,
- * so it needs the exact same layout-gate/sidebar_w/apply_css_deep/
- * generic-nav exceptions g_is_palettes already added - see every
- * `g_is_palettes` site below, now OR'd with this flag rather than
- * duplicated. Kept as its own flag (not folded into g_is_palettes)
- * since bookmarks also needs the chtpm-live-reload + armed-input
- * mechanism palettes has no use for. */
-static const int g_is_bookmarks = 0;
-/* REAL, NEW 2026-08-30 - piececraft-hq board-view khtpm conversion,
- * direct instruction ("u should do it the same way the legacy chtpm
- * parser does it. if possible steal code/ops w/e u have to"). Real,
- * deliberate ISOLATION choice: unlike every other g_is_* mode flag
- * above, this one is handled by its own fully separate function
- * (run_pchq_board_mode(), see its own header comment near main()) that
- * returns before any of this file's shared X11-window/Elem/CSS setup
- * runs - zero shared state with the other 8 real modes, since this
- * mode is fundamentally a raw-pixel blit (bv_render_3d.c's own 3D
- * raymarch RGBA output), not an Elem/CSS-rendered window at all. Kept
- * as its own real, low-risk addition rather than threaded through the
- * existing giant shared main() - see PIECECRAFT-HQ-BOARD-KHTPM-
- * CONVERSION-2026-08-30.md for the real proof-of-concept this ports
- * (pchq_board_view_poc.c, already live-verified with a real
- * screenshot before this port). */
-static int g_is_pchq_board = 0;
+/* 2026-09-04: g_is_stats_hq/g_is_palettes/g_is_bookmarks (and
+ * g_is_db_hq before them) removed - stats-hq/palettes/bookmarks all
+ * have real live button-pal.sh launchers pointed at their own
+ * .xhtpm templates + projectors now; every branch these flags gated
+ * was already dead by construction (const 0). See handoff
+ * Rev 15 for the audit that found this. */
+/* 2026-09-04: piececraft-hq's board window (formerly its own isolated
+ * raw-pixel-blit mode, run_pchq_board_mode()/g_is_pchq_board/<window
+ * class="pchq-board">) is retired - pchq-board.xhtpm (static template
+ * + <canvas> primitive + generic Interact Mode relay) replaced it,
+ * live-verified end to end this session. */
 static int scaled(int base_px) {
     return base_px;
 }
+
+/* Screen dimensions - a constant under --headless (no dpy to ask), the
+ * real X value otherwise. Every layout-path DisplayWidth/Height call
+ * goes through these two so headless layout has a sane viewport. */
+static int kh_screen_w(void) { return g_headless ? 1920 : DisplayWidth(dpy, screen); }
+static int kh_screen_h(void) { return g_headless ? 1080 : DisplayHeight(dpy, screen); }
 /* REAL Stage 5 (2026-08-16, khtpm-merge-how2.md §5d) - shared, generic
  * draw_elem()/render_tree()/font_for() (was hand-rolled, per-app pixel
  * drawing - see khtpm_draw_core.c's own header comment). Included here
@@ -1887,37 +2077,28 @@ static int kh_elem_in_scope(Elem *e) {
 #include "khtpm_draw_core.c"
 #define ROW_H 24
 #define CHROME_H 24
+#define KH_WIN_FRAME 2
 
 static CssSheet g_sheet;
 
 /* REAL Stage 5 §5d.3 step 6 (2026-08-16, khtpm-merge-how2.md) - the
  * actual literal binary merge. This binary now serves BOTH the real
- * generic menu shape (entity-menu's own original job) AND taskbar-
- * settings' own real swatch-picker shape, selected by a real, data-
- * driven signal (`<window class="swatch-picker">`), matching wraith-
- * alpha's own real "one binary, behavior selected by loaded data"
- * shape - not zero-app-C, but genuinely ONE compiled binary, no
- * dlopen/plugin indirection. Set once in main() after parse_chtpm(). */
-static pid_t g_swatch_mgr_pid = -1;
-static unsigned g_swatch_action_seq = 0;
-
-/* REAL, swatch-picker-only state - ported verbatim from taskbar-
- * settings' own real g_phase/g_chosen_bg_idx/g_chosen_fg_idx/
- * g_palette_hex/g_palette_name (khtpm_taskbar_settings_render.c,
- * kept as a real, documented per-mode exception - the 2-phase pick
- * is genuinely stateful UI interaction, not something the shared
- * dispatch()/assign_nav_and_layout() can express generically, same
- * real precedent as chat-hai's panel exception in Stage 3). Unused,
- * harmless, when g_is_swatch_picker is 0. */
+ * generic menu shape (entity-menu's own original job). 2026-09-04:
+ * taskbar-settings' own real swatch-picker shape (`<window class=
+ * "swatch-picker">`) was retired - taskbar-settings-pal.xhtpm (the
+ * real, live template since 2026-09-03) is a normal generic-mode
+ * window and never trips this. */
 #define SWATCH 34
 #define SWATCH_GAP 8
 #define SWATCH_COLS 6
-static int g_phase = 0;
-static int g_chosen_bg_idx = -1;
-static int g_chosen_fg_idx = -1;
-static const char *g_palette_hex[12];
 static char g_palette_name_buf[12][32];
 static const char *g_palette_name[12];
+/* "PICK:<n>" is a generic, always-on dispatch() action token (not
+ * gated by any window-class flag) - taskbar-settings-pal.xhtpm's own
+ * swatch items use it, consumed by swatch_picker_manager.+x via
+ * #.desktop/taskbar_settings_action.txt. See dispatch()'s own PICK:
+ * handler below. */
+static unsigned g_swatch_action_seq = 0;
 
 static int elem_has_class(Elem *e, const char *cls) {
     for (int i = 0; i < e->n_classes; i++)
@@ -1931,6 +2112,18 @@ static int elem_has_class(Elem *e, const char *cls) {
 /* Real, single-slot font cache for text measurement, ported verbatim
  * (khtpm-merge-how2.md §3.2's own cache pattern, already proven). */
 static int kh_measure_text_px(const CssStyle *st, const char *text) {
+    if (g_headless) {
+        /* no Xft without a display - estimate: ~0.55em advance per
+         * UTF-8 codepoint (bytes with (b & 0xC0) != 0x80). Good enough
+         * for layout width decisions; the text mirror doesn't render
+         * pixels anyway. */
+        int size = scaled(st->has_font_size ? st->font_size : 12);
+        int adv = (size * 55) / 100; if (adv < 5) adv = 5;
+        int n = 0;
+        for (const char *p = text ? text : ""; *p; p++)
+            if (((unsigned char)*p & 0xC0) != 0x80) n++;
+        return n * adv;
+    }
     char spec[128];
     const char *fam = st->has_font_family ? st->font_family : "DejaVu Sans";
     int size = scaled(st->has_font_size ? st->font_size : 12);
@@ -1985,6 +2178,11 @@ static void kh_shift_subtree(Elem *e, int dy) {
     for (int i = 0; i < e->n_children; i++) kh_shift_subtree(e->children[i], dy);
 }
 
+static void kh_shift_subtree_xy(Elem *e, int dx, int dy) {
+    if (!e) return;
+    e->x += dx; e->y += dy;
+    for (int i = 0; i < e->n_children; i++) kh_shift_subtree_xy(e->children[i], dx, dy);
+}
 
 
 static void nav_tab_register(const char *type, const char *title);
@@ -2045,6 +2243,30 @@ static void frame_field_unescape_pipe(const char *in, char *out, size_t outsz) {
         out[o++] = (*p == '\x01') ? '|' : (char)*p;
     out[o] = '\0';
 }
+/* REAL, NEW 2026-09-05 (CLI_IO-CURSOR-AND-TEXT_AREA-MULTILINE-EDITING-
+ * DESIGN.md) - text_area_buffer needs the SAME pipe-escape as every
+ * other frame field above, PLUS a real newline escape: this frame
+ * format is fundamentally line-oriented (kh_paint_frame_line() is
+ * called once per fgets()-read line), so a real, literal `\n` a user
+ * actually typed into a text_area would otherwise split ONE element's
+ * serialized line into two - one truncated, one garbage with no
+ * leading fields - the exact "malformed line" case this file's own
+ * honest-skip convention exists for, except here it would happen on
+ * EVERY real multi-line document instead of never. 0x02 is the same
+ * real "control byte that can never appear in real typed text"
+ * substitution trick 0x01 already uses for '|' above. */
+static void frame_field_escape_text(const char *in, char *out, size_t outsz) {
+    size_t o = 0;
+    for (const unsigned char *p = (const unsigned char *)in; *p && o + 1 < outsz; p++)
+        out[o++] = (*p == '|') ? '\x01' : (*p == '\n') ? '\x02' : (char)*p;
+    out[o] = '\0';
+}
+static void frame_field_unescape_text(const char *in, char *out, size_t outsz) {
+    size_t o = 0;
+    for (const unsigned char *p = (const unsigned char *)in; *p && o + 1 < outsz; p++)
+        out[o++] = (*p == '\x01') ? '|' : (*p == '\x02') ? '\n' : (char)*p;
+    out[o] = '\0';
+}
 
 static void kh_serialize_frame_elem(FILE *f, Elem *e) {
     char classes_joined[CSS_MAX_CLASSES * 33] = "";
@@ -2061,10 +2283,73 @@ static void kh_serialize_frame_elem(FILE *f, Elem *e) {
     char target_id_esc[64 * 2], input_buffer_esc[256 * 2];
     frame_field_escape_pipe(e->target_id, target_id_esc, sizeof(target_id_esc));
     frame_field_escape_pipe(e->input_buffer, input_buffer_esc, sizeof(input_buffer_esc));
-    fprintf(f, "%s|%s|%s|%s|%s|%s|%d|%d|%d|%d|%d|%d|%s|%s\n",
-            e->tag, e->id, classes_joined, e->label, e->sprite, e->onclick,
+    /* REAL FIX 2026-09-05, live bug (csv-hq's own real grid: a row
+     * label like "1  |       |       |..." genuinely needs literal '|'
+     * characters to look like spreadsheet columns) - label is one of
+     * the FRONT-anchored fields (kh_paint_frame_line() splits fields
+     * 0-4 sequentially via strchr('|'), on the documented assumption
+     * "they never contain a real pipe in practice" - exactly the same
+     * class of bug book-stack's onclick hit in 2026-08-28, just in a
+     * front-anchored field instead of the middle one). Escaping label
+     * the same proven way target_id/input_buffer/relay/bg already are
+     * is simpler than re-anchoring the front split (unlike onclick,
+     * label has other real fields BOTH before and after it, so it
+     * can't just become "whatever's left in the middle"). */
+    char label_esc[256 * 2];
+    frame_field_escape_pipe(e->label, label_esc, sizeof(label_esc));
+    /* REAL FIX 2026-09-04 (pc-hq-bugs.md Bug 3 - "^" badge never shows
+     * for an Interact Mode trigger even though its class/label are
+     * current) - e->relay was never serialized here, same gap
+     * target_id/input_buffer had before 2026-08-31 fixed it for THEM.
+     * Every default/popup-mode window draws through THIS frame-file
+     * round trip (see redraw()'s own header comment - render_tree()
+     * itself is never called for this mode), so kh_paint_frame_line()'s
+     * tmp Elem always had relay[0]=='\0', and draw_core.c's own
+     * is_scope check (`g_interact_relay_on && e->relay[0]`) could
+     * never see it - not a bug in that check itself, a bug in what it
+     * was ever handed. Same escape convention (relay's own value is a
+     * comma-joined absolute-path list - could theoretically collide
+     * with '|' in a wild house_root, escape defensively same as the
+     * other two). */
+    char relay_esc[300 * 2];
+    frame_field_escape_pipe(e->relay, relay_esc, sizeof(relay_esc));
+    /* REAL, NEW 2026-09-04 (same class of gap as relay's own fix just
+     * above, caught proactively this time before it became a repeat
+     * of that same debugging saga) - e->bg (the new generic bg=
+     * attribute, see its own field/apply_attr/draw_elem comments) is
+     * ALSO consumed by draw_elem() on the tmp Elem this round trip
+     * hands it, so it needs to survive the trip too, same as every
+     * other field draw_elem() reads. */
+    char bg_esc[16 * 2];
+    frame_field_escape_pipe(e->bg, bg_esc, sizeof(bg_esc));
+    /* REAL, NEW 2026-09-05 (CLI_IO-CURSOR-AND-TEXT_AREA-MULTILINE-
+     * EDITING-DESIGN.md) - e->cursor is a plain int, no escaping
+     * needed, but it hits the EXACT same trap relay/bg already did:
+     * draw_elem() only ever sees the tmp Elem this round trip hands
+     * it, so a cursor that isn't serialized here is a cursor
+     * kh_paint_frame_line() can never reconstruct, no matter how
+     * correct the key-handling logic is. */
+    /* REAL, NEW 2026-09-05 - text_area_buffer, same exact trap as
+     * every field above (draw_elem() only ever sees this round trip's
+     * own tmp Elem) - see frame_field_escape_text()'s own comment for
+     * why this one needs a REAL newline escape too, not just pipe. */
+    char text_area_esc[4096 * 2];
+    frame_field_escape_text(e->text_area_buffer, text_area_esc, sizeof(text_area_esc));
+    /* REAL, NEW 2026-09-05 (GRID-ELEMENT-DESIGN.md) - grid_jump_buffer/
+     * grid_cell_buffer get the same pipe escape as label/target_id/etc
+     * (either could plausibly contain a literal '|' - a cell's own real
+     * content, mid-edit). grid_cur_row/col/edit_mode are plain ints,
+     * same as e->cursor above - no escaping needed, but still must be
+     * serialized or kh_paint_frame_line()'s tmp Elem can never see them. */
+    char grid_jump_esc[16 * 2], grid_cell_esc[256 * 2];
+    frame_field_escape_pipe(e->grid_jump_buffer, grid_jump_esc, sizeof(grid_jump_esc));
+    frame_field_escape_pipe(e->grid_cell_buffer, grid_cell_esc, sizeof(grid_cell_esc));
+    fprintf(f, "%s|%s|%s|%s|%s|%s|%d|%d|%d|%d|%d|%d|%s|%s|%s|%s|%d|%s|%d|%d|%d|%s|%s|%d\n",
+            e->tag, e->id, classes_joined, label_esc, e->sprite, e->onclick,
             e->nav_index, e->active, e->x, e->y, e->w, e->h,
-            target_id_esc, input_buffer_esc);
+            target_id_esc, input_buffer_esc, relay_esc, bg_esc, e->cursor, text_area_esc,
+            e->grid_cur_row, e->grid_cur_col, e->grid_edit_mode, grid_jump_esc, grid_cell_esc,
+            e->sel_anchor);
 }
 
 /* Real recursive serializer, same traversal order render_tree() itself
@@ -2113,7 +2398,14 @@ static void kh_serialize_frame_subtree(FILE *f, Elem *e) {
  * beyond "call the real, already-correct drawing code" is the file
  * parse itself). */
 static void kh_paint_frame_line(const char *line) {
-    char buf2[2048];
+    /* REAL, NEW 2026-09-05 - bumped from 2048: text_area_buffer alone
+     * can be up to 4096 bytes, escaped (worst case ~2x if every byte
+     * needs escaping) - 2048 silently truncated any real document
+     * anywhere near that size, corrupting the parse (not just for
+     * text_area's own field - a truncated line desyncs every FIELD
+     * after it too, tail-anchored or not). Sized with real headroom,
+     * not just barely enough. */
+    char buf2[9000];
     snprintf(buf2, sizeof(buf2), "%s", line);
 
     /* REAL FIX 2026-08-28, live bug (book-stack's entity-menu: first
@@ -2145,13 +2437,22 @@ static void kh_paint_frame_line(const char *line) {
         p = bar + 1;
     }
     /* [0]=nav_index [1]=active [2]=x [3]=y [4]=w [5]=h [6]=target_id
-     * (pipe-escaped) [7]=input_buffer (pipe-escaped) - the last two are
-     * REAL, NEW 2026-08-31, see kh_serialize_frame_elem()'s own
-     * comment; a frame file written by an older binary (before these
-     * two fields existed) simply has 6 tail fields, not 8 - the loop
-     * below returns (honest skip) rather than misparse it, matching
-     * this function's existing "malformed line" convention exactly. */
-    char *tail[8];
+     * (pipe-escaped) [7]=input_buffer (pipe-escaped) [8]=relay (pipe-
+     * escaped, pc-hq-bugs.md Bug 3) [9]=bg (pipe-escaped, REAL, NEW
+     * 2026-09-04 - the generic bg= attribute, see Elem.bg's own field
+     * comment) [10]=cursor (plain int, REAL, NEW 2026-09-05 - see
+     * Elem.cursor's own field comment) [11]=text_area_buffer
+     * (pipe-AND-newline-escaped, REAL, NEW 2026-09-05 - see
+     * frame_field_escape_text()'s own comment) [12]=grid_cur_row
+     * [13]=grid_cur_col [14]=grid_edit_mode (plain ints, REAL, NEW
+     * 2026-09-05, GRID-ELEMENT-DESIGN.md) [15]=grid_jump_buffer
+     * [16]=grid_cell_buffer (pipe-escaped) [17]=sel_anchor (plain int,
+     * REAL, NEW 2026-09-05, TEXT_AREA-SCROLL-GUTTER-SELECTION-DESIGN.md)
+     * - a frame file written by an older binary (before these fields
+     * existed) simply has fewer tail fields - the loop below returns
+     * (honest skip) rather than misparse it, matching this function's
+     * existing "malformed line" convention exactly. */
+    char *tail[18];
     /* REAL FIX 2026-08-28, same-day self-correction (first attempt at
      * this fix broke EVERY entity menu, not just book-stack's - see
      * git blame if this comment ever needs re-deriving why): the front
@@ -2163,7 +2464,7 @@ static void kh_paint_frame_line(const char *line) {
      * onward), so `p + strlen(p)` is the real end - `buf2 +
      * strlen(buf2)` is not. */
     char *scan_end = p + strlen(p);
-    for (int i = 7; i >= 0; i--) {
+    for (int i = 17; i >= 0; i--) {
         char *bar = NULL;
         for (char *q = scan_end - 1; q >= p; q--) { if (*q == '|') { bar = q; break; } }
         if (!bar) return; /* malformed line - honest skip, not a crash */
@@ -2189,7 +2490,8 @@ static void kh_paint_frame_line(const char *line) {
             cp = comma ? comma + 1 : NULL;
         }
     }
-    snprintf(tmp.label, sizeof(tmp.label), "%s", front[3]);
+    { char label_unesc[256]; frame_field_unescape_pipe(front[3], label_unesc, sizeof(label_unesc));
+      snprintf(tmp.label, sizeof(tmp.label), "%s", label_unesc); }
     snprintf(tmp.sprite, sizeof(tmp.sprite), "%s", front[4]);
     snprintf(tmp.onclick, sizeof(tmp.onclick), "%s", onclick_field);
     tmp.nav_index = atoi(tail[0]);
@@ -2207,6 +2509,22 @@ static void kh_paint_frame_line(const char *line) {
      * a human is actually typing into. */
     frame_field_unescape_pipe(tail[6], tmp.target_id, sizeof(tmp.target_id));
     frame_field_unescape_pipe(tail[7], tmp.input_buffer, sizeof(tmp.input_buffer));
+    frame_field_unescape_pipe(tail[8], tmp.relay, sizeof(tmp.relay));
+    frame_field_unescape_pipe(tail[9], tmp.bg, sizeof(tmp.bg));
+    tmp.cursor = atoi(tail[10]); /* plain int, no escaping - see Elem.cursor's own field comment */
+    frame_field_unescape_text(tail[11], tmp.text_area_buffer, sizeof(tmp.text_area_buffer));
+    /* REAL, NEW 2026-09-05, GRID-ELEMENT-DESIGN.md - same trap every
+     * field above already hit: draw_elem() only ever sees this round
+     * trip's own tmp Elem, so a grid element's live cursor/edit-mode/
+     * jump-buffer/cell-buffer that isn't serialized+parsed here can
+     * never actually reach the screen, no matter how correct the
+     * key-handling logic is. */
+    tmp.grid_cur_row = atoi(tail[12]);
+    tmp.grid_cur_col = atoi(tail[13]);
+    tmp.grid_edit_mode = atoi(tail[14]);
+    frame_field_unescape_pipe(tail[15], tmp.grid_jump_buffer, sizeof(tmp.grid_jump_buffer));
+    frame_field_unescape_pipe(tail[16], tmp.grid_cell_buffer, sizeof(tmp.grid_cell_buffer));
+    tmp.sel_anchor = atoi(tail[17]); /* plain int - see Elem.sel_anchor's own field comment */
 
     css_compute_style(&g_sheet, tmp.tag, tmp.id[0] ? tmp.id : NULL, tmp.classes, tmp.n_classes, tmp.active, &tmp.style);
     if (window_is_dock()) {
@@ -2304,6 +2622,38 @@ static void zero_nav_subtree(Elem *e) {
     for (int i = 0; i < e->n_children; i++) zero_nav_subtree(e->children[i]);
 }
 
+/* Recursively resolve CSS for every Elem in a subtree. css_layout_pass()
+ * reads e->style but never fills it, and the classic layout helpers only
+ * CSS their direct children - a flex subtree needs every node styled
+ * first. */
+static void kh_css_deep(Elem *e) {
+    if (!e) return;
+    css_compute_style(&g_sheet, e->tag, e->id[0] ? e->id : NULL,
+                      e->classes, e->n_classes, 0, &e->style);
+    for (int i = 0; i < e->n_children; i++) kh_css_deep(e->children[i]);
+}
+
+/* Number every actionable <item>/<cli_io> in a subtree in document
+ * order (g_nav[]/g_n_nav). Used for a region laid out by css_layout_pass
+ * (flex), which sizes/positions boxes but assigns no nav. */
+static void kh_assign_nav_subtree(Elem *e) {
+    if (!e) return;
+    int actionable = (strcmp(e->tag, "item") == 0 || strcmp(e->tag, "cli_io") == 0) &&
+                     (e->onclick[0] || e->label[0]);
+    /* Renumber unconditionally every call, like every other layout pass
+     * (++g_n_nav). A stale nav_index left on the Elem from the previous
+     * frame must NOT be kept - assign_nav_and_layout() resets g_n_nav to
+     * 0 but not the per-Elem field, so keeping it produced two items
+     * sharing an index (a tile stuck at 1, chrome also at 1). */
+    if (actionable && g_n_nav < MAX_ELEMS) {
+        e->nav_index = ++g_n_nav;
+        g_nav[g_n_nav - 1] = e;
+    } else if (!actionable) {
+        e->nav_index = 0;
+    }
+    for (int i = 0; i < e->n_children; i++) kh_assign_nav_subtree(e->children[i]);
+}
+
 /* REAL FIX 2026-08-29 (EVENTS-HQ-RENDER-UNIFICATION-PLAN.md Part B) -
  * extracted from events-hq's own view_mode==1 branch (was hardcoded
  * to that one caller's "window"/"viewmode_stub" globals) so Common
@@ -2391,6 +2741,10 @@ static int g_default_sidebar_scroll = 0;
  * nothing to scroll" (a fresh page/an empty sidebar). */
 static int g_default_sidebar_nav_lo = 0, g_default_sidebar_nav_hi = 0;
 static int g_default_scrolllist_nav_lo = 0, g_default_scrolllist_nav_hi = 0;
+/* extra <panel> regions (flex-row page, e.g. Canvas-Craft's inventory
+ * column). Shared scroll cursor across all extras. */
+static int g_default_panel2_scroll = 0;
+static int g_default_panel2_nav_lo = 0, g_default_panel2_nav_hi = 0;
 
 /* REAL, NEW 2026-09-02 - generic visible scrollbar for ANY <scrolllist>
  * that overflows its viewport. Palette-grid already had its own track
@@ -2680,6 +3034,7 @@ static int scroll_row_span(const Elem *c, int w) {
      * at this font) is subtracted here so this stays a real, honest
      * upper-bound measurement, not an undercount that reintroduces the
      * exact same overlap for a differently-worded label later. */
+    if (g_headless) return 1;   /* no Xft to measure wrapping; the text mirror ignores visual row spans */
     if (c && (strcmp(c->tag, "text") == 0 || strcmp(c->tag, "item") == 0) && c->label[0]) {
         CssStyle tmp_style;
         css_compute_style(&g_sheet, c->tag, c->id, (char (*)[32])(void *)c->classes, c->n_classes, 0, &tmp_style);
@@ -2747,7 +3102,7 @@ static void layout_scroll_region(Elem *container, int x, int y, int w, int h, in
     for (int i = 0; i < container->n_children; i++) {
         Elem *c = container->children[i];
         if (strcmp(c->tag, "item") == 0 || strcmp(c->tag, "text") == 0 ||
-            strcmp(c->tag, "cli_io") == 0 || scroll_is_sprite_grid_row(c))
+            strcmp(c->tag, "cli_io") == 0 || strcmp(c->tag, "text_area") == 0 || scroll_is_sprite_grid_row(c))
             total += scroll_row_span(c, w);
     }
     int max_scroll = total > visible_rows ? total - visible_rows : 0;
@@ -2784,7 +3139,7 @@ static void layout_scroll_region(Elem *container, int x, int y, int w, int h, in
         Elem *c = container->children[i];
         int is_grid = scroll_is_sprite_grid_row(c);
         if (!is_grid && strcmp(c->tag, "item") != 0 && strcmp(c->tag, "text") != 0 &&
-            strcmp(c->tag, "cli_io") != 0) continue;
+            strcmp(c->tag, "cli_io") != 0 && strcmp(c->tag, "text_area") != 0) continue;
         int span = scroll_row_span(c, inner_w);
         int visible = (row + span > *scroll && row < *scroll + visible_rows);
         if (is_grid) {
@@ -2792,7 +3147,7 @@ static void layout_scroll_region(Elem *container, int x, int y, int w, int h, in
         } else if (visible) {
             c->x = x; c->y = content_y + (row - *scroll) * ROW_H; c->w = inner_w; c->h = span * ROW_H;
             css_compute_style(&g_sheet, c->tag, c->id, c->classes, c->n_classes, 0, &c->style);
-            if (strcmp(c->tag, "item") == 0 || strcmp(c->tag, "cli_io") == 0) {
+            if (strcmp(c->tag, "item") == 0 || strcmp(c->tag, "cli_io") == 0 || strcmp(c->tag, "text_area") == 0) {
                 c->nav_index = ++g_n_nav;
                 g_nav[g_n_nav - 1] = c;
                 if (*out_lo == 0) *out_lo = c->nav_index;
@@ -2867,7 +3222,7 @@ static void layout_fixed_rows_and_scrolllist(Elem *container, int x, int y, int 
          * own real composer included, is completely unaffected).
          * REAL FIX 2026-09-02 - only BOTTOM (unclassed) cli_io reserves
          * the trailing strip. class=top is laid at y_cursor below. */
-        if (strcmp(c->tag, "cli_io") == 0 && !elem_has_class(c, "top"))
+        if ((strcmp(c->tag, "cli_io") == 0 || strcmp(c->tag, "text_area") == 0) && !elem_has_class(c, "top"))
             composer_rows = c->rows > 0 ? c->rows : 1;
         if (strcmp(c->tag, "scrolllist") == 0) scrolllist = c;
     }
@@ -2900,7 +3255,7 @@ static void layout_fixed_rows_and_scrolllist(Elem *container, int x, int y, int 
         } else if (strcmp(c->tag, "row") == 0 && elem_has_class(c, "toolbar") && !elem_has_class(c, "pal-grid-row")) {
             layout_toolbar_row(c, x, y_cursor, w);
             y_cursor += ROW_H;
-        } else if (strcmp(c->tag, "cli_io") == 0) {
+        } else if (strcmp(c->tag, "cli_io") == 0 || strcmp(c->tag, "text_area") == 0) {
             int this_h = (c->rows > 0 ? c->rows : 1) * ROW_H;
             if (elem_has_class(c, "top")) {
                 c->x = x; c->y = y_cursor; c->w = w; c->h = this_h;
@@ -2910,6 +3265,39 @@ static void layout_fixed_rows_and_scrolllist(Elem *container, int x, int y, int 
             }
             css_compute_style(&g_sheet, c->tag, c->id, c->classes, c->n_classes, 0, &c->style);
             c->nav_index = ++g_n_nav; g_nav[g_n_nav - 1] = c;
+        } else if (strcmp(c->tag, "grid") == 0) {
+            /* REAL, NEW 2026-09-05 (GRID-ELEMENT-DESIGN.md). Always a
+             * fixed, always-visible row (like cli_io/text_area's own
+             * class="top" case) - a grid doesn't glue to the bottom the
+             * way a single composer field does. rows= reused verbatim
+             * from cli_io/text_area's own attribute (defaults to 8 real
+             * visible rows if unset, an arbitrary but reasonable v1
+             * placeholder height).
+             * REAL FIX 2026-09-05, direct live report ("the orange
+             * highligh for grid goes offscreen. nothing should go
+             * offscreen") - this height MUST exactly match what
+             * khtpm_draw_core.c's own grid branch actually consumes
+             * (its STATUS_H_PX + (rows+1)*CELL_H_PX), or the generic
+             * nav-focus rectangle (drawn earlier in draw_elem(), sized
+             * from THIS c->h) ends up taller than the real drawn table,
+             * leaving a floating, disconnected-looking orange line past
+             * the last real row. This was using the unrelated generic
+             * ROW_H (24px, ~every other element's row height) instead -
+             * a real, deliberately duplicated copy of draw_core.c's own
+             * two constants (same reason grid_col_to_letters() is also
+             * duplicated there: the two files can't share a single
+             * #define across their real translation-unit split at this
+             * house's own build boundary). Keep these three numbers
+             * (18, 22, and the +1 for the header row) in exact sync
+             * with khtpm_draw_core.c's STATUS_H_PX/CELL_H_PX if either
+             * ever changes. */
+            enum { GRID_STATUS_H_PX = 18, GRID_CELL_H_PX = 22 };
+            int rows = c->rows > 0 ? c->rows : 8;
+            int this_h = GRID_STATUS_H_PX + (rows + 1) * GRID_CELL_H_PX;
+            c->x = x; c->y = y_cursor; c->w = w; c->h = this_h;
+            css_compute_style(&g_sheet, c->tag, c->id, c->classes, c->n_classes, 0, &c->style);
+            c->nav_index = ++g_n_nav; g_nav[g_n_nav - 1] = c;
+            y_cursor += this_h;
         }
         /* scrolllist itself is positioned in its own real pass below,
          * once the fixed-row total (y_cursor's own final advance) is
@@ -2991,8 +3379,8 @@ static int layout_sidebar_panel(Elem *page) {
     css_compute_style(&g_sheet, panel->tag, panel->id, panel->classes, panel->n_classes, 0, &panel->style);
 
     if (g_default_is_fullscreen) {
-        g_win_w = DisplayWidth(dpy, screen);
-        g_win_h = DisplayHeight(dpy, screen);
+        g_win_w = kh_screen_w();
+        g_win_h = kh_screen_h();
     } else {
         g_win_w = g_window->style.has_width ? g_window->style.width : DEFAULT_WIN_W;
         g_win_h = g_window->style.has_height ? g_window->style.height : DEFAULT_WIN_H;
@@ -3017,7 +3405,7 @@ static int layout_sidebar_panel(Elem *page) {
      * never re-centers a window the human deliberately dragged
      * partway off - a real position clamp, not a real recenter. */
     if (!g_default_is_fullscreen) {
-        int sw = DisplayWidth(dpy, screen), sh = DisplayHeight(dpy, screen);
+        int sw = kh_screen_w(), sh = kh_screen_h();
         /* REAL, NEW 2026-09-04 (live report: chat-hai's session-list
          * scrollbar sat flush against / past the screen's right edge,
          * unusable). A window WIDER than the screen leaves g_win_x
@@ -3085,7 +3473,8 @@ static int layout_sidebar_panel(Elem *page) {
                     tab->n_classes = w2;
                 }
                 css_compute_style(&g_sheet, tab->tag, tab->id, tab->classes, tab->n_classes, 0, &tab->style);
-                int tw = scaled(34);
+                /* [ ]N. badge is ~46px (playbook); 34 left labels clipped. */
+                int tw = scaled(52);
                 if (font_ui && tab->label[0]) {
                     XGlyphInfo gi;
                     XftTextExtentsUtf8(dpy, font_ui, (const FcChar8 *)tab->label, (int)strlen(tab->label), &gi);
@@ -3103,7 +3492,23 @@ static int layout_sidebar_panel(Elem *page) {
     }
     int content_top = CHROME_H + tabbar_h;
 
-    {
+    /* Region boxes. Two ways, HTML-shaped:
+     *  - default: the classic fixed sidebar + one panel takes the rest.
+     *  - if <page style="display:flex; flex-direction:row"> the shared
+     *    flexbox engine (css_layout_pass, khtpm_render_core.c) sizes
+     *    every region child (sidebar + N panels) from its own
+     *    width / flex-grow - exactly like a CSS flex row. This is how a
+     *    3-column (recipes | bench | inventory) window is authored, no
+     *    per-app renderer code. */
+    css_compute_style(&g_sheet, page->tag, page->id, page->classes, page->n_classes, 0, &page->style);
+    int page_is_flex = page->style.has_display && page->style.display_flex;
+    if (page_is_flex) {
+        for (int i = 0; i < page->n_children; i++) {
+            Elem *c = page->children[i];
+            css_compute_style(&g_sheet, c->tag, c->id, c->classes, c->n_classes, 0, &c->style);
+        }
+        css_layout_pass(page, 0, content_top, g_win_w, g_win_h - content_top);
+    } else {
         int sidebar_w = SIDEBAR_W;
         if (sidebar->style.has_width && !sidebar->style.width_is_pct) sidebar_w = sidebar->style.width;
         sidebar->x = 0; sidebar->y = content_top; sidebar->w = sidebar_w; sidebar->h = g_win_h - content_top;
@@ -3141,10 +3546,102 @@ static int layout_sidebar_panel(Elem *page) {
      * and scrolls independently - same real per-region scroll variable
      * as before, just no longer required to be sidebar's OWN direct
      * children. */
-    layout_fixed_rows_and_scrolllist(sidebar, sidebar->x, sidebar->y, sidebar->w, sidebar->h,
-                                      &g_default_sidebar_scroll, &g_default_sidebar_nav_lo, &g_default_sidebar_nav_hi);
-    layout_fixed_rows_and_scrolllist(panel, panel->x, panel->y, panel->w, panel->h,
-                                      &g_default_scrolllist_scroll, &g_default_scrolllist_nav_lo, &g_default_scrolllist_nav_hi);
+    /* A region that opts into flexbox (display:flex, incl.
+     * flex-wrap:wrap for a tile grid / periodic table) is laid out by
+     * the shared HTML flex engine; css_layout_pass assigns no nav, so
+     * number its items after. Otherwise the classic vertical
+     * fixed-rows + scroll pass. */
+    if (sidebar->style.has_display && sidebar->style.display_flex) {
+        /* Flex-wrap tile grid (e.g. the periodic-table element picker).
+         * The shared HTML flex engine (css_layout_pass) lays every tile
+         * out fresh from sidebar->y every frame; it assigns no nav.
+         * SCROLL exactly the way every other region in this file does
+         * (layout_scroll_region / the swatch-grid path): do NOT
+         * translate the whole subtree - off-fold rows then paint up
+         * into the pinned chrome band, nothing clips a region to its
+         * box on the paint side - instead HIDE off-fold tiles at
+         * y=-100000 and nav-number only the visible ones. Scroll input
+         * is the generic Page_Up/Down + the generic_sbar ^/v arrows +
+         * wheel; no bespoke key handling. See HOUSE_CODE_PITFALLS.md #14. */
+        zero_nav_subtree(sidebar);
+        kh_css_deep(sidebar);
+        css_layout_pass(sidebar, sidebar->x, sidebar->y, sidebar->w, sidebar->h);
+
+        int grid_bottom = 0, first_h = 0, first_y = sidebar->y;
+        for (int i = 0; i < sidebar->n_children; i++) {
+            Elem *c = sidebar->children[i];
+            if (strcmp(c->tag, "item") != 0) continue;
+            if (!first_h) { first_h = c->h; first_y = c->y; }
+            if (c->y + c->h > grid_bottom) grid_bottom = c->y + c->h;
+        }
+        int cgap = sidebar->style.has_gap ? sidebar->style.gap : 0;
+        int cpad = sidebar->style.has_padding ? sidebar->style.padding : 0;
+        int row_h  = (first_h > 0 ? first_h : 40) + cgap;
+        int grid_h = grid_bottom - first_y + cpad;
+        int total_rows   = row_h > 0 ? (grid_h + row_h - 1) / row_h : 1;
+        int visible_rows = row_h > 0 ? sidebar->h / row_h : 1;
+        if (visible_rows < 1) visible_rows = 1;
+        int max_scroll   = total_rows > visible_rows ? total_rows - visible_rows : 0;
+        if (g_default_sidebar_scroll < 0) g_default_sidebar_scroll = 0;
+        if (g_default_sidebar_scroll > max_scroll) g_default_sidebar_scroll = max_scroll;
+
+        int shift = g_default_sidebar_scroll * row_h;
+        int lo = g_n_nav + 1;
+        for (int i = 0; i < sidebar->n_children; i++) {
+            Elem *c = sidebar->children[i];
+            if (strcmp(c->tag, "item") != 0) {
+                if (shift) kh_shift_subtree(c, -shift);   /* headers etc. scroll with the grid */
+                continue;
+            }
+            int r = row_h > 0 ? (c->y - first_y + row_h / 2) / row_h : 0;
+            if (r < g_default_sidebar_scroll || r >= g_default_sidebar_scroll + visible_rows) {
+                kh_shift_subtree(c, -100000 - c->y);      /* park the whole tile subtree off-screen */
+                c->nav_index = 0;
+            } else {
+                if (shift) kh_shift_subtree(c, -shift);
+                if (c->onclick[0] || c->label[0]) {
+                    c->nav_index = ++g_n_nav;
+                    g_nav[g_n_nav - 1] = c;
+                } else {
+                    c->nav_index = 0;
+                }
+            }
+        }
+        g_default_sidebar_nav_lo = (g_n_nav >= lo) ? lo : 0;
+        g_default_sidebar_nav_hi = g_n_nav;
+
+        /* same call shape as layout_fixed_rows_and_scrolllist()'s own:
+         * pass the FULL region width/height - the helper carves the
+         * thumb + arrows off the right edge itself. */
+        generic_sbar_register(sidebar->x, sidebar->y, sidebar->w, sidebar->h,
+                              &g_default_sidebar_scroll, total_rows, visible_rows, max_scroll);
+    } else {
+        layout_fixed_rows_and_scrolllist(sidebar, sidebar->x, sidebar->y, sidebar->w, sidebar->h,
+                                          &g_default_sidebar_scroll, &g_default_sidebar_nav_lo, &g_default_sidebar_nav_hi);
+    }
+    if (panel->style.has_display && panel->style.display_flex) {
+        zero_nav_subtree(panel);
+        kh_css_deep(panel);
+        css_layout_pass(panel, panel->x, panel->y, panel->w, panel->h);
+        kh_assign_nav_subtree(panel);       /* detail-panel buttons: few, after the grid, before chrome */
+    } else {
+        layout_fixed_rows_and_scrolllist(panel, panel->x, panel->y, panel->w, panel->h,
+                                          &g_default_scrolllist_scroll, &g_default_scrolllist_nav_lo, &g_default_scrolllist_nav_hi);
+    }
+    /* flex mode: css_layout_pass() sized every region above; run the
+     * classic vertical fixed-rows+scroll+nav pass inside EACH extra
+     * <panel> too (its box is already set). One shared scroll cursor
+     * for all extras - fine while there's one; give it its own if a
+     * window ever needs two independently-scrolling right columns. */
+    if (page_is_flex) {
+        for (int i = 0; i < page->n_children; i++) {
+            Elem *c = page->children[i];
+            if (c == panel || strcmp(c->tag, "panel") != 0) continue;
+            layout_fixed_rows_and_scrolllist(c, c->x, c->y, c->w, c->h,
+                                              &g_default_panel2_scroll,
+                                              &g_default_panel2_nav_lo, &g_default_panel2_nav_hi);
+        }
+    }
 
     /* REAL, NEW 2026-09-01 - the real "X"/"!" chrome pair (see these
      * statics' own header comment). Positioned in the chrome strip's
@@ -3258,7 +3755,7 @@ static void dock_release_keyboard_if_left(void) {
         return;
     }
     if (g_dock_kbd_win) {
-        XUngrabKeyboard(dpy, CurrentTime);
+        kh_ungrab_kbd();
         g_dock_kbd_win = None;
     }
 }
@@ -3450,8 +3947,8 @@ static int layout_dock_bar(Elem *page) {
     is_bottom = elem_has_class(g_window, "dock-bottom");
     g_default_has_sidebar_panel = 1; /* persistent: dispatch must not quit */
     generic_sbar_reset();
-    sw = DisplayWidth(dpy, screen);
-    sh = DisplayHeight(dpy, screen);
+    sw = kh_screen_w();
+    sh = kh_screen_h();
     load_theme_colors();
     load_dock_strip_offset(&ox, &oy);
     if (is_bottom) {
@@ -3724,7 +4221,7 @@ static void dock_paint_peer(void) {
         }
         FILE *rf = fopen(fpath, "r");
         if (rf) {
-            char line[2048];
+            char line[9000]; /* REAL, NEW 2026-09-05 - see kh_paint_frame_line()'s own buf2 comment: must be big enough for a real text_area line */
             while (fgets(line, sizeof(line), rf)) {
                 size_t len = strlen(line);
                 while (len > 0 && (line[len-1]=='\n' || line[len-1]=='\r')) line[--len] = '\0';
@@ -3756,9 +4253,8 @@ static void dock_paint_peer(void) {
      * dimensions here (swapped in above). */
     {
         XSetForeground(dpy, gc, alloc_pixel(g_theme_fg[0] ? g_theme_fg : "#888888"));
-        for (int _fb = 0; _fb < 2; _fb++)
-            XDrawRectangle(dpy, buf, gc, _fb, _fb,
-                           (unsigned)(g_win_w - 1 - 2 * _fb), (unsigned)(g_win_h - 1 - 2 * _fb));
+        XDrawRectangle(dpy, buf, gc, 0, 0,
+                       (unsigned)(g_win_w - 1), (unsigned)(g_win_h - 1));
     }
     {
         XImage *frame = XGetImage(dpy, buf, 0, 0, (unsigned)g_win_w, (unsigned)g_win_h, AllPlanes, ZPixmap);
@@ -3842,7 +4338,7 @@ static void dock_paint_menu(void) {
             }
             FILE *rf = fopen(fpath, "r");
             if (rf) {
-                char line[2048];
+                char line[9000]; /* REAL, NEW 2026-09-05 - see kh_paint_frame_line()'s own buf2 comment: must be big enough for a real text_area line */
                 while (fgets(line, sizeof(line), rf)) {
                     size_t len = strlen(line);
                     while (len > 0 && (line[len-1]=='\n' || line[len-1]=='\r')) line[--len] = '\0';
@@ -3851,11 +4347,11 @@ static void dock_paint_menu(void) {
                 fclose(rf);
             }
         }
-        /* 2px theme-secondary window frame, same as every other khtpm
-         * window - drawn LAST, right before the present. */
+        /* 2px theme-secondary window frame in a dedicated margin,
+         * drawn LAST, right before the present. */
         {
             XSetForeground(dpy, gc, alloc_pixel(g_theme_fg[0] ? g_theme_fg : "#888888"));
-            for (int _fb = 0; _fb < 2; _fb++)
+            for (int _fb = 0; _fb < KH_WIN_FRAME; _fb++)
                 XDrawRectangle(dpy, buf, gc, _fb, _fb,
                                (unsigned)(g_win_w - 1 - 2 * _fb), (unsigned)(g_win_h - 1 - 2 * _fb));
         }
@@ -3938,7 +4434,165 @@ static void kh_apply_scope_confine(void) {
     kh_focus_first_child_in_scope();
 }
 
+/* REAL, NEW 2026-09-04 - see g_interact_relay_on's own declaration
+ * comment. Scans the current page's direct <item> children (never the
+ * whole tree - a relay trigger is always a real, top-level toolbar-ish
+ * item, same shape the chrome/canvas scans right above already use)
+ * for one carrying BOTH a non-empty relay= and class="interact-active".
+ * Arms if found and not already armed; disarms if not found and
+ * currently armed - so simply not publishing that class on the next
+ * reparse (the projector's own real signal that the external process
+ * disengaged) is what turns keyboard ownership back over to this
+ * window, never a local guess. */
+static void kh_scan_interact_relay(void) {
+    Elem *pg = find_page(g_current_page);
+    Elem *found = NULL;
+    Elem *any_relay = NULL;
+    if (pg) {
+        for (int i = 0; i < pg->n_children; i++) {
+            Elem *it = pg->children[i];
+            if (strcmp(it->tag, "item") != 0 || !it->relay[0]) continue;
+            if (!any_relay) any_relay = it;
+            if (elem_has_class(it, "interact-active")) { found = it; break; }
+        }
+    }
+    if (!found) found = any_relay;
+    /* Arm from projector vars even when the Elem class is stale
+     * (vars-hash reparse not firing — pc-hq-leg-vs-nu-fix.md §6b). */
+    const char *ic = kh_get_var("interact_class");
+    const char *ia = kh_get_var("interact_armed");
+    int var_armed = (ic && strstr(ic, "interact-active")) ||
+                    (ia && ia[0] == '1');
+    int class_armed = found && elem_has_class(found, "interact-active");
+    const char *h1 = kh_get_var("bv_h1");
+    const char *h2 = kh_get_var("bv_h2");
+    if (class_armed || var_armed) {
+        char paths[PATH_BUF * 2];
+        if (h1 && h1[0]) {
+            if (h2 && h2[0]) snprintf(paths, sizeof(paths), "%s,%s", h1, h2);
+            else snprintf(paths, sizeof(paths), "%s", h1);
+        } else if (found) {
+            snprintf(paths, sizeof(paths), "%s", found->relay);
+        } else {
+            g_interact_relay_on = 0;
+            g_interact_relay_raw[0] = '\0';
+            return;
+        }
+        if (!g_interact_relay_on || strcmp(g_interact_relay_raw, paths) != 0) {
+            snprintf(g_interact_relay_raw, sizeof(g_interact_relay_raw), "%s", paths);
+            g_interact_relay_n = 0;
+            char work[PATH_BUF * 2];
+            snprintf(work, sizeof(work), "%s", paths);
+            char *save = NULL, *tok = strtok_r(work, ",", &save);
+            while (tok && g_interact_relay_n < 2) {
+                snprintf(g_interact_relay_paths[g_interact_relay_n], sizeof(g_interact_relay_paths[0]), "%s", tok);
+                g_interact_relay_n++;
+                tok = strtok_r(NULL, ",", &save);
+            }
+        }
+        /* REVERTED 2026-09-04 - see pc-hq-bugs.md Bug 2 update. The
+         * XGrabKeyboard this comment used to describe was a real,
+         * confirmed regression: a keyboard grab is DISPLAY-WIDE (this
+         * file's own line ~9192 comment already warns about exactly
+         * this class of problem) and only ever released by an explicit
+         * XUngrabKeyboard on the on->off transition below - which
+         * depends on the SAME projector/reparse cycle already known
+         * fragile (Bug 3's root cause). Live-confirmed: once armed,
+         * EVERY other window in the house (including the taskbar
+         * itself) lost real keyboard input until the pc-hq process was
+         * killed outright, severing its X connection (the only other
+         * way an X grab releases). Killing the one window broke
+         * keyboard input for the entire desktop - far worse than the
+         * bug it was meant to fix. Do not re-add this without solving
+         * the disarm-reliability problem FIRST, and prefer a per-
+         * window `XSetInputFocus` reassertion over a display-wide
+         * grab if it needs revisiting at all. */
+        g_interact_relay_on = 1;
+    } else {
+        g_interact_relay_on = 0;
+        g_interact_relay_raw[0] = '\0';
+        g_interact_disengage_sent = 0;
+    }
+}
+
+static int kh_interact_vars_on(void) {
+    const char *ic = kh_get_var("interact_class");
+    const char *ia = kh_get_var("interact_armed");
+    return (ic && strstr(ic, "interact-active")) || (ia && ia[0] == '1');
+}
+
+static void kh_interact_append_13(void) {
+    int n = g_interact_relay_n;
+    const char *paths[2];
+    char h1buf[PATH_BUF], h2buf[PATH_BUF];
+    if (n > 0) {
+        for (int i = 0; i < n; i++) paths[i] = g_interact_relay_paths[i];
+    } else {
+        const char *h1 = kh_get_var("bv_h1");
+        const char *h2 = kh_get_var("bv_h2");
+        n = 0;
+        if (h1 && h1[0]) { snprintf(h1buf, sizeof(h1buf), "%s", h1); paths[n++] = h1buf; }
+        if (h2 && h2[0]) { snprintf(h2buf, sizeof(h2buf), "%s", h2); paths[n++] = h2buf; }
+    }
+    for (int i = 0; i < n; i++) {
+        if (!paths[i] || !paths[i][0]) continue;
+        FILE *f = fopen(paths[i], "a");
+        if (f) { fprintf(f, "13\n"); fclose(f); }
+    }
+}
+
+static void kh_interact_disengage_engine_if_on(void) {
+    if (g_interact_disengage_sent) return;
+    if (!kh_interact_vars_on() && !g_interact_relay_on) return;
+    kh_interact_append_13();
+    g_interact_disengage_sent = 1;
+}
+
+static void kh_interact_engage_if_needed(void) {
+    if (kh_interact_vars_on() || g_interact_relay_on) return;
+    kh_interact_append_13();
+}
+
+static int kh_page_has_relay_item(void) {
+    Elem *pg = find_page(g_current_page);
+    if (!pg) return 0;
+    for (int i = 0; i < pg->n_children; i++) {
+        Elem *it = pg->children[i];
+        if (strcmp(it->tag, "item") == 0 && it->relay[0]) return 1;
+    }
+    return 0;
+}
+
+static int kh_canvas_hit(int px, int py) {
+    Elem *pg = find_page(g_current_page);
+    if (!pg) return 0;
+    for (int i = 0; i < pg->n_children; i++) {
+        Elem *it = pg->children[i];
+        if (strcmp(it->tag, "canvas") != 0) continue;
+        if (px >= it->x && px < it->x + it->w && py >= it->y && py < it->y + it->h)
+            return 1;
+    }
+    return 0;
+}
+
 static void assign_nav_and_layout(void) {
+    g_has_canvas = 0;
+    /* REAL FIX 2026-09-04 - the window-frame block at the end of this
+     * function does `g_win_w/h += 2*KH_WIN_FRAME` every call. Branches
+     * that recompute g_win_w/h from content (sidebar+panel, persistent
+     * swatch grid) are fine, but the flat-list / entity-menu popup
+     * branch leaves g_win_w fixed, so the +frame COMPOUNDED every
+     * redraw (context menu marched off-screen + pegged CPU on the
+     * resize->expose->relayout loop). Undo the previous pass's frame
+     * grow up front so it's idempotent regardless of which branch runs.
+     * g_win_frame_applied guards against undoing what was never added
+     * (dock, first call). */
+    static int g_win_frame_applied = 0;
+    if (g_win_frame_applied) {
+        g_win_w -= 2 * KH_WIN_FRAME;
+        g_win_h -= 2 * KH_WIN_FRAME;
+        g_win_frame_applied = 0;
+    }
     /* REAL Stage 5 §5d.10 (2026-08-16) - db-hq mode branch, real WM-
      * managed window shape, own layout/nav functions (ported verbatim,
      * not forced into the popup modes' page/item shape below). */
@@ -4039,7 +4693,7 @@ static void assign_nav_and_layout(void) {
         /* wide, screen-relative, like the old window - only for a real
          * persistent palette/db window, not a transient swatch popup */
         if (g_default_persistent) {
-            int scr_w = DisplayWidth(dpy, screen);
+            int scr_w = kh_screen_w();
             int want = (scr_w * 5) / 8;
             if (want > 1180) want = 1180;
             if (want < 460) want = 460;
@@ -4061,6 +4715,7 @@ static void assign_nav_and_layout(void) {
         int grid_w = cols * pitch;
         int n_sw = 0;
         int chrome_x = g_win_w - 8;   /* right-to-left cursor for chrome buttons */
+        int found_close = 0;
         Elem *sw_items[MAX_CHILDREN];
         for (i = 0; i < page->n_children; i++) {
             Elem *item = page->children[i];
@@ -4072,6 +4727,7 @@ static void assign_nav_and_layout(void) {
                     strcmp(item->classes[c], "chrome-btn") == 0) is_close = 1;
             }
             if (strcmp(item->id, "close") == 0) is_close = 1;
+            if (is_close) found_close = 1;
             css_compute_style(&g_sheet, item->tag, item->id, item->classes, item->n_classes, 0, &item->style);
             item->nav_index = ++g_n_nav;
             g_nav[g_n_nav - 1] = item;
@@ -4096,6 +4752,31 @@ static void assign_nav_and_layout(void) {
                 if (n_sw < MAX_CHILDREN) sw_items[n_sw] = item;
                 n_sw++;
             }
+        }
+        /* Every real HQ/picker window MUST have a way out (direct
+         * instruction: "make sure x11-hq windows all have a default x
+         * button so they don't get stuck on screen"). If the template
+         * declared none, synthesise the same g_default_close_elem the
+         * sidebar+panel path uses - drawn/clicked/serialised through the
+         * exact machinery that already exists for it. */
+        if (!found_close) {
+            memset(g_default_close_elem, 0, sizeof(*g_default_close_elem));
+            snprintf(g_default_close_elem->tag, sizeof(g_default_close_elem->tag), "item");
+            snprintf(g_default_close_elem->id, sizeof(g_default_close_elem->id), "chrome-close");
+            snprintf(g_default_close_elem->label, sizeof(g_default_close_elem->label), "X");
+            snprintf(g_default_close_elem->onclick, sizeof(g_default_close_elem->onclick), "CLOSE");
+            css_compute_style(&g_sheet, "item", "chrome-close", NULL, 0, 0, &g_default_close_elem->style);
+            int cw = kh_measure_text_px(&g_default_close_elem->style, "X") + 52;
+            if (cw < 48) cw = 48;
+            chrome_x -= cw;
+            g_default_close_elem->x = chrome_x; g_default_close_elem->y = 2;
+            g_default_close_elem->w = cw; g_default_close_elem->h = CHROME_H - 4;
+            kh_clamp_elem_onscreen(g_default_close_elem);
+            chrome_x = g_default_close_elem->x - 4;
+            g_default_close_elem->nav_index = ++g_n_nav;
+            g_nav[g_n_nav - 1] = g_default_close_elem;
+        } else {
+            g_default_close_elem->w = 0;   /* template has its own; keep the synth one inert */
         }
         /* helper: does this <item> carry class="pal-dir" (the long folder
          * list - pinned to the FOOTER; sheet A/B/C + tileset choosers go
@@ -4138,7 +4819,30 @@ static void assign_nav_and_layout(void) {
             if (cx > x0 || cy > chips_top) chips_top = cy + ROW_H + KH_CHIP_ROW_GAP;
         }
         /* pass 3: scrolled swatch grid, below the header strip */
-        int y0 = chips_top;
+        /* REAL FIX 2026-09-04, direct live report ("settings buttons
+         * overlap the color buttons") - confirmed via frame-dump
+         * coordinates, not guessed: a header chip row (e.g. taskbar-
+         * settings-pal's own Opacity -/+ buttons) sits at y=[32,56),
+         * chips_top pushed the grid's own tile boxes down to y=66 -
+         * the TILE rects themselves never touched (10px clear) - but
+         * each swatch tile's own nav badge is drawn ABOVE the tile
+         * (khtpm_draw_core.c's `is_swatch_tile` branch: `numy_above =
+         * e->y - 2 - descent`, chip spanning roughly 16-18px above
+         * e->y), landing at y=[50,65] - a real ~6px visual collision
+         * with the chip row's own bottom edge that chips_top's own
+         * ROW_H+KH_CHIP_ROW_GAP spacing never accounted for. Real fix:
+         * reserve that same badge headroom before the grid starts,
+         * not just row-height + gap - same constant the badge draw
+         * itself effectively uses (ascent+descent+padding), rounded
+         * up. Swatch grids with no header chips are unaffected
+         * (chips_top == CHROME_H+6 either way; this headroom is
+         * needed either way since row 1's own badges always draw
+         * above the first tile row too - matches the pre-existing
+         * fixed 12px top margin that already worked fine when nothing
+         * shared this space, just wasn't enough once a header row
+         * pushed the grid down to a tighter starting position). */
+        #define KH_SWATCH_BADGE_HEADROOM 18
+        int y0 = chips_top + KH_SWATCH_BADGE_HEADROOM;
         static int g_swatch_grid_scroll = 0;
         int total_rows = (n_sw + cols - 1) / cols;
         int visible_rows = 12;
@@ -4185,34 +4889,175 @@ static void assign_nav_and_layout(void) {
         #undef KH_IS_FOOTER_CHIP
         g_win_h = max_y + 8;
         } else {
-        int y = CHROME_H;
+        /* A page carrying a <canvas> is a live-framebuffer window (the
+         * piececraft-hq board). It gets a horizontal toolbar row, top-
+         * strip chrome-close placement, and a canvas sized to the
+         * framebuffer's own dims. A plain flat list - context menus,
+         * bootstrap skeletons, chat-hai's fallback - has NO <canvas> and
+         * takes the ORIGINAL stacked-row path below BYTE-FOR-BYTE (this
+         * branch is shared by every windowless-list window; see the
+         * 2026-09-04 context-menu runaway/regression). */
+        int has_canvas = 0;
+        for (int _i = 0; _i < page->n_children; _i++)
+            if (strcmp(page->children[_i]->tag, "canvas") == 0) { has_canvas = 1; break; }
+
+        /* Same <tabbar> strip layout_sidebar_panel() uses (db-hq /
+         * csv-hq). Canvas pages used to skip it, so a skeleton-3 toy
+         * could not put New/Demo/tools on a horizontal tab row. */
+        int canvas_tabbar_h = 0;
+        if (has_canvas) {
+            int row_h_tb = scaled(28);
+            int th = row_h_tb - scaled(4);
+            for (int ci = 0; ci < page->n_children; ci++) {
+                Elem *tabbar = page->children[ci];
+                if (strcmp(tabbar->tag, "tabbar") != 0 || tabbar->n_children <= 0) continue;
+                int ty = CHROME_H + canvas_tabbar_h + scaled(2);
+                int tx = scaled(6);
+                for (int i = 0; i < tabbar->n_children; i++) {
+                    Elem *tab = tabbar->children[i];
+                    if (strcmp(tab->tag, "tab") != 0) continue;
+                    css_compute_style(&g_sheet, tab->tag, tab->id, tab->classes, tab->n_classes, 0, &tab->style);
+                    int tw = scaled(52);
+                    if (font_ui && tab->label[0]) {
+                        XGlyphInfo gi;
+                        XftTextExtentsUtf8(dpy, font_ui, (const FcChar8 *)tab->label, (int)strlen(tab->label), &gi);
+                        tw += gi.xOff;
+                    }
+                    tab->x = tx; tab->y = ty; tab->w = tw; tab->h = th;
+                    tab->nav_index = ++g_n_nav; g_nav[g_n_nav - 1] = tab;
+                    tx += tw + scaled(3);
+                }
+                if (tx + scaled(6) > g_win_w) { g_win_w = tx + scaled(6); g_window->w = g_win_w; }
+                tabbar->x = 0; tabbar->y = CHROME_H + canvas_tabbar_h; tabbar->w = g_win_w; tabbar->h = row_h_tb;
+                css_compute_style(&g_sheet, tabbar->tag, tabbar->id, tabbar->classes, tabbar->n_classes, 0, &tabbar->style);
+                canvas_tabbar_h += row_h_tb;
+            }
+        }
+
+        int y = CHROME_H + canvas_tabbar_h;
+        int chrome_x = g_win_w - 8;      /* has_canvas only */
+        int row_x = 0, row_h = 0;        /* has_canvas horizontal-row cursor */
         for (int i = 0; i < page->n_children; i++) {
             Elem *item = page->children[i];
-            /* REAL, NEW 2026-08-31 (found live testing open-hai's own
-             * .chtpm projection: "looks nothing like the old one" /
-             * "not able to enter keys") - real bug, not a guess: this
-             * loop only ever laid out "item"/"cli_io" rows, so any
-             * plain <text> row (a status line, a transcript message, a
-             * tool-approval banner - ordinary non-interactive content
-             * ANY khtpm consumer's own .chtpm might mix in) was left at
-             * its real parse-time default x/y/w/h (0,0,0,0) - never
-             * positioned, garbled on top of row 0, and worse, silently
-             * shifting every item/cli_io AFTER it up by one full row
-             * from where its own document position visually implies.
-             * Fixed generically: a "text" row now advances y exactly
-             * like an item row (real vertical space, real row height),
-             * it's simply never added to g_nav (it isn't interactive -
-             * no real nav_index, can't be focused/clicked/armed). */
+            /* 2026-08-31 - a plain <text> row advances y like an item row
+             * (real vertical space) but is never nav-numbered. */
             int is_text = strcmp(item->tag, "text") == 0;
-            if (strcmp(item->tag, "item") != 0 && strcmp(item->tag, "cli_io") != 0 && !is_text) continue;
-            item->x = 0; item->y = y; item->w = g_win_w; item->h = ROW_H;
-            if (!is_text) { item->nav_index = ++g_n_nav; g_nav[g_n_nav - 1] = item; }
+            if (strcmp(item->tag, "canvas") == 0) {
+                /* live pixel framebuffer element (kh_draw_canvas): sized
+                 * from CSS w/h, else the framebuffer's own receipt dims,
+                 * else window-width x 360. Never nav-numbered. */
+                g_has_canvas = 1;
+                if (row_x) { y += row_h + 4; row_x = 0; row_h = 0; }
+                css_compute_style(&g_sheet, item->tag, item->id, item->classes, item->n_classes, 0, &item->style);
+                /* Live canvas_raw from projector vars — first parse can
+                 * happen before ui.txt exists (click-open vs Enter after
+                 * 1.5s). Without this the Elem sprite stays empty and
+                 * kh_draw_canvas fills dark every tick. */
+                {
+                    const char *cr = kh_get_var("canvas_raw");
+                    if (cr && cr[0])
+                        snprintf(item->sprite, sizeof(item->sprite), "%s", cr);
+                }
+                int cw = item->style.has_width  ? item->style.width  : 0;
+                int ch = item->style.has_height ? item->style.height : 0;
+                if ((!cw || !ch) && item->sprite[0]) {
+                    /* sibling <base>.receipt.txt, not <base>.raw.receipt.txt
+                     * (matches kh_draw_canvas's own fix, same real bug -
+                     * this is why the map never rendered: both guesses
+                     * used the wrong receipt path so w/h stayed 0). */
+                    char rp[512]; const char *dot = strrchr(item->sprite, '.');
+                    if (dot && strcmp(dot, ".raw") == 0)
+                        snprintf(rp, sizeof(rp), "%.*s.receipt.txt", (int)(dot - item->sprite), item->sprite);
+                    else
+                        snprintf(rp, sizeof(rp), "%s.receipt.txt", item->sprite);
+                    FILE *rf = fopen(rp, "r");
+                    if (rf) { char l[128];
+                        while (fgets(l, sizeof(l), rf)) {
+                            if (!cw && !strncmp(l, "overlay_w=", 10)) cw = atoi(l + 10);
+                            if (!ch && !strncmp(l, "overlay_h=", 10)) ch = atoi(l + 10);
+                        }
+                        fclose(rf);
+                    }
+                }
+                if (!cw) cw = g_win_w - 12;
+                if (!ch) ch = 360;
+                item->x = 6; item->y = y; item->w = cw; item->h = ch;
+                if (cw + 12 > g_win_w) { g_win_w = cw + 12; g_window->w = g_win_w; }
+                y += ch + 4;
+                continue;
+            }
+            if (strcmp(item->tag, "item") != 0 && strcmp(item->tag, "cli_io") != 0 && strcmp(item->tag, "text_area") != 0 && !is_text) continue;
             css_compute_style(&g_sheet, item->tag, item->id, item->classes, item->n_classes, 0, &item->style);
-            y += ROW_H;
+
+            if (has_canvas && !is_text) {
+                int is_close = strcmp(item->id, "close") == 0;
+                for (int c = 0; c < item->n_classes && !is_close; c++)
+                    if (strcmp(item->classes[c], "chrome-btn") == 0 ||
+                        strcmp(item->classes[c], "close-btn") == 0) is_close = 1;
+                if (is_close) {
+                    int cw = kh_measure_text_px(&item->style, item->label) + 52;
+                    if (cw < 48) cw = 48;
+                    chrome_x -= cw;
+                    item->y = 2; item->w = cw; item->h = CHROME_H - 4; item->x = chrome_x;
+                    kh_clamp_elem_onscreen(item);
+                    chrome_x = item->x - 4;
+                    item->nav_index = ++g_n_nav; g_nav[g_n_nav - 1] = item;
+                    continue;
+                }
+                if (item->style.has_width && item->style.width > 0) {
+                    int iw = item->style.width;
+                    int ih = item->style.has_height ? item->style.height : ROW_H;
+                    if (row_x == 0) row_x = 6;
+                    if (row_x + iw > g_win_w - 6) { y += row_h + 4; row_x = 6; row_h = 0; }
+                    item->x = row_x; item->y = y; item->w = iw; item->h = ih;
+                    row_x += iw + 5;
+                    if (ih > row_h) row_h = ih;
+                    item->nav_index = ++g_n_nav; g_nav[g_n_nav - 1] = item;
+                    continue;
+                }
+                if (row_x) { y += row_h + 4; row_x = 0; row_h = 0; }
+            }
+
+            /* REAL FIX 2026-09-05 (found live testing <text_area>'s
+             * own first real window) - this fallback ignored rows="N"
+             * entirely for BOTH cli_io and text_area, always giving a
+             * single ROW_H regardless - a pre-existing gap that never
+             * surfaced for cli_io because every real cli_io consumer so
+             * far (open-hai's composer) happens to live inside a
+             * sidebar+panel window, which goes through layout_fixed_
+             * rows_and_scrolllist()'s OWN, correct rows= handling
+             * instead of this flat-list fallback path. */
+            int is_multirow_field = (strcmp(item->tag, "cli_io") == 0 || strcmp(item->tag, "text_area") == 0);
+            int item_h = is_multirow_field ? (item->rows > 0 ? item->rows : 1) * ROW_H : ROW_H;
+            item->x = 0; item->y = y; item->w = g_win_w; item->h = item_h;
+            if (!is_text) { item->nav_index = ++g_n_nav; g_nav[g_n_nav - 1] = item; }
+            y += item_h;
         }
+        if (row_x) y += row_h + 4;
         g_win_h = y + 8;
         }
     }
+    if (!window_is_dock() && g_window) {
+        int fb = KH_WIN_FRAME;
+        Elem *pg = find_page(g_current_page);
+        if (pg) for (int i = 0; i < pg->n_children; i++) kh_shift_subtree_xy(pg->children[i], fb, fb);
+        /* synthetic chrome elems (not in the tree) */
+        if (g_default_close_elem && g_default_close_elem->w > 0)      { g_default_close_elem->x += fb;      g_default_close_elem->y += fb; }
+        if (g_default_minimize_elem && g_default_minimize_elem->w > 0) { g_default_minimize_elem->x += fb;   g_default_minimize_elem->y += fb; }
+        if (g_default_fullscreen_elem && g_default_fullscreen_elem->w > 0) { g_default_fullscreen_elem->x += fb; g_default_fullscreen_elem->y += fb; }
+        /* generic scrollbar geometry + its ^/v arrow elems */
+        for (int i = 0; i < g_n_generic_sbars; i++) {
+            g_generic_sbars[i].vx += fb; g_generic_sbars[i].vy += fb;
+            g_generic_sbars[i].track_x += fb; g_generic_sbars[i].track_y += fb;
+            g_generic_sbars[i].thumb_y += fb;
+            if (g_sbar_up_elem[i].w > 0)   { g_sbar_up_elem[i].x += fb;   g_sbar_up_elem[i].y += fb; }
+            if (g_sbar_down_elem[i].w > 0) { g_sbar_down_elem[i].x += fb; g_sbar_down_elem[i].y += fb; }
+        }
+        g_win_w += 2 * fb; g_win_h += 2 * fb;
+        g_window->w = g_win_w; g_window->h = g_win_h;
+        g_win_frame_applied = 1;   /* the undo at the top of the next pass reads this */
+    }
+    kh_scan_interact_relay();
     kh_apply_scope_confine();
     if (g_focus_nav > g_n_nav) g_focus_nav = g_n_nav > 0 ? g_n_nav : 1;
     if (g_focus_nav < 1) g_focus_nav = 1;
@@ -4295,6 +5140,251 @@ static void dispatch(const char *action) {
         if (af) { fprintf(af, "seq=%u\n%s\n", ++g_swatch_action_seq, action); fclose(af); }
         return;
     }
+    /* REAL, NEW 2026-09-05 (11.brainstorm/2026-09-05/PDL-READER-AND-
+     * FILE-EXPLORER-WIDGET.md) - the File Explorer widget's own
+     * dispatch verbs, same exact real "renderer writes an
+     * incrementing-seq action file in-process, manager polls it"
+     * convention PICK:<n> just above already uses - not a shell-
+     * command relay (a static xhtpm template has no reliable way to
+     * embed its own absolute install path for a relay script to call
+     * with plain argv, which is why PICK:<n> is handled here instead
+     * of via a launched process too). FE_ENTRY:<n> keeps browsing
+     * (window stays open); FE_SAVEAS:<name> and FE_CANCEL both finish
+     * the dialog, so the window closes the same way CLOSE already
+     * does elsewhere - the manager (a separate, independent process)
+     * keeps running just long enough on its own to notice the write,
+     * commit result/result_action, and exit itself; closing this
+     * window early never kills it. See file_explorer_manager.c's own
+     * header comment for the full real command contract. */
+    if (strncmp(action, "FE_", 3) == 0) {
+        char ap[PATH_BUF];
+        snprintf(ap, sizeof(ap), "%s/&.widgits/file-explorer/file_explorer_action.txt", g_house_root);
+        char cmd_buf[600];
+        if (strcmp(action, "FE_SAVEAS") == 0) {
+            /* REAL, NEW 2026-09-05 - the filename field is a real,
+             * live <cli_io> (id="filename") the shared renderer itself
+             * already owns the typed value for - read it directly off
+             * the live tree here rather than trusting a `${filename}`
+             * template substitution, which only ever reflects the
+             * MANAGER's last-published value (updated on an ENTRY pick,
+             * not on every keystroke) and would go stale the moment a
+             * human types something different afterward. */
+            Elem *fld = find_by_id(g_window, "filename");
+            snprintf(cmd_buf, sizeof(cmd_buf), "SAVEAS:%s", fld ? fld->input_buffer : "");
+        } else {
+            snprintf(cmd_buf, sizeof(cmd_buf), "%s", action + 3);
+        }
+        FILE *af = fopen(ap, "w");
+        if (af) { fprintf(af, "seq=%u\ncmd=%s\n", ++g_swatch_action_seq, cmd_buf); fclose(af); }
+        if (strcmp(action, "FE_SAVEAS") == 0 || strcmp(action, "FE_CANCEL") == 0) g_quit = 1;
+        return;
+    }
+    /* REAL, NEW 2026-09-05 (same brainstorm doc, pdl-read - the second
+     * real app off today's cli_io/text_area/File-Explorer work) - same
+     * in-process action-file-write convention as FE_ above, but
+     * written to g_package_dir directly (pdl-read's own manager lives
+     * in the SAME package_dir as this window's xhtpm, unlike the File
+     * Explorer widget's fixed &.widgits/ location) - see pdl_read_
+     * manager.c's own header for the full OPEN:<n>/NEXT/PREV command
+     * contract. Page navigation never quits the window - only real
+     * page-switching (GOTO:/BACK, already generic, unrelated to this
+     * prefix) leaves the reader view. */
+    /* REAL, NEW 2026-09-05, direct live request ("should have file
+     * explorer 'file' button in its header to open other files") -
+     * launches the File Explorer widget's own real button.sh (a plain
+     * background process - no new IPC needed, pdl_read_manager.c
+     * already independently polls that widget's own real, published
+     * result state once it's running) AND switches to the "read" page
+     * right away, same real reason PDL_OPEN:<n> below also needs a
+     * direct switch_page() call - one xhtpm action= string can't run
+     * two dispatch verbs. The "read" page shows its own real "no
+     * document open" state until the manager notices a pick and
+     * republishes - the same live-reparse-on-vars-change mechanism
+     * every other page_text update already relies on, nothing new. */
+    if (strcmp(action, "PDL_OPENFILE") == 0) {
+        /* REAL FIX 2026-09-05, direct live report ("opened a mess
+         * within same window, didn't see any files") - button.sh was
+         * rewritten to the real toy.pdl launch convention (`sh
+         * button.sh run`, deriving house_root itself) so it could be
+         * added to the "toys" menu; this call site still passed
+         * house_root as argv[1], which is no longer "run", so the
+         * script silently exited 0 without launching anything - the
+         * switch_page("read") below still fired regardless, which is
+         * exactly the "mess in the same window, no files" symptom. */
+        char cmd[PATH_BUF * 2];
+        snprintf(cmd, sizeof(cmd), "sh '%s/&.widgits/file-explorer/button.sh' run >/dev/null 2>&1 &",
+                 g_house_root);
+        int rc = system(cmd);
+        (void)rc;
+        switch_page("read");
+        return;
+    }
+    if (strncmp(action, "PDL_", 4) == 0) {
+        char ap[PATH_BUF];
+        snprintf(ap, sizeof(ap), "%s/pdl_read_action.txt", g_package_dir);
+        FILE *af = fopen(ap, "w");
+        if (af) { fprintf(af, "seq=%u\ncmd=%s\n", ++g_swatch_action_seq, action + 4); fclose(af); }
+        /* REAL, NEW 2026-09-05 - a single dispatch() call only ever
+         * runs ONE action string; PDL_OPEN:<n> needs BOTH the manager
+         * notified (above) AND the window to actually switch to the
+         * "read" page - done directly here rather than trying to
+         * encode two actions into one xhtpm action= string (dispatch()
+         * has no such combinator, and inventing one for just this case
+         * isn't worth it when a real generic switch_page() call is
+         * right here already). */
+        if (strncmp(action + 4, "OPEN:", 5) == 0) switch_page("read");
+        return;
+    }
+    /* REAL, NEW 2026-09-05 - music-player-hq (@.apps/music-player-hq),
+     * same shape as PDL_* / CSVH_*: just relay the verb (everything
+     * after "MUS_") to the app's own action file. The backend
+     * (music_player_manager.+x) owns all playback state and drives an
+     * mpg123 -R child; it's a single <page> app so no switch_page()
+     * pairing is needed. Verbs: PLAY_INDEX:<n>, PLAYPAUSE, STOP,
+     * NEXT, PREV, SEEK:<+/-secs>, VOL_UP, VOL_DN, SHUFFLE_TOGGLE,
+     * RESCAN. None need a live element value (unlike FE_SAVEAS /
+     * CSVH_SETCELL), so a plain seq/cmd write is the whole job. */
+    if (strncmp(action, "MUS_", 4) == 0) {
+        char ap[PATH_BUF];
+        snprintf(ap, sizeof(ap), "%s/music_player_action.txt", g_package_dir);
+        FILE *af = fopen(ap, "w");
+        if (af) { fprintf(af, "seq=%u\ncmd=%s\n", ++g_swatch_action_seq, action + 4); fclose(af); }
+        return;
+    }
+    /* REAL, NEW 2026-09-05 - text-edit-hq (@.apps/text-edit-hq), same
+     * real toys-menu batch as csv-hq below. TXT_OPENFILE launches the
+     * shared File Explorer widget exactly like PDL_OPENFILE (own real
+     * window, LOAD mode, no page switch needed - text-edit-hq is a
+     * single-page app); the manager polls File Explorer's own
+     * published result itself, same poll_file_explorer_pick() pattern
+     * pdl_read_manager.c already uses - no new IPC. TXT_SAVE/
+     * TXT_SAVEAS both need the LIVE <text_area id="editor"> buffer,
+     * which only this render process holds (the manager's own last-
+     * published `content` var is stale the instant a human types
+     * anything) - dumped RAW (this file's own private scratch buffer,
+     * both ends agree on the format, no escaping needed) to
+     * text_edit_save_buffer.txt, same real "dump live element, THEN
+     * write the actual action" two-step FE_SAVEAS already established
+     * for its own live "filename" cli_io. TXT_SAVEAS also reads the
+     * live "pathfield" cli_io the same way. */
+    if (strcmp(action, "TXT_OPENFILE") == 0) {
+        char cmd[PATH_BUF * 2];
+        snprintf(cmd, sizeof(cmd), "sh '%s/&.widgits/file-explorer/button.sh' run >/dev/null 2>&1 &",
+                 g_house_root);
+        int rc = system(cmd);
+        (void)rc;
+        return;
+    }
+    if (strcmp(action, "TXT_NEW") == 0) {
+        char ap[PATH_BUF];
+        snprintf(ap, sizeof(ap), "%s/text_edit_action.txt", g_package_dir);
+        FILE *af = fopen(ap, "w");
+        if (af) { fprintf(af, "seq=%u\ncmd=NEW\n", ++g_swatch_action_seq); fclose(af); }
+        return;
+    }
+    if (strcmp(action, "TXT_SAVE") == 0 || strcmp(action, "TXT_SAVEAS") == 0) {
+        Elem *ed = find_by_id(g_window, "editor");
+        char bufpath[PATH_BUF];
+        snprintf(bufpath, sizeof(bufpath), "%s/text_edit_save_buffer.txt", g_package_dir);
+        FILE *bf = fopen(bufpath, "wb");
+        if (bf) { if (ed) fputs(ed->text_area_buffer, bf); fclose(bf); }
+        char ap[PATH_BUF];
+        snprintf(ap, sizeof(ap), "%s/text_edit_action.txt", g_package_dir);
+        FILE *af = fopen(ap, "w");
+        if (strcmp(action, "TXT_SAVE") == 0) {
+            if (af) { fprintf(af, "seq=%u\ncmd=SAVE\n", ++g_swatch_action_seq); fclose(af); }
+        } else {
+            /* REAL, NEW 2026-09-05, direct live report ("we dont need
+             * that save as path cli_io thing. we have seperate save
+             * menu 2 handle that") - Save As no longer reads a typed
+             * <cli_io> path from the sidebar (removed). It arms the
+             * manager for a save-as (buffer already dumped above) and
+             * launches the shared File Explorer widget - the manager
+             * then treats the NEXT File Explorer pick as the save
+             * target, not a file to load (SAVEAS_ARM). */
+            if (af) { fprintf(af, "seq=%u\ncmd=SAVEAS_ARM\n", ++g_swatch_action_seq); fclose(af); }
+            char cmd[PATH_BUF * 2];
+            snprintf(cmd, sizeof(cmd), "sh '%s/&.widgits/file-explorer/button.sh' run >/dev/null 2>&1 &", g_house_root);
+            int rc = system(cmd); (void)rc;
+        }
+        return;
+    }
+    /* REAL, NEW 2026-09-05 - csv-hq (@.apps/csv-hq). Same real shape as
+     * text-edit-hq just above - CSVH_OPENFILE launches the shared File
+     * Explorer widget; CSVH_SETCELL/CSVH_FUNC:<name> need a live
+     * <cli_io> value (cellval/colref) the manager's own last-published
+     * state can't reflect mid-keystroke, dumped/embedded the same real
+     * way FE_SAVEAS and TXT_SAVE already do. Column refs and function
+     * names are short, house-controlled tokens (typed into a small
+     * cli_io, or a fixed action= suffix) - safe to embed directly in
+     * the single-line cmd=... the manager parses, no scratch-file
+     * needed there (unlike cellval, which could contain arbitrary
+     * text). CSVH_NEW/CSVH_SAVE fall through to the generic CSVH_
+     * prefix at the end - the grid itself is entirely manager-owned
+     * (edited only via real SETCELL calls, never a giant live text
+     * buffer), so no live-dump is needed for either. */
+    if (strcmp(action, "CSVH_OPENFILE") == 0) {
+        char cmd[PATH_BUF * 2];
+        snprintf(cmd, sizeof(cmd), "sh '%s/&.widgits/file-explorer/button.sh' run >/dev/null 2>&1 &",
+                 g_house_root);
+        int rc = system(cmd);
+        (void)rc;
+        return;
+    }
+    /* REAL, NEW 2026-09-05 (GRID-ELEMENT-DESIGN.md, step 5 - the real
+     * <grid> element replacing csv-hq's old cellref/cellval/Set-Cell
+     * trio). Fired from default_grid_handle_key()'s own Escape-commit
+     * branch via the grid's own action=/onclick= attribute - reads the
+     * LIVE grid element's own grid_cur_row/col + grid_cell_buffer
+     * (the manager's last-published state can't reflect a mid-edit
+     * keystroke), dumps the edited value to the SAME scratch file
+     * CSVH_SETCELL already uses, and issues the SAME SETCELL command -
+     * zero manager-side protocol change, per the design doc's own
+     * "the grid is purely a richer input surface" decision. */
+    if (strcmp(action, "CSVH_GRIDCOMMIT") == 0) {
+        Elem *g = find_by_id(g_window, "sheet");
+        if (g) {
+            char bufpath[PATH_BUF];
+            snprintf(bufpath, sizeof(bufpath), "%s/csv_setcell_buffer.txt", g_package_dir);
+            FILE *bf = fopen(bufpath, "wb");
+            if (bf) { fputs(g->grid_cell_buffer, bf); fclose(bf); }
+            char colletters[8];
+            grid_col_to_letters(g->grid_cur_col, colletters, sizeof(colletters));
+            char ap[PATH_BUF];
+            snprintf(ap, sizeof(ap), "%s/csv_hq_action.txt", g_package_dir);
+            FILE *af = fopen(ap, "w");
+            if (af) { fprintf(af, "seq=%u\ncmd=SETCELL:%s%d\n", ++g_swatch_action_seq, colletters, g->grid_cur_row + 1); fclose(af); }
+        }
+        return;
+    }
+    if (strcmp(action, "CSVH_SETCELL") == 0) {
+        Elem *rf = find_by_id(g_window, "cellref");
+        Elem *vf = find_by_id(g_window, "cellval");
+        char bufpath[PATH_BUF];
+        snprintf(bufpath, sizeof(bufpath), "%s/csv_setcell_buffer.txt", g_package_dir);
+        FILE *bf = fopen(bufpath, "wb");
+        if (bf) { if (vf) fputs(vf->input_buffer, bf); fclose(bf); }
+        char ap[PATH_BUF];
+        snprintf(ap, sizeof(ap), "%s/csv_hq_action.txt", g_package_dir);
+        FILE *af = fopen(ap, "w");
+        if (af) { fprintf(af, "seq=%u\ncmd=SETCELL:%s\n", ++g_swatch_action_seq, rf ? rf->input_buffer : ""); fclose(af); }
+        return;
+    }
+    if (strncmp(action, "CSVH_FUNC:", 10) == 0) {
+        Elem *cf = find_by_id(g_window, "colref");
+        char ap[PATH_BUF];
+        snprintf(ap, sizeof(ap), "%s/csv_hq_action.txt", g_package_dir);
+        FILE *af = fopen(ap, "w");
+        if (af) { fprintf(af, "seq=%u\ncmd=FUNC:%s:%s\n", ++g_swatch_action_seq, action + 10, cf ? cf->input_buffer : ""); fclose(af); }
+        return;
+    }
+    if (strncmp(action, "CSVH_", 5) == 0) {
+        char ap[PATH_BUF];
+        snprintf(ap, sizeof(ap), "%s/csv_hq_action.txt", g_package_dir);
+        FILE *af = fopen(ap, "w");
+        if (af) { fprintf(af, "seq=%u\ncmd=%s\n", ++g_swatch_action_seq, action + 5); fclose(af); }
+        return;
+    }
     /* REAL, NEW 2026-08-29 (TASK 2: opacity control) - OPACITY_MINUS/OPACITY_PLUS
      * handlers. Read current opacity from theme, adjust by ±0.05, write back,
      * and apply to the window immediately for live visual feedback. */
@@ -4313,6 +5403,11 @@ static void dispatch(const char *action) {
         if (opacity > 1.0) opacity = 1.0;
         write_theme_opacity(opacity);
         set_window_opacity(dpy, win, opacity);
+        redraw();
+        return;
+    }
+    if (strcmp(action, "CLICK_TWOSTEP_TOGGLE") == 0) {
+        desktop_toggle_click_two_step(g_house_root);
         redraw();
         return;
     }
@@ -4358,6 +5453,12 @@ static void dispatch(const char *action) {
             g_win_x = g_default_pre_fullscreen_x; g_win_y = g_default_pre_fullscreen_y;
         }
         XMoveWindow(dpy, win, g_win_x, g_win_y);
+        /* REAL FIX 2026-09-05 - force a real relayout+repaint now (this
+         * handler previously relied on some later redraw() that never
+         * came for a plain app window). redraw() itself does the
+         * grow-buf + XResizeWindow to the new fullscreen size before it
+         * draws (moved early this same fix). */
+        if (!g_quit) { assign_nav_and_layout(); redraw(); }
         return;
     }
     /* REAL FIX 2026-08-16, direct live report ("cancel doesn't work
@@ -4493,14 +5594,249 @@ static void default_cli_io_run_action(const char *action, const char *value) {
     (void)rc;
 }
 
+/* REAL, NEW 2026-09-05 (CLI_IO-CURSOR-AND-TEXT_AREA-MULTILINE-EDITING-
+ * DESIGN.md) - text_area's own live-save. cli_io_state.txt's key=value-
+ * per-line format can't hold a value containing real newlines, so this
+ * is a real, separate, dedicated file per field (named by its own
+ * target_id/id) holding the raw buffer as the WHOLE file content - no
+ * escaping needed here (unlike the frame round-trip file below, this
+ * one is read as one big blob by any real consumer, never line-by-
+ * line). */
+static void default_text_area_state_path(const char *key, char *out, size_t outsz) {
+    snprintf(out, outsz, "%s/text_area_%s.txt", g_package_dir, key);
+}
+static void default_text_area_save(Elem *e) {
+    const char *key = e->target_id[0] ? e->target_id : e->id;
+    if (!key[0]) return;
+    char path[PATH_BUF];
+    default_text_area_state_path(key, path, sizeof(path));
+    FILE *f = fopen(path, "w");
+    if (!f) return;
+    fputs(e->text_area_buffer, f);
+    fclose(f);
+}
+
+/* Re-hydrate a <text_area> from its own text_area_<id>.txt (written by
+ * default_text_area_save). Called once per reparse so a projector's
+ * every-Run state rewrite doesn't wipe the user's in-progress buffer.
+ * If the save file is absent the elem keeps its content="" attr value. */
+static void kh_text_areas_reload(Elem *root) {
+    if (!root || !g_package_dir[0]) return;
+    if (strcmp(root->tag, "text_area") == 0) {
+        const char *key = root->target_id[0] ? root->target_id : root->id;
+        if (key[0]) {
+            char path[PATH_BUF];
+            default_text_area_state_path(key, path, sizeof(path));
+            FILE *f = fopen(path, "rb");
+            if (f) {
+                size_t n = fread(root->text_area_buffer, 1,
+                                 sizeof(root->text_area_buffer) - 1, f);
+                root->text_area_buffer[n] = '\0';
+                fclose(f);
+            }
+        }
+    }
+    for (int i = 0; i < root->n_children; i++)
+        kh_text_areas_reload(root->children[i]);
+}
+
+/* REAL, NEW 2026-09-05 - real logical-line (delimited by actual `\n`
+ * bytes the user typed, NOT the renderer's own display-only word-wrap
+ * breaks) boundary helpers, shared by Home/End/Up/Down below. For
+ * cli_io (never contains a real `\n`) these are always a no-op past
+ * "the whole buffer is one line" - correctly reducing to cli_io's
+ * original whole-buffer Home/End behavior for free. */
+static int kh_text_line_start(const char *buf, int pos) {
+    while (pos > 0 && buf[pos - 1] != '\n') pos--;
+    return pos;
+}
+static int kh_text_line_end(const char *buf, int pos) {
+    int len = (int)strlen(buf);
+    while (pos < len && buf[pos] != '\n') pos++;
+    return pos;
+}
+
+/* REAL, NEW 2026-09-05 (CLI_IO-CURSOR-AND-TEXT_AREA-MULTILINE-EDITING-
+ * DESIGN.md, direct instruction: "i think cli-io should still have a
+ * cursor") - real cursor-aware editing, replacing the old append/
+ * backspace-at-the-end-only behavior. `e->cursor` is a plain byte
+ * offset (matching the existing printable-char branch below, which is
+ * ASCII-only already - no UTF-8 codepoint-width awareness attempted
+ * here, consistent with the scope this function already had). This is
+ * the SAME primitive text_area's own multi-line cursor logic will
+ * generalize from (crossing embedded \n and visual post-wrap rows,
+ *08-roadmap/design-docs/CLI_IO-CURSOR-AND-TEXT_AREA-MULTILINE-EDITING-
+ * DESIGN.md) - keep insert/delete-at-offset shaped so that reuse stays
+ * possible, don't fold assumptions here that only make sense for a
+ * single line with no real newlines. */
+/* REAL, NEW 2026-09-05 - generalized to (buffer, capacity, *cursor)
+ * instead of hardcoding e->input_buffer, so <text_area> (its own much
+ * bigger text_area_buffer, same shared cursor field) reuses these
+ * verbatim instead of a second, duplicate implementation - exactly
+ * the reuse this plan's own design doc called for. default_cli_io_
+ * handle_key() below picks buf/cap based on e->tag and calls these
+ * directly - no separate cli_io-named wrapper layer anymore. */
+static void kh_text_clamp_cursor(char *buf, int *cursor) {
+    int len = (int)strlen(buf);
+    if (*cursor < 0) *cursor = 0;
+    if (*cursor > len) *cursor = len;
+}
+static void kh_text_insert_at_cursor(char *buf, size_t cap, int *cursor, char ch) {
+    int len = (int)strlen(buf);
+    if (len + 1 >= (int)cap) return; /* real cap, matches the old append path's own bound */
+    kh_text_clamp_cursor(buf, cursor);
+    for (int i = len; i >= *cursor; i--) buf[i + 1] = buf[i];
+    buf[*cursor] = ch;
+    (*cursor)++;
+}
+static void kh_text_delete_before_cursor(char *buf, int *cursor) {
+    kh_text_clamp_cursor(buf, cursor);
+    if (*cursor <= 0) return;
+    int len = (int)strlen(buf);
+    for (int i = *cursor - 1; i < len; i++) buf[i] = buf[i + 1];
+    (*cursor)--;
+}
+static void kh_text_delete_at_cursor(char *buf, int *cursor) {
+    kh_text_clamp_cursor(buf, cursor);
+    int len = (int)strlen(buf);
+    if (*cursor >= len) return;
+    for (int i = *cursor; i < len; i++) buf[i] = buf[i + 1];
+}
+
+/* REAL, NEW 2026-09-05 (TEXT_AREA-SCROLL-GUTTER-SELECTION-DESIGN.md) -
+ * if [sel_anchor,cursor) is a real (non-collapsed) range, delete it,
+ * leave the cursor at the range start with the selection collapsed.
+ * Returns 1 if it deleted something. This is the "typing / paste /
+ * Backspace replaces the selection" primitive. */
+static int kh_text_delete_selection(Elem *e, char *buf) {
+    if (e->sel_anchor == e->cursor) return 0;
+    int lo = e->sel_anchor < e->cursor ? e->sel_anchor : e->cursor;
+    int hi = e->sel_anchor < e->cursor ? e->cursor : e->sel_anchor;
+    int len = (int)strlen(buf);
+    if (lo < 0) lo = 0;
+    if (hi > len) hi = len;
+    memmove(buf + lo, buf + hi, (size_t)(len - hi) + 1);
+    e->cursor = lo;
+    e->sel_anchor = lo;
+    return 1;
+}
+/* Selection bounds into *lo/*hi (clamped to the real buffer). Returns
+ * 1 if there is a real selection, 0 if collapsed. */
+static int kh_text_selection_range(const Elem *e, const char *buf, int *lo, int *hi) {
+    if (e->sel_anchor == e->cursor) return 0;
+    int a = e->sel_anchor < e->cursor ? e->sel_anchor : e->cursor;
+    int b = e->sel_anchor < e->cursor ? e->cursor : e->sel_anchor;
+    int len = (int)strlen(buf);
+    if (a < 0) a = 0;
+    if (b > len) b = len;
+    *lo = a; *hi = b;
+    return b > a;
+}
+
+/* ---------- REAL, NEW 2026-09-05 (08-roadmap/design-docs/
+ * CLIPBOARD-COPY-PASTE-DESIGN.md, direct instruction "lets build it in
+ * text editor") - real X11 CLIPBOARD selection copy/paste. Works
+ * window <-> window (any two khtpm processes) AND window <-> any other
+ * real X11 app (terminal, browser), because it speaks the actual X11
+ * selection protocol rather than a house-private channel. v1 scope:
+ * whole-buffer copy, paste-at-cursor - no text-range SELECTION yet
+ * (that's a real, separate, larger feature, see the design doc's own
+ * v2 note).
+ *
+ * Copy = XSetSelectionOwner(CLIPBOARD, win); we then answer
+ * SelectionRequest events (hq_dispatch_xevent()) with g_clipboard_text
+ * for as long as we own it. Paste = XConvertSelection request, then
+ * the text arrives asynchronously via a SelectionNotify event, which
+ * inserts it at g_default_input_elem's cursor. ---------- */
+static char g_clipboard_text[65536];
+static int  g_paste_pending = 0;
+static Atom g_atom_clipboard = 0, g_atom_utf8 = 0, g_atom_targets = 0, g_atom_paste_prop = 0;
+/* REAL, NEW 2026-09-05, direct live request ("is there a way, in top
+ * right to show var 'copied' when ctrl+c is pressed?") - set on every
+ * copy/cut; redraw()'s own chrome-strip block draws a small "copied"
+ * tag top-right while this is within ~2s of now, and hq_idle_tick()
+ * clears it (one final repaint) once it ages out. */
+static time_t g_clip_copied_at = 0;
+
+static void kh_clipboard_init_atoms(void) {
+    if (g_atom_clipboard) return;
+    g_atom_clipboard  = XInternAtom(dpy, "CLIPBOARD", False);
+    g_atom_utf8       = XInternAtom(dpy, "UTF8_STRING", False);
+    g_atom_targets    = XInternAtom(dpy, "TARGETS", False);
+    g_atom_paste_prop = XInternAtom(dpy, "KH_CLIP_PASTE", False);
+}
+
+static void kh_clipboard_copy(const char *text) {
+    kh_clipboard_init_atoms();
+    snprintf(g_clipboard_text, sizeof(g_clipboard_text), "%s", text ? text : "");
+    XSetSelectionOwner(dpy, g_atom_clipboard, win, CurrentTime);
+    /* also seed PRIMARY - some real X apps (xterm middle-click) only
+     * read that one; costs nothing to own both. */
+    XSetSelectionOwner(dpy, XA_PRIMARY, win, CurrentTime);
+    XFlush(dpy);
+    g_clip_copied_at = time(NULL);
+}
+
+static void kh_clipboard_request_paste(void) {
+    kh_clipboard_init_atoms();
+    g_paste_pending = 1;
+    /* Ask the current CLIPBOARD owner to write UTF8_STRING into our own
+     * KH_CLIP_PASTE property - answered async by a SelectionNotify. */
+    XConvertSelection(dpy, g_atom_clipboard, g_atom_utf8, g_atom_paste_prop, win, CurrentTime);
+    XFlush(dpy);
+}
+
+/* Insert an arbitrary run of bytes at an armed field's cursor, reusing
+ * the same one-char insert primitive typing already goes through.
+ * cli_io (single line, and its input_buffer is NOT newline-escaped
+ * through the frame round trip) drops '\n' -> ' '; text_area keeps
+ * real newlines (its buffer IS newline-safe). '\r' is always stripped
+ * (CRLF normalisation for text pasted from other platforms/apps). */
+static void kh_clipboard_insert_text(Elem *e, const char *text) {
+    if (!e || !text) return;
+    int is_area = (strcmp(e->tag, "text_area") == 0);
+    char *buf = is_area ? e->text_area_buffer : e->input_buffer;
+    size_t cap = is_area ? sizeof(e->text_area_buffer) : sizeof(e->input_buffer);
+    for (const unsigned char *p = (const unsigned char *)text; *p; p++) {
+        char c = (char)*p;
+        if (c == '\r') continue;
+        if (c == '\n' && !is_area) c = ' ';
+        if (c == '\n') { kh_text_insert_at_cursor(buf, cap, &e->cursor, '\n'); continue; }
+        if (c < 32 || c > 126) continue; /* v1: ASCII-only, same scope the typed-char path already has */
+        kh_text_insert_at_cursor(buf, cap, &e->cursor, c);
+    }
+    e->sel_anchor = e->cursor; /* a paste lands as a plain cursor, no selection */
+    if (is_area) default_text_area_save(e); else default_cli_io_save(e);
+}
+
+/* REAL, NEW 2026-09-05 - this function now handles BOTH cli_io and
+ * text_area (kept the cli_io name - every existing call site already
+ * says "cli_io" and this IS still that same function, just widened,
+ * not a rename-everything exercise). Shared: Escape/Left/Right/Home/
+ * End/Delete/Backspace/printable-insert, all through the generalized
+ * kh_text_*() primitives above. Different: Enter (submit-and-clear for
+ * cli_io, insert-a-real-newline for text_area) and Up/Down (text_area
+ * only - cli_io is single-line, nothing to move to). */
 static void default_cli_io_handle_key(KeySym ks, char ch) {
     Elem *e = g_default_input_elem;
     if (!e) return;
+    int is_area = (strcmp(e->tag, "text_area") == 0);
+    char *buf = is_area ? e->text_area_buffer : e->input_buffer;
+    size_t cap = is_area ? sizeof(e->text_area_buffer) : sizeof(e->input_buffer);
     if (ks == XK_Return || ks == XK_KP_Enter) {
-        default_cli_io_save(e);
-        default_cli_io_run_action(e->onclick, e->input_buffer);
-        e->input_buffer[0] = '\0';
-        default_cli_io_save(e); /* real, empty value, matching the reference's own "clear after submit, stay active" behavior */
+        if (is_area) {
+            kh_text_delete_selection(e, buf); /* Enter over a selection replaces it, same as typing */
+            kh_text_insert_at_cursor(buf, cap, &e->cursor, '\n');
+            e->sel_anchor = e->cursor;
+            default_text_area_save(e);
+        } else {
+            default_cli_io_save(e);
+            default_cli_io_run_action(e->onclick, e->input_buffer);
+            e->input_buffer[0] = '\0';
+            e->cursor = 0; /* real, matching the reference's own "clear after submit, stay active" behavior - cursor resets with the now-empty buffer */
+            e->sel_anchor = 0;
+            default_cli_io_save(e);
+        }
         return;
     }
     /* REAL FIX 2026-08-31 (live report: armed via a real double-click,
@@ -4515,25 +5851,266 @@ static void default_cli_io_handle_key(KeySym ks, char ch) {
      * kh_grab_keyboard_retry() (db-hq's own real XGrabKeyboard retry,
      * currently gated behind its own g_dbhq_focus_grab_enabled .pdl
      * flag for THAT mode) - reused verbatim, unconditionally, scoped to
-     * exactly a cli_io field's own armed lifetime. An exclusive
-     * keyboard grab routes KeyPress to `win` regardless of pointer
-     * position or window-manager focus policy, so this is immune to
-     * the exact failure just diagnosed. Safe to make unconditional
-     * here (no existing popup uses cli_io yet, so this can't regress
-     * any of them) - see the matching XUngrabKeyboard on every real
-     * disarm path (Escape here, reparse_chtpm_if_changed()'s own real
-     * safety net). */
-    if (ks == XK_Escape) { g_default_input_elem = NULL; XUngrabKeyboard(dpy, CurrentTime); return; }
+     * exactly an armed field's own lifetime (cli_io originally, now
+     * text_area too). An exclusive keyboard grab routes KeyPress to
+     * `win` regardless of pointer position or window-manager focus
+     * policy, so this is immune to the exact failure just diagnosed.
+     * Safe to make unconditional here (no existing popup uses cli_io
+     * yet, so this can't regress any of them) - see the matching
+     * XUngrabKeyboard on every real disarm path (Escape here, reparse_
+     * chtpm_if_changed()'s own real safety net). */
+    if (ks == XK_Escape) { g_default_input_elem = NULL; kh_ungrab_kbd(); return; }
+    /* REAL, NEW 2026-09-05 (CLIPBOARD-COPY-PASTE-DESIGN.md +
+     * TEXT_AREA-SCROLL-GUTTER-SELECTION-DESIGN.md) - Ctrl+C / Ctrl+V /
+     * Ctrl+X arrive as plain control characters through XLookupString
+     * (ASCII 3 / 22 / 24) on a standard X keyboard; the relay sends the
+     * same bare codes. When a real text SELECTION exists, copy/cut act
+     * on just the selected substring ("partial copy out" - direct
+     * request); with no selection they fall back to the whole buffer
+     * (still a genuinely useful "copy the whole doc" shortcut). Paste
+     * replaces the selection if any, then inserts at the cursor once
+     * the async SelectionNotify comes back. */
+    if (ch == 3 || ch == 24) { /* Ctrl+C / Ctrl+X */
+        int lo, hi;
+        if (kh_text_selection_range(e, buf, &lo, &hi)) {
+            char saved = buf[hi];
+            buf[hi] = '\0';
+            kh_clipboard_copy(buf + lo);
+            buf[hi] = saved;
+            if (ch == 24) { /* cut: remove the selection */
+                kh_text_delete_selection(e, buf);
+                if (is_area) default_text_area_save(e); else default_cli_io_save(e);
+            }
+        } else {
+            kh_clipboard_copy(buf);
+            if (ch == 24) {
+                buf[0] = '\0'; e->cursor = 0; e->sel_anchor = 0;
+                if (is_area) default_text_area_save(e); else default_cli_io_save(e);
+            }
+        }
+        return;
+    }
+    if (ch == 22) { /* Ctrl+V */
+        if (kh_text_delete_selection(e, buf)) {
+            if (is_area) default_text_area_save(e); else default_cli_io_save(e);
+        }
+        kh_clipboard_request_paste();
+        return;
+    }
+    /* --- cursor movement, selection-aware. Shift+move keeps
+     * sel_anchor where it is (so [sel_anchor,cursor) grows/shrinks); an
+     * unshifted move collapses the selection to the new cursor. --- */
+    if (ks == XK_Left) {
+        kh_text_clamp_cursor(buf, &e->cursor);
+        if (e->cursor > 0) e->cursor--;
+        if (!g_key_shift) e->sel_anchor = e->cursor;
+        return;
+    }
+    if (ks == XK_Right) {
+        kh_text_clamp_cursor(buf, &e->cursor);
+        if (e->cursor < (int)strlen(buf)) e->cursor++;
+        if (!g_key_shift) e->sel_anchor = e->cursor;
+        return;
+    }
+    /* REAL, NEW 2026-09-05 - line-aware (real \n, not display-wrap)
+     * Home/End via kh_text_line_start/end() - for cli_io (never
+     * contains a real \n) these reduce to the exact same whole-buffer
+     * Home/End behavior it always had; for text_area this is the real,
+     * expected "jump to start/end of the current line" behavior. */
+    if (ks == XK_Home) { e->cursor = kh_text_line_start(buf, e->cursor); if (!g_key_shift) e->sel_anchor = e->cursor; return; }
+    if (ks == XK_End) { e->cursor = kh_text_line_end(buf, e->cursor); if (!g_key_shift) e->sel_anchor = e->cursor; return; }
+    /* REAL, NEW 2026-09-05 - text_area only: real LOGICAL-line Up/Down
+     * (crosses actual \n boundaries, preserving column position best-
+     * effort). Real VISUAL (word-wrapped) row Up/Down - i.e. moving
+     * within one long logical line that wraps across several on-screen
+     * rows - is explicitly NOT attempted here; see this plan's own
+     * design doc for why that's real, separate, harder work, not
+     * silently guessed at in this first pass. cli_io has no real \n
+     * ever, so Up/Down simply does nothing for it - correct, since a
+     * single-line composer has nowhere to move to. */
+    if (is_area && (ks == XK_Up || ks == XK_Down)) {
+        int line_start = kh_text_line_start(buf, e->cursor);
+        int col = e->cursor - line_start;
+        if (ks == XK_Up) {
+            if (line_start > 0) {
+                int prev_end = line_start - 1; /* the real \n immediately before this line */
+                int prev_start = kh_text_line_start(buf, prev_end);
+                int prev_len = prev_end - prev_start;
+                e->cursor = prev_start + (col < prev_len ? col : prev_len);
+            }
+        } else {
+            int line_end = kh_text_line_end(buf, e->cursor);
+            if (buf[line_end] != '\0') { /* not already the last real line */
+                int next_start = line_end + 1;
+                int next_end = kh_text_line_end(buf, next_start);
+                int next_len = next_end - next_start;
+                e->cursor = next_start + (col < next_len ? col : next_len);
+            }
+        }
+        if (!g_key_shift) e->sel_anchor = e->cursor;
+        return;
+    }
+    if (ks == XK_Delete) {
+        if (!kh_text_delete_selection(e, buf)) kh_text_delete_at_cursor(buf, &e->cursor);
+        if (is_area) default_text_area_save(e); else default_cli_io_save(e);
+        return;
+    }
     if (ks == XK_BackSpace) {
-        size_t len = strlen(e->input_buffer);
-        if (len > 0) { e->input_buffer[len - 1] = '\0'; default_cli_io_save(e); }
+        if (!kh_text_delete_selection(e, buf)) kh_text_delete_before_cursor(buf, &e->cursor);
+        if (is_area) default_text_area_save(e); else default_cli_io_save(e);
         return;
     }
     if (ch >= 32 && ch < 127) {
-        size_t len = strlen(e->input_buffer);
-        if (len + 1 < sizeof(e->input_buffer)) {
-            e->input_buffer[len] = ch; e->input_buffer[len + 1] = '\0';
-            default_cli_io_save(e);
+        kh_text_delete_selection(e, buf); /* typing over a selection replaces it */
+        kh_text_insert_at_cursor(buf, cap, &e->cursor, ch);
+        e->sel_anchor = e->cursor;
+        if (is_area) default_text_area_save(e); else default_cli_io_save(e);
+    }
+}
+
+/* REAL, NEW 2026-09-05 (GRID-ELEMENT-DESIGN.md) - base-26 multi-letter
+ * column codec (A=0..Z=25, AA=26..AZ=51, ...), the same "bijective
+ * base-26" scheme spreadsheet column letters always use. Shared by the
+ * jump-buffer parser below and by draw_elem()'s own grid header-row
+ * rendering (step 3, not yet built). */
+static void grid_col_to_letters(int col, char *out, size_t outsz) {
+    char tmp[8]; int n = 0;
+    long v = col + 1; /* 1-based for this algorithm */
+    while (v > 0 && n < (int)sizeof(tmp)) {
+        long rem = (v - 1) % 26;
+        tmp[n++] = (char)('A' + rem);
+        v = (v - 1) / 26;
+    }
+    int i = 0;
+    for (; i < n && (size_t)i < outsz - 1; i++) out[i] = tmp[n - 1 - i];
+    out[i] = '\0';
+}
+static int grid_letters_to_col(const char *s, int len) {
+    long col = 0;
+    for (int i = 0; i < len; i++) {
+        char c = (char)toupper((unsigned char)s[i]);
+        if (c < 'A' || c > 'Z') return -1;
+        col = col * 26 + (c - 'A' + 1);
+        if (col > 1000000) return -1; /* sane runaway guard, not a real cap */
+    }
+    return (int)(col - 1);
+}
+/* Real jump-buffer resolver - letters and digits may arrive in EITHER
+ * order ("a11" or "11a", direct instruction) since a human doesn't
+ * reliably type a spreadsheet ref in one fixed order under pressure;
+ * parsed as a whole on Enter, not position-sensitively. Returns 1 and
+ * fills *row_out/*col_out on success (0-based); 0 on anything
+ * unparseable (empty/no letters/no digits/bad letters) - caller treats
+ * this as a no-op, matching the design doc's own "clears the buffer,
+ * doesn't crash/move" rule. */
+static int grid_parse_jump(const char *buf, int *row_out, int *col_out) {
+    char letters[16]; int nl = 0;
+    char digits[16]; int nd = 0;
+    for (const char *p = buf; *p; p++) {
+        if (isalpha((unsigned char)*p) && nl < (int)sizeof(letters) - 1) letters[nl++] = *p;
+        else if (isdigit((unsigned char)*p) && nd < (int)sizeof(digits) - 1) digits[nd++] = *p;
+    }
+    if (nl == 0 || nd == 0) return 0;
+    int col = grid_letters_to_col(letters, nl);
+    if (col < 0) return 0;
+    int row = atoi(digits) - 1; /* refs are 1-based, same as csv_hq_manager.c's own parse_cell_ref() */
+    if (row < 0) return 0;
+    *row_out = row; *col_out = col;
+    return 1;
+}
+
+/* REAL, NEW 2026-09-05 (GRID-ELEMENT-DESIGN.md) - the grid's own key
+ * handler, routed to from the same armed-field call site cli_io/
+ * text_area use, but with genuinely different semantics (a 2D cursor
+ * plus a nested cell-edit sub-state, not one text cursor). Two real
+ * sub-states, both scoped to grid_edit_mode:
+ *   0 = navigating (# badge) - arrows move the cursor; letters/digits
+ *       accumulate into grid_jump_buffer; Enter resolves a pending
+ *       jump, or (buffer already empty) ENTERS the cell under the
+ *       cursor; Escape disarms the whole grid.
+ *   1 = editing one cell (^ badge) - grid_cell_buffer is a real,
+ *       live-typed single-line buffer, reusing cli_io's own text-
+ *       editing primitives (kh_text_insert_at_cursor/kh_text_delete_*)
+ *       directly rather than re-implementing them; Escape COMMITS
+ *       (fires the grid's own action=/onclick=, the same generic
+ *       dispatch() verb mechanism <tab>/<item> already use - NOT
+ *       default_cli_io_run_action()'s raw-shell-command path, since a
+ *       commit needs the full in-process dispatch() table, e.g.
+ *       CSVH_GRIDCOMMIT) and returns to state 0 - a SECOND Escape from
+ *       state 0 is what actually disarms the grid, matching the
+ *       design doc's "activating that cell '^' till esc is pressed"
+ *       (one Escape ends the cell, a second ends the grid). */
+static void default_grid_handle_key(KeySym ks, char ch) {
+    Elem *e = g_default_input_elem;
+    if (!e) return;
+    if (e->grid_edit_mode) {
+        /* State 1: editing one cell - same single-line primitives
+         * cli_io's own input_buffer editing already uses, pointed at
+         * grid_cell_buffer instead. */
+        if (ks == XK_Escape) {
+            if (e->onclick[0]) dispatch(e->onclick);
+            e->grid_edit_mode = 0;
+            return;
+        }
+        if (ks == XK_Return || ks == XK_KP_Enter) return; /* single-line cell - Enter does nothing, same as cli_io has no multi-line concept */
+        if (ks == XK_Left) { kh_text_clamp_cursor(e->grid_cell_buffer, &e->cursor); if (e->cursor > 0) e->cursor--; return; }
+        if (ks == XK_Right) { kh_text_clamp_cursor(e->grid_cell_buffer, &e->cursor); if (e->cursor < (int)strlen(e->grid_cell_buffer)) e->cursor++; return; }
+        if (ks == XK_Home) { e->cursor = 0; return; }
+        if (ks == XK_End) { e->cursor = (int)strlen(e->grid_cell_buffer); return; }
+        if (ks == XK_Delete) { kh_text_delete_at_cursor(e->grid_cell_buffer, &e->cursor); return; }
+        if (ks == XK_BackSpace) { kh_text_delete_before_cursor(e->grid_cell_buffer, &e->cursor); return; }
+        if (ch >= 32 && ch < 127) kh_text_insert_at_cursor(e->grid_cell_buffer, sizeof(e->grid_cell_buffer), &e->cursor, ch);
+        return;
+    }
+    /* State 0: navigating. */
+    if (ks == XK_Escape) { g_default_input_elem = NULL; kh_ungrab_kbd(); return; }
+    if (ks == XK_Up)    { if (e->grid_cur_row > 0) e->grid_cur_row--; return; }
+    if (ks == XK_Down)  { e->grid_cur_row++; return; } /* no hard upper cap here - the MANAGER is the real bounds authority (SETCELL already rejects out-of-range refs), same as csv_hq_manager.c's own parse_cell_ref() */
+    if (ks == XK_Left)  { if (e->grid_cur_col > 0) e->grid_cur_col--; return; }
+    if (ks == XK_Right) { e->grid_cur_col++; return; }
+    if (ks == XK_BackSpace) {
+        size_t len = strlen(e->grid_jump_buffer);
+        if (len > 0) e->grid_jump_buffer[len - 1] = '\0';
+        return;
+    }
+    if (ks == XK_Return || ks == XK_KP_Enter) {
+        if (e->grid_jump_buffer[0]) {
+            int row, col;
+            if (grid_parse_jump(e->grid_jump_buffer, &row, &col)) {
+                e->grid_cur_row = row;
+                e->grid_cur_col = col;
+            }
+            e->grid_jump_buffer[0] = '\0';
+        } else {
+            /* Nothing pending - a second real Enter ENTERS the cell
+             * under the cursor (state 0 -> state 1), matching the
+             * design doc's own disambiguation (two different "Enter
+             * does something" cases, not two different keys).
+             * REAL, NEW 2026-09-05 (step 5, GRID-ELEMENT-DESIGN.md's
+             * own build order) - grid_cell_buffer is SEEDED here with
+             * the cursor's current real cell value (published by the
+             * app's own manager as a per-cell var, e.g. "cell_2_1"),
+             * same as activate_focused()'s own cli_io/text_area arm
+             * already seeds the cursor from the real current buffer.
+             * The var-name PREFIX is read from this grid's own
+             * target_id= attribute (reusing that existing generic
+             * field rather than adding a new one just for this -
+             * defaults to "cell_" if unset) - keeps the element itself
+             * generic (any consumer picks its own prefix), matching
+             * commit_action already reusing onclick= the same way. */
+            char varname[80];
+            snprintf(varname, sizeof(varname), "%s%d_%d", e->target_id[0] ? e->target_id : "cell_", e->grid_cur_row, e->grid_cur_col);
+            snprintf(e->grid_cell_buffer, sizeof(e->grid_cell_buffer), "%s", kh_get_var(varname));
+            e->grid_edit_mode = 1;
+            e->cursor = (int)strlen(e->grid_cell_buffer);
+        }
+        return;
+    }
+    if ((isalnum((unsigned char)ch)) && ch >= 32 && ch < 127) {
+        size_t len = strlen(e->grid_jump_buffer);
+        if (len + 1 < sizeof(e->grid_jump_buffer)) {
+            e->grid_jump_buffer[len] = ch;
+            e->grid_jump_buffer[len + 1] = '\0';
         }
     }
 }
@@ -4545,24 +6122,57 @@ static void activate_focused(void) {
     /* REAL FIX 2026-08-31 - see default_cli_io_handle_key()'s own
      * Escape-branch comment for the full real diagnosis. Grab taken
      * HERE (arm time), released on every real disarm path. */
-    if (strcmp(item->tag, "cli_io") == 0) { g_default_input_elem = item; kh_grab_keyboard_retry(); return; }
-    /* generic <tab> (spirit of db-hq's tab click): run the tab's own
-     * action= (switches the projected content), mark it active, and
-     * scope nav into the page's <sidebar> - so after choosing a tab you
-     * navigate its record list, [^] shows, Esc returns to the tab row. */
+    if (strcmp(item->tag, "cli_io") == 0 || strcmp(item->tag, "text_area") == 0) {
+        g_default_input_elem = item;
+        /* REAL, NEW 2026-09-05 - arm at the end of whatever's already
+         * typed, matching every normal editor's own re-focus
+         * convention, not wherever a stale cursor happened to be left.
+         * text_area added alongside cli_io here (same real armed-field
+         * mechanism, same ^ indicator, same Escape-disarm path). */
+        item->cursor = (int)strlen(strcmp(item->tag, "text_area") == 0 ? item->text_area_buffer : item->input_buffer);
+        item->sel_anchor = item->cursor; /* arm with no stale selection */
+        kh_grab_keyboard_retry();
+        return;
+    }
+    /* REAL, NEW 2026-09-05 (GRID-ELEMENT-DESIGN.md) - <grid> arms into
+     * its own state 0 (navigating, # badge) - grid_cur_row/col are
+     * deliberately NOT reset here, so re-entering an already-used grid
+     * resumes where the cursor last was, same "pick up where you left
+     * off" spirit cli_io/text_area's own end-of-buffer cursor seed
+     * has. grid_jump_buffer/grid_edit_mode DO reset - a stale pending
+     * jump or a still-"editing" flag from a previous arm would be a
+     * real, confusing leftover state to resume into. */
+    if (strcmp(item->tag, "grid") == 0) {
+        g_default_input_elem = item;
+        item->grid_jump_buffer[0] = '\0';
+        item->grid_edit_mode = 0;
+        kh_grab_keyboard_retry();
+        return;
+    }
+    /* generic <tab>: run the tab's own action=, mark it active for CSS.
+     *
+     * REAL FIX 2026-09-05, direct live report ("nav has to work for
+     * entire window... [text_area at nav 6] unreachable by mouse or
+     * nav arrows"): a <tab> only scope-confines nav into a container
+     * when it has an EXPLICIT target_id= (db-hq/events-hq's real
+     * content-switching tabs - "pick a tab, then navigate its record
+     * list"). A <tab> with NO target_id= is a plain menu-bar action
+     * button (text-edit-hq/csv-hq/pdl-read/media-* New/Open/Save/etc) -
+     * it must NOT trap nav anywhere, or the app's MAIN content (a
+     * <text_area> or <grid> in the <panel>, not the <sidebar>) becomes
+     * permanently unreachable the moment you press one. The old
+     * fallback (`if (!sb) sb = find_by_tag(pg,"sidebar")`) confined
+     * every no-target_id tab to whatever sidebar the page happened to
+     * have - the exact bug. Every real content-switching tab in the
+     * house already sets target_id= explicitly, so dropping the
+     * fallback changes behavior only for the plain action tabs, which
+     * is the fix. */
     if (strcmp(item->tag, "tab") == 0) {
         if (item->id[0])
             snprintf(g_default_active_tab_id, sizeof(g_default_active_tab_id), "%s", item->id);
         if (item->onclick[0]) dispatch(item->onclick);
-        {
-            /* scope target: the tab's target_id= container, else the
-             * page <sidebar>. Same path the reparse re-resolve below
-             * uses, so the scope survives the projector's every-tick
-             * state write (which triggers a full reparse). */
-            Elem *pg = find_page(g_current_page);
-            Elem *sb = NULL;
-            if (item->target_id[0]) sb = find_by_id(g_window, item->target_id);
-            if (!sb && pg) sb = find_by_tag(pg, "sidebar");
+        if (item->target_id[0]) {
+            Elem *sb = find_by_id(g_window, item->target_id);
             if (sb) {
                 g_default_active_scope_root = sb;
                 g_default_scope_confine = 1;
@@ -4658,7 +6268,284 @@ static void activate_focused(void) {
     if (item->onclick[0]) dispatch(item->onclick);
 }
 
+/* REAL, NEW 2026-09-06 - restore the HQ-menu "cli" terminal mirror.
+ * khtpm_strip_render_ascii.+x read #.desktop/strip_frame.cells.pdl, which
+ * the retired khtpm_strip_parser.+x wrote; both went away 2026-09-01 when
+ * the strip folded into this binary, so the mirror froze (last cells.pdl
+ * write Sep 3). This walks the LIVE laid-out Elem tree and writes the
+ * same readable frame file straight from redraw(), so a terminal
+ * `tail -F #.desktop/strip_ascii_current_frame.txt` IS the live strip.
+ * Dock mode only; a no-op for every other window. Cheap: two small
+ * fopen("w")+tree-walk per repaint, and the strip only repaints on a
+ * real state change. */
+/* Header-cell / bottom-tab focus lives in the MANAGER's strip_state.txt
+ * (strip_focus_cell: 0-based cell, or -1 meaning focus is on a bottom
+ * tab at index tab_focus_idx). Read once per frame; used by the walk so
+ * arrow-key nav is actually visible in the terminal mirror. */
+static int g_dock_focus_cell = -1;   /* 0-based, -1 = on a tab */
+static int g_dock_tab_focus  = 0;
+
+/* REAL, NEW 2026-09-06 - the terminal-input half of the mirror.
+ * khtpm_strip_keyboard_ascii.+x relays arrow/digit/Enter keys to
+ * #.desktop/strip_history.txt; the manager consumes them and republishes
+ * strip_state.txt (strip_focus_cell / tab_focus_idx / hq_open / ...).
+ * The X11 strip repaints on its own X events, but a state change driven
+ * purely from the terminal produces NO X event here, so redraw() (and
+ * with it dock_write_ascii_frame()) never ran and the ASCII mirror
+ * lagged - it only caught up on the next unrelated repaint.
+ *
+ * MARKER-DRIVEN (DIAMOND standard, 2026-09-06 - see
+ * 02-architecture/reference/TPMOS-DIAMOND-render-chain.md): the manager
+ * already appends one byte to #.desktop/strip_frame_changed.txt on every
+ * publish_state() (touch_frame_changed(), modelled on chtpm_parser.c's
+ * frame_changed.txt). We watch that marker's SIZE growth - never mtime -
+ * so there is no wall-clock-resolution race and no "same second"
+ * dropped republish. On growth: re-read strip_state.txt, map the
+ * manager's focus cursor onto g_focus_nav, redraw once. */
+static void dock_poll_strip_state(void) {
+    if (!window_is_dock()) return;
+    static long s_marker = -1;
+    char mp[PATH_BUF];
+    snprintf(mp, sizeof(mp), "%s/#.desktop/strip_frame_changed.txt", g_house_root);
+    struct stat mst;
+    if (stat(mp, &mst) != 0) return;
+    if (s_marker < 0)               { s_marker = mst.st_size; return; }  /* first sight */
+    if (mst.st_size < s_marker)     { s_marker = mst.st_size; return; }  /* truncated/rotated - resync */
+    if (mst.st_size == s_marker)      return;                            /* nothing new */
+    s_marker = mst.st_size;
+
+    char sp[PATH_BUF];
+    snprintf(sp, sizeof(sp), "%s/#.desktop/strip_state.txt", g_house_root);
+
+    /* The manager just republished. Pull its focus cursor
+     * (strip_focus_cell: 0-based header cell, or -1 = a bottom tab at
+     * tab_focus_idx) and map it onto THIS renderer's g_focus_nav so a
+     * key driven from the terminal moves the real on-screen highlight,
+     * not just the ASCII mirror. Header cells are g_focus_nav
+     * 1..g_dock_header_nav_hi; bottom-bar tabs continue above that. */
+    int sfc = -2, tfi = 0;
+    FILE *s = fopen(sp, "r");
+    if (s) {
+        char line[512];
+        while (fgets(line, sizeof(line), s)) {
+            if (strncmp(line, "KEY | strip_focus_cell | ", 25) == 0) sfc = atoi(line + 25);
+            else if (strncmp(line, "KEY | tab_focus_idx | ", 22) == 0) tfi = atoi(line + 22);
+        }
+        fclose(s);
+    }
+    if (sfc >= 0) {
+        int nv = sfc + 1;
+        if (nv >= 1 && nv <= g_n_nav) g_focus_nav = nv;
+    } else if (sfc == -1) {
+        int nv = g_dock_header_nav_hi + 1 + tfi;
+        if (nv >= 1 && nv <= g_n_nav) g_focus_nav = nv;
+    }
+    if (!g_quit) redraw();
+}
+
+static void dock_ascii_walk(FILE *f, Elem *e, int depth) {
+    if (!e) return;
+    if (e->y < -1000) { return; }   /* parked offscreen (a closed menu's rows etc.) - not on screen, not in the mirror */
+    int has_label = e->label[0] != '\0';
+    int is_container = (strcmp(e->tag, "window") == 0 || strcmp(e->tag, "page") == 0 ||
+                        strcmp(e->tag, "sidebar") == 0 || strcmp(e->tag, "panel") == 0 ||
+                        strcmp(e->tag, "row") == 0 || strcmp(e->tag, "tabbar") == 0 ||
+                        strcmp(e->tag, "scrolllist") == 0 || strcmp(e->tag, "module") == 0);
+    if ((has_label || (!is_container && e->nav_index > 0)) && strcmp(e->tag, "module") != 0) {
+        for (int i = 0; i < depth; i++) fputs("  ", f);
+        if (e->nav_index > 0) {
+            /* Mark the ONE cell this renderer is actually highlighting on
+             * screen: g_focus_nav (1-based, unified across header cells
+             * 1..g_dock_header_nav_hi then bottom-bar tabs above that).
+             * 2026-09-06 fix for the split-brain the user hit: this used
+             * to read the MANAGER's strip_focus_cell, which is a separate
+             * cursor the manager only moves for terminal-relay input - so
+             * driving the X11 strip with the mouse/keys moved g_focus_nav
+             * (what you see) but not strip_focus_cell (what the mirror
+             * drew), and the two disagreed. Now the mirror always shows
+             * the real highlight; terminal input reaches g_focus_nav via
+             * dock_poll_strip_state() below, so both stay in lockstep. */
+            fprintf(f, "%s%d. ", (e->nav_index == g_focus_nav) ? "[>] " : "[ ] ", e->nav_index);
+        } else if (!is_container)
+            fputs("    ", f);
+        int active = 0;
+        for (int i = 0; i < e->n_classes; i++)
+            if (strcmp(e->classes[i], "active") == 0 || strcmp(e->classes[i], "tab-active") == 0 ||
+                strcmp(e->classes[i], "room-active") == 0) active = 1;
+        fprintf(f, "%s%s%s\n", active ? "* " : "",
+                has_label ? e->label : e->tag,
+                (e->y < -1000) ? "  (hidden)" : "");
+    }
+    for (int i = 0; i < e->n_children; i++)
+        dock_ascii_walk(f, e->children[i], depth + (is_container ? 1 : 0));
+}
+
+/* The dynamic strip bits (which header cell is focused, whether the HQ
+ * popup menu is open + its rows + focus) live in the MANAGER's
+ * strip_state.txt, not this renderer's g_window tree - the popup is a
+ * separate window. Fold them into the mirror by reading that file. */
+static void dock_ascii_append_state(FILE *f) {
+    char sp[PATH_BUF];
+    snprintf(sp, sizeof(sp), "%s/#.desktop/strip_state.txt", g_house_root);
+    FILE *s = fopen(sp, "r");
+    if (!s) return;
+    char line[1024];
+    int hq_open = 0, hq_focus = -1, tab_focus = -1;
+    int n_hqitems = 0;
+    char hqitems[24][160];
+    while (fgets(line, sizeof(line), s)) {
+        line[strcspn(line, "\r\n")] = '\0';
+        if (strncmp(line, "KEY | hq_open | ", 16) == 0)      hq_open  = atoi(line + 16);
+        else if (strncmp(line, "KEY | hq_focus | ", 17) == 0) hq_focus = atoi(line + 17);
+        else if (strncmp(line, "KEY | tab_focus_idx | ", 22) == 0) tab_focus = atoi(line + 22);
+        else if (strncmp(line, "HQITEM | ", 9) == 0 && n_hqitems < 24) {
+            const char *p = line + 9;
+            const char *bar = strchr(p, '|');
+            size_t len = bar ? (size_t)(bar - p) : strlen(p);
+            while (len > 0 && p[len - 1] == ' ') len--;
+            if (len >= sizeof(hqitems[0])) len = sizeof(hqitems[0]) - 1;
+            memcpy(hqitems[n_hqitems], p, len);
+            hqitems[n_hqitems][len] = '\0';
+            n_hqitems++;
+        }
+    }
+    fclose(s);
+    (void)tab_focus;
+    if (hq_open && n_hqitems > 0) {
+        fprintf(f, "--- HQ menu (open) ---\n");
+        for (int i = 0; i < n_hqitems; i++)
+            fprintf(f, "  %s%d. %s\n", (i == hq_focus) ? "[>] " : "[ ] ", i + 1, hqitems[i]);
+    }
+}
+
+static void dock_write_ascii_frame(void) {
+    if (!window_is_dock() || !g_window) return;
+
+    /* pull the manager's focus cursor before walking the tree */
+    g_dock_focus_cell = -1;
+    g_dock_tab_focus  = 0;
+    {
+        char sp[PATH_BUF];
+        snprintf(sp, sizeof(sp), "%s/#.desktop/strip_state.txt", g_house_root);
+        FILE *s = fopen(sp, "r");
+        if (s) {
+            char line[512];
+            while (fgets(line, sizeof(line), s)) {
+                if (strncmp(line, "KEY | strip_focus_cell | ", 25) == 0) g_dock_focus_cell = atoi(line + 25);
+                else if (strncmp(line, "KEY | tab_focus_idx | ", 22) == 0) g_dock_tab_focus = atoi(line + 22);
+            }
+            fclose(s);
+        }
+    }
+
+    char path[PATH_BUF], hpath[PATH_BUF];
+    snprintf(path,  sizeof(path),  "%s/#.desktop/strip_ascii_current_frame.txt", g_house_root);
+    snprintf(hpath, sizeof(hpath), "%s/#.desktop/strip_ascii_frame_history.txt", g_house_root);
+    char ts[32];
+    time_t now = time(NULL);
+    strftime(ts, sizeof(ts), "%Y-%m-%d %H:%M:%S", localtime(&now));
+
+    FILE *f = fopen(path, "w");
+    if (f) {
+        fprintf(f, "--- TASKBAR FRAME  %s ---\n", ts);
+        dock_ascii_walk(f, g_window, 0);
+        if (g_dock_peer) { fprintf(f, "--- bottom bar ---\n"); dock_ascii_walk(f, g_dock_peer, 0); }
+        dock_ascii_append_state(f);
+        fclose(f);
+        /* DIAMOND: the compose->present marker, exactly like
+         * chtpm_parser.c appends "P\n" to renderer_pulse.txt after
+         * writing current_frame.txt. khtpm_strip_render_ascii.+x (the
+         * terminal presenter) watches THIS file's size growth - not the
+         * frame file's mtime - so a frame that is byte-identical in
+         * length (a single-digit nav number moving) still triggers a
+         * repaint. */
+        char pp[PATH_BUF];
+        snprintf(pp, sizeof(pp), "%s/#.desktop/strip_ascii_pulse.txt", g_house_root);
+        struct stat pst;
+        /* size IS the signal, so rotate (not append) once it gets big -
+         * the presenter's `size < last` branch treats the shrink as a
+         * resync, never a missed frame. */
+        const char *mode = (stat(pp, &pst) == 0 && pst.st_size > 64 * 1024) ? "w" : "a";
+        FILE *pf = fopen(pp, mode);
+        if (pf) { fputc('P', pf); fclose(pf); }
+    }
+    FILE *h = fopen(hpath, "a");
+    if (h) {
+        struct stat hst;
+        if (fstat(fileno(h), &hst) == 0 && hst.st_size > 512 * 1024) { fclose(h); h = fopen(hpath, "w"); }
+    }
+    if (h) {
+        fprintf(h, "\n=== %s ===\n", ts);
+        dock_ascii_walk(h, g_window, 0);
+        fclose(h);
+    }
+}
+
+/* Mode-agnostic sibling of dock_write_ascii_frame() (TERMINAL-MIRROR-
+ * PARITY-all-windows.md step 1). Every NON-dock window this binary
+ * renders drops a live text mirror of its laid-out Elem tree, keyed by
+ * PID, next to the per-PID input relay that poll_agent_history() already
+ * consumes:
+ *   #.desktop/ascii_frames/<pid>.frame.txt   - the readable frame
+ *   #.desktop/ascii_frames/<pid>.pulse.txt   - DIAMOND marker (size grows
+ *                                              per frame, rotates >64KB)
+ * A generic presenter (khtpm_render_ascii.+x <house> <pid>) tails the
+ * pulse and prints the frame; a generic keyboard relay writes
+ * KEY_PRESSED lines into #.desktop/entity_menu_history/<pid>.txt. The
+ * dock keeps its own strip_ascii_* filenames (the cli launcher + docs
+ * point at them) - it's the already-shipped special case. */
+static void kh_write_ascii_frame(void) {
+    if (!g_window || window_is_dock()) return;
+
+    char dir[PATH_BUF], fpath[PATH_BUF], ppath[PATH_BUF];
+    snprintf(dir, sizeof(dir), "%s/#.desktop/ascii_frames", g_house_root);
+    mkdir(dir, 0777);
+    snprintf(fpath, sizeof(fpath), "%s/%d.frame.txt", dir, (int)getpid());
+    snprintf(ppath, sizeof(ppath), "%s/%d.pulse.txt", dir, (int)getpid());
+
+    const char *base = g_chtpm_path;
+    { const char *sl = strrchr(base, '/'); if (sl) base = sl + 1; }
+    char ts[32];
+    time_t now = time(NULL);
+    strftime(ts, sizeof(ts), "%Y-%m-%d %H:%M:%S", localtime(&now));
+
+    FILE *f = fopen(fpath, "w");
+    if (!f) return;
+    fprintf(f, "--- %s  pid %d  %s ---\n", base, (int)getpid(), ts);
+    if (g_current_page[0]) fprintf(f, "--- page: %s ---\n", g_current_page);
+    dock_ascii_walk(f, g_window, 0);
+    fclose(f);
+
+    struct stat pst;
+    const char *mode = (stat(ppath, &pst) == 0 && pst.st_size > 64 * 1024) ? "w" : "a";
+    FILE *pf = fopen(ppath, mode);
+    if (pf) { fputc('P', pf); fclose(pf); }
+}
+
+/* Real cleanup counterpart - a closed window's frame/pulse pair
+ * shouldn't linger. Called from the same quit paths as
+ * history_unregister(). */
+static void kh_ascii_frame_unregister(void) {
+    char p[PATH_BUF];
+    snprintf(p, sizeof(p), "%s/#.desktop/ascii_frames/%d.frame.txt", g_house_root, (int)getpid());
+    unlink(p);
+    snprintf(p, sizeof(p), "%s/#.desktop/ascii_frames/%d.pulse.txt", g_house_root, (int)getpid());
+    unlink(p);
+}
+
 static void redraw(void) {
+    /* --headless: there is no window to blit to. redraw() is the one
+     * choke point every "something changed, repaint" path funnels
+     * through, so intercept it here - run the real layout, then write
+     * the text frame + DIAMOND pulse instead of drawing pixels. Every
+     * caller (idle tick, reparse, dispatch verbs, dock nav) then just
+     * works headless with no per-caller guard. */
+    if (g_headless) {
+        assign_nav_and_layout();
+        if (window_is_dock()) dock_write_ascii_frame();
+        else kh_write_ascii_frame();
+        return;
+    }
     if (getenv("KH_REDRAW_TRACE")) {
         static int rc = 0; struct timespec ts; clock_gettime(CLOCK_MONOTONIC, &ts);
         void *ra = __builtin_return_address(0);
@@ -4677,6 +6564,39 @@ static void redraw(void) {
      * draw (chrome/tabbar/sidebar/panel), same shared present
      * (XGetImage->XPutImage) below every mode already uses. */
     assign_nav_and_layout();
+    /* REAL FIX 2026-09-05, direct live report ("fullscreen breaks
+     * pdl-read layout - content stays squished bottom-left, most of
+     * the window black"). Root cause (found by a parallel
+     * investigation): the grow-buf + XResizeWindow blocks near the end
+     * of redraw() ran AFTER this frame was already drawn into the
+     * still-SMALL Pixmap - everything past the old bounds got clipped,
+     * then the buffer/window grew, and that comment's promised "NEXT
+     * redraw() repaints it" never came (TOGGLE_FULLSCREEN's handler
+     * only did XMoveWindow + a single popup_handle_click redraw, no
+     * hq_request_redraw()). Fix: do the essential grow+resize HERE,
+     * right after assign_nav_and_layout() has set g_win_w/g_win_h to
+     * the fullscreen size, BEFORE the first XFillRectangle - so this
+     * very frame draws into a correctly-sized buffer and window. The
+     * every-frame safety-net block near the end stays (it's a cheap
+     * no-op read when nothing changed). Position-move logic is left
+     * where it is - only the size half needs to be early. */
+    if (g_win_w > g_buf_w || g_win_h > g_buf_h) {
+        int nw = g_win_w > g_buf_w ? g_win_w : g_buf_w;
+        int nh = g_win_h > g_buf_h ? g_win_h : g_buf_h;
+        if (xftdraw_buf) { XftDrawDestroy(xftdraw_buf); xftdraw_buf = NULL; }
+        if (buf) XFreePixmap(dpy, buf);
+        buf = XCreatePixmap(dpy, win, (unsigned)nw, (unsigned)nh, (unsigned)DefaultDepth(dpy, screen));
+        xftdraw_buf = XftDrawCreate(dpy, buf, DefaultVisual(dpy, screen), cmap);
+        g_buf_w = nw; g_buf_h = nh;
+        XSync(dpy, False);
+    }
+    {
+        XWindowAttributes wa;
+        if (XGetWindowAttributes(dpy, win, &wa) && (wa.width != g_win_w || wa.height != g_win_h)) {
+            XResizeWindow(dpy, win, (unsigned)g_win_w, (unsigned)g_win_h);
+            XSync(dpy, False);
+        }
+    }
     XSetForeground(dpy, gc, alloc_pixel(window_is_dock() ? g_theme_bg : "#1c1c1c"));
     XFillRectangle(dpy, buf, gc, 0, 0, (unsigned)g_win_w, (unsigned)g_win_h);
     if (!window_is_dock()) {
@@ -4727,6 +6647,21 @@ static void redraw(void) {
         XftDrawStringUtf8(xftdraw_buf, &title_col, font_ui, 8, 16,
                            (const FcChar8 *)title, (int)strlen(title));
         XftColorFree(dpy, DefaultVisual(dpy, screen), cmap, &title_col);
+        /* REAL, NEW 2026-09-05 - "copied" tag top-right (left of the
+         * chrome minimize/fullscreen/close buttons, which start around
+         * g_win_w-190) for ~2s after any Ctrl+C/Ctrl+X. Event-driven:
+         * the copy keypress already redraws once to show it;
+         * hq_idle_tick() redraws once more to clear it when it ages. */
+        if (g_clip_copied_at && (time(NULL) - g_clip_copied_at) <= 2) {
+            XftColor cc = xft_color("#ff8c00");
+            const char *tag = "copied";
+            XGlyphInfo ge;
+            XftTextExtentsUtf8(dpy, font_ui, (const FcChar8 *)tag, (int)strlen(tag), &ge);
+            XftDrawStringUtf8(xftdraw_buf, &cc, font_ui,
+                               g_win_w - 200 - ge.width, 16,
+                               (const FcChar8 *)tag, (int)strlen(tag));
+            XftColorFree(dpy, DefaultVisual(dpy, screen), cmap, &cc);
+        }
         }
         /* REAL, NEW 2026-09-03 (HQ-WINDOW-TASKBAR-ENTRIES-AND-MINIMIZE-
          * 2026-09-03.md §2.1) - real per-window taskbar registry, one
@@ -4754,14 +6689,6 @@ static void redraw(void) {
                 fclose(rf);
                 rename(reg_tmp, reg_path);
             }
-        }
-        if (g_is_swatch_picker) {
-            const char *status = g_phase == 0 ? "Pick PRIMARY, then Enter"
-                                : g_phase == 1 ? "Pick SECONDARY, then Enter"
-                                : "Applied - closing...";
-            XftColor status_col = xft_color("#ffffff");
-            XftDrawStringUtf8(xftdraw_buf, &status_col, font_ui, 16, CHROME_H + 26, (const FcChar8 *)status, (int)strlen(status));
-            XftColorFree(dpy, DefaultVisual(dpy, screen), cmap, &status_col);
         }
     }
 
@@ -4795,8 +6722,8 @@ static void redraw(void) {
          * renderer, so two windows can never collide on this path
          * again, house-wide, permanently, not just for chat-hai/open-
          * hai's own current pairing. */
-        snprintf(fpath, sizeof(fpath), "%s/#.desktop/%s_%d.txt", g_house_root,
-                 g_is_swatch_picker ? "taskbar_settings_frame" : "entity_menu_frame", (int)getpid());
+        snprintf(fpath, sizeof(fpath), "%s/#.desktop/entity_menu_frame_%d.txt", g_house_root,
+                 (int)getpid());
         snprintf(tmpp, sizeof(tmpp), "%s.tmp", fpath);
         FILE *ff = fopen(tmpp, "w");
         if (ff) {
@@ -4828,7 +6755,7 @@ static void redraw(void) {
         {
             FILE *rf = fopen(fpath, "r");
             if (rf) {
-                char line[2048];
+                char line[9000]; /* REAL, NEW 2026-09-05 - see kh_paint_frame_line()'s own buf2 comment: must be big enough for a real text_area line */
                 while (fgets(line, sizeof(line), rf)) {
                     size_t len = strlen(line);
                     while (len > 0 && (line[len-1]=='\n' || line[len-1]=='\r')) line[--len] = '\0';
@@ -4843,38 +6770,6 @@ static void redraw(void) {
     if (g_dock_peer && !g_dock_in_peer_paint) dock_paint_peer();
     if (window_is_dock() && !g_dock_in_peer_paint && !g_dock_in_menu_paint)
         dock_paint_menu();
-
-    /* REAL, swatch-picker-only overlay (ported verbatim from taskbar-
-     * settings' own redraw()) - the "chosen" bg/fg ring + primary/
-     * secondary status lines, real, documented per-mode exceptions
-     * (khtpm_draw_core.c's own draw_elem() has no generic 3rd-state
-     * concept). */
-    if (g_is_swatch_picker && page) {
-        int sw_i = 0;
-        for (int i = 0; i < page->n_children; i++) {
-            Elem *item = page->children[i];
-            if (strcmp(item->tag, "item") != 0 || strcmp(item->id, "close") == 0) continue;
-            int chosen = (sw_i == g_chosen_bg_idx) || (sw_i == g_chosen_fg_idx);
-            if (chosen && item->nav_index != g_focus_nav) {
-                XSetForeground(dpy, gc, 0x22c55e);
-                XDrawRectangle(dpy, buf, gc, item->x - 2, item->y - 2, (unsigned)item->w + 4, (unsigned)item->h + 4);
-            }
-            sw_i++;
-        }
-        int x0 = 16, y0 = CHROME_H + 44;
-        XftColor accent = xft_color("#22c55e");
-        if (g_chosen_bg_idx >= 0) {
-            char line[64];
-            snprintf(line, sizeof(line), "primary: %s", g_palette_name[g_chosen_bg_idx]);
-            XftDrawStringUtf8(xftdraw_buf, &accent, font_ui, x0, y0 + 2 * (SWATCH + SWATCH_GAP) + 20, (const FcChar8 *)line, (int)strlen(line));
-        }
-        if (g_chosen_fg_idx >= 0) {
-            char line[64];
-            snprintf(line, sizeof(line), "secondary: %s", g_palette_name[g_chosen_fg_idx]);
-            XftDrawStringUtf8(xftdraw_buf, &accent, font_ui, x0, y0 + 2 * (SWATCH + SWATCH_GAP) + 38, (const FcChar8 *)line, (int)strlen(line));
-        }
-        XftColorFree(dpy, DefaultVisual(dpy, screen), cmap, &accent);
-    }
 
     /* REAL FIX 2026-08-31 (found live, testing generic capability #1 -
      * the .chtpm live-reparse this default/popup mode now also gets,
@@ -4971,9 +6866,8 @@ static void redraw(void) {
      * proof that any edge affordance stopping short of it is on-window. */
     {
         XSetForeground(dpy, gc, alloc_pixel(g_theme_fg[0] ? g_theme_fg : "#888888"));
-        for (int _fb = 0; _fb < 2; _fb++)
-            XDrawRectangle(dpy, buf, gc, _fb, _fb,
-                           (unsigned)(g_win_w - 1 - 2 * _fb), (unsigned)(g_win_h - 1 - 2 * _fb));
+        XDrawRectangle(dpy, buf, gc, 0, 0,
+                       (unsigned)(g_win_w - 1), (unsigned)(g_win_h - 1));
     }
     XSync(dpy, False);
     XImage *frame = XGetImage(dpy, buf, 0, 0, (unsigned)g_win_w, (unsigned)g_win_h, AllPlanes, ZPixmap);
@@ -4984,6 +6878,8 @@ static void redraw(void) {
         XCopyArea(dpy, buf, win, gc, 0, 0, (unsigned)g_win_w, (unsigned)g_win_h, 0, 0);
     }
     XFlush(dpy);
+    dock_write_ascii_frame();   /* strip: the "cli" mirror (dock only, else no-op) */
+    kh_write_ascii_frame();     /* every other window: per-PID text mirror */
 }
 
 /* on-demand debug PNG dump, same real convention every other khtpm app
@@ -5026,29 +6922,12 @@ static void redraw(void);
 static void dump_frame_png(void) {
     char png[PATH_BUF];
     redraw(); /* REAL FIX above - guarantees `win`'s real on-screen pixels reflect the state as of THIS tick's input, not the previous tick's */
-    if (g_is_swatch_picker) {
-        char audit_dir[PATH_BUF];
-        snprintf(audit_dir, sizeof(audit_dir), "%s/#.desktop/taskbar-settings-audit", g_house_root);
-        mkdir(audit_dir, 0755);
-        snprintf(png, sizeof(png), "%s/settings-frame.png", audit_dir);
-    } else {
-        snprintf(png, sizeof(png), "/tmp/entity-menu-frame.png");
-    }
+    snprintf(png, sizeof(png), "/tmp/entity-menu-frame.png");
     char cmd[PATH_BUF * 2];
     snprintf(cmd, sizeof(cmd), "'%s/&.widgits/_shared-lib/ops/+x/dump_frame_png_op.+x' 0x%lx '%s'",
              g_house_root, (unsigned long)win, png);
     int ok = (system(cmd) == 0);
-    if (g_is_swatch_picker) {
-        char audit_dir[PATH_BUF], receipt[PATH_BUF];
-        snprintf(audit_dir, sizeof(audit_dir), "%s/#.desktop/taskbar-settings-audit", g_house_root);
-        snprintf(receipt, sizeof(receipt), "%s/settings-frame.png.receipt.txt", audit_dir);
-        FILE *rf = fopen(receipt, "w");
-        if (rf) {
-            fprintf(rf, "ok=%d w=%d h=%d t=%ld nav=%d n_nav=%d phase=%d bg_idx=%d fg_idx=%d\n",
-                    ok, g_win_w, g_win_h, (long)time(NULL), g_focus_nav, g_n_nav, g_phase, g_chosen_bg_idx, g_chosen_fg_idx);
-            fclose(rf);
-        }
-    } else {
+    {
         /* Generic window: alongside the PNG write (a) a .receipt.txt and
          * (b) a .frame.txt ASCII serialization of the laid-out Elem
          * tree - the tpmos "if it's not in current_frame.txt it's not
@@ -5077,6 +6956,81 @@ static void dump_frame_png(void) {
 }
 
 static void handle_key(KeySym ks, char ch) {
+    /* REAL FIX 2026-09-04 (pc-hq-bugs.md Bug 2 - "tb top gets focus
+     * (steals it) and wont ever give it back" the instant the user
+     * presses an arrow key after clicking a different window). Root
+     * cause, confirmed by direct read: dock_grab_keyboard()'s matching
+     * release (dock_release_keyboard_if_left()) only fires on a real
+     * FocusOut event for the dock's OWN window - if that release is
+     * ever missed (this desktop's real Mutter/XWayland focus-
+     * notification quirks are already documented multiple times
+     * elsewhere in this file), the dock keeps an ACTIVE, DISPLAY-WIDE
+     * XGrabKeyboard indefinitely. A key display-routed to the dock
+     * ONLY because of that stale grab (never because the user is
+     * actually navigating the taskbar) still reaches THIS function
+     * with `window_is_dock()` true, and the dock's own arrow-key nav
+     * handler below (`XRaiseWindow`+`XSetInputFocus`+`dock_grab_
+     * keyboard()`) then RE-ASSERTS AND RE-GRABS focus for itself as an
+     * ordinary side effect of what it thinks is legitimate taskbar
+     * navigation - reinforcing the exact steal, forever, on every
+     * subsequent keypress. Real fix: before acting on ANY key as the
+     * dock's own input, verify via a live XGetInputFocus (not the
+     * cached/one-tick-stale g_focus_owned_painted) that the dock
+     * genuinely holds real focus right now. If it doesn't, this key
+     * was never meant for it - release the stale grab immediately and
+     * do not process it as dock nav, so whichever window the user
+     * actually clicked keeps its real focus and gets the NEXT key. */
+    if (window_is_dock() && g_dock_kbd_win && dpy) {
+        Window fw = None; int rev = 0;
+        XGetInputFocus(dpy, &fw, &rev);
+        if (!dock_is_our_win(fw)) {
+            kh_ungrab_kbd();
+            g_dock_kbd_win = None;
+            return;
+        }
+    }
+    /* REAL, NEW 2026-09-04 - see g_interact_relay_on's own declaration
+     * comment. Checked BEFORE every other key-order exception in this
+     * function (events-hq's picker, db-hq's armed field, 'p' dump) -
+     * matches run_pchq_board_mode()'s own real behavior: "keyboard is
+     * 100% game input now", forwarded unconditionally, INCLUDING Escape
+     * (the external process's own native ESC-exit consumes it there,
+     * never intercepted locally) and 'p' (never a local dump shortcut
+     * while engaged). kh_key_history_code() is the SAME decimal-code
+     * resolver history capture already uses - reused, not reinvented. */
+    if (g_interact_relay_on && g_x11_window_focused) {
+        int code = kh_key_history_code(ks, ch);
+        /* REAL FIX 2026-09-04 (see PLAN-pchq-interact-camera-pov.md
+         * Part A for the full citation trail) - tpmos/board-viewer's
+         * own ARROW_LEFT/RIGHT/UP/DOWN convention (chtpm_parser.c's
+         * enum, bv_menu_input.c's own #defines) is 1000/1001/1002/1003,
+         * NOT khtpm's house-wide 200-203 nav-capture convention that
+         * kh_key_history_code() correctly still returns for every
+         * OTHER caller. Interact Mode is the one relay path that must
+         * speak the game engine's own dialect - remap ONLY here. */
+        if      (code == 200) code = 1002; /* Up    -> ARROW_UP    */
+        else if (code == 201) code = 1003; /* Down  -> ARROW_DOWN  */
+        else if (code == 202) code = 1000; /* Left  -> ARROW_LEFT  */
+        else if (code == 203) code = 1001; /* Right -> ARROW_RIGHT */
+        for (int i = 0; i < g_interact_relay_n; i++) {
+            const char *p = g_interact_relay_paths[i];
+            if (!p[0]) continue;
+            FILE *f = fopen(p, "a");
+            if (f) { fprintf(f, "%d\n", code); fclose(f); }
+        }
+        /* REAL, NEW 2026-09-04, direct request ("add p frame dump to
+         * game then") - 'p' is not on the documented camera/POV key
+         * table (PLAN-pchq-interact-camera-pov.md), so it's safe to
+         * ALSO fire the normal local PNG dump here, in addition to
+         * forwarding it same as every other key above - lets whoever
+         * is debugging a live Interact Mode session get a real frame
+         * (proving reparse/badge/canvas state at that instant)
+         * without ever needing to disarm first. Forward always
+         * happens above regardless, in case some future game module
+         * genuinely does bind 'p'. */
+        if (ch == 'p') dump_frame_png();
+        return;
+    }
     /* REAL, events-hq mode only - routed BEFORE the shared 'p' dump
      * check, matching its own real key-order exactly: when its picker
      * overlay is open, 'p' must be swallowed as a literal typed
@@ -5087,8 +7041,21 @@ static void handle_key(KeySym ks, char ch) {
      * own armed input field (g_input_elem, bookmarks' New+ path entry)
      * and needs the SAME key-order exception as events-hq/chat-hai
      * above: 'p' must type into an armed field, not trigger a dump. */
+    /* REAL, NEW 2026-09-05 (GRID-ELEMENT-DESIGN.md) - <grid> shares the
+     * same g_default_input_elem armed-field slot (same 'p'-swallowed-
+     * as-a-literal-character exception, same single active-field-at-a-
+     * time invariant every other armed element already relies on), but
+     * its own key semantics (2D cursor / jump buffer / nested cell-edit
+     * sub-state) are different enough from cli_io/text_area's single
+     * text-cursor model to need a dedicated handler rather than another
+     * is_area-style branch inside default_cli_io_handle_key(). */
+    if (g_default_input_elem && strcmp(g_default_input_elem->tag, "grid") == 0) { default_grid_handle_key(ks, ch); return; }
     if (g_default_input_elem) { default_cli_io_handle_key(ks, ch); return; } /* same real key-order exception - a real cli_io field needs 'p' as a literal typed character */
     if (ch == 'p') { dump_frame_png(); return; }
+    /* Anything past this point that isn't a bare digit ends a
+     * pending multi-digit nav jump (tpmos digit_accum "reset on
+     * non-digit keys"). */
+    if (!(ch >= '0' && ch <= '9')) g_nav_digit_accum = 0;
     if (ks == XK_Return || ks == XK_KP_Enter) {
         activate_focused();
         /* activate_focused() may have just entered/left a scope (<tab>,
@@ -5166,6 +7133,7 @@ static void handle_key(KeySym ks, char ch) {
             return;
         }
         kh_nav_step(-1);
+        if (window_is_dock()) dock_relay_focus_code(6000 + g_focus_nav);  /* snap the manager's strip_focus_cell to the new highlight (absolute, no drift) */
         if (window_is_dock() && g_dock_peer_win && g_focus_nav >= 1 && g_focus_nav <= g_n_nav) {
             Window want = (g_focus_nav > g_dock_header_nav_hi) ? g_dock_peer_win : win;
             XRaiseWindow(dpy, want);
@@ -5180,6 +7148,7 @@ static void handle_key(KeySym ks, char ch) {
             return;
         }
         kh_nav_step(1);
+        if (window_is_dock()) dock_relay_focus_code(6000 + g_focus_nav);
         if (window_is_dock() && g_dock_peer_win && g_focus_nav >= 1 && g_focus_nav <= g_n_nav) {
             Window want = (g_focus_nav > g_dock_header_nav_hi) ? g_dock_peer_win : win;
             XRaiseWindow(dpy, want);
@@ -5201,14 +7170,28 @@ static void handle_key(KeySym ks, char ch) {
             g_default_scrolllist_scroll += dir;
         return;
     }
-    if (ch >= '1' && ch <= '9') {
+    if (ch >= '0' && ch <= '9') {
         int d = ch - '0';
         if (g_dock_drop_lo && g_default_active_scope_id[0]) {
+            /* dock drop-zone: single-digit only, unchanged */
+            g_nav_digit_accum = 0;
             int idx = g_dock_drop_lo + d - 1;
             if (idx >= g_dock_drop_lo && idx <= g_dock_drop_hi) g_focus_nav = idx;
             return;
         }
-        if (d <= g_n_nav && kh_elem_in_scope(g_nav[d - 1])) g_focus_nav = d;
+        /* multi-digit accumulate: "15" jumps to 15, not 5 (tpmos
+         * chtpm_parser.c.bak digit_accum). Take accum*10+d when it's a
+         * real nav index; else restart the accumulator with just d. */
+        int nv = g_nav_digit_accum * 10 + d;
+        if (nv >= 1 && nv <= g_n_nav && kh_elem_in_scope(g_nav[nv - 1])) {
+            g_focus_nav = nv;
+            g_nav_digit_accum = nv;
+        } else if (d >= 1 && d <= g_n_nav && kh_elem_in_scope(g_nav[d - 1])) {
+            g_focus_nav = d;
+            g_nav_digit_accum = d;
+        } else {
+            g_nav_digit_accum = 0;
+        }
         return;
     }
 }
@@ -5241,10 +7224,7 @@ static long g_history_cursor = -1;
  * publish()), and nav_tab/<pid> holds that pid's real window title -
  * cross-reference the two, no new registry needed. */
 static void history_dir(char *out, size_t outsz) {
-    snprintf(out, outsz, "%s/#.desktop/%s", g_house_root,
-             g_is_stats_hq ? "stats_hq_history" :
-             g_is_events_hq ? "events_hq_history" :
-             g_is_swatch_picker ? "taskbar_settings_history" : "entity_menu_history");
+    snprintf(out, outsz, "%s/#.desktop/entity_menu_history", g_house_root);
 }
 static void history_path(char *out, size_t outsz) {
     char dir[PATH_BUF];
@@ -5259,6 +7239,21 @@ static void history_unregister(void) {
     char path[PATH_BUF];
     history_path(path, sizeof(path));
     unlink(path);
+}
+
+/* Create this process's relay file empty at startup and seed the cursor
+ * to 0, so the FIRST keystroke a generic terminal keyboard
+ * (khtpm_kbd_ascii.+x) sends into a brand-new relay isn't mistaken for
+ * pre-existing backlog and swallowed by poll_agent_history()'s
+ * first-sight seed (g_history_cursor < 0 -> = st.st_size). Truncates a
+ * stale file left by a crashed same-PID predecessor, which is correct -
+ * nothing should replay across process lifetimes. */
+static void history_init_empty(void) {
+    char path[PATH_BUF];
+    history_path(path, sizeof(path));
+    FILE *f = fopen(path, "w");
+    if (f) fclose(f);
+    g_history_cursor = 0;
 }
 
 /* Phase 3a: capture-only. House format from pieces/keyboard/history.txt:
@@ -5454,7 +7449,7 @@ static void nav_tab_poll_active(void) {
     if (seq && seq == last_seq) return;
     last_seq = seq;
     if (tab != g_nav_tab_ordinal && pid != (int)getpid()) return;
-    XUngrabKeyboard(dpy, CurrentTime);
+    kh_ungrab_kbd();
     XRaiseWindow(dpy, win);
     XSetInputFocus(dpy, win, RevertToParent, CurrentTime);
     XFlush(dpy);
@@ -5506,13 +7501,7 @@ static void nav_ledger_publish(void) {
 static long g_frame_changed_last_size = -1;
 
 static void frame_changed_path(char *out, size_t outsz) {
-    snprintf(out, outsz, "%s/#.desktop/%s", g_house_root,
-             g_is_palettes ? "palettes_frame_changed.txt" :
-             g_is_bookmarks ? "bookmarks_frame_changed.txt" :
-             g_is_stats_hq ? "stats_hq_frame_changed.txt" :
-             g_is_events_hq ? "events_hq_frame_changed.txt" :
-             g_is_swatch_picker ? "taskbar_settings_frame_changed.txt" :
-             "entity_menu_frame_changed.txt");
+    snprintf(out, outsz, "%s/#.desktop/entity_menu_frame_changed.txt", g_house_root);
 }
 
 static void mark_frame_changed(void) {
@@ -5549,6 +7538,13 @@ static int consume_frame_changed(void) {
 
 
 static void dispatch_relay_code(int code) {
+    /* REAL, NEW 2026-09-05 - a relay-driven key is Shift-held only if
+     * it's one of the explicit shifted-selection codes (220-225 below).
+     * Reset first so a stale g_key_shift left by a prior PHYSICAL
+     * Shift+key (the KeyPress site sets it from ev->xkey.state) can't
+     * leak into an unshifted relay arrow and silently extend a
+     * selection instead of collapsing it. */
+    if (code < 220 || code > 225) g_key_shift = 0;
     if (code == 13) handle_key(XK_Return, 0);
     else if (code == 27) handle_key(XK_Escape, 0);
     else if (code == 8) handle_key(XK_BackSpace, 0); /* real, db-hq's own extra code - harmless no-op for other modes */
@@ -5565,6 +7561,26 @@ static void dispatch_relay_code(int code) {
     else if (code == 203) handle_key(XK_Right, 0);
     else if (code == 204) handle_key(XK_Page_Up, 0);
     else if (code == 205) handle_key(XK_Page_Down, 0);
+    /* REAL, NEW 2026-09-05 (CLIPBOARD-COPY-PASTE-DESIGN.md) - Ctrl+C/
+     * Ctrl+X/Ctrl+V as their real ASCII control codes (3/24/22), so
+     * the relay can drive clipboard copy/paste headlessly for testing,
+     * exactly the same bytes a physical Ctrl+letter produces through
+     * XLookupString. Handled as `ch`, not a keysym - default_cli_io_
+     * handle_key()'s own `ch == 3/22/24` checks pick them up. */
+    else if (code == 3 || code == 22 || code == 24) handle_key(0, (char)code);
+    /* REAL, NEW 2026-09-05 (TEXT_AREA-SCROLL-GUTTER-SELECTION-DESIGN.md)
+     * - Shift+arrow / Shift+Home / Shift+End for text selection, which
+     * the relay had no way to express (Shift is a modifier, not a
+     * key). 220-225, same reserved-band idea as the 200-205 plain
+     * arrows. g_key_shift is set for exactly the one dispatched key. */
+    else if (code >= 220 && code <= 225) {
+        KeySym sk = (code == 220) ? XK_Left : (code == 221) ? XK_Right :
+                    (code == 222) ? XK_Up   : (code == 223) ? XK_Down  :
+                    (code == 224) ? XK_Home : XK_End;
+        g_key_shift = 1;
+        handle_key(sk, 0);
+        g_key_shift = 0;
+    }
     /* Task 6/7 (2026-08-26) - db-hq-only cheap text state dump for
      * agent testing, see dbhq_dump_debug_state()'s own header comment.
      * Code 210 (not a real keypress; 206-209 left free for any future
@@ -5591,6 +7607,7 @@ static int hq_window_has_x_focus(void) {
  * popup/entity-menu + cli_io paths still need them after the dbhq_*
  * deletion). */
 static void kh_grab_keyboard_retry(void) {
+    if (!dpy) return;   /* --headless: no display, nothing to grab */
     for (int a = 0; a < 5; a++) {
         if (XGrabKeyboard(dpy, win, True, GrabModeAsync, GrabModeAsync, CurrentTime) == GrabSuccess) break;
         XSync(dpy, False); usleep(5000);
@@ -5800,29 +7817,63 @@ static void hq_request_redraw(void) {
     if (!g_quit) g_frame_dirty = 1;
 }
 
+/* Same real cheap "changed marker" convention as khtpm_strip_parser.c/
+ * tp_desktop_window_rgb.c's own theme_changed_dirty() (dc759f3c) -
+ * fully generic (plain house_root string + a shared dirty-marker
+ * file) despite its pchq-sounding name; used every-mode, every-tick
+ * (see hq_idle_tick()'s own call site for why). */
+static long g_pchq_theme_changed_cursor = 0;
+static int pchq_theme_changed_dirty(const char *house_root) {
+    char path[PATH_BUF];
+    snprintf(path, sizeof(path), "%s/#.desktop/livedesk_theme_changed.txt", house_root);
+    struct stat st;
+    if (stat(path, &st) != 0) return 0;
+    if (st.st_size != g_pchq_theme_changed_cursor) { g_pchq_theme_changed_cursor = st.st_size; return 1; }
+    return 0;
+}
+
+/* REAL FIX 2026-09-04, direct live report ("clicking changing to
+ * 2step doesn't change tb yet") - desktop_load_click_two_step() was
+ * only ever called once, at startup (main()/tp_main()). Every OTHER
+ * window is short-lived (a fresh launch already sees a just-toggled
+ * setting), but the taskbar/dock strip is long-running - it never
+ * saw a toggle made in Settings without a manual restart. Same real
+ * mtime-gate convention as pchq_theme_changed_dirty() above (avoid a
+ * needless fopen+read every tick for every window in the house);
+ * called every tick in hq_idle_tick(), same shared every-mode spot. */
+/* hq_ui.pdl is a Settings-window config file rewritten in place (not
+ * appended), so a size cursor can't see an equal-length rewrite - this
+ * is the one spot that must key off mtime. NANOSECOND, never
+ * st_mtime-seconds: two Settings saves inside one wall-clock second
+ * must not collapse into one. */
+static struct timespec g_hq_ui_pdl_mtime = {0, 0};
+static void hq_ui_pdl_reload_if_changed(const char *house_root) {
+    char path[PATH_BUF];
+    snprintf(path, sizeof(path), "%s/#.desktop/hq_ui.pdl", house_root);
+    struct stat st;
+    if (stat(path, &st) != 0) return;
+    if (st.st_mtim.tv_sec != g_hq_ui_pdl_mtime.tv_sec ||
+        st.st_mtim.tv_nsec != g_hq_ui_pdl_mtime.tv_nsec) {
+        g_hq_ui_pdl_mtime = st.st_mtim;
+        desktop_load_click_two_step(house_root);
+    }
+}
+
 static void hq_idle_tick(void) {
-    if (g_is_swatch_picker) {
-        char sp[PATH_BUF];
-        snprintf(sp, sizeof(sp), "%s/#.desktop/taskbar_settings_state.txt", g_house_root);
-        FILE *sf = fopen(sp, "r");
-        if (sf) {
-            char line[64];
-            int phase=g_phase, bg=g_chosen_bg_idx, fg=g_chosen_fg_idx, apply=0;
-            while (fgets(line, sizeof(line), sf)) {
-                if (strncmp(line, "phase=", 6)==0) phase=atoi(line+6);
-                else if (strncmp(line, "bg=", 3)==0) bg=atoi(line+3);
-                else if (strncmp(line, "fg=", 3)==0) fg=atoi(line+3);
-                else if (strncmp(line, "apply=", 6)==0) apply=atoi(line+6);
-            }
-            fclose(sf);
-            if (phase != g_phase || bg != g_chosen_bg_idx || fg != g_chosen_fg_idx) {
-                g_phase = phase; g_chosen_bg_idx = bg; g_chosen_fg_idx = fg;
-                redraw();
-            }
-            /* Only a completed 2-phase pick may close the picker.
-             * Leftover apply=1 from a prior instance must not quit on launch. */
-            if (apply && phase >= 2 && fg >= 0) g_quit = 1;
-        }
+    /* PC-HQ-FOCUS-AND-INTERACT-ACTIVATE.md: idle pointer-over
+     * XSetInputFocus deleted (that was the focus hog). One-shot
+     * take-focus is ButtonPress / post-map only.
+     * pc-hq-leg-vs-nu-fix.md §6b: Interact Mode arm must not wait on
+     * a vars-hash reparse. Reload projector vars and rescan every tick
+     * (legacy read active_gui_is_typing.txt once per frame). */
+    if (g_vars_path[0]) kh_load_vars_multi(g_vars_path);
+    kh_scan_interact_relay();
+    /* REAL, NEW 2026-09-05 - age out the top-right "copied" tag: one
+     * last repaint the moment it crosses ~2s old, then it stays cleared
+     * (this block is a no-op once g_clip_copied_at is back to 0). */
+    if (g_clip_copied_at && (time(NULL) - g_clip_copied_at) > 2) {
+        g_clip_copied_at = 0;
+        if (!g_quit) redraw();
     }
     /* REAL, NEW 2026-08-31 (xperiments/khtpm-generic-dispatch-design.md
      * §5 - direct instruction: "the renderer/parser should have no
@@ -5844,7 +7895,18 @@ static void hq_idle_tick(void) {
     {
         if (reparse_chtpm_if_changed()) {
             assign_nav_and_layout(); redraw();
-            if (g_dock_kbd_win) dock_grab_keyboard(g_dock_kbd_win);
+            /* REAL FIX 2026-09-04 (pc-hq-bugs.md Bug 2, same root cause
+             * as handle_key()'s own new guard above) - this used to
+             * blindly re-grab whenever g_dock_kbd_win was still set,
+             * regardless of whether the dock actually still holds real
+             * focus - one of the two paths that could reinforce a
+             * stale grab forever. Same live-focus check first. */
+            if (g_dock_kbd_win) {
+                Window fw = None; int rev = 0;
+                if (dpy) XGetInputFocus(dpy, &fw, &rev);
+                if (dock_is_our_win(fw)) dock_grab_keyboard(g_dock_kbd_win);
+                else { kh_ungrab_kbd(); g_dock_kbd_win = None; }
+            }
             /* real content growth may have just recreated buf as a
              * blank Pixmap (see redraw()'s own resize-safety comment) -
              * a second real redraw() repaints it for real THIS tick,
@@ -5870,15 +7932,21 @@ static void hq_idle_tick(void) {
      * string + a shared dirty-marker file, nothing pchq-specific) so
      * every window gets the same live behavior entities already have,
      * with zero per-mode duplication. */
+    hq_ui_pdl_reload_if_changed(g_house_root);
     if (pchq_theme_changed_dirty(g_house_root)) {
         set_window_opacity(dpy, win, load_theme_opacity());
-        if (window_is_dock()) {
-            load_theme_colors();
-            if (g_dock_peer_win) set_window_opacity(dpy, g_dock_peer_win, load_theme_opacity());
-            hq_request_redraw();
-        }
+        /* REAL FIX 2026-09-04 (live incident: bg/fg picked the same
+         * colour, corrected in the pdl, but every already-open
+         * non-dock window - palette/chat-hai/db-hq-pal/entity-menu -
+         * kept showing the broken theme until manually restarted).
+         * load_theme_colors()/redraw() was dock-only here; every
+         * window needs the SAME live reload, not just the taskbar. */
+        load_theme_colors();
+        hq_request_redraw();
+        if (window_is_dock() && g_dock_peer_win) set_window_opacity(dpy, g_dock_peer_win, load_theme_opacity());
     }
     if (poll_agent_history() > 0 && !g_quit) hq_request_redraw();
+    dock_poll_strip_state();   /* mirror terminal-driven nav into strip_ascii_current_frame.txt promptly */
     if (g_default_has_sidebar_panel && !window_is_dock() && dpy && win) {
         char restore_path[PATH_BUF];
         snprintf(restore_path, sizeof(restore_path),
@@ -6078,17 +8146,30 @@ static void hq_dispatch_xevent(XEvent *ev, Atom wm_delete, int is_popup) {
                 /* click anywhere in an HQ window -> bring it (and its
                  * keyboard focus) to the top, WM-managed mode included */
                 kh_raise_and_focus(cw);
+                g_x11_window_focused = 1;
+                /* Play-screen engage: canvas bbox, not g_nav. Never
+                 * verb interact (toggle-off). */
+                if (g_win_managed_focus && kh_page_has_relay_item() &&
+                    kh_canvas_hit(ev->xbutton.x, ev->xbutton.y))
+                    kh_interact_engage_if_needed();
             }
             if (window_is_dock() && g_dock_menu_win && cw == g_dock_menu_win &&
                 ev->xbutton.button == 1 && g_dock_drop_lo >= 1) {
-                int row = ev->xbutton.y / DOCK_BAR_H;
-                int nav = g_dock_drop_lo + row;
-                if (row >= 0 && nav >= g_dock_drop_lo && nav <= g_dock_drop_hi &&
-                    nav <= g_n_nav && g_nav[nav - 1]) {
-                    g_focus_nav = nav;
-                    activate_focused();
-                    if (!g_quit) redraw();
-                    return;
+                /* Hit-test laid-out row boxes. y/DOCK_BAR_H was off-by-one
+                 * on the long toys list (Piececraft-HQ vs Piececraft). */
+                int px = ev->xbutton.x, py = ev->xbutton.y;
+                int i0 = g_dock_drop_lo - 1, i1 = g_dock_drop_hi;
+                if (i1 > g_n_nav) i1 = g_n_nav;
+                for (int i = i0; i < i1; i++) {
+                    Elem *it = g_nav[i];
+                    if (!it) continue;
+                    if (px >= it->x && px < it->x + it->w &&
+                        py >= it->y && py < it->y + it->h) {
+                        g_focus_nav = it->nav_index;
+                        activate_focused();
+                        if (!g_quit) redraw();
+                        return;
+                    }
                 }
             }
         }
@@ -6130,7 +8211,7 @@ static void hq_dispatch_xevent(XEvent *ev, Atom wm_delete, int is_popup) {
                                  ? g_default_minimize_elem->x
                                  : ((g_default_has_sidebar_panel && g_default_fullscreen_elem->w > 0)
                                     ? g_default_fullscreen_elem->x : g_win_w - 60);
-            if (!window_is_dock() && ev->xbutton.button == 1 && ev->xbutton.y < CHROME_H &&
+            if (!window_is_dock() && ev->xbutton.button == 1 && ev->xbutton.y >= KH_WIN_FRAME && ev->xbutton.y < CHROME_H + KH_WIN_FRAME &&
                 !(ev->xbutton.x >= chrome_zone_x && ev->xbutton.x < g_win_w)) {
                 g_popup_dragging = 1;
                 g_popup_drag_last_x = ev->xbutton.x_root;
@@ -6196,6 +8277,9 @@ static void hq_dispatch_xevent(XEvent *ev, Atom wm_delete, int is_popup) {
         int n = XLookupString(&ev->xkey, buf8, sizeof(buf8) - 1, &ks, NULL);
         buf8[n > 0 ? n : 0] = '\0';
         const char *kname = XKeysymToString(ks);
+        /* REAL, NEW 2026-09-05 - real Shift state for this key, read by
+         * default_cli_io_handle_key()'s selection logic. */
+        g_key_shift = (ev->xkey.state & ShiftMask) ? 1 : 0;
         if (is_popup) {
             /* Physical keys must move dock/popup nav in-process.
              * Capture+poll is for agent replay; idle tick still consumes
@@ -6253,13 +8337,69 @@ static void hq_dispatch_xevent(XEvent *ev, Atom wm_delete, int is_popup) {
              * other reason anyway. */
             if (g_focus_owned_painted != 1) redraw();
         }
+        g_x11_window_focused = 1;
+        g_interact_disengage_sent = 0;
         return;
     }
     if (ev->type == FocusOut) {
         if (window_is_dock() &&
             ev->xfocus.mode != NotifyGrab && ev->xfocus.mode != NotifyUngrab)
             dock_release_keyboard_if_left();
+        if (g_win_managed_focus) {
+            g_x11_window_focused = 0;
+            kh_interact_disengage_engine_if_on();
+        }
         if (g_focus_owned_painted != 0) redraw();
+        return;
+    }
+    /* REAL, NEW 2026-09-05 (CLIPBOARD-COPY-PASTE-DESIGN.md) - real X11
+     * CLIPBOARD selection protocol. SelectionRequest: another client
+     * (another khtpm window, a terminal, a browser) asked us for the
+     * clipboard content we own - answer with g_clipboard_text.
+     * SelectionClear: we lost ownership (someone else copied) - nothing
+     * to do, the new owner answers from here on. SelectionNotify (with
+     * g_paste_pending, NOT the XDND g_xdnd_awaiting path below): a paste
+     * we requested has arrived - read the property, insert at the armed
+     * field's cursor. These three event types are delivered regardless
+     * of this window's event mask, so no XSelectInput change is needed. */
+    if (ev->type == SelectionRequest) {
+        XSelectionRequestEvent *rq = &ev->xselectionrequest;
+        XSelectionEvent nt;
+        nt.type = SelectionNotify; nt.display = rq->display; nt.requestor = rq->requestor;
+        nt.selection = rq->selection; nt.target = rq->target; nt.time = rq->time;
+        nt.property = None;
+        if (!g_atom_targets) kh_clipboard_init_atoms();
+        if (rq->target == g_atom_targets) {
+            Atom offer[] = { g_atom_targets, g_atom_utf8, XA_STRING };
+            XChangeProperty(dpy, rq->requestor, rq->property, XA_ATOM, 32,
+                            PropModeReplace, (unsigned char *)offer, 3);
+            nt.property = rq->property;
+        } else if (rq->target == g_atom_utf8 || rq->target == XA_STRING) {
+            XChangeProperty(dpy, rq->requestor, rq->property, rq->target, 8,
+                            PropModeReplace, (unsigned char *)g_clipboard_text,
+                            (int)strlen(g_clipboard_text));
+            nt.property = rq->property;
+        }
+        XSendEvent(dpy, rq->requestor, True, NoEventMask, (XEvent *)&nt);
+        XFlush(dpy);
+        return;
+    }
+    if (ev->type == SelectionClear) {
+        return; /* lost CLIPBOARD/PRIMARY ownership - real, expected, nothing to do */
+    }
+    if (ev->type == SelectionNotify && g_paste_pending) {
+        g_paste_pending = 0;
+        XSelectionEvent *se = &ev->xselection;
+        if (se->property != None && g_default_input_elem) {
+            Atom got_type; int got_fmt; unsigned long nitems, after; unsigned char *data = NULL;
+            if (XGetWindowProperty(dpy, win, g_atom_paste_prop, 0, (long)(sizeof(g_clipboard_text) / 4),
+                                   True, AnyPropertyType, &got_type, &got_fmt,
+                                   &nitems, &after, &data) == Success && data) {
+                kh_clipboard_insert_text(g_default_input_elem, (const char *)data);
+                XFree(data);
+                if (!g_quit) redraw();
+            }
+        }
         return;
     }
     /* XDND was popup-only because is_popup returned before HQ handlers.
@@ -6357,7 +8497,16 @@ static void hq_run_event_loop(Atom wm_delete, int is_popup) {
          * entirely between press and release. Only shortened while
          * g_pal_rmmv_armed (costs nothing otherwise - every other
          * window/mode never sets this flag at all). */
-        struct timeval tv = { 0, 150000 };
+        /* Dock strip: tick at ~30Hz like a canvas, not 150ms. hq_idle_tick()
+         * is where dock_poll_strip_state() notices the manager's
+         * strip_state.txt republish and mirrors terminal-driven focus into
+         * the ASCII frame - a 150ms tick there was the visible "cli" lag
+         * the user reported. TPMOS's own reference renderer.c polls its
+         * pulse marker at 60Hz (usleep(16667)); 33ms here is the same
+         * marker/dirty idea, one cheap stat() per tick, no extra file. */
+        struct timeval tv = (g_has_canvas || window_is_dock())
+                                ? (struct timeval){ 0, 33000 }
+                                : (struct timeval){ 0, 150000 };
         select(xfd + 1, &fds, NULL, NULL, &tv);
         while (XPending(dpy)) {
             XEvent ev; XNextEvent(dpy, &ev);
@@ -6370,1192 +8519,10 @@ static void hq_run_event_loop(Atom wm_delete, int is_popup) {
          * grabbing process. No-op (returns immediately) whenever not
          * armed, so this costs nothing on every other tick of every
          * other window's own event loop. */
+        if (g_has_canvas && !g_quit) g_frame_dirty = 1;  /* live framebuffer: repaint every tick */
         if (g_frame_dirty && !g_quit) { g_frame_dirty = 0; redraw(); }
     }
 }
-
-
-/* REAL, NEW 2026-08-30 - piececraft-hq board-view khtpm conversion. See
- * g_is_pchq_board's own declaration comment for the real "why isolated"
- * reasoning, and PIECECRAFT-HQ-BOARD-KHTPM-CONVERSION-2026-08-30.md for
- * the full real writeup + the proven proof-of-concept
- * (pchq_board_view_poc.c) this whole block ports, verbatim in spirit,
- * into a real khtpm-family window (real chrome: title + close [X],
- * matching every other khtpm window's own visual convention - itself a
- * real, deliberate port of x11_mirror.c's own draw_chrome(), same
- * "steal code, don't reinvent" instruction this whole feature was built
- * under). */
-static unsigned long pchq_alloc_pixel(Display *dpy, Colormap cmap, const char *spec) {
-    XColor c;
-    if (XParseColor(dpy, cmap, spec, &c) && XAllocColor(dpy, cmap, &c)) return c.pixel;
-    return BlackPixel(dpy, DefaultScreen(dpy));
-}
-
-static int pchq_read_kv_int(const char *path, const char *key, int def) {
-    FILE *f = fopen(path, "r");
-    if (!f) return def;
-    char line[128];
-    size_t klen = strlen(key);
-    int val = def;
-    while (fgets(line, sizeof(line), f)) {
-        if (strncmp(line, key, klen) == 0 && line[klen] == '=') { val = atoi(line + klen + 1); break; }
-    }
-    fclose(f);
-    return val;
-}
-
-/* REAL, NEW 2026-08-30 (!.HOUSE_STDS.md §A.9) - resolves whether the
- * legacy engine's own real INTERACT element is genuinely engaged right
- * now, by reading the SAME real state its own onClick="INTERACT" click
- * handler persists (pieces/hero_01/state.txt's interact_mode flag,
- * under the HOST project - resolved via board-viewer's own real
- * bv_state.txt focused_project_root, not board-viewer's own session).
- * This is the one real signal this window uses to decide which side of
- * the engine's own active_index==-1 boundary it's on - see §A.9 for
- * the full model this mirrors. */
-/* REAL FIX (2026-08-30, found live debugging "interact isn't yet
- * activating"): set_interact_mode() in chtpm_parser_pal.c writes
- * hero_01/state.txt under THIS board-viewer session's OWN
- * project_root_path - which has no hero_01 dir at all (silent no-op,
- * confirmed live: "No such file or directory"). The real,
- * unconditionally-written signal for "active_index != -1" (genuinely
- * engaged in an INTERACT/cli_io element right now) is
- * export_active_index()'s own pieces/display/active_gui_is_typing.txt
- * - a bare "1"/"0" (not key=value), confirmed live to read "1"
- * immediately after a real Enter-activation of the Interact button.
- * Same real file &.widgits/interact-fix-widget.txt already documented
- * using for this exact purpose - should have started here. */
-static int pchq_is_interact_on(const char *bv_session) {
-    char path[PATH_BUF];
-    snprintf(path, sizeof(path), "%s/pieces/display/active_gui_is_typing.txt", bv_session);
-    FILE *f = fopen(path, "r");
-    if (!f) return 0;
-    char l[32] = "";
-    if (!fgets(l, sizeof(l), f)) { fclose(f); return 0; }
-    fclose(f);
-    return atoi(l) != 0;
-}
-
-/* Real session discovery - a scoped-down port of pc_menu_input.c's own
- * open_board_widget() peer lookup (ledger_peers.+x, real, live, already
- * proven - not reinvented). Only finds the session dir; does NOT spawn
- * a new board-viewer widget if none is running (this mode is a real
- * DISPLAY for an already-live board-viewer session, launched
- * separately by piececraft-hq's own real "View Board" - a genuinely
- * separate concern from finding it). */
-static int pchq_find_board_session(const char *house_root, const char *host_project_id, char *out, size_t outsz) {
-    /* REAL FIX, found live testing this exact function - ledger_peers.+x
-     * hard-requires PRISC_PROJECT_ROOT (confirmed: "Error: PRISC_
-     * PROJECT_ROOT not set" running it bare) AND that dir's own real
-     * pieces/system/house_root.txt (ledger_peers.c's own
-     * resolve_house_root(), reads THAT file, not the env var directly).
-     * button.sh only ever writes house_root.txt into piececraft-hq's
-     * EPHEMERAL per-launch session dir (pieces/sessions/<id>/pieces/
-     * system/house_root.txt), never the static project root - confirmed
-     * live (real file only found under sessions/, real "no such file"
-     * at the static path). Since this khtpm process is launched
-     * independently of any one game session and has no real way to
-     * know which session is "the" current one just from house_root/
-     * host_project_id, write a real house_root.txt at the STATIC
-     * project root once (same real content button.sh's own session
-     * copy already has) so ledger_peers.+x can resolve it regardless of
-     * which session is live - harmless, idempotent, matches this
-     * file's own real content exactly. */
-    char static_root[PATH_BUF], hr_path[PATH_BUF];
-    snprintf(static_root, sizeof(static_root), "%s/@.apps/%s", house_root, host_project_id);
-    snprintf(hr_path, sizeof(hr_path), "%s/pieces/system/house_root.txt", static_root);
-    FILE *hrf = fopen(hr_path, "w");
-    if (hrf) { fprintf(hrf, "%s\n", house_root); fclose(hrf); }
-
-    char cmd[PATH_BUF * 2];
-    snprintf(cmd, sizeof(cmd),
-             "PRISC_PROJECT_ROOT='%s' '%s/&.widgits/board-viewer/ops/+x/ledger_peers.+x' widget 2>/dev/null",
-             static_root, house_root);
-    FILE *pf = popen(cmd, "r");
-    if (!pf) return 0;
-    char want[256];
-    snprintf(want, sizeof(want), "board-viewer:%s", host_project_id);
-    char line[1024];
-    int found = 0;
-    while (fgets(line, sizeof(line), pf)) {
-        line[strcspn(line, "\r\n")] = '\0';
-        char *save = NULL;
-        char *sess_tok = strtok_r(line, "|", &save);
-        strtok_r(NULL, "|", &save);
-        strtok_r(NULL, "|", &save);
-        char *proj_tok = strtok_r(NULL, "|", &save);
-        if (proj_tok && sess_tok && strcmp(proj_tok, want) == 0) {
-            snprintf(out, outsz, "%s", sess_tok);
-            found = 1;
-            break;
-        }
-    }
-    pclose(pf);
-    return found;
-}
-
-/* REAL FIX 2026-08-30, direct live report ("i opened. killed from
- * close. and tried 2 open again. its not opening (pc-hq)") - the
- * pchq-board Close Elem only ever did `running = 0`, tearing down
- * THIS window's own X11 resources - it never touched the real,
- * underlying piececraft-hq session (its orchestrator, board-viewer
- * widget, everything button.sh's own `run` spawned). That whole real
- * game session kept running silently in the background - the next
- * taskbar click's own `run` invocation would find and kill that
- * lingering orchestrator via kill_own_orchestrator() (real, correct
- * cleanup, confirmed by direct code read), then start a genuinely NEW
- * session/orchestrator/board-viewer/chrome - so a real fresh window
- * SHOULD still have appeared... but "Close" leaving the OLD, real
- * game session alive for however long the user waits between close
- * and reopen is still real, wrong behavior (matches how every other
- * hq window's own Close - db-hq/chat-hai/events-hq - actually ends
- * the thing it's a chrome for, not just its own drawing surface).
- * Real fix: before tearing down this window, write the SAME real
- * pieces/system/quit_flag.txt orchestrator.c already polls for on
- * every tick (confirmed via direct read: "Exits when
- * pieces/system/quit_flag.txt becomes non-empty") - the exact same
- * signal Ctrl+C's own real quit path uses (keyboard_input.c's
- * write_quit_flag()) - so Close now triggers the REAL, full,
- * clean button.sh EXIT trap (kill_own_module, kill_own_board_widget,
- * persist_session_state, rm -rf SESSION_DIR) instead of just hiding
- * this one window over a still-live session. */
-/* REAL, NEW 2026-08-30, direct instruction ("fullscreen... we will put
- * '!' for fullscreen next to 'x'") - the standard, real EWMH way to
- * toggle fullscreen on an ALREADY-MAPPED window: a real
- * _NET_WM_STATE ClientMessage sent to the root window (per the EWMH
- * spec - a direct XChangeProperty from the client itself is only
- * honored BEFORE the initial map, which this window already is well
- * past by the time a user clicks "!"). _NET_WM_STATE_TOGGLE (2) lets
- * the WM own the actual on/off bookkeeping - this function only
- * tracks *this window's own* believed state locally for the toolbar's
- * own badge/highlight, same as pchq_interact_on's own local mirror of
- * real engine state elsewhere in this function. */
-static void pchq_toggle_fullscreen(Display *dpy, Window win) {
-    Atom wm_state = XInternAtom(dpy, "_NET_WM_STATE", False);
-    Atom fullscreen = XInternAtom(dpy, "_NET_WM_STATE_FULLSCREEN", False);
-    XEvent xev;
-    memset(&xev, 0, sizeof(xev));
-    xev.type = ClientMessage;
-    xev.xclient.window = win;
-    xev.xclient.message_type = wm_state;
-    xev.xclient.format = 32;
-    xev.xclient.data.l[0] = 2; /* _NET_WM_STATE_TOGGLE */
-    xev.xclient.data.l[1] = (long)fullscreen;
-    xev.xclient.data.l[2] = 0;
-    xev.xclient.data.l[3] = 1; /* source indication: normal application */
-    XSendEvent(dpy, RootWindow(dpy, DefaultScreen(dpy)), False,
-               SubstructureRedirectMask | SubstructureNotifyMask, &xev);
-    XFlush(dpy);
-}
-
-/* Same real cheap "changed marker" convention as khtpm_strip_parser.c/
- * tp_desktop_window_rgb.c's own theme_changed_dirty() (dc759f3c) -
- * kept as a local static cursor here since this mode is its own real
- * long-running loop, same shape as those two files' own. */
-static long g_pchq_theme_changed_cursor = 0;
-static int pchq_theme_changed_dirty(const char *house_root) {
-    char path[PATH_BUF];
-    snprintf(path, sizeof(path), "%s/#.desktop/livedesk_theme_changed.txt", house_root);
-    struct stat st;
-    if (stat(path, &st) != 0) return 0;
-    if (st.st_size != g_pchq_theme_changed_cursor) { g_pchq_theme_changed_cursor = st.st_size; return 1; }
-    return 0;
-}
-
-/* REAL, NEW 2026-08-30, direct instruction ("lets look into dropdown
- * for pc taskbar (file and desk menu etc) cuz thats how we will prove
- * save load projects [note this as well, i haven't seen save load
- * from file in pc yet]") - File's own two real states
- * (default-pdl/default-legacy) are tracked in the HOST's own real,
- * static config.txt (pc_menu_input.c's FILE_MENU/DESK_MENU handlers
- * write active_level/active_board there via resolve_real_root() -
- * confirmed by direct read: that resolves to the STATIC project root,
- * not the ephemeral session dir, since real_project_root.txt always
- * points back to it). Reading the SAME static path directly - no
- * session resolution needed, this file is written once per real
- * FILE_MENU/DESK_MENU action regardless of which session triggered
- * it. */
-static void pchq_read_config_kv(const char *house_root, const char *host_project_id, const char *key, char *out, size_t outsz) {
-    out[0] = '\0';
-    char path[PATH_BUF];
-    snprintf(path, sizeof(path), "%s/@.apps/%s/pieces/system/config.txt", house_root, host_project_id);
-    FILE *f = fopen(path, "r");
-    if (!f) return;
-    char line[PATH_BUF];
-    size_t klen = strlen(key);
-    while (fgets(line, sizeof(line), f)) {
-        if (strncmp(line, key, klen) == 0 && line[klen] == '=') {
-            snprintf(out, outsz, "%s", line + klen + 1);
-            out[strcspn(out, "\r\n")] = '\0';
-            break;
-        }
-    }
-    fclose(f);
-}
-
-static void pchq_quit_host_session(const char *house_root, const char *host_project_id) {
-    char sessions_dir[PATH_BUF];
-    snprintf(sessions_dir, sizeof(sessions_dir), "%s/@.apps/%s/pieces/sessions", house_root, host_project_id);
-    DIR *d = opendir(sessions_dir);
-    if (!d) return;
-    char latest[256] = "";
-    long latest_ts = -1;
-    struct dirent *ent;
-    while ((ent = readdir(d)) != NULL) {
-        if (ent->d_name[0] == '.') continue;
-        long ts = atol(ent->d_name);
-        if (ts > latest_ts) { latest_ts = ts; snprintf(latest, sizeof(latest), "%s", ent->d_name); }
-    }
-    closedir(d);
-    if (!latest[0]) return;
-    char quit_path[PATH_BUF];
-    snprintf(quit_path, sizeof(quit_path), "%s/%s/pieces/system/quit_flag.txt", sessions_dir, latest);
-    FILE *f = fopen(quit_path, "w");
-    if (f) { fprintf(f, "1\n"); fclose(f); }
-}
-
-/* REAL, NEW 2026-08-30, direct live report ("there are 2 renders on
- * screen") - confirmed via real xwininfo output: this mode's own
- * window and the legacy x11_mirror.+x-based board-viewer widget window
- * were both real, both mapped, at the EXACT SAME screen position -
- * this mode never replaced the legacy display, it just sat alongside
- * it. Direct instruction from earlier in this same session ("we are
- * meant to get rid of 'board-view widget'... its the board view widget
- * that needs to be converted to khtpm") - once this mode successfully
- * finds and attaches to a live board-viewer session, kill THAT
- * session's own x11_mirror.+x process (cwd-scoped, same real technique
- * board-viewer's own button.sh already uses for its bv_set_wm_pid
- * targeting - see that file's own real cwd-match pgrep loop). Leaves
- * every OTHER real board-viewer process for that same session alone
- * (chtpm_parser_pal/prisc+x/bv_render_3d.c/bv_compose_frame.c) - those
- * are what actually GENERATE the real rgb_frame_3d_overlay.raw this
- * mode reads, killing them would break the real data source, not just
- * the redundant legacy display. */
-static void pchq_kill_legacy_display(const char *bv_session) {
-    char cmd[PATH_BUF * 2];
-    snprintf(cmd, sizeof(cmd),
-             "for p in $(pgrep -f 'x11_mirror\\.\\+x'); do "
-             "cwd=$(readlink -f /proc/$p/cwd 2>/dev/null); "
-             "if [ \"$cwd\" = '%s' ]; then kill $p; fi; done",
-             bv_session);
-    int rc = system(cmd);
-    (void)rc;
-}
-
-/* REAL, NEW 2026-08-30, direct instruction: "thats not what the legacy
- * chtpm peice board-view did u need to stick as closely to that model
- * as possible. absolute parity. research it and see where u went
- * wrong." Real research finding (see PIECECRAFT-HQ-BOARD-KHTPM-
- * CONVERSION-2026-08-30.md for the full writeup):
- *   1. board_viewer.chtpm has a real, declarative <interact src="..."/>
- *      + a reserved onClick="INTERACT" button - the ENGINE
- *      (chtpm_parser_pal.c) handles ALL real nav/focus/arrow-relay/ESC
- *      natively, with zero app-side code - this is the real "for free"
- *      system, and it lives entirely in the legacy engine, not
- *      anything this file can reimplement locally with real parity.
- *   2. system/chtpm_rgb_render.c (a real, shared compositor daemon,
- *      NOT the same thing as the window-display step) already reads
- *      BOTH the real text chrome chtpm_parser_pal renders into
- *      current_frame.txt AND the real 3D overlay bv_render_3d.c
- *      writes, and blits them into ONE real, fully-composited
- *      rgb_frame.raw (see that file's own blit_overlay()/MAP3D_MARKER
- *      header comment) - x11_mirror.c only ever needed to blit THAT
- *      one file and forward every real key/click into board-viewer's
- *      own real relay files, letting the real engine do everything
- *      else. The earlier version of this function read rgb_frame_3d_
- *      overlay.raw DIRECTLY (skipping the real compositor's own output
- *      entirely) and hand-drew its own separate chrome/nav on top -
- *      real parity means NOT doing either of those things.
- * Real fix: blit rgb_frame.raw (the same file x11_mirror.c blits,
- * already containing the real "[>] N. Interact Mode..." chrome text),
- * and forward EVERY real key/click into board-viewer's own real
- * relay files (keyboard/history.txt, player_app/history.txt,
- * player_app/state.txt's last_click_x/y) via a direct, deliberate port
- * of x11_mirror.c's own append_key()/write_click_kv()/map_special_key()
- * - zero local nav logic of this file's own, matching x11_mirror.c's
- * own real "steal everything, reimplement nothing" shape exactly.
- * board-viewer/button.sh's own NO_RGB_COMPOSITOR/NO_GL split (same
- * date) is what makes rgb_frame.raw available here with no real GL
- * window of board-viewer's own ever needing to map. */
-#define PCHQ_ARROW_LEFT  1000
-#define PCHQ_ARROW_RIGHT 1001
-#define PCHQ_ARROW_UP    1002
-#define PCHQ_ARROW_DOWN  1003
-
-static int pchq_map_special_key(KeySym ks) {
-    if (ks == XK_Left) return PCHQ_ARROW_LEFT;
-    if (ks == XK_Right) return PCHQ_ARROW_RIGHT;
-    if (ks == XK_Up) return PCHQ_ARROW_UP;
-    if (ks == XK_Down) return PCHQ_ARROW_DOWN;
-    return 0;
-}
-
-/* Direct port of x11_mirror.c's own append_key() - dual-write, same
- * real target files, same real format. */
-static void pchq_append_key(const char *history1, const char *history2, int key) {
-    FILE *f = fopen(history1, "a");
-    if (f) { fprintf(f, "%d\n", key); fclose(f); }
-    FILE *cf = fopen(history2, "a");
-    if (cf) { fprintf(cf, "KEY_PRESSED: %d\n", key); fclose(cf); }
-}
-
-/* Direct port of x11_mirror.c's own write_click_kv() - real read-
- * modify-write of board-viewer's own real player_app/state.txt. */
-static void pchq_write_click_kv(const char *bv_session, const char *key, int value) {
-    char path[PATH_BUF];
-    snprintf(path, sizeof(path), "%s/pieces/apps/player_app/state.txt", bv_session);
-    char lines[128][512];
-    int n = 0, replaced = 0;
-    FILE *rf = fopen(path, "r");
-    if (rf) {
-        char line[512];
-        size_t klen = strlen(key);
-        while (n < 128 && fgets(line, sizeof(line), rf)) {
-            if (strncmp(line, key, klen) == 0 && line[klen] == '=') {
-                snprintf(lines[n], sizeof(lines[0]), "%s=%d\n", key, value);
-                replaced = 1;
-            } else {
-                snprintf(lines[n], sizeof(lines[0]), "%s", line);
-            }
-            n++;
-        }
-        fclose(rf);
-    }
-    FILE *wf = fopen(path, "w");
-    if (!wf) return;
-    for (int i = 0; i < n; i++) fputs(lines[i], wf);
-    if (!replaced) fprintf(wf, "%s=%d\n", key, value);
-    fclose(wf);
-}
-
-static int run_pchq_board_mode(const char *house_root, const char *host_project_id) {
-    char bv_session[PATH_BUF] = "";
-    if (!pchq_find_board_session(house_root, host_project_id, bv_session, sizeof(bv_session))) {
-        fprintf(stderr, "run_pchq_board_mode: no live board-viewer session found for %s "
-                        "(open View Board from the game first)\n", host_project_id);
-        return 1;
-    }
-    pchq_kill_legacy_display(bv_session);
-
-    /* REAL ARCHITECTURE REWRITE (2026-08-30, direct instruction: "isn't
-     * it only that actual 2d/3d screen {interact screen} needs to be
-     * blitted? ... everything else can be just a typical hq window...
-     * thats the architecture we should have been using not some hybrid
-     * disorganized blitted legacy newfangled setup").
-     *
-     * Previous shape (restyle pass, commit 562eb172 onward) blitted the
-     * legacy engine's ENTIRE current_frame.txt (chrome text, toolbar
-     * buttons, status info, AND the 3D view) as one classified text
-     * stream, then tried to bolt real khtpm-style nav-badge highlight
-     * on top of it. That's the direct cause of two real, reported bugs:
-     * multiple buttons packed onto one text LINE all shared a single
-     * whole-line highlight (no per-badge granularity), and a real
-     * numbered close button living inside blitted content could never
-     * be unified with this window's own separately hand-drawn chrome
-     * [X] the way db-hq/chat-hai/events-hq keep ONE real close Elem in
-     * their own title strip.
-     *
-     * New shape: ONLY the real 2D/3D view (pieces/display/
-     * rgb_frame_3d_overlay.raw - a real, project-agnostic RGBA canvas,
-     * see &.widgits/board-viewer/ops/bv_render_3d.c's own header) is a
-     * blit, treated exactly like an <img>/<canvas> element would be.
-     * Everything else - title bar, Close, File, Desk, the Interact Mode
-     * toggle - is a real local Elem with its own nav_index, drawn with
-     * the SAME real "#ff8c00 focused / #888888 unfocused" bordered-box
-     * convention db-hq's own g_dbhq_close_elem uses (see
-     * dbhq_draw_chrome_bar() for the reference this was modeled on).
-     * current_frame.txt is no longer read AT ALL - board_viewer.chtpm
-     * itself went back to being ONLY the real "Interact Mode" button
-     * (see that file's own header comment), since camera/selector
-     * navigation while genuinely inside real Interact Mode is the ONE
-     * piece of UI that must stay legacy-engine-owned (that's what
-     * "absolute parity" was about) - everything else here is real,
-     * local, khtpm-native UI, not a hybrid.
-     *
-     * The one real subtlety: this window's own "Interact Mode" Elem
-     * can't just write hero_01/state.txt's interact_mode flag directly
-     * - chtpm_parser_pal.c's own onClick="INTERACT" handling
-     * (set_interact_mode() + export_active_index()) also updates that
-     * RUNNING process's own in-memory active_index/focus_index, which
-     * is what actually gates real arrow-key-to-camera relay - a raw
-     * file write from a separate process would get silently
-     * overwritten by the engine's own next render pass. Real, zero-
-     * reimplementation fix: forward a synthetic click at the fixed
-     * real screen position board_viewer.chtpm's own (now sole) button
-     * always renders at (row 0) via the SAME pchq_write_click_kv()
-     * mechanism already used for real in-canvas clicks - the legacy
-     * engine's own native click-hit-testing does the real toggle, this
-     * file does zero reimplementation of it. */
-    char overlay_path[PATH_BUF], overlay_receipt_path[PATH_BUF];
-    snprintf(overlay_path, sizeof(overlay_path), "%s/pieces/display/rgb_frame_3d_overlay.raw", bv_session);
-    snprintf(overlay_receipt_path, sizeof(overlay_receipt_path), "%s/pieces/display/rgb_frame_3d_overlay.receipt.txt", bv_session);
-
-    char bv_history1[PATH_BUF], bv_history2[PATH_BUF];
-    snprintf(bv_history1, sizeof(bv_history1), "%s/pieces/apps/player_app/history.txt", bv_session);
-    snprintf(bv_history2, sizeof(bv_history2), "%s/pieces/keyboard/history.txt", bv_session);
-
-    Display *dpy = XOpenDisplay(NULL);
-    if (!dpy) { fprintf(stderr, "run_pchq_board_mode: cannot open display\n"); return 1; }
-    /* REAL FIX 2026-08-30 - this mode returns before main()'s own
-     * XSetErrorHandler(kh_nonfatal_x_error) call, so an
-     * XSetInputFocus() landing before the WM finishes reparenting a
-     * freshly WM-managed window throws an uncaught BadMatch and crashes
-     * the whole process (confirmed live). Same real non-fatal handler
-     * already used elsewhere in this file. */
-    XSetErrorHandler(kh_nonfatal_x_error);
-    load_theme_colors();  /* g_theme_fg for the window frame (this mode returns before main()'s own load) */
-    int screen = DefaultScreen(dpy);
-    Visual *visual = DefaultVisual(dpy, screen);
-    int depth = DefaultDepth(dpy, screen);
-    Colormap cmap = DefaultColormap(dpy, screen);
-
-#define PCHQ_TOOLBAR_H 28
-#define PCHQ_CLOSE_W 74
-#define PCHQ_FULLSCREEN_W 56
-#define PCHQ_DROPDOWN_ROW_H 22
-    int canvas_w = 640, canvas_h = 480; /* real defaults, resized from the overlay's own receipt below */
-    int win_x = 140, win_y = 90;
-    int dragging = 0, drag_last_x = 0, drag_last_y = 0;
-    int win_w = canvas_w, win_h = CHROME_H + PCHQ_TOOLBAR_H + canvas_h;
-
-    /* REAL FIX 2026-08-30, direct live report ("its not geting mouse /
-     * kbd input") - override_redirect windows never get real keyboard/
-     * mouse focus routed by Mutter (synthetic XTest input worked,
-     * masking the bug) - normal WM-managed window, decorations
-     * stripped via _MOTIF_WM_HINTS instead, same real shape
-     * x11_mirror.c itself uses. */
-    Window win = XCreateSimpleWindow(dpy, RootWindow(dpy, screen), win_x, win_y,
-                                      (unsigned)win_w, (unsigned)win_h, 0,
-                                      BlackPixel(dpy, screen), pchq_alloc_pixel(dpy, cmap, "#1c1c1c"));
-    {
-        Atom motif_hints = XInternAtom(dpy, "_MOTIF_WM_HINTS", False);
-        long hints[5] = { 2, 0, 0, 0, 0 }; /* flags=MWM_HINTS_DECORATIONS, decorations=0 */
-        XChangeProperty(dpy, win, motif_hints, motif_hints, 32, PropModeReplace, (unsigned char *)hints, 5);
-    }
-    XStoreName(dpy, win, "Piececraft-HQ Board (khtpm)");
-    Atom pchq_wm_delete = XInternAtom(dpy, "WM_DELETE_WINDOW", False);
-    XSetWMProtocols(dpy, win, &pchq_wm_delete, 1);
-    XSelectInput(dpy, win, ExposureMask | ButtonPressMask | ButtonReleaseMask | ButtonMotionMask | KeyPressMask | StructureNotifyMask);
-    {
-        XSizeHints *shints = XAllocSizeHints();
-        /* REAL FIX 2026-08-30, direct live report (fullscreen toggled
-         * off per _NET_WM_STATE, confirmed via xprop, but the window
-         * never actually shrank back down) - PPosition alone gives the
-         * WM no real "normal" size to restore to after leaving
-         * fullscreen. Real fix: also advertise PSize with this
-         * window's own actual current size. */
-        if (shints) { shints->flags = PPosition | PSize; shints->x = win_x; shints->y = win_y; shints->width = win_w; shints->height = win_h; XSetWMNormalHints(dpy, win, shints); XFree(shints); }
-    }
-    XMapRaised(dpy, win);
-    set_window_opacity(dpy, win, load_theme_opacity());
-    GC gc = XCreateGC(dpy, win, 0, NULL);
-    for (int attempt = 0; attempt < 5; attempt++) {
-        XSetInputFocus(dpy, win, RevertToParent, CurrentTime);
-        XSync(dpy, False);
-        Window focused; int revert;
-        XGetInputFocus(dpy, &focused, &revert);
-        if (focused == win) break;
-        usleep(5000);
-    }
-
-    Pixmap buf = XCreatePixmap(dpy, win, (unsigned)win_w, (unsigned)win_h, (unsigned)depth);
-    XftDraw *xftdraw = XftDrawCreate(dpy, buf, visual, cmap);
-    XftFont *ui_font = XftFontOpenName(dpy, screen, "Ubuntu-10");
-    XftFont *pchq_body_font = XftFontOpenName(dpy, screen, "DejaVu Sans Mono:pixelsize=13");
-    if (!pchq_body_font) pchq_body_font = ui_font;
-
-    XImage *ov_img = NULL;
-    unsigned char *ov_buf = NULL;
-    int ov_w_cur = 0, ov_h_cur = 0;
-
-    /* Real, cached colors/pixels - allocated once, not per-frame (same
-     * real perf fix as before - a colormap round trip per element per
-     * frame at 30fps was measurably laggy). */
-    unsigned long pix_chrome = pchq_alloc_pixel(dpy, cmap, "#2a2a2a");
-    /* REAL FIX 2026-08-30, direct live report ("x doesn't need to be
-     * 'red' its distracting") - matches Fullscreen's own neutral
-     * chrome-strip-icon treatment now (pix_chrome), not a special
-     * warning color - the orange focus border is still real feedback
-     * when it's actually focused, same as every other elem. */
-    unsigned long pix_close = pchq_alloc_pixel(dpy, cmap, "#2a2a2a");
-    unsigned long pix_bg = pchq_alloc_pixel(dpy, cmap, "#111111");
-    unsigned long pix_focus_fill = pchq_alloc_pixel(dpy, cmap, "#3a2a10");
-    unsigned long pix_focus_border = pchq_alloc_pixel(dpy, cmap, "#ff8c00");
-    unsigned long pix_unfocus_fill = pchq_alloc_pixel(dpy, cmap, "#2a2a2a");
-    unsigned long pix_unfocus_border = pchq_alloc_pixel(dpy, cmap, "#555555");
-    XftColor col_title, col_focus, col_unfocus;
-    { XRenderColor rc = {0xeeee, 0xeeee, 0xeeee, 0xffff}; XftColorAllocValue(dpy, visual, cmap, &rc, &col_title); }
-    { XRenderColor rc = {0xffff, 0x8c8c, 0x0000, 0xffff}; XftColorAllocValue(dpy, visual, cmap, &rc, &col_focus); }
-    { XRenderColor rc = {0xaaaa, 0xaaaa, 0xaaaa, 0xffff}; XftColorAllocValue(dpy, visual, cmap, &rc, &col_unfocus); }
-
-    /* REAL, local Elem set - File/Desk/Interact Mode/Close, same real
-     * "#ff8c00 focused / #888888 unfocused" bordered-box convention
-     * every other khtpm window uses. nav_index order matches on-screen
-     * left-to-right/chrome-position order; Close is last on purpose
-     * (matches db-hq's own convention - a fresh window never opens
-     * with Close already focused). Positions recomputed each frame
-     * below (win_w can change with the overlay's own real size). */
-    /* REAL REORDER 2026-08-30, direct instruction ("interact mode
-     * should be #1, then menu, then file, then desk" -> clarified to
-     * "1.in 2.file 3.desk 4.menu 5.db 6.x" -> "hold off on db, put it
-     * as a sub under menu") - real order is now In, File, Desk, Menu,
-     * X. "Menu" is a real, new, currently-stub toolbar Elem (a general
-     * game menu; Db will live as a sub-item under it later, not its own
-     * top-level slot) - present now for layout/nav parity, no
-     * dispatch yet. Later: Menu should open as a real dropdown (same
-     * real pattern the taskbar's own menus already use), with Db as
-     * one of its rows - not implemented yet, this is just the stub
-     * slot reserved for it. */
-    /* REAL, NEW 2026-08-30, direct instruction ("fullscreen, player and
-     * clock" - roadmap items from aug-30-retro.md's own "Next-steps"
-     * section) - Player/Clock join the toolbar row right after Menu
-     * (per direct instruction: "we will probably just add player and
-     * clock tb after menu"); Fullscreen ("!") joins Close in the chrome
-     * strip (per direct instruction: "we will put '!' for fullscreen
-     * next to 'x'"). Clock shows the real current time (cheap,
-     * deterministic, no reason to stub it); Player is a real stub for
-     * now (hero HP/position readback is a separate, later pass - not
-     * blocking this layout work). */
-    typedef struct { char label[24]; int x, y, w, h; int action; } PchqElem;
-    enum { PCHQ_ACT_INTERACT = 0, PCHQ_ACT_FILE, PCHQ_ACT_DESK, PCHQ_ACT_MENU, PCHQ_ACT_PLAYER, PCHQ_ACT_CLOCK, PCHQ_ACT_FULLSCREEN, PCHQ_ACT_CLOSE, PCHQ_N_ELEMS };
-    PchqElem elems[PCHQ_N_ELEMS];
-    snprintf(elems[PCHQ_ACT_INTERACT].label, sizeof(elems[0].label), "In");
-    snprintf(elems[PCHQ_ACT_FILE].label, sizeof(elems[0].label), "File");
-    snprintf(elems[PCHQ_ACT_DESK].label, sizeof(elems[0].label), "Desk");
-    snprintf(elems[PCHQ_ACT_MENU].label, sizeof(elems[0].label), "Menu");
-    snprintf(elems[PCHQ_ACT_PLAYER].label, sizeof(elems[0].label), "Player");
-    snprintf(elems[PCHQ_ACT_CLOCK].label, sizeof(elems[0].label), "Clock");
-    snprintf(elems[PCHQ_ACT_FULLSCREEN].label, sizeof(elems[0].label), "!");
-    snprintf(elems[PCHQ_ACT_CLOSE].label, sizeof(elems[0].label), "X");
-    for (int i = 0; i < PCHQ_N_ELEMS; i++) elems[i].action = i;
-    int pchq_focus = PCHQ_ACT_INTERACT;
-    int pchq_is_fullscreen = 0;
-    int pchq_opacity_reapplied = 0;
-
-    /* REAL, NEW 2026-08-30 - File/Desk real dropdowns, so switching
-     * levels/boards is a real, visible pick instead of a blind cycle -
-     * direct instruction: "thats how we will prove save load
-     * projects... i haven't seen save load from file in pc yet".
-     * pchq_dropdown: 0=closed, 1=File open, 2=Desk open.
-     * File has exactly 2 real states today (default-pdl/default-
-     * legacy, per pc_menu_input.c's own FILE_MENU handler) - picking
-     * the non-current one sends the same real cycle key that already
-     * works, just through a real visible list instead of blind
-     * toggling. Desk has exactly 1 real board today (confirmed by
-     * direct read of defaults/default-pdl/default.pdl) - still real
-     * infrastructure, ready for when more boards exist, not
-     * fabricated content. */
-    int pchq_dropdown = 0;
-    int pchq_dropdown_focus = 0;
-    char pchq_active_level[64] = "";
-    char pchq_active_board[64] = "";
-
-    int running = 1;
-    int pchq_focus_ok = 0;
-    while (running) {
-        /* REAL FIX 2026-08-30, direct live report ("screen flashes and
-         * is throttling. is the renderer cpu safe?") - this loop had NO
-         * real frame cap at all (confirmed live: ps aux showed it
-         * pinned at ~75-80% CPU, state Rs - genuinely spinning, not
-         * blocked/idle waiting on anything). Every other khtpm loop in
-         * this file (db-hq's, the strip's) has a real usleep() per
-         * iteration; this one was missed in the architecture rewrite.
-         * 16ms ~= 60fps, same real target the overlay's own raymarch
-         * producer runs at - matches, doesn't starve, doesn't spin. */
-        usleep(16000);
-        if (!pchq_focus_ok) {
-            XSetInputFocus(dpy, win, RevertToParent, CurrentTime);
-            XSync(dpy, False);
-            Window focused; int revert;
-            XGetInputFocus(dpy, &focused, &revert);
-            if (focused == win) pchq_focus_ok = 1;
-        }
-
-        int ov_w = pchq_read_kv_int(overlay_receipt_path, "overlay_w", 0);
-        int ov_h = pchq_read_kv_int(overlay_receipt_path, "overlay_h", 0);
-        if (ov_w > 0 && ov_h > 0 && (ov_w != ov_w_cur || ov_h != ov_h_cur || !ov_img)) {
-            ov_w_cur = ov_w; ov_h_cur = ov_h;
-            canvas_w = ov_w; canvas_h = ov_h;
-            free(ov_buf);
-            ov_buf = malloc((size_t)ov_w * ov_h * 4);
-            if (ov_img) { XDestroyImage(ov_img); ov_img = NULL; }
-            char *data = malloc((size_t)ov_w * ov_h * 4);
-            ov_img = XCreateImage(dpy, visual, (unsigned)depth, ZPixmap, 0, data,
-                                   (unsigned)ov_w, (unsigned)ov_h, 32, 0);
-            int new_win_w = canvas_w, new_win_h = CHROME_H + PCHQ_TOOLBAR_H + canvas_h;
-            if (new_win_w != win_w || new_win_h != win_h) {
-                win_w = new_win_w; win_h = new_win_h;
-                XResizeWindow(dpy, win, (unsigned)win_w, (unsigned)win_h);
-                XFreePixmap(dpy, buf);
-                buf = XCreatePixmap(dpy, win, (unsigned)win_w, (unsigned)win_h, (unsigned)depth);
-                XftDrawDestroy(xftdraw);
-                xftdraw = XftDrawCreate(dpy, buf, visual, cmap);
-            }
-        }
-        if (ov_img && ov_buf) {
-            FILE *of = fopen(overlay_path, "rb");
-            if (of) {
-                size_t got = fread(ov_buf, 1, (size_t)ov_w_cur * ov_h_cur * 4, of);
-                fclose(of);
-                if (got == (size_t)ov_w_cur * ov_h_cur * 4) {
-                    for (int y = 0; y < ov_h_cur; y++)
-                        for (int x = 0; x < ov_w_cur; x++) {
-                            size_t o = ((size_t)y * ov_w_cur + x) * 4;
-                            unsigned long px = ((unsigned long)ov_buf[o] << 16)
-                                              | ((unsigned long)ov_buf[o + 1] << 8)
-                                              | (unsigned long)ov_buf[o + 2];
-                            XPutPixel(ov_img, x, y, px);
-                        }
-                }
-            }
-        }
-
-        /* REAL, NEW 2026-08-30 (!.HOUSE_STDS.md §A.9) - the one real
-         * signal that decides which side of the engine's own
-         * active_index==-1 boundary this window is on right now. Read
-         * ONCE per frame - used both for the status label below AND
-         * for routing keyboard input in this same iteration's event
-         * loop (a real live report confirmed arrows/digits must move
-         * THIS toolbar's own focus while off, and forward unconditionally
-         * to the game once on - "everything is normal till in interact"). */
-        int pchq_interact_on = pchq_is_interact_on(bv_session);
-        /* Real, live active_level/active_board readback for the File/
-         * Desk dropdowns - only bothered with while a dropdown is
-         * actually open, to avoid a pointless file read every frame
-         * the rest of the time. */
-        if (pchq_dropdown) {
-            pchq_read_config_kv(house_root, host_project_id, "active_level", pchq_active_level, sizeof(pchq_active_level));
-            pchq_read_config_kv(house_root, host_project_id, "active_board", pchq_active_board, sizeof(pchq_active_board));
-        }
-
-        /* Real title chrome - just a title, Close now lives here as a
-         * real Elem (see below), not a separate hand-drawn duplicate. */
-        XSetForeground(dpy, gc, pix_chrome);
-        XFillRectangle(dpy, buf, gc, 0, 0, (unsigned)win_w, CHROME_H);
-        if (ui_font) {
-            const char *title = "Piececraft-HQ Board (khtpm)";
-            XftDrawStringUtf8(xftdraw, &col_title, ui_font, 8, 18, (const FcChar8 *)title, (int)strlen(title));
-        }
-
-        /* Real toolbar row - File/Desk/Interact Mode, left to right. */
-        XSetForeground(dpy, gc, pix_chrome);
-        XFillRectangle(dpy, buf, gc, 0, CHROME_H, (unsigned)win_w, PCHQ_TOOLBAR_H);
-
-        /* Real order left to right, per direct instruction: In, File,
-         * Desk, Menu, then X in the chrome strip far right - spaced out
-         * (6px gaps) same as before. "In" is shortened from "Interact
-         * Mode" so its own box doesn't have to be the widest one. */
-        /* REAL FIX 2026-08-30, direct live report ("4.x is going off
-         * the right of the header a bit") - flush against win_w left
-         * zero margin for text to render into; a real gap keeps the
-         * badge text fully inside the visible window. */
-        /* REAL, NEW 2026-08-30 - Fullscreen ("!") joins Close in the
-         * chrome strip, immediately to its left (direct instruction:
-         * "we will put '!' for fullscreen next to 'x'"). Player/Clock
-         * join the toolbar row after Menu (direct instruction: "we
-         * will probably just add player and clock tb after menu") -
-         * widths trimmed slightly across the board so all six toolbar
-         * boxes still fit inside the real canvas width without
-         * overflowing/clipping. */
-        elems[PCHQ_ACT_CLOSE].x = win_w - PCHQ_CLOSE_W - 6; elems[PCHQ_ACT_CLOSE].y = 0;
-        elems[PCHQ_ACT_CLOSE].w = PCHQ_CLOSE_W; elems[PCHQ_ACT_CLOSE].h = CHROME_H;
-        elems[PCHQ_ACT_FULLSCREEN].x = elems[PCHQ_ACT_CLOSE].x - PCHQ_FULLSCREEN_W - 4; elems[PCHQ_ACT_FULLSCREEN].y = 0;
-        elems[PCHQ_ACT_FULLSCREEN].w = PCHQ_FULLSCREEN_W; elems[PCHQ_ACT_FULLSCREEN].h = CHROME_H;
-        elems[PCHQ_ACT_INTERACT].x = 6; elems[PCHQ_ACT_INTERACT].y = CHROME_H + 2;
-        elems[PCHQ_ACT_INTERACT].w = 95; elems[PCHQ_ACT_INTERACT].h = PCHQ_TOOLBAR_H - 4;
-        elems[PCHQ_ACT_FILE].x = elems[PCHQ_ACT_INTERACT].x + elems[PCHQ_ACT_INTERACT].w + 5; elems[PCHQ_ACT_FILE].y = CHROME_H + 2;
-        elems[PCHQ_ACT_FILE].w = 78; elems[PCHQ_ACT_FILE].h = PCHQ_TOOLBAR_H - 4;
-        elems[PCHQ_ACT_DESK].x = elems[PCHQ_ACT_FILE].x + elems[PCHQ_ACT_FILE].w + 5; elems[PCHQ_ACT_DESK].y = CHROME_H + 2;
-        elems[PCHQ_ACT_DESK].w = 78; elems[PCHQ_ACT_DESK].h = PCHQ_TOOLBAR_H - 4;
-        elems[PCHQ_ACT_MENU].x = elems[PCHQ_ACT_DESK].x + elems[PCHQ_ACT_DESK].w + 5; elems[PCHQ_ACT_MENU].y = CHROME_H + 2;
-        elems[PCHQ_ACT_MENU].w = 82; elems[PCHQ_ACT_MENU].h = PCHQ_TOOLBAR_H - 4;
-        elems[PCHQ_ACT_PLAYER].x = elems[PCHQ_ACT_MENU].x + elems[PCHQ_ACT_MENU].w + 5; elems[PCHQ_ACT_PLAYER].y = CHROME_H + 2;
-        elems[PCHQ_ACT_PLAYER].w = 92; elems[PCHQ_ACT_PLAYER].h = PCHQ_TOOLBAR_H - 4;
-        elems[PCHQ_ACT_CLOCK].x = elems[PCHQ_ACT_PLAYER].x + elems[PCHQ_ACT_PLAYER].w + 5; elems[PCHQ_ACT_CLOCK].y = CHROME_H + 2;
-        elems[PCHQ_ACT_CLOCK].w = 84; elems[PCHQ_ACT_CLOCK].h = PCHQ_TOOLBAR_H - 4;
-
-        for (int i = 0; i < PCHQ_N_ELEMS; i++) {
-            int focused = (i == pchq_focus);
-            if (i == PCHQ_ACT_CLOSE) {
-                /* REAL FIX 2026-08-30, direct live report ("x still
-                 * dont' have index nav (close) why? isn't it using a
-                 * similar layout system now?") - Close is a real Elem
-                 * in the SAME elems[] array/nav_index sequence as
-                 * File/Desk/Interact (arrow/digit-nav already reaches
-                 * it, confirmed), but its own draw branch never got the
-                 * same real "[>]N."/"[ ]N." badge the other three
-                 * elems' draw branch has - a real omission, not a
-                 * structural difference. Widened PCHQ_CLOSE_W to fit
-                 * the badge text. */
-                XSetForeground(dpy, gc, pix_close);
-                XFillRectangle(dpy, buf, gc, elems[i].x, elems[i].y, (unsigned)elems[i].w, (unsigned)elems[i].h);
-                if (focused) {
-                    XSetForeground(dpy, gc, pix_focus_border);
-                    XDrawRectangle(dpy, buf, gc, elems[i].x, elems[i].y, (unsigned)elems[i].w - 1, (unsigned)elems[i].h - 1);
-                }
-                if (ui_font) {
-                    char close_label[16];
-                    snprintf(close_label, sizeof(close_label), "%s%d. X", focused ? "[>]" : "[ ]", PCHQ_ACT_CLOSE + 1);
-                    XftDrawStringUtf8(xftdraw, &col_title, ui_font, elems[i].x + 4, 18, (const FcChar8 *)close_label, (int)strlen(close_label));
-                }
-                continue;
-            }
-            if (i == PCHQ_ACT_FULLSCREEN) {
-                /* Same real chrome-strip-icon treatment as Close - a
-                 * short glyph, not a normal toolbar box, matching
-                 * direct instruction ("'!' for fullscreen next to
-                 * 'x'"). */
-                XSetForeground(dpy, gc, pix_chrome);
-                XFillRectangle(dpy, buf, gc, elems[i].x, elems[i].y, (unsigned)elems[i].w, (unsigned)elems[i].h);
-                if (focused) {
-                    XSetForeground(dpy, gc, pix_focus_border);
-                    XDrawRectangle(dpy, buf, gc, elems[i].x, elems[i].y, (unsigned)elems[i].w - 1, (unsigned)elems[i].h - 1);
-                }
-                if (ui_font) {
-                    char fs_label[16];
-                    snprintf(fs_label, sizeof(fs_label), "%s%d.!", focused ? "[>]" : "[ ]", PCHQ_ACT_FULLSCREEN + 1);
-                    XftDrawStringUtf8(xftdraw, pchq_is_fullscreen ? &col_focus : &col_title, ui_font,
-                                       elems[i].x + 4, 18, (const FcChar8 *)fs_label, (int)strlen(fs_label));
-                }
-                continue;
-            }
-            XSetForeground(dpy, gc, focused ? pix_focus_fill : pix_unfocus_fill);
-            XFillRectangle(dpy, buf, gc, elems[i].x, elems[i].y, (unsigned)elems[i].w, (unsigned)elems[i].h);
-            XSetForeground(dpy, gc, focused ? pix_focus_border : pix_unfocus_border);
-            XDrawRectangle(dpy, buf, gc, elems[i].x, elems[i].y, (unsigned)elems[i].w - 1, (unsigned)elems[i].h - 1);
-            if (pchq_body_font) {
-                /* REAL FIX 2026-08-30, direct live report ("its missing
-                 * all the index, nav bracket [] features why?") - the
-                 * bordered-box highlight alone dropped the real "[>]N."/
-                 * "[ ]N." nav-badge convention every other numbered row
-                 * in this house shows. Added back as a real visual
-                 * prefix - genuinely can't be digit-jump-activated
-                 * (1/2/3 are legitimately reserved for real camera-mode
-                 * switching, checked directly in bv_menu_input.c), but
-                 * the badge itself is still real, informational, and
-                 * consistent - Tab/click remain the real activation
-                 * path, same as this window's own documented reason for
-                 * not overloading those digits. */
-                char label[48];
-                char badge[8];
-                /* REAL FIX 2026-08-30, direct live report ("its not
-                 * changing '>' to '^' to signal its using interact
-                 * mode") - the house-wide [>]/[^]/[ ] glyph convention
-                 * (!.HOUSE_STDS.md §A.5) means [^] = genuinely ACTIVE/
-                 * ENGAGED, which takes priority over plain focus - the
-                 * real engine's own render_element() does exactly this
-                 * glyph swap for its own active_index element. Mirror
-                 * it here using the same real pchq_interact_on signal
-                 * already resolved once this frame. */
-                int is_engaged = (i == PCHQ_ACT_INTERACT) && pchq_interact_on;
-                snprintf(badge, sizeof(badge), "%s%d.", is_engaged ? "[^]" : (focused ? "[>]" : "[ ]"), i + 1);
-                if (i == PCHQ_ACT_INTERACT) {
-                    /* Real status readback - not a separate blitted text
-                     * dump, a real, small local label reading the SAME
-                     * real active_gui_is_typing.txt flag the legacy
-                     * engine itself writes on real activation
-                     * (pchq_interact_on, already resolved once this
-                     * frame above). */
-                    snprintf(label, sizeof(label), "%s In: %s", badge, pchq_interact_on ? "ON" : "off");
-                } else if (i == PCHQ_ACT_CLOCK) {
-                    /* Real, live current time - cheap, deterministic,
-                     * no reason to leave it a stub like Menu/Player. */
-                    time_t now = time(NULL);
-                    struct tm *tmv = localtime(&now);
-                    char tbuf[16];
-                    if (tmv) strftime(tbuf, sizeof(tbuf), "%H:%M", tmv); else snprintf(tbuf, sizeof(tbuf), "--:--");
-                    snprintf(label, sizeof(label), "%s %s", badge, tbuf);
-                } else {
-                    snprintf(label, sizeof(label), "%s %s", badge, elems[i].label);
-                }
-                XftDrawStringUtf8(xftdraw, focused ? &col_focus : &col_unfocus, pchq_body_font,
-                                   elems[i].x + 6, elems[i].y + elems[i].h - 8, (const FcChar8 *)label, (int)strlen(label));
-            }
-        }
-
-        /* Real content background + the ONLY real blit left - the pure
-         * 2D/3D view itself, treated exactly like a canvas element. */
-        XSetForeground(dpy, gc, pix_bg);
-        XFillRectangle(dpy, buf, gc, 0, CHROME_H + PCHQ_TOOLBAR_H, (unsigned)win_w, (unsigned)canvas_h);
-        if (ov_img)
-            XPutImage(dpy, buf, gc, ov_img, 0, 0, 0, CHROME_H + PCHQ_TOOLBAR_H, (unsigned)ov_w_cur, (unsigned)ov_h_cur);
-
-        /* Real File/Desk dropdown - drawn AFTER the content blit above
-         * (real bug, caught live: drawing it BEFORE meant the content
-         * canvas fill/blit - which starts at the SAME y as the
-         * dropdown - painted straight over it every frame; state was
-         * always correct, confirmed via debug print, only the paint
-         * order was wrong) so it actually renders on top, real rows,
-         * real current-state marker (see pchq_dropdown's own
-         * declaration comment for the full real behavior). */
-        if (pchq_dropdown) {
-            int n_rows = (pchq_dropdown == 1) ? 2 : 1;
-            int dropdown_x = elems[pchq_dropdown == 1 ? PCHQ_ACT_FILE : PCHQ_ACT_DESK].x;
-            int dropdown_y = CHROME_H + PCHQ_TOOLBAR_H;
-            int dropdown_w = 150;
-            XSetForeground(dpy, gc, pix_unfocus_fill);
-            XFillRectangle(dpy, buf, gc, dropdown_x, dropdown_y, (unsigned)dropdown_w, (unsigned)(n_rows * PCHQ_DROPDOWN_ROW_H));
-            XSetForeground(dpy, gc, pix_unfocus_border);
-            XDrawRectangle(dpy, buf, gc, dropdown_x, dropdown_y, (unsigned)dropdown_w - 1, (unsigned)(n_rows * PCHQ_DROPDOWN_ROW_H) - 1);
-            for (int r = 0; r < n_rows; r++) {
-                int row_y = dropdown_y + r * PCHQ_DROPDOWN_ROW_H;
-                int row_focused = (r == pchq_dropdown_focus);
-                int is_current;
-                const char *row_label;
-                if (pchq_dropdown == 1) {
-                    int is_legacy = (strcmp(pchq_active_level, "default-legacy") == 0);
-                    is_current = (r == (is_legacy ? 1 : 0));
-                    row_label = (r == 0) ? "default-pdl" : "default-legacy";
-                } else {
-                    is_current = 1; /* the one real board is always the active one today */
-                    row_label = pchq_active_board[0] ? pchq_active_board : "default";
-                }
-                if (row_focused) {
-                    XSetForeground(dpy, gc, pix_focus_fill);
-                    XFillRectangle(dpy, buf, gc, dropdown_x + 1, row_y + 1, (unsigned)dropdown_w - 2, (unsigned)PCHQ_DROPDOWN_ROW_H - 2);
-                }
-                if (pchq_body_font) {
-                    char row_text[80];
-                    /* same "[ ]N." / "[>]N." nav-badge convention the
-                     * toolbar items above already use, so the dropdown
-                     * rows are digit-jumpable / AI-addressable too */
-                    snprintf(row_text, sizeof(row_text), "%s%d. %s%s",
-                             row_focused ? "[>]" : "[ ]", r + 1,
-                             is_current ? "* " : "", row_label);
-                    XftDrawStringUtf8(xftdraw, row_focused ? &col_focus : &col_unfocus, pchq_body_font,
-                                       dropdown_x + 6, row_y + PCHQ_DROPDOWN_ROW_H - 6, (const FcChar8 *)row_text, (int)strlen(row_text));
-                }
-            }
-        }
-
-        /* 2px theme-secondary window frame, same as every other khtpm
-         * window (see redraw()'s own frame draw) - drawn last, over the
-         * chrome + canvas, before the present. */
-        XSetForeground(dpy, gc, alloc_pixel(g_theme_fg[0] ? g_theme_fg : "#888888"));
-        for (int _fb = 0; _fb < 2; _fb++)
-            XDrawRectangle(dpy, buf, gc, _fb, _fb,
-                           (unsigned)(win_w - 1 - 2 * _fb), (unsigned)(win_h - 1 - 2 * _fb));
-
-        XCopyArea(dpy, buf, win, gc, 0, 0, (unsigned)win_w, (unsigned)win_h, 0, 0);
-        XFlush(dpy);
-
-        /* REAL FIX 2026-08-30, direct live report ("piececraft hq
-         * window doesn't have the opacity at all yet") - the SAME real
-         * bug 9ab1c199 already found+fixed for db-hq/events-hq/chat-
-         * hai/popup/every desktop entity: Mutter/XWayland does not
-         * reliably honor _NET_WM_WINDOW_OPACITY set at map-time, before
-         * a real first paint - it must be re-applied once after the
-         * window has actually been painted at least one real frame.
-         * This mode's own set_window_opacity() call (right after
-         * XMapRaised, above) never got this follow-up - confirmed live
-         * via xprop that the property WAS set correctly but visually
-         * never applied. Same real one-time-after-first-paint pattern
-         * every other branch already uses. */
-        if (!pchq_opacity_reapplied) {
-            pchq_opacity_reapplied = 1;
-            usleep(200000);
-            set_window_opacity(dpy, win, load_theme_opacity());
-            XFlush(dpy);
-        }
-        /* Real, event-driven live opacity reload - same cheap marker
-         * convention as khtpm_strip_parser.c/tp_desktop_window_rgb.c's
-         * own theme_changed_dirty() (dc759f3c). */
-        if (pchq_theme_changed_dirty(house_root)) {
-            set_window_opacity(dpy, win, load_theme_opacity());
-        }
-
-        struct timeval tv = {0, 33333}; /* same 30fps cap as x11_mirror.c's own real poll */
-        fd_set fds; FD_ZERO(&fds); int xfd = ConnectionNumber(dpy); FD_SET(xfd, &fds);
-        select(xfd + 1, &fds, NULL, NULL, &tv);
-        while (XPending(dpy)) {
-            XEvent ev; XNextEvent(dpy, &ev);
-            if (ev.type == Expose) {
-                XCopyArea(dpy, buf, win, gc, 0, 0, (unsigned)win_w, (unsigned)win_h, 0, 0);
-                XFlush(dpy);
-            } else if (ev.type == KeyPress) {
-                char kbuf[8]; KeySym ks;
-                int n = XLookupString(&ev.xkey, kbuf, sizeof(kbuf) - 1, &ks, NULL);
-                /* REAL, NEW 2026-08-30 (!.HOUSE_STDS.md §A.9, direct
-                 * live correction: "arrow keys work for the external
-                 * nav items... when not in interact right. they still
-                 * get nav index numbers. everything is normal till in
-                 * interact. its very elegant") - this window's own
-                 * mirror of the legacy engine's real active_index==-1
-                 * dual-mode model. pchq_interact_on (resolved once this
-                 * frame, above) is the one real signal deciding which
-                 * side of that boundary we're on. */
-                if (pchq_dropdown) {
-                    /* Real dropdown mode - takes priority over normal
-                     * toolbar nav while open (matches the taskbar's
-                     * own popup-vs-header nav priority). Row count is
-                     * fixed per dropdown kind: File=2 (default-pdl/
-                     * default-legacy), Desk=1 (the one real board
-                     * today). */
-                    int n_rows = (pchq_dropdown == 1) ? 2 : 1;
-                    if (ks == XK_Escape) {
-                        pchq_dropdown = 0;
-                    } else if (ks == XK_Up || ks == XK_Left) {
-                        pchq_dropdown_focus = (pchq_dropdown_focus - 1 + n_rows) % n_rows;
-                    } else if (ks == XK_Down || ks == XK_Right || ks == XK_Tab) {
-                        pchq_dropdown_focus = (pchq_dropdown_focus + 1) % n_rows;
-                    } else if (ks == XK_Return || ks == XK_KP_Enter) {
-                        /* REAL FIX 2026-08-30, direct instruction ("can
-                         * we just do w/e tb does? even reuse as op or
-                         * something?") closing the real, confirmed gap
-                         * (traced live): chtpm_parser_pal.c's own real
-                         * process_key() only ever forwards a relayed key
-                         * into interact_relay.txt (inject_raw_key())
-                         * from its `else if (strcmp(el->onClick,
-                         * "INTERACT") == 0)` branch - i.e. ONLY while
-                         * active_index is genuinely on the INTERACT
-                         * element (pchq_is_interact_on() true). This
-                         * whole dropdown is only ever reachable from the
-                         * `!pchq_interact_on` normal-nav branch above, so
-                         * '5'/'6' landed on ordinary chtpm nav dispatch
-                         * instead and never reached bv_menu_input.c at
-                         * all - confirmed by direct trace, not assumed.
-                         * Real, zero-reimplementation fix: reuse the
-                         * EXACT SAME mechanism PCHQ_ACT_INTERACT's own
-                         * activation already uses below (a plain Enter/
-                         * ASCII 13 through this same real relay) to
-                         * engage Interact Mode first, THEN send the real
-                         * File/Desk key - same "op" the legacy engine
-                         * already runs for every other key, nothing new
-                         * built. */
-                        if (!pchq_is_interact_on(bv_session))
-                            pchq_append_key(bv_history1, bv_history2, 13);
-                        if (pchq_dropdown == 1) {
-                            /* Row 0 = default-pdl, row 1 = default-legacy
-                             * (matches pc_menu_input.c's own FILE_MENU
-                             * cycle order). Picking whichever ISN'T
-                             * already active sends the same real cycle
-                             * key that already works - two states, one
-                             * cycle key, a real visible pick instead of
-                             * a blind toggle. Picking the ALREADY-active
-                             * one is a real no-op (matches "you're
-                             * already here"). */
-                            int is_legacy = (strcmp(pchq_active_level, "default-legacy") == 0);
-                            int current_row = is_legacy ? 1 : 0;
-                            if (pchq_dropdown_focus != current_row) pchq_append_key(bv_history1, bv_history2, '5');
-                        } else {
-                            /* Desk - the one real board, reload it
-                             * (matches DESK_MENU's own real behavior). */
-                            pchq_append_key(bv_history1, bv_history2, '6');
-                        }
-                        pchq_dropdown = 0;
-                    }
-                } else if (!pchq_interact_on) {
-                    /* Normal nav mode - arrows move THIS toolbar's own
-                     * focus, digits 1-4 jump-select the SAME real way
-                     * the legacy engine's own numbered rows do
-                     * (honoring the real house-wide g_click_two_step
-                     * setting - already loaded before this mode's
-                     * dispatch, see main()'s own dbhq_load_font_scale()
-                     * call), Enter activates whatever's focused. None
-                     * of this ever reaches the legacy relay - it can't
-                     * collide with real gameplay keys because those
-                     * only mean anything once genuinely engaged. */
-                    int activate = 0;
-                    if (ks == XK_Left || ks == XK_Up) {
-                        pchq_focus = (pchq_focus - 1 + PCHQ_N_ELEMS) % PCHQ_N_ELEMS;
-                    } else if (ks == XK_Right || ks == XK_Down || ks == XK_Tab) {
-                        pchq_focus = (pchq_focus + 1) % PCHQ_N_ELEMS;
-                    } else if (n > 0 && kbuf[0] >= '1' && kbuf[0] < '1' + PCHQ_N_ELEMS) {
-                        int target = kbuf[0] - '1';
-                        if (g_click_two_step && target != pchq_focus) pchq_focus = target;
-                        else { pchq_focus = target; activate = 1; }
-                    } else if (ks == XK_Return || ks == XK_KP_Enter) {
-                        activate = 1;
-                    }
-                    if (activate) {
-                        if (pchq_focus == PCHQ_ACT_FILE) {
-                            /* REAL, NEW 2026-08-30 - open a real
-                             * dropdown instead of blind-cycling (see
-                             * pchq_dropdown's own declaration comment
-                             * above). */
-                            pchq_dropdown = 1; pchq_dropdown_focus = 0;
-                        } else if (pchq_focus == PCHQ_ACT_DESK) {
-                            pchq_dropdown = 2; pchq_dropdown_focus = 0;
-                        } else if (pchq_focus == PCHQ_ACT_MENU) {
-                            /* Real stub - Menu has no dispatch yet (see
-                             * its own declaration comment above). */
-                        } else if (pchq_focus == PCHQ_ACT_PLAYER) {
-                            /* Real stub - hero HP/position readback is
-                             * a separate, later pass. */
-                        } else if (pchq_focus == PCHQ_ACT_CLOCK) {
-                            /* Clock is a real, live, read-only display -
-                             * nothing to activate. */
-                        } else if (pchq_focus == PCHQ_ACT_FULLSCREEN) {
-                            pchq_toggle_fullscreen(dpy, win);
-                            pchq_is_fullscreen = !pchq_is_fullscreen;
-                        } else if (pchq_focus == PCHQ_ACT_INTERACT) {
-                            /* REAL BUG FOUND + FIXED LIVE (2026-08-30) -
-                             * a synthetic click via last_click_x/y does
-                             * NOT reach the legacy engine's own button
-                             * click-hit-testing at all - that convention
-                             * (ported from x11_mirror.c) is consumed by
-                             * board-viewer's own GAME logic (xelector/
-                             * possess clicks), a completely separate
-                             * real mechanism from chtpm_parser_pal's own
-                             * UI activation. The REAL, zero-
-                             * reimplementation way to activate a focused
-                             * onClick="INTERACT" button from outside the
-                             * engine's own process is a plain Enter
-                             * keypress (ASCII 13) through the SAME real
-                             * relay File/Desk already use - confirmed
-                             * directly against the reference process_
-                             * key()'s own Enter branch (!.HOUSE_STDS.md
-                             * §A.9): "if (key==10||key==13...) { ...
-                             * el=&elements[focus_index]; ... else if
-                             * (onClick=='INTERACT') active_index=
-                             * focus_index; ... }". board_viewer.chtpm's
-                             * ONLY remaining element IS this button, so
-                             * it's always the default focus - no digit-
-                             * jump needed first. */
-                            pchq_append_key(bv_history1, bv_history2, 13);
-                        } else if (pchq_focus == PCHQ_ACT_CLOSE) {
-                            pchq_quit_host_session(house_root, host_project_id);
-                            running = 0;
-                        }
-                    }
-                } else {
-                    /* Engaged mode - keyboard is 100% game input now
-                     * (direct confirmed answer: "Mouse click only while
-                     * in interact mode"), forwarded unconditionally,
-                     * same real shape x11_mirror.c's own KeyPress branch
-                     * uses - includes Escape, which the legacy engine's
-                     * own native ESC-exit consumes BEFORE this
-                     * project's own ops ever see it (§A.9) - zero local
-                     * interception needed here. */
-                    if (n > 0) {
-                        pchq_append_key(bv_history1, bv_history2, (int)(unsigned char)kbuf[0]);
-                    } else {
-                        int mapped = pchq_map_special_key(ks);
-                        if (mapped > 0) pchq_append_key(bv_history1, bv_history2, mapped);
-                    }
-                }
-            } else if (pchq_dropdown && ev.type == ButtonPress && ev.xbutton.button == Button1) {
-                /* Real dropdown row click - see the KeyPress dropdown
-                 * branch above for the real row-count/action shape;
-                 * geometry mirrors the draw code below exactly
-                 * (dropdown_x/y/w, PCHQ_DROPDOWN_ROW_H). */
-                int n_rows = (pchq_dropdown == 1) ? 2 : 1;
-                int dropdown_x = elems[pchq_dropdown == 1 ? PCHQ_ACT_FILE : PCHQ_ACT_DESK].x;
-                int dropdown_y = CHROME_H + PCHQ_TOOLBAR_H;
-                int dropdown_w = 150;
-                int row = (ev.xbutton.x >= dropdown_x && ev.xbutton.x < dropdown_x + dropdown_w &&
-                           ev.xbutton.y >= dropdown_y) ? (ev.xbutton.y - dropdown_y) / PCHQ_DROPDOWN_ROW_H : -1;
-                if (row >= 0 && row < n_rows) {
-                    /* Same real fix as the KeyPress dropdown branch above -
-                     * engage Interact Mode first (reusing PCHQ_ACT_INTERACT's
-                     * own real activation, a plain Enter/13 through this
-                     * same relay) so chtpm_parser_pal.c's own real
-                     * onClick=="INTERACT" gate is actually open before the
-                     * File/Desk key is sent, or it never reaches
-                     * bv_menu_input.c at all. */
-                    if (!pchq_is_interact_on(bv_session))
-                        pchq_append_key(bv_history1, bv_history2, 13);
-                    if (pchq_dropdown == 1) {
-                        int is_legacy = (strcmp(pchq_active_level, "default-legacy") == 0);
-                        int current_row = is_legacy ? 1 : 0;
-                        if (row != current_row) pchq_append_key(bv_history1, bv_history2, '5');
-                    } else {
-                        pchq_append_key(bv_history1, bv_history2, '6');
-                    }
-                }
-                pchq_dropdown = 0;
-            } else if (ev.type == ButtonPress && ev.xbutton.button == Button1) {
-                kh_raise_and_focus(win);  /* click anywhere -> bring to top, WM-managed mode included */
-                int hit = -1;
-                for (int i = 0; i < PCHQ_N_ELEMS; i++) {
-                    if (ev.xbutton.x >= elems[i].x && ev.xbutton.x < elems[i].x + elems[i].w &&
-                        ev.xbutton.y >= elems[i].y && ev.xbutton.y < elems[i].y + elems[i].h) { hit = i; break; }
-                }
-                if (hit >= 0) {
-                    /* Real mouse click_two_step - same real convention
-                     * click_focus_then_activate() uses house-wide (a
-                     * click on an unfocused item selects it; a second
-                     * click, or click_two_step=0, activates). Real
-                     * mouse access to these elems ALWAYS works, even
-                     * while genuinely engaged (direct confirmed answer:
-                     * "Mouse click only while in interact mode"). */
-                    int activate = (!g_click_two_step) || (pchq_focus == hit);
-                    pchq_focus = hit;
-                    if (activate) {
-                        if (hit == PCHQ_ACT_FILE) {
-                            pchq_dropdown = 1; pchq_dropdown_focus = 0;
-                        } else if (hit == PCHQ_ACT_DESK) {
-                            pchq_dropdown = 2; pchq_dropdown_focus = 0;
-                        } else if (hit == PCHQ_ACT_MENU) {
-                            /* Real stub - see declaration comment above. */
-                        } else if (hit == PCHQ_ACT_PLAYER) {
-                            /* Real stub - see declaration comment above. */
-                        } else if (hit == PCHQ_ACT_CLOCK) {
-                            /* Real, live, read-only display - nothing to
-                             * activate. */
-                        } else if (hit == PCHQ_ACT_FULLSCREEN) {
-                            pchq_toggle_fullscreen(dpy, win);
-                            pchq_is_fullscreen = !pchq_is_fullscreen;
-                        } else if (hit == PCHQ_ACT_INTERACT) {
-                            /* Same real fix as the keyboard path above -
-                             * a plain Enter keypress through the relay,
-                             * not a synthetic click. */
-                            pchq_append_key(bv_history1, bv_history2, 13);
-                        } else if (hit == PCHQ_ACT_CLOSE) {
-                            /* REAL FIX 2026-08-30 - this mouse-click
-                             * branch uses `hit`, not `pchq_focus` (the
-                             * keyboard branch's own variable) - the
-                             * earlier pchq_quit_host_session() fix
-                             * (b1ef2cf0) only matched `pchq_focus ==
-                             * PCHQ_ACT_CLOSE` text and silently never
-                             * touched THIS branch at all, so a real
-                             * mouse click on Close - confirmed live,
-                             * the actual way this was being used - kept
-                             * leaving the real game session running
-                             * even after that fix. */
-                            pchq_quit_host_session(house_root, host_project_id);
-                            running = 0;
-                        }
-                    }
-                } else if (ev.xbutton.y < CHROME_H) {
-                    dragging = 1;
-                    drag_last_x = ev.xbutton.x_root;
-                    drag_last_y = ev.xbutton.y_root;
-                } else if (ev.xbutton.y >= CHROME_H + PCHQ_TOOLBAR_H) {
-                    /* Real click forwarded into the canvas - same real
-                     * mechanism, offset now by chrome+toolbar height
-                     * instead of just chrome. */
-                    pchq_write_click_kv(bv_session, "last_click_x", ev.xbutton.x);
-                    pchq_write_click_kv(bv_session, "last_click_y", ev.xbutton.y - CHROME_H - PCHQ_TOOLBAR_H);
-                }
-            } else if (ev.type == ButtonRelease && ev.xbutton.button == 1) {
-                dragging = 0;
-            } else if (ev.type == MotionNotify) {
-                if (dragging) {
-                    int dx = ev.xmotion.x_root - drag_last_x;
-                    int dy = ev.xmotion.y_root - drag_last_y;
-                    win_x += dx; win_y += dy;
-                    XMoveWindow(dpy, win, win_x, win_y);
-                    drag_last_x = ev.xmotion.x_root;
-                    drag_last_y = ev.xmotion.y_root;
-                }
-            } else if (ev.type == ClientMessage && (Atom)ev.xclient.data.l[0] == pchq_wm_delete) {
-                /* Real window-manager [X]/Alt+F4 close - same real quit
-                 * signal as the in-toolbar Close Elem, so a WM-level
-                 * close doesn't leave the underlying game session
-                 * silently alive either. */
-                pchq_quit_host_session(house_root, host_project_id);
-                running = 0;
-            }
-        }
-    }
-
-    XDestroyWindow(dpy, win);
-    XSync(dpy, False);
-    XCloseDisplay(dpy);
-    return 0;
-}
-
 
 
 /* ============================================================
@@ -7693,6 +8660,49 @@ static void bump_camera_changed(const char *house_root) {
 static int g_emoji_sprite_view_top = 0; /* 0 = front (default), 1 = top */
 
 
+/* REAL, NEW 2026-09-04, direct live request ("single click vs double
+ * click. it was added to settings yet[?]") - real, generic toggle for
+ * the same house-wide click_two_step key desktop_load_click_two_step()
+ * reads, exposed via a reserved onclick verb (CLICK_TWOSTEP_TOGGLE,
+ * same real shape as OPACITY_MINUS/PLUS above: read current value,
+ * flip, write back, apply locally, redraw) so it's settable from a
+ * real Settings UI item instead of hand-editing hq_ui.pdl. Multi-key
+ * file (comments + emoji_sprite_view live in the same file) - can't
+ * just overwrite the whole thing like the single-key zorder-mode
+ * file; rewrites in place, replacing the one matching line (or
+ * appending it if somehow absent), leaving every other line
+ * untouched. Only takes effect for THIS process immediately
+ * (g_click_two_step updated in place) and any future launch that
+ * reads the file fresh - does NOT live-propagate to other already-
+ * open windows (that would need the same respawn-all-processes
+ * mechanism ktb_toggle_zorder_respawn() uses for override_redirect;
+ * deliberately not built here, scope kept to "settable at all"). */
+static void desktop_toggle_click_two_step(const char *house_root) {
+    char path[PATH_BUF];
+    snprintf(path, sizeof(path), "%s/#.desktop/hq_ui.pdl", house_root);
+    char lines[128][256];
+    int n = 0;
+    FILE *f = fopen(path, "r");
+    if (f) {
+        while (n < 128 && fgets(lines[n], sizeof(lines[n]), f)) n++;
+        fclose(f);
+    }
+    int new_val = !g_click_two_step;
+    int replaced = 0;
+    for (int i = 0; i < n; i++) {
+        if (strncmp(lines[i], "click_two_step=", 15) == 0) {
+            snprintf(lines[i], sizeof(lines[i]), "click_two_step=%d\n", new_val);
+            replaced = 1;
+        }
+    }
+    FILE *wf = fopen(path, "w");
+    if (!wf) return;
+    for (int i = 0; i < n; i++) fputs(lines[i], wf);
+    if (!replaced) fprintf(wf, "click_two_step=%d\n", new_val);
+    fclose(wf);
+    g_click_two_step = new_val;
+}
+
 static void desktop_load_click_two_step(const char *house_root) {
     char path[4352]; /* matches this file's own later TP_PATH_BUF (not yet declared at this point) */
     snprintf(path, sizeof(path), "%s/#.desktop/hq_ui.pdl", house_root);
@@ -7767,7 +8777,18 @@ static int GRID_CELL_PX = 80;
  * (rmmv_armed.txt/.pal-hint-armed). This is step 1 of that doc's own
  * scoped rollout (arm+halo only) - arrow-key movement, click-to-place,
  * and the 2D/3D camera switch are explicitly deferred to a later pass,
- * per the doc's own §8/§10 sequencing. */
+ * per the doc's own §8/§10 sequencing.
+ * REAL FIX 2026-09-04 (RENDERER-MODULARITY-AND-PERF-AUDIT.md §1.1) -
+ * set from a data-driven "STATE | log_mode | 1" row in the entity's
+ * own meta.pdl now (read_log_mode()), not a hardcoded
+ * `basename(package_dir) == "cursword"` identity check - the exact
+ * project-name-in-shared-renderer pattern CENTROID_GOLD_STD.md rule 7
+ * forbids for top-level modes, just nested inside tp_main() instead
+ * of main(). The taller "log" window / arm-on-click behavior this
+ * flag gates is unchanged and still lives inline here (that's the
+ * larger, deferred tp_main()-extraction work in the same audit doc's
+ * Part 3) - only HOW the flag gets set is now generic; any entity can
+ * opt into this variant via its own meta.pdl, not just cursword. */
 static int g_is_cursword = 0;
 static int g_cursword_armed = 0;
 
@@ -8596,6 +9617,47 @@ static FILE *pdl_open(const char *path) {
     return f;
 }
 
+/* REAL FIX 2026-09-04 (RENDERER-MODULARITY-AND-PERF-AUDIT.md §1.1) -
+ * reads an optional "STATE | log_mode | 1" row from the package's own
+ * meta.pdl, same SECTION|KEY|VALUE parse shape as read_footprint_
+ * tiles() above. Replaces the old g_is_cursword identity check
+ * (`strcmp(basename(pkgcopy), "cursword") == 0`) - a hardcoded
+ * project name living in the shared renderer is exactly the
+ * CENTROID_GOLD_STD.md rule 7 pattern this house's own standard
+ * forbids for top-level modes, just one level deeper (inside tp_main()
+ * instead of main()). Any entity can now opt into the taller "log"
+ * window variant by publishing this one row in its own meta.pdl - no
+ * renderer change needed to add a second one. Defaults to 0 (every
+ * existing entity's own meta.pdl lacks this row, so behavior is
+ * unchanged for all of them except cursword, which now carries the
+ * row itself instead of being named in code). */
+static int read_log_mode(const char *package_dir) {
+    char path[TP_PATH_BUF];
+    snprintf(path, sizeof(path), "%s/meta.pdl", package_dir);
+    FILE *f = pdl_open(path);
+    if (!f) return 0;
+    char line[TP_PATH_BUF];
+    int result = 0;
+    while (fgets(line, sizeof(line), f)) {
+        if (strncmp(line, "STATE", 5) != 0) continue;
+        char *p = strchr(line, '|');
+        if (!p) continue;
+        p++;
+        while (*p == ' ') p++;
+        char *end = strchr(p, '|');
+        if (!end) continue;
+        char *label_end = end;
+        while (label_end > p && label_end[-1] == ' ') label_end--;
+        const char *key = "log_mode";
+        size_t klen = strlen(key);
+        if ((size_t)(label_end - p) != klen || strncmp(p, key, klen) != 0) continue;
+        result = atoi(end + 1) != 0;
+        break;
+    }
+    fclose(f);
+    return result;
+}
+
 static int read_footprint_tiles(const char *package_dir) {
     char path[TP_PATH_BUF];
     snprintf(path, sizeof(path), "%s/meta.pdl", package_dir);
@@ -8952,28 +10014,97 @@ static int load_sprite_csv(const char *csv_path) {
     return 1;
 }
 
+/* REAL FIX 2026-09-04 (RENDERER-MODULARITY-AND-PERF-AUDIT.md §1.3) -
+ * the nearest-neighbor sprite-downscale index math (`(screen_px *
+ * sprite_res) / win_px`, clamped to `sprite_res - 1`) was copy-pasted
+ * verbatim at 3 separate sites (build_shape_mask() below, draw_sprite_
+ * rgb(), and the top-strip sprite sampler further down) - one real
+ * shared helper now, not three. Behavior is bit-for-bit identical
+ * (same integer math, same clamp), this is a pure dedup, not a
+ * functional change. */
+static int sprite_scale_index(int screen_px, int sprite_res, int win_px) {
+    int idx = (screen_px * sprite_res) / win_px;
+    if (idx >= sprite_res) idx = sprite_res - 1;
+    return idx;
+}
+
+/* REAL FIX 2026-09-04 (RENDERER-MODULARITY-AND-PERF-AUDIT.md §1.3) -
+ * generic replacement for what used to be two separate, near-identical
+ * mask-builder functions (this one's own sprite-alpha-driven test, and
+ * update_entity_shape_from_3d()'s own buffer-vs-background-diff test) -
+ * same real loop shape (clear to 0, set fg to 1, per-pixel test,
+ * XFillRectangle the opaque ones), differing only in HOW a pixel is
+ * tested. One real shared implementation via a callback, not two.
+ *
+ * REAL FIX 2026-09-04, PART 2 (RENDERER-MODULARITY-AND-PERF-AUDIT.md
+ * §2.2) - was WIN_PX² individual XFillRectangle(mask, x, y, 1, 1) X
+ * protocol calls (one full request per opaque pixel - real, measured
+ * cost, worse than kh_draw_canvas()'s own already-known per-pixel
+ * XPutPixel loop since that one at least stays client-side). Now
+ * builds a local 1bpp bitmap (plain C loop, zero X calls per pixel -
+ * just setting a bit in a malloc'd byte buffer) and pushes it to the
+ * X server in ONE shot: XCreateBitmapFromData() (handles the real
+ * display's own bitmap-bit-order/padding correctly, same primitive
+ * X11 icon-mask code has always used for exactly this) builds a fresh
+ * pixmap from the local bits, one XCopyArea() blits it into the
+ * CALLER's own `mask` Pixmap (preserving that object's identity - both
+ * call sites, and cursword_update_shape()'s own multi-step compositing
+ * that keeps drawing into `mask`/`mask_gc` after this call returns,
+ * depend on `mask` staying the SAME pixmap, not a new one). Net: a
+ * handful of X calls total, not WIN_PX²+2, with bit-for-bit identical
+ * resulting shape - confirmed via live PNG dump of a real sprite tile
+ * before/after. `mask_gc`'s own foreground color state is left
+ * touched (0 then 1, matching prior behavior) since callers may still
+ * rely on it being GC-drawable afterward (cursword_update_shape()
+ * does, for its own ring/disc compositing). */
+typedef int (*kh_pixel_opaque_fn)(int x, int y, void *ctx);
+static void kh_build_shape_mask_generic(Display *dpy, GC mask_gc, Pixmap mask,
+                                         int w, int h, kh_pixel_opaque_fn is_opaque, void *ctx) {
+    XSetForeground(dpy, mask_gc, 0);
+    XFillRectangle(dpy, mask, mask_gc, 0, 0, (unsigned)w, (unsigned)h);
+    XSetForeground(dpy, mask_gc, 1);
+    int stride = (w + 7) / 8;
+    unsigned char *bits = (unsigned char *)calloc((size_t)stride * (size_t)h, 1);
+    if (!bits) {
+        /* real, honest fallback - should never happen in practice at
+         * these tile resolutions, but never silently draw nothing if
+         * it ever does. */
+        for (int y = 0; y < h; y++)
+            for (int x = 0; x < w; x++)
+                if (is_opaque(x, y, ctx)) XFillRectangle(dpy, mask, mask_gc, x, y, 1, 1);
+        return;
+    }
+    for (int y = 0; y < h; y++)
+        for (int x = 0; x < w; x++)
+            if (is_opaque(x, y, ctx))
+                bits[y * stride + (x >> 3)] |= (unsigned char)(1u << (x & 7));
+    Pixmap tmp = XCreateBitmapFromData(dpy, mask, (char *)bits, (unsigned)w, (unsigned)h);
+    free(bits);
+    if (tmp != None) {
+        XCopyArea(dpy, tmp, mask, mask_gc, 0, 0, (unsigned)w, (unsigned)h, 0, 0);
+        XFreePixmap(dpy, tmp);
+    }
+}
+
+static int kh_sprite_alpha_opaque(int x, int y, void *ctx) {
+    (void)ctx;
+    int sy = sprite_scale_index(y, g_sprite_res, WIN_PX);
+    int sx = sprite_scale_index(x, g_sprite_res, WIN_PX);
+    return g_sprite_pixels[(sy * g_sprite_res + sx) * 4 + 3] > 127;
+}
+
 /* Verbatim port of egg_window.c's own build_shape_mask() (POSIX/X11
  * branch) - builds the window's real clip shape from the sprite's own
  * alpha channel (upscaled nearest-neighbor to the window's pixel size),
  * so the desktop genuinely shows through transparent pixels instead of
  * this window's own opaque background fill. */
 static void build_shape_mask(Display *dpy, Window win, GC mask_gc, Pixmap mask) {
-    XSetForeground(dpy, mask_gc, 0);
-    XFillRectangle(dpy, mask, mask_gc, 0, 0, WIN_PX, WIN_PX);
-    XSetForeground(dpy, mask_gc, 1);
     if (g_sprite_pixels) {
-        for (int y = 0; y < WIN_PX; y++) {
-            int sy = (y * g_sprite_res) / WIN_PX;
-            if (sy >= g_sprite_res) sy = g_sprite_res - 1;
-            for (int x = 0; x < WIN_PX; x++) {
-                int sx = (x * g_sprite_res) / WIN_PX;
-                if (sx >= g_sprite_res) sx = g_sprite_res - 1;
-                if (g_sprite_pixels[(sy * g_sprite_res + sx) * 4 + 3] > 127) {
-                    XFillRectangle(dpy, mask, mask_gc, x, y, 1, 1);
-                }
-            }
-        }
+        kh_build_shape_mask_generic(dpy, mask_gc, mask, WIN_PX, WIN_PX, kh_sprite_alpha_opaque, NULL);
     } else {
+        XSetForeground(dpy, mask_gc, 0);
+        XFillRectangle(dpy, mask, mask_gc, 0, 0, WIN_PX, WIN_PX);
+        XSetForeground(dpy, mask_gc, 1);
         XFillArc(dpy, mask, mask_gc, 0, 0, WIN_PX, WIN_PX, 0, 360 * 64);
     }
     XShapeCombineMask(dpy, win, ShapeBounding, 0, 0, mask, ShapeSet);
@@ -9007,22 +10138,23 @@ static void build_shape_mask(Display *dpy, Window win, GC mask_gc, Pixmap mask) 
  * (the halo's wider click surface) and real ARGB alpha for its own
  * background, so this generic path would just be redundant/
  * conflicting there. */
+struct kh_bg_diff_ctx { XImage *img; unsigned long bg_pixel; };
+static int kh_bg_diff_opaque(int x, int y, void *ctxp) {
+    struct kh_bg_diff_ctx *ctx = (struct kh_bg_diff_ctx *)ctxp;
+    unsigned long px = XGetPixel(ctx->img, x, y) & 0xFFFFFFUL; /* real, deliberate - ignore the alpha byte, meaningless on this non-ARGB visual */
+    return px != ctx->bg_pixel;
+}
+
 static void update_entity_shape_from_3d(Display *dpy, Window win, Drawable buf,
                                          int bg_r, int bg_g, int bg_b) {
     XImage *img = XGetImage(dpy, buf, 0, 0, WIN_PX, WIN_PX, AllPlanes, ZPixmap);
     if (!img) return;
     Pixmap mask = XCreatePixmap(dpy, win, WIN_PX, WIN_PX, 1);
     GC mask_gc = XCreateGC(dpy, mask, 0, NULL);
-    XSetForeground(dpy, mask_gc, 0);
-    XFillRectangle(dpy, mask, mask_gc, 0, 0, WIN_PX, WIN_PX);
-    XSetForeground(dpy, mask_gc, 1);
-    unsigned long bg_pixel = ((unsigned long)bg_r << 16) | ((unsigned long)bg_g << 8) | (unsigned long)bg_b;
-    for (int y = 0; y < WIN_PX; y++) {
-        for (int x = 0; x < WIN_PX; x++) {
-            unsigned long px = XGetPixel(img, x, y) & 0xFFFFFFUL; /* real, deliberate - ignore the alpha byte, meaningless on this non-ARGB visual */
-            if (px != bg_pixel) XFillRectangle(dpy, mask, mask_gc, x, y, 1, 1);
-        }
-    }
+    struct kh_bg_diff_ctx ctx;
+    ctx.img = img;
+    ctx.bg_pixel = ((unsigned long)bg_r << 16) | ((unsigned long)bg_g << 8) | (unsigned long)bg_b;
+    kh_build_shape_mask_generic(dpy, mask_gc, mask, WIN_PX, WIN_PX, kh_bg_diff_opaque, &ctx);
     XDestroyImage(img);
     XShapeCombineMask(dpy, win, ShapeBounding, 0, 0, mask, ShapeSet);
     XFreeGC(dpy, mask_gc);
@@ -9137,11 +10269,9 @@ static void cursword_update_shape(Display *dpy, Window win) {
 static void draw_sprite_rgb(Display *dpy, Drawable buf, GC gc, int bg_r, int bg_g, int bg_b) {
     if (!g_sprite_pixels || g_sprite_res <= 0) return;
     for (int y = 0; y < WIN_PX; y++) {
-        int sy = (y * g_sprite_res) / WIN_PX;
-        if (sy >= g_sprite_res) sy = g_sprite_res - 1;
+        int sy = sprite_scale_index(y, g_sprite_res, WIN_PX);
         for (int x = 0; x < WIN_PX; x++) {
-            int sx = (x * g_sprite_res) / WIN_PX;
-            if (sx >= g_sprite_res) sx = g_sprite_res - 1;
+            int sx = sprite_scale_index(x, g_sprite_res, WIN_PX);
             unsigned char *p = &g_sprite_pixels[(sy * g_sprite_res + sx) * 4];
             int a = p[3];
             if (a <= 0) continue;
@@ -9930,8 +11060,7 @@ static void draw_topdown_block_rgb(Display *dpy, Drawable buf, GC gc, int bg_r, 
         int srow = v0 + (y * (v1 - v0 + 1)) / top_h_scaled;
         if (srow > v1) srow = v1;
         for (int x = 0; x < WIN_PX; x++) {
-            int scol = (x * g_sprite_res) / WIN_PX;
-            if (scol >= g_sprite_res) scol = g_sprite_res - 1;
+            int scol = sprite_scale_index(x, g_sprite_res, WIN_PX);
             unsigned char *p = &g_sprite_pixels[(srow * g_sprite_res + scol) * 4];
             int a = p[3];
             if (a <= 0) continue;
@@ -10593,17 +11722,12 @@ static void draw_context_menu(Display *dpy, Window popup, GC gc, MethodItem *ite
     }
 }
 
-/* REAL, 2026-08-05: the range-finder grid used to be drawn HERE as an
- * opaque popup (real, but covered the dog/nearby tiles - direct
- * correction: "it should just be a transparent outline like a png").
- * Moved to a real standalone binary, ops/tp_range_grid.c, using the
- * X11 Shape Extension (same real transparency technique this file's
- * own sprite rendering already uses) - launched via system() from the
- * "OPEN_RANGE_GRID" dispatch below instead of drawn inline. */
+/* 2026-09-08: tp_range_grid.+x deleted. Map range is range_overlay.pdl
+ * (vision §6.7), not a screen-space diamond popup. */
 
 static void close_context_menu(Display *dpy, Window popup) {
     if (g_grab_pointer) XUngrabPointer(dpy, CurrentTime);
-    if (g_grab_keyboard) XUngrabKeyboard(dpy, CurrentTime);
+    if (g_grab_keyboard) kh_ungrab_kbd();
     XDestroyWindow(dpy, popup);
     popup_lock_release();
 }
@@ -10759,14 +11883,14 @@ static int tp_main(int argc, char **argv) {
     win_package_rel(package_buf);
 #endif
     const char *package_dir = package_buf;
-    /* Real, one-time identity check - see g_is_cursword's own
-     * declaration comment for why this is scoped to cursword only,
-     * not every desktop entity. */
-    {
-        char pkgcopy[TP_PATH_BUF];
-        snprintf(pkgcopy, sizeof(pkgcopy), "%s", package_dir);
-        g_is_cursword = (strcmp(basename(pkgcopy), "cursword") == 0);
-    }
+    /* REAL FIX 2026-09-04 (RENDERER-MODULARITY-AND-PERF-AUDIT.md §1.1) -
+     * data-driven now (see read_log_mode()'s own header comment) -
+     * was a hardcoded `strcmp(basename(pkgcopy), "cursword")` identity
+     * check; any entity can opt in via its own meta.pdl now, not just
+     * this one hardcoded name. g_is_cursword's own name is kept as-is
+     * (24 real call sites already read it) - only how it gets set
+     * changed. */
+    g_is_cursword = read_log_mode(package_dir);
     snprintf(g_history_path, sizeof(g_history_path), "%s/history.txt", package_dir);
     snprintf(g_relay_path, sizeof(g_relay_path), "%s/interact_relay.txt", package_dir);
     append_history("WINDOW_OPEN");
@@ -11185,7 +12309,7 @@ static int tp_main(int argc, char **argv) {
     int user_popup_x = 0, user_popup_y = 0;
     MethodItem user_methods[4];
     snprintf(user_methods[0].label, sizeof(user_methods[0].label), "Move");
-    snprintf(user_methods[0].action, sizeof(user_methods[0].action), "OPEN_RANGE_GRID");
+    snprintf(user_methods[0].action, sizeof(user_methods[0].action), "void");
     snprintf(user_methods[1].label, sizeof(user_methods[1].label), "Inventory");
     snprintf(user_methods[1].action, sizeof(user_methods[1].action), "void");
     snprintf(user_methods[2].label, sizeof(user_methods[2].label), "Skill");
@@ -12138,35 +13262,6 @@ static int tp_main(int argc, char **argv) {
                 }
                 close_context_menu(dpy, user_popup_win);
                 user_popup_win = 0;
-                if (strcmp(user_methods[row].action, "OPEN_RANGE_GRID") == 0) {
-                    /* REAL FIX 2026-08-05: this used to draw an OPAQUE
-                     * popup right here (real, but covered up the dog
-                     * and nearby tiles - direct correction: "it should
-                     * just be a transparent outline like a png").
-                     * Consolidated into tp_range_grid.+x, a real
-                     * standalone binary using the X11 Shape Extension
-                     * (same technique this file's own sprite
-                     * transparency already uses) so only the outline
-                     * strokes are opaque - launched here instead of
-                     * duplicating that logic. Centered on THIS
-                     * window's own real position (win_x/win_y, the
-                     * same coords XMoveWindow already uses), not the
-                     * submenu popup's location - direct correction
-                     * ("the range finder should be around the dog
-                     * tho, its off center"). */
-                    int grid_size = 5 * GRID_CELL_PX;
-                    int gx = win_x + WIN_PX / 2 - grid_size / 2;
-                    int gy = win_y + WIN_PX / 2 - grid_size / 2;
-                    char self_path[TP_PATH_BUF];
-                    if (self_exe_path(self_path, sizeof(self_path))) {
-                        char *ops_dir = dirname(self_path);
-                        char cmd[TP_PATH_BUF * 2];
-                        snprintf(cmd, sizeof(cmd), "'%s/tp_range_grid.+x' %d %d >/dev/null 2>&1 &",
-                                 ops_dir, gx, gy);
-                        int rc = system(cmd);
-                        (void)rc;
-                    }
-                }
                 need_redraw = 1;
             } else if (input_popup_win && xev.type == Expose && xev.xany.window == input_popup_win) {
                 char disp[300];
@@ -12264,7 +13359,7 @@ static int tp_main(int argc, char **argv) {
                 XMoveWindow(dpy, win, win_x, win_y);
                 write_pos(package_dir, win_x, win_y);
                 XUngrabPointer(dpy, CurrentTime);
-                XUngrabKeyboard(dpy, CurrentTime);
+                kh_ungrab_kbd();
                 g_cursword_awaiting_place = 0;
                 g_cursword_armed = 0;
                 cursword_write_armed(g_house_root, 0);
@@ -12366,7 +13461,7 @@ static int tp_main(int argc, char **argv) {
                          * reach here, see the NOTE below). The keyboard
                          * grab taken on arm above must be released
                          * here too, same as the real Escape path. */
-                        XUngrabKeyboard(dpy, CurrentTime);
+                        kh_ungrab_kbd();
                     }
                     if (g_cursword_armed && g_cursword_click_place) {
                         /* REAL, NEW 2026-08-30 - real click-to-place
@@ -12495,7 +13590,7 @@ static int tp_main(int argc, char **argv) {
                     XUngrabPointer(dpy, CurrentTime);
                     g_cursword_awaiting_place = 0;
                 }
-                XUngrabKeyboard(dpy, CurrentTime);
+                kh_ungrab_kbd();
                 g_cursword_armed = 0;
                 cursword_write_armed(g_house_root, 0);
                 append_history("CURSWORD_DISARMED_FOCUS_LOST");
@@ -12541,7 +13636,7 @@ static int tp_main(int argc, char **argv) {
                             XUngrabPointer(dpy, CurrentTime);
                             g_cursword_awaiting_place = 0;
                         }
-                        XUngrabKeyboard(dpy, CurrentTime);
+                        kh_ungrab_kbd();
                         g_cursword_armed = 0;
                         cursword_write_armed(g_house_root, 0);
                         append_history("CURSWORD_DISARMED");
@@ -12994,9 +14089,65 @@ static void cleanup_hq_window_registry(void) {
     unlink(path);
 }
 
+/* --headless main loop. Entered from main() just before it would
+ * XOpenDisplay(). g_window is parsed, CSS loaded, g_current_page set,
+ * the per-PID relay + atexit hooks are in place. No X, ever. redraw()
+ * itself is intercepted for headless (writes the text frame), so this
+ * loop just drives the same change signals hq_idle_tick() does. */
+static int headless_run(void) {
+    fprintf(stderr, "[khtpm --headless] %s  pid %d\n",
+            g_chtpm_path[0] ? g_chtpm_path : "(dock)", (int)getpid());
+    g_win_x = 0; g_win_y = 0;
+    g_win_w = window_is_dock() ? kh_screen_w() : 960;
+    g_win_h = window_is_dock() ? 40 : 640;
+
+    /* If this window has <module>s that publish its vars= file, give
+     * them a beat to write it before the first layout. The windowed
+     * path gets this for free from its slower event loop; without it a
+     * headless run can race a missing -> fully-populated vars file into
+     * its very first reparse and (with a large generated list) trip a
+     * layout crash. Bounded ~1.5s; a window with no vars= file or a
+     * fast module just falls straight through. */
+    if (g_vars_path[0]) {
+        for (int w = 0; w < 90; w++) {
+            struct stat vst;
+            if (stat(g_vars_path, &vst) == 0 && vst.st_size > 0) {
+                unsigned long h1 = kh_files_hash(g_vars_path);
+                usleep(16667);
+                if (kh_files_hash(g_vars_path) == h1) break;   /* stable */
+            }
+            usleep(16667);
+        }
+        reparse_chtpm_if_changed();   /* pick the file up before the first paint */
+    }
+
+    redraw();   /* first frame (headless redraw() == layout + write text frame) */
+
+    while (!g_quit && !g_shutdown_requested) {
+        int dirty = 0;
+        if (reparse_chtpm_if_changed()) dirty = 1;
+        hq_ui_pdl_reload_if_changed(g_house_root);
+        if (poll_agent_history() > 0) dirty = 1;
+        if (dirty && !g_quit) redraw();
+        usleep(16667);   /* 60Hz, DIAMOND cadence */
+    }
+    return 0;
+}
+
 int main(int argc, char **argv) {
-    for (int ai = 1; ai < argc; ai++)
-        if (strcmp(argv[ai], "--dump-and-exit") == 0) g_dump_and_exit = 1;
+    /* Scan + strip the flag tokens so the positional parsing below sees
+     * a clean <house_root> <chtpm_path> [x] [y] regardless of where the
+     * flag was placed. */
+    {
+        int w = 1;
+        for (int ai = 1; ai < argc; ai++) {
+            if (strcmp(argv[ai], "--dump-and-exit") == 0) { g_dump_and_exit = 1; continue; }
+            if (strcmp(argv[ai], "--headless") == 0)      { g_headless = 1;      continue; }
+            argv[w++] = argv[ai];
+        }
+        argc = w;
+        argv[argc] = NULL;
+    }
     /* REAL, NEW 2026-09-01 - taskbar strip mode AND tile mode dispatch,
      * checked FIRST, before any of the shared .chtpm-parsing setup below
      * - NEITHER mode takes a .chtpm path at all, so both share the same
@@ -13039,6 +14190,8 @@ int main(int argc, char **argv) {
      * convention ktb_pid_alive() already uses) when it polls, same
      * real second-safety-net shape as this design doc's own §2.1. */
     atexit(cleanup_hq_window_registry);
+    atexit(kh_ascii_frame_unregister);   /* per-PID text-mirror frame/pulse pair */
+    history_init_empty();                /* per-PID input relay exists from tick 0 - no swallowed first keystroke */
     /* REAL, NEW 2026-09-03 - default/HQ-window SIGTERM cleanup hook.
      * tp_main() (entity/tile path) installs handle_shutdown_signal() and
      * honors g_shutdown_requested, but the shared default/HQ path that
@@ -13059,13 +14212,23 @@ int main(int argc, char **argv) {
      * window creation - override_redirect is creation-time-only. */
     load_override_redirect(g_house_root);
     load_zorder_mode(g_house_root);
-    /* REAL, NEW 2026-08-29 - dbhq_load_font_scale() also reads the new
-     * click_two_step key (see click_focus_then_activate()'s own
-     * comment); that key applies to EVERY mode's clicks, not just
-     * db-hq, so it's loaded here once, unconditionally, before any
-     * mode-specific branch - the existing db-hq-only call further
-     * down is now a harmless redundant reload, left in place rather
-     * than restructured, since removing it isn't needed for this fix. */
+    /* REAL FIX 2026-09-04 (RENDERER-MODULARITY-AND-PERF-AUDIT.md-
+     * adjacent finding, direct live report "single click vs double
+     * click... was it added to settings yet") - this comment's own
+     * claim ("dbhq_load_font_scale() also reads... click_two_step")
+     * was already stale: dbhq_load_font_scale() no longer exists
+     * anywhere in this file (deleted in an earlier dbhq_* cleanup
+     * pass), and desktop_load_click_two_step() itself was ONLY ever
+     * called from tp_main() (tile mode) - meaning the generic default-
+     * mode path this comment claims to cover (db-hq/events-hq/chat-
+     * hai/open-hai/settings/entity-menus/everything else) NEVER
+     * actually loaded click_two_step at all, silently staying at its
+     * compile-time default (1, two-step) regardless of what
+     * #.desktop/hq_ui.pdl says - a real, previously-undiscovered gap
+     * this comment's own words already promised was fixed. Restored
+     * for real, at the exact spot this comment already said it
+     * belonged. */
+    desktop_load_click_two_step(g_house_root);
     snprintf(g_chtpm_path, sizeof(g_chtpm_path), "%s", argv[2]);
     snprintf(g_package_dir, sizeof(g_package_dir), "%s", g_chtpm_path);
     { char *slash = strrchr(g_package_dir, '/'); if (slash) *slash = '\0'; }
@@ -13086,6 +14249,7 @@ int main(int argc, char **argv) {
     g_window = parse_chtpm(g_chtpm_path);
     if (!g_window) { fprintf(stderr, "khtpm_core_render: failed to parse %s\n", g_chtpm_path); return 1; }
     { struct stat gcst; if (stat(g_chtpm_path, &gcst) == 0) g_chtpm_mtime = gcst.st_mtim; }
+    kh_text_areas_reload(g_window); /* 2026-09-08 - restore a persisted <text_area> (sql-hq editor) on launch too, not only across reparse */
     if (elem_has_class(g_window, "dock-header")) {
         /* peer is the static bottom template beside the header, never
          * a generated #.desktop/strip_bottom.chtpm (layout-update). */
@@ -13101,7 +14265,6 @@ int main(int argc, char **argv) {
      * selected by loaded data" shape, not a new attribute/parser
      * change - class= was already fully generic). */
     for (int i = 0; i < g_window->n_classes; i++) {
-        if (strcmp(g_window->classes[i], "swatch-picker") == 0) { g_is_swatch_picker = 1; break; }
         if (strcmp(g_window->classes[i], "database-window") == 0 ||
             strcmp(g_window->classes[i], "palettes-pal") == 0) g_default_persistent = 1;
         /* REAL Stage 5 §5d.10 (2026-08-16) - db-hq mode, real, data-
@@ -13137,22 +14300,6 @@ int main(int argc, char **argv) {
          * composes <window class="database-window bookmarks">. */
     }
 
-    /* REAL, NEW 2026-08-30 - piececraft-hq board-view mode, checked
-     * separately from the chain above (not folded in) since it early-
-     * returns before any of the shared X11/Elem/CSS setup below runs -
-     * see g_is_pchq_board's own declaration comment. argv[3] (optional,
-     * default "piececraft-hq") is the host project id whose live
-     * board-viewer session to display - kept as a real argument rather
-     * than hardcoded so this mode isn't accidentally piececraft-hq-only
-     * at the C level, only at the .chtpm launch site. */
-    for (int i = 0; i < g_window->n_classes; i++) {
-        if (strcmp(g_window->classes[i], "pchq-board") == 0) { g_is_pchq_board = 1; break; }
-    }
-    if (g_is_pchq_board) {
-        const char *host = (argc >= 4 && argv[3][0]) ? argv[3] : "piececraft-hq";
-        return run_pchq_board_mode(g_house_root, host);
-    }
-
     /* REAL FIX 2026-08-16, direct live report ("doesn't open by her
      * actual position like old context menu does") - launch_khtpm_menu()
      * now passes the caller's real, screen-clamped popup x/y (the same
@@ -13180,8 +14327,8 @@ int main(int argc, char **argv) {
      * not a fixed ops-dir filename like the other 2 modes. */
     {
         char css_path[PATH_BUF];
-        snprintf(css_path, sizeof(css_path), "%s/*.monads/*.livedesk-taskbar/ops/%s",
-                 g_house_root, g_is_swatch_picker ? "taskbar_settings.css" : "entity_menu_default.css");
+        snprintf(css_path, sizeof(css_path), "%s/*.monads/*.livedesk-taskbar/ops/entity_menu_default.css",
+                 g_house_root);
         memset(&g_sheet, 0, sizeof(g_sheet));
         css_load(css_path, &g_sheet);
         /* REAL, NEW 2026-09-02 - merge the .css sitting next to the
@@ -13195,12 +14342,6 @@ int main(int argc, char **argv) {
             if (dot) snprintf(dot, sizeof(app_css) - (size_t)(dot - app_css), ".css");
             if (strcmp(app_css, css_path) != 0) css_load(app_css, &g_sheet);
         }
-    }
-
-    if (g_is_swatch_picker) {
-        static const char *hex[12] = { "#000000","#ffffff","#1a1a1a","#e5e5e5","#ef4444","#f97316","#eab308","#22c55e","#06b6d4","#3b82f6","#8b5cf6","#ec4899" };
-        for (int i = 0; i < 12; i++) { g_palette_hex[i] = hex[i]; g_palette_name[i] = g_palette_name_buf[i]; }
-        g_win_w = 420;
     }
 
     /* REAL, NEW 2026-09-03 (direct live report: "look at how db hq has
@@ -13220,8 +14361,7 @@ int main(int argc, char **argv) {
      * at all - they stomp it with their own fixed, safe corner anchor
      * right after the one shared load call (dbhq_load_font_scale()) at
      * line ~17761, same real pattern applied here. */
-    if (!g_is_swatch_picker &&
-        find_by_tag(g_window, "sidebar") && find_by_tag(g_window, "panel")) {
+    if (find_by_tag(g_window, "sidebar") && find_by_tag(g_window, "panel")) {
         g_win_x = 80; g_win_y = 80; /* sidebar+panel default, distinct from the small-popup modes' 300,300 */
     }
 
@@ -13240,6 +14380,16 @@ int main(int argc, char **argv) {
      * rows which never needed dpy this early. Harmless reorder for
      * popup modes - dpy/screen/cmap weren't used before this point
      * either way. */
+    if (g_headless) {
+        /* the normal path forks the window's <module>s ~250 lines below,
+         * after XOpenDisplay - headless returns before that, so do it
+         * here. Same generic call, same cleanup (atexit kh_cleanup_
+         * modules, registered inside). Without this a headless window
+         * shows only its static skeleton, its manager never running. */
+        kh_launch_window_modules(g_window, g_house_root, g_package_dir);
+        return headless_run();
+    }
+
     dpy = XOpenDisplay(NULL);
     if (!dpy) { fprintf(stderr, "khtpm_entity_menu_render: cannot open display\n"); return 1; }
     /* REAL FIX 2026-09-01 (found live: open-hai/chat-hai/network-browser
@@ -13300,7 +14450,7 @@ int main(int argc, char **argv) {
      * DisplayHeight this file already uses for fullscreen; only pulls
      * IN from an off-screen edge, never re-centers. */
     {
-        int sw = DisplayWidth(dpy, screen), sh = DisplayHeight(dpy, screen);
+        int sw = kh_screen_w(), sh = kh_screen_h();
         if (g_win_x + g_win_w > sw) g_win_x = sw - g_win_w;
         if (g_win_y + g_win_h > sh) g_win_y = sh - g_win_h;
         if (g_win_x < 0) g_win_x = 0;
@@ -13324,7 +14474,57 @@ int main(int argc, char **argv) {
      * foreground actor there); open-hai and the transient menus follow
      * the shared pdl's managed=false when "normal" sinks below native
      * apps. Same data-driven rule, same shared #.desktop pdl. */
-    swa.override_redirect = g_is_swatch_picker ? True : (Bool)g_override_redirect;
+    /* !!! NEVER REMOVE THIS COMMENT OR THE `dock_managed` LOGIC BELOW
+     * WITHOUT READING IT FIRST !!! (direct user instruction, 2026-09-05)
+     * Full incident writeup, alternatives considered, and standing
+     * rule: 03-pitfalls/X11-AND-SESSION-PITFALLS.md, 2026-09-05 entry.
+     * One-line version: this exact bug (dock arrow-key nav dying) was
+     * ALREADY fixed once (eb74b733, 2026-08-30) in the taskbar's THEN
+     * implementation, khtpm_strip_parser.c - that file was later fully
+     * replaced by this file's own dock mode, which never inherited the
+     * fix and just followed the shared `g_override_redirect` PDL like
+     * every other window. The very next unrelated revert of that PDL
+     * (fixing a DIFFERENT bug, the toys-dropdown regression) silently
+     * undid this fix as a side effect. If you are refactoring dock
+     * window creation, or ever tempted to make this follow
+     * `g_override_redirect` "for consistency" - don't. That is
+     * literally the regression. The dock strip windows (this one and
+     * g_dock_peer_win below) must stay unconditionally WM-managed,
+     * independent of any global override_redirect setting, forever. */
+    /* REAL FIX 2026-09-05, direct live report ("when i click tb, i
+     * expect arrows to control nav, this broke again... same problem
+     * as last time") - this is the SAME real bug class eb74b733
+     * (2026-08-30, "Fix taskbar's own intermittent click failures:
+     * WM-managed, not override_redirect") already found and fixed
+     * once, for the taskbar's OLD implementation (khtpm_strip_parser.c,
+     * since replaced by this file's own dock mode) - Mutter's real
+     * XWayland focus/key routing never reaches an override_redirect
+     * surface at all (XSetInputFocus/XGetInputFocus report success at
+     * the raw X11-protocol level regardless - why every xdotool/
+     * synthetic-event test this session looked fine while real
+     * hardware kept failing). That old fix's target file no longer
+     * exists; this file's own dock windows inherited the house-wide
+     * `g_override_redirect` PDL setting instead, which the 217d97eb
+     * revert (same day, different bug - the toys dropdown menu breaking
+     * once EVERY window went WM-managed) put back to `true` - silently
+     * undoing eb74b733's fix for the dock strip specifically as a side
+     * effect of fixing something else. Scoped fix this time so a
+     * future revert of the global PDL can't do this again: the
+     * persistent dock strip windows (this one, window_is_dock(), and
+     * g_dock_peer_win below) are unconditionally WM-managed, completely
+     * independent of the global `g_override_redirect` PDL - matching
+     * apply_dock_window_hints()'s own already-unconditional EWMH dock
+     * hints just below. g_dock_menu_win (the toys dropdown, ~line 3802)
+     * deliberately keeps its own hardcoded `override_redirect = True` -
+     * that IS the 217d97eb regression's real fix already in place
+     * (short-lived popups/submenus correctly stay override_redirect,
+     * per 03-pitfalls/X11-AND-SESSION-PITFALLS.md) - not touched here. */
+    int dock_managed = window_is_dock();
+    /* pc-hq-leg-vs-nu-fix.md §5-A-ii: <window class="managed"> is
+     * WM-managed like the dock. Only pchq-board sets the class. */
+    int win_managed = dock_managed || elem_has_class(g_window, "managed");
+    g_win_managed_focus = win_managed && !dock_managed;
+    swa.override_redirect = win_managed ? False : (Bool)g_override_redirect;
     /* REAL FIX 2026-08-29 (live report: "toolbar doesn't allow drag
      * repositioning") - this generic popup window (entity-menu popup AND
      * swatch-picker/Settings) never requested ButtonReleaseMask or
@@ -13341,7 +14541,7 @@ int main(int argc, char **argv) {
     win = XCreateWindow(dpy, RootWindow(dpy, screen), g_win_x, g_win_y, (unsigned)g_win_w, (unsigned)g_win_h, 0,
                          CopyFromParent, InputOutput, CopyFromParent, CWBackPixel | CWOverrideRedirect | CWEventMask, &swa);
     if (window_is_dock()) apply_dock_window_hints(dpy, win, g_win_x, g_win_y);
-    render_managed_wm_hints(dpy, win, g_is_swatch_picker ? 0 : !g_override_redirect); /* REAL, NEW 2026-09-01 - managed branch: undecorated + no shell chrome (post-map sink-below lands after XMapRaised) */
+    render_managed_wm_hints(dpy, win, win_managed || !g_override_redirect); /* REAL, NEW 2026-09-01 - managed branch; win_managed adds class="managed" 2026-09-08 */
     Atom motif_hints = XInternAtom(dpy, "_MOTIF_WM_HINTS", False);
     long hints[5] = { 2, 0, 0, 0, 0 };
     XChangeProperty(dpy, win, motif_hints, motif_hints, 32, PropModeReplace, (unsigned char *)hints, 5);
@@ -13492,7 +14692,13 @@ int main(int argc, char **argv) {
     if (g_dock_peer) {
         XSetWindowAttributes pswa;
         pswa.background_pixel = alloc_pixel(g_theme_bg);
-        pswa.override_redirect = (Bool)g_override_redirect;
+        /* REAL FIX 2026-09-05 - see the main dock window's own
+         * `dock_managed` fix above (same header comment) for the full
+         * story. g_dock_peer_win is the bottom "pals" row - just as
+         * persistent as the main strip, needs the exact same
+         * unconditional WM-managed treatment for real arrow-key/click
+         * routing, independent of the global override_redirect PDL. */
+        pswa.override_redirect = False;
         pswa.event_mask = ExposureMask | ButtonPressMask | ButtonReleaseMask | ButtonMotionMask | KeyPressMask | StructureNotifyMask | FocusChangeMask;
         g_dock_peer_win = XCreateWindow(dpy, RootWindow(dpy, screen),
             g_dock_peer_x, g_dock_peer_y,
@@ -13501,6 +14707,7 @@ int main(int argc, char **argv) {
             0, CopyFromParent, InputOutput, CopyFromParent,
             CWBackPixel | CWOverrideRedirect | CWEventMask, &pswa);
         apply_dock_window_hints(dpy, g_dock_peer_win, g_dock_peer_x, g_dock_peer_y);
+        render_managed_wm_hints(dpy, g_dock_peer_win, 1);
         XMapRaised(dpy, g_dock_peer_win);
         set_window_opacity(dpy, g_dock_peer_win, load_theme_opacity());
         XMoveWindow(dpy, g_dock_peer_win, g_dock_peer_x, g_dock_peer_y);
@@ -13523,32 +14730,7 @@ int main(int argc, char **argv) {
     set_window_opacity(dpy, win, load_theme_opacity());
     XFlush(dpy);
 
-    if (g_is_swatch_picker) {
-        /* Reset house action/state before the manager starts so a leftover
-         * PICK: from the last session cannot count as the first pick. */
-        {
-            char ap[PATH_BUF], sp[PATH_BUF];
-            snprintf(ap, sizeof(ap), "%s/#.desktop/taskbar_settings_action.txt", g_house_root);
-            snprintf(sp, sizeof(sp), "%s/#.desktop/taskbar_settings_state.txt", g_house_root);
-            FILE *af = fopen(ap, "w");
-            if (af) { fputs("seq=0\n", af); fclose(af); }
-            FILE *sf = fopen(sp, "w");
-            if (sf) { fputs("phase=0\nbg=-1\nfg=-1\napply=0\n", sf); fclose(sf); }
-            g_swatch_action_seq = 0;
-            g_phase = 0;
-            g_chosen_bg_idx = -1;
-            g_chosen_fg_idx = -1;
-        }
-        char mb[PATH_BUF];
-        snprintf(mb, sizeof(mb), "%s/*.monads/*.livedesk-taskbar/ops/+x/swatch_picker_manager.+x", g_house_root);
-        g_swatch_mgr_pid = fork();
-        if (g_swatch_mgr_pid == 0) {
-            execl(mb, mb, g_house_root, (char *)NULL);
-            _exit(1);
-        }
-    }
     hq_run_event_loop(wm_delete, 1);
-    if (g_swatch_mgr_pid > 0) { kill(g_swatch_mgr_pid, SIGTERM); g_swatch_mgr_pid = -1; }
 
     XftDrawDestroy(xftdraw_buf);
     XFreeGC(dpy, gc);

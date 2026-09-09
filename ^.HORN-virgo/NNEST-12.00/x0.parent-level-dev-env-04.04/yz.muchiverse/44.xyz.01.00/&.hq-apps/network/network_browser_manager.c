@@ -80,9 +80,13 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/socket.h>
 #include <sys/wait.h>
 #include <signal.h>
 #include <errno.h>
+#include <poll.h>
+
+#include "nb_dom.h"
 
 #define PATH_BUF 4352
 
@@ -124,6 +128,7 @@ static char g_request_path[PATH_BUF];
 static char g_page_state_path[PATH_BUF];
 static char g_status_path[PATH_BUF];
 static char g_tmp_html_path[PATH_BUF];
+static char g_tmp_dom_path[PATH_BUF];
 static char g_current_url[PATH_BUF] = "";
 
 static void path_join(char *out, size_t outsz, const char *a, const char *b) {
@@ -681,9 +686,8 @@ static void load_page_title(char *out, size_t outsz);
 static void do_fetch(const char *url_in, int record_history);
 
 static char g_curl_url_path[PATH_BUF];
-static char g_js_eval_path[PATH_BUF];
+static char g_js_worker_path[PATH_BUF];
 static char g_js_script_path[PATH_BUF];
-static char g_js_effects_path[PATH_BUF];
 static char g_media_op_path[PATH_BUF];
 static char g_media_root[PATH_BUF];
 
@@ -782,53 +786,48 @@ static void collect_scripts(const char *html, const char *page_url, FILE *js_out
     *n_scripts = n;
 }
 
-static void apply_js_effects(const char *page_title) {
-    FILE *ef = fopen(g_js_effects_path, "r");
-    if (!ef) return;
-    char line[PATH_BUF];
-    char new_title[512] = "";
-    char extras[16][2048];
-    int n_extra = 0;
-    int ok = 0;
-    while (fgets(line, sizeof(line), ef)) {
-        size_t L = strlen(line);
-        while (L > 0 && (line[L-1]=='\n' || line[L-1]=='\r')) line[--L] = 0;
-        if (strncmp(line, "OK|1", 4) == 0) ok = 1;
-        else if (strncmp(line, "TITLE|", 6) == 0) {
-            snprintf(new_title, sizeof(new_title), "%s", line + 6);
-        } else if ((strncmp(line, "LOG|", 4) == 0 || strncmp(line, "TEXT|", 5) == 0) && n_extra < 16) {
-            const char *payload = strchr(line, '|');
-            if (payload) {
-                snprintf(extras[n_extra], sizeof(extras[0]), "TEXT|js: %s", payload + 1);
-                n_extra++;
-            }
-        }
-    }
-    fclose(ef);
-    if (!ok && !new_title[0] && n_extra == 0) return;
+/* ---- NB-JS persistent worker lifecycle (worker plan §2B) ----
+ * Step 2: the manager can spawn / LOAD / QUIT the resident worker, but
+ * the page still renders through the existing one-shot eval + static
+ * extractor. Spawn is lazy (only when a <script> exists); the worker is
+ * QUIT+reaped on manager shutdown. Effects merge (step 4) later makes the
+ * worker authoritative. RPC framing follows plan §4 (length-prefixed). */
+static int g_worker_fd = -1;
+static pid_t g_worker_pid = -1;
+static char g_worker_render[65536];   /* step 4: last RENDER rows, or "" */
 
-    (void)page_title;
+/* Step 4: overlay the worker's RENDER rows onto page.state.txt. The
+ * post-JS DOM is authoritative, so content rows (TITLE/TEXT/LINK/IMG) are
+ * replaced wholesale; non-content rows (URL|...) pass through unchanged.
+ * A script with no DOM output leaves the static file intact. Returns 1
+ * when the RENDER rows were actually merged. */
+static int merge_render_rows(void) {
+    if (!g_worker_render[0]) return 0;
+
     char tmp[PATH_BUF];
     FILE *pf = fopen(g_page_state_path, "r");
     FILE *wf = atomic_open(g_page_state_path, tmp, sizeof(tmp));
-    if (!pf || !wf) {
+    if (!wf) {
         if (pf) fclose(pf);
-        if (wf) fclose(wf);
-        return;
+        return 0;
     }
-    char row[PATH_BUF];
-    while (fgets(row, sizeof(row), pf)) {
-        size_t L = strlen(row);
-        while (L > 0 && (row[L-1]=='\n' || row[L-1]=='\r')) row[--L] = 0;
-        if (new_title[0] && strncmp(row, "TITLE|", 6) == 0)
-            fprintf(wf, "TITLE|%s\n", new_title);
-        else
+    if (pf) {
+        char row[PATH_BUF];
+        while (fgets(row, sizeof(row), pf)) {
+            size_t L = strlen(row);
+            while (L > 0 && (row[L-1]=='\n' || row[L-1]=='\r')) row[--L] = 0;
+            if (strncmp(row, "TITLE|", 6) == 0 || strncmp(row, "TEXT|", 5) == 0 ||
+                strncmp(row, "LINK|", 5) == 0 || strncmp(row, "IMG|", 4) == 0)
+                continue;
             fprintf(wf, "%s\n", row);
+        }
+        fclose(pf);
     }
-    fclose(pf);
-    for (int i = 0; i < n_extra; i++) fprintf(wf, "%s\n", extras[i]);
+    fputs(g_worker_render, wf);
+    if (g_worker_render[strlen(g_worker_render) - 1] != '\n') fputc('\n', wf);
     fclose(wf);
     atomic_commit(g_page_state_path, tmp);
+    return 1;
 }
 
 
@@ -970,9 +969,110 @@ static void collect_page_media(const char *html, const char *page_url) {
     atomic_commit(g_page_state_path, tmp);
 }
 
+#define WORKER_RECV_TIMEOUT_MS 3000   /* plan step 5: stall watchdog */
+
+static int worker_send(const char *payload, size_t n) {
+    if (g_worker_fd < 0) return 0;
+    char lb[16];
+    int ln = snprintf(lb, sizeof(lb), "%.6d\n", (int)n);
+    if (write(g_worker_fd, lb, (size_t)ln) != ln) return 0;
+    if (n && write(g_worker_fd, payload, n) != (ssize_t)n) return 0;
+    return write(g_worker_fd, "\n", 1) == 1;
+}
+
+static int worker_recv_line(char *out, size_t cap) {
+    if (g_worker_fd < 0) return 0;
+    struct pollfd p = { g_worker_fd, POLLIN, 0 };
+    int pr = poll(&p, 1, WORKER_RECV_TIMEOUT_MS);
+    if (pr <= 0) return 0;   /* worker stalled: caller closes + respawns */
+    char lb[16]; size_t i = 0; char c;
+    while (read(g_worker_fd, &c, 1) == 1) {
+        if (c == '\n') break;
+        if (i < sizeof(lb) - 1) lb[i++] = c;
+    }
+    lb[i] = 0;
+    long n = strtol(lb, NULL, 10);
+    if (n < 0 || (size_t)n >= cap) return 0;
+    size_t got = 0;
+    while (got < (size_t)n) {
+        ssize_t r = read(g_worker_fd, out + got, (size_t)n - got);
+        if (r <= 0) return 0;
+        got += (size_t)r;
+    }
+    out[got] = 0;
+    if (read(g_worker_fd, &c, 1) != 1) return 0;
+    return 1;
+}
+
+static void worker_close(void) {
+    if (g_worker_fd >= 0) { close(g_worker_fd); g_worker_fd = -1; }
+    if (g_worker_pid > 0) {
+        kill(g_worker_pid, SIGKILL);          /* plan step 5: no strays */
+        int st; waitpid(g_worker_pid, &st, 0);
+        g_worker_pid = -1;
+    }
+}
+
+/* Spawn the worker on first need. Child keeps socketpair end as stdin/stdout. */
+static void worker_spawn(void) {
+    if (g_worker_fd >= 0) return;
+    if (!g_js_worker_path[0]) return;
+    FILE *probe = fopen(g_js_worker_path, "r");
+    if (!probe) return;
+    fclose(probe);
+
+    int sv[2];
+    if (socketpair(AF_UNIX, SOCK_STREAM, 0, sv) != 0) return;
+    pid_t pid = fork();
+    if (pid == 0) {
+        dup2(sv[1], STDIN_FILENO);
+        dup2(sv[1], STDOUT_FILENO);
+        close(sv[0]); close(sv[1]);
+        execl(g_js_worker_path, g_js_worker_path, (char *)NULL);
+        _exit(127);
+    }
+    if (pid < 0) { close(sv[0]); close(sv[1]); return; }
+    close(sv[1]);
+    g_worker_fd = sv[0];
+    g_worker_pid = pid;
+}
+
+/* Ask the worker to run a page. Reads the optional RENDER frame (step 4)
+ * into g_worker_render[] then the STATUS frame. Returns 1 on "STATUS ok". */
+static int worker_load(const char *js_path, const char *dom_path,
+                       const char *href, const char *title) {
+    worker_spawn();
+    if (g_worker_fd < 0) return 0;
+    char payload[8192];
+    int n = snprintf(payload, sizeof(payload), "LOAD\n%s\n%s\n%s\n%s",
+                     js_path ? js_path : "", dom_path ? dom_path : "",
+                     href ? href : "", title ? title : "");
+    if (!worker_send(payload, (size_t)n)) { worker_close(); return 0; }
+
+    g_worker_render[0] = 0;
+    char resp[65536];
+    for (;;) {
+        if (!worker_recv_line(resp, sizeof(resp))) { worker_close(); return 0; }
+        if (strncmp(resp, "RENDER\n", 7) == 0) {
+            size_t rn = strlen(resp + 7);
+            if (rn + 1 < sizeof(g_worker_render))
+                memcpy(g_worker_render, resp + 7, rn + 1);
+            continue;   /* wait for STATUS next */
+        }
+        return strncmp(resp, "STATUS ok", 9) == 0;
+    }
+}
+
+static void worker_quit(void) {
+    if (g_worker_fd >= 0) {
+        worker_send("QUIT", 4);
+        worker_close();
+    }
+}
+
 static void run_page_scripts(const char *html, const char *url, const char *title) {
-    if (!g_js_eval_path[0]) return;
-    FILE *probe = fopen(g_js_eval_path, "r");
+    if (!g_js_worker_path[0]) return;
+    FILE *probe = fopen(g_js_worker_path, "r");
     if (!probe) return;
     fclose(probe);
 
@@ -983,13 +1083,13 @@ static void run_page_scripts(const char *html, const char *url, const char *titl
     fclose(js);
     if (n <= 0) return;
 
-    char cmd[PATH_BUF * 2];
-    snprintf(cmd, sizeof(cmd),
-        "timeout 3 '%s' '%s' '%s' '%s' '%s'",
-        g_js_eval_path, g_js_script_path, g_js_effects_path, url, title ? title : "");
-    int rc = system(cmd);
-    (void)rc;
-    apply_js_effects(title);
+    /* NB-JS worker authoritative: LOAD the page into the resident worker
+     * and, when it reports RENDER rows, overlay them onto page.state.txt
+     * (document.title=, el.textContent=, appendChild, ...). The legacy
+     * one-shot nb_js_eval effects path is gone — the worker is the single
+     * DOM writer. A worker that fails leaves the static DOM in place. */
+    worker_load(g_js_script_path, g_tmp_dom_path, url, title);
+    (void)merge_render_rows();
 }
 
 
@@ -1658,6 +1758,30 @@ static int ingest_4chan_catalog(const char *page_url) {
     return count > 0;
 }
 
+/* Phase 1 step 1 (NB-JS worker plan §3/§7): parse the fetched HTML into
+ * nb_dom.c's tolerant node tree and serialize it out to fetch.dom (the
+ * future worker's input). Produced-but-unused this commit: no behavior
+ * change, the manager still uses its linear extractor for rendering.
+ * Writes atomically like the rest of the manager. Never blocks or fails
+ * a fetch on parse trouble - if serialization fails we just leave the
+ * previous fetch.dom (or none) in place. */
+static void write_fetch_dom(const char *html, size_t n) {
+    char tmp[PATH_BUF];
+    FILE *out = atomic_open(g_tmp_dom_path, tmp, sizeof(tmp));
+    if (!out) return;
+    NbNode *root = nb_parse_html(html, n);
+    if (root) {
+        long nodes = nb_serialize(out, root);
+        fclose(out);
+        if (nodes > 0) atomic_commit(g_tmp_dom_path, tmp);
+        else unlink(tmp);
+        nb_node_free(root);
+    } else {
+        fclose(out);
+        unlink(tmp);
+    }
+}
+
 static void do_fetch(const char *url_in, int record_history) {
     char url[PATH_BUF];
     if (g_current_url[0]) resolve_url(g_current_url, url_in, url, sizeof(url));
@@ -1734,6 +1858,8 @@ static void do_fetch(const char *url_in, int record_history) {
     extract_and_publish(html, url, out);
     fclose(out);
     atomic_commit(g_page_state_path, tmp);
+
+    write_fetch_dom(html, n);
 
     {
         char title[512] = "";
@@ -2372,6 +2498,7 @@ static int parent_still_alive(void) {
 
 int main(int argc, char **argv) {
     if (argc < 2) { fprintf(stderr, "usage: %s <house_root> [pkg_dir] [ui]\n", argv[0]); return 1; }
+    signal(SIGPIPE, SIG_IGN);   /* plan step 5: dying worker writes must not kill us */
     snprintf(g_house, sizeof(g_house), "%s", argv[1]);
     snprintf(g_package_dir, sizeof(g_package_dir), "%s/&.hq-apps/network", g_house);
     for (int ai = 2; ai < argc; ai++)
@@ -2409,11 +2536,11 @@ int main(int argc, char **argv) {
     snprintf(tmpdir, sizeof(tmpdir), "%s/&.hq-apps/network/tmp", g_house);
     mkdir_p_local(tmpdir);
     path_join(g_tmp_html_path, sizeof(g_tmp_html_path), tmpdir, "fetch.html");
+    path_join(g_tmp_dom_path, sizeof(g_tmp_dom_path), tmpdir, "fetch.dom");
     path_join(g_curl_url_path, sizeof(g_curl_url_path), tmpdir, "curl.url.cfg");
     path_join(g_fetch_pid_path, sizeof(g_fetch_pid_path), tmpdir, "fetch.pid");
     path_join(g_js_script_path, sizeof(g_js_script_path), tmpdir, "page.js");
-    path_join(g_js_effects_path, sizeof(g_js_effects_path), tmpdir, "js.effects.txt");
-    snprintf(g_js_eval_path, sizeof(g_js_eval_path), "%s/ops/+x/nb_js_eval.+x", g_package_dir);
+    snprintf(g_js_worker_path, sizeof(g_js_worker_path), "%s/ops/+x/nb_js_worker.+x", g_package_dir);
     snprintf(g_media_op_path, sizeof(g_media_op_path), "%s/ops/+x/nb_media_to_sprite.+x", g_package_dir);
     path_join(g_media_root, sizeof(g_media_root), desktop, "nb_sprites");
     mkdir_p_local(g_media_root);
@@ -2436,6 +2563,7 @@ int main(int argc, char **argv) {
 
         if (!parent_still_alive()) {
             fprintf(stderr, "network_browser_manager: parent renderer is gone - exiting\n");
+            worker_quit();
             break;
         }
         usleep(300000);

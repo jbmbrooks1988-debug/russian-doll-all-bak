@@ -1,0 +1,65 @@
+<!-- canvas-craft.xhtpm - PHASE 2 (CANVAS-CRAFT-DESIGN.md).
+     Static layout only, rendered by the shared khtpm_core_render.+x.
+     class="canvas-craft-window database-window": neither token hits a
+     g_is_* strcmp trigger -> generic sidebar/panel path, zero new
+     renderer C.
+
+     3 columns, authored the HTML way: <page class="cc-cols"> is
+     display:flex; flex-direction:row (see .css), so the shared flexbox
+     engine (css_layout_pass) sizes the three regions from their own
+     width / flex-grow:
+        <sidebar>  fixed 220px   - recipe list (+ POE tab, later)
+        <panel>    flex-grow:2   - the bench: recipe card + ingredients
+        <panel>    flex-grow:1   - inventory (numbered []N, priced)
+
+     One <module>: ops/+x/canvascraft_manager.+x - parses the recipe
+     registry + canvascraft_items.pdl, runs the quantity resolver,
+     owns the (seeded) inventory, publishes canvas-craft_ui.txt; polls
+     canvas-craft_action.txt written by ops/cc_item.sh. -->
+<window label="Canvas-Craft" class="canvas-craft-window database-window" vars="canvas-craft_ui.txt">
+  <module src="&.widgits/canvas-craft/ops/+x/canvascraft_manager.+x"/>
+  <page name="main" class="cc-cols">
+
+    <sidebar id="recipes" class="cc-sidebar">
+      <text id="side-hdr" label="Recipes" class="cc-side-hdr"/>
+      <scrolllist class="from-top">
+        <repeat count="${n_recipes}" bind="rc">
+          <item id="rc${rc.#}" class="cc-recipe ${rc.cls}" label="${rc.name}"
+                action="'${PKG}/ops/cc_item.sh' 'SELECT ${rc.id}'"/>
+        </repeat>
+      </scrolllist>
+    </sidebar>
+
+    <panel id="bench" class="cc-panel">
+      <text id="pick-hint" class="cc-quiet"
+            label="Pick a recipe on the left." show="${sel_empty}"/>
+      <text id="sel-name" class="cc-sel-name"
+            label="${sel_name}   x${sel_yield}" show="${sel_show}"/>
+      <text id="sel-sub" class="cc-sel-sub"
+            label="${sel_tier}   -   ${sel_pne}" show="${sel_show}"/>
+      <text id="ing-hdr" class="cc-ing-hdr"
+            label="Ingredients (highest common denominator):" show="${sel_show}"/>
+      <repeat count="${n_ing}" bind="ing">
+        <text id="ing${ing.#}" class="cc-ing"
+              label="${ing.have} / ${ing.need}   ${ing.name}   ${ing.bar}"/>
+      </repeat>
+      <text id="sel-note" class="cc-note" label="${sel_note}" show="${sel_note}"/>
+      <item id="craft-btn" class="cc-craft" label="CRAFT" show="${sel_show}"
+            action="'${PKG}/ops/cc_item.sh' 'CRAFT'"/>
+      <text id="craft-msg" class="cc-craftmsg" label="${craft_msg}" show="${craft_msg}"/>
+    </panel>
+
+    <panel id="inventory" class="cc-invpanel">
+      <text id="inv-hdr" class="cc-side-hdr" label="Inventory"/>
+      <scrolllist class="from-top">
+        <repeat count="${n_inv}" bind="iv">
+          <item id="iv${iv.#}" class="cc-inv ${iv.cls}"
+                label="[]${iv.handle}  ${iv.name}  x${iv.count}   $${iv.price}"
+                action="'${PKG}/ops/cc_item.sh' 'SELECT ${iv.id}'"/>
+        </repeat>
+        <text id="inv-empty" class="cc-quiet" label="Inventory empty." show="${inv_empty}"/>
+      </scrolllist>
+    </panel>
+
+  </page>
+</window>

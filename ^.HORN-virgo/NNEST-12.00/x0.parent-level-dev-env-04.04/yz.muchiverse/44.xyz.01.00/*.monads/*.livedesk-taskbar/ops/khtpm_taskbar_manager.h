@@ -201,6 +201,10 @@ void ktb_focus_delta(KtbState *s, int delta);
 
 /* Quit+save: rewrite autostart LAUNCH rows from open tabs (portable paths) */
 void ktb_quit_and_save(KtbState *s);
+/* Stop the strip's own renderer window process(es). Call ONLY from an
+ * explicit user quit (KSC_CLOSE_QUIT / X.quit) - NOT from a plain exit,
+ * or it races run_khtpm_strip.sh's restart. See khtpm_taskbar_manager.c. */
+void ktb_stop_strip_renderers(const char *house_root);
 
 /* Layout helpers for plat drawing */
 int ktb_close_x0(int screen_w);
@@ -236,6 +240,12 @@ void ktb_hq_digit(KtbState *s, int d);
 /* Runs hq_menu[row].command (switch-desk / new-desk / edit-desk / open-
  * session / pal placement / cancel), mirroring run_popup_row()'s dispatch. */
 void ktb_hq_activate(KtbState *s, int row);
+
+/* Consume a `widget:` menu row's result: #.desktop/scripts/menu-widget.sh
+ * writes #.desktop/livedesk_widget_result.txt (verb= / value=); this
+ * routes on verb (open-session -> load, save-as -> save-as, ...). Call
+ * every main-loop tick; no-op when the file is absent. */
+void ktb_poll_widget_result(KtbState *s);
 
 void ktb_cliio_open_save_as(KtbState *s);
 void ktb_cliio_open_rename_desk(KtbState *s); /* seeds buffer with the current active desk's name */

@@ -1,0 +1,263 @@
+# IRC / Forum / Chain → X11-HQ windows — Phase 2 implementation plan
+
+**Status: PLAN, 2026-09-06.** Companion to
+`NETWORK-CELL-HQ-WINDOWS-DESIGN.md` (that doc's §6 recipe + §12 per-app
+UI shapes are the source of truth for *what* each window is; this doc
+is the concrete *how*, grounded in a fresh read of each app's real
+files). Browser is a separate effort (opencode). Phase 1 (network
+taskbar cell wired, live-verified 2026-08-31) is DONE — this is Phase 2.
+
+## Hard rules carried in from TPMOS-COMPLIANCE-DEBT.md §5–6 + CENTROID_GOLD_STD §3
+
+1. **Zero new C in `khtpm_core_render.c` / `khtpm_entity_menu_render.c`.**
+   No `g_is_irc_*`, no per-mode dispatch branches, no hand-built `Elem`
+   tree. Both were tried by earlier agents and fully reverted. The
+   renderer already draws an unknown `<window class="...">` correctly
+   via the generic sidebar/panel/scrolllist/cli_io path.
+2. **New class names** `irc-chat-window` / `forum-window` /
+   `chain-window` — deliberately NOT `chat-window` (would trip
+   chat-hai's persona-loop `<module>` assumptions in older docs) and
+   not any existing `g_is_*` trigger token.
+3. **Reuse each CLI app's ops verbatim** (`chat_post_message.+x`,
+   `chat_replay_ledger.+x`, `forum_*`, `chain_*`). The window manager
+   `popen()`/`system()`s them with their real argv contracts; it never
+   reimplements their logic. No new sockets (PAL-NET-STANDARD).
+4. **Discovery already done** (this doc's §2). Re-run each app's
+   `button.sh` standalone once before wiring the P2P daemons in v2.
+
+## 1. Shape — same three-part house pattern as chat-hai / csv-hq / music-player-hq
+
+Per app, a new sibling dir `&.hq-apps/<app>-hq/`:
+
+- **`<app>-hq.xhtpm` + `.css`** — static template. `<window
+  class="<app>-window" vars="<app>_ui.txt">`, one `<module
+  src=".../ops/+x/<app>_manager.+x"/>`. Sidebar + panel + `<cli_io>`,
+  all generic tags. Modeled on `&.hq-apps/chat-hai/chat-hai.xhtpm`
+  (3 KB, the cleanest existing example).
+- **`ops/<app>_manager.c`** (compiled `<module>`, music-player-hq
+  style) — argv `<house_root> <package_dir> [arg3]`. Publishes
+  `<app>_ui.txt` (key=value), polls `<app>_action.txt` (`seq=`/`cmd=`).
+  Drives the real CLI ops. `build_<app>_manager.sh` beside it.
+- **`ops/<app>_item.sh` + `<app>_send.sh`** — thin action shims, exact
+  chat-hai convention:
+  - `<item action="'${PKG}/ops/<app>_item.sh' 'VERB ARG'">` → shim is
+    called `<shim> 'VERB ARG' '<pkg>' '<house>'` → writes one
+    `seq/cmd` line to `<app>_action.txt`.
+  - `<cli_io action="'${PKG}/ops/<app>_send.sh'">` → shim is called
+    `<shim> '<pkg>' '<house>' '<live typed text>'` (renderer's
+    `default_cli_io_run_action()` contract — verified in
+    `chat-hai/ops/ch_send.sh`'s header) → writes `cmd=SEND:<text>`.
+- **`open_<app>_hq.sh`** — launcher copied from
+  `&.hq-apps/chat-hai/button-pal.sh` shape (build-if-missing,
+  single-instance `pgrep` guard, `setsid nohup "$RENDER_BIN"
+  "$HOUSE" "$XHTPM"`, record pid).
+- **Wire-in:** point the Phase-1 `livedesk:open-network:<key>` handler
+  (or `livedesk_launchers.pdl` row) at `open_<app>_hq.sh` instead of
+  the CLI `button.sh`. Both stay valid during dev.
+
+### Why a compiled manager, not chat-hai's bash `loop.sh` + `projector.+x` split
+
+chat-hai splits engine (bash persona loop) from projection (compiled
+projector) because its engine is genuinely its own long-running thing.
+Here the "engine" is a set of one-shot ops (`chat_replay_ledger`,
+`chat_post_message`) plus, in v2, two daemons. One compiled manager
+that polls the action file, runs the ops, and writes the UI file is
+simpler and matches the current house pattern (pdl-read, csv-hq,
+music-player-hq all do exactly this). No bash projector.
+
+## 2. Discovery — real schemas & ops (read 2026-09-06)
+
+### IRC — `044.pal-chat-irc👥️+2/`
+- **Ledger:** `data/master_ledger.txt`, one row per line:
+  `MSG|<msg_id>|<room>|<user>|<ts>|<text>`
+  (`msg_id` = `<epoch>-0-<seq>`; `ts` = epoch seconds).
+- **Rooms** are just the distinct `<room>` values (also dirs under
+  `rooms/<room>/`). **Users** = dirs under `users/<user>/`.
+- **Ops** (`ops/+x/`, all built): `chat_post_message.+x <room> <user>
+  <text>` (appends a MSG row); `chat_replay_ledger.+x` (no args, reads
+  `$PRISC_PROJECT_ROOT/data/master_ledger.txt`, rebuilds every
+  `rooms/<room>/messages.txt`); `chat_create_user.+x`,
+  `chat_switch_user.+x`, `chat_inbox_watcher.+x`, `palnet_peer.+x`
+  (own_kind `irc_node`), `chat_compose_frame.+x` (legacy TUI — NOT
+  used).
+- **Env:** ops resolve the project via `PRISC_PROJECT_ROOT` (falls
+  back to cwd). The manager exports it = the real
+  `044.pal-chat-irc👥️+2/` abs path.
+
+### Forum — `041.pal-forum👥️/` (Twitter-shaped: posts, likes, retweets, media, DMs)
+- **Schema (read 2026-09-06):**
+  - `users/<u>/wall.txt` rows: `POST|<post_id>|<author>|<ts>|<text>|<image_id>`
+    (`post_id` = `<author>-<epoch>-<seq>`; `image_id` = `-` when none).
+  - `users/<u>/feed_cache.txt` (what `forum_compute_feed.+x` writes):
+    same but with a trailing like count —
+    `POST|<post_id>|<author>|<ts>|<text>|<image_id>|<like_count>`.
+  - `users/<u>/{likes.txt, following.txt, followers.txt}`.
+  - DMs: `forum_dm.c`'s own per-pair thread files (verify path at build).
+- **Ops** (`ops/+x/`, all built): `forum_post.+x <user> <text> [image_id]`,
+  `forum_like.+x`, `forum_retweet.+x`, `forum_follow.+x`,
+  `forum_dm.+x <from> <to> <text>`, `forum_compute_feed.+x <user>`
+  (rebuilds that user's `feed_cache.txt`), `forum_create_user.+x`,
+  `forum_switch_user.+x`, `forum_inbox_watcher.+x`, `palnet_peer.+x`.
+  `forum_compose_frame.+x` = legacy TUI, NOT used.
+- **Media reality:** forum stores `image_id` as an **opaque string** —
+  there is NO image storage/decode op in the forum project. So media
+  support is a WINDOW-side concern:
+  - **Attach:** a "media" button on the compose row launches the shared
+    File Explorer widget (`poll_file_explorer_pick` pattern pdl-read /
+    text-edit-hq already use); the picked absolute path becomes the
+    `image_id` argv to `forum_post.+x`.
+  - **Display:** the manager, for any feed row whose `image_id != "-"`,
+    resolves it to a sprite (reuse `&.hq-apps/network/ops/
+    nb_media_to_sprite.c`, or a trimmed copy) and publishes
+    `p_<i>_sprite=<path>` + `p_<i>_has_media=1`; the template row shows
+    `<item sprite="${p.sprite}" show="${p.has_media}"/>` under the text.
+  - v1 may ship display-only (render existing `image_id` paths) and add
+    the attach button in the same pass if cheap; both are window-side,
+    no forum-project change.
+
+### Chain — `041.pal-chain⛓️/`
+- **Schema:** `data/blockchain.txt` rows
+  `BLOCK|<idx>|<prev_hash>|<nonce?>|<hash>|<ts>|<miner_wallet>|` and
+  (per §12) `TX|<from>|<to>|<amount>|<ts>|<tx_id>`; `data/pending_tx.txt`;
+  a miner state file (`net/miner_status.txt`).
+- **Ops:** `chain_create_wallet.+x`, `chain_login.+x`,
+  `chain_balance.+x`, `chain_send.+x <from> <to> <amount>`,
+  `chain_miner.+x <wallet_id>` (background toggle),
+  `chain_inbox_watcher.+x`, `palnet_peer.+x`.
+- **Wallets** = dirs under `wallets/<id>/`.
+
+## 3. Per-window layout (from NETWORK-CELL §12)
+
+### IRC (`irc-chat-window`)
+- sidebar: `${n_rooms}` `<repeat bind="r">` of `<item action="'…/irc_item.sh'
+  'ROOM ${r.name}'">`; header `+ New Room` / current-user line
+  (`<item> USER` / `NEWUSER`).
+- panel: `<text>` `${cur_room} — ${cur_user}`; `<scrolllist>` of
+  `${n_msgs}` `<repeat bind="m">` `<text class="${m.cls}"
+  label="${m.text}"/>` (cls = `msg-self` / `msg-other`); `<cli_io
+  id="composer" action="'…/irc_send.sh'">` → `SEND:<text>` →
+  `chat_post_message.+x ${cur_room} ${cur_user} <text>`.
+
+### Chain (`chain-window`) — wallet dashboard, NOT a feed
+- sidebar tabs: Wallet / Send / Mine / History (`<item action="'…'
+  'TAB wallet'">` …).
+- panel content swapped by `${cur_tab}` via `show=`-gated blocks:
+  Wallet = balance (`chain_balance.+x`) + wallet id + Create/Login;
+  Send = 3 `<cli_io>` (to / amount) + Send `<item>` →
+  `chain_send.+x`; Mine = miner state fields + Start/Stop toggle
+  (`chain_miner.+x`); History = `${n_rows}` `<repeat>` of TX/BLOCK
+  rows, newest first.
+
+### Forum (`forum-window`) — Twitter-shaped
+- **sidebar**: current user + switch/create; then tabs (`<item action
+  ="'…/forum_item.sh' 'TAB home'">` …) — **Home** (own wall + follows'
+  posts via `forum_compute_feed`), **Following** (manage follows;
+  `forum_follow.+x`), **DMs** (per-user threads, `forum_dm.+x`),
+  **Notifications** (likes/retweets/follows on your posts — derived by
+  the manager from `likes.txt` / retweet rows / `followers.txt`).
+- **panel**, `show=`-gated by `${cur_tab}`:
+  - **Home**: compose row at top — `<cli_io id="composer" action="'…
+    /forum_send.sh'">` → `POST:<text>`; a `[media]` `<item action="'…
+    /forum_item.sh' 'MEDIA'">` next to it launches File Explorer, the
+    picked path rides along as `forum_post.+x <user> <text>
+    <image_id>`. Below: feed `<repeat count="${n_posts}" bind="p">` of
+    rows — `<text label="${p.author} · ${p.age}"/>`, `<text
+    label="${p.text}"/>`, `<item sprite="${p.sprite}"
+    show="${p.has_media}"/>`, then a control line `<item action="'…'
+    'LIKE ${p.id}'" label="♥ ${p.likes}"/>` + `<item action="'…'
+    'RETWEET ${p.id}'" label="⟲ ${p.rts}"/>` + `<item action="'…'
+    'FOLLOW ${p.author}'" label="+follow" show="${p.can_follow}"/>`.
+  - **DMs**: left = thread list (one per correspondent), right = that
+    thread's messages + a `<cli_io>` → `DM:<to>|<text>` →
+    `forum_dm.+x`. (Same two-pane shape as IRC rooms.)
+  - **Following / Notifications**: plain `<repeat>` lists.
+- Manager runs `forum_compute_feed.+x ${cur_user}` on open / post /
+  RESCAN, then reads `users/${cur_user}/feed_cache.txt` for the Home
+  feed; reads `wall.txt` for a profile view.
+
+## 4. `<app>_ui.txt` schema (IRC shown; forum/chain analogous)
+
+```
+n_rooms=<N>
+r_0_name=lobby        r_0_cls=          (r_<i>_cls="active" for cur_room)
+...
+cur_room=lobby
+cur_user=guest
+n_msgs=<M>            (cap ~200, newest-last, room-filtered)
+m_0_text=<user>: <text>      m_0_cls=msg-other|msg-self
+...
+n_users=<U>  u_0_name=...    (for the switch-user control)
+status=<short status line>
+```
+
+Repeat binds: rooms `r`, msgs `m`, users `u` — key prefix MUST match
+`bind=`. Manager escapes `|`, CR, LF out of every published value
+(same `uisan()` discipline network-browser's projector uses).
+
+## 5. `<app>_action.txt` verbs (IRC)
+
+`ROOM:<name>` (switch current room; create the dir if new),
+`SEND:<text>` (→ `chat_post_message.+x`), `USER:<name>` (switch),
+`NEWUSER:<name>` (→ `chat_create_user.+x`), `RESCAN` (re-run
+`chat_replay_ledger.+x`, re-read ledger). Chain: `TAB:<name>`,
+`SEND:<to>|<amt>`, `MINE_TOGGLE`, `WALLET_NEW`, `LOGIN:<id>`. Forum:
+`TAB:<name>`, `POST:<text>`, `LIKE:<post_id>`, `RETWEET:<post_id>`,
+`FOLLOW:<user>`.
+
+## 6. Scope — real identity + real P2P from v1 (revised 2026-09-06)
+
+Original plan was "local ledger only for v1". Direct correction:
+*"it should have my user name and port number. since we can test with
+same user multiports"* — the whole point of these windows is P2P
+testing, so identity + mesh are v1, not deferred.
+
+**What each `<app>_manager.c` does on start:**
+1. **Identity** — read the house login
+   `0.user-pal👤️/00.login-signup/current_login.txt` → `current_user_id`
+   (real value: `jb`); write it into this instance's own
+   `net/session.txt` as `current_user_id=` (same file/format
+   `chat_switch_user.+x` writes). Live-switchable in-window.
+2. **Per-instance session dir** —
+   `<app>/pieces/sessions/hq-<ts>-<pid>/` with `net/ data/ rooms/
+   users/<user>/`, seeded from the real project's
+   `data/master_ledger.txt`. This dir is the child ops'
+   `PRISC_PROJECT_ROOT`, so two windows as the same user have
+   independent ledgers and genuinely exercise P2P.
+3. **Mesh** — `spawn_daemon()`:
+   `palnet_peer.+x <own_kind> <project_id> <piece_tag> <sess>/net/
+   outbox.txt <sess>/net/inbox.txt <own_kind>` (env
+   `PRISC_PROJECT_ROOT`=session, `PRISC_NET_ROOT`=`<house>/net/presence`
+   — the SHARED presence dir), plus `<app>_inbox_watcher.+x` (no args).
+   Both SIGTERM'd from the manager's own SIGTERM/INT/HUP handler.
+4. **Port** — `palnet_peer` auto-allocates from base 9950 (`irc_node`)
+   and writes `port=<n>` to `<house>/net/presence/<project_id>-<piece_
+   tag>-<peerpid>.txt`; the manager globs that prefix, reads the port,
+   publishes it. Header shows `<user>  ·  :<port>  ·  #<room>`.
+
+**Verified 2026-09-06 (IRC):** two manager instances → `cur_user=jb`
+for both, ports `:9950` / `:9951`, each its own session; instance A
+posts to `#lobby` → instance B's feed shows it within ~5 s via real
+P2P (`palnet_peer` mesh + `chat_inbox_watcher` merge).
+
+Chain/Forum follow the identical bring-up (their own `own_kind`,
+`*_inbox_watcher`, login seeds `net/session.txt` the same way).
+
+## 7. Order
+
+1. **IRC first** (simplest: one ledger, one message shape, chat-hai
+   layout is a near-exact precedent).
+2. **Chain** (different shape — tabbed wallet dashboard; proves the
+   `show=`-gated multi-tab panel).
+3. **Forum** (most ops; reuses Chain's tab pattern).
+
+Each: build headless-verify (frame dump, `<app>_ui.txt` inspection) →
+live launch from `open_<app>_hq.sh` → retarget the network-cell row →
+live-verify from the taskbar. One app per commit, own small steps.
+
+## 8. Files touched (IRC, v1) — nothing shared, nothing in the boundary
+
+New: `&.hq-apps/irc-chat-hq/{irc-chat-hq.xhtpm,.css}`,
+`ops/{irc_chat_manager.c,build_irc_chat_manager.sh,irc_item.sh,irc_send.sh}`,
+`open_irc_chat_hq.sh`. Edited: `#.desktop/livedesk_launchers.pdl` OR the
+`livedesk:open-network:irc` target (one line). `khtpm_core_render.c`,
+`khtpm_entity_menu_render.c`, `khtpm_taskbar_manager.c` — **untouched**.

@@ -1,0 +1,78 @@
+<!-- csv-hq-pal.xhtpm - real, standalone CSV/spreadsheet editor with a
+     few real functions (direct request, 2026-09-05: "while we do the
+     text editor, we also want to make a spreadsheet/csv editor with
+     some functions"). See 12.calendar/2026-09-05/2do.md for the
+     pointer to an existing external CSV ops tree checked before
+     starting this (real precedent worth reusing conceptually: a 2D
+     grid data model + a "function bank" of small reducer functions
+     over a column - reused here as SUM/AVG/MIN/MAX/COUNT built
+     directly into the manager rather than shelling out to separate
+     per-function binaries, a real, deliberate simplification for v1).
+
+     Static template + real manager (csv_hq_manager.+x, a <module>),
+     same house convention as every other app this session built. The
+     manager owns the actual grid/file state and publishes it as
+     csv_hq_ui.txt; this template only ever renders whatever it
+     published, via vars=.
+
+     REAL, NEW 2026-09-05 - cells are now edited IN PLACE via a real
+     <grid> element (08-roadmap/design-docs/GRID-ELEMENT-DESIGN.md),
+     replacing the original cellref/cellval/Set-Cell <cli_io> trio
+     (direct live feedback: "it doesn't allow user editing the cell
+     live in place like a real spreadsheet"). One nav item for the
+     WHOLE grid; arrow keys move a real 2D cursor, letters/digits
+     accumulate into a jump buffer (either order, "a11" or "11a")
+     resolved on Enter, a second Enter enters the cell for real typed
+     editing (# badge = navigating, ^ badge = editing - see the design
+     doc's own "Decided" section for why two symbols). target_id="cell_"
+     is the per-cell var-name prefix the grid reads live cell content
+     from on entering edit mode (cell_<row>_<col>, published by
+     csv_hq_manager.c's own write_ui_file()); action="CSVH_GRIDCOMMIT"
+     fires on Escape-out-of-a-cell, reusing the SAME manager-side
+     SETCELL command the old trio used - the grid is purely a richer
+     input surface, zero manager protocol change. colref stays a plain
+     <cli_io> for the SUM/AVG/MIN/MAX/COUNT functions below (those need
+     a column selection independent of wherever the grid's own cursor
+     happens to be). Up to 26 columns (A-Z) and a real display cap on
+     published rows - documented limitations, not bugs. Save writes
+     back to whatever path is already open (from Open); Save As is not
+     built this pass, same real, deliberately deferred v2 as text-
+     edit-hq's own Save As limitation doc'd in its own header (a real
+     SAVE mode for the shared File Explorer widget is the one
+     dependency both would want).
+
+     Persistent <tabbar> under chrome for New/Open/Save (same real,
+     always-visible mechanism just added to pdl-read/text-edit-hq).
+     Open reuses the shared File Explorer widget exactly like the
+     other two apps (CSVH_OPENFILE, khtpm_core_render.c) - its own
+     separate real X11 window; this manager polls File Explorer's own
+     published result the same way pdl_read_manager.c already does. -->
+<window label="csv-hq - ${file_path}" class="csv-hq-pal database-window" vars="csv_hq_ui.txt">
+  <module src="@.apps/csv-hq/ops/+x/csv_hq_manager.+x" id="_"/>
+  <page name="main">
+    <tabbar class="tab-bar">
+      <tab id="newbtn" class="tab" action="CSVH_NEW" label="New"/>
+      <tab id="openbtn" class="tab" action="CSVH_OPENFILE" label="[file] Open..."/>
+      <tab id="savebtn" class="tab" action="CSVH_SAVE" label="Save"/>
+    </tabbar>
+    <sidebar id="sidebar" class="sidebar">
+      <text label="${file_path}" class="quiet"/>
+      <text label="${status}" class="quiet"/>
+      <text label="Column letter for functions below:" class="quiet"/>
+      <cli_io id="colref" target_id="colref" label=""/>
+      <row class="toolbar">
+        <item id="sumbtn" class="opacity-btn" action="CSVH_FUNC:SUM" label="SUM"/>
+        <item id="avgbtn" class="opacity-btn" action="CSVH_FUNC:AVG" label="AVG"/>
+      </row>
+      <row class="toolbar">
+        <item id="minbtn" class="opacity-btn" action="CSVH_FUNC:MIN" label="MIN"/>
+        <item id="maxbtn" class="opacity-btn" action="CSVH_FUNC:MAX" label="MAX"/>
+      </row>
+      <item id="countbtn" class="opacity-btn" action="CSVH_FUNC:COUNT" label="COUNT"/>
+      <text label="Result: ${func_result}" class="quiet"/>
+    </sidebar>
+    <panel id="panel" class="csv-panel">
+      <grid id="sheet" rows="${n_rows}" target_id="cell_" action="CSVH_GRIDCOMMIT"/>
+    </panel>
+  </page>
+</window>

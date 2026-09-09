@@ -1,0 +1,28 @@
+ACTIVE_DIR|Smileys_Emotion
+ACTIVE_TILESET|face_smiling
+ACTIVE_CATEGORY|face_smiling
+DIR|Smileys_Emotion|Smileys & Emotion
+DIR|People_Body|People & Body
+DIR|Animals_Nature|Animals & Nature
+DIR|Food_Drink|Food & Drink
+DIR|Travel_Places|Travel & Places
+DIR|Activities|Activities
+DIR|Objects|Objects
+DIR|Symbols|Symbols
+DIR|Flags|Flags
+TILESET|face_smiling|face-smiling
+TILESET|face_affection|face-affection
+TILESET|face_tongue|face-tongue
+TILESET|face_hand|face-hand
+TILESET|face_neutral_skeptical|face-neutral-skeptical
+TILESET|face_sleepy|face-sleepy
+TILESET|face_unwell|face-unwell
+TILESET|face_hat|face-hat
+TILESET|face_glasses|face-glasses
+TILESET|face_concerned|face-concerned
+TILESET|face_negative|face-negative
+TILESET|face_costume|face-costume
+TILESET|cat_face|cat-face
+TILESET|monkey_face|monkey-face
+TILESET|heart|heart
+TILESET|emotion|emotion

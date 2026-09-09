@@ -18,13 +18,6 @@ echo "Found nested git repositories:"
 echo "$NESTED_GITS"
 echo ""
 
-# Load existing gitmodules if any
-if [ -f .gitmodules ]; then
-    GITMODULES_CONTENT=$(cat .gitmodules)
-else
-    GITMODULES_CONTENT=""
-fi
-
 FIXED=0
 
 for NESTED_GIT in $NESTED_GITS; do
@@ -33,12 +26,6 @@ for NESTED_GIT in $NESTED_GITS; do
     REL_PATH="${REL_PATH%/.git}"
 
     echo "Processing: $REL_PATH"
-
-    # Check if this is already a submodule in .gitmodules
-    if echo "$GITMODULES_CONTENT" | grep -q "path = $REL_PATH"; then
-        echo "  -> Already in .gitmodules, skipping."
-        continue
-    fi
 
     # Check if it's tracked as a gitlink in the index
     if git ls-files -s "$REL_PATH" 2>/dev/null | head -1 | grep -q "^160000"; then
@@ -50,11 +37,16 @@ for NESTED_GIT in $NESTED_GITS; do
     echo "  -> Removing nested .git directory..."
     rm -rf "$NESTED_GIT"
 
-    # Add to .gitignore
-    if ! grep -qF "$REL_PATH" .gitignore 2>/dev/null; then
-        echo "  -> Adding to .gitignore..."
-        echo "$REL_PATH" >> .gitignore
+    # Add .git directory to .gitignore if not already there
+    IGNORE_ENTRY="$REL_PATH/.git"
+    if ! grep -qF "$IGNORE_ENTRY" .gitignore 2>/dev/null; then
+        echo "  -> Adding $IGNORE_ENTRY to .gitignore..."
+        echo "$IGNORE_ENTRY" >> .gitignore
     fi
+
+    # Stage the actual files from the folder (not the .git)
+    echo "  -> Staging folder contents..."
+    git add "$REL_PATH/"
 
     FIXED=$((FIXED + 1))
 done

@@ -1040,6 +1040,56 @@ void ktb_action_portable(const char *in, char *out, size_t out_sz) {
 static void livedesk_close_all(const char *house_root);
 #ifndef _WIN32
 static void livedesk_kill_stray_entities(const char *house_root);
+
+/* REAL, NEW 2026-09-08 (direct live report: "i used quit to quit tb but
+ * it's still on screen"). X.quit / [X]-close stop the manager loop
+ * (g_running = 0) and close entities, but the strip's own RENDERER is a
+ * separate process (khtpm_core_render.+x <house>
+ * .../khtpm_strip_header.xhtpm, + the bottom peer) launched as a
+ * sibling by run_khtpm_strip.sh - nothing was signalling it, so the bar
+ * stayed on screen orphaned after the manager exited. This is the
+ * narrow /proc sweep run_khtpm_strip.sh's own strip_parser_pids() does,
+ * ported to C: ONLY khtpm_core_render.+x processes for THIS house_root
+ * whose argv also names the strip header/bottom template - never a pal,
+ * an hq window, or the manager itself. SIGTERM then SIGKILL after 1s,
+ * same shape as livedesk_kill_stray_entities(). */
+static void livedesk_kill_strip_renderers(const char *house_root) {
+    DIR *pd = opendir("/proc");
+    if (!pd) return;
+    pid_t pids[16];
+    int n = 0;
+    struct dirent *ent;
+    while ((ent = readdir(pd)) != NULL) {
+        if (ent->d_name[0] < '0' || ent->d_name[0] > '9') continue;
+        char cpath[64];
+        snprintf(cpath, sizeof(cpath), "/proc/%s/cmdline", ent->d_name);
+        FILE *cf = fopen(cpath, "r");
+        if (!cf) continue;
+        char cmdbuf[KTB_PATH_BUF * 2];
+        size_t nb = fread(cmdbuf, 1, sizeof(cmdbuf) - 1, cf);
+        fclose(cf);
+        if (nb == 0) continue;
+        cmdbuf[nb] = '\0';
+        for (size_t i = 0; i < nb; i++) if (cmdbuf[i] == '\0') cmdbuf[i] = ' ';
+        if (strstr(cmdbuf, house_root) &&
+            strstr(cmdbuf, "khtpm_core_render.+x") &&
+            (strstr(cmdbuf, "khtpm_strip_header.xhtpm") ||
+             strstr(cmdbuf, "khtpm_strip_bottom.xhtpm") ||
+             strstr(cmdbuf, "strip_header.chtpm") ||
+             strstr(cmdbuf, "strip_bottom.chtpm"))) {
+            int pid = atoi(ent->d_name);
+            if (pid > 0 && n < (int)(sizeof(pids) / sizeof(pids[0]))) pids[n++] = (pid_t)pid;
+        }
+    }
+    closedir(pd);
+    if (n == 0) return;
+    for (int i = 0; i < n; i++) kill(pids[i], SIGTERM);
+    struct timespec ts = {1, 0};
+    nanosleep(&ts, NULL);
+    for (int i = 0; i < n; i++) {
+        if (kill(pids[i], 0) == 0) kill(pids[i], SIGKILL);
+    }
+}
 #endif
 
 void ktb_quit_and_save(KtbState *s) {
@@ -1079,7 +1129,25 @@ void ktb_quit_and_save(KtbState *s) {
     livedesk_kill_stray_entities(s->house_root);
 #endif
     ktb_unlink_pidfile(s);
+    /* NOTE: the strip renderer is NOT stopped here. ktb_quit_and_save()
+     * also runs on a plain SIGTERM exit (main() bottom), and
+     * run_khtpm_strip.sh's own restart already SIGTERMs the old pair
+     * then launches a fresh one - a renderer kill here would race that
+     * and leave the new strip with no window. The strip renderer is
+     * stopped ONLY on an explicit user quit, via
+     * ktb_stop_strip_renderers() called from the KSC_CLOSE_QUIT /
+     * hq_quit_requested paths in khtpm_taskbar_manager_main.c. */
 }
+
+#ifndef _WIN32
+/* Public entry for the explicit-user-quit paths in _main.c. See
+ * livedesk_kill_strip_renderers()'s header for what/why. */
+void ktb_stop_strip_renderers(const char *house_root) {
+    livedesk_kill_strip_renderers(house_root);
+}
+#else
+void ktb_stop_strip_renderers(const char *house_root) { (void)house_root; }
+#endif
 
 int ktb_close_x0(int screen_w) {
     return screen_w - KTB_CLOSE_W;
@@ -2416,6 +2484,11 @@ static void livedesk_load_session(const char *house_root, const char *sroot, con
     livedesk_root_write(sroot, id, cur[0] ? cur : id);
 }
 
+/* (2026-09-08) ktb_poll_pending_session_open + ktb_poll_pending_save_as
+ * were merged into the single generic ktb_poll_widget_result(), defined
+ * below after livedesk_save_as_with_name(). See
+ * 08-roadmap/design-docs/TASKBAR-MENUS-DATA-DRIVEN.md step 1. */
+
 static void livedesk_new_session(const char *house_root) {
     char sroot[KTB_PATH_BUF];
     if (!livedesk_sessions_root(house_root, sroot, sizeof(sroot))) return;
@@ -2481,6 +2554,70 @@ static void livedesk_save_as_with_name(const char *house_root, const char *sroot
     livedesk_active_desk(sroot, cur, src_ad, sizeof(src_ad));
     livedesk_write_active_desk(sroot, nid, src_ad);
     livedesk_root_write(sroot, nid, "");
+}
+
+/* Generic consumer for a `widget:` menu row's result (2026-09-08, the
+ * TASKBAR-MENUS-DATA-DRIVEN.md step-1 replacement for the two per-feature
+ * pollers ktb_poll_pending_session_open / ktb_poll_pending_save_as).
+ *
+ * #.desktop/scripts/menu-widget.sh runs the widget (File Explorer),
+ * resolves the pick, and writes #.desktop/livedesk_widget_result.txt:
+ *   verb=<routing key>
+ *   value=<picked absolute path, or empty on cancel>
+ * This is polled once per main-loop tick and consumed (file removed).
+ *
+ * verbs handled here:
+ *   open-session : `value` is a path at/under the sessions root -> the
+ *                  session dir name -> livedesk_load_session().
+ *   save-as      : `value`'s basename is the new session name ->
+ *                  livedesk_save_as_with_name().
+ * An unknown/empty verb, or empty value, is a harmless no-op. */
+void ktb_poll_widget_result(KtbState *s) {
+    char path[KTB_PATH_BUF];
+    path_join(path, sizeof(path), s->house_root,
+              "#.desktop/livedesk_widget_result.txt");
+    FILE *f = ktb_fopen(path, "r");
+    if (!f) return;
+    char verb[32] = "", value[KTB_PATH_BUF] = "";
+    char line[KTB_PATH_BUF];
+    while (fgets(line, sizeof(line), f)) {
+        line[strcspn(line, "\r\n")] = '\0';
+        if (strncmp(line, "verb=", 5) == 0)
+            snprintf(verb, sizeof(verb), "%s", line + 5);
+        else if (strncmp(line, "value=", 6) == 0)
+            snprintf(value, sizeof(value), "%s", line + 6);
+    }
+    fclose(f);
+    remove(path);
+    if (!verb[0] || !value[0]) return;
+
+    char sroot[KTB_PATH_BUF];
+    if (!livedesk_sessions_root(s->house_root, sroot, sizeof(sroot))) return;
+
+    if (strcmp(verb, "open-session") == 0) {
+        /* map the picked path -> a bare session dir name under sroot */
+        char id[64] = "";
+        size_t rl = strlen(sroot);
+        if (strncmp(value, sroot, rl) == 0 && value[rl] == '/') {
+            const char *rel = value + rl + 1;
+            const char *slash = strchr(rel, '/');
+            size_t n = slash ? (size_t)(slash - rel) : strlen(rel);
+            if (n > 0 && n < sizeof(id)) { memcpy(id, rel, n); id[n] = '\0'; }
+        } else {
+            const char *base = strrchr(value, '/');
+            snprintf(id, sizeof(id), "%s", base ? base + 1 : value);
+        }
+        if (!id[0] || strcmp(id, "..") == 0) return;
+        char sp[KTB_PATH_BUF];
+        snprintf(sp, sizeof(sp), "%s/%s/session.pdl", sroot, id);
+        if (access(sp, F_OK) != 0) return;
+        livedesk_load_session(s->house_root, sroot, id);
+    } else if (strcmp(verb, "save-as") == 0) {
+        const char *base = strrchr(value, '/');
+        const char *name = base ? base + 1 : value;
+        if (!name[0] || strcmp(name, "..") == 0) return;
+        livedesk_save_as_with_name(s->house_root, sroot, name);
+    }
 }
 
 static int livedesk_build_session_menu(const char *house_root, HQMenuItem *menu, int max) {
@@ -2671,6 +2808,34 @@ static int livedesk_build_palettes_menu(const char *house_root, HQMenuItem *menu
         char lkey[40], ckey[40];
         snprintf(lkey, sizeof(lkey), "palettes_menu_%d_label", i);
         snprintf(ckey, sizeof(ckey), "palettes_menu_%d_cmd", i);
+        char lab[64] = "", cmd[KTB_PATH_BUF] = "";
+        read_key_value(pdl, lkey, lab, sizeof(lab));
+        read_key_value(pdl, ckey, cmd, sizeof(cmd));
+        if (!lab[0]) continue;
+        snprintf(menu[count].label, sizeof(menu[count].label), "%s", lab);
+        snprintf(menu[count].command, sizeof(menu[count].command), "%s", cmd);
+        count++;
+    }
+    return count;
+}
+
+/* Shared row reader for the data-driven strip menus (TASKBAR-MENU-
+ * ARCHITECTURE.md): reads `<prefix>_menu_<N>_label` / `_cmd` rows
+ * (1-based N) from #.desktop/livedesk_taskbar.pdl into menu[0..],
+ * returns the count. A builder calls this first and falls back to its
+ * own hardcoded rows only when it returns 0 (the `count==0` fallback
+ * shape livedesk_build_hq_menu()/_file_menu() already use). Extracted
+ * 2026-09-08 so the remaining C-hardcoded builders (player/ai/db/...)
+ * can convert with one line each instead of a copy-pasted loop. */
+static int livedesk_pdl_menu_rows(const char *house_root, const char *prefix,
+                                  HQMenuItem *menu, int max) {
+    char pdl[KTB_PATH_BUF];
+    snprintf(pdl, sizeof(pdl), "%s/#.desktop/livedesk_taskbar.pdl", house_root);
+    int count = 0;
+    for (int i = 1; i <= max; i++) {
+        char lkey[48], ckey[48];
+        snprintf(lkey, sizeof(lkey), "%s_menu_%d_label", prefix, i);
+        snprintf(ckey, sizeof(ckey), "%s_menu_%d_cmd", prefix, i);
         char lab[64] = "", cmd[KTB_PATH_BUF] = "";
         read_key_value(pdl, lkey, lab, sizeof(lab));
         read_key_value(pdl, ckey, cmd, sizeof(cmd));
@@ -3023,8 +3188,8 @@ static int livedesk_build_file_menu(const char *house_root, HQMenuItem *menu, in
     int n = 0;
     if (n < max) { snprintf(menu[n].label, sizeof(menu[n].label), "new-desk"); snprintf(menu[n].command, sizeof(menu[n].command), "livedesk:new-desk"); n++; }
     if (n < max) { snprintf(menu[n].label, sizeof(menu[n].label), "save"); snprintf(menu[n].command, sizeof(menu[n].command), "livedesk:save"); n++; }
-    if (n < max) { snprintf(menu[n].label, sizeof(menu[n].label), "save-as"); snprintf(menu[n].command, sizeof(menu[n].command), "livedesk:save-as"); n++; }
-    if (n < max) { snprintf(menu[n].label, sizeof(menu[n].label), "load"); snprintf(menu[n].command, sizeof(menu[n].command), "livedesk:load"); n++; }
+    if (n < max) { snprintf(menu[n].label, sizeof(menu[n].label), "save-as"); snprintf(menu[n].command, sizeof(menu[n].command), "widget:file-explorer SAVE @sessions save-as"); n++; }
+    if (n < max) { snprintf(menu[n].label, sizeof(menu[n].label), "load"); snprintf(menu[n].command, sizeof(menu[n].command), "widget:file-explorer LOAD @sessions open-session"); n++; }
     if (n < max) { snprintf(menu[n].label, sizeof(menu[n].label), "Cancel"); menu[n].command[0] = '\0'; n++; }
     return n;
 }
@@ -3038,8 +3203,11 @@ static int livedesk_build_file_menu(const char *house_root, HQMenuItem *menu, in
  * then relaunch them fresh") — real, new functionality added here, not
  * present in legacy at all. See livedesk_reset_entities() for what it
  * does. */
-static int livedesk_build_player_menu(HQMenuItem *menu, int max) {
-    int n = 0;
+static int livedesk_build_player_menu(const char *house_root, HQMenuItem *menu, int max) {
+    int n = livedesk_pdl_menu_rows(house_root, "player", menu, max);
+    if (n > 0) return n;
+    /* fallback: hardcoded rows (used only when the .pdl defines no
+     * player_menu_N_* rows) */
     if (n < max) { snprintf(menu[n].label, sizeof(menu[n].label), "play"); menu[n].command[0] = '\0'; n++; }
     if (n < max) { snprintf(menu[n].label, sizeof(menu[n].label), "pause"); menu[n].command[0] = '\0'; n++; }
     if (n < max) { snprintf(menu[n].label, sizeof(menu[n].label), "reset"); snprintf(menu[n].command, sizeof(menu[n].command), "livedesk:reset-entities"); n++; }
@@ -3064,8 +3232,11 @@ static int livedesk_build_player_menu(HQMenuItem *menu, int max) {
  * The 2-row shape (Open h-ai + Cancel) is INTENTIONAL, not a workaround.
  * Cancel row provides standard close-without-action UX, matching other
  * menus that need to be dismissible. */
-static int livedesk_build_ai_menu(HQMenuItem *menu, int max) {
-    int n = 0;
+static int livedesk_build_ai_menu(const char *house_root, HQMenuItem *menu, int max) {
+    int n = livedesk_pdl_menu_rows(house_root, "ai", menu, max);
+    if (n > 0) return n;
+    /* fallback: hardcoded rows (used only when the .pdl defines no
+     * ai_menu_N_* rows) */
     if (n < max) {
         snprintf(menu[n].label, sizeof(menu[n].label), "Open h-ai");
         snprintf(menu[n].command, sizeof(menu[n].command), "livedesk:open-open-hai");
@@ -3262,8 +3433,14 @@ static int livedesk_build_db_menu(const char *house_root, HQMenuItem *menu, int 
     if (!livedesk_sessions_root(house_root, sroot, sizeof(sroot))) return 0;
     char cur[KTB_PATH_BUF] = "";
     livedesk_root_read(sroot, cur, sizeof(cur), NULL, 0);
-    if (!cur[0]) return 0;
+    if (!cur[0]) return 0;   /* no active session -> no db menu (gate kept) */
 
+    n = livedesk_pdl_menu_rows(house_root, "db", menu, max);
+    if (n > 0) return n;
+    /* fallback: hardcoded rows (used only when the .pdl defines no
+     * db_menu_N_* rows). db-ez -> the 101/102 sub-lists (kept until
+     * db-hq-pal's Common Events tab port lands, see
+     * TASKBAR-MENUS-DATA-DRIVEN.md); db-hq -> the pal dashboard window. */
     if (n < max) {
         snprintf(menu[n].label, sizeof(menu[n].label), "db-ez");
         snprintf(menu[n].command, sizeof(menu[n].command), "livedesk:db-ez-sections");
@@ -3596,6 +3773,14 @@ static int livedesk_build_toys_menu(const char *house_root, HQMenuItem *menu, in
     char apps_root[KTB_PATH_BUF];
     snprintf(apps_root, sizeof(apps_root), "%s/@.apps", house_root);
     toys_scan_one_root(apps_root, menu, max, &n);
+    /* REAL, NEW 2026-09-05, direct live request ("add them to tb sub
+     * menus so i can check them") - &.widgits/ toys (e.g. File
+     * Explorer's own standalone check entry point) weren't scanned at
+     * all, only house_root itself and @.apps/ - same opt-in-by-
+     * toy.pdl-presence convention, third root. */
+    char widgits_root[KTB_PATH_BUF];
+    snprintf(widgits_root, sizeof(widgits_root), "%s/&.widgits", house_root);
+    toys_scan_one_root(widgits_root, menu, max, &n);
     if (n < max) { snprintf(menu[n].label, sizeof(menu[n].label), "Cancel"); menu[n].command[0] = '\0'; n++; }
     return n;
 }
@@ -3620,7 +3805,7 @@ void ktb_hq_open(KtbState *s, int which) {
     else if (which == 5) n = livedesk_build_pals_menu(s->house_root, s->hq_menu, KTB_LIVEDESK_DYN_MAX);
     else if (which == 1) n = livedesk_build_hq_menu(s->house_root, s->hq_menu, KTB_LIVEDESK_DYN_MAX);
     else if (which == 3) n = livedesk_build_file_menu(s->house_root, s->hq_menu, KTB_LIVEDESK_DYN_MAX);
-    else if (which == 8) n = livedesk_build_player_menu(s->hq_menu, KTB_LIVEDESK_DYN_MAX);
+    else if (which == 8) n = livedesk_build_player_menu(s->house_root, s->hq_menu, KTB_LIVEDESK_DYN_MAX);
     /* db (9) restored 2026-08-12 - was parked as an inert placeholder
      * while the real bug (header-click codes swallowed whenever ANY
      * cell's menu was already open, see dispatch_code()'s hq_open branch
@@ -3631,7 +3816,7 @@ void ktb_hq_open(KtbState *s, int which) {
     /* ai (14) - real, wired 2026-08-12, see livedesk_build_ai_menu()'s
      * own header comment. Was one of the bare inert cells (6/7/10/11/
      * 12/13/14) this same catch-all comment below used to include. */
-    else if (which == 14) n = livedesk_build_ai_menu(s->hq_menu, KTB_LIVEDESK_DYN_MAX);
+    else if (which == 14) n = livedesk_build_ai_menu(s->house_root, s->hq_menu, KTB_LIVEDESK_DYN_MAX);
     /* date/time (15) - clock menu, wired 2026-08-13 (au11-hq/15.clock-
      * design.md §5.2): root + internal sublevels 151 (clocks&cals) / 152
      * (reminders) / 153 (game-clock controls) / 154 (calendar view). The
@@ -3654,6 +3839,38 @@ void ktb_hq_open(KtbState *s, int which) {
         snprintf(s->hq_menu[0].label, sizeof(s->hq_menu[0].label), "(empty)");
         s->hq_menu[0].command[0] = '\0';
         n = 1;
+    }
+    /* REAL, NEW 2026-09-08 (direct request) - a generic "notes-<cell>"
+     * row on every real header-cell menu, one slot above the trailing
+     * cancel/(empty). Opens (creating if needed) a per-subsystem dev-
+     * note file in the most relevant dir, exactly the way the HQ
+     * menu's own "dir" row shells out (#.desktop/scripts/notes.sh does
+     * the dir map + `xdg-open`). Real header cells only (which 1..15);
+     * the internal session/db-ez/common-events sub-lists (100/101/102)
+     * are skipped. Idempotent - never doubles the row on re-open. */
+    if (which >= 1 && which <= 15 && n >= 1 && n < KTB_LIVEDESK_DYN_MAX - 1 &&
+        strncmp(s->hq_menu[n - 1].label, "notes-", 6) != 0) {
+        const char *cell = ktb_cell_id(s, which);
+        char cellname[32];
+        if (cell && cell[0]) {
+            snprintf(cellname, sizeof(cellname), "%s", cell);
+        } else {
+            const char *nm = "hq";
+            switch (which) {
+                case 1: nm = "hq"; break;      case 2: nm = "user"; break;
+                case 3: nm = "file"; break;    case 4: nm = "desk"; break;
+                case 5: nm = "pals"; break;    case 6: nm = "palettes"; break;
+                case 8: nm = "player"; break;  case 9: nm = "db"; break;
+                case 13: nm = "network"; break; case 14: nm = "ai"; break;
+                case 15: nm = "clock"; break;  default: nm = "hq"; break;
+            }
+            snprintf(cellname, sizeof(cellname), "%s", nm);
+        }
+        s->hq_menu[n] = s->hq_menu[n - 1];  /* push the trailing cancel/(empty) down one */
+        snprintf(s->hq_menu[n - 1].label, sizeof(s->hq_menu[n - 1].label), "notes-%s", cellname);
+        snprintf(s->hq_menu[n - 1].command, sizeof(s->hq_menu[n - 1].command),
+                 "sh '%s/#.desktop/scripts/notes.sh' '%s'", s->house_root, cellname);
+        n++;
     }
     s->hq_n_menu = n;
     s->hq_open = which;
@@ -3734,6 +3951,30 @@ void ktb_hq_activate(KtbState *s, int row) {
         /* Renderer owns the real X raise/sink (onclick=ZORDER_TOGGLE).
          * Do not flip the state file here - a leftover 5000 relay would
          * undo the renderer's toggle on the same click. */
+        return;
+    }
+    if (strncmp(m->command, "widget:", 7) == 0) {
+        /* Generic "open a helper window and act on its result" menu row
+         * (2026-09-08, TASKBAR-MENUS-DATA-DRIVEN.md step 1). _cmd form:
+         *   widget:<name> <MODE> <start-token> <result-verb>
+         * e.g. `widget:file-explorer LOAD @sessions open-session`.
+         * menu-widget.sh runs the widget modally and drops the pick in
+         * #.desktop/livedesk_widget_result.txt for ktb_poll_widget_
+         * result() (main loop). No in-place menu swap -> can't latch
+         * strip nav the way the old livedesk:load / :save-as did. */
+        char wname[32] = "", wmode[16] = "", wstart[64] = "", wverb[32] = "";
+        sscanf(m->command + 7, "%31s %15s %63s %31s", wname, wmode, wstart, wverb);
+        if (wname[0] && wverb[0]) {
+            char fx[KTB_PATH_BUF * 3];
+            snprintf(fx, sizeof(fx),
+                     KTB_SETSID "nohup sh -c 'sh \"%s/#.desktop/scripts/menu-widget.sh\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"' >/dev/null 2>&1 &",
+                     s->house_root, s->house_root, wname,
+                     wmode[0] ? wmode : "LOAD",
+                     wstart[0] ? wstart : "@house", wverb);
+            int rc = ktb_system_recorded(s->house_root, fx);
+            (void)rc;
+        }
+        ktb_hq_close(s);
         return;
     }
     if (strcmp(m->command, "user:new") == 0) {
@@ -3900,44 +4141,28 @@ void ktb_hq_activate(KtbState *s, int row) {
         (void)rc;
         ktb_hq_close(s);
     } else if (strncmp(m->command, "livedesk:open-network:", 22) == 0) {
-        /* network cell rows (2026-08-31, "13.network" dropdown, see
-         * livedesk_build_network_menu()'s own header comment) - SAME
-         * real reason as livedesk:open-palette: right above: the real
-         * launcher scripts live under the house's literal "&.hq-apps/"
-         * dir, which cannot survive unquoted in the generic sh -c
-         * fallback ('&' is a control operator). Dispatch string +
-         * C-side quoted absolute path, not a raw PDL shell command.
-         * "browser" opens the REAL, current, CENTROID_GOLD_STD-
-         * compliant window (button.sh - the shared khtpm_core_render.c
-         * generic default path + a real manager, per xperiments/
-         * khtpm-generic-dispatch-design.md's own "REAL, adopted answer"
-         * section, live-tested standalone but never actually wired to
-         * this menu until now, direct live report 2026-09-01: "so ur
-         * telling me we havent wired up the real browser to toolbar
-         * yet?"). The OLD standalone stub (open_network_browser.sh ->
-         * network_browser_render.c, its own separate hand-rolled X11
-         * app) is retired - button.sh's own header comment already
-         * documents killing any leftover instance of it as a one-time
-         * transition safeguard. irc/forum/chain still open the matching
-         * app via open_network_app.sh's own real <app> key, untouched.
-         * Prefix length verified: printf '%s'
-         * "livedesk:open-network:" | wc -c = 22. */
+        /* network cell rows ("13.network" dropdown). FULLY data-driven
+         * (2026-09-06, direct: "we shouldnt have to change parser code
+         * to add more apps"): the row's <key> maps to a
+         * `launcher_network_<key>` line in livedesk_launchers.pdl,
+         * resolved against house_root exactly like settings/stats/db/ai
+         * already are (ktb_hq_launcher_path()). Every network launcher
+         * takes just `<house_root>` as argv[1]. Adding or repointing a
+         * network app = one menu row (livedesk_taskbar.pdl) + one
+         * launcher row (livedesk_launchers.pdl) - zero C, zero
+         * recompile, no per-key strcmp chain here anymore. */
         const char *key = m->command + 22;
-        char sh[KTB_PATH_BUF * 3];
-        if (strcmp(key, "browser") == 0) {
+        char app[80];
+        snprintf(app, sizeof(app), "network_%s", key);
+        char launcher[KTB_PATH_BUF];
+        if (ktb_hq_launcher_path(s->house_root, app, launcher, sizeof(launcher))) {
+            char sh[KTB_PATH_BUF * 3];
             snprintf(sh, sizeof(sh),
-                     KTB_SETSID "nohup sh \"%s/&.hq-apps/network/button.sh\" \"%s\" >/dev/null 2>&1 &",
-                     s->house_root, s->house_root);
-        } else {
-            const char *title = strcmp(key, "irc") == 0 ? "IRC Chat"
-                               : strcmp(key, "forum") == 0 ? "Forum"
-                               : strcmp(key, "chain") == 0 ? "Chain" : key;
-            snprintf(sh, sizeof(sh),
-                     KTB_SETSID "nohup sh \"%s/&.hq-apps/network/open_network_app.sh\" \"%s\" \"%s\" \"%s\" >/dev/null 2>&1 &",
-                     s->house_root, s->house_root, key, title);
+                     KTB_SETSID "nohup sh -c 'bash \"%s\" \"%s\"' >/dev/null 2>&1 &",
+                     launcher, s->house_root);
+            int rc = ktb_system_recorded(s->house_root, sh);
+            (void)rc;
         }
-        int rc = ktb_system_recorded(s->house_root, sh);
-        (void)rc;
         ktb_hq_close(s);
     } else if (strcmp(m->command, "livedesk:spawn-cursword") == 0) {
         /* CURSword personal-assistant entity (AU24-oc-handon.md §4.4),
@@ -4152,6 +4377,40 @@ void ktb_hq_activate(KtbState *s, int row) {
         (void)rc;
 #endif
         ktb_hq_close(s);
+    } else if (strcmp(m->command, "livedesk:open-sql-hq") == 0) {
+        /* db cell's "sql-hq" row - SQL over .csv/.pdl. Same launch
+         * shape as db-hq-pal above (single-quoted sh -c makes the
+         * &.hq-apps path safe). SQL-HQ-DESIGN.md. */
+#ifdef _WIN32
+        char bin[KTB_PATH_BUF], chtpm[KTB_PATH_BUF];
+        snprintf(bin, sizeof(bin), "%s/*.monads/*.livedesk-taskbar/ops/+x/khtpm_core_render.+x", s->house_root);
+        snprintf(chtpm, sizeof(chtpm), "%s/&.hq-apps/sql-hq/sql-hq.xhtpm", s->house_root);
+        const char *aa[2] = { s->house_root, chtpm };
+        win_spawn_n(bin, aa, 2);
+#else
+        char sh[KTB_PATH_BUF * 3];
+        snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c 'sh \"%s/&.hq-apps/sql-hq/button.sh\" \"%s\"' >/dev/null 2>&1 &",
+                 s->house_root, s->house_root);
+        int rc = ktb_system_recorded(s->house_root, sh);
+        (void)rc;
+#endif
+        ktb_hq_close(s);
+    } else if (strcmp(m->command, "livedesk:open-piececraft-hq") == 0) {
+        /* HQ-menu pin: toys list is 17+ rows; click y/row used to hit
+         * piececraft-xyz instead of piececraft-hq. Same button.sh run
+         * as livedesk:open-toy. */
+#ifdef _WIN32
+        char launch[KTB_PATH_BUF];
+        snprintf(launch, sizeof(launch), "%s/@.apps/piececraft-hq/button.sh", s->house_root);
+        (void)launch;
+#else
+        char sh[KTB_PATH_BUF * 3];
+        snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c 'sh \"%s/@.apps/piececraft-hq/button.sh\" run' >/dev/null 2>&1 &",
+                 s->house_root);
+        int rc = ktb_system_recorded(s->house_root, sh);
+        (void)rc;
+#endif
+        ktb_hq_close(s);
     } else if (strncmp(m->command, "livedesk:clock:", 15) == 0) {
         /* Cell 15 clock menu dispatch (15.clock-design.md §5.3). All
          * writers shell out to lc_clock (control plane) which does the
@@ -4303,19 +4562,13 @@ void ktb_hq_activate(KtbState *s, int row) {
          * replacement popup). */
         livedesk_save(s->house_root);
         ktb_hq_close(s);
-    } else if (strcmp(m->command, "livedesk:save-as") == 0) {
-        /* file cell's "save-as" row - mirrors livedesk_dispatch()'s
-         * `livedesk_save_as()` branch, which opens the cli-io text-input
-         * modal (same real target as the standalone which==4 header used
-         * to be before this pass's 12-cell renumbering - see
-         * ktb_cliio_open_save_as()). */
-        ktb_cliio_open_save_as(s);
-    } else if (strcmp(m->command, "livedesk:load") == 0) {
-        /* file cell's "load" row - mirrors livedesk_dispatch()'s
-         * `livedesk_open_sessions_popup()` branch: replaces the current
-         * (file) row list in place with the session picker, same
-         * "keep_open" shape run_popup_row() uses for load->sessions. */
-        ktb_hq_open(s, 100); /* session picker (13 is an inert cell and would close the popup) */
+    /* file cell's "save-as" / "load" rows are now `widget:` _cmd rows
+     * (livedesk_taskbar.pdl file_menu_*), handled by the generic
+     * strncmp(m->command, "widget:", 7) branch near the top of this
+     * function -> menu-widget.sh -> ktb_poll_widget_result(). The old
+     * livedesk:save-as / livedesk:load branches (and pick-session.sh /
+     * save-as-session.sh) were deleted 2026-09-08, TASKBAR-MENUS-DATA-
+     * DRIVEN.md step 1. */
     } else if (strcmp(m->command, "quit") == 0) {
         /* Real HQ menu's "X.quit" row (which==1, see ktb_hq_open()) -
          * mirrors tp_taskbar.c's agent_relay_dispatch() "quit" branch. Can't

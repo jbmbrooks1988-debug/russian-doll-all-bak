@@ -204,13 +204,59 @@ before (worker not even spawned unless a `<script>` exists).
    `textContent`, `children`, `tagName`, `getAttribute`, `setAttribute`,
    `classList`, `appendChild`, `innerHTML` get/set). Verify with
    `tests/worker_dom_test.*`. *Commit 3.*
+   > **DONE — 2026-09-04, branch `chtpm-js-rungs`** (commit: step-3 DOM
+   > commit; see slave handoff `09-appendix/handoff-2026-09-04-slave-nb-js-worker.md`).
+   > Worker links `nb_dom.c`; `nb_dom_load()` rebuilds the tree in its
+   > heap; index-based node handles; `install_dom()` natives; several
+   > accessors shipped as real `duk_def_prop` getters with `this`-binding
+   > via `duk_push_this` (Duktape 2.7 puts args at 0..n-1, `this` above —
+   > the step-3 debug catch). `tests/worker_dom_test.*` green (81
+   > assertions); 5 rung suites pass through both eval AND worker.
 4. **`RENDER` merge** back into `page.state.txt` (rung 5 glue) —
    mutated DOM now visibly changes the window. Verify with a real
    `innerHTML=`-style fixture + live window. *Commit 4.*
+   > **DONE — 2026-09-05, branch `chtpm-js-rungs`** (step-4 commit; see
+   > slave handoff `09-appendix/handoff-2026-09-04-slave-nb-js-worker.md`).
+   > Worker sends a **single frame `RENDER\n<rows>`** (rows =
+   > `page.state.txt` format, TITLE first, budget-capped at 60 k rows)
+   > before `STATUS ok`; manager's `worker_load()` skips it into
+   > `g_worker_render[]`, then `merge_render_rows()` overlays it onto
+   > `page.state.txt` under `merge_render_rows()` — worker DOM is
+   > authoritative when RENDER rows exist (legacy one-shot effects merge
+   > skipped so the DOM-less eval can't inject noise). Verified end-to-end
+   > through the real manager binary + local HTTP server: `document.title`,
+   > `el.textContent=`, `createElement`+`appendChild` all show in
+   > `page.state.txt`; no-script pages byte-identical; script-error pages
+   > keep the static rows. `tests/worker_dom_test.c` taught to skip the
+   > RENDER frame (and to drain frames exactly, trailing `\n` included).
 5. **CPU budget + node cap** harden + `usleep` idle-loop discipline +
    manager SIGKILL/restart guards. *Commit 5.*
+   > **DONE — 2026-09-05, branch `chtpm-js-rungs`** (step-5 commit; see
+   > slave handoff). The DOM-node cap was **already** in `nb_dom.c`
+   > (`DOM_MAX_NODES` 50000 at the parser/serializer); what was missing was
+   > the script side. The worker now (a) caps JS-created element wrappers at
+   > `NODE_HANDLE_CAP` 250000 (index table simply returns -1 → the wrapper's
+   > natives no-op via the existing bounds check), and (b) runs every eval
+   > under a **CPU budget**: `alarm(EVAL_BUDGET_SEC=2)` + a deadly-default
+   > `SIGALRM` handler that `_exit`s the worker mid-eval — a
+   > `while(true){}` page.js kills the worker, not the browser. The manager
+   > gained `WORKER_RECV_TIMEOUT_MS` 3000 (`poll()` before each frame read),
+   > `worker_close()` now `SIGKILL`s + `waitpid`s the child, and main
+   > `SIG_IGN`s `SIGPIPE` so a dying worker's write can't take the manager
+   > down. Worker death ⇒ `worker_load` fails ⇒ static-raster rows stay
+   > (degrade-without-blanking invariant); next `<script>` page respawns a
+   > fresh worker. Verified end-to-end with a hostile `while(true){}` page:
+   > manager survives, `page.state.txt` keeps the static rows, no hang, no
+   > zombie workers; the following scripted page still RENDER-merges through
+   > a respawned worker.
 6. **Docs**: mark rung 2 (+ rung 5 glue + §3 worker plumbing) done in
    the roadmap; note what rungs 3/4/7 remain. *Commit 6.*
+   > **DONE — 2026-09-05, branch `chtpm-js-rungs`** (step-6 doc commit):
+   > roadmap §0 refreshed to the worker pipeline, rung 5 marked DONE
+   > (glue), §2 CPU-safety "enforced as of step 5" block, §3 marked BUILT,
+   > rung-2 block gained the `duk_push_this` catch line, session report
+   > added (`PROGRESS-nb-js-worker-phase1.md`). Phase 1 complete — rungs
+   > 3/4 remain, rung 7 deferred (this §8 + roadmap rung headers).
 
 ## 8. PHASE 2 — rungs 3, 4, 5 + the rung-6 remainder (the "what's next" / hand-off)
 

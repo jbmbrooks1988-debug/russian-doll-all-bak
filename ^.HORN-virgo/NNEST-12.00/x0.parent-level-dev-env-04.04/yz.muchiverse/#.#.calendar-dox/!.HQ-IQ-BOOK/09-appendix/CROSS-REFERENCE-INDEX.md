@@ -5,6 +5,8 @@
 | What the house is, PIECE/MODULE/OS shape | `01-orientation/WHAT-IS-THIS-HOUSE.md` |
 | Glossary | `01-orientation/GLOSSARY.md` |
 | The gold-standard rendering architecture | `02-architecture/CENTROID_GOLD_STD.md` |
+| xhtpm/khtpm complete tag/attribute/verb/CSS/layout reference, hard limits table | `02-architecture/XHTPM-PARSER-REFERENCE.md` |
+| Renderer modularity/reuse + performance audit (dead g_is_* flags, copy-paste, per-pixel loops, tp_main() ops-conversion assessment) | `02-architecture/RENDERER-MODULARITY-AND-PERF-AUDIT.md` |
 | How khtpm's merged binary actually works today | `02-architecture/RENDERING-ORIENTATION.md` |
 | chtpm_parser_pal vs khtpm | `02-architecture/TWO-PARSER-FAMILIES.md` |
 | Input/relay/dispatch pipeline, nav_index | `02-architecture/INPUT-RELAY-PIPELINE.md` |
@@ -23,6 +25,11 @@
 | CPU-safety / headless testing | `06-testing/CPU-AND-SESSION-SAFETY.md` |
 | Install/versioning/store ideas | `07-install-and-ship/PHONDO_INSTALL_IDEAS.md` |
 | Open roadmap items | `08-roadmap/OPEN-ITEMS.md` |
+| Tilesets, palettes, event guides, MC/CDDA/Civ/GTA/RPG Maker clone map | `08-roadmap/TILESETS-EVENTS-AND-GAME-CLONES.md` |
+| My Palettes / Tiled / OHRRPGCE / tile-editor (design only) | `08-roadmap/design-docs/MY-PALETTES-TILED-OHR-TILE-EDITOR-DESIGN.md` |
+| Asset location PDLs (RMMV, Mineclonia, CDDA, Tiled, OHR, emoji 17, video) | `44.xyz.01.00/shared/*-ASSET-SOURCE-LOCATION.pdl` (house zip; clones stay in optional `#.NNEST_ASSETS`) |
+| Per-tile event guides (Mineclonia / CDDA) | `44.xyz.01.00/#.ref/menu/event-guides/` |
+| Event command registry (live) | `44.xyz.01.00/#.ref/menu/event_commands.registry.pdl` |
 | 2026-08-31 in-progress network-HQ work | `08-roadmap/au-31/` |
 | 63 bulk-moved design/plan/handoff docs | `08-roadmap/design-docs/` |
 | Browser-prompting delegation prompts | `08-roadmap/browser-prompting/` |

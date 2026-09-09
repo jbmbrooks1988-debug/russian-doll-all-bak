@@ -1,0 +1,44 @@
+<!-- media-3d-hq — page-level canvas + tabbar + pchq chrome. -->
+<window label="Muchi Blend - ${status_line}" class="database-window" vars="state/media_3d_hq_ui.txt">
+  <module src="@.apps/media-3d-hq/ops/+x/media_3d_hq_manager.+x" id="_"/>
+  <page name="main">
+    <item id="close" class="chrome-btn" label="x" onclick="CLOSE"/>
+    <item id="fullscreen" class="chrome-btn" label="!" onclick="TOGGLE_FULLSCREEN"/>
+    <item id="minimize" class="chrome-btn" label="_" onclick="MINIMIZE"/>
+    <tabbar class="tab-bar">
+      <tab id="new" class="tab" label="New"
+           action="'${HOUSE}/@.apps/media-3d-hq/ops/media_3d_hq_action.sh' 'NEW'"/>
+      <tab id="demo" class="tab" label="Demo"
+           action="'${HOUSE}/@.apps/media-3d-hq/ops/media_3d_hq_action.sh' 'DEMO'"/>
+      <tab id="addc" class="tab" label="+ Cube"
+           action="'${HOUSE}/@.apps/media-3d-hq/ops/media_3d_hq_action.sh' 'ADD:CUBE'"/>
+      <tab id="adds" class="tab" label="+ Sph"
+           action="'${HOUSE}/@.apps/media-3d-hq/ops/media_3d_hq_action.sh' 'ADD:SPHERE'"/>
+    </tabbar>
+    <tabbar class="tab-bar">
+      <tab id="tsel" class="tab ${tSEL}" label="Sel"
+           action="'${HOUSE}/@.apps/media-3d-hq/ops/media_3d_hq_action.sh' 'TOOL:SEL'"/>
+      <tab id="tgr" class="tab ${tGRAB}" label="Grab"
+           action="'${HOUSE}/@.apps/media-3d-hq/ops/media_3d_hq_action.sh' 'TOOL:GRAB'"/>
+      <tab id="trot" class="tab ${tROT}" label="Rot"
+           action="'${HOUSE}/@.apps/media-3d-hq/ops/media_3d_hq_action.sh' 'TOOL:ROT'"/>
+      <tab id="tscl" class="tab ${tSCL}" label="Scl"
+           action="'${HOUSE}/@.apps/media-3d-hq/ops/media_3d_hq_action.sh' 'TOOL:SCL'"/>
+      <tab id="cL" class="tab" label="orb &lt;"
+           action="'${HOUSE}/@.apps/media-3d-hq/ops/media_3d_hq_action.sh' 'CAM:L'"/>
+      <tab id="cR" class="tab" label="orb &gt;"
+           action="'${HOUSE}/@.apps/media-3d-hq/ops/media_3d_hq_action.sh' 'CAM:R'"/>
+      <tab id="zin" class="tab" label="z+"
+           action="'${HOUSE}/@.apps/media-3d-hq/ops/media_3d_hq_action.sh' 'CAM:IN'"/>
+      <tab id="zout" class="tab" label="z-"
+           action="'${HOUSE}/@.apps/media-3d-hq/ops/media_3d_hq_action.sh' 'CAM:OUT'"/>
+    </tabbar>
+    <canvas id="view" class="ms-canvas" sprite="${canvas_raw}"/>
+    <text label="${gutter}" class="ms-gutter"/>
+    <repeat count="${n_items}" bind="it">
+      <item id="row${it.#}" class="ms-row ${it.cls}" label="${it.name}"
+            action="'${HOUSE}/@.apps/media-3d-hq/ops/media_3d_hq_action.sh' 'PICK:${it.#}'"
+            backspace_action="'${HOUSE}/@.apps/media-3d-hq/ops/media_3d_hq_action.sh' 'DEL:${it.#}'"/>
+    </repeat>
+  </page>
+</window>

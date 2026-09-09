@@ -10,6 +10,29 @@
   handoff (stale filenames, predates `CENTROID_GOLD_STD.md` and
   everything since). Read this before tasking Grok with anything.
 - `OPEN-ITEMS.md` — the current, real open-item summary (start here).
+- `design-docs/SQL-HQ-DESIGN.md` — **2026-09-08 BUILT (steps 1–6, 9)**:
+  sql-hq = SQL over `.csv` / `.pdl` (vendored sqlite3 amalgamation);
+  x11-hq window + macro sidebar + `sql_hq repl` CLI, opens from
+  `[ ]db → sql-hq`. Remaining: staged Commit/Rollback, Export/History,
+  grid polish (§6 table).
+- `design-docs/TASKBAR-MENUS-DATA-DRIVEN.md` — **in progress**: strip
+  submenu rows moved to `livedesk_taskbar.pdl` `<cell>_menu_N_label/_cmd`
+  read at open time. player/ai/db converted; user/pals/toys/clock
+  (directory-scanning) still hardcoded.
+- `design-docs/MY-PALETTES-TILED-OHR-TILE-EDITOR-DESIGN.md` — Tiled +
+  OHR pickers + import-only My Palettes + tile-editor v1 **landed
+  2026-09-08** (MVP). Design still the contract for TMX/TSX and saver.
+- `design-docs/PIECECRAFT-HQ-GAME-EDITOR-AND-PLAY.md` — **2026-09-08
+  studio vision + implementer briefing**: desktop is an RM map too;
+  play does not hide chrome; Transfer/Shop/Battle/db guidance; CDDA /
+  MC / Civ / Pokemon as event skins (§§6–9). Range overlay §6.7
+  (priority; builtin compositor+BFS, plugin = registry+db).
+- `TILESETS-EVENTS-AND-GAME-CLONES.md` — **2026-09-08 find-it-later map**:
+  palettes categories (RMMV / Mineclonia / CDDA / emoji / tiled / ohr),
+  outside-zip asset PDLs, event-guide sheets, registry + `mr_world`,
+  sample piececraft maps, and how those attach to MC / CDDA / Civ /
+  GTA / RPG Maker clones. Start here before hunting tileset or event
+  paths.
 - `au-31/` — 2026-08-31's live in-progress work directory (`00-todo.md`
   real todo list, `01-manager-design.md`/`02-network-browser-...md`
   design docs). Moved verbatim from `1.^V-hq/au-31/`.
@@ -75,9 +98,13 @@ pointers were the only outright deletions.
   design in `02-architecture/xperiments/khtpm-generic-dispatch-
   design.md`, not yet implemented — see `CENTROID_GOLD_STD.md` §3
   rule 7 for the ordered migration plan.
-- **ASCII/headless khtpm renderer** (`ascii_draw_elem()`): designed,
-  not yet built — `02-architecture/xperiments/chtpmx11-refactor.md`
-  §8.
+- **ASCII/headless khtpm renderer** (`ascii_draw_elem()`): the strip
+  half is **BUILT + verified** (`cli`, bidirectional, DIAMOND
+  marker-driven, 2026-09-06). Extending it to every window (entity
+  menus, sub-menus, HQ windows, headless) is planned in
+  `design-docs/TERMINAL-MIRROR-PARITY-all-windows.md` (4 shippable
+  steps). Older sketch: `02-architecture/xperiments/chtpmx11-
+  refactor.md` §8.
 - **LayDoc → Elem/CSS taskbar retarget**: not started — see
   `design-docs/LAYDOC-ELEM-PORT-IMPLEMENTATION-PLAN.md`.
 - **`dbhq_load_actors()` and sibling inline loaders**: audit pass not

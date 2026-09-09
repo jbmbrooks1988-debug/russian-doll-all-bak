@@ -1,0 +1,2 @@
+dir=Smileys_Emotion
+tileset=face_smiling

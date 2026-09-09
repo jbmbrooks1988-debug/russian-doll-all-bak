@@ -95,6 +95,16 @@
  * exactly like the bottom bar's own nav digit buffer):
  * 5000 + row_idx (idx in [0, KTB_LIVEDESK_DYN_MAX) ). */
 #define KSC_HQ_ITEM_BASE   5000
+/* Absolute focus set (2026-09-06): 6000 + nav_index. The X11 strip
+ * renderer (khtpm_core_render.c dock mode) owns its own on-screen
+ * highlight cursor g_focus_nav; whenever a mouse click or arrow key
+ * moves it, it relays 6000+g_focus_nav here so this manager's
+ * strip_focus_cell / tab_focus_idx snap to the exact same cell with no
+ * drift (relative FOCUS_LEFT/RIGHT could accumulate an offset once the
+ * two cursors ever disagreed - the split-brain a user hit where the
+ * taskbar showed cell 14 and the ASCII mirror showed cell 6). nav
+ * 1..KTB_STRIP_N_CELLS = header cells; above that = a bottom-bar tab. */
+#define KSC_SET_FOCUS_BASE 6000
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -303,9 +313,19 @@ static void publish_var_fragments(const KtbState *s, const char *house_root) {
      * "never a crash" contract, so no existence check is needed here. */
     off = 0;
     for (int i = 0; i < s->n_tabs && off < sizeof(frag); i++) {
+        /* REAL FIX 2026-09-04 - same "N. " label-baking bug fixed just
+         * above in the live tab_%d_label path (see that fix's own
+         * header comment). khtpm_strip_parser.c (the Linux consumer
+         * this comment block's own header references) doesn't exist in
+         * this tree anymore - only khtpm_strip_parser_win.c (Windows)
+         * does, confirming this whole publish_var_fragments() fragment
+         * is dead on Linux today. Left in place (not this fix's scope
+         * to remove dead code), but changed for consistency so it
+         * doesn't silently reintroduce the same duplicate-number bug
+         * if it's ever revived. */
         int n = snprintf(frag + off, sizeof(frag) - off,
-                          "<button label=\"%d. %s\" onClick=\"TAB:%d\" sprite=\"%s\"/>",
-                          s->tabs[i].nav, s->tabs[i].entity, i, s->tabs[i].path);
+                          "<button label=\"%s\" onClick=\"TAB:%d\" sprite=\"%s\"/>",
+                          s->tabs[i].entity, i, s->tabs[i].path);
         if (n < 0) break;
         off += (size_t)n;
     }
@@ -554,7 +574,23 @@ static void publish_strip_ui(const KtbState *s, const char *house_root) {
     }
     for (i = 0; i < s->n_tabs; i++) {
         char lab[KTB_PATH_BUF];
-        snprintf(lab, sizeof(lab), "%d. %s", s->tabs[i].nav, s->tabs[i].entity);
+        /* REAL FIX 2026-09-04, direct live report ("tb still has issues
+         * with nav color... navs are white but no black background")
+         * - root cause was NOT a color/chip bug at all: this row baked
+         * "N. " into the label TEXT itself (plain, unchipped label
+         * text), while khtpm_core_render.c's generic nav-badge system
+         * ALSO independently numbers this same item (confirmed via a
+         * live frame dump - nav_index was already correctly 16, 17...
+         * for these exact items) and draws ITS OWN numbered badge, with
+         * the real dark #141414 chip, right next to it. The visible
+         * "16. cursword" the report describes was the plain baked-in
+         * label text, not the (correctly chipped, just easy to miss
+         * next to its own duplicate) real badge. Fix: stop duplicating
+         * the number here - publish the plain entity name, exactly like
+         * the hqwin row above (hi_%d_label, never number-prefixed) that
+         * already renders its badges correctly - and let the one real,
+         * generic badge mechanism be the only place a number appears. */
+        snprintf(lab, sizeof(lab), "%s", s->tabs[i].entity);
         snprintf(key, sizeof(key), "tab_%d_label", i);
         ui_put(body, &off, sizeof(body), key, lab);
         snprintf(key, sizeof(key), "tab_%d_sprite", i);
@@ -701,15 +737,26 @@ static void dispatch_code(KtbState *s, int code) {
      * the hq_open block because ktb_hq_close() sets hq_open=0, so if the
      * check stayed inside the hq_open block, it would be unreachable.
      * This is the one place that actually stops the event loop, mirroring
-     * tp_taskbar.c's own "quit" command branch in agent_relay_dispatch(). */
+     * tp_taskbar.c's own "quit" command branch in agent_relay_dispatch().
+     *
+     * DO NOT kill(getppid()) here (removed 2026-09-07, direct live
+     * report: "i clicked quit in hq and it actually logged me out. i
+     * just wanted it to close the house tabs & entities"). Under this
+     * house's setsid/nohup launch the taskbar manager's parent is
+     * `systemd --user` (or init) — SIGTERMing it ends the whole login
+     * session. The `ppid > 1` guard only spares init, not the session
+     * manager. Legacy's spec is "CLOSE relays + pid unlink" only
+     * (#.livedesk/livedesk-editor-design.md line 149); logout is a
+     * separate, explicitly-labelled action (USER menu -> Logout ->
+     * user:logout). X.quit now behaves exactly like the strip's own
+     * [X] close button (KSC_CLOSE_QUIT below): close everything, stop
+     * the strip, stay logged in. See HOUSE_CODE_PITFALLS.md. */
     if (s->hq_quit_requested) {
         s->hq_quit_requested = 0;
         ktb_quit_and_save(s);
-        #ifndef _WIN32
-        pid_t ppid = getppid();
-        if (ppid > 1) kill(ppid, SIGTERM);
-        #endif
-        exit(0);
+        ktb_stop_strip_renderers(s->house_root); /* take the bar off screen too (2026-09-08) */
+        g_running = 0;
+        return;
     }
     if (s->hq_open) {
         if (code == KSC_ESCAPE) {
@@ -746,13 +793,12 @@ static void dispatch_code(KtbState *s, int code) {
             ktb_hq_open(s, code - KSC_HQ_HEADER_BASE);
         }
         if (s->hq_quit_requested) {
+            /* see the identical block above for why this no longer
+             * kill()s getppid() (2026-09-07 logout regression fix). */
             s->hq_quit_requested = 0;
             ktb_quit_and_save(s);
-            #ifndef _WIN32
-            pid_t ppid = getppid();
-            if (ppid > 1) kill(ppid, SIGTERM);
-            #endif
-            exit(0);
+            ktb_stop_strip_renderers(s->house_root);
+            g_running = 0;
         }
         return;
     }
@@ -771,6 +817,17 @@ static void dispatch_code(KtbState *s, int code) {
         return;
     }
 
+    if (code >= KSC_SET_FOCUS_BASE && code < KSC_SET_FOCUS_BASE + 128) {
+        int nav_n = code - KSC_SET_FOCUS_BASE;
+        if (nav_n >= 1 && nav_n <= KTB_STRIP_N_CELLS) {
+            s->strip_focus_cell = nav_n - 1;
+        } else if (nav_n > KTB_STRIP_N_CELLS) {
+            int t = nav_n - KTB_STRIP_N_CELLS - 1;
+            if (t >= 0 && t < s->n_tabs) { s->strip_focus_cell = -1; s->tab_focus_idx = t; }
+        }
+        return;
+    }
+
     if (code >= 48 && code <= 57) {
         ktb_digit_push(s, (char)code);
     } else if (code == KSC_BACKSPACE) {
@@ -785,6 +842,7 @@ static void dispatch_code(KtbState *s, int code) {
         ktb_nav_focus_delta(s, 1);
     } else if (code == KSC_CLOSE_QUIT) {
         ktb_quit_and_save(s);
+        ktb_stop_strip_renderers(s->house_root);
         g_running = 0;
     } else if (code >= KSC_TAB_BASE && code < KSC_TAB_BASE + KTB_MAX_TABS) {
         ktb_activate_tab(s, code - KSC_TAB_BASE);
@@ -926,6 +984,10 @@ int main(int argc, char **argv) {
     int active_ticks = ACTIVE_HOLD_TICKS; /* start hot - matches TPMOS's own "layout in focus" active default right after launch */
     while (g_running) {
         int mutated = poll_strip_history(&st, house_root);
+        /* consume a `widget:` menu row's result (menu-widget.sh writes
+         * #.desktop/livedesk_widget_result.txt): load a picked session,
+         * save-as under a typed name, etc. */
+        ktb_poll_widget_result(&st);
         /* also periodically reload so external tab/shortcut/theme file
          * changes (livedesk_open.txt, livedesk_shortcuts.pdl, etc.) are
          * picked up, matching ktb_plat_run()'s own per-tick ktb_reload(). */

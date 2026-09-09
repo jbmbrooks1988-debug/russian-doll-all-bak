@@ -1,7 +1,7 @@
 entity_type=xelector
-pos_x=8
+pos_x=10
 pos_y=8
-pos_z=17
+pos_z=18
 possessed_id=none
 chunk_x=0
 chunk_y=0

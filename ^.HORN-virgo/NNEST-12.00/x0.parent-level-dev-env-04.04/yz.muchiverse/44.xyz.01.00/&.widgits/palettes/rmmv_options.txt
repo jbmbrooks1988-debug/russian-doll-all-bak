@@ -1,4 +1,4 @@
-ACTIVE_DIR|tilesets
+ACTIVE_DIR|animations
 DIR|tilesets|tilesets
 DIR|characters|characters
 DIR|faces|faces
@@ -19,8 +19,8 @@ TILESET|Outside|Outside
 TILESET|SF_Inside|SF Inside
 TILESET|SF_Outside|SF Outside
 TILESET|World|World
-TAB|A|a2
+TAB|A|a4
 TAB|B|b
 TAB|C|c
-ACTIVE_TILESET|Dungeon
+ACTIVE_TILESET|SF_Inside
 ACTIVE_CATEGORY|c

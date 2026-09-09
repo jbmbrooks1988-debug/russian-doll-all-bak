@@ -90,6 +90,46 @@ loop, or armed-input-state logic by hand: stop and check whether
 `khtpm_render_core.c`/`khtpm_draw_core.c` (the shared, text-included
 core files) already provide it. They usually do.
 
+## Adding a *layout* branch to `khtpm_core_render.c` (2026-09-06 incident)
+
+**Real, concrete incident**: the "Chemicals+Compounds" periodic-table
+picker was built on a brand-new `<sidebar style="display:flex">` scroll
+branch in `layout_sidebar_panel()` — plus a bespoke `XK_Up/XK_Down`
+handler and a new `g_default_poe_cols` global — when the generic
+**swatch-grid path** (`<window class="palettes-pal database-window">`,
+`<item class="swatch">`, ~line 4669) already rendered the exact same
+shape (a wide scrolling tile grid + chrome) and is what the sibling
+`palettes-rmmv.xhtpm` uses. The new branch also got three load-bearing
+details wrong, each a real bug: it **translated** the whole laid-out
+subtree to scroll (`kh_shift_subtree(sidebar, -scroll*row_h)`) instead
+of clipping, so off-fold rows painted up over the pinned chrome; it
+mutated the scroll cursor directly (one direction only) from a custom
+key handler; and it nav-numbered invisible rows.
+
+**Before adding any `layout_*` branch to this file:**
+1. Grep for a sibling that already renders the same shape and route
+   through it: `grep -n 'class="swatch"'`, `grep -rn sprite-grid-row`,
+   `layout_scroll_region`, `layout_fixed_rows_and_scrolllist`.
+2. If you genuinely must add a branch, it MUST:
+   - **clip, never translate** — park off-screen children at
+     `y = -100000` (every existing scroll path does this); a subtree
+     that re-lays every frame must not be `kh_shift_subtree`'d as the
+     scroll mechanism (that's for one-shot transients like a dropdown
+     offset).
+   - **not add key handling and not write a `g_*_scroll` directly** —
+     every scroll cursor is owned by `generic_sbar_register()` + the
+     generic `Page_Up`/`Page_Down` handler. A new grid needs zero new
+     key code.
+   - **nav-number only visible rows** (off-screen → `nav_index = 0`,
+     out of `g_nav[]`).
+3. `assign_nav_and_layout()` runs many times per frame — every mutation
+   it makes must be idempotent (see the `khtpm-shared-layout-caution`
+   auto-memory). A translate applied on top of a fresh layout is not.
+
+Full writeup: `03-pitfalls/HOUSE_CODE_PITFALLS.md` #14 +
+`02-architecture/RENDERER-MODULARITY-AND-PERF-AUDIT.md` addendum
+2026-09-06.
+
 **Scoped nav / `[^]` `[>]` (2026-09-03):** do not compact `g_nav[]`.
 Read
 `yz.muchiverse/#.#.calendar-dox/!.HQ-IQ-BOOK/09-appendix/HANDOFF-scope-nav-and-chtpm-port.md`
@@ -97,3 +137,64 @@ Read
 or nav badges. Edit `&.widgits/_shared-lib/khtpm_draw_core.c` (the
 ops copy is overwritten on build). Running windows do not pick up a
 rebuild until relaunch.
+
+## Driving/testing a khtpm_core_render.c window: use the relay, not xdotool
+
+**Direct instruction, real incident (2026-09-05)**: an agent (this same
+house) drove pdl-read/text-edit-hq/File-Explorer test windows this
+session almost entirely via `xdotool key`/`xdotool click` — repeatedly
+flaky (clicks not landing, keys not registering) — when a real,
+reliable, house-standard input mechanism was already built into
+`khtpm_core_render.c` itself and just never used. Full history of why
+this convention exists (and three real testing-methodology bugs a past
+agent made before finding it) is in
+`#.#.calendar-dox/1.^V-hq/_.0.aigent-testing-k9.txt`, but do not wait
+to discover it 900 lines in — read this section first.
+
+**The mechanism, already live in every khtpm_core_render.c window**
+(`poll_agent_history()`/`history_path()`, ~line 5885 as of 2026-09-05):
+every running instance polls its own **per-process** relay file every
+tick, real X11 input or agent writes both land through the exact same
+path:
+```
+#.desktop/entity_menu_history/<pid>.txt
+```
+One line per event, appended (never truncate this file yourself —
+it's cursor-based, append-only):
+- `KEY_PRESSED: <decimal>` — printable ASCII 32-126 as the literal
+  character; `13`=Enter, `27`=Escape, `8`=Backspace, `9`=Tab;
+  `200`/`201`/`202`/`203`=Up/Down/Left/Right, `204`/`205`=PageUp/Down
+  (arrow keysyms have no ASCII code, hence the reserved 200+ band).
+- `MOUSE_EVENT: <button> <x> <y> <is_press>` — real clicks/wheel.
+- A line starting with `#` is a no-op audit comment (still consumes
+  the cursor past it, never dispatched) — use it to leave a "why" note
+  inline in the file.
+
+Find the PID from `ps aux | grep khtpm_core_render` (it's argv-visible
+in the process list, or read it back from the window's own
+`module_parent.pid` file next to its package dir).
+
+**Before sending ANY digit for nav-jump, dump the frame first and read
+the ACTUAL rendered nav numbers.** Nav numbering in this family is
+**global/unified across every concurrently-open khtpm window**, not
+reset to 1 per window — a freshly-launched window can legitimately
+start at nav 11, 19, whatever other windows already claimed. Assuming
+nav starts at 1, or that a single-digit code always means "item N," is
+a real, confirmed mistake (see k9 doc's own "Rule 7" and the
+h-ai digit-accumulator incident) — always verify against a live dump,
+never hardcode an index across more than one action.
+
+Order of preference, strict (matches k9 doc's own gate for this
+binary family):
+1. The relay file above, driving real dispatch/nav exactly like a
+   human keypress would.
+2. A cheap **text** state read (this app family's own published
+   `<name>_ui.txt`, or a manager's action/UI files) to confirm what
+   actually changed — cheaper and less ambiguous than decoding a PNG.
+3. `dump_frame_png_op.+x <window-id> <out.png>` (direct binary
+   invocation, not the in-window `'p'` key relay — an ARMED cli_io/
+   text_area field consumes `'p'` as literal typed input instead) for
+   real pixel-level/layout proof.
+4. `xdotool`/XTest — **last resort only**, e.g. real mouse-drag physics
+   the relay can't express. Reaching for it first is the exact mistake
+   this section exists to prevent.

@@ -372,6 +372,276 @@ re-detects real content on every tick / every live reparse
 (`layout_sidebar_panel()`'s own `g_default_has_sidebar_panel` latch,
 here), never inside the one-shot `main()` startup sequence.
 
+## 13. A `${var}` value with a bare `"` hangs the xhtpm parser at 100% CPU — the window never maps, looks "WM-related"
+
+**Symptom (2026-09-05, direct live report "some x11-hq windows
+(pdl-read) wont open from the tb-sub menu anymore ... WM related?"):**
+pdl-read launched from the taskbar toys submenu but no window ever
+appeared. The `khtpm_core_render.+x` process was alive, pinned at
+**100% CPU** (`ps` state `Rs`), `/tmp/pdl-read-pal.log` empty, and
+**plain `kill`/SIGTERM did not stop it** (needs `kill -9` - the loop
+never reaches a signal check). Every OTHER X11-HQ window launched
+fine, and pdl-read's own template/manager/`button.sh` had no recent
+commits - so it read as WM / environment / "an old bug resurfaced".
+It is a parser bug, and it is deterministic given the input.
+
+**Do not chase the wrong layer.** Reverting the recent fullscreen fix
+(`bb8ac63d`) changed nothing. Bisecting the shared renderer back
+several commits changed nothing. The hang reproduces at every renderer
+revision - it is driven purely by what pdl-read's manager publishes.
+
+**Root cause (gdb-traced):** infinite loop in `parse_element()`'s
+child loop in `khtpm_core_render.c`, hit during `parse_chtpm()` in
+`main()`, **before `XMapRaised`** (hence: process alive, no window):
+
+```c
+for (;;) {
+    skip_ws(&p);
+    if (!*p) return p;
+    if (p[0]=='<' && p[1]=='/') { ... return ...; }
+    p = parse_element(p, e);        /* never advances */
+}
+```
+
+`parse_element()`'s first line is `if (*p != '<') return p;` - it
+returns `p` **unchanged** for any byte that isn't a tag opener. The
+loop then calls it again on the same byte, forever.
+
+**How non-`<` text ends up mid-stream:** `kh_substitute_vars()`
+splices a `${var}` value straight into the raw template text *before*
+parsing (`parse_chtpm()`, ~line 1293). pdl-read's manager publishes a
+doc page into `content="${page_text}"`. That page body contains a bare
+`"` (e.g. a Markdown  `"(CORRECT)"`  quote). `parse_attr_value()`
+(which just scans `"` ... `"`) ends the value at that inner `"`; the
+rest of the page body spills into the stream as raw text; the first
+`>` in it (a Markdown `> ` blockquote) closes the mangled tag - and
+now there is prose where a child element is expected. Pages with no
+`>` after the stray `"` happened to parse (the tail got eaten as junk
+attributes up to EOF), which is exactly why it looked intermittent -
+short doc pages hid it, one long one exposed it.
+
+**Fix (committed, branch `fix/xhtpm-parser-infinite-loop`):**
+guarantee forward progress in the child loop - if `parse_element()`
+returns without consuming a byte, skip that byte. The parser is then
+robust to any not-well-formed input instead of spinning. The deeper
+correctness fix (escape `"`/`<`/`>`/`&` in a `${var}` value spliced
+into a quoted attribute, so `content=` text isn't truncated at the
+first `"`) is a separate change.
+
+**Rule:** any hand-rolled recursive-descent parser whose input can be
+influenced by external data (a manager's published `${var}` values,
+here) must guarantee the cursor advances every iteration of every
+scan/child loop - a "return unchanged on unexpected byte" leaf plus a
+"call until it returns a close tag" loop is an infinite loop waiting
+for one malformed byte.
+
+**Diagnostic notes that cost real time (worth their own reflex):**
+1. `pkill -f pdl-read-pal.xhtpm` (or `pkill -f pdl_read_manager`) run
+   from an interactive shell **kills the shell running the command** -
+   the pattern string is in that shell's own `argv`, so `pkill -f`
+   matches it. A command that "cannot time out" exiting 143/144 is
+   this. Put the launch+kill in a **script file** invoked by name, or
+   build the pattern so the literal isn't on the command line
+   (`P=$(printf 'pdl%s' '-read-pal')`), or match the binary
+   (`pkill -f 'khtpm_core_render[.][+]x .*pdl-read'`).
+2. Backgrounding a never-exiting render as `( "$BIN" ... & )` with a
+   pipe keeps the calling harness blocked on the inherited stdout fd
+   until *its own* timeout. Use
+   `setsid "$BIN" ... </dev/null >log 2>&1 & disown`.
+3. `ptrace_scope=1` (the default here) blocks `gdb -p` on a process
+   that isn't your descendant, and there's no passwordless sudo to
+   lower it. Workaround: run the target **as gdb's own child** -
+   `gdb -batch -ex 'set startup-with-shell on' -ex 'run <args>' BIN`,
+   with a `( sleep 7; pkill -INT -x gdb ) &` beside it to break in and
+   dump `bt`. `set startup-with-shell off` made the render fail to
+   find its own template - leave shell startup **on**.
+4. `<window>` here has no `WM_NAME`, so `xwininfo -root -tree | grep`
+   for the app title finds nothing even when the window is mapped -
+   grep the expected **geometry** (`560x480`) instead.
+5. `<module>`-spawned managers are orphaned when you `kill -9` their
+   parent render; repeated test launches pile up dozens of idle
+   `pdl_read_manager.+x`. Sweep them (`pkill -9 -f pdl_read_manager`)
+   between test rounds, same as pitfall #1's "confirm zero first".
+
+---
+
+## 14. A new scroll/grid/nav "branch" in the shared renderer that TRANSLATES a laid-out subtree (instead of clipping it) breaks header-pinning and thumb direction — reuse the existing scroll path
+
+**Symptom (live report, 2026-09-06, periodic-table element picker):**
+pressing **Down** in a scrollable tile grid (a) scrolled the window's
+own chrome/header row off the top of the window ("header should always
+stay pinned"), and (b) moved the scrollbar thumb the **wrong**
+direction (up). "This bug has never happened before" — correct: it was
+new code.
+
+**Real cause — three separate house-standard violations in one new
+branch** (`layout_sidebar_panel()`'s `<sidebar style="display:flex">`
+path + a bespoke `XK_Up/XK_Down` handler + a new `g_default_poe_cols`
+global, all added to `khtpm_core_render.c` for this one picker):
+
+1. **Translate, not clip.** The branch laid the whole 118-tile grid
+   with `css_layout_pass()` and then did
+   `kh_shift_subtree(sidebar, -scroll * row_h)` to "scroll" it. Nothing
+   in the default/popup paint path (`kh_serialize_frame_subtree()` /
+   `kh_paint_frame_line()`) clips a region to its own box — it draws
+   each `Elem` at whatever `y` it carries. Rows scrolled above the fold
+   got small/negative `y` values that land **inside the chrome strip
+   band** (`content_top`-relative) and painted right over the pinned
+   close/minimise/fullscreen chrome. Every *existing* scroll path
+   (`layout_scroll_region()`, the swatch-grid path at ~line 4669,
+   `layout_scroll_sprite_grid_row()`) instead **positions only the
+   visible rows** and parks the rest at `y = -100000` — the chrome is
+   drawn in its own later pass and is never touched. `kh_shift_subtree`
+   is for a one-shot transient (a dropdown offset), not for a region
+   that re-lays every frame.
+
+2. **Direct cursor mutation outside the clamp, one direction only.**
+   The bespoke arrow handler did
+   `if (row < g_default_sidebar_scroll) g_default_sidebar_scroll = row;`
+   — it can only ever *decrease* the scroll cursor, and it writes the
+   global directly instead of going through `generic_sbar_register()`'s
+   own clamp. Pressing Down moved focus to a lower row; when that row
+   index came out `< scroll` (focus outside `[nav_lo,nav_hi]` makes
+   `row` negative) the cursor was yanked toward/below zero → thumb
+   jumps up. There was no code path that ever scrolled the grid
+   *down*. The house already has the right input: `Page_Up`/`Page_Down`
+   (handled generically at ~line 6961, adjusting whichever region's
+   cursor `g_focus_nav` sits in) plus the `generic_sbar` `^`/`v` nav
+   arrows + wheel. A new grid needs **zero** new key handling.
+
+3. **Nav-numbering invisible items.** `kh_assign_nav_subtree()` numbers
+   *every* actionable descendant regardless of visibility. Every other
+   scroll path only assigns `nav_index` to rows that are actually on
+   screen (off-screen → `nav_index = 0`, out of `g_nav[]`, not
+   focusable). Numbering all 118 let `kh_nav_step()` walk focus onto
+   tiles scrolled out of view — "navigation broke."
+
+**The reuse that was already there and already used by a sibling app:**
+the RPG-Maker-Tiles palette (`&.widgits/palettes/palettes-rmmv.xhtpm`)
+is the *same shape of thing* — a wide scrolling tile grid with chrome —
+and it renders through the **generic swatch-grid path**
+(`<window class="palettes-pal database-window">`, tiles as
+`<item class="swatch">`), which already gives: width-derived column
+count, a clipped scrolled grid, one `generic_sbar_register()` thumb +
+nav `^`/`v` arrows, chrome in its own untouched pass, and a
+function-local `static` scroll cursor. Nothing new in the shared file.
+
+**Real fix applied:** kept the generic `flex-wrap` support in
+`css_layout_pass()` (that *is* a legitimate, reusable flexbox-engine
+capability), but rewrote the `<sidebar display:flex>` scroll block to
+follow the existing pattern — **clip by hiding off-fold tiles at
+`y = -100000`**, shift only the visible band, and **nav-number only
+visible tiles** — and **deleted the bespoke `XK_Up/XK_Down` handler and
+the `g_default_poe_cols` global** entirely (scroll is `Page_Up/Down` +
+sbar arrows + wheel, exactly like every other region).
+
+**Rule (add to the reflexes in pitfall #11):** before adding a *layout*
+branch to `khtpm_core_render.c`, grep for an existing sibling that
+renders the same shape (`grep -n 'class="swatch"' ; grep -rn
+sprite-grid-row ; layout_scroll_region`) and route through it. If you
+genuinely must add a branch: it MUST (a) clip by hiding off-screen
+children at `-100000`, never translate a subtree that re-lays every
+frame; (b) leave every scroll cursor owned by `generic_sbar_register()`
++ the generic `Page_Up/Down` handler — no new key handling, no direct
+`g_*_scroll =` writes; (c) nav-number only visible rows. `khtpm-shared-
+layout-caution` (auto-memory) already says it: `assign_nav_and_layout()`
+runs many times per frame — every mutation it makes must be idempotent,
+and a translate-on-top-of-a-fresh-layout is not.
+
+---
+
+## 15. `kill(getppid(), SIGTERM)` to "end the session" actually kills `systemd --user` and logs the whole desktop out
+
+**Symptom (live report, 2026-09-07):** clicking **HQ → `X.quit`** logged
+the user out of the entire graphical session, back to the display
+manager. They only wanted it to close the house tabs + desktop
+entities.
+
+**Real cause:** `khtpm_taskbar_manager_main.c`'s `hq_quit_requested`
+handler (the only caller — `#.desktop/livedesk_taskbar.pdl`
+`hq_menu_5_cmd = quit`) did, on top of the correct
+`ktb_quit_and_save(s)` (close entities + unlink pidfile):
+
+```c
+#ifndef _WIN32
+pid_t ppid = getppid();
+if (ppid > 1) kill(ppid, SIGTERM);   /* <-- */
+#endif
+exit(0);
+```
+
+The comment claimed it "mirrors tp_taskbar.c's quit branch", but
+legacy's spec is only *"CLOSE relays + pid unlink"*
+(`#.livedesk/livedesk-editor-design.md` line 149) — nothing about
+killing a parent. And **`getppid()` is not a house session
+supervisor.** This house launches the taskbar manager with
+`setsid`/`nohup … &`, so it is reparented — verified live, its parent
+is **`systemd --user`** (or `init`). `kill(getppid(), SIGTERM)` there
+SIGTERMs `systemd --user` → the whole user session ends. The
+`ppid > 1` guard only spares PID 1; it does nothing for the session
+manager, a login shell, a terminal, or anything else that happens to
+be the parent — so the "polite" path this code was written for
+basically never happens, and the destructive one always can.
+
+The sibling quit path already did it right: `KSC_CLOSE_QUIT` (the
+strip's own `[X]` button) is just `ktb_quit_and_save(s); g_running = 0;`
+— no parent kill, exits cleanly through `main()`'s tail.
+
+**Fix (2026-09-07):** both `hq_quit_requested` blocks in
+`khtpm_taskbar_manager_main.c` now do `ktb_quit_and_save(s);
+g_running = 0;` — identical to `KSC_CLOSE_QUIT`. `X.quit` closes
+everything and stops the strip; the user stays logged in. Logout stays
+its own explicit, labelled action (USER menu → Logout → `user:logout`
+→ `userpal_logout.+x`).
+
+**Rule:** never `kill(getppid())` (or `kill` any pid you did not
+`fork()` yourself) to "tidy up" or "end a session". A process does not
+own its parent, and under `setsid`/`nohup` the parent is whatever the
+OS reparented it to. To stop your own event loop, clear your own run
+flag (`g_running = 0`) and let normal teardown run. Session lifecycle
+(logout, session-end) belongs to the explicit, named action for it —
+never as a side effect of a "quit"/"close" button.
+
+---
+
+## 16. `kh_substitute_vars()` XML-escapes every `${var}` in a quoted attribute — but `apply_attr()` only *decodes* a hand-maintained list, so a new attribute silently gets `&amp;`
+
+**Symptom (live report, 2026-09-08):** the RPG-Maker-Tiles palette
+(and any sprite-grid palette) rendered an **empty grid** — layout
+correct, all 32 tiles positioned, but no image blitted.
+
+**Real cause:** since `experiment/xhtpm-attr-var-escaping`,
+`kh_substitute_vars()` XML-escapes (`&`→`&amp;`, `"`→`&quot;`, `<`/`>`)
+any `${var}` value it splices **inside a template-level `"..."`** — a
+correct fix for pitfall #13 ("a bare `"` in a `${var}` hangs the
+parser"). The re-parse then stores the escaped text verbatim, and
+`apply_attr()` is expected to `decode_entities()` it back. But
+`apply_attr()` only decodes an **explicit, hand-maintained list**:
+`label`, `onclick`/`action`, `backspace_action`, `content`,
+`drop_action`. `sprite=` and `src=` were never added.
+
+This house's own directories are literally `&.widgits/` and
+`&.hq-apps/`. A projector feeds `sprite="${t.sprite}"` where
+`${t.sprite}` = `".../&.widgits/palettes/sprites/..."`, so `e->sprite`
+ends up `".../&amp;.widgits/..."` — a path that does not exist. Every
+`hq_sprite()` blit silently fails (no error, blank tile). `label=` on
+the same element was fine (it's on the decode list), which is exactly
+why it looks like "only the sprites broke".
+
+**Fix (`d71f73e9`):** `decode_entities()` the `sprite=` and `src=`
+values in `apply_attr()`, same as `label=`/`action=` already do.
+
+**Rule:** any time you add a new attribute to `apply_attr()` whose
+value can come from a `${var}` (i.e. basically any attribute a
+projector or `<repeat>` fills), it MUST `decode_entities()` the value
+— or accept that a `&`, `"`, `<`, `>` in that value will arrive
+XML-escaped. The two sides (`kh_substitute_vars` escape ↔
+`apply_attr` decode) must be kept in lockstep. Better long-term:
+decode once, generically, for every attribute value at the top of
+`apply_attr()` and drop the per-attribute calls — deferred as too
+broad a change to make while chasing a live bug, but it's the real
+fix for this whole class.
+
 ---
 
 *Append new entries here as they're found — this file exists so the

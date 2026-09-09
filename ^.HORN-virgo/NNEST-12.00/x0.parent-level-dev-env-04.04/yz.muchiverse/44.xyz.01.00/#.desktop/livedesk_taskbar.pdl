@@ -27,16 +27,18 @@ SECTION      | hq_menu_10_label    | !kill hq
 SECTION      | hq_menu_10_cmd      | sh *.monads/*.livedesk-taskbar/ops/kill_hq_windows.sh .
 SECTION      | hq_menu_11_label    | debug
 SECTION      | hq_menu_11_cmd      | livedesk:open-palette:debug
-SECTION      | hq_menu_12_label    | cancel
+SECTION      | hq_menu_12_label    | piececraft-hq
+SECTION      | hq_menu_12_cmd      | livedesk:open-piececraft-hq
+SECTION      | hq_menu_13_label    | cancel
 
 SECTION      | file_menu_1_label   | new-desk
 SECTION      | file_menu_1_cmd     | livedesk:new-desk
 SECTION      | file_menu_2_label   | save
 SECTION      | file_menu_2_cmd     | livedesk:save
 SECTION      | file_menu_3_label   | save-as
-SECTION      | file_menu_3_cmd     | livedesk:save-as
+SECTION      | file_menu_3_cmd     | widget:file-explorer SAVE @sessions save-as
 SECTION      | file_menu_4_label   | load
-SECTION      | file_menu_4_cmd     | livedesk:load
+SECTION      | file_menu_4_cmd     | widget:file-explorer LOAD @sessions open-session
 SECTION      | file_menu_5_label   | Cancel
 
 SECTION      | desk_menu_action_1_label | edit
@@ -45,7 +47,40 @@ SECTION      | desk_menu_action_2_label | +new-desk
 SECTION      | desk_menu_action_2_cmd   | livedesk:new-desk
 SECTION      | desk_menu_action_3_label | cancel
 
-SECTION      | palettes_menu_1_label  | my pallet
+# player cell (8.player) - converted from C-hardcoded 2026-09-08
+# (TASKBAR-MENU-ARCHITECTURE.md debt list). play/pause are inert
+# placeholders (empty cmd = just close); reset closes all entities and
+# respawns the current desk fresh (livedesk_reset_entities()).
+SECTION      | player_menu_1_label   | play
+SECTION      | player_menu_2_label   | pause
+SECTION      | player_menu_3_label   | reset
+SECTION      | player_menu_3_cmd     | livedesk:reset-entities
+SECTION      | player_menu_4_label   | Cancel
+
+# ai cell (14.h-ai) - converted from C-hardcoded 2026-09-08. Was the
+# original anti-pattern TASKBAR-MENU-ARCHITECTURE.md called out.
+SECTION      | ai_menu_1_label       | Open h-ai
+SECTION      | ai_menu_1_cmd         | livedesk:open-open-hai
+SECTION      | ai_menu_2_label       | Chat-h-ai
+SECTION      | ai_menu_2_cmd         | livedesk:open-chat-hai
+SECTION      | ai_menu_3_label       | Co-lab-h-ai
+SECTION      | ai_menu_3_cmd         | livedesk:open-colab-hai
+SECTION      | ai_menu_4_label       | Cancel
+
+# db cell (9.db) - converted from C-hardcoded 2026-09-08. The builder
+# still gates on an active livedesk session (no session -> no menu).
+# db-ez opens the 101/102 Common Events sub-lists (kept until
+# db-hq-pal's CE tab port lands); db-hq opens the pal dashboard window.
+SECTION      | db_menu_1_label       | db-ez
+SECTION      | db_menu_1_cmd         | livedesk:db-ez-sections
+SECTION      | db_menu_2_label       | db-hq
+SECTION      | db_menu_2_cmd         | livedesk:open-db-hq-pal
+# sql-hq: SQL over .csv / .pdl (wired 2026-09-08). SQL-HQ-DESIGN.md.
+SECTION      | db_menu_3_label       | sql-hq
+SECTION      | db_menu_3_cmd         | livedesk:open-sql-hq
+SECTION      | db_menu_4_label       | Cancel
+
+SECTION      | palettes_menu_1_label  | canvas-craft
 SECTION      | palettes_menu_1_cmd    | livedesk:open-palette:user-pallet
 SECTION      | palettes_menu_2_label  | emojis
 SECTION      | palettes_menu_2_cmd    | livedesk:open-palette:emojis
