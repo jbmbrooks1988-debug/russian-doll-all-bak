@@ -76,3 +76,26 @@ short version.*
     per-frame focus re-assert + fix "Interact Mode never arms" (reparse
     -on-vars-change not firing for the pchq board). `09-appendix/
     pc-hq-leg-vs-nu-fix.md` §5/§6/§6b, `pc-hq-bugs.md` Bug 2.
+17. Process-lifecycle teardown (TPMOS parity): **WIRED + LIVE-VERIFIED
+    2026-09-09** — restart→register→quit→reap→truncate confirmed on the
+    running desktop; dropdowns unaffected; legacy pidfile still written.
+    master-ledger column + kh_spawn funnel + self-register landed
+    (§5 step 4, tested + live). renderer now registers + reaps its own <module>s (§5 step 5a,
+    live-verified). Left: mpg123/music-player-hq, the prisc VM (that's
+    chtpm_parser_pal.c's <module> launch), fold livedesk_hq_windows_
+    <pid>.txt, drop livedesk_launched_pids.txt (§5 5b–7).
+    `design-docs/PROC-LIFECYCLE-ORCHESTRATOR-TEARDOWN.md`.
+18. ~~Shared source compiled by copy-into-`ops/`~~ **DONE 2026-09-09**:
+    switch every `build_*.sh` to compile the canonical
+    `&.widgits/_shared-lib/*.c` in place with `-I` (binary stays local),
+    delete the ~5 stale `ops/` copies (6 already drifted), packaging
+    keeps self-contained subtrees via one `vendor-into.sh`.
+    `design-docs/SHARED-SOURCE-COMPILE-IN-PLACE.md`.
+19. prisc+x.c fork consolidation: **Phase B DONE 2026-09-09** — 17
+    pal-VM projects (incl. wsr-pal + muchi-pals-egg, whose _WIN32/MinGW
+    compile shims were folded into the canonical) now build the ONE
+    `&.widgits/_shared-lib/system/prisc+x.c`; ~11 others were already on
+    `$_SS`. Left (small): ledger-player + lpns+map (orchestrator-built,
+    no scripts/build.sh compiles prisc — need a real line added);
+    egg's CreateProcessA cmd.exe-correct custom-op dispatch (needs a
+    MinGW build to verify). `PRISC-X-FORK-CONSOLIDATION.md`.

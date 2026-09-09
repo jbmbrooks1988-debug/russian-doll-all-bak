@@ -23,6 +23,14 @@
 #include <string.h>
 #include <ctype.h>
 #include <errno.h>
+
+/* Orchestrator-owned PID-tracked teardown (TPMOS parity) —
+ * PROC-LIFECYCLE-ORCHESTRATOR-TEARDOWN.md. This file is compiled exactly
+ * once (into khtpm_taskbar_manager_main.+x), so it carries the IMPL.
+ * build_khtpm_strip.sh adds -I "$SHARED" for this header. */
+#define KH_PROC_REGISTRY_IMPL
+#include "kh_proc_registry.h"
+
 #ifndef _WIN32
 #include <dirent.h>
 #include <sys/stat.h>
@@ -84,11 +92,38 @@ static void ktb_load_zorder_mode(KtbState *s);
  * dash. Fix: no explicit `;` - a plain space after the caller's own
  * trailing `&` is a valid, single separator (`cmd & echo $! ...`). */
 static int ktb_system_recorded(const char *house_root, const char *cmd) {
+    /* DROP 2026-09-09 (PROC-LIFECYCLE-CONSOLIDATE-REGISTRIES.md §2): the
+     * legacy bare-PID file #.desktop/livedesk_launched_pids.txt is gone.
+     * `cmd` ends in ` &`, so a trailing foreground `echo $! > <tmp>`
+     * still runs in the same shell before system() returns — write the
+     * setsid group-leader PID to a private single-line scratch file,
+     * read it back, and register it PROPERLY in the one proc-ledger
+     * (kh_proc_register_owned computes the real /proc start-time, the
+     * PID-reuse guard). */
+    char pidfile[KTB_PATH_BUF];
+    snprintf(pidfile, sizeof(pidfile),
+             "%s/#.desktop/.livedesk_last_launch.pid", house_root);
     char wrapped[KTB_PATH_BUF * 4];
     snprintf(wrapped, sizeof(wrapped),
-             "%s echo $! >> \"%s/#.desktop/livedesk_launched_pids.txt\"",
-             cmd, house_root);
-    return system(wrapped);
+             "%s echo $! > \"%s\"", cmd, pidfile);
+    int rc = system(wrapped);
+    FILE *pf = fopen(pidfile, "r");
+    if (pf) {
+        char ln[64]; long last = 0;
+        while (fgets(ln, sizeof(ln), pf)) {
+            long v = strtol(ln, NULL, 10);
+            if (v > 1) last = v;
+        }
+        fclose(pf);
+        /* master_pid = this manager: a house-wide quit reaps via
+         * kh_proc_reap_all; a future "close just this app" reaps via
+         * kh_proc_reap_subtree(<the app's own root pid>) once apps
+         * register their own forks (§5 step 5). */
+        if (last > 1)
+            kh_proc_register_owned(house_root, last, last,
+                                   (long)getpid(), "tb-launch");
+    }
+    return rc;
 }
 #endif
 
@@ -349,6 +384,13 @@ void ktb_init(KtbState *s, const char *house_root) {
 #ifdef _WIN32
     for (char *p = s->pid_path; *p; p++) if (*p == '/') *p = '\\';
 #endif
+    /* PROC-LIFECYCLE-ORCHESTRATOR-TEARDOWN.md: PRUNE (not reset) the
+     * launched-process registry on every manager start. `run_khtpm_
+     * strip.sh new` restarts only the strip pair, leaving prior HQ
+     * windows/toys alive — a blind truncate would lose track of them.
+     * Prune keeps live entries, drops dead/PID-reused ones; a genuine
+     * fresh boot prunes to empty. */
+    kh_proc_registry_prune(s->house_root);
     snprintf(s->theme_bg, sizeof(s->theme_bg), "white");
     snprintf(s->theme_fg, sizeof(s->theme_fg), "black");
     s->tab_focus_idx = 0;
@@ -1148,6 +1190,68 @@ void ktb_stop_strip_renderers(const char *house_root) {
 #else
 void ktb_stop_strip_renderers(const char *house_root) { (void)house_root; }
 #endif
+
+/* PROC-LIFECYCLE-ORCHESTRATOR-TEARDOWN.md: the orchestrator-owned reap.
+ * Called ONLY from the explicit-user-quit sites in _main.c (X.quit /
+ * [X] / KSC_CLOSE_QUIT) — the same three places ktb_stop_strip_
+ * renderers() already fires. A plain SIGTERM (run_khtpm_strip.sh
+ * restart) does NOT reap: the user may just be restarting the bar.
+ * TERM(-pgid,pid) -> 200ms -> KILL -> reap -> truncate. Never signals
+ * pid 0/1, self, or its own process group (see kh_proc_registry.h).
+ * kill_hq_windows.sh's name-pattern list stays as the manual HQ-menu
+ * backstop for anything that was running before the registry existed. */
+void ktb_reap_launched(const char *house_root) {
+    kh_proc_reap_all(house_root, 200, 0);
+#ifndef _WIN32
+    /* CURSWORD on explicit quit (direct live report 2026-09-09: "two
+     * cursword icons on screen, even after i quit"). cursword is
+     * deliberately exempt from livedesk_close_all() /
+     * livedesk_kill_stray_entities() ("always-on assistant, 1st
+     * entity") — correct for a desk switch, WRONG for an explicit quit
+     * (X.quit / [X] / KSC_CLOSE_QUIT), the only path that calls this
+     * function. A current-session cursword is already in the ledger
+     * (via ktb_system_recorded) so kh_proc_reap_all above got it; this
+     * /proc sweep also catches cursword processes started BEFORE the
+     * ledger existed (orphans reparented to init — the actual cause of
+     * the pile-up), scoped to THIS house_root so a different house's
+     * cursword is never touched. Same SIGTERM->1s->SIGKILL shape as
+     * livedesk_kill_strip_renderers(). */
+    DIR *pd = opendir("/proc");
+    if (pd) {
+        pid_t cw[32]; int cn = 0;
+        struct dirent *e;
+        while ((e = readdir(pd)) != NULL) {
+            if (e->d_name[0] < '0' || e->d_name[0] > '9') continue;
+            char cpath[64];
+            snprintf(cpath, sizeof(cpath), "/proc/%s/cmdline", e->d_name);
+            FILE *cf = fopen(cpath, "r");
+            if (!cf) continue;
+            char cb[KTB_PATH_BUF * 2];
+            size_t nb = fread(cb, 1, sizeof(cb) - 1, cf);
+            fclose(cf);
+            if (nb == 0) continue;
+            cb[nb] = '\0';
+            for (size_t i = 0; i < nb; i++) if (cb[i] == '\0') cb[i] = ' ';
+            if (strstr(cb, house_root) &&
+                strstr(cb, "khtpm_core_render.+x") &&
+                strstr(cb, "/pals/cursword")) {
+                int pid = atoi(e->d_name);
+                if (pid > 1 && cn < (int)(sizeof(cw) / sizeof(cw[0])))
+                    cw[cn++] = (pid_t)pid;
+            }
+        }
+        closedir(pd);
+        int any = 0;
+        for (int i = 0; i < cn; i++) { kill(cw[i], SIGTERM); any = 1; }
+        if (any) {
+            struct timespec ts = {0, 400 * 1000 * 1000};   /* 400ms */
+            nanosleep(&ts, NULL);
+            for (int i = 0; i < cn; i++)
+                if (kill(cw[i], 0) == 0) kill(cw[i], SIGKILL);
+        }
+    }
+#endif
+}
 
 int ktb_close_x0(int screen_w) {
     return screen_w - KTB_CLOSE_W;
@@ -4396,17 +4500,22 @@ void ktb_hq_activate(KtbState *s, int row) {
 #endif
         ktb_hq_close(s);
     } else if (strcmp(m->command, "livedesk:open-piececraft-hq") == 0) {
-        /* HQ-menu pin: toys list is 17+ rows; click y/row used to hit
-         * piececraft-xyz instead of piececraft-hq. Same button.sh run
-         * as livedesk:open-toy. */
+        /* THE standard x11-hq launch for piececraft-hq's board window
+         * (PIECECRAFT-HQ-LAUNCH-STANDARDIZE.md). open_pchq_board.sh is
+         * the stats-hq-shaped launcher: single-instance guard (clean
+         * board-window restart, no blank on reclick), ensures a
+         * board-viewer engine session exists, launches the shared
+         * khtpm_core_render against pchq-board.xhtpm, records the PID in
+         * livedesk_proc_list.txt. `button.sh run` is now the terminal
+         * path only; the toys-menu `toy.pdl` duplicate was removed. */
 #ifdef _WIN32
         char launch[KTB_PATH_BUF];
-        snprintf(launch, sizeof(launch), "%s/@.apps/piececraft-hq/button.sh", s->house_root);
+        snprintf(launch, sizeof(launch), "%s/@.apps/piececraft-hq/open_pchq_board.sh", s->house_root);
         (void)launch;
 #else
         char sh[KTB_PATH_BUF * 3];
-        snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c 'sh \"%s/@.apps/piececraft-hq/button.sh\" run' >/dev/null 2>&1 &",
-                 s->house_root);
+        snprintf(sh, sizeof(sh), KTB_SETSID "nohup sh -c 'sh \"%s/@.apps/piececraft-hq/open_pchq_board.sh\" \"%s\"' >/dev/null 2>&1 &",
+                 s->house_root, s->house_root);
         int rc = ktb_system_recorded(s->house_root, sh);
         (void)rc;
 #endif

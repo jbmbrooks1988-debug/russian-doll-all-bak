@@ -18,3 +18,9 @@ You can't go that way.
 You can't go that way.
 You can't go that way.
 You can't go that way.
+You take control of hero.
+zombie_child hits you for 1!
+zombie_child hits you for 1!
+zombie_child hits you for 1!
+zombie_child hits you for 1!
+zombie_child hits you for 1!

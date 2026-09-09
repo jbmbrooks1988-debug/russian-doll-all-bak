@@ -1,10 +1,10 @@
 name=World 01
 type=world
 seed=1787971953
-tick=2
+tick=107
 active=1
-game_time_epoch_sec=1767268800
+game_time_epoch_sec=1767268819
 autotick_enabled=0
-autotick_speed=min
+autotick_speed=cent
 autotick_last_real_ms=0
-game_time_epoch_ms=1767268800000
+game_time_epoch_ms=1767268819149

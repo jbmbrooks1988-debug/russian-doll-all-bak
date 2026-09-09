@@ -1,9 +1,10 @@
 #!/bin/bash
+_pcd="$(cd "$(dirname "$0")" && pwd)"; while [ "$_pcd" != "/" ] && [ ! -d "$_pcd/&.widgits/_shared-lib" ]; do _pcd="$(dirname "$_pcd")"; done; PRISC_CANON_SHARED_LIB="$_pcd/&.widgits/_shared-lib"  # PRISC-X-FORK-CONSOLIDATION.md
 # scripts/build.sh - compile everything, warning-free.
 #
 # LOCAL COPIES, NOT A LIVE SHARED_OPS REFERENCE: this project keeps its
 # own real, local copy of every file below that also exists in
-# yz.muchiverse/2.muchi-verse/shared-ops/ (system/prisc+x.c,
+# yz.muchiverse/2.muchi-verse/shared-ops/ ("$PRISC_CANON_SHARED_LIB/system/prisc+x.c",
 # system/keyboard_input.c, system/chtpm_parser_pal.c, system/renderer.c,
 # ops/palnet_peer.c) - same convention every other project in this
 # family follows (see ../shared-ops-manifest.txt). To pull in an
@@ -18,13 +19,20 @@ mkdir -p ops/+x system
 CFLAGS="-Wall -Wextra -O2"
 
 echo "--- Building system processes ---"
-gcc $CFLAGS "system/prisc+x.c" -o "system/prisc+x"
+gcc $CFLAGS "$PRISC_CANON_SHARED_LIB/system/prisc+x.c" -o "system/prisc+x"
 gcc $CFLAGS "system/keyboard_input.c" -o "system/keyboard_input"
 gcc $CFLAGS "system/renderer.c" -o "system/renderer"
 
 echo "--- Building chtpm_parser_pal (PERSISTENT process, -Wno-unused-result"
 echo "    -Wno-stringop-truncation required - see shared-ops/chtpm_parser_pal.c)"
-gcc $CFLAGS -Wno-unused-result -Wno-stringop-truncation "system/chtpm_parser_pal.c" -o "system/chtpm_parser_pal"
+# PROC-LIFECYCLE-CONSOLIDATE-REGISTRIES.md §3: compile the CANONICAL
+# parser (not the drifting vendored system/ copy) with the proc-ledger
+# opt-in, so a taskbar quit / kill_hq_windows reaps this project's prisc
+# VM. -I gives it kh_proc_registry.h; -DKH_HAVE_PROC_REGISTRY turns the
+# (otherwise no-op) hooks on.
+gcc $CFLAGS -Wno-unused-result -Wno-stringop-truncation \
+    -I "$PRISC_CANON_SHARED_LIB" -DKH_HAVE_PROC_REGISTRY \
+    "$PRISC_CANON_SHARED_LIB/system/chtpm_parser_pal.c" -o "system/chtpm_parser_pal"
 
 echo "--- Building palnet_peer (local copy - reusable P2P op, see"
 echo "    ../PAL-NET-STANDARD.txt) ---"

@@ -86,6 +86,14 @@ extern char **environ;
 #include <libgen.h> /* REAL, NEW 2026-09-01 - tile mode's own dirname()/basename() (self_exe_path/piece_id) */
 #include <sys/file.h> /* REAL, NEW 2026-09-01 - tile mode's own real flock() cross-process popup mutex */
 
+/* Orchestrator-owned PID teardown — PROC-LIFECYCLE-ORCHESTRATOR-TEARDOWN.md.
+ * This is its own binary (separate from khtpm_taskbar_manager_main.+x),
+ * so it carries the IMPL. build_core_render.sh passes -I "$SHARED".
+ * _POSIX_C_SOURCE is already set at line 1, so the header's own
+ * _GNU_SOURCE fallback stays inert. */
+#define KH_PROC_REGISTRY_IMPL
+#include "kh_proc_registry.h"
+
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "lib/stb_image_write.h"
 
@@ -118,6 +126,39 @@ static int g_n_elems = 0;
 static char g_package_dir[PATH_BUF];
 static char g_house_root[PATH_BUF];
 static char g_chtpm_path[PATH_BUF];  /* real, generic (2026-08-31) - the real .chtpm this process was launched against, kept for the generic live-reparse capability below */
+
+/* Entity-menu identity strip for the title bar (2026-09-09, direct
+ * report: "entities just say ^main; they used to have entity name +
+ * uid & pid"). Composed once from g_chtpm_path when this process is
+ * rendering an entity context menu (.../<entity>/menu.chtpm): the
+ * fallback title becomes "<entity> <iid> <pid4>" instead of the bare
+ * page name "main". Empty for every other window (HQ windows carry a
+ * real <window label="...">, so they never hit this fallback). */
+static char g_entity_ident[128] = "";
+static void kh_compose_entity_ident(void) {
+    if (g_entity_ident[0] || !g_chtpm_path[0]) return;
+    const char *slash = strrchr(g_chtpm_path, '/');
+    const char *base = slash ? slash + 1 : g_chtpm_path;
+    if (strcmp(base, "menu.chtpm") != 0) return;   /* only entity menus */
+    /* dir = g_chtpm_path without the trailing "/menu.chtpm" */
+    char dir[PATH_BUF];
+    size_t dl = (size_t)(slash - g_chtpm_path);
+    if (dl >= sizeof(dir)) return;
+    memcpy(dir, g_chtpm_path, dl); dir[dl] = '\0';
+    const char *ds = strrchr(dir, '/');
+    const char *ename = ds ? ds + 1 : dir;         /* the entity dir name */
+    char iid[32] = "";
+    char ipath[PATH_BUF];
+    snprintf(ipath, sizeof(ipath), "%s/instance_id.txt", dir);
+    FILE *f = fopen(ipath, "r");
+    if (f) { if (fgets(iid, sizeof(iid), f)) iid[strcspn(iid, "\r\n")] = '\0'; fclose(f); }
+    if (iid[0])
+        snprintf(g_entity_ident, sizeof(g_entity_ident), "%s %s %04d",
+                 ename, iid, (int)getpid() % 10000);
+    else
+        snprintf(g_entity_ident, sizeof(g_entity_ident), "%s %04d",
+                 ename, (int)getpid() % 10000);
+}
 /* REAL FIX 2026-09-01 (live report: open-hai's own real projection
  * never got picked up after a fresh launch - the bootstrap-then-
  * manager-writes-real-content sequence happens fast enough, especially
@@ -300,6 +341,39 @@ static void set_window_opacity(Display *d, Window w, double opacity) {
 
 static char g_theme_bg[16] = "#1c1c1c";
 static char g_theme_fg[16] = "#cccccc";
+
+/* Nudge a "#rrggbb" toward white (delta>0) or black (delta<0) by delta
+ * per channel, clamped. Used for the small chrome-strip accent over the
+ * themed base fill so it tracks the theme instead of a hardcoded grey.
+ * Returns a pointer to a static buffer - one call per use site. */
+static const char *kh_shade_hex(const char *hex, int delta) {
+    static char out[8];
+    int r = 0, g = 0, b = 0;
+    if (!hex || sscanf(hex, "#%2x%2x%2x", &r, &g, &b) != 3) return hex ? hex : "#2a2a2a";
+    r += delta; g += delta; b += delta;
+    if (r < 0) r = 0; if (r > 255) r = 255;
+    if (g < 0) g = 0; if (g > 255) g = 255;
+    if (b < 0) b = 0; if (b > 255) b = 255;
+    snprintf(out, sizeof(out), "#%02x%02x%02x", r, g, b);
+    return out;
+}
+
+/* Allocate a "#rrggbb" pixel using an EXPLICIT Display+screen.
+ * tp_main() (tile/entity mode) has its own LOCAL Display and never
+ * sets the file-scope dpy/cmap/screen that the shared alloc_pixel()
+ * reads - calling alloc_pixel() from there dereferences a NULL Display
+ * and kills the process (regression: a themed Show Text popup closed
+ * the book-stack entity, 2026-09-09). Uses the root default colormap,
+ * which is what tp_main's popup windows and popup_gc actually use
+ * (they are created CopyFromParent / on the root). */
+static unsigned long tp_hex_pixel(Display *d, int scr, const char *hex) {
+    if (!d) return 0;
+    if (!hex || !hex[0]) return BlackPixel(d, scr);
+    Colormap cm = DefaultColormap(d, scr);
+    XColor c;
+    if (XParseColor(d, cm, hex, &c) && XAllocColor(d, cm, &c)) return c.pixel;
+    return BlackPixel(d, scr);
+}
 
 static void load_theme_colors(void) {
     char path[PATH_BUF];
@@ -544,6 +618,13 @@ static void kh_cleanup_modules(void) {
             waitpid(g_module_pids[i], NULL, WNOHANG);
         }
     g_n_module_pids = 0;
+    /* PROC-LIFECYCLE: drop this render's owned rows from the canonical
+     * ledger (the SIGTERM loop above already stopped them; this rewrites
+     * the file without them so a later reap_all / prune has nothing
+     * stale to chase). grace_ms 1 -> the already-dead modules are
+     * skip-stale, so it's effectively just the rewrite. */
+    if (g_house_root[0])
+        kh_proc_reap_subtree(g_house_root, (long)getpid(), 1, 0);
 }
 
 static void kh_collect_and_launch_modules(Elem *e, const char *house_root, const char *package_dir) {
@@ -554,7 +635,24 @@ static void kh_collect_and_launch_modules(Elem *e, const char *house_root, const
             g_n_module_pids < KH_MAX_MODULES) {
             pid_t p = launch_module(c->label, house_root, package_dir,
                                     c->id[0] ? c->id : NULL);
-            if (p > 0) g_module_pids[g_n_module_pids++] = p;
+            if (p > 0) {
+                g_module_pids[g_n_module_pids++] = p;
+                /* PROC-LIFECYCLE: track every <module> in the canonical
+                 * ledger, owned by THIS render (master = getpid()). It's
+                 * in the render's process group so a house quit reaches
+                 * it via the group-kill anyway; registering also lets
+                 * prune keep the ledger honest and a kill -9'd render's
+                 * modules still get reaped house-wide. */
+                if (house_root && house_root[0]) {
+                    /* name must be a single whitespace-free token (the
+                     * ledger line is space-delimited). c->label is the
+                     * whole `src="..."` string, so use the module id, or
+                     * a fixed label. */
+                    const char *mn = (c->id[0]) ? c->id : "module";
+                    kh_proc_register_owned(house_root, (long)p, (long)p,
+                                           (long)getpid(), mn);
+                }
+            }
         }
         kh_collect_and_launch_modules(c, house_root, package_dir);
     }
@@ -2924,6 +3022,15 @@ static int g_default_has_sidebar_panel = 0;
  * needing the <sidebar>+<panel> structure that flag is tied to. Set
  * once from the window class in main(). */
 static int g_default_persistent = 0;
+/* REAL, NEW 2026-09-09 - leftmost x of the has_canvas layout's template
+ * chrome trio (x / ! / _), captured during layout (post window-frame
+ * shift). The ButtonPress drag-start zone uses it to know which part of
+ * the top strip is real chrome (must take a click) vs draggable margin -
+ * the sidebar+panel layout has g_default_*_elem for this, the flat
+ * toolbar/canvas layout did not, so a mouse click on "!" or "_" was
+ * eaten as a window drag ("worked from nav, not mouse"). 0 = no canvas
+ * chrome this frame (fall back to the old g_win_w-60 constant). */
+static int g_canvas_chrome_left_x = 0;
 static Elem g_default_close_elem_storage;
 static Elem *g_default_close_elem = &g_default_close_elem_storage;
 static Elem g_default_fullscreen_elem_storage;
@@ -4537,7 +4644,13 @@ static void kh_interact_append_13(void) {
     for (int i = 0; i < n; i++) {
         if (!paths[i] || !paths[i][0]) continue;
         FILE *f = fopen(paths[i], "a");
-        if (f) { fprintf(f, "13\n"); fclose(f); }
+        if (!f) continue;
+        /* pchq-vs-tpmos.md D2: keyboard/history.txt needs the
+         * KEY_PRESSED: prefix or the board_viewer.chtpm parser ignores
+         * it (so grok's FocusOut auto-disengage silently did nothing). */
+        if (strstr(paths[i], "keyboard/history.txt")) fprintf(f, "KEY_PRESSED: 13\n");
+        else                                          fprintf(f, "13\n");
+        fclose(f);
     }
 }
 
@@ -4577,6 +4690,7 @@ static int kh_canvas_hit(int px, int py) {
 
 static void assign_nav_and_layout(void) {
     g_has_canvas = 0;
+    g_canvas_chrome_left_x = 0;
     /* REAL FIX 2026-09-04 - the window-frame block at the end of this
      * function does `g_win_w/h += 2*KH_WIN_FRAME` every call. Branches
      * that recompute g_win_w/h from content (sidebar+panel, persistent
@@ -4973,8 +5087,13 @@ static void assign_nav_and_layout(void) {
                     FILE *rf = fopen(rp, "r");
                     if (rf) { char l[128];
                         while (fgets(l, sizeof(l), rf)) {
+                            /* bv_render_3d overlay receipt: overlay_w/h.
+                             * chtpm_rgb_render composited receipt
+                             * (pchq-vs-muta.md B1): frame_w/h. */
                             if (!cw && !strncmp(l, "overlay_w=", 10)) cw = atoi(l + 10);
                             if (!ch && !strncmp(l, "overlay_h=", 10)) ch = atoi(l + 10);
+                            if (!cw && !strncmp(l, "frame_w=", 8))    cw = atoi(l + 8);
+                            if (!ch && !strncmp(l, "frame_h=", 8))    ch = atoi(l + 8);
                         }
                         fclose(rf);
                     }
@@ -5001,6 +5120,8 @@ static void assign_nav_and_layout(void) {
                     item->y = 2; item->w = cw; item->h = CHROME_H - 4; item->x = chrome_x;
                     kh_clamp_elem_onscreen(item);
                     chrome_x = item->x - 4;
+                    if (!g_canvas_chrome_left_x || item->x < g_canvas_chrome_left_x)
+                        g_canvas_chrome_left_x = item->x;
                     item->nav_index = ++g_n_nav; g_nav[g_n_nav - 1] = item;
                     continue;
                 }
@@ -5045,6 +5166,7 @@ static void assign_nav_and_layout(void) {
         if (g_default_close_elem && g_default_close_elem->w > 0)      { g_default_close_elem->x += fb;      g_default_close_elem->y += fb; }
         if (g_default_minimize_elem && g_default_minimize_elem->w > 0) { g_default_minimize_elem->x += fb;   g_default_minimize_elem->y += fb; }
         if (g_default_fullscreen_elem && g_default_fullscreen_elem->w > 0) { g_default_fullscreen_elem->x += fb; g_default_fullscreen_elem->y += fb; }
+        if (g_canvas_chrome_left_x) g_canvas_chrome_left_x += fb;  /* keep it in the same post-shift coords the ButtonPress handler sees */
         /* generic scrollbar geometry + its ^/v arrow elems */
         for (int i = 0; i < g_n_generic_sbars; i++) {
             g_generic_sbars[i].vx += fb; g_generic_sbars[i].vy += fb;
@@ -5467,7 +5589,22 @@ static void dispatch(const char *action) {
      * action - "void" only skips running a shell command, it still
      * closes the menu. This copy returned without setting g_quit, so
      * Cancel/Stop silently left the window open. */
-    if (strcmp(action, "void") == 0) { g_quit = 1; return; }
+    if (strcmp(action, "void") == 0) {
+        /* A context-menu Cancel/Stop row is `action="void"` and SHOULD
+         * close its (transient) menu - the legacy tp_desktop_window_
+         * rgb.c behavior. But a persistent window (class="database-
+         * window"/"palettes-pal"), a sidebar+panel app, or a live
+         * canvas window (the pchq board) uses `action="void"` for
+         * genuine no-op chrome (the board's clock / Menu / Player
+         * stubs) - there, "void" must mean nothing, not "close the
+         * whole window". REAL FIX 2026-09-09, direct live report
+         * ("clicking toolbar clock ... actually closes the window").
+         * Same guard the shell-command fallthrough at the end of this
+         * function already uses. */
+        if (!g_default_has_sidebar_panel && !g_default_persistent && !g_has_canvas)
+            g_quit = 1;
+        return;
+    }
     if (strncmp(action, "GOTO:", 5) == 0) { switch_page(action + 5); return; }
     if (strcmp(action, "BACK") == 0) {
         if (g_page_stack_n > 0) { switch_page(g_page_stack[--g_page_stack_n]); }
@@ -6597,10 +6734,18 @@ static void redraw(void) {
             XSync(dpy, False);
         }
     }
-    XSetForeground(dpy, gc, alloc_pixel(window_is_dock() ? g_theme_bg : "#1c1c1c"));
+    /* 2026-09-09, direct report ("bookstack doesn't take on the settings
+     * colors from the verse popup"): the base window fill + chrome strip
+     * were hardcoded #1c1c1c/#2a2a2a for every non-dock window, so an
+     * entity window like book-stack (minimal CSS - nothing repaints over
+     * this base) ignored #.desktop/livedesk_theme.pdl entirely.
+     * g_theme_bg/fg are already loaded (load_theme_colors() in main() +
+     * live on the theme-changed marker) and always hold a valid value
+     * (static #1c1c1c/#cccccc defaults), so just use them. */
+    XSetForeground(dpy, gc, alloc_pixel(g_theme_bg));
     XFillRectangle(dpy, buf, gc, 0, 0, (unsigned)g_win_w, (unsigned)g_win_h);
     if (!window_is_dock()) {
-    XSetForeground(dpy, gc, alloc_pixel("#2a2a2a"));
+    XSetForeground(dpy, gc, alloc_pixel(kh_shade_hex(g_theme_bg, 14)));
     XFillRectangle(dpy, buf, gc, 0, 0, (unsigned)g_win_w, CHROME_H);
     }
 
@@ -6627,7 +6772,11 @@ static void redraw(void) {
         XGetInputFocus(dpy, &focus_win, &focus_revert);
         g_focus_owned_painted = (focus_win == win) ? 1 : 0; /* what the "^"/"." below reflects - the FocusIn/FocusOut redraw guard reads this */
         char title_buf[192];
-        const char *title_raw = (g_window->label[0] ? g_window->label : g_current_page);
+        /* fallback chain: explicit <window label> -> entity identity
+         * strip (entity menus) -> bare page name. */
+        kh_compose_entity_ident();
+        const char *title_raw = g_window->label[0] ? g_window->label
+                              : (g_entity_ident[0] ? g_entity_ident : g_current_page);
         snprintf(title_buf, sizeof(title_buf), "%s %s%s",
                  (focus_win == win) ? "^" : ".", title_raw,
                  g_default_scope_confine ? "  Active [^]: (ESC to exit)" : "");
@@ -6643,7 +6792,7 @@ static void redraw(void) {
             XSetForeground(dpy, gc, alloc_pixel("#4a4a4a"));
             XDrawLine(dpy, buf, gc, DOCK_FOCUS_BOX_W, 0, DOCK_FOCUS_BOX_W, g_win_h);
         } else {
-        XftColor title_col = xft_color("#eeeeee");
+        XftColor title_col = xft_color(g_theme_fg);  /* themed (was hardcoded #eeeeee) - see the base-fill comment above */
         XftDrawStringUtf8(xftdraw_buf, &title_col, font_ui, 8, 16,
                            (const FcChar8 *)title, (int)strlen(title));
         XftColorFree(dpy, DefaultVisual(dpy, screen), cmap, &title_col);
@@ -6998,6 +7147,25 @@ static void handle_key(KeySym ks, char ch) {
      * never intercepted locally) and 'p' (never a local dump shortcut
      * while engaged). kh_key_history_code() is the SAME decimal-code
      * resolver history capture already uses - reused, not reinvented. */
+    /* Escape bypasses the g_x11_window_focused half of the gate
+     * (pchq-vs-tpmos.md D5): a real KeyPress here proves this window has
+     * X focus, and Escape is the unambiguous "exit Interact" - forward
+     * it (format-correct, D2) so the board_viewer.chtpm parser's own
+     * process_key(27) ESC-exit runs even if a spurious Mutter FocusOut
+     * left the flag at 0. */
+    if (g_interact_relay_on && ks == XK_Escape) {
+        /* 27 goes ONLY to keyboard/history.txt - see the double-arrow
+         * comment in the general branch below. */
+        g_x11_window_focused = 1;
+        for (int i = 0; i < g_interact_relay_n; i++) {
+            const char *p = g_interact_relay_paths[i];
+            if (p[0] && strstr(p, "keyboard/history.txt")) {
+                FILE *f = fopen(p, "a");
+                if (f) { fprintf(f, "KEY_PRESSED: 27\n"); fclose(f); }
+            }
+        }
+        return;
+    }
     if (g_interact_relay_on && g_x11_window_focused) {
         int code = kh_key_history_code(ks, ch);
         /* REAL FIX 2026-09-04 (see PLAN-pchq-interact-camera-pov.md
@@ -7012,11 +7180,32 @@ static void handle_key(KeySym ks, char ch) {
         else if (code == 201) code = 1003; /* Down  -> ARROW_DOWN  */
         else if (code == 202) code = 1000; /* Left  -> ARROW_LEFT  */
         else if (code == 203) code = 1001; /* Right -> ARROW_RIGHT */
+        /* REAL FIX 2026-09-09 (pchq-vs-muta.md - the "double arrow"
+         * bug). The two relay targets have DIFFERENT consumers:
+         *   - keyboard/history.txt -> the board_viewer.chtpm PARSER's
+         *     process_key() (KEY_PRESSED: <n> format only). While the
+         *     parser is engaged in INTERACT it ALSO re-injects every key
+         *     it reads there into interact_relay.txt (inject_raw_key) -
+         *     so a key written to BOTH files reaches the pal-VM camera
+         *     TWICE = one keypress moves the xelector two cells.
+         *   - interact_relay.txt -> the pal-VM camera loop (bare <n>).
+         * Fix: 13/27 (engage-toggle / ESC-exit - the parser's state
+         * machine) go ONLY to keyboard/history.txt; every other key
+         * (arrows 1000-1003, wasd, 0, 1-4, q/e/r/t/c/v, digits) goes
+         * ONLY to interact_relay.txt. The parser stays engaged (its
+         * active_index never changes on a camera key) and never
+         * double-injects. */
+        int to_parser = (code == 13 || code == 27);
         for (int i = 0; i < g_interact_relay_n; i++) {
             const char *p = g_interact_relay_paths[i];
             if (!p[0]) continue;
+            int is_kbd = (strstr(p, "keyboard/history.txt") != NULL);
+            if (to_parser != is_kbd) continue;      /* route by consumer */
             FILE *f = fopen(p, "a");
-            if (f) { fprintf(f, "%d\n", code); fclose(f); }
+            if (!f) continue;
+            if (is_kbd) fprintf(f, "KEY_PRESSED: %d\n", code);
+            else        fprintf(f, "%d\n", code);
+            fclose(f);
         }
         /* REAL, NEW 2026-09-04, direct request ("add p frame dump to
          * game then") - 'p' is not on the documented camera/POV key
@@ -8207,10 +8396,17 @@ static void hq_dispatch_xevent(XEvent *ev, Atom wm_delete, int is_popup) {
              * (g_default_has_sidebar_panel), else keep the original
              * 60px for any other popup that has just a plain close
              * corner and no chrome trio of its own. */
+            /* 2026-09-09: the has_canvas / flat-toolbar layout (pchq
+             * board) has its own template chrome trio, not the
+             * g_default_*_elem synth ones - use its captured leftmost x
+             * so a mouse click on "!" / "_" hit-tests instead of being
+             * swallowed as a window drag. */
             int chrome_zone_x = (g_default_has_sidebar_panel && g_default_minimize_elem->w > 0)
                                  ? g_default_minimize_elem->x
                                  : ((g_default_has_sidebar_panel && g_default_fullscreen_elem->w > 0)
-                                    ? g_default_fullscreen_elem->x : g_win_w - 60);
+                                    ? g_default_fullscreen_elem->x
+                                    : (g_canvas_chrome_left_x ? g_canvas_chrome_left_x - 4
+                                                              : g_win_w - 60));
             if (!window_is_dock() && ev->xbutton.button == 1 && ev->xbutton.y >= KH_WIN_FRAME && ev->xbutton.y < CHROME_H + KH_WIN_FRAME &&
                 !(ev->xbutton.x >= chrome_zone_x && ev->xbutton.x < g_win_w)) {
                 g_popup_dragging = 1;
@@ -8519,7 +8715,31 @@ static void hq_run_event_loop(Atom wm_delete, int is_popup) {
          * grabbing process. No-op (returns immediately) whenever not
          * armed, so this costs nothing on every other tick of every
          * other window's own event loop. */
-        if (g_has_canvas && !g_quit) g_frame_dirty = 1;  /* live framebuffer: repaint every tick */
+        /* P-7 (pchq-vs-tpmos.md): a <canvas> window used to force
+         * g_frame_dirty=1 EVERY tick -> ~33 redraw()s/s (re-read the
+         * .raw + XPutImage) whether or not the framebuffer changed.
+         * TPMOS's renderer.c only repaints on its pulse marker growing.
+         * Marker-drive it: stat the live canvas_raw file and only repaint
+         * when its size/mtime moved, plus a slow ~2Hz safety repaint
+         * (late-appearing var, window resize, receipt swap). */
+        if (g_has_canvas && !g_quit) {
+            static off_t  s_last_sz = -1;
+            static time_t s_last_mt = 0;
+            static time_t s_last_force = 0;
+            const char *cr = kh_get_var("canvas_raw");
+            struct stat cst;
+            if (cr && cr[0] && stat(cr, &cst) == 0) {
+                if (cst.st_size != s_last_sz || cst.st_mtime != s_last_mt) {
+                    s_last_sz = cst.st_size;
+                    s_last_mt = cst.st_mtime;
+                    g_frame_dirty = 1;
+                }
+            } else {
+                g_frame_dirty = 1;  /* no file/var yet: keep painting the dark bootstrap */
+            }
+            time_t nowt = time(NULL);
+            if (nowt - s_last_force >= 1) { s_last_force = nowt; g_frame_dirty = 1; }
+        }
         if (g_frame_dirty && !g_quit) { g_frame_dirty = 0; redraw(); }
     }
 }
@@ -11900,6 +12120,18 @@ static int tp_main(int argc, char **argv) {
     if (!g_house_root[0]) snprintf(g_house_root, sizeof(g_house_root), ".");
 #endif
     snprintf(g_house_root_for_lock, sizeof(g_house_root_for_lock), "%s", g_house_root);
+    /* REAL FIX 2026-09-09, direct report ("bookstack ... its this part
+     * that hasn't changed color ... look deeper"): tile/entity mode
+     * (tp_main) - which hosts every desktop entity incl. book-stack and
+     * its Show Text popup - NEVER loaded #.desktop/livedesk_theme.pdl.
+     * main()/hq_run_event_loop() do (startup + every hq_idle_tick), but
+     * tp_main() has its own event loop and only ever reapplied theme
+     * OPACITY on a change, never the bg/fg colours - so g_theme_bg/fg
+     * stayed at their compile-time #1c1c1c/#cccccc defaults here and
+     * every "use g_theme_bg" draw site was themed in name only. Load it
+     * now (before the window is created below) and again on every
+     * livedesk_theme_changed marker (see the tp_main event loop). */
+    if (g_house_root[0]) load_theme_colors();
     if (g_house_root[0]) desktop_load_click_two_step(g_house_root);
     if (g_house_root[0]) load_override_redirect(g_house_root);
     if (g_house_root[0] && g_is_cursword) cursword_load_move_mode(g_house_root);
@@ -12004,7 +12236,21 @@ static int tp_main(int argc, char **argv) {
      * the FocusOut handler in the main event loop below). */
     swa.event_mask = ExposureMask | ButtonPressMask | ButtonReleaseMask | ButtonMotionMask | KeyPressMask | FocusChangeMask;
     swa.override_redirect = g_override_redirect; /* real X11 requirement whenever a window's own depth differs from its parent's (root's) - harmless to set unconditionally */
-    swa.background_pixel = 0;
+    /* The server-side backing colour, shown until this window paints its
+     * first real frame. tp_main() has its own tile/sprite renderer (NOT
+     * the shared redraw()/g_theme_bg path - HQ mode only), so this is
+     * the ONLY theme hook for the pre-first-paint gap. It used to be 0
+     * (black): direct report ("on new startups there are black squares
+     * that show up and disappear") - that is this, one unpainted entity
+     * window per still-spawning tile during the login storm, not
+     * zombies or debug. Theme it so the gap blends instead of flashing
+     * black. tp_hex_pixel() (local Display) - NOT the shared
+     * alloc_pixel(), whose dpy/cmap/screen globals tp_main never sets
+     * (that mistake closed the book-stack entity, see tp_hex_pixel's
+     * header). For cursword's ARGB visual a null pixel keeps it fully
+     * transparent, which is the intended look there. */
+    swa.background_pixel = g_is_cursword ? 0
+                        : tp_hex_pixel(dpy, screen_num, g_theme_bg);
 
     Window win = XCreateWindow(dpy, RootWindow(dpy, screen_num), 3 * GRID_CELL_PX, 3 * GRID_CELL_PX, WIN_PX, WIN_PX,
                                 0, win_depth, InputOutput, win_vis,
@@ -12367,6 +12613,8 @@ static int tp_main(int argc, char **argv) {
          * theme_changed_dirty()'s own declaration comment. */
         if (theme_changed_dirty(g_house_root)) {
             set_window_opacity(dpy, win, tp_load_theme_opacity(g_house_root));
+            load_theme_colors();   /* bg/fg too, not just opacity - see the load_theme_colors() call in tp_main()'s setup */
+            need_redraw = 1;
         }
 
         /* Real, cheap, event-driven camera pan/tilt/mode reapply - see
@@ -12756,7 +13004,15 @@ static int tp_main(int argc, char **argv) {
                             clamp_popup_to_screen(dpy, &tpx, &tpy, pop_w, pop_h);
                             XSetWindowAttributes swa2;
                             swa2.override_redirect = True;
-                            swa2.background_pixel = WhitePixel(dpy, DefaultScreen(dpy));
+                            /* 2026-09-09, direct report ("after choosing
+                             * the bible verse / tao it shows a popup with
+                             * text - those are still black and white").
+                             * The Show Text popup (book-stack's verse /
+                             * Tao view) was a hardcoded white bg + black
+                             * text. Use the livedesk theme like every
+                             * other surface (g_theme_bg/fg are loaded +
+                             * live-refreshed in hq_idle_tick()). */
+                            swa2.background_pixel = tp_hex_pixel(dpy, DefaultScreen(dpy), g_theme_bg);
                             swa2.event_mask = ExposureMask | ButtonPressMask | KeyPressMask;
                             text_popup_win = XCreateWindow(dpy, RootWindow(dpy, DefaultScreen(dpy)),
                                                             tpx, tpy, pop_w, pop_h, 1,
@@ -13312,7 +13568,11 @@ static int tp_main(int argc, char **argv) {
                 { Window root_r; int x_r, y_r; unsigned int w_r, h_r, bw_r, depth_r;
                   XGetGeometry(dpy, text_popup_win, &root_r, &x_r, &y_r, &w_r, &h_r, &bw_r, &depth_r);
                   pop_w2 = (int)w_r; pop_h2 = (int)h_r; }
+                /* themed border + text (popup_gc is shared with the
+                 * context menus, whatever fg they last set - pin it) */
+                XSetForeground(dpy, popup_gc, tp_hex_pixel(dpy, DefaultScreen(dpy), kh_shade_hex(g_theme_fg, -60)));
                 XDrawRectangle(dpy, text_popup_win, popup_gc, 0, 0, pop_w2 - 1, pop_h2 - 1);
+                XSetForeground(dpy, popup_gc, tp_hex_pixel(dpy, DefaultScreen(dpy), g_theme_fg));
                 for (int li = 0; li < g_text_popup_n_lines; li++) {
                     popup_draw_text(dpy, text_popup_win, popup_gc, 8, (li + 1) * POPUP_ROW_H - 6, g_text_popup_lines[li]);
                 }
@@ -13610,14 +13870,14 @@ static int tp_main(int argc, char **argv) {
                      * the moment a key was pressed while armed -
                      * confirmed by direct read, not assumed. */
                     KeySym ks2 = XLookupKeysym(&xev.xkey, 0);
-                    /* REAL FIX 2026-08-31 - the camera-mode keys moved
-                     * from 1-4 to 5-8 (see cursword_handle_camera_key()'s
-                     * own header comment: keys 1-4 are now reserved for
-                     * a future "one map" perspective mode) - the old
-                     * special-cased "1"/"2"/"3"/"4" label branch here is
-                     * dropped since it's no longer needed: XKeysymToString()
-                     * already returns the correct literal digit string
-                     * ("5".."8") for these keysyms same as any other key. */
+                    /* 2026-09-09: cursword's desktop camera has no
+                     * numeric mode keys - the "one map" 1-4 reservation
+                     * (and the brief 1-4 -> 5-8 remap) is abandoned
+                     * (^.ONE-MAP-ATTEMPT.md; pc-hq/board-viewer uses 1-4
+                     * for POV again). Digit keys fall through to the
+                     * generic cursword_log_key() / dispatch below with
+                     * no special-casing - XKeysymToString() returns the
+                     * literal digit string same as any other key. */
                     cursword_log_key(
                         ks2 == XK_Escape ? "ESC" :
                         ks2 == XK_Left ? "LEFT" : ks2 == XK_Right ? "RIGHT" :
@@ -14457,7 +14717,7 @@ int main(int argc, char **argv) {
         if (g_win_y < 0) g_win_y = 0;
     }
     load_theme_colors();  /* every window, not just dock - the 2px window frame + theme-aware bg need g_theme_fg/bg live */
-    swa.background_pixel = alloc_pixel(window_is_dock() ? g_theme_bg : "#1c1c1c"); /* real dark default - no white-flash bug, ai-cell's own proven pattern, not WhitePixel */
+    swa.background_pixel = alloc_pixel(g_theme_bg); /* themed base (load_theme_colors() ran just above); static #1c1c1c default keeps the no-white-flash guarantee */
     /* REAL FIX 2026-08-16, direct live report ("none of the buttons seem
      * 2 work yet"): this window was a normal WM-managed window, unlike
      * the legacy popup (override_redirect=True, open_context_menu() near

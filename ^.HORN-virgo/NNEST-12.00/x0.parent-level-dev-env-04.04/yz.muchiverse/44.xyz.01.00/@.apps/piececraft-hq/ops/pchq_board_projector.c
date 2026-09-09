@@ -96,9 +96,18 @@ static int find_board_session(const char *house, const char *host_id, char *out,
         strtok_r(NULL, "|", &save);
         char *proj_tok = strtok_r(NULL, "|", &save);
         if (proj_tok && sess_tok && strcmp(proj_tok, want) == 0) {
-            snprintf(out, outsz, "%s", sess_tok);
-            found = 1;
-            break;
+            /* ledger_peers keeps a row ONLINE as long as its PID lives,
+             * but a hard-killed test can leave the wrapper bash alive
+             * with its session dir already rm -rf'd. A session whose dir
+             * is gone must NOT be reported - it makes canvas_raw point
+             * at a missing .raw = blank window. Keep scanning for a
+             * newer, real one. */
+            struct stat sst;
+            if (stat(sess_tok, &sst) == 0 && S_ISDIR(sst.st_mode)) {
+                snprintf(out, outsz, "%s", sess_tok);
+                found = 1;
+                break;
+            }
         }
     }
     pclose(pf);
@@ -122,13 +131,54 @@ int main(int argc, char **argv) {
     static char ui[UIBUF], last[UIBUF];
     last[0] = '\0';
 
+    /* Session discovery is a popen() of a whole binary (ledger_peers.+x)
+     * - it was run EVERY 300ms loop, forever, per board window. The
+     * board-viewer session dir almost never changes: discover it once,
+     * then only re-scan when we don't have one or the cached dir has
+     * disappeared (session ended). */
+    static char bv_cache[PATH_MAX] = "";
+
     for (;;) {
         char bv[PATH_MAX] = "";
-        int have = find_board_session(house, host_id, bv, sizeof(bv));
+        int have;
+        {
+            struct stat cst;
+            if (bv_cache[0] && stat(bv_cache, &cst) == 0 && S_ISDIR(cst.st_mode)) {
+                snprintf(bv, sizeof(bv), "%s", bv_cache);
+                have = 1;
+            } else {
+                have = find_board_session(house, host_id, bv, sizeof(bv));
+                snprintf(bv_cache, sizeof(bv_cache), "%s", have ? bv : "");
+            }
+        }
 
         char raw[PATH_MAX] = "", typing[PATH_MAX] = "", h1[PATH_MAX] = "", h2[PATH_MAX] = "";
         if (have) {
-            snprintf(raw, sizeof(raw), "%s/pieces/display/rgb_frame_3d_overlay.raw", bv);
+            /* pchq-vs-muta.md B1: `0` toggles render_mode, but
+             * bv_render_3d.c early-returns when render_mode==0 and only
+             * ever writes rgb_frame_3d_overlay.raw - so 2D mode froze
+             * the canvas on the last 3D frame. Pick the source by mode:
+             *   render_mode==1 -> rgb_frame_3d_overlay.raw  (clean 3D,
+             *       no chrome - the khtpm window draws its own toolbar)
+             *   render_mode==0 -> rgb_frame.raw  (chtpm_rgb_render's
+             *       composited frame; the only surface with the 2D
+             *       emoji map. Carries board-viewer's own text chrome
+             *       for now - a chrome-free 2D pixel path is the clean
+             *       follow-up, see the doc.)
+             * Fallback to whichever exists so the canvas is never blank. */
+            char st_path[PATH_MAX], overlay[PATH_MAX], comp[PATH_MAX];
+            snprintf(st_path, sizeof(st_path), "%s/pieces/system/bv_state.txt", bv);
+            snprintf(overlay, sizeof(overlay), "%s/pieces/display/rgb_frame_3d_overlay.raw", bv);
+            snprintf(comp,    sizeof(comp),    "%s/pieces/display/rgb_frame.raw", bv);
+            char rm[8] = ""; read_kv(st_path, "render_mode", rm, sizeof(rm));
+            int mode3d = (rm[0] == '\0' || atoi(rm) != 0);   /* default 3D */
+            struct stat so, sc;
+            int have_o = (stat(overlay, &so) == 0 && so.st_size > 0);
+            int have_c = (stat(comp,    &sc) == 0 && sc.st_size > 0);
+            if (mode3d && have_o)       snprintf(raw, sizeof(raw), "%s", overlay);
+            else if (!mode3d && have_c) snprintf(raw, sizeof(raw), "%s", comp);
+            else if (have_o)            snprintf(raw, sizeof(raw), "%s", overlay);
+            else                       snprintf(raw, sizeof(raw), "%s", comp);
             snprintf(typing, sizeof(typing), "%s/pieces/display/active_gui_is_typing.txt", bv);
             /* REAL FIX 2026-09-04 (live debug: relayed keys landed in
              * player_app/history.txt - confirmed via direct byte-level
@@ -169,10 +219,22 @@ int main(int argc, char **argv) {
         char menu_open[16] = "";
         read_kv(menu_path, "open", menu_open, sizeof(menu_open));
 
-        time_t now = time(NULL);
-        struct tm *tmv = localtime(&now);
+        /* 2026-09-09, direct instruction ("time on display should show
+         * clock time, not real time"): the toolbar clock is the GAME
+         * clock (world_01/state.txt game_time_epoch_sec, the same value
+         * bv_render_3d.c drives the sun/sky from), not the wall clock.
+         * Falls back to "--:--" if the world file has no epoch yet. */
+        char world_state[PATH_MAX], epoch_s[32] = "";
+        snprintf(world_state, sizeof(world_state),
+                 "%s/@.apps/%s/pieces/world_01/state.txt", house, host_id);
+        read_kv(world_state, "game_time_epoch_sec", epoch_s, sizeof(epoch_s));
         char clock_s[8] = "--:--";
-        if (tmv) strftime(clock_s, sizeof(clock_s), "%H:%M", tmv);
+        if (epoch_s[0]) {
+            long long ep = atoll(epoch_s);
+            long long tod = ep % 86400; if (tod < 0) tod += 86400;
+            snprintf(clock_s, sizeof(clock_s), "%02lld:%02lld",
+                     tod / 3600, (tod % 3600) / 60);
+        }
 
         size_t off = 0;
         off += (size_t)snprintf(ui + off, UIBUF - off,

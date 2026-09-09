@@ -3,5 +3,29 @@ SECTION      | KEY                | VALUE
 META         | piece_id           | apps
 META         | version            | 1.0
 
-METHOD       | (empty)                  | NOOP
+METHOD       | TSC_ELO | RUN:apps:TSC_ELO
+METHOD       | aomorai-editor | RUN:apps:aomorai-editor
+METHOD       | asa-&-ava | RUN:apps:asa-&-ava
+METHOD       | civ-txt | RUN:apps:civ-txt
+METHOD       | csv-hq | RUN:apps:csv-hq
+METHOD       | media-3d-hq | RUN:apps:media-3d-hq
+METHOD       | media-canvas | RUN:apps:media-canvas
+METHOD       | media-daw | RUN:apps:media-daw
+METHOD       | media-daw-hq | RUN:apps:media-daw-hq
+METHOD       | media-img-hq | RUN:apps:media-img-hq
+METHOD       | media-img3d-hq | RUN:apps:media-img3d-hq
+METHOD       | media-vid | RUN:apps:media-vid
+METHOD       | media-vid-hq | RUN:apps:media-vid-hq
+METHOD       | music-player-hq | RUN:apps:music-player-hq
+METHOD       | my-biotech | RUN:apps:my-biotech
+METHOD       | my-chara-txt | RUN:apps:my-chara-txt
+METHOD       | my-lawyer | RUN:apps:my-lawyer
+METHOD       | pdl-read | RUN:apps:pdl-read
+METHOD       | piececraft-hq | RUN:apps:piececraft-hq
+METHOD       | piececraft-xyz | RUN:apps:piececraft-xyz
+METHOD       | screen-rec-hq | RUN:apps:screen-rec-hq
+METHOD       | tactics-txt | RUN:apps:tactics-txt
+METHOD       | text-edit-hq | RUN:apps:text-edit-hq
+METHOD       | text-editor-xyz | RUN:apps:text-editor-xyz
+METHOD       | yahoo-app | RUN:apps:yahoo-app
 METHOD       | Refresh list             | REFRESH

@@ -1,0 +1,596 @@
+
+--- FRAME at 2026-09-09 04:26:16 ---
+[>] 1. [Interact Mode (camera + selector)]
++============================================================+
+|  B O A R D - V I E W E R   ( W I D G E T )                 |
++============================================================+
+|                                                            |
+|  Focused on: piececraft-xyz  (board 16x16, cam 0,3)        |
+|  Interact mode: OFF (select Enter Interact Mode below)     |
+|  Possessing: hero_01 (jump/mine/build active)  (press 9 to |
+|  Display: emoji (default)                                  |
+|  Z-level: 16 / 31  (z / x to switch layers)                |
+|  Camera: 3D mode 2 (third-person) yaw=180 pitch=6          |
+|    pan=(0,0,0) z_level=0 [q/e yaw][r/t pitch][wasd pan][c/v|
+|                                                            |
+|  (3D overlay not ready - showing 2D emoji map; press 0 when|
+|  🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿�|
+|  🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿�|
+|  🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿�|
+|  🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿�|
+|  🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿�|
+|  🌿🌿🌿🌿🌿🌿🌿🌿[🌿]🌿🌿🌿🌿🌿|
+|  🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿�|
+|  🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿�|
+|  🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿�|
+|  🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿🌿�|
+|                                                            |
+|  Selected (8,8): grass                                     |
+|  Arrow keys pan the selector. Camera follows, clamped to bo|
+|                                                            |
++============================================================+
+
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-09-09 04:26:16 ---
+[>] 1. [Interact Mode (camera + selector)]
++============================================================+
+|  B O A R D - V I E W E R   ( W I D G E T )                 |
++============================================================+
+|                                                            |
+|  Focused on: piececraft-xyz  (board 16x16, cam 0,3)        |
+|  Interact mode: OFF (select Enter Interact Mode below)     |
+|  Possessing: hero_01 (jump/mine/build active)  (press 9 to |
+|  Display: emoji (default)                                  |
+|  Z-level: 16 / 31  (z / x to switch layers)                |
+|  Camera: 3D mode 2 (third-person) yaw=180 pitch=6          |
+|    pan=(0,0,0) z_level=0 [q/e yaw][r/t pitch][wasd pan][c/v|
+|                                                            |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+|                                                            |
+|  Selected (8,8): grass                                     |
+|  Arrow keys pan the selector. Camera follows, clamped to bo|
+|                                                            |
++============================================================+
+
+
++=========================================================+
+Nav > _
+
+
+--- FRAME at 2026-09-09 04:26:17 ---
+[^] 1. [Interact Mode (camera + selector)]
++============================================================+
+|  B O A R D - V I E W E R   ( W I D G E T )                 |
++============================================================+
+|                                                            |
+|  Focused on: piececraft-xyz  (board 16x16, cam 0,3)        |
+|  Interact mode: OFF (select Enter Interact Mode below)     |
+|  Possessing: hero_01 (jump/mine/build active)  (press 9 to |
+|  Display: emoji (default)                                  |
+|  Z-level: 16 / 31  (z / x to switch layers)                |
+|  Camera: 3D mode 2 (third-person) yaw=180 pitch=6          |
+|    pan=(0,0,0) z_level=0 [q/e yaw][r/t pitch][wasd pan][c/v|
+|                                                            |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+|                                                            |
+|  Selected (8,8): grass                                     |
+|  Arrow keys pan the selector. Camera follows, clamped to bo|
+|                                                            |
++============================================================+
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-09-09 04:26:18 ---
+[^] 1. [Interact Mode (camera + selector)]
++============================================================+
+|  B O A R D - V I E W E R   ( W I D G E T )                 |
++============================================================+
+|                                                            |
+|  Focused on: piececraft-xyz  (board 16x16, cam 0,3)        |
+|  Interact mode: ON (arrows move selector, ESC exits)       |
+|  Possessing: hero_01 (jump/mine/build active)  (press 9 to |
+|  Display: emoji (default)                                  |
+|  Z-level: 16 / 31  (z / x to switch layers)                |
+|  Camera: 3D mode 2 (third-person) yaw=180 pitch=6          |
+|    pan=(0,0,0) z_level=0 [q/e yaw][r/t pitch][wasd pan][c/v|
+|                                                            |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+|                                                            |
+|  Selected (9,8): grass                                     |
+|  Arrow keys pan the selector. Camera follows, clamped to bo|
+|                                                            |
++============================================================+
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-09-09 04:26:18 ---
+[^] 1. [Interact Mode (camera + selector)]
++============================================================+
+|  B O A R D - V I E W E R   ( W I D G E T )                 |
++============================================================+
+|                                                            |
+|  Focused on: piececraft-xyz  (board 16x16, cam 0,3)        |
+|  Interact mode: ON (arrows move selector, ESC exits)       |
+|  Possessing: hero_01 (jump/mine/build active)  (press 9 to |
+|  Display: emoji (default)                                  |
+|  Z-level: 16 / 31  (z / x to switch layers)                |
+|  Camera: 3D mode 2 (third-person) yaw=180 pitch=6          |
+|    pan=(0,0,0) z_level=0 [q/e yaw][r/t pitch][wasd pan][c/v|
+|                                                            |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+|                                                            |
+|  Selected (10,8): grass                                    |
+|  Arrow keys pan the selector. Camera follows, clamped to bo|
+|                                                            |
++============================================================+
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-09-09 04:26:19 ---
+[^] 1. [Interact Mode (camera + selector)]
++============================================================+
+|  B O A R D - V I E W E R   ( W I D G E T )                 |
++============================================================+
+|                                                            |
+|  Focused on: piececraft-xyz  (board 16x16, cam 0,3)        |
+|  Interact mode: ON (arrows move selector, ESC exits)       |
+|  Possessing: hero_01 (jump/mine/build active)  (press 9 to |
+|  Display: emoji (default)                                  |
+|  Z-level: 16 / 31  (z / x to switch layers)                |
+|  Camera: 3D mode 2 (third-person) yaw=180 pitch=6          |
+|    pan=(0,0,0) z_level=0 [q/e yaw][r/t pitch][wasd pan][c/v|
+|                                                            |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+|                                                            |
+|  Selected (11,8): grass                                    |
+|  Arrow keys pan the selector. Camera follows, clamped to bo|
+|                                                            |
++============================================================+
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-09-09 04:26:19 ---
+[^] 1. [Interact Mode (camera + selector)]
++============================================================+
+|  B O A R D - V I E W E R   ( W I D G E T )                 |
++============================================================+
+|                                                            |
+|  Focused on: piececraft-xyz  (board 16x16, cam 0,3)        |
+|  Interact mode: ON (arrows move selector, ESC exits)       |
+|  Possessing: hero_01 (jump/mine/build active)  (press 9 to |
+|  Display: emoji (default)                                  |
+|  Z-level: 16 / 31  (z / x to switch layers)                |
+|  Camera: 3D mode 2 (third-person) yaw=180 pitch=6          |
+|    pan=(0,0,0) z_level=0 [q/e yaw][r/t pitch][wasd pan][c/v|
+|                                                            |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+|                                                            |
+|  Selected (12,8): grass                                    |
+|  Arrow keys pan the selector. Camera follows, clamped to bo|
+|                                                            |
++============================================================+
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-09-09 04:26:20 ---
+[^] 1. [Interact Mode (camera + selector)]
++============================================================+
+|  B O A R D - V I E W E R   ( W I D G E T )                 |
++============================================================+
+|                                                            |
+|  Focused on: piececraft-xyz  (board 16x16, cam 0,3)        |
+|  Interact mode: ON (arrows move selector, ESC exits)       |
+|  Possessing: hero_01 (jump/mine/build active)  (press 9 to |
+|  Display: emoji (default)                                  |
+|  Z-level: 16 / 31  (z / x to switch layers)                |
+|  Camera: 3D mode 2 (third-person) yaw=180 pitch=6          |
+|    pan=(0,0,0) z_level=0 [q/e yaw][r/t pitch][wasd pan][c/v|
+|                                                            |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+|                                                            |
+|  Selected (13,8): grass                                    |
+|  Arrow keys pan the selector. Camera follows, clamped to bo|
+|                                                            |
++============================================================+
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-09-09 04:26:20 ---
+[^] 1. [Interact Mode (camera + selector)]
++============================================================+
+|  B O A R D - V I E W E R   ( W I D G E T )                 |
++============================================================+
+|                                                            |
+|  Focused on: piececraft-xyz  (board 16x16, cam 0,4)        |
+|  Interact mode: ON (arrows move selector, ESC exits)       |
+|  Possessing: hero_01 (jump/mine/build active)  (press 9 to |
+|  Display: emoji (default)                                  |
+|  Z-level: 16 / 31  (z / x to switch layers)                |
+|  Camera: 3D mode 2 (third-person) yaw=180 pitch=6          |
+|    pan=(0,0,0) z_level=0 [q/e yaw][r/t pitch][wasd pan][c/v|
+|                                                            |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+|                                                            |
+|  Selected (13,9): grass                                    |
+|  Arrow keys pan the selector. Camera follows, clamped to bo|
+|                                                            |
++============================================================+
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-09-09 04:26:20 ---
+[^] 1. [Interact Mode (camera + selector)]
++============================================================+
+|  B O A R D - V I E W E R   ( W I D G E T )                 |
++============================================================+
+|                                                            |
+|  Focused on: piececraft-xyz  (board 16x16, cam 0,5)        |
+|  Interact mode: ON (arrows move selector, ESC exits)       |
+|  Possessing: hero_01 (jump/mine/build active)  (press 9 to |
+|  Display: emoji (default)                                  |
+|  Z-level: 16 / 31  (z / x to switch layers)                |
+|  Camera: 3D mode 2 (third-person) yaw=180 pitch=6          |
+|    pan=(0,0,0) z_level=0 [q/e yaw][r/t pitch][wasd pan][c/v|
+|                                                            |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+|                                                            |
+|  Selected (13,10): grass                                   |
+|  Arrow keys pan the selector. Camera follows, clamped to bo|
+|                                                            |
++============================================================+
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+
+
+--- FRAME at 2026-09-09 04:26:21 ---
+[^] 1. [Interact Mode (camera + selector)]
++============================================================+
+|  B O A R D - V I E W E R   ( W I D G E T )                 |
++============================================================+
+|                                                            |
+|  Focused on: piececraft-xyz  (board 16x16, cam 0,6)        |
+|  Interact mode: ON (arrows move selector, ESC exits)       |
+|  Possessing: hero_01 (jump/mine/build active)  (press 9 to |
+|  Display: emoji (default)                                  |
+|  Z-level: 16 / 31  (z / x to switch layers)                |
+|  Camera: 3D mode 2 (third-person) yaw=180 pitch=6          |
+|    pan=(0,0,0) z_level=0 [q/e yaw][r/t pitch][wasd pan][c/v|
+|                                                            |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+|                                                            |
+|  Selected (13,11): grass                                   |
+|  Arrow keys pan the selector. Camera follows, clamped to bo|
+|                                                            |
++============================================================+
+
+
++=========================================================+
+Active [^]:  (ESC to exit)
+

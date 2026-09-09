@@ -37,16 +37,92 @@
 #include <direct.h>
 #include <process.h>
 #include <io.h>
+#include <fcntl.h>
+#include <stdarg.h>
 #define usleep(us) Sleep((us)/1000)
 #define REALPATH(path, resolved) _fullpath(resolved, path, 4096)
 #define SETENV(name, value, overwrite) _putenv_s(name, value)
+/* WINDOWS FOLD-IN 2026-09-09 (from 014.wsr-pal + 01.muchi-pals-egg's own
+ * long-standing local prisc+x.c — PRISC-X-FORK-CONSOLIDATION.md). MinGW
+ * names popen/pclose with a leading underscore, and asprintf is only
+ * present with _GNU_SOURCE. These make the custom-op dispatch below
+ * COMPILE on Windows (it did not before). NOT Linux-testable here — the
+ * whole block is #ifdef _WIN32, verified inert on Linux by re-A/B of
+ * every converted project; needs a real MinGW build to confirm the
+ * Windows path. */
+#define popen  _popen
+#define pclose _pclose
+#ifndef asprintf
+static int kh_prisc_asprintf(char **strp, const char *fmt, ...) {
+    va_list ap;
+    va_start(ap, fmt);
+    int n = vsnprintf(NULL, 0, fmt, ap);
+    va_end(ap);
+    if (n < 0) return -1;
+    *strp = (char *)malloc((size_t)n + 1);
+    if (!*strp) return -1;
+    va_start(ap, fmt);
+    vsnprintf(*strp, (size_t)n + 1, fmt, ap);
+    va_end(ap);
+    return n;
+}
+#define asprintf kh_prisc_asprintf
+#endif
 #else
 #include <unistd.h>
 #include <dirent.h>
+#include <sys/wait.h>
+#include <fcntl.h>
+#include <time.h>
 #define REALPATH(path, resolved) realpath(path, resolved)
 #define SETENV(name, value, overwrite) setenv(name, value, overwrite)
 #endif
 #include <sys/stat.h>
+
+#ifndef _WIN32
+/* RE-LANDED 2026-09-09 (was 3eeb5a25, reverted 4370fc13 only because it
+ * did not fix a SEPARATE pc-hq focus bug — the hazard below is real and
+ * the canonical now serves ~17 projects).
+ *
+ * exec_custom_op() used to run every `+x/` custom op via
+ * popen(cmd,"r") + fgets-to-EOF + pclose(). If the child hangs, or any
+ * descendant it spawns keeps the stdout write-end open, fgets() never
+ * sees EOF and the ENTIRE single-threaded pal VM blocks forever
+ * (observed live: prisc+x stuck in wchan=pipe_read, board frames frozen
+ * ~80 s after launch, Interact keys landing in a queue nothing drains).
+ * mutaclsym-neo's own game_dispatch.c run_op() avoids this exactly:
+ * fork + child stdout/stderr -> /dev/null + execl + waitpid, no pipe.
+ * This is that pattern PLUS a hard 4 s watchdog: a genuinely infinite
+ * child gets its whole process group SIGKILLed and the pal loop
+ * continues on the last good frame. Custom ops in this house all
+ * communicate through files/receipts — their stdout is log chatter, so
+ * dropping the pipe loses nothing. */
+static void run_custom_bin(const char *cmd) {
+    pid_t pid = fork();
+    if (pid == 0) {
+        setsid(); /* own process group so a timeout can kill the whole tree */
+        int devnull = open("/dev/null", O_WRONLY);
+        if (devnull >= 0) { dup2(devnull, 1); dup2(devnull, 2); if (devnull > 2) close(devnull); }
+        execl("/bin/sh", "sh", "-c", cmd, (char *)NULL);
+        _exit(127);
+    }
+    if (pid < 0) return;
+    const int cap_ms = 4000, step_ms = 20;
+    int waited = 0, status = 0;
+    for (;;) {
+        pid_t r = waitpid(pid, &status, WNOHANG);
+        if (r == pid || r < 0) break;
+        if (waited >= cap_ms) {
+            kill(-pid, SIGKILL);
+            waitpid(pid, &status, 0);
+            break;
+        }
+        struct timespec ts = { 0, (long)step_ms * 1000000L };
+        nanosleep(&ts, NULL);
+        waited += step_ms;
+    }
+}
+#endif
 
 #ifndef MAX_PATH
 #define MAX_PATH 4096
@@ -1001,23 +1077,31 @@ void exec_custom_op(Inst *i) {
                 if (strlen(i->literal_arg) > 0) {
                     if (asprintf(&cmd, "'%s' \"%s\"",
                              full_script_path, i->literal_arg) != -1) {
+#ifdef _WIN32
                         FILE *pipe = popen(cmd, "r");
                         if (pipe) {
                             char result[256];
                             while (fgets(result, sizeof(result), pipe)) printf("%s", result);
                             pclose(pipe);
                         }
+#else
+                        run_custom_bin(cmd); /* fork+exec+waitpid + 4s watchdog - never blocks the VM */
+#endif
                         free(cmd);
                     }
                 } else {
                     if (asprintf(&cmd, "'%s' %d",
                              full_script_path, regs[i->rs1]) != -1) {
+#ifdef _WIN32
                         FILE *pipe = popen(cmd, "r");
                         if (pipe) {
                             char result[256];
                             while (fgets(result, sizeof(result), pipe)) printf("%s", result);
                             pclose(pipe);
                         }
+#else
+                        run_custom_bin(cmd);
+#endif
                         free(cmd);
                     }
                 }

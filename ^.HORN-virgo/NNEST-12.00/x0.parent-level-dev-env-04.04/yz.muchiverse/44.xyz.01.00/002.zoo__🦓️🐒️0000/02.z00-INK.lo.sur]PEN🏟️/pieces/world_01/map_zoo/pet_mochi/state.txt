@@ -1,13 +1,13 @@
 name=Mochi
 type=pet
 species=cat
-pos_x=2
+pos_x=1
 pos_y=1
 pos_z=0
 on_map=1
 map_id=map_zoo
 hunger=40
-happiness=60
+happiness=80
 energy=90
 decision_mode=0
 digit_accum=0
