@@ -589,11 +589,18 @@ static void kh_draw_canvas(Elem *e) {
      * on screen (below) instead of blanking - no visible flicker, same
      * spirit as the old implementation apparently already had. */
     if (w <= 0 || h <= 0) {
-        if (!c_img) {
+        /* bad receipt tick (read landed mid-write -> w/h==0). redraw()
+         * has already cleared the window buffer, so returning here
+         * leaves the canvas box grey - re-blit the LAST good frame
+         * instead (fall through with its cached size). Only fill when
+         * there's genuinely nothing cached yet. */
+        if (c_img && c_w > 0 && c_h > 0) {
+            w = c_w; h = c_h;
+        } else {
             XSetForeground(dpy, gc, alloc_pixel("#101014"));
             XFillRectangle(dpy, buf, gc, e->x, e->y, (unsigned)e->w, (unsigned)e->h);
+            return;
         }
-        return;
     }
     if (strcmp(c_path, spr) != 0 || c_w != w || c_h != h || !c_img) {
         snprintf(c_path, sizeof(c_path), "%s", spr);
@@ -622,9 +629,25 @@ static void kh_draw_canvas(Elem *e) {
                 }
         }
     }
-    int bw = w < e->w ? w : e->w;
-    int bh = h < e->h ? h : e->h;
-    XPutImage(dpy, buf, gc, c_img, 0, 0, e->x, e->y, (unsigned)bw, (unsigned)bh);
+    /* A frame the exact size of its canvas box blits 1:1 (bv_render_2d).
+     * A smaller frame (bv_render_3d's fixed 640x480) is CENTRED, never
+     * up-scaled - direct instruction 2026-09-09: "don't resize voxels
+     * on screen, camera should be wider". A larger frame is cropped. */
+    if (w == e->w && h == e->h) {
+        XPutImage(dpy, buf, gc, c_img, 0, 0, e->x, e->y, (unsigned)w, (unsigned)h);
+    } else {
+        int bw = w < e->w ? w : e->w;
+        int bh = h < e->h ? h : e->h;
+        int offx = (e->w - bw) / 2; if (offx < 0) offx = 0;
+        int offy = (e->h - bh) / 2; if (offy < 0) offy = 0;
+        int srcx = w > e->w ? (w - e->w) / 2 : 0;
+        int srcy = h > e->h ? (h - e->h) / 2 : 0;
+        /* fill the letterbox so an old frame doesn't ghost around it */
+        XSetForeground(dpy, gc, alloc_pixel("#0c0c0c"));
+        XFillRectangle(dpy, buf, gc, e->x, e->y, (unsigned)e->w, (unsigned)e->h);
+        XPutImage(dpy, buf, gc, c_img, srcx, srcy, e->x + offx, e->y + offy,
+                  (unsigned)bw, (unsigned)bh);
+    }
 }
 
 static void draw_elem(Elem *e, int hover_id_hash) {

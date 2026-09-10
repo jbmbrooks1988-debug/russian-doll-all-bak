@@ -116,7 +116,9 @@ static void redraw(void); /* REAL, forward declaration needed for dispatch()'s O
 static void kh_raise_and_focus(Window w); /* fwd - dispatch()'s FOCUSWIN handler uses it, defined near hq_dispatch_xevent */
 static int kh_key_history_code(KeySym ks, char ch); /* fwd - handle_key()'s interact-relay forward uses it before its real definition, near kh_capture_key */
 static void desktop_toggle_click_two_step(const char *house_root); /* fwd - dispatch()'s CLICK_TWOSTEP_TOGGLE handler uses it before its real definition, near desktop_load_click_two_step */
+static void desktop_set_font_scale(const char *house_root, int pct); /* fwd - dispatch()'s UI_SCALE_MINUS/PLUS handlers */
 static void desktop_load_click_two_step(const char *house_root); /* fwd - hq_ui_pdl_reload_if_changed() (hq_idle_tick(), long-running dock strip) uses it before its real definition */
+static void reload_font_ui(void); /* fwd - hq_ui_pdl_reload_if_changed() re-sizes the chrome font on a live font_scale change */
 static void kh_text_areas_reload(Elem *root); /* fwd - reparse_chtpm_if_changed() re-hydrates <text_area> buffers, defined near default_text_area_save */
 #define MAX_ELEMS 1024  /* 2026-09-02: page projection + chrome, was 512 */
 #define MAX_PAGE_STACK 8
@@ -705,6 +707,35 @@ static Elem *reusable_slot(Elem *slots, int max_slots, int index, const char *ta
  * own hand-rolled parser, not reinvented) ---------- */
 static void skip_ws(const char **p) { while (**p && isspace((unsigned char)**p)) (*p)++; }
 
+/* Count of malformed bytes the tag-tree parser had to skip in the
+ * current parse_chtpm() call (see the forward-progress guard in
+ * parse_element()'s child loop). >0 means a not-well-formed template -
+ * almost always a bare `"` / `<` / `>` / `&` in a ${var} value that
+ * kh_substitute_vars() couldn't escape (a value spliced OUTSIDE a
+ * quoted attribute, e.g. free `>${x}<` between tags). The parser
+ * degrades gracefully (skips the byte, keeps rendering) rather than
+ * spinning or aborting - this counter just makes it non-silent. */
+static long g_parse_skipped_bytes = 0;
+
+/* Paranoia cap: even with the forward-progress guard, bound the total
+ * loop iterations of one parse_chtpm() call so a future no-progress
+ * regression in SOME OTHER parser loop can't hang the process either.
+ * Set to ~4x the (post-substitution) template length + a floor; a
+ * well-formed parse is well under 1x. 0 = disabled (no parse running). */
+static long g_parse_budget = 0;
+static int  g_parse_cap_hit = 0;
+/* Set by parse_chtpm() for the MAIN window's template only: how many
+ * bytes the last parse skipped, and a sticky "this window's template is
+ * not well-formed" flag the redraw() title code shows as "⚠ malformed
+ * template". Cleared when a later reparse of the same template is
+ * clean. */
+static long g_last_parse_skipped = 0;
+static int  g_window_malformed = 0;
+#define KH_PARSE_STEP() do { \
+    if (g_parse_budget > 0 && --g_parse_budget <= 0) { \
+        g_parse_cap_hit = 1; return p + strlen(p); \
+    } } while (0)
+
 static void parse_attr_value(const char **p, char *out, size_t outsz) {
     skip_ws(p);
     if (**p != '"') { out[0] = '\0'; return; }
@@ -958,6 +989,7 @@ static const char *parse_element(const char *p, Elem *parent) {
      * signup-hq gates. */
     int drop_elem = 0;
     for (;;) {
+        KH_PARSE_STEP();
         skip_ws(&p);
         if (*p == '/' && p[1] == '>') {
             p += 2;
@@ -989,6 +1021,7 @@ static const char *parse_element(const char *p, Elem *parent) {
         parent->n_children--;
 
     for (;;) {
+        KH_PARSE_STEP();
         skip_ws(&p);
         if (!*p) return p;
         if (p[0] == '<' && p[1] == '/') {
@@ -1022,7 +1055,7 @@ static const char *parse_element(const char *p, Elem *parent) {
          * is a separate change.) */
         const char *before = p;
         p = parse_element(p, e);
-        if (p == before) p++;
+        if (p == before) { g_parse_skipped_bytes++; p++; }
     }
 }
 
@@ -1424,6 +1457,7 @@ static char *kh_expand_repeats_all(char *a, char *b, size_t cap) {
 }
 
 static Elem *parse_chtpm(const char *path) {
+    long skipped_before = g_parse_skipped_bytes;
     FILE *f = fopen(path, "r");
     if (!f) return NULL;
     fseek(f, 0, SEEK_END);
@@ -1480,9 +1514,16 @@ static Elem *parse_chtpm(const char *path) {
         }
     }
 
+    /* paranoia cap: ~4x the post-substitution length + a floor. A
+     * well-formed parse stays under 1x; this only trips on a genuine
+     * runaway (a future no-progress bug somewhere in parse_element). */
+    g_parse_budget = (long)strlen(buf) * 4 + 100000;
+    g_parse_cap_hit = 0;
+
     const char *p = buf;
     Elem *root = NULL;
     while (*p) {
+        if (--g_parse_budget <= 0) { g_parse_cap_hit = 1; break; }
         skip_ws(&p);
         if (!*p) break;
         if (*p == '<' && p[1] == '!') { p = parse_element(p, NULL); continue; }
@@ -1496,6 +1537,27 @@ static Elem *parse_chtpm(const char *path) {
         }
     }
     free(buf);
+    g_parse_budget = 0;   /* parse over - disable the step guard */
+    long this_skipped = g_parse_skipped_bytes - skipped_before;
+    if (this_skipped > 0 || g_parse_cap_hit) {
+        /* Non-silent, non-fatal: a not-well-formed template rendered
+         * with garbled bytes dropped. Almost always a bare " / < / > /
+         * & in a ${var} value that landed outside a quoted attribute
+         * (kh_substitute_vars escapes the in-attribute case). The
+         * window still opens; this line is the breadcrumb. */
+        fprintf(stderr,
+            "khtpm parse_chtpm(%s): NOT WELL-FORMED - skipped %ld stray byte(s)%s "
+            "(a bare \" / < / > / & in a ${var} value between tags?). "
+            "Window still rendered, content may be garbled.\n",
+            path, this_skipped, g_parse_cap_hit ? " AND HIT THE ITERATION CAP" : "");
+    }
+    /* Sticky visible marker - only for THIS window's own template (not
+     * the dock-peer strip or an unrelated reparse); cleared by a later
+     * clean reparse of the same file. */
+    if (!g_chtpm_path[0] || (path && strcmp(path, g_chtpm_path) == 0)) {
+        g_last_parse_skipped = this_skipped;
+        g_window_malformed = (this_skipped > 0 || g_parse_cap_hit);
+    }
     if (root && root->n_children > 0) return root->children[0];
     return root;
 }
@@ -2053,6 +2115,14 @@ static Elem *g_nav[MAX_ELEMS];
  * (1); set `click_two_step=0` in #.desktop/hq_ui.pdl to restore the
  * old single-click-activates "auto" behavior house-wide. */
 static int g_click_two_step = 1;
+/* UI scale (2026-09-09, LIVEDESK-UI-SCALE.md). Percent; 100 = 1.0x.
+ * Loaded from #.desktop/hq_ui.pdl's `font_scale` key (which already
+ * shipped 1.25 and was read by nothing) in desktop_load_click_two_step()
+ * and live-reloaded via hq_ui_pdl_reload_if_changed(). Every font-size
+ * and layout-box call site that goes through scaled() (font_for()'s CSS
+ * font-size, row heights, paddings) picks this up for free. Settings
+ * 'Size -'/'Size +' step it via the UI_SCALE_MINUS/PLUS verbs. */
+static int g_ui_scale_pct = 100;
 static int window_is_dock(void);
 static int elem_has_class(Elem *e, const char *cls);
 static int kh_elem_in_scope(Elem *e);
@@ -2134,7 +2204,11 @@ static Elem *g_dbhq_active_scope_root = NULL;
  * + <canvas> primitive + generic Interact Mode relay) replaced it,
  * live-verified end to end this session. */
 static int scaled(int base_px) {
-    return base_px;
+    if (g_ui_scale_pct == 100) return base_px;
+    /* round to nearest; keep a 1px floor for anything that was >=1 */
+    int v = (base_px * g_ui_scale_pct + 50) / 100;
+    if (base_px > 0 && v < 1) v = 1;
+    return v;
 }
 
 /* Screen dimensions - a constant under --headless (no dpy to ask), the
@@ -2173,8 +2247,13 @@ static int kh_elem_in_scope(Elem *e) {
     return 0;
 }
 #include "khtpm_draw_core.c"
-#define ROW_H 24
-#define CHROME_H 24
+/* ROW_H / CHROME_H are UI-scaled (LIVEDESK-UI-SCALE.md): scaled() is a
+ * pure int fn of g_ui_scale_pct (100 = identity), so these stay a
+ * single consistent value within any one expression / layout pass and
+ * grow the row + titlebar height with the Settings font_scale. Base:
+ * 24 / 24. */
+#define ROW_H    scaled(24)
+#define CHROME_H scaled(24)
 #define KH_WIN_FRAME 2
 
 static CssSheet g_sheet;
@@ -2778,6 +2857,20 @@ static int kh_nonfatal_x_error(Display *d, XErrorEvent *e) {
  * despite living inside that block historically. */
 static int g_popup_dragging = 0;
 static int g_popup_drag_last_x = 0, g_popup_drag_last_y = 0;
+
+/* User drag-resize (2026-09-09, direct request: "we used to have window
+ * grab stretch resize - definitely want that for this window, but
+ * toggleable by project layout or pdl"). Opt-in per window via
+ * <window class="user-resizable">. When on: a ⌟ glyph is drawn in the
+ * bottom-right, and a button-1 drag started in that KH_RESIZE_GRIP hot
+ * corner resizes the window (XResizeWindow + relayout). Zero effect on
+ * every other window. */
+static int g_user_resizable = 0;
+static int g_win_resizing = 0;
+static int g_resize_start_xr = 0, g_resize_start_yr = 0, g_resize_start_w = 0, g_resize_start_h = 0;
+#define KH_RESIZE_GRIP 20
+#define KH_WIN_MIN_W   220
+#define KH_WIN_MIN_H   140
 
 /* REAL, NEW 2026-09-01 - the old chat-hai mode block (~2,500 lines,
  * chai_-prefixed: its own draw_elem/render_tree/CSS apply/layout/
@@ -3826,7 +3919,7 @@ static int layout_sidebar_panel(Elem *page) {
 }
 /* ============ end generic sidebar+panel scroll ============ */
 
-#define DOCK_BAR_H 36
+#define DOCK_BAR_H scaled(36)  /* UI-scaled, LIVEDESK-UI-SCALE.md (base 36) */
 #define DOCK_SPRITE_PX 24
 #define DOCK_CELL_GAP 16
 #define DOCK_NAV_BADGE_PX 36
@@ -5041,7 +5134,7 @@ static void assign_nav_and_layout(void) {
                     tab->nav_index = ++g_n_nav; g_nav[g_n_nav - 1] = tab;
                     tx += tw + scaled(3);
                 }
-                if (tx + scaled(6) > g_win_w) { g_win_w = tx + scaled(6); g_window->w = g_win_w; }
+                if (!g_user_resizable && tx + scaled(6) > g_win_w) { g_win_w = tx + scaled(6); g_window->w = g_win_w; }
                 tabbar->x = 0; tabbar->y = CHROME_H + canvas_tabbar_h; tabbar->w = g_win_w; tabbar->h = row_h_tb;
                 css_compute_style(&g_sheet, tabbar->tag, tabbar->id, tabbar->classes, tabbar->n_classes, 0, &tabbar->style);
                 canvas_tabbar_h += row_h_tb;
@@ -5101,8 +5194,26 @@ static void assign_nav_and_layout(void) {
                 if (!cw) cw = g_win_w - 12;
                 if (!ch) ch = 360;
                 item->x = 6; item->y = y; item->w = cw; item->h = ch;
-                if (cw + 12 > g_win_w) { g_win_w = cw + 12; g_window->w = g_win_w; }
-                y += ch + 4;
+                if (g_user_resizable) {
+                    /* the canvas FILLS the window (below the toolbar) -
+                     * resize the window, the map view resizes with it.
+                     * The producing renderer is told this pixel size via
+                     * #.desktop/pchq_board_view.txt (below) and renders
+                     * exactly that, so kh_draw_canvas blits 1:1. */
+                    item->x = 6;
+                    item->w = g_win_w - 12;
+                    item->h = g_win_h - item->y - 8;
+                    if (item->w < 64) item->w = 64;
+                    if (item->h < 64) item->h = 64;
+                    char vsz[PATH_BUF];
+                    snprintf(vsz, sizeof(vsz), "%s/#.desktop/pchq_board_view.txt", g_house_root);
+                    FILE *vf = fopen(vsz, "w");
+                    if (vf) { fprintf(vf, "%d %d\n", item->w, item->h); fclose(vf); }
+                } else {
+                    /* not user-owned: grow the window to the framebuffer */
+                    if (cw + 12 > g_win_w) { g_win_w = cw + 12; g_window->w = g_win_w; }
+                }
+                y += item->h + 4;
                 continue;
             }
             if (strcmp(item->tag, "item") != 0 && strcmp(item->tag, "cli_io") != 0 && strcmp(item->tag, "text_area") != 0 && !is_text) continue;
@@ -5155,7 +5266,13 @@ static void assign_nav_and_layout(void) {
             y += item_h;
         }
         if (row_x) y += row_h + 4;
-        g_win_h = y + 8;
+        /* user owns the height when class="user-resizable". No
+         * "never clip content" fallback here: the canvas is sized to
+         * fill exactly the space left below the toolbar
+         * (item->h = g_win_h - item->y - 8), so content height always
+         * ~= g_win_h and a `g_win_h < y+8 -> g_win_h = y+8` guard is a
+         * +4/pass feedback loop (window crept to the screen edge). */
+        if (!g_user_resizable) g_win_h = y + 8;
         }
     }
     if (!window_is_dock() && g_window) {
@@ -5526,6 +5643,18 @@ static void dispatch(const char *action) {
         write_theme_opacity(opacity);
         set_window_opacity(dpy, win, opacity);
         redraw();
+        return;
+    }
+    if (strcmp(action, "UI_SCALE_MINUS") == 0 || strcmp(action, "UI_SCALE_PLUS") == 0) {
+        /* LIVEDESK-UI-SCALE.md - step font_scale in hq_ui.pdl by 0.25,
+         * clamp 0.75..2.0, re-size the chrome font, relayout, repaint.
+         * Other open windows follow via hq_ui_pdl_reload_if_changed(). */
+        int s = g_ui_scale_pct + (action[9] == 'P' ? 25 : -25);
+        if (s < 75) s = 75;
+        if (s > 200) s = 200;
+        desktop_set_font_scale(g_house_root, s);
+        reload_font_ui();
+        if (!g_quit) { assign_nav_and_layout(); redraw(); }
         return;
     }
     if (strcmp(action, "CLICK_TWOSTEP_TOGGLE") == 0) {
@@ -6777,9 +6906,10 @@ static void redraw(void) {
         kh_compose_entity_ident();
         const char *title_raw = g_window->label[0] ? g_window->label
                               : (g_entity_ident[0] ? g_entity_ident : g_current_page);
-        snprintf(title_buf, sizeof(title_buf), "%s %s%s",
+        snprintf(title_buf, sizeof(title_buf), "%s %s%s%s",
                  (focus_win == win) ? "^" : ".", title_raw,
-                 g_default_scope_confine ? "  Active [^]: (ESC to exit)" : "");
+                 g_default_scope_confine ? "  Active [^]: (ESC to exit)" : "",
+                 g_window_malformed ? "  \xE2\x9A\xA0 malformed template" : "");
         const char *title = title_buf;
         if (window_is_dock()) {
             const char *mark = (focus_win == win) ? "^" : ".";
@@ -7018,6 +7148,16 @@ static void redraw(void) {
         XDrawRectangle(dpy, buf, gc, 0, 0,
                        (unsigned)(g_win_w - 1), (unsigned)(g_win_h - 1));
     }
+    /* user drag-resize affordance: ⌟ in the bottom-right corner when the
+     * window opted in (class="user-resizable"). The KH_RESIZE_GRIP hot
+     * corner in the ButtonPress handler is anchored to the same spot. */
+    if (g_user_resizable && xftdraw_buf && font_ui) {
+        XftColor gcol = xft_color(g_theme_fg[0] ? g_theme_fg : "#888888");
+        XftDrawStringUtf8(xftdraw_buf, &gcol, font_ui,
+                          g_win_w - 15, g_win_h - 5,
+                          (const FcChar8 *)"\xE2\x8C\x9F", 3);   /* U+231F ⌟ */
+        XftColorFree(dpy, DefaultVisual(dpy, screen), cmap, &gcol);
+    }
     XSync(dpy, False);
     XImage *frame = XGetImage(dpy, buf, 0, 0, (unsigned)g_win_w, (unsigned)g_win_h, AllPlanes, ZPixmap);
     if (frame) {
@@ -7203,8 +7343,19 @@ static void handle_key(KeySym ks, char ch) {
             if (to_parser != is_kbd) continue;      /* route by consumer */
             FILE *f = fopen(p, "a");
             if (!f) continue;
-            if (is_kbd) fprintf(f, "KEY_PRESSED: %d\n", code);
-            else        fprintf(f, "%d\n", code);
+            if (is_kbd) {
+                fprintf(f, "KEY_PRESSED: %d\n", code);
+            } else {
+                /* "<code> <monotonic_ms>" - bv_dispatch drops a queued
+                 * key older than its stale threshold, so a held key
+                 * that piles up behind a slow render stops promptly on
+                 * release instead of coasting. A bare "<code>" (this
+                 * line without the timestamp) still parses - reverse
+                 * compatible. */
+                struct timespec rts; clock_gettime(CLOCK_MONOTONIC, &rts);
+                long long rms = (long long)rts.tv_sec * 1000 + rts.tv_nsec / 1000000;
+                fprintf(f, "%d %lld\n", code, rms);
+            }
             fclose(f);
         }
         /* REAL, NEW 2026-09-04, direct request ("add p frame dump to
@@ -8044,7 +8195,16 @@ static void hq_ui_pdl_reload_if_changed(const char *house_root) {
     if (st.st_mtim.tv_sec != g_hq_ui_pdl_mtime.tv_sec ||
         st.st_mtim.tv_nsec != g_hq_ui_pdl_mtime.tv_nsec) {
         g_hq_ui_pdl_mtime = st.st_mtim;
+        int old_scale = g_ui_scale_pct;
         desktop_load_click_two_step(house_root);
+        if (g_ui_scale_pct != old_scale) {
+            /* font_scale changed in Settings while this window is open:
+             * re-size the chrome font, relayout (box metrics changed,
+             * not just a colour), repaint. */
+            reload_font_ui();
+            assign_nav_and_layout();
+            hq_request_redraw();
+        }
     }
 }
 
@@ -8363,6 +8523,19 @@ static void hq_dispatch_xevent(XEvent *ev, Atom wm_delete, int is_popup) {
             }
         }
         if (is_popup) {
+            /* user drag-resize: button-1 in the bottom-right KH_RESIZE_GRIP
+             * hot corner starts a resize (opt-in, <window class="user-
+             * resizable">). Checked before the title drag-start below. */
+            if (g_user_resizable && !window_is_dock() && ev->xbutton.button == 1 &&
+                ev->xbutton.x >= g_win_w - KH_RESIZE_GRIP && ev->xbutton.x < g_win_w &&
+                ev->xbutton.y >= g_win_h - KH_RESIZE_GRIP && ev->xbutton.y < g_win_h) {
+                g_win_resizing = 1;
+                g_resize_start_xr = ev->xbutton.x_root;
+                g_resize_start_yr = ev->xbutton.y_root;
+                g_resize_start_w = g_win_w;
+                g_resize_start_h = g_win_h;
+                return;
+            }
             /* REAL, NEW 2026-08-29 (TASK 1: popup drag support) - check for
              * drag-start on chrome area (y < CHROME_H), same pattern as
              * db-hq/events-hq/chat-hai. Button 1 only, top CHROME_H pixels.
@@ -8450,9 +8623,41 @@ static void hq_dispatch_xevent(XEvent *ev, Atom wm_delete, int is_popup) {
     }
     if (ev->type == ButtonRelease && ev->xbutton.button == 1) {
         g_popup_dragging = 0;  /* REAL, NEW 2026-08-29 (TASK 1) */
+        if (g_win_resizing) {
+            /* commit: ONE relayout + redraw now that the drag is done.
+             * Doing it per-MotionNotify feeds back through the
+             * has_canvas/toolbar layout (which only ever grows g_win_w,
+             * plus a per-pass +2*KH_WIN_FRAME) and the window grows
+             * without bound while you drag - the "infinite grow" bug. */
+            g_win_resizing = 0;
+            if (!g_quit) { assign_nav_and_layout(); redraw(); }
+        }
         return;
     }
     if (ev->type == MotionNotify) {
+        if (is_popup && g_win_resizing) {
+            /* coalesce the motion burst - only the final position matters */
+            XEvent mdrain;
+            while (XCheckTypedWindowEvent(dpy, win, MotionNotify, &mdrain)) *ev = mdrain;
+            int scr = DefaultScreen(dpy);
+            int maxw = DisplayWidth(dpy, scr), maxh = DisplayHeight(dpy, scr);
+            int nw = g_resize_start_w + (ev->xmotion.x_root - g_resize_start_xr);
+            int nh = g_resize_start_h + (ev->xmotion.y_root - g_resize_start_yr);
+            if (nw < KH_WIN_MIN_W) nw = KH_WIN_MIN_W;
+            if (nh < KH_WIN_MIN_H) nh = KH_WIN_MIN_H;
+            if (nw > maxw) nw = maxw;
+            if (nh > maxh) nh = maxh;
+            if (nw != g_win_w || nh != g_win_h) {
+                g_win_w = nw; g_win_h = nh;
+                if (g_window) { g_window->w = g_win_w; g_window->h = g_win_h; }
+                /* X window only + cheap same-buffer repaint. NO
+                 * assign_nav_and_layout() here - see the ButtonRelease
+                 * comment. The Pixmap may be smaller than the new size
+                 * for a beat; redraw() on release rebuilds it. */
+                XResizeWindow(dpy, win, (unsigned)g_win_w, (unsigned)g_win_h);
+            }
+            return;
+        }
         if (is_popup && g_popup_dragging) {
             /* REAL, NEW 2026-08-29 (TASK 1: popup drag-move) - same pattern
              * as other modes: compute delta from last recorded x_root/y_root,
@@ -8923,6 +9128,34 @@ static void desktop_toggle_click_two_step(const char *house_root) {
     g_click_two_step = new_val;
 }
 
+/* Rewrite hq_ui.pdl's font_scale row in place (same shape as
+ * desktop_toggle_click_two_step). pct is 75..200; stored as a decimal
+ * multiplier. Updates g_ui_scale_pct in this process; other open
+ * windows pick it up via hq_ui_pdl_reload_if_changed()'s mtime check. */
+static void desktop_set_font_scale(const char *house_root, int pct) {
+    if (pct < 75) pct = 75;
+    if (pct > 200) pct = 200;
+    char path[PATH_BUF];
+    snprintf(path, sizeof(path), "%s/#.desktop/hq_ui.pdl", house_root);
+    char lines[128][256];
+    int n = 0;
+    FILE *f = fopen(path, "r");
+    if (f) { while (n < 128 && fgets(lines[n], sizeof(lines[n]), f)) n++; fclose(f); }
+    int replaced = 0;
+    for (int i = 0; i < n; i++) {
+        if (strncmp(lines[i], "font_scale=", 11) == 0) {
+            snprintf(lines[i], sizeof(lines[i]), "font_scale=%.2f\n", pct / 100.0);
+            replaced = 1;
+        }
+    }
+    FILE *wf = fopen(path, "w");
+    if (!wf) return;
+    for (int i = 0; i < n; i++) fputs(lines[i], wf);
+    if (!replaced) fprintf(wf, "font_scale=%.2f\n", pct / 100.0);
+    fclose(wf);
+    g_ui_scale_pct = pct;
+}
+
 static void desktop_load_click_two_step(const char *house_root) {
     char path[4352]; /* matches this file's own later TP_PATH_BUF (not yet declared at this point) */
     snprintf(path, sizeof(path), "%s/#.desktop/hq_ui.pdl", house_root);
@@ -8938,8 +9171,31 @@ static void desktop_load_click_two_step(const char *house_root) {
         if (nl) *nl = '\0';
         if (strcmp(line, "click_two_step") == 0) g_click_two_step = atoi(val) != 0;
         else if (strcmp(line, "emoji_sprite_view") == 0) g_emoji_sprite_view_top = (strcmp(val, "top") == 0);
+        else if (strcmp(line, "font_scale") == 0) {
+            int p = (int)(atof(val) * 100.0 + 0.5);
+            if (p < 50) p = 50;      /* the hq_ui.pdl comment's own 0.5-3.0 range */
+            if (p > 300) p = 300;
+            g_ui_scale_pct = p;
+        }
     }
     fclose(f);
+}
+
+/* Reopen font_ui at the current UI scale. font_ui is the shared chrome/
+ * title/dock/tab font (drawn directly, not via font_for()), loaded once
+ * in main(); this lets a live scale change re-size it too. Safe to call
+ * whenever dpy/screen are valid. */
+static void reload_font_ui(void) {
+    if (!dpy) return;
+    XftFont *old = font_ui;
+    char spec[64];
+    snprintf(spec, sizeof(spec), "Noto Sans CJK SC:pixelsize=%d", scaled(13));
+    XftFont *nf = XftFontOpenName(dpy, screen, spec);
+    if (!nf) {
+        snprintf(spec, sizeof(spec), "DejaVu Sans:pixelsize=%d", scaled(12));
+        nf = XftFontOpenName(dpy, screen, spec);
+    }
+    if (nf) { font_ui = nf; if (old && old != nf) XftFontClose(dpy, old); }
 }
 static int g_grab_pointer = LIVEDESK_USE_XGRAB_POINTER;
 static int g_grab_keyboard = LIVEDESK_USE_XGRAB_KEYBOARD;
@@ -11365,7 +11621,7 @@ static int read_initial_pos(const char *package_dir, int *out_x, int *out_y) {
  * MAX_METHODS with no error, so a 9th row would have been invisible
  * with zero warning. Bumped with real headroom, not just +1. */
 #define MAX_METHODS 12
-#define POPUP_ROW_H 28
+#define POPUP_ROW_H scaled(28)  /* UI-scaled, LIVEDESK-UI-SCALE.md (base 28) */
 /* REAL FIX 2026-08-06, user: "menu screen is too thin i cant see everything"
  * — fixed 160px clipped RPG Menu rows (XP / qolq / Level lines with nav
  * prefixes). Width is now content-measured (see measure_context_popup_w /
@@ -14527,6 +14783,7 @@ int main(int argc, char **argv) {
     for (int i = 0; i < g_window->n_classes; i++) {
         if (strcmp(g_window->classes[i], "database-window") == 0 ||
             strcmp(g_window->classes[i], "palettes-pal") == 0) g_default_persistent = 1;
+        if (strcmp(g_window->classes[i], "user-resizable") == 0) g_user_resizable = 1;
         /* REAL Stage 5 §5d.10 (2026-08-16) - db-hq mode, real, data-
          * driven detection (`<window class="db-hq">`, same convention
          * as swatch-picker's own). */
@@ -14675,8 +14932,25 @@ int main(int argc, char **argv) {
     XSetErrorHandler(kh_nonfatal_x_error);
     screen = DefaultScreen(dpy);
     cmap = DefaultColormap(dpy, screen);
-    font_ui = XftFontOpenName(dpy, screen, "Noto Sans CJK SC:pixelsize=13");
-    if (!font_ui) font_ui = XftFontOpenName(dpy, screen, "DejaVu Sans:pixelsize=12");
+    /* class="user-resizable" opens at a modest fixed size, offset from
+     * the corner so the chrome (x / ! / _) is always reachable. NOT
+     * derived from DisplayWidth/Height - those read the framebuffer,
+     * which under HiDPI / a virtual desktop can be much larger than the
+     * visible monitor (direct report 2026-09-09: full-screen put the
+     * close button off the right edge). Only clamped DOWN to the
+     * display. The ⌟ drag + the canvas take it from here. */
+    if (g_user_resizable) {
+        int sw = DisplayWidth(dpy, screen), sh = DisplayHeight(dpy, screen);
+        g_win_x = 90;
+        g_win_y = WM_MANAGED_DRAG_MIN_Y;
+        g_win_w = 1120;
+        g_win_h = 720;
+        if (g_win_w > sw - g_win_x - 60)  g_win_w = sw - g_win_x - 60;
+        if (g_win_h > sh - g_win_y - 40)  g_win_h = sh - g_win_y - 40;
+        if (g_win_w < KH_WIN_MIN_W) g_win_w = KH_WIN_MIN_W;
+        if (g_win_h < KH_WIN_MIN_H) g_win_h = KH_WIN_MIN_H;
+    }
+    reload_font_ui();  /* "Noto Sans CJK SC" / "DejaVu Sans" at pixelsize scaled(13)/scaled(12) - honours hq_ui.pdl font_scale, loaded just above */
     /* REAL, NEW 2026-08-25 (live report: bookmarks' own path labels
      * carry real emoji dir names, rendered as tofu boxes - "open-hai
      * has an implementation for this we can steal") - loads once, here,

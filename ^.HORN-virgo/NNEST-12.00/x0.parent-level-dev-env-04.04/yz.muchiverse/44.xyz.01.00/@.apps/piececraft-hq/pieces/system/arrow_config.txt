@@ -56,15 +56,24 @@ fp_eye_height=1.5
 # tp_look_down_deg: how many degrees to tilt the VIEW down (on top of
 #   whatever r/t pitch you've dialed in) so the elevated camera
 #   actually looks down at the entity instead of level over its head.
-tp_distance=5.0
-tp_height=4.0
-tp_look_down_deg=20.0
+tp_distance=7.0
+tp_height=9.0
+tp_look_down_deg=48.0
 
 # --- Lighting engine (xyz-ngn-plan.md) ---
 # lighting_enabled: 1 = real sun/moon-driven sky color + ground light
 #   level + visible sun/moon objects. 0 = flat sky, flat lighting (old
 #   behavior), sun/moon objects hidden. Toggle without a rebuild.
 lighting_enabled=1
+
+# --- Adaptive resolution (mc-speed-algos.md §7) ---
+# motion_lod_step: while the CAMERA IS STILL MOVING, bv_render_3d
+#   raymarches a 1/N grid and block-fills, then snaps to a crisp
+#   full-res frame the instant you stop. N=1 disables it (always full
+#   res); 2 = quarter the rays while moving (recommended); 3-4 =
+#   coarser/faster but blockier during motion. The settled frame and
+#   any host-driven redraw are always full res regardless.
+motion_lod_step=2
 
 # --- Camera/movement keys (all values are the KEY'S OWN ASCII CODE,
 #     not a character - e.g. 'w' is 119, 'q' is 113. Use `python3 -c
@@ -95,3 +104,4 @@ key_cam_up=118              # 'v' - free camera height up (modes 3/4)
 # keybinds.txt, then the built-in char default. Edit keybinds.pdl for
 # pov_mode_1..4 / render_mode_toggle / possess / possess_commit /
 # file_menu / desk_menu and the JUMP/MINE/BUILD/END_TURN verbs.
+use_gpu_render=1

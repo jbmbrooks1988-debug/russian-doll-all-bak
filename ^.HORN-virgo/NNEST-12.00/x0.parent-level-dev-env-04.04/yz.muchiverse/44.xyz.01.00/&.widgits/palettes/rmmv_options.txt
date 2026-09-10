@@ -1,4 +1,4 @@
-ACTIVE_DIR|animations
+ACTIVE_DIR|tilesets
 DIR|tilesets|tilesets
 DIR|characters|characters
 DIR|faces|faces
