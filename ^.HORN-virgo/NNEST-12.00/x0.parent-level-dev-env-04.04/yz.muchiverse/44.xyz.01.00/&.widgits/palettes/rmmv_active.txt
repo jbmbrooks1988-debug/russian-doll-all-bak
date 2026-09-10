@@ -1,3 +1,3 @@
 tab=C
-tileset=SF_Inside
+tileset=SF_Outside
 dir=tilesets

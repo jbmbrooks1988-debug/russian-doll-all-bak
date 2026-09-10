@@ -189,6 +189,12 @@ static Window g_dock_kbd_win;
 static int g_dock_visible_rows = 1;
 static int g_dock_packed_rows = 1;
 static Elem g_dock_plus_elem, g_dock_minus_elem;
+/* MILESTONE B/C - generic <footer> row pager (same idea as the dock
+ * +/- above, for any sidebar+panel window's footer). g_footer_vis_rows
+ * survives redraws; clamped against g_footer_total_rows each layout. */
+static Elem g_footer_more_elem, g_footer_less_elem;
+static int g_footer_vis_rows = 1;
+static int g_footer_total_rows = 1;
 static int g_dock_in_peer_paint;
 static int g_dock_in_menu_paint;
 static Window g_dock_menu_win;
@@ -1609,6 +1615,17 @@ static Elem *g_default_input_elem;
  * End). default_cli_io_handle_key() reads it: Shift+move extends the
  * text selection, an unshifted move collapses it. */
 static int g_key_shift = 0;
+static int g_key_ctrl = 0;
+/* PDL-configurable window-close combo. ESC never closes a real app
+ * window (accident risk - direct instruction). This is the deliberate
+ * close gesture, from #.desktop/hq_ui.pdl:  close_combo=ctrl+c
+ * (the user can set ctrl+q, ctrl+w, ctrl+shift+w, ...). */
+static char g_close_combo[24] = "ctrl+c";
+/* Top of the desktop work area - a new HQ window spawns here, fullscreen
+ * starts here, and window drag can't go above it (clears the GNOME
+ * panel + livedesk top strip). #.desktop/hq_ui.pdl: win_top_y=90 -
+ * bump it if the board opens too high / into the top taskbar. */
+static int g_win_top_y = 90;   /* == WM_MANAGED_DRAG_MIN_Y (defined below) */
 /* REAL FIX 2026-09-05, direct live report ("tb and x11-hq windows no
  * longer do double digit accumulation jump, ie 15 jumps to 5") -
  * multi-digit nav-jump accumulator for the generic default-mode
@@ -2284,6 +2301,22 @@ static int elem_has_class(Elem *e, const char *cls) {
 }
 
 #define WM_MANAGED_DRAG_MIN_Y 90
+/* Fullscreen ("!" / TOGGLE_FULLSCREEN) fills only the desktop WORK AREA
+ * - the band between the livedesk top strip (WM_MANAGED_DRAG_MIN_Y) and
+ * the bottom dock strip - not the whole display (direct instruction
+ * 2026-09-10: "full screen shouldn't go above the size within bottom/
+ * top tb of desk"). Follow-up: "too far right off the screen ... when
+ * in doubt dont go far, stop short" - so inset a clear margin on every
+ * edge (WM frame + being safely inside, matching the ~60px right
+ * reserve user-resizable windows already use). */
+#define WM_MANAGED_BOTTOM_RESERVE 46
+#define WM_FS_MARGIN_X 16
+#define WM_FS_MARGIN_RIGHT 140   /* generous - kept overshooting the right; stop short */
+#define WM_FS_MARGIN_BOTTOM 32
+/* absolute safety cap: fullscreen never exceeds this fraction of the
+ * reported display, whatever the WM / HiDPI coord weirdness (direct
+ * instruction: "when in doubt dont go far, stop short"). */
+#define WM_FS_MAX_PCT 90
 
 
 /* Real, single-slot font cache for text measurement, ported verbatim
@@ -2533,6 +2566,25 @@ static void kh_serialize_frame_elem(FILE *f, Elem *e) {
  * uses (non-title children first, in order, title deferred to last at
  * each level) - PRESERVING draw order matters for real visual parity
  * (a later-drawn element can visually overlap an earlier one). */
+/* MILESTONE A polish (direct report: "desk dropdown renders UNDER the
+ * game map"). The per-level second-pass defer below only reorders
+ * dropdown-child WITHIN one container's subtree - a dropdown nested in
+ * an early sibling (the board's <sidebar id="rail">) still paints
+ * before a later sibling (<panel> with the <canvas>). Collect every
+ * non-dock dropdown-child tree-wide during the first pass and flush it
+ * AFTER everything (canvas, footer, chrome) via
+ * kh_serialize_frame_deferred(). */
+static Elem *g_ser_dd[32];
+static int g_ser_dd_n = 0;
+static void kh_serialize_frame_subtree(FILE *f, Elem *e);
+static void kh_serialize_frame_deferred(FILE *f) {
+    for (int i = 0; i < g_ser_dd_n; i++) {
+        kh_serialize_frame_elem(f, g_ser_dd[i]);
+        kh_serialize_frame_subtree(f, g_ser_dd[i]);
+    }
+    g_ser_dd_n = 0;
+}
+
 static void kh_serialize_frame_subtree(FILE *f, Elem *e) {
     for (int i = 0; i < e->n_children; i++) {
         Elem *c = e->children[i];
@@ -2548,15 +2600,20 @@ static void kh_serialize_frame_subtree(FILE *f, Elem *e) {
          * immediately painted-over by whatever line came after it in
          * this file, same real reason <title> is deferred below. Same
          * fix, same place, mirrored. */
-        if (elem_has_class(c, "dropdown-child")) continue;
+        if (elem_has_class(c, "dropdown-child")) {
+            /* dock keeps its own in-place menu paint; every other window
+             * defers tree-wide (flushed last by the caller). */
+            if (!window_is_dock() && g_ser_dd_n < 32) g_ser_dd[g_ser_dd_n++] = c;
+            continue;
+        }
         kh_serialize_frame_elem(f, c);
         kh_serialize_frame_subtree(f, c);
     }
     for (int i = 0; i < e->n_children; i++) {
         Elem *c = e->children[i];
         if (strcmp(c->tag, "title") == 0) kh_serialize_frame_elem(f, c);
-        else if (elem_has_class(c, "dropdown-child")) {
-            if (window_is_dock() && !g_dock_in_menu_paint) continue;
+        else if (elem_has_class(c, "dropdown-child") && window_is_dock()) {
+            if (!g_dock_in_menu_paint) continue;
             kh_serialize_frame_elem(f, c);
             kh_serialize_frame_subtree(f, c);
         }
@@ -3567,9 +3624,57 @@ static void layout_fixed_rows_and_scrolllist(Elem *container, int x, int y, int 
  * consumer can rely on, tag-based, not open-hai-specific). Returns 1
  * if it actually ran (caller should skip the old flat-list path),
  * 0 if `page` has no sidebar+panel pair (old path still owns it). */
+/* MILESTONE A (PCHQ-ENTITY-MENU-AND-TASKBAR-DESIGN.md §6a) - lay out a
+ * <canvas> child of a sidebar+panel region so the board window can be a
+ * normal HQ window (chrome, dropdowns, taskbar entry, minimize) with the
+ * 2D/3D view as an in-panel canvas instead of the flat has_canvas
+ * layout. The canvas fills the region box. Sets g_has_canvas (drives
+ * the live-feed ~30fps tick), wires the projector's canvas_raw sprite,
+ * and writes the producer-size handoff (#.desktop/pchq_board_view.txt)
+ * so bv_render_3d renders the exact pixel box kh_draw_canvas blits 1:1.
+ * The shared draw_elem() already dispatches <canvas> -> kh_draw_canvas
+ * regardless of layout, so no paint-side change is needed. Returns 1 if
+ * a canvas was found and placed. */
+static int kh_layout_canvas_in_region(Elem *region, int rx, int ry, int rw, int rh) {
+    Elem *cv = NULL;
+    for (int i = 0; i < region->n_children; i++)
+        if (strcmp(region->children[i]->tag, "canvas") == 0) { cv = region->children[i]; break; }
+    if (!cv) return 0;
+
+    css_compute_style(&g_sheet, cv->tag, cv->id, cv->classes, cv->n_classes, 0, &cv->style);
+    { const char *cr = kh_get_var("canvas_raw");
+      if (cr && cr[0]) snprintf(cv->sprite, sizeof(cv->sprite), "%s", cr); }
+
+    int pad = 6;
+    cv->x = rx + pad; cv->y = ry + pad;
+    cv->w = rw - 2 * pad; cv->h = rh - 2 * pad;
+    if (cv->w < 64) cv->w = 64;
+    if (cv->h < 64) cv->h = 64;
+    cv->nav_index = 0;
+    g_has_canvas = 1;
+
+    char vsz[PATH_BUF];
+    snprintf(vsz, sizeof(vsz), "%s/#.desktop/pchq_board_view.txt", g_house_root);
+    FILE *vf = fopen(vsz, "w");
+    if (vf) { fprintf(vf, "%d %d\n", cv->w, cv->h); fclose(vf); }
+    return 1;
+}
+
 static int layout_sidebar_panel(Elem *page) {
     Elem *sidebar = find_by_tag(page, "sidebar");
-    Elem *panel = find_by_tag(page, "panel");
+    /* The main content panel is a DIRECT child of <page> and is not a
+     * dropdown overlay. find_by_tag()'s depth-first first-match would
+     * otherwise return a `<panel class="dropdown-child">` nested inside
+     * the sidebar (milestone A: the board's Desk/Menu dropdowns) - so
+     * pick deliberately, then fall back to the old behavior. */
+    Elem *panel = NULL;
+    for (int i = 0; i < page->n_children; i++) {
+        Elem *c = page->children[i];
+        if (strcmp(c->tag, "panel") == 0 && !elem_has_class(c, "dropdown-child")) {
+            panel = c; break;
+        }
+    }
+    if (!panel) panel = find_by_tag(page, "panel");
     if (!sidebar || !panel) return 0;
     generic_sbar_reset();
 
@@ -3579,8 +3684,21 @@ static int layout_sidebar_panel(Elem *page) {
     css_compute_style(&g_sheet, panel->tag, panel->id, panel->classes, panel->n_classes, 0, &panel->style);
 
     if (g_default_is_fullscreen) {
-        g_win_w = kh_screen_w();
-        g_win_h = kh_screen_h();
+        /* work area only, and stop short of every edge (see the
+         * WM_FS_MARGIN_* declaration comment) */
+        int sw = kh_screen_w(), sh = kh_screen_h();
+        g_win_w = sw - WM_FS_MARGIN_X - WM_FS_MARGIN_RIGHT;
+        g_win_h = sh - WM_MANAGED_DRAG_MIN_Y - WM_MANAGED_BOTTOM_RESERVE - WM_FS_MARGIN_BOTTOM;
+        if (g_win_w > sw * WM_FS_MAX_PCT / 100) g_win_w = sw * WM_FS_MAX_PCT / 100;
+        if (g_win_h > sh * WM_FS_MAX_PCT / 100) g_win_h = sh * WM_FS_MAX_PCT / 100;
+        if (g_win_w < 320) g_win_w = sw - WM_FS_MARGIN_X;
+        if (g_win_h < 240) g_win_h = sh - WM_MANAGED_DRAG_MIN_Y;
+        if (g_win_h < 240) g_win_h = sh;
+    } else if (g_user_resizable && g_win_w > 0 && g_win_h > 0) {
+        /* a user-resizable window OWNS its own size after main()'s
+         * initial value - the ⌟ drag updates g_win_w/g_win_h and this
+         * relayout must NOT snap it back to the CSS/default ("resize
+         * wont grow at all" report 2026-09-10). */
     } else {
         g_win_w = g_window->style.has_width ? g_window->style.width : DEFAULT_WIN_W;
         g_win_h = g_window->style.has_height ? g_window->style.height : DEFAULT_WIN_H;
@@ -3714,6 +3832,107 @@ static int layout_sidebar_panel(Elem *page) {
         sidebar->x = 0; sidebar->y = content_top; sidebar->w = sidebar_w; sidebar->h = g_win_h - content_top;
         panel->x = sidebar_w; panel->y = content_top; panel->w = g_win_w - sidebar_w; panel->h = g_win_h - content_top;
     }
+
+    /* MILESTONE B/C (PCHQ-ENTITY-MENU-AND-TASKBAR-DESIGN.md §6a) - a
+     * generic bottom-dock <footer>: a horizontal strip along the
+     * window's bottom edge, laid out AFTER sidebar/panel (their heights
+     * trimmed so nothing paints under it). Cells WRAP into rows; a
+     * synthesized +/- pager (like the dock strip's) shows/hides deeper
+     * rows via FOOTER_ROWS:+1/-1. g_footer_vis_rows of g_footer_total_
+     * rows are visible; off-page cells park at -100000. */
+    g_footer_more_elem.w = g_footer_less_elem.w = 0;
+    {
+        Elem *footer = NULL;
+        for (int i = 0; i < page->n_children; i++)
+            if (strcmp(page->children[i]->tag, "footer") == 0) { footer = page->children[i]; break; }
+        if (footer) {
+            css_compute_style(&g_sheet, footer->tag, footer->id, footer->classes, footer->n_classes, 0, &footer->style);
+            int row_h = footer->style.has_height ? footer->style.height : scaled(24);
+            if (row_h < 12) row_h = 12;
+            int pad = scaled(6);
+            int pager_w = scaled(46);   /* room for +/- at the right edge */
+            /* always stop short of the ⌟ drag-resize grip in the
+             * bottom-right corner (direct instruction) */
+            int grip = g_user_resizable ? KH_RESIZE_GRIP + scaled(4) : 0;
+            int right_edge = g_win_w - pad - grip;
+
+            /* pass 1: assign each cell a (row, x) by wrapping */
+            int row = 0, fx = pad, max_row = 0;
+            for (int i = 0; i < footer->n_children; i++) {
+                Elem *fi = footer->children[i];
+                if (strcmp(fi->tag, "item") != 0 && strcmp(fi->tag, "text") != 0) continue;
+                css_compute_style(&g_sheet, fi->tag, fi->id, fi->classes, fi->n_classes, 0, &fi->style);
+                int fw = fi->style.has_width ? fi->style.width
+                       : (kh_measure_text_px(&fi->style, fi->label) + scaled(18));
+                if (fx > pad && fx + fw > right_edge - pager_w) { row++; fx = pad; }
+                fi->x = fx; fi->w = fw; fi->h = row_h - scaled(4);
+                fi->y = row;                       /* stash the row index in y for pass 2 */
+                if (row > max_row) max_row = row;
+                fx += fw + scaled(4);
+            }
+            g_footer_total_rows = max_row + 1;
+            if (g_footer_vis_rows < 1) g_footer_vis_rows = 1;
+            if (g_footer_vis_rows > g_footer_total_rows) g_footer_vis_rows = g_footer_total_rows;
+
+            int footer_h = g_footer_vis_rows * row_h + scaled(4);
+            footer->x = 0; footer->y = g_win_h - footer_h;
+            /* the footer NEVER climbs into the header/toolbar band -
+             * they don't compete. Keep a sliver of panel between them. */
+            int min_footer_y = content_top + scaled(6);
+            if (footer->y < min_footer_y) {
+                footer->y = min_footer_y;
+                footer_h = g_win_h - footer->y;
+                if (footer_h < row_h) footer_h = row_h;
+            }
+            footer->w = g_win_w; footer->h = footer_h;
+            /* sidebar/panel stop exactly at the footer top */
+            panel->h  = footer->y - panel->y;   if (panel->h  < 0) panel->h  = 0;
+            sidebar->h = footer->y - sidebar->y; if (sidebar->h < 0) sidebar->h = 0;
+
+            /* pass 2: real y from the stashed row, park off-page rows */
+            for (int i = 0; i < footer->n_children; i++) {
+                Elem *fi = footer->children[i];
+                if (strcmp(fi->tag, "item") != 0 && strcmp(fi->tag, "text") != 0) continue;
+                int r = fi->y;
+                if (r >= g_footer_vis_rows) {
+                    fi->x = 0; fi->y = -100000; fi->w = 0; fi->h = 0; fi->nav_index = 0;
+                    continue;
+                }
+                fi->y = footer->y + scaled(2) + r * row_h;
+                if (strcmp(fi->tag, "item") == 0 && (fi->onclick[0] || fi->label[0])) {
+                    fi->nav_index = ++g_n_nav; g_nav[g_n_nav - 1] = fi;
+                } else {
+                    fi->nav_index = 0;
+                }
+            }
+
+            /* synthesize the +/- pager on the footer's first row when
+             * there is more than one row of cells. */
+            if (g_footer_total_rows > 1) {
+                int ay = footer->y + scaled(2);
+                int aw = scaled(20), ah = row_h - scaled(4);
+                memset(&g_footer_less_elem, 0, sizeof(g_footer_less_elem));
+                snprintf(g_footer_less_elem.tag, sizeof(g_footer_less_elem.tag), "item");
+                snprintf(g_footer_less_elem.id, sizeof(g_footer_less_elem.id), "footer-rows-less");
+                snprintf(g_footer_less_elem.label, sizeof(g_footer_less_elem.label), "-");
+                snprintf(g_footer_less_elem.onclick, sizeof(g_footer_less_elem.onclick), "FOOTER_ROWS:-1");
+                g_footer_less_elem.x = right_edge - 2 * aw - scaled(3);
+                g_footer_less_elem.y = ay; g_footer_less_elem.w = aw; g_footer_less_elem.h = ah;
+                css_compute_style(&g_sheet, "item", "footer-rows-less", NULL, 0, 0, &g_footer_less_elem.style);
+                g_footer_less_elem.nav_index = ++g_n_nav; g_nav[g_n_nav - 1] = &g_footer_less_elem;
+
+                memset(&g_footer_more_elem, 0, sizeof(g_footer_more_elem));
+                snprintf(g_footer_more_elem.tag, sizeof(g_footer_more_elem.tag), "item");
+                snprintf(g_footer_more_elem.id, sizeof(g_footer_more_elem.id), "footer-rows-more");
+                snprintf(g_footer_more_elem.label, sizeof(g_footer_more_elem.label), "+");
+                snprintf(g_footer_more_elem.onclick, sizeof(g_footer_more_elem.onclick), "FOOTER_ROWS:+1");
+                g_footer_more_elem.x = right_edge - aw;
+                g_footer_more_elem.y = ay; g_footer_more_elem.w = aw; g_footer_more_elem.h = ah;
+                css_compute_style(&g_sheet, "item", "footer-rows-more", NULL, 0, 0, &g_footer_more_elem.style);
+                g_footer_more_elem.nav_index = ++g_n_nav; g_nav[g_n_nav - 1] = &g_footer_more_elem;
+            }
+        }
+    }
     /* REAL, NEW 2026-08-31 (live report: "no separation elements") -
      * a real visible divider between the two regions belongs in CSS
      * (entity_menu_default.css's own generic `sidebar`/`cli_io` rules),
@@ -3819,7 +4038,10 @@ static int layout_sidebar_panel(Elem *page) {
         layout_fixed_rows_and_scrolllist(sidebar, sidebar->x, sidebar->y, sidebar->w, sidebar->h,
                                           &g_default_sidebar_scroll, &g_default_sidebar_nav_lo, &g_default_sidebar_nav_hi);
     }
-    if (panel->style.has_display && panel->style.display_flex) {
+    if (kh_layout_canvas_in_region(panel, panel->x, panel->y, panel->w, panel->h)) {
+        /* MILESTONE A - the panel is a live canvas (pc-hq board); it
+         * filled the box, no fixed-rows / flex pass for it. */
+    } else if (panel->style.has_display && panel->style.display_flex) {
         zero_nav_subtree(panel);
         kh_css_deep(panel);
         css_layout_pass(panel, panel->x, panel->y, panel->w, panel->h);
@@ -4082,40 +4304,50 @@ static int dock_item_cw(Elem *t) {
     return cw;
 }
 
-static void dock_place_pager(int win_w) {
-    memset(&g_dock_plus_elem, 0, sizeof(g_dock_plus_elem));
-    snprintf(g_dock_plus_elem.tag, sizeof(g_dock_plus_elem.tag), "item");
-    snprintf(g_dock_plus_elem.id, sizeof(g_dock_plus_elem.id), "dock-page-plus");
-    snprintf(g_dock_plus_elem.label, sizeof(g_dock_plus_elem.label), "+");
-    snprintf(g_dock_plus_elem.onclick, sizeof(g_dock_plus_elem.onclick), "PAGEROW:+1");
-    g_dock_plus_elem.x = win_w - DOCK_PAGER_W + 8;
-    g_dock_plus_elem.y = 0;
-    g_dock_plus_elem.w = DOCK_PAGER_W - 16;
-    g_dock_plus_elem.h = DOCK_BAR_H;
-    css_compute_style(&g_sheet, g_dock_plus_elem.tag, g_dock_plus_elem.id, NULL, 0, 0, &g_dock_plus_elem.style);
-    g_dock_plus_elem.nav_index = ++g_n_nav;
-    g_nav[g_n_nav - 1] = &g_dock_plus_elem;
+/* Horizontal "- +" pager, placed right AFTER the last cell (left-flowing
+ * with the cells, not pinned to the far right - direct instruction:
+ * "why isn't it justified left like the [cells]?"), and only when there
+ * is actually a row to page to (g_dock_packed_rows > 1) - a lone no-op
+ * "+" was the old behaviour. `after_x` = the x just past the last laid-
+ * out cell on the last visible row. */
+static void dock_place_pager(int win_w, int after_x) {
+    int aw = scaled(22), gap = scaled(4);
+    int need = (g_dock_packed_rows > 1) || (g_dock_visible_rows > 1);
 
     memset(&g_dock_minus_elem, 0, sizeof(g_dock_minus_elem));
+    memset(&g_dock_plus_elem,  0, sizeof(g_dock_plus_elem));
+    if (!need) {
+        g_dock_minus_elem.y = g_dock_plus_elem.y = -100000;
+        g_dock_minus_elem.nav_index = g_dock_plus_elem.nav_index = 0;
+        return;
+    }
+
+    int mx = after_x + gap;
+    /* never let the pair run past the visible strip: DOCK_PAGER_W is the
+     * right margin the packer already reserved, so this is the hard cap. */
+    int cap = win_w - DOCK_PAGER_W + 8;
+    if (mx > cap) mx = cap;
+    if (mx < DOCK_FOCUS_BOX_W) mx = DOCK_FOCUS_BOX_W;
+
     snprintf(g_dock_minus_elem.tag, sizeof(g_dock_minus_elem.tag), "item");
     snprintf(g_dock_minus_elem.id, sizeof(g_dock_minus_elem.id), "dock-page-minus");
     snprintf(g_dock_minus_elem.label, sizeof(g_dock_minus_elem.label), "-");
     snprintf(g_dock_minus_elem.onclick, sizeof(g_dock_minus_elem.onclick), "PAGEROW:-1");
-    if (g_dock_visible_rows > 1) {
-        g_dock_minus_elem.x = win_w - DOCK_PAGER_W + 8;
-        g_dock_minus_elem.y = DOCK_BAR_H;
-        g_dock_minus_elem.w = DOCK_PAGER_W - 16;
-        g_dock_minus_elem.h = DOCK_BAR_H;
-        css_compute_style(&g_sheet, g_dock_minus_elem.tag, g_dock_minus_elem.id, NULL, 0, 0, &g_dock_minus_elem.style);
-        g_dock_minus_elem.nav_index = ++g_n_nav;
-        g_nav[g_n_nav - 1] = &g_dock_minus_elem;
-    } else {
-        g_dock_minus_elem.x = 0;
-        g_dock_minus_elem.y = -100000;
-        g_dock_minus_elem.w = 0;
-        g_dock_minus_elem.h = 0;
-        g_dock_minus_elem.nav_index = 0;
-    }
+    g_dock_minus_elem.x = mx; g_dock_minus_elem.y = 0;
+    g_dock_minus_elem.w = aw; g_dock_minus_elem.h = DOCK_BAR_H;
+    css_compute_style(&g_sheet, "item", "dock-page-minus", NULL, 0, 0, &g_dock_minus_elem.style);
+    g_dock_minus_elem.nav_index = ++g_n_nav;
+    g_nav[g_n_nav - 1] = &g_dock_minus_elem;
+
+    snprintf(g_dock_plus_elem.tag, sizeof(g_dock_plus_elem.tag), "item");
+    snprintf(g_dock_plus_elem.id, sizeof(g_dock_plus_elem.id), "dock-page-plus");
+    snprintf(g_dock_plus_elem.label, sizeof(g_dock_plus_elem.label), "+");
+    snprintf(g_dock_plus_elem.onclick, sizeof(g_dock_plus_elem.onclick), "PAGEROW:+1");
+    g_dock_plus_elem.x = mx + aw + gap; g_dock_plus_elem.y = 0;
+    g_dock_plus_elem.w = aw; g_dock_plus_elem.h = DOCK_BAR_H;
+    css_compute_style(&g_sheet, "item", "dock-page-plus", NULL, 0, 0, &g_dock_plus_elem.style);
+    g_dock_plus_elem.nav_index = ++g_n_nav;
+    g_nav[g_n_nav - 1] = &g_dock_plus_elem;
 }
 
 static void dock_draw_separators(Elem *page) {
@@ -4204,7 +4436,7 @@ static int layout_dock_bar(Elem *page) {
         if (g_dock_visible_rows > g_dock_packed_rows) g_dock_visible_rows = g_dock_packed_rows;
         if (g_dock_visible_rows < 1) g_dock_visible_rows = 1;
         y = g_dock_visible_rows * DOCK_BAR_H;
-        dock_place_pager(g_win_w);
+        dock_place_pager(g_win_w, col_x);
         for (i = 0; i < page->n_children; i++) {
             Elem *c = page->children[i];
             if (strcmp(c->tag, "cli_io") == 0) {
@@ -4649,11 +4881,23 @@ static void kh_scan_interact_relay(void) {
     Elem *found = NULL;
     Elem *any_relay = NULL;
     if (pg) {
-        for (int i = 0; i < pg->n_children; i++) {
-            Elem *it = pg->children[i];
-            if (strcmp(it->tag, "item") != 0 || !it->relay[0]) continue;
-            if (!any_relay) any_relay = it;
-            if (elem_has_class(it, "interact-active")) { found = it; break; }
+        /* direct page children, AND one level into a layout container
+         * (sidebar / tabbar / footer) - milestone A moved the board's
+         * relay trigger from a flat page <item> into a <sidebar>/
+         * <tabbar> toolbar. Accept <item> or <tab>. */
+        for (int i = 0; i < pg->n_children && !found; i++) {
+            Elem *c = pg->children[i];
+            int is_container = (strcmp(c->tag, "sidebar") == 0 ||
+                                strcmp(c->tag, "tabbar") == 0 ||
+                                strcmp(c->tag, "footer") == 0);
+            int lo = is_container ? 0 : -1;
+            int hi = is_container ? c->n_children : 0;
+            for (int j = lo; j < hi; j++) {
+                Elem *it = (j < 0) ? c : c->children[j];
+                if ((strcmp(it->tag, "item") != 0 && strcmp(it->tag, "tab") != 0) || !it->relay[0]) continue;
+                if (!any_relay) any_relay = it;
+                if (elem_has_class(it, "interact-active")) { found = it; break; }
+            }
         }
     }
     if (!found) found = any_relay;
@@ -4763,8 +5007,19 @@ static int kh_page_has_relay_item(void) {
     Elem *pg = find_page(g_current_page);
     if (!pg) return 0;
     for (int i = 0; i < pg->n_children; i++) {
-        Elem *it = pg->children[i];
-        if (strcmp(it->tag, "item") == 0 && it->relay[0]) return 1;
+        Elem *c = pg->children[i];
+        if ((strcmp(c->tag, "item") == 0 || strcmp(c->tag, "tab") == 0) && c->relay[0])
+            return 1;
+        /* milestone A: the board's relay trigger moved into a <tabbar>/
+         * <sidebar>/<footer> toolbar - look one level in. */
+        if (strcmp(c->tag, "tabbar") == 0 || strcmp(c->tag, "sidebar") == 0 ||
+            strcmp(c->tag, "footer") == 0) {
+            for (int j = 0; j < c->n_children; j++) {
+                Elem *it = c->children[j];
+                if ((strcmp(it->tag, "item") == 0 || strcmp(it->tag, "tab") == 0) && it->relay[0])
+                    return 1;
+            }
+        }
     }
     return 0;
 }
@@ -4860,7 +5115,7 @@ static void assign_nav_and_layout(void) {
          * IS the real detection. g_default_has_sidebar_panel latching
          * true is the correct "first time" signal already used one
          * line below for a different real fix, same real idea reused. */
-        if (!g_default_has_sidebar_panel) { g_win_x = 80; g_win_y = 80; }
+        if (!g_default_has_sidebar_panel) { g_win_x = 80; g_win_y = g_win_top_y; }
         g_default_has_sidebar_panel = 1;
         if (g_dock_drop_lo && g_default_active_scope_id[0] &&
             (g_focus_nav < g_dock_drop_lo || g_focus_nav > g_dock_drop_hi))
@@ -5338,6 +5593,14 @@ static void dispatch(const char *action) {
         if (g_dock_visible_rows > 1) g_dock_visible_rows--;
         return;
     }
+    if (strcmp(action, "FOOTER_ROWS:+1") == 0) {
+        if (g_footer_vis_rows < g_footer_total_rows) g_footer_vis_rows++;
+        return;
+    }
+    if (strcmp(action, "FOOTER_ROWS:-1") == 0) {
+        if (g_footer_vis_rows > 1) g_footer_vis_rows--;
+        return;
+    }
     if (strncmp(action, "FOCUSWIN:", 9) == 0) {
         unsigned long w = 0; int pid = 0;
         if (sscanf(action + 9, "0x%lx:%d", &w, &pid) != 2) return;
@@ -5699,7 +5962,8 @@ static void dispatch(const char *action) {
         g_default_is_fullscreen = !g_default_is_fullscreen;
         if (g_default_is_fullscreen) {
             g_default_pre_fullscreen_x = g_win_x; g_default_pre_fullscreen_y = g_win_y;
-            g_win_x = 0; g_win_y = 0;
+            /* inside the work area, stop short of the edges */
+            g_win_x = WM_FS_MARGIN_X; g_win_y = g_win_top_y;
         } else {
             g_win_x = g_default_pre_fullscreen_x; g_win_y = g_default_pre_fullscreen_y;
         }
@@ -7006,6 +7270,7 @@ static void redraw(void) {
         snprintf(tmpp, sizeof(tmpp), "%s.tmp", fpath);
         FILE *ff = fopen(tmpp, "w");
         if (ff) {
+            g_ser_dd_n = 0;
             kh_serialize_frame_subtree(ff, page);
             /* REAL, NEW 2026-09-01 - the sidebar+panel chrome "X"/"!"
              * pair (see their own static-storage declaration comment)
@@ -7029,6 +7294,14 @@ static void redraw(void) {
                 if (g_sbar_up_elem[sbi].w > 0) kh_serialize_frame_elem(ff, &g_sbar_up_elem[sbi]);
                 if (g_sbar_down_elem[sbi].w > 0) kh_serialize_frame_elem(ff, &g_sbar_down_elem[sbi]);
             }
+            /* MILESTONE B/C - the synthesized footer row pager, same
+             * "lives outside the parsed tree" pattern as the chrome
+             * trio above. */
+            if (g_footer_more_elem.w > 0) kh_serialize_frame_elem(ff, &g_footer_more_elem);
+            if (g_footer_less_elem.w > 0) kh_serialize_frame_elem(ff, &g_footer_less_elem);
+            /* MILESTONE A polish - open dropdown-child last so it paints
+             * OVER the <canvas> / <footer> (direct report). */
+            kh_serialize_frame_deferred(ff);
             fclose(ff); rename(tmpp, fpath);
         }
         {
@@ -7245,6 +7518,26 @@ static void dump_frame_png(void) {
 }
 
 static void handle_key(KeySym ks, char ch) {
+    /* PDL-configurable window close (#.desktop/hq_ui.pdl close_combo,
+     * default ctrl+c). The deliberate close gesture for a focused
+     * window - ESC deliberately does NOT close a real app window
+     * (accident risk). Compares the base keysym (Ctrl+C delivers ch
+     * 0x03, so ch is useless here) against the letter after the last
+     * '+', case-insensitively, with the ctrl/shift requirement. */
+    if (g_close_combo[0] && ((ks >= 'a' && ks <= 'z') || (ks >= 'A' && ks <= 'Z'))) {
+        const char *plus = strrchr(g_close_combo, '+');
+        int want_ch = plus ? (unsigned char)plus[1] : (unsigned char)g_close_combo[0];
+        int want_ctrl  = (strstr(g_close_combo, "ctrl")  != NULL);
+        int want_shift = (strstr(g_close_combo, "shift") != NULL);
+        int got = (int)ks; if (got >= 'A' && got <= 'Z') got += 32;
+        if (want_ch >= 'A' && want_ch <= 'Z') want_ch += 32;
+        if (want_ch && got == want_ch &&
+            (!want_ctrl  || g_key_ctrl) &&
+            (!want_shift || g_key_shift)) {
+            g_quit = 1;
+            return;
+        }
+    }
     /* REAL FIX 2026-09-04 (pc-hq-bugs.md Bug 2 - "tb top gets focus
      * (steals it) and wont ever give it back" the instant the user
      * presses an arrow key after clicking a different window). Root
@@ -7454,7 +7747,20 @@ static void handle_key(KeySym ks, char ch) {
         if (hf) { fprintf(hf, "27\n"); fclose(hf); }
         return;
     }
-    if (ks == XK_Escape) { g_quit = 1; return; }
+    if (ks == XK_Escape) {
+        /* Direct instruction 2026-09-10: "we dont wanna close any
+         * window on esc cuz it could be accident. ctrl+c is ok, but
+         * nothing else but the x button". A real app window
+         * (persistent / sidebar+panel / canvas - db-hq, events-hq, the
+         * pc-hq board) is NEVER closed by a bare Escape; it has an [X]
+         * chrome button. Bare ESC here is a no-op (earlier handlers
+         * already gave ESC its useful jobs: exit a scope, forward to an
+         * armed interact relay). Transient popups - the entity context
+         * menu, pickers - keep their own ESC-to-dismiss below. */
+        if (g_default_persistent || g_default_has_sidebar_panel || g_has_canvas)
+            return;
+        g_quit = 1; return;
+    }
     /* REAL, NEW 2026-09-01 - a real, generic second action any focused
      * <item> can carry (see Elem's own backspace_action field comment) -
      * checked BEFORE the plain Up/Down/digit nav below, same real key-
@@ -8448,6 +8754,23 @@ static void hq_dispatch_xevent(XEvent *ev, Atom wm_delete, int is_popup) {
      * is kept only because it still works for synthetic/XTest testing
      * and costs nothing to leave in. */
     if (ev->type == ButtonPress) {
+        /* drag-resize grip - works for ANY user-resizable window, not
+         * just popups (the pc-hq board is now a managed sidebar+panel
+         * window, so the popup-gated grip block below never fired for
+         * it - "resize wont grow at all" report 2026-09-10). Very small
+         * hot corner (KH_RESIZE_GRIP px), checked before any element
+         * hit-test so a footer cell can't eat it. */
+        if (g_user_resizable && !window_is_dock() && !g_win_resizing &&
+            ev->xbutton.button == 1 &&
+            ev->xbutton.x >= g_win_w - KH_RESIZE_GRIP && ev->xbutton.x < g_win_w &&
+            ev->xbutton.y >= g_win_h - KH_RESIZE_GRIP && ev->xbutton.y < g_win_h) {
+            g_win_resizing = 1;
+            g_resize_start_xr = ev->xbutton.x_root;
+            g_resize_start_yr = ev->xbutton.y_root;
+            g_resize_start_w = g_win_w;
+            g_resize_start_h = g_win_h;
+            return;
+        }
         /* REAL FIX 2026-09-03 (direct live report: "its way to hard to
          * get window focus. i tap click window and it still doesn't
          * have focus") - root cause, confirmed live via the new "^"/"."
@@ -8635,7 +8958,7 @@ static void hq_dispatch_xevent(XEvent *ev, Atom wm_delete, int is_popup) {
         return;
     }
     if (ev->type == MotionNotify) {
-        if (is_popup && g_win_resizing) {
+        if (g_win_resizing) {   /* any user-resizable window, not just popups */
             /* coalesce the motion burst - only the final position matters */
             XEvent mdrain;
             while (XCheckTypedWindowEvent(dpy, win, MotionNotify, &mdrain)) *ev = mdrain;
@@ -8666,7 +8989,7 @@ static void hq_dispatch_xevent(XEvent *ev, Atom wm_delete, int is_popup) {
             int dx = ev->xmotion.x_root - g_popup_drag_last_x;
             int dy = ev->xmotion.y_root - g_popup_drag_last_y;
             g_win_x += dx; g_win_y += dy;
-            if (g_win_y < WM_MANAGED_DRAG_MIN_Y) g_win_y = WM_MANAGED_DRAG_MIN_Y;
+            if (g_win_y < g_win_top_y) g_win_y = g_win_top_y;
             XMoveWindow(dpy, win, g_win_x, g_win_y);
             g_popup_drag_last_x = ev->xmotion.x_root;
             g_popup_drag_last_y = ev->xmotion.y_root;
@@ -8681,6 +9004,7 @@ static void hq_dispatch_xevent(XEvent *ev, Atom wm_delete, int is_popup) {
         /* REAL, NEW 2026-09-05 - real Shift state for this key, read by
          * default_cli_io_handle_key()'s selection logic. */
         g_key_shift = (ev->xkey.state & ShiftMask) ? 1 : 0;
+        g_key_ctrl  = (ev->xkey.state & ControlMask) ? 1 : 0;
         if (is_popup) {
             /* Physical keys must move dock/popup nav in-process.
              * Capture+poll is for agent replay; idle tick still consumes
@@ -9170,6 +9494,15 @@ static void desktop_load_click_two_step(const char *house_root) {
         char *nl = strchr(val, '\n');
         if (nl) *nl = '\0';
         if (strcmp(line, "click_two_step") == 0) g_click_two_step = atoi(val) != 0;
+        else if (strcmp(line, "close_combo") == 0) {
+            snprintf(g_close_combo, sizeof(g_close_combo), "%s", val);
+            for (char *p = g_close_combo; *p; p++) if (*p >= 'A' && *p <= 'Z') *p += 32;
+        }
+        else if (strcmp(line, "win_top_y") == 0) {
+            g_win_top_y = atoi(val);
+            if (g_win_top_y < 0) g_win_top_y = 0;
+            if (g_win_top_y > 400) g_win_top_y = 400;
+        }
         else if (strcmp(line, "emoji_sprite_view") == 0) g_emoji_sprite_view_top = (strcmp(val, "top") == 0);
         else if (strcmp(line, "font_scale") == 0) {
             int p = (int)(atof(val) * 100.0 + 0.5);
@@ -14879,7 +15212,7 @@ int main(int argc, char **argv) {
      * right after the one shared load call (dbhq_load_font_scale()) at
      * line ~17761, same real pattern applied here. */
     if (find_by_tag(g_window, "sidebar") && find_by_tag(g_window, "panel")) {
-        g_win_x = 80; g_win_y = 80; /* sidebar+panel default, distinct from the small-popup modes' 300,300 */
+        g_win_x = 80; g_win_y = g_win_top_y; /* sidebar+panel default (hq_ui.pdl win_top_y) */
     }
 
     /* REAL FIX (found live, first standalone test): g_win_h is DATA-

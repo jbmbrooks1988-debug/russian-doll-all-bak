@@ -1,104 +1,75 @@
-<!-- pchq-board.xhtpm - STATIC template for the piececraft-hq 3D board
-     view, replacing run_pchq_board_mode()'s ~800 lines of hardcoded C
-     (khtpm_core_render.c). Same "only the 2D/3D screen is a blit,
-     everything else is a normal hq window" architecture the 2026-08-30
-     rewrite was aiming at - now actually on the shared Elem/CSS path.
+<!-- pchq-board.xhtpm - MILESTONE A + A-2 + B
+     (PCHQ-ENTITY-MENU-AND-TASKBAR-DESIGN.md §6a): the board window as a
+     normal HQ window with a horizontal toolbar + a footer.
 
-       class="pchq-board-pal database-window managed"  - neither token
-         trips the renderer's exact-strcmp g_is_* / pchq-board mode
-         triggers; "database-window" is CSS-only; "managed" opts this
-         window out of override_redirect (pc-hq-leg-vs-nu-fix.md §5-A).
-       <module> pchq_board_projector.+x args="piececraft-hq" - finds the
-         live board-viewer session (ledger_peers.+x), writes state/ui.txt:
-           bv_session=          absolute session dir ("" if none live)
-           canvas_raw=          <bv_session>/pieces/display/rgb_frame_3d_overlay.raw
-           no_session=1|""      gate for the "open View Board first" hint
-           interact_label=      "ON" / "off"  (active_gui_is_typing.txt)
-           clock=               HH:MM
-           menu_open=file|desk|  (from state/menu.txt, action.sh writes it)
-           file_menu_open= desk_menu_open=  "1"/"" derived from menu_open
-           n_file_opts= f_<i>_label= f_<i>_active=(pchq-menu-active|"")
-           n_desk_opts= d_<i>_label= d_<i>_active=
-       ops/pchq_board_action.sh <bv_session> <verb> [arg] - appends the
-         right byte(s) to the board-viewer's own history files
-         (interact=13, file=engage+'5', desk=engage+'6'); menu open/close
-         just rewrites state/menu.txt for the projector to pick up.
+       <tabbar id="toolbar">  - In/File/Desk/Menu/Player/clock as a
+         horizontal <tab> row just under the chrome (direct feedback:
+         "header should be <tabbar> horizontal row"). <tab> click
+         dispatches onclick=, so shell actions + ACTIVATE dropdowns both
+         work; kh_scan_interact_relay now also finds a relay= trigger
+         inside a <tabbar>.
+       <sidebar id="rail">  - width:0, present only to satisfy
+         layout_sidebar_panel()'s sidebar+panel trigger.
+       <panel id="view-panel"><canvas id="view"/>  - the 2D/3D blit;
+         kh_layout_canvas_in_region() fills it, sets g_has_canvas, wires
+         canvas_raw, writes #.desktop/pchq_board_view.txt (1:1 blit).
+       <footer id="statusbar">  - horizontal bottom strip; milestone C
+         puts the entities bar here.
 
-     Old pchq-board.chtpm (class="pchq-board" -> run_pchq_board_mode)
-     stays as rollback; button.sh still launches THAT until this path is
-     proven. -->
+     Free: X/!/_ chrome, taskbar entry, minimize/restore, REAL Desk/Menu
+     dropdowns. Rollback: pchq-board.hascanvas.xhtpm (PCHQ_BOARD_HASCANVAS=1). -->
 <window label="piececraft-hq board" class="pchq-board-pal database-window managed user-resizable" vars="state/ui.txt">
   <module src="@.apps/piececraft-hq/ops/+x/pchq_board_projector.+x" args="piececraft-hq"/>
   <page name="main">
-    <item id="close" class="chrome-btn" label="x" onclick="CLOSE"/>
-    <!-- 2026-09-04: restored - the original run_pchq_board_mode()
-         toolbar (khtpm_core_render.c's own PCHQ_ACT_FULLSCREEN, before
-         its 2026-09-04 deletion) had a real "!" fullscreen chrome item
-         next to Close ("we will put '!' for fullscreen next to 'x'").
-         This session's static-template port dropped it by omission
-         when building this file - restoring it here now, wired to the
-         house's own already-generic TOGGLE_FULLSCREEN onclick verb
-         (XHTPM-PARSER-REFERENCE.md §16) rather than the old bespoke
-         pchq_focus/pchq_is_fullscreen local state machine. -->
-    <item id="fullscreen" class="chrome-btn" label="!" onclick="TOGGLE_FULLSCREEN"/>
-    <!-- 2026-09-04: minimize ("_") - the generic sidebar+panel layout
-         auto-adds this chrome item for its own windows
-         (g_default_minimize_elem, khtpm_core_render.c ~line 3166), but
-         pchq-board uses the flat toolbar-item/canvas layout (has_canvas
-         branch) instead, which never gets it automatically - added
-         explicitly here, same "_"/MINIMIZE convention. -->
-    <item id="minimize" class="chrome-btn" label="_" onclick="MINIMIZE"/>
+    <tabbar id="toolbar" class="pchq-toolbar">
+      <tab id="tb-in" class="pchq-tb ${interact_class}" label="In: ${interact_label}"
+           relay="${bv_h1},${bv_h2}"
+           onclick="'${HOUSE}/@.apps/piececraft-hq/ops/pchq_board_action.sh' '${bv_session}' 'interact'"/>
+      <tab id="tb-file" class="pchq-tb" label="File"
+           onclick="'${HOUSE}/@.apps/piececraft-hq/ops/pchq_board_action.sh' '${bv_session}' 'file-hq'"/>
+      <tab id="tb-desk" class="pchq-tb" label="Desk ▾" onclick="ACTIVATE" target_id="tb-desk"/>
+      <tab id="tb-menu" class="pchq-tb" label="Menu ▾" onclick="ACTIVATE" target_id="tb-menu"/>
+      <tab id="tb-player" class="pchq-tb" label="Player" onclick="void"/>
+      <tab id="tb-clock" class="pchq-tb" label="${clock}" onclick="void"/>
+    </tabbar>
 
-    <!-- toolbar row. tb-in is the generic Interact Mode trigger (see
-         khtpm_core_render.c's g_interact_relay_on): relay= names the
-         two board-viewer history files (same dual write pchq_append_
-         key() always did); class="${interact_class}" is projector-
-         published from active_gui_is_typing.txt and is what ARMS
-         keyboard forwarding - not the click. While armed, its own
-         badge reads [^] (house-wide "genuinely engaged" glyph) same
-         as every other real active-scope indicator in this file. -->
-    <item id="tb-in" class="pchq-tb ${interact_class}" label="In: ${interact_label}"
-          relay="${bv_h1},${bv_h2}"
-          action="'${HOUSE}/@.apps/piececraft-hq/ops/pchq_board_action.sh' '${bv_session}' 'interact'"/>
-    <!-- 2026-09-09, direct report ("file button ... opening dropdown menu,
-         instead of file browser widget as it should ... the dropdown is
-         only for maps[=desks], not files"). File now goes STRAIGHT to the
-         File Explorer widget (pchq_board_action.sh's `file-hq` verb:
-         fe-pick.sh LOAD -> load the picked map). Only Desk keeps the
-         dropdown. -->
-    <item id="tb-file" class="pchq-tb" label="File"
-          action="'${HOUSE}/@.apps/piececraft-hq/ops/pchq_board_action.sh' '${bv_session}' 'file-hq'"/>
-    <item id="tb-desk" class="pchq-tb" label="Desk"
-          action="'${HOUSE}/@.apps/piececraft-hq/ops/pchq_board_action.sh' '${bv_session}' 'menu' 'desk'"/>
-    <!-- 2026-09-04: restored - the original toolbar order was
-         In, File, Desk, Menu, Player, Clock (see PCHQ_ACT_MENU/
-         PCHQ_ACT_PLAYER in run_pchq_board_mode() before its
-         2026-09-04 deletion: "real order is now In, File, Desk, Menu,
-         X. Menu is a real, new, currently-stub toolbar Elem (a
-         general game menu; Db will live as a sub-item under it
-         later)" / "Player is a real stub for now (hero HP/position
-         readback is a separate, later pass)"). Both were dropped by
-         omission when this file was first built - restored as the
-         same real stub slots (action="void", present for layout/nav
-         parity only, no dispatch yet), NOT wired to anything new. -->
-    <item id="tb-menu" class="pchq-tb quiet" label="Menu" action="void"/>
-    <item id="tb-player" class="pchq-tb quiet" label="Player" action="void"/>
-    <item id="tb-clock" class="pchq-tb quiet" label="${clock}" action="void"/>
+    <!-- zero-width rail: satisfies layout_sidebar_panel's sidebar+panel
+         trigger AND hosts the dropdown rows. The generic overlay pass
+         (in layout_fixed_rows_and_scrolllist) wants FLAT sibling
+         <item class="dropdown-child" target_id="X">, stacked below
+         trigger X (same shape co-lab-hai uses), NOT a wrapping panel.
+         Triggers stay in the <tabbar>, found window-wide by id.
+         Painted last (over the canvas) - kh_serialize_frame_deferred. -->
+    <sidebar id="rail" class="pchq-rail sidebar">
+      <repeat count="${n_desk_opts}" bind="d">
+        <item id="do-${d.#}" class="pchq-menu-row dropdown-child ${d.active}" target_id="tb-desk"
+              label="${d.label}"
+              action="'${HOUSE}/@.apps/piececraft-hq/ops/pchq_board_action.sh' '${bv_session}' 'desk' '${d.#}'"/>
+      </repeat>
+      <item id="dm-cancel" class="pchq-menu-row dropdown-child quiet" target_id="tb-desk"
+            label="- cancel -" action="void"/>
+      <item id="mn-entbar" class="pchq-menu-row dropdown-child" target_id="tb-menu"
+            label="Entities bar on/off"
+            action="sh '${HOUSE}/@.apps/piececraft-hq/ops/pc_toggle_pdl_opt.sh' '${HOUSE}/@.apps/piececraft-hq/pieces/system/pchq.pdl' 'entities_bar'"/>
+      <item id="mn-db" class="pchq-menu-row dropdown-child quiet" target_id="tb-menu"
+            label="Db (todo)" action="void"/>
+      <item id="mn-cancel" class="pchq-menu-row dropdown-child quiet" target_id="tb-menu"
+            label="- cancel -" action="void"/>
+    </sidebar>
 
-    <!-- (File dropdown removed 2026-09-09 - File goes straight to the
-         File Explorer widget now, see tb-file above.) -->
+    <panel id="view-panel" class="pchq-view">
+      <canvas id="view" sprite="${canvas_raw}"/>
+    </panel>
 
-    <!-- Desk menu -->
-    <item id="dm-cancel" class="pchq-menu-row" label="- close -" show="${desk_menu_open}"
-          action="'${HOUSE}/@.apps/piececraft-hq/ops/pchq_board_action.sh' '${bv_session}' 'menu' 'close'"/>
-    <repeat count="${n_desk_opts}" bind="d">
-      <item id="do-${d.#}" class="pchq-menu-row ${d.active}" label="${d.label}" show="${desk_menu_open}"
-            action="'${HOUSE}/@.apps/piececraft-hq/ops/pchq_board_action.sh' '${bv_session}' 'desk' '${d.#}'"/>
-    </repeat>
-
-    <!-- Play screen. No action=interact (that verb is toggle-off).
-         Renderer: canvas bbox click + managed+relay -> engage-if-needed. -->
-    <canvas id="view" sprite="${canvas_raw}"/>
+    <!-- MILESTONE C: entities bar. show= drops the whole strip when
+         entities_bar is 0 in pchq.pdl (Menu > Entities bar toggles it). -->
+    <footer id="statusbar" class="pchq-footer" show="${entities_bar_on}">
+      <text label="ents" class="quiet"/>
+      <repeat count="${n_ent}" bind="ent">
+        <item id="e${ent.#}" class="pchq-ft" label="${ent.label}"
+              action="setsid sh '${HOUSE}/@.apps/piececraft-hq/ops/pc_entity_ctx.sh' '${HOUSE}/@.apps/piececraft-hq' '${ent.x}' '${ent.y}' '${ent.z}' '${ent.kind}' '${ent.id}'"/>
+      </repeat>
+    </footer>
 
     <text label="No live board-viewer session - open 'View Board' from the game first." class="quiet" show="${no_session}"/>
   </page>

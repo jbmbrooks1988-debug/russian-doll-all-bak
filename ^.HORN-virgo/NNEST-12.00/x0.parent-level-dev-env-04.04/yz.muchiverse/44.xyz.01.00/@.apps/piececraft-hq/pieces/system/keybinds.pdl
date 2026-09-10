@@ -45,6 +45,17 @@ VERB         | 47                 | END_TURN
 VERB         | 46                 | TOGGLE_AUTOTICK
 VERB         | 44                 | CYCLE_TICK_SPEED
 
+# ── entity context menu (PCHQ-ENTITY-MENU-AND-TASKBAR-DESIGN.md) ──
+# The ctx_menu VERB opens the SHARED khtpm context-menu window on
+# whatever the selector points at (pieces/display/pick.txt). Unlike the
+# game verbs below it fires even when NOT possessing the hero
+# (bv_menu_input.c's verb_always_allowed list). Default 'm' (109) - a
+# real forwarded key; bare Shift is a modifier and isn't relayed. Right-
+# click is the planned second trigger (slice 3). Rebind by editing the
+# keycode here (man ascii / python3 -c "print(ord('m'))").
+OPT          | ctx_menu_enabled   | 1
+VERB         | 109                | CTX_MENU
+
 # ── input options ──
 # multipress_compensator: 1 = bv_dispatch drops stale queued keys (a
 #   held key that piled up behind a slow 3D render) so movement stops

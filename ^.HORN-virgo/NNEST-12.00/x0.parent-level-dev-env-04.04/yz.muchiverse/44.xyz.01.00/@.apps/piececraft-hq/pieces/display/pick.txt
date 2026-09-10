@@ -1,0 +1,8 @@
+sel_x=8
+sel_y=8
+sel_z=20
+kind=air
+id=
+template=
+glyph=
+asset_hex=
