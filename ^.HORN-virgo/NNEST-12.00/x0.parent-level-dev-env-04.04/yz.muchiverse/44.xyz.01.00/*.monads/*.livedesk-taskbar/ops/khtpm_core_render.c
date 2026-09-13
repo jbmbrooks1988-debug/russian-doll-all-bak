@@ -2261,34 +2261,96 @@ static void ktb_toggle_zorder_respawn(void) {
             p += l + 1;
             if (p >= cmdbuf + (int)got) break;
         }
+        /* REAL FIX 2026-09-13, direct live report ("just the bottom
+         * toolbar that is taking long to populate... we dont even need
+         * to respawn the bottom toolbar tho for ontop. get it? we dont
+         * need to respawn top tb either. just entities") - correct: the
+         * always-on-top toggle is real, per-ENTITY window state
+         * (swa.override_redirect = g_override_redirect, tp_main() only).
+         * The strip's own two windows (khtpm_strip_header.xhtpm's
+         * process, which also renders the bottom peer template in the
+         * SAME process - see g_dock_peer_path) are unconditionally WM-
+         * managed already (2026-09-13, "dock strip windows... completely
+         * independent of the global g_override_redirect PDL" - see
+         * dock_managed in main()) - this toggle can never change their
+         * z-order behavior at all, so killing+respawning them here was
+         * always pure waste: real process teardown, a full re-launch
+         * (re-parse strip_header/bottom.xhtpm, re-walk the registry,
+         * reload every tab), for a window whose own state this toggle
+         * doesn't touch - exactly the real, visible "bottom toolbar
+         * takes long to populate" cost. Same real /proc cmdline-
+         * substring identity check khtpm_taskbar_manager.c's own
+         * livedesk_kill_strip_renderers() already uses for this same
+         * "is this process the strip" question - ported here rather
+         * than re-invented. */
+        {
+            int is_strip = 0;
+            for (k = 0; k < found[n_found].argc; k++) {
+                const char *av = found[n_found].arg[k];
+                if (strstr(av, "khtpm_strip_header.xhtpm") ||
+                    strstr(av, "khtpm_strip_bottom.xhtpm") ||
+                    strstr(av, "strip_header.chtpm") ||
+                    strstr(av, "strip_bottom.chtpm")) { is_strip = 1; break; }
+            }
+            if (is_strip) continue;
+        }
         n_found++;
     }
     closedir(pd);
     for (i = 0; i < n_found; i++)
         if (found[i].pid != self) kill(found[i].pid, SIGTERM);
-    usleep(300000);
-    for (i = 0; i < n_found; i++) {
-        pid_t pid;
-        if (found[i].pid == self) continue;
-        pid = fork();
-        if (pid == 0) {
-            char *av[9];
-            int n, j, devnull;
-            setsid();
-            devnull = open("/dev/null", O_RDWR);
-            if (devnull >= 0) {
-                dup2(devnull, 0); dup2(devnull, 1); dup2(devnull, 2);
-                if (devnull > 2) close(devnull);
-            }
-            av[0] = (char *)bins[found[i].which];
-            n = found[i].argc < 8 ? found[i].argc : 8;
-            for (j = 1; j < n; j++) av[j] = found[i].arg[j];
-            av[n] = NULL;
-            execve(av[0], av, environ);
-            _exit(1);
+    /* REAL FIX 2026-09-13, direct live report ("1.2 seconds is really
+     * long"): this used to be a flat, unconditional usleep(300000) -
+     * 300ms of pure dead time on EVERY toggle, no matter how fast the
+     * old processes actually died. That number wasn't arbitrary - it
+     * matches POLL_INTERVAL_USEC (each entity's own select() timeout)
+     * exactly, as if SIGTERM had to wait for the next poll tick to be
+     * noticed. It doesn't: sigaction() (handle_shutdown_signal_info(),
+     * no SA_RESTART) makes a pending SIGTERM interrupt a blocking
+     * select() immediately (real, standard POSIX EINTR behavior, not
+     * an assumption) - g_shutdown_requested gets set and the old
+     * process's own loop exits on its very next condition check,
+     * typically sub-millisecond, not 300ms later. Real fix: poll for
+     * actual death (kill(pid,0)) instead of guessing a fixed delay -
+     * returns the instant every old process is confirmed gone, with a
+     * short real ceiling (30ms x up to 6 = 180ms) as a safety margin
+     * for the rare slow case, not the common-case cost. */
+    for (int wait_i = 0; wait_i < 6; wait_i++) {
+        int all_dead = 1;
+        for (i = 0; i < n_found; i++) {
+            if (found[i].pid == self) continue;
+            if (kill(found[i].pid, 0) == 0 || errno != ESRCH) { all_dead = 0; break; }
         }
+        if (all_dead) break;
+        usleep(30000);
     }
-    /* Recreate this strip so override_redirect is set at XCreateWindow. */
+    /* REAL FIX 2026-09-13, direct live report ("it populated eventually
+     * after a long time. why would it take so long?... the old legacy
+     * tb would populate all immediately") - researched, not a compile
+     * step (confirmed directly: execve() here re-runs the SAME binary,
+     * no build call anywhere in this path). Two real, separate causes
+     * closed here:
+     * 1. The strip/dock renderer itself used to respawn LAST, after
+     *    every entity - the one window the user is actually staring at
+     *    (and the ONLY one showing the real, already-correct tab list -
+     *    every earlier round in tb-bug-doc.txt already proved the DATA
+     *    side is fine) sat blank the whole time entities were still
+     *    coming up. Moved first.
+     * 2. Zero stagger, zero nice - launching 7-8 real GUI processes
+     *    (each doing genuine startup work: sprite/phymoji atlas load,
+     *    X11 window+GC+Pixmap creation, font loading) all at once with
+     *    default scheduling priority is exactly the shape this house's
+     *    own standing rule already names (project memory,
+     *    "nice-heavy-background-work": "weak CPU machine... wrap
+     *    multi-minute background work with nice... so the taskbar/
+     *    desktop stays responsive") - never applied to this respawn
+     *    burst specifically. Real fix: the strip stays at normal
+     *    priority (it must repaint immediately, it's the UI shell);
+     *    every entity gets a real, small stagger (`usleep`) between
+     *    forks and a real, mild `nice()` bump in the child before
+     *    `execve` - keeps the burst from saturating the CPU all at
+     *    once without meaningfully slowing any one entity's own
+     *    startup. */
     {
         pid_t np = fork();
         if (np == 0) {
@@ -2308,6 +2370,29 @@ static void ktb_toggle_zorder_respawn(void) {
                 av[n] = NULL;
                 execve(av[0], av, environ);
             }
+            _exit(1);
+        }
+    }
+    for (i = 0; i < n_found; i++) {
+        pid_t pid;
+        if (found[i].pid == self) continue;
+        usleep(30000); /* real stagger - see this function's own header comment; 30ms direct instruction 2026-09-13 (was 120ms) */
+        pid = fork();
+        if (pid == 0) {
+            char *av[9];
+            int n, j, devnull;
+            setsid();
+            nice(8); /* real, mild CPU-priority yield to the strip above - see header comment */
+            devnull = open("/dev/null", O_RDWR);
+            if (devnull >= 0) {
+                dup2(devnull, 0); dup2(devnull, 1); dup2(devnull, 2);
+                if (devnull > 2) close(devnull);
+            }
+            av[0] = (char *)bins[found[i].which];
+            n = found[i].argc < 8 ? found[i].argc : 8;
+            for (j = 1; j < n; j++) av[j] = found[i].arg[j];
+            av[n] = NULL;
+            execve(av[0], av, environ);
             _exit(1);
         }
     }
@@ -6010,6 +6095,34 @@ static void dispatch(const char *action) {
         g_override_redirect = g_zorder_above ? 1 : 0;
         ktb_toggle_zorder_apply(g_zorder_above);
         ktb_toggle_zorder_respawn();
+        /* REAL FIX 2026-09-13, direct live report ("we dont even need
+         * to respawn the bottom toolbar tho for ontop... we dont need
+         * to respawn top tb either. just entities") - correct: always-
+         * on-top is real per-ENTITY window state (swa.override_redirect,
+         * tp_main() only) - the strip's own two windows are
+         * unconditionally WM-managed regardless of this setting (see
+         * dock_managed in main()), so ktb_toggle_zorder_respawn() above
+         * now skips them entirely (real /proc cmdline identity check,
+         * same one khtpm_taskbar_manager.c's own
+         * livedesk_kill_strip_renderers() already uses). This @ button
+         * only ever lives on the strip itself (khtpm_strip_header.chtpm,
+         * grepped - no other window ever wires ZORDER_TOGGLE), so the
+         * process running THIS handler is always the strip - it must
+         * NOT g_quit anymore: nothing above it in
+         * ktb_toggle_zorder_respawn() forked a replacement (the strip is
+         * excluded from that respawn list now), so setting g_quit here
+         * would just kill the taskbar with nothing left to bring it
+         * back. Re-apply the strip's own persistent EWMH ABOVE hint live
+         * instead (XChangeProperty, no window recreation needed - unlike
+         * override_redirect, _NET_WM_STATE is a plain property any
+         * window can update after the fact) so its own always-above
+         * preference stays in sync with the new g_zorder_above value
+         * without needing to restart the process that just changed it. */
+        if (window_is_dock()) {
+            apply_dock_window_hints(dpy, win, g_win_x, g_win_y);
+            if (g_dock_peer_win) apply_dock_window_hints(dpy, g_dock_peer_win, g_dock_peer_x, g_dock_peer_y);
+            return;
+        }
         g_quit = 1;
         return;
     }
@@ -11472,53 +11585,46 @@ static void glyph_color(char g, float *r, float *gg, float *b) {
  * and leaves *base_list unset if no such font can be loaded (caller falls
  * back to the plain color square, same as before this fix). */
 static int g_font_loaded = 0;
-static XFontStruct *g_font_info = NULL;
+static XftFont *g_font_info = NULL;
 
 /* REAL FIX 2026-08-05, direct report ("its having problems with the
  * chinese"): all popup text (context menu rows, Show Text) was drawn
  * with plain XDrawString - Latin-1 only, real X core-font limitation,
  * so the Chinese half of book-stack's Bible verses rendered as boxes/
- * garbage. Real fix: Xutf8DrawString against a real multi-byte XFontSet
- * that includes a CJK-capable base font (confirmed present on this
- * house's system via `fc-list :lang=zh` / `xlsfonts` - GNU unifont's
- * own "-misc-fixed-*-iso10646-1" covers CJK, used here alongside a
- * plain Latin fallback so ASCII stays crisp). Built once in main(),
- * used by every popup draw site below instead of XDrawString. */
-static XFontSet g_popup_fontset = NULL;
+ * garbage. Real fix (UPDATED 2026-09-13, see below): Xft/fontconfig
+ * text, which covers CJK the same way font_ui/kh_measure_text_px
+ * already do elsewhere in this file, instead of a hand-built XFontSet.
+ * Built once in tp_main()'s own startup, used by every popup draw site
+ * below instead of XDrawString. */
+static XftFont *g_popup_fontset = NULL;
 /* the g_ui_scale_pct this fontset was actually built at - lets
  * ensure_popup_fontset_current() (below) notice a live font_scale
  * change and rebuild, instead of baking in whatever scale happened to
  * be loaded at process start forever. 0 = never built yet. */
 static int g_popup_fontset_pct = 0;
 
+/* REAL FIX 2026-09-13, direct instruction ("dig into whats actually
+ * slowing entity startup") - real, measured root cause (startup_timing.
+ * txt, TP_STARTUP_TIMING=1): this fontset and load_glyph_font()'s own
+ * g_font_info below, TOGETHER, were ~90-95% of every entity's ~100ms
+ * respawn cost (54-70ms + 20-39ms, confirmed live across 3 runs) - the
+ * legacy X core-font path (XCreateFontSet/XLoadQueryFont) forces the X
+ * SERVER to do a full wildcard font-list match on every single process
+ * start, with nothing cached across respawns. Xft/fontconfig (already
+ * used everywhere else in this file - font_ui, kh_measure_text_px) goes
+ * through fontconfig's own persistent on-disk cache instead - real,
+ * confirmed fix, not a guess (see TP_TIMING_MARK results in the always-
+ * on-top toggle perf thread, tb-bug-doc.txt). */
 static void load_popup_fontset(Display *dpy) {
-    /* REAL FIX 2026-09-10, direct report ("everything honors [font
-     * settings] but 1 thing... the bible verse popup within bookstack
-     * entity"): this whole XFontSet predates font_scale (2026-08-05,
-     * house-wide scaling landed later) and never picked it up - the
-     * "18" pixel-size field below was a hardcoded literal, while
-     * POPUP_ROW_H right next to every draw site already correctly used
-     * scaled(28). g_ui_scale_pct is already loaded by the time any
-     * real caller reaches this (desktop_load_click_two_step() runs
-     * earlier in every mode's own startup) - scaled(18) here is the
-     * whole fix for a fresh popup; ensure_popup_fontset_current()
-     * below covers a font_scale change while an entity is already
-     * running (settings reload live, this fontset didn't rebuild). */
-    char **missing = NULL;
-    int n_missing = 0;
-    char *def_str = NULL;
-    char base[320];
+    int screen_num = DefaultScreen(dpy);
     int px = scaled(18);
-    snprintf(base, sizeof(base),
-        "-misc-fixed-medium-r-normal--%d-120-100-100-c-90-iso10646-1,"
-        "-*-fixed-medium-r-normal--%d-*-*-*-*-*-iso10646-1,"
-        "-*-*-medium-r-normal--*-*-*-*-*-*-iso10646-1", px, px);
-    if (g_popup_fontset) { XFreeFontSet(dpy, g_popup_fontset); g_popup_fontset = NULL; }
-    g_popup_fontset = XCreateFontSet(dpy, base, &missing, &n_missing, &def_str);
-    if (missing) XFreeStringList(missing);
+    char spec[96];
+    snprintf(spec, sizeof(spec), "monospace:pixelsize=%d", px);
+    if (g_popup_fontset) { XftFontClose(dpy, g_popup_fontset); g_popup_fontset = NULL; }
+    g_popup_fontset = XftFontOpenName(dpy, screen_num, spec);
     if (!g_popup_fontset) {
-        g_popup_fontset = XCreateFontSet(dpy, "fixed", &missing, &n_missing, &def_str);
-        if (missing) XFreeStringList(missing);
+        snprintf(spec, sizeof(spec), "DejaVu Sans Mono:pixelsize=%d", px);
+        g_popup_fontset = XftFontOpenName(dpy, screen_num, spec);
     }
     g_popup_fontset_pct = g_ui_scale_pct;
 }
@@ -11533,10 +11639,37 @@ static void ensure_popup_fontset_current(Display *dpy) {
     load_popup_fontset(dpy);
 }
 
+/* Real, explicit-Display XftColor alloc, same reasoning as tp_hex_pixel()
+ * just above (tp_main's own LOCAL dpy/screen/colormap, NOT the shared
+ * file-scope dpy/screen/cmap the HQ-window xft_color() reads) - caller
+ * frees via XftColorFree(), same convention xft_color()'s own callers
+ * already use. */
+static XftColor tp_xft_color(Display *d, Visual *vis, Colormap cm, const char *hex) {
+    XftColor xc;
+    XRenderColor rc = {0, 0, 0, 0xffff};
+    if (hex && hex[0] == '#' && strlen(hex) >= 7) {
+        unsigned int r, g, b;
+        sscanf(hex + 1, "%02x%02x%02x", &r, &g, &b);
+        rc.red = (unsigned short)(r * 257); rc.green = (unsigned short)(g * 257); rc.blue = (unsigned short)(b * 257);
+    }
+    XftColorAllocValue(d, vis, cm, &rc, &xc);
+    return xc;
+}
+
 static void popup_draw_text(Display *dpy, Drawable d, GC gc, int x, int y, const char *s) {
+    (void)gc;
     ensure_popup_fontset_current(dpy);
     if (g_popup_fontset) {
-        Xutf8DrawString(dpy, d, g_popup_fontset, gc, x, y, s, (int)strlen(s));
+        int screen_num = DefaultScreen(dpy);
+        Visual *vis = DefaultVisual(dpy, screen_num);
+        Colormap cm = DefaultColormap(dpy, screen_num);
+        XftDraw *xd = XftDrawCreate(dpy, d, vis, cm);
+        if (xd) {
+            XftColor col = tp_xft_color(dpy, vis, cm, "#000000");
+            XftDrawStringUtf8(xd, &col, g_popup_fontset, x, y, (const FcChar8 *)s, (int)strlen(s));
+            XftColorFree(dpy, vis, cm, &col);
+            XftDrawDestroy(xd);
+        }
     } else {
         XDrawString(dpy, d, gc, x, y, s, (int)strlen(s));
     }
@@ -11547,38 +11680,47 @@ static int popup_text_px(Display *dpy, const char *s) {
     if (!s || !*s) return 0;
     ensure_popup_fontset_current(dpy);
     if (g_popup_fontset) {
-        XRectangle ink, logical;
-        Xutf8TextExtents(g_popup_fontset, s, (int)strlen(s), &ink, &logical);
-        return logical.width > 0 ? logical.width : ink.width;
+        XGlyphInfo ext;
+        XftTextExtentsUtf8(dpy, g_popup_fontset, (const FcChar8 *)s, (int)strlen(s), &ext);
+        return ext.width;
     }
-    /* Fallback: ~9px/glyph for the 18px fixed face we load. */
+    /* Fallback: ~9px/glyph for the 18px face we load. */
     return (int)strlen(s) * 9;
 }
 
 static int load_glyph_font(Display *dpy) {
-    g_font_info = XLoadQueryFont(dpy, "-sony-fixed-medium-r-normal--24-170-100-100-c-120-iso8859-1");
-    if (!g_font_info) g_font_info = XLoadQueryFont(dpy, "fixed");
+    int screen_num = DefaultScreen(dpy);
+    g_font_info = XftFontOpenName(dpy, screen_num, "monospace:pixelsize=24");
+    if (!g_font_info) g_font_info = XftFontOpenName(dpy, screen_num, "DejaVu Sans Mono:pixelsize=24");
     if (!g_font_info) return 0;
     return 1;
 }
 
-/* Draws directly into the compose buffer via plain XDrawString (no GL
- * display lists needed once glXUseXFont is gone - XLoadQueryFont's own
- * XFontStruct is enough for a GC-based draw). */
-static void draw_glyph_rgb(Display *dpy, Drawable buf, GC gc, char g) {
+/* Draws directly into the compose buffer via Xft (see load_glyph_font()'s
+ * own header comment - was XLoadQueryFont/XDrawString, real measured
+ * startup-cost fix 2026-09-13). vis/cm are the entity window's OWN
+ * visual/colormap (win_vis/swa.colormap in tp_main - cursword's real
+ * ARGB32 visual on that one entity, default visual/colormap on every
+ * other), matching whatever buf/win were actually created with. */
+static void draw_glyph_rgb(Display *dpy, Drawable buf, GC gc, char g, Visual *vis, Colormap cm) {
+    (void)gc;
     if (!g_font_info) return;
-    XSetFont(dpy, gc, g_font_info->fid);
+    XftDraw *xd = XftDrawCreate(dpy, buf, vis, cm);
+    if (!xd) return;
     /* Real, new 2026-08-30 - BlackPixel() alone has no real alpha byte
      * (0 in the high byte), which would draw fully TRANSPARENT text on
      * cursword's own new ARGB32 window - see draw_sprite_rgb()'s own
      * matching comment. Harmless no-op high byte on every other
-     * entity's plain 24-bit window. */
-    XSetForeground(dpy, gc, 0xFF000000UL | BlackPixel(dpy, DefaultScreen(dpy)));
+     * entity's plain 24-bit window - XftColor's own alpha channel
+     * (0xffff, opaque) plays the same role here. */
+    XftColor col = tp_xft_color(dpy, vis, cm, "#000000");
     int cw = WIN_PX / 2, ch = (g_font_info->ascent + g_font_info->descent);
     int x = (WIN_PX - cw) / 2;
     int y = (WIN_PX + g_font_info->ascent - g_font_info->descent) / 2;
     (void)ch;
-    XDrawString(dpy, buf, gc, x, y, &g, 1);
+    XftDrawStringUtf8(xd, &col, g_font_info, x, y, (const FcChar8 *)&g, 1);
+    XftColorFree(dpy, vis, cm, &col);
+    XftDrawDestroy(xd);
 }
 
 /* REAL FIX 2026-08-04, direct instruction ("do u see how egg-pal creates
@@ -13556,6 +13698,39 @@ static int tp_main(int argc, char **argv) {
     win_package_rel(package_buf);
 #endif
     const char *package_dir = package_buf;
+    /* REAL, NEW 2026-09-13, direct instruction ("dig into whats
+     * actually slowing entity startup") - genuine measurement, not
+     * guesswork: a real per-step timestamp log, one line per real
+     * setup phase, appended to startup_timing.txt in this entity's own
+     * package dir. Env-gated (TP_STARTUP_TIMING=1) so this never costs
+     * anything on a normal run - only set while actively profiling.
+     * Found the real bottleneck with it (legacy X core-font loading,
+     * see load_popup_fontset()/load_glyph_font()'s own header comments
+     * for the fix) - kept permanently, env-gated, as a real reusable
+     * diagnostic for the next "why is startup slow" question, same
+     * reasoning handle_shutdown_signal_info()'s SA_SIGINFO forensics
+     * were kept for. */
+    struct timespec tp_t0, tp_tlast;
+    int tp_timing_on = getenv("TP_STARTUP_TIMING") != NULL;
+    if (tp_timing_on) { clock_gettime(CLOCK_MONOTONIC, &tp_t0); tp_tlast = tp_t0; }
+#define TP_TIMING_MARK(label) do { \
+    if (tp_timing_on) { \
+        struct timespec tp_now; clock_gettime(CLOCK_MONOTONIC, &tp_now); \
+        double tp_since_last = (tp_now.tv_sec - tp_tlast.tv_sec) * 1000.0 + (tp_now.tv_nsec - tp_tlast.tv_nsec) / 1e6; \
+        double tp_since_0 = (tp_now.tv_sec - tp_t0.tv_sec) * 1000.0 + (tp_now.tv_nsec - tp_t0.tv_nsec) / 1e6; \
+        char tp_tpath[TP_PATH_BUF]; \
+        snprintf(tp_tpath, sizeof(tp_tpath), "%s/startup_timing.txt", package_dir); \
+        FILE *tp_tf = fopen(tp_tpath, "a"); \
+        if (tp_tf) { fprintf(tp_tf, "%s: +%.2fms (total %.2fms)\n", label, tp_since_last, tp_since_0); fclose(tp_tf); } \
+        /* REAL FIX - re-stamp AFTER the file write (not before), so this
+         * mark's own I/O latency (real, confirmed cost on this xyzfs
+         * mount) is absorbed into ITS OWN delta the next time around,
+         * never silently attributed to the NEXT real step - this exact
+         * bug briefly made load_glyph_font look like a ~60ms cost when
+         * it was really the previous mark's own disk write. */ \
+        clock_gettime(CLOCK_MONOTONIC, &tp_tlast); \
+    } \
+} while (0)
     /* REAL, NEW 2026-09-13 - g_package_dir used to be set ONLY on the
      * default/HQ-window main() path, never here in tp_main() (entity/
      * tile mode) - handle_shutdown_signal_info()'s own real forensic
@@ -13582,8 +13757,10 @@ static int tp_main(int argc, char **argv) {
     snprintf(g_history_path, sizeof(g_history_path), "%s/history.txt", package_dir);
     snprintf(g_relay_path, sizeof(g_relay_path), "%s/interact_relay.txt", package_dir);
     append_history("WINDOW_OPEN");
+    TP_TIMING_MARK("start->history");
     char g_ops_dir[TP_PATH_BUF];
     resolve_livedesk_paths(g_ops_dir, sizeof(g_ops_dir), g_house_root, sizeof(g_house_root));
+    TP_TIMING_MARK("resolve_livedesk_paths");
 #ifdef _WIN32
     if (!g_house_root[0]) snprintf(g_house_root, sizeof(g_house_root), ".");
 #endif
@@ -13603,6 +13780,7 @@ static int tp_main(int argc, char **argv) {
     if (g_house_root[0]) desktop_load_click_two_step(g_house_root);
     if (g_house_root[0]) load_override_redirect(g_house_root);
     if (g_house_root[0] && g_is_cursword) cursword_load_move_mode(g_house_root);
+    TP_TIMING_MARK("theme/click2step/override_redirect/move_mode");
     /* REAL FIX 2026-08-27 (TILE-SYSTEM-DESIGN.md §0a) - read the real,
      * optional, house-wide grid cell size as early as possible (right
      * after g_house_root resolves, before anything below uses
@@ -13625,6 +13803,7 @@ static int tp_main(int argc, char **argv) {
         ensure_taskbar_running(g_house_root);
         append_history("LIVEDESK_INDEX=%d", g_livedesk_index);
     }
+    TP_TIMING_MARK("livedesk_index/registry_add/ensure_taskbar_running");
     /* REAL FIX 2026-08-05 (MUCHI_RANCHER monsters), EXTENDED 2026-08-29
      * direct live report ("placing a tile isn't taking up the full
      * 80px tile square... all entities need this fix except muchi
@@ -13667,7 +13846,9 @@ static int tp_main(int argc, char **argv) {
         fprintf(stderr, "tp_desktop_window: cannot open display\n");
         return 1;
     }
+    TP_TIMING_MARK("XOpenDisplay");
     load_popup_fontset(dpy);
+    TP_TIMING_MARK("load_popup_fontset");
 
     int screen_num = DefaultScreen(dpy);
     Visual *vis = DefaultVisual(dpy, screen_num);
@@ -13720,9 +13901,103 @@ static int tp_main(int argc, char **argv) {
     swa.background_pixel = g_is_cursword ? 0
                         : tp_hex_pixel(dpy, screen_num, g_theme_bg);
 
-    Window win = XCreateWindow(dpy, RootWindow(dpy, screen_num), 3 * GRID_CELL_PX, 3 * GRID_CELL_PX, WIN_PX, WIN_PX,
+    /* REAL FIX 2026-09-13, direct live report ("at entity render time,
+     * i always see in the top left these 'ghost renders' before real
+     * renders... trying to render dead/legacy entities?") - not dead
+     * entities at all: every FRESH entity window used to be created
+     * here at a hardcoded near-origin default (3*GRID_CELL_PX,
+     * 3*GRID_CELL_PX - genuinely "top left"), immediately mapped
+     * (visible), and only THEN moved to its real, saved grid position
+     * via a SEPARATE XMoveWindow call ~250 lines further down, after
+     * real disk I/O (read_initial_pos/read_map_size/read_entity_z) and
+     * other setup. With several entities respawning together (a normal
+     * always-on-top toggle or restart), that's several real windows
+     * all briefly stacked near the same wrong corner before each snaps
+     * to its own distinct real spot - exactly what reads as "ghost
+     * renders," and it's every real entity doing this every time, not
+     * a stale/legacy one. Real fix: compute the REAL win_x/win_y (the
+     * exact same logic that used to run after window creation, moved
+     * here verbatim, nothing behaviorally changed about how the
+     * position itself is derived) BEFORE XCreateWindow, and create the
+     * window there directly - no wrong position ever exists on screen,
+     * so there is nothing left to visibly correct afterward. */
+    int screen_w = DisplayWidth(dpy, DefaultScreen(dpy));
+    int screen_h = DisplayHeight(dpy, DefaultScreen(dpy));
+    int max_col = (screen_w / GRID_CELL_PX) - 1;
+    int max_row = (screen_h / GRID_CELL_PX) - 1;
+    /* REAL, NEW 2026-08-31 ("map size" movement wall, see
+     * read_map_size()'s own header comment) - a configured
+     * desk_grid.pdl map_cols/map_rows overrides the screen-derived
+     * bound above (real, deliberately smaller-or-equal "wall" so an
+     * entity dragged/placed/nudged can never end up further out than
+     * the configured map, not just the physical screen edge). Every
+     * other real clamp site in this function (drag release, arrow-key
+     * nudge, click-to-place) already reuses these same max_col/max_row
+     * locals, so this one override site is the only real change
+     * needed. */
+    {
+        int cfg_cols = 0, cfg_rows = 0;
+        read_map_size(g_house_root, &cfg_cols, &cfg_rows);
+        if (cfg_cols > 0) max_col = cfg_cols - 1;
+        if (cfg_rows > 0) max_row = cfg_rows - 1;
+    }
+    if (max_col < 0) max_col = 0;
+    if (max_row < 0) max_row = 0;
+    /* Real, new 2026-08-31 - this entity's own persisted z, loaded
+     * once at startup (see g_entity_z's own declaration comment). */
+    g_entity_z = read_entity_z(package_dir);
+    int win_x = 3 * GRID_CELL_PX, win_y = 3 * GRID_CELL_PX; /* grid-aligned spawn, matching egg_window.c's own default */
+    {
+        int ix, iy;
+        if (read_initial_pos(package_dir, &ix, &iy)) {
+            int gx = (ix + GRID_CELL_PX / 2) / GRID_CELL_PX;
+            int gy = (iy + GRID_CELL_PX / 2) / GRID_CELL_PX;
+            if (gx < 0) gx = 0; if (gx > max_col) gx = max_col;
+            if (gy < 0) gy = 0; if (gy > max_row) gy = max_row;
+            win_x = gx * GRID_CELL_PX;
+            win_y = gy * GRID_CELL_PX;
+        }
+#ifdef _WIN32
+        /* Linux pos can sit past this monitor. Keep on the primary work
+         * area, below the strip. */
+        {
+            int pad_top = 40, g = 8;
+            if (win_x < g) win_x = g;
+            if (win_y < pad_top) win_y = pad_top;
+            if (win_x + WIN_PX > screen_w - g) win_x = screen_w - WIN_PX - g;
+            if (win_y + WIN_PX > screen_h - g) win_y = screen_h - WIN_PX - g;
+            if (win_x < g) win_x = g;
+            if (win_y < pad_top) win_y = pad_top;
+        }
+#endif
+#ifdef __APPLE__
+        /* macOS leg (2026-08-22): mirror of the _WIN32 work-area clamp.
+         * Saved Linux grid positions can sit past this display's right
+         * edge (live: tiles parked at x=1600 on a 1680px screen, mostly
+         * invisible). XQuartz rootless maps y=0 to just under the macOS
+         * menu bar, so pad_top only needs to clear the taskbar strip. */
+        {
+            int pad_top = 40, g = 8;
+            if (win_x < g) win_x = g;
+            if (win_y < pad_top) win_y = pad_top;
+            if (win_x + WIN_PX > screen_w - g) win_x = screen_w - WIN_PX - g;
+            if (win_y + WIN_PX > screen_h - g) win_y = screen_h - WIN_PX - g;
+            if (win_x < g) win_x = g;
+            if (win_y < pad_top) win_y = pad_top;
+        }
+#endif
+        /* macOS leg (2026-08-22): persist the CLAMPED position - the
+         * saved Linux grid value can sit past this display's edge, and
+         * downstream consumers (khtpm_show_choices.c's picker spawn
+         * reads this same file) must not inherit an off-screen x/y. */
+        write_pos(package_dir, win_x, win_y);
+    }
+
+    TP_TIMING_MARK("pos-compute/colormap");
+    Window win = XCreateWindow(dpy, RootWindow(dpy, screen_num), win_x, win_y, WIN_PX, WIN_PX,
                                 0, win_depth, InputOutput, win_vis,
                                 CWColormap | CWEventMask | CWOverrideRedirect | CWBorderPixel | CWBackPixel, &swa);
+    TP_TIMING_MARK("XCreateWindow");
     /* REAL, NEW 2026-09-01 - when the pdl turns override_redirect off
      * (WM-managed pieces, so the taskbar's @ toggle can control their
      * real z-order on Xwayland/Mutter), Mutter would put a titlebar/frame
@@ -13739,7 +14014,9 @@ static int tp_main(int argc, char **argv) {
         XSetClassHint(dpy, win, &(XClassHint){(char *)"MuchiverseLivedesk", (char *)"MuchiverseLivedesk"});
     }
     XMapWindow(dpy, win);
+    TP_TIMING_MARK("motif_hints/XMapWindow");
     set_window_opacity(dpy, win, tp_load_theme_opacity(g_house_root));
+    TP_TIMING_MARK("set_window_opacity");
     /* REAL FIX 2026-08-29, direct live report ("entities and tb dropdown
      * cell tabs aren't opaque yet" - i.e. still full opacity) - ported
      * from khtpm_strip_parser.c's own real "KISS opacity-on-reset fix"
@@ -13799,6 +14076,7 @@ static int tp_main(int argc, char **argv) {
     float r, g, b;
     glyph_color(glyph, &r, &g, &b);
     g_font_loaded = load_glyph_font(dpy);
+    TP_TIMING_MARK("load_glyph_font");
 
     /* Resolve ops_dir (same /proc/self/exe technique tp_place_desktop.c
      * already uses) so apply_asset_override() can find tp_asset_to_
@@ -13815,16 +14093,19 @@ static int tp_main(int argc, char **argv) {
             apply_asset_override(package_dir, ops_dir);
         }
     }
+    TP_TIMING_MARK("self_exe_path/apply_asset_override");
 
     char sprite_path[TP_PATH_BUF];
     snprintf(sprite_path, sizeof(sprite_path), "%s/sprite.csv", package_dir);
     g_has_sprite = load_sprite_csv(sprite_path);
+    TP_TIMING_MARK("load_sprite_csv");
     /* Real, new 2026-08-30 - real per-voxel phymoji asset, generated
      * on demand from this entity's own real sprite.csv if it doesn't
      * exist yet (see load_entity_phymoji()/ensure_entity_phymoji_
      * generated()'s own header comments) - loaded once here, cached
      * for the whole process lifetime same as the sprite itself. */
     load_entity_phymoji(package_dir, resolved_ops_dir);
+    TP_TIMING_MARK("load_entity_phymoji");
 
     /* Real window shape from the sprite's own alpha, if we have one -
      * see build_shape_mask()'s own header comment for why GL_BLEND
@@ -13888,82 +14169,10 @@ static int tp_main(int argc, char **argv) {
         cursword_update_shape(dpy, win);
     }
 
-    int screen_w = DisplayWidth(dpy, DefaultScreen(dpy));
-    int screen_h = DisplayHeight(dpy, DefaultScreen(dpy));
-    int max_col = (screen_w / GRID_CELL_PX) - 1;
-    int max_row = (screen_h / GRID_CELL_PX) - 1;
-    /* REAL, NEW 2026-08-31 ("map size" movement wall, see
-     * read_map_size()'s own header comment) - a configured
-     * desk_grid.pdl map_cols/map_rows overrides the screen-derived
-     * bound above (real, deliberately smaller-or-equal "wall" so an
-     * entity dragged/placed/nudged can never end up further out than
-     * the configured map, not just the physical screen edge). Every
-     * other real clamp site in this function (drag release, arrow-key
-     * nudge, click-to-place) already reuses these same max_col/max_row
-     * locals, so this one override site is the only real change
-     * needed. */
-    {
-        int cfg_cols = 0, cfg_rows = 0;
-        read_map_size(g_house_root, &cfg_cols, &cfg_rows);
-        if (cfg_cols > 0) max_col = cfg_cols - 1;
-        if (cfg_rows > 0) max_row = cfg_rows - 1;
-    }
-    if (max_col < 0) max_col = 0;
-    if (max_row < 0) max_row = 0;
-
     int xfd = ConnectionNumber(dpy);
-    /* Real, new 2026-08-31 - this entity's own persisted z, loaded
-     * once at startup (see g_entity_z's own declaration comment). */
-    g_entity_z = read_entity_z(package_dir);
-    int win_x = 3 * GRID_CELL_PX, win_y = 3 * GRID_CELL_PX; /* grid-aligned spawn, matching egg_window.c's own default */
-    {
-        int ix, iy;
-        if (read_initial_pos(package_dir, &ix, &iy)) {
-            int gx = (ix + GRID_CELL_PX / 2) / GRID_CELL_PX;
-            int gy = (iy + GRID_CELL_PX / 2) / GRID_CELL_PX;
-            if (gx < 0) gx = 0; if (gx > max_col) gx = max_col;
-            if (gy < 0) gy = 0; if (gy > max_row) gy = max_row;
-            win_x = gx * GRID_CELL_PX;
-            win_y = gy * GRID_CELL_PX;
-        }
-#ifdef _WIN32
-        /* Linux pos can sit past this monitor. Keep on the primary work
-         * area, below the strip. */
-        {
-            int pad_top = 40, g = 8;
-            if (win_x < g) win_x = g;
-            if (win_y < pad_top) win_y = pad_top;
-            if (win_x + WIN_PX > screen_w - g) win_x = screen_w - WIN_PX - g;
-            if (win_y + WIN_PX > screen_h - g) win_y = screen_h - WIN_PX - g;
-            if (win_x < g) win_x = g;
-            if (win_y < pad_top) win_y = pad_top;
-        }
-#endif
-#ifdef __APPLE__
-        /* macOS leg (2026-08-22): mirror of the _WIN32 work-area clamp.
-         * Saved Linux grid positions can sit past this display's right
-         * edge (live: tiles parked at x=1600 on a 1680px screen, mostly
-         * invisible). XQuartz rootless maps y=0 to just under the macOS
-         * menu bar, so pad_top only needs to clear the taskbar strip. */
-        {
-            int pad_top = 40, g = 8;
-            if (win_x < g) win_x = g;
-            if (win_y < pad_top) win_y = pad_top;
-            if (win_x + WIN_PX > screen_w - g) win_x = screen_w - WIN_PX - g;
-            if (win_y + WIN_PX > screen_h - g) win_y = screen_h - WIN_PX - g;
-            if (win_x < g) win_x = g;
-            if (win_y < pad_top) win_y = pad_top;
-        }
-#endif
-        XMoveWindow(dpy, win, win_x, win_y);
-        /* macOS leg (2026-08-22): persist the CLAMPED position - the
-         * saved Linux grid value can sit past this display's edge, and
-         * downstream consumers (khtpm_show_choices.c's picker spawn
-         * reads this same file) must not inherit an off-screen x/y. */
-        write_pos(package_dir, win_x, win_y);
-    }
     MethodItem methods[MAX_METHODS];
     int n_methods = load_methods(package_dir, methods, MAX_METHODS);
+    TP_TIMING_MARK("load_methods");
     if (n_methods == 0) {
         snprintf(methods[0].label, sizeof(methods[0].label), "Close");
         snprintf(methods[0].action, sizeof(methods[0].action), "CLOSE");
@@ -13977,6 +14186,7 @@ static int tp_main(int argc, char **argv) {
      * methods[]/n_methods keeps working completely unchanged. */
     ObjPage obj_pages[MAX_PAGES];
     int n_obj_pages = load_objects(package_dir, obj_pages, MAX_PAGES);
+    TP_TIMING_MARK("load_objects");
     int using_objects = (n_obj_pages > 0);
     int cur_page = 0;
     int page_stack[MAX_PAGES];
@@ -14045,6 +14255,7 @@ static int tp_main(int argc, char **argv) {
     int running = 1;
     struct timeval last_frame = { 0, 0 };
 
+    TP_TIMING_MARK("setup-complete->entering event loop");
     while (running && !g_shutdown_requested) {
 #ifdef _WIN32
         x11_wait(dpy, POLL_INTERVAL_USEC);
@@ -15700,7 +15911,7 @@ static int tp_main(int argc, char **argv) {
                     was_3d_last_frame = 0;
                 }
             }
-            else if (g_font_loaded) draw_glyph_rgb(dpy, g_buf, g_buf_gc, glyph);
+            else if (g_font_loaded) draw_glyph_rgb(dpy, g_buf, g_buf_gc, glyph, win_vis, swa.colormap);
             /* REAL, NEW 2026-08-30, direct instruction ("camera pan/
              * zoom moves the whole desktop") - a real, desktop-wide
              * screen-position offset while in 3D mode. win_x/win_y
@@ -16038,6 +16249,34 @@ int main(int argc, char **argv) {
     { struct stat gcst; if (stat(g_chtpm_path, &gcst) == 0) g_chtpm_mtime = gcst.st_mtim; }
     kh_text_areas_reload(g_window); /* 2026-09-08 - restore a persisted <text_area> (sql-hq editor) on launch too, not only across reparse */
     if (elem_has_class(g_window, "dock-header")) {
+        /* REAL FIX 2026-09-13, direct live report ("nav is stuck at 1
+         * again") - live-confirmed on a GENUINELY FRESH strip process
+         * (a brand-new PID from an always-on-top respawn, never sent a
+         * real click in its own lifetime by the time it was checked):
+         * nav was already snapped into a "dropdown open" scope from
+         * frame one (kh_elem_in_scope()'s own g_default_active_scope_id/
+         * g_dock_drop_lo pair already non-empty/non-zero). Every real
+         * setter of g_default_active_scope_id is click-driven (grepped,
+         * confirmed - activate_focused()'s own ACTIVATE/tab branches,
+         * the Escape-pop handler) - none of them can fire before this
+         * process's own event loop even starts, so the exact mechanism
+         * that pre-seeds it remains unconfirmed. Rather than chase a
+         * process-local global's mystery initial state further, this is
+         * the direct, robust answer: a freshly-started dock window
+         * cannot possibly have a real, current scope yet (nothing has
+         * been clicked in ITS OWN lifetime) - explicitly zero every
+         * piece of that state right here, once, before the first real
+         * layout pass ever runs, so whatever value these globals
+         * happened to hold is irrelevant. Belt-and-suspenders on top of
+         * the two earlier related fixes this same week (the reparse-
+         * restore confine reset, and the dup-registry-line race) - this
+         * one guarantees a clean slate unconditionally, not just in the
+         * specific paths already found. */
+        g_default_active_scope_root = NULL;
+        g_default_active_scope_id[0] = '\0';
+        g_default_scope_confine = 0;
+        g_dock_drop_lo = 0;
+        g_dock_drop_hi = 0;
         /* peer is the static bottom template beside the header, never
          * a generated #.desktop/strip_bottom.chtpm (layout-update). */
         snprintf(g_dock_peer_path, sizeof(g_dock_peer_path),
