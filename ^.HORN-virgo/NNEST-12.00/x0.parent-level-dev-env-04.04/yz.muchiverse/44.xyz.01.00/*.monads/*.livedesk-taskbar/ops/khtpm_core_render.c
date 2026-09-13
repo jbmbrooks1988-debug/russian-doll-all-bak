@@ -1823,6 +1823,7 @@ static Elem *kh_parse_into_scratch(const char *path) {
  * latest" convention any chat UI needs - see this function's own body
  * below for where it's used. */
 static int g_default_scrolllist_scroll;
+static int window_is_dock(void); /* real def + header comment further down; forward-declared for the dock heartbeat below */
 static int reparse_chtpm_if_changed(void) {
     if (!g_chtpm_path[0]) return 0;
     struct stat st;
@@ -1840,9 +1841,51 @@ static int reparse_chtpm_if_changed(void) {
          * .chtpm is now static, so its mtime never moves - a data
          * change shows up as a new mtime on g_vars_path instead. Treat
          * that exactly like a template change: re-parse (which re-runs
-         * kh_load_vars + kh_substitute_vars) + re-layout + re-draw. */
+         * kh_load_vars + kh_substitute_vars) + re-layout + re-draw.
+         *
+         * REAL FIX 2026-09-13, direct live report: "bottom tb is missing
+         * entities again... no matter what this cant happen" - the
+         * FOURTH live occurrence of this exact symptom class this week
+         * (bug_bounty.md), each time a DIFFERENT specific mechanism (a
+         * dead pid, a double-registration kill, an ENOENT race, and this
+         * time: a content-hash that was live-confirmed STABLE for 5+
+         * full seconds with the dock still blank - a fourth, distinct
+         * gap in this exact mtime/hash/debounce chain). Direct follow-up
+         * instruction, after an earlier pass here tried a periodic
+         * forced-reparse timer as a band-aid over that same chain: "we
+         * dont use mtime or hash for render, ideally we use marker
+         * filesize change only, or stay with last render... do u see
+         * this instruction in golden rules?" - CENTROID_GOLD_STD.md
+         * rule 8 ("Repaint discipline - marker/dirty model... not on
+         * mtime, not on a hash, not per input event"), yes, and this
+         * exact file already has the real, proven, ALREADY-WIRED
+         * instance of it one function away: the manager's own
+         * publish_state() (khtpm_taskbar_manager_main.c) writes
+         * strip_ui.txt/strip_state.txt THEN appends one byte to
+         * #.desktop/strip_frame_changed.txt (touch_frame_changed()) -
+         * dock_poll_strip_state() below already watches that marker's
+         * SIZE growth, never mtime, for its own (narrower) focus-sync
+         * job. The real, final fix: for a dock window, THIS reparse
+         * gate watches the exact same marker for content changes too,
+         * replacing the hash/debounce chain entirely - no timer, no
+         * hash, no possible instability window; growth is the one and
+         * only real signal, exactly as rule 8 states. Non-dock windows
+         * (every other mode) keep the existing hash/debounce path
+         * unchanged - they have no such marker to watch (most have no
+         * single "the" writer process the way the strip's manager is
+         * one), so the earlier mechanism stays the correct one there. */
         int vars_changed = 0;
-        if (g_vars_path[0]) {
+        if (window_is_dock()) {
+            static long s_dock_vars_marker = -1;
+            char mp[PATH_BUF];
+            snprintf(mp, sizeof(mp), "%s/#.desktop/strip_frame_changed.txt", g_house_root);
+            struct stat mst;
+            if (stat(mp, &mst) == 0) {
+                if (s_dock_vars_marker < 0)              s_dock_vars_marker = mst.st_size;      /* first sight */
+                else if (mst.st_size < s_dock_vars_marker) s_dock_vars_marker = mst.st_size;      /* truncated/rotated - resync */
+                else if (mst.st_size > s_dock_vars_marker) { s_dock_vars_marker = mst.st_size; vars_changed = 1; }
+            }
+        } else if (g_vars_path[0]) {
             /* content-hash ALL the state files (one per <module>) - a
              * reparse fires only on a real byte change in any of them,
              * not on a projector's identical every-tick rewrite
@@ -10827,6 +10870,9 @@ static void livedesk_registry_add(const char *house_root, const char *package_di
     FILE *w = fopen(tmp_path, "w");
     if (f && w) {
         char line[TP_PATH_BUF];
+        char newline[TP_PATH_BUF];
+        int wrote_self = 0;
+        snprintf(newline, sizeof(newline), "PID=%d|INDEX=%d|ENTITY=%s|PATH=%s\n", (int)pid, index, ent_name, package_dir);
         while (fgets(line, sizeof(line), f)) {
             char *pp = strstr(line, "PID=");
             int line_pid = pp ? atoi(pp + 4) : 0;
@@ -10843,21 +10889,38 @@ static void livedesk_registry_add(const char *house_root, const char *package_di
              * saw two live-PID lines for one entity in a single read
              * and killed the "duplicate" (logic written for an actual
              * zorder-respawn leftover, not this) - which was the
-             * entity's only real process. Confirmed live via a debug
-             * log: "line pid=X entity=self alive=1" appeared twice in
-             * one tick, immediately followed by "DUP-KILL pid=X". Real
-             * fix: also drop any existing line for THIS SAME pid before
-             * appending its fresh one, so a re-registration replaces
-             * its own prior line instead of piling up beside it -
-             * correct for every future periodic self-heal call, not
-             * just the immediate-first-tick case. */
-            if (!pp || !pid_is_alive(line_pid) || line_pid == (int)pid) continue;
+             * entity's only real process.
+             *
+             * REAL FIX 2026-09-13, direct follow-up (direct live
+             * report: "it just reshuffled again... how did old
+             * codebase accomplish [stable order]?"): the fix above
+             * dropped this entity's OLD line and appended the fresh
+             * one at the TAIL of the file - every entity's own
+             * unsynchronized ~10s self-heal timer (tp_main()) means
+             * entities re-register at staggered moments, each one
+             * yanking itself to the bottom of the file on its own
+             * schedule - load_tabs() (both this house's current AND
+             * the old, pre-periodic-self-heal codebase, confirmed
+             * identical) reads this file top-to-bottom for the tab
+             * order, so the file order IS the visible tab order, and
+             * this was silently, continuously reshuffling it as a
+             * side effect - not a rendering bug, a real data-ordering
+             * one. The old codebase never had this because it never
+             * re-registered at all (register once, at launch, line
+             * never moves again). Real fix: write this entity's own
+             * fresh line back IN PLACE, at its original row, instead
+             * of always at the tail - keeps the exact same self-heal
+             * guarantee (a lapsed/pruned entry still gets restored)
+             * with zero reordering as a side effect, matching the old
+             * codebase's real stable-order invariant. */
+            if (line_pid == (int)pid) { fputs(newline, w); wrote_self = 1; continue; }
+            if (!pp || !pid_is_alive(line_pid)) continue;
             fputs(line, w);
         }
+        if (!wrote_self) fputs(newline, w); /* genuinely new registration - append */
     }
     if (f) fclose(f);
     if (w) {
-        fprintf(w, "PID=%d|INDEX=%d|ENTITY=%s|PATH=%s\n", (int)pid, index, ent_name, package_dir);
         fclose(w);
         rename(tmp_path, reg_path);
     }
@@ -12944,6 +13007,54 @@ static int measure_context_popup_w(Display *dpy, MethodItem *items, int n) {
  * hq_run_event_loop) so both the default/HQ handler here and the
  * default-mode loop can use it; this file-scope static needs exactly
  * one definition. */
+/* REAL, NEW 2026-09-13, direct live instruction ("theres nothing
+ * external to house quiting booktstack it must be in house. it must
+ * be researched and fix"): plain signal(SIGTERM,...) tells us THAT a
+ * signal arrived, never WHO sent it. Real, permanent upgrade to
+ * SA_SIGINFO so a future occurrence (this exact class of "reaches
+ * the loop, dies within ~1s, no crash evidence anywhere" bug,
+ * confirmed live via temporary checkpoint logging to be an external
+ * termination, not an internal crash) leaves a real forensic trail:
+ * the sender's own PID and cmdline, written with async-signal-safe
+ * primitives (write(2) to raw fds, no fopen/fprintf/malloc from
+ * inside a signal handler - the one real correctness rule that
+ * matters here). Cheap and silent when nothing ever fires it. */
+static void handle_shutdown_signal_info(int sig, siginfo_t *info, void *ctx) {
+    (void)sig; (void)ctx;
+    g_shutdown_requested = 1;
+    if (g_package_dir[0]) {
+        char path[TP_PATH_BUF];
+        int n = 0;
+        const char *pfx = "/last_signal.txt";
+        while (g_package_dir[n] && n < (int)sizeof(path) - 1) { path[n] = g_package_dir[n]; n++; }
+        for (int i = 0; pfx[i] && n < (int)sizeof(path) - 1; i++) path[n++] = pfx[i];
+        path[n] = '\0';
+        int fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        if (fd >= 0) {
+            char buf[128];
+            int bl = 0;
+            const char *m1 = "sig=";
+            for (int i = 0; m1[i]; i++) buf[bl++] = m1[i];
+            {
+                int v = sig, digs[8], nd = 0;
+                if (v == 0) digs[nd++] = 0;
+                while (v > 0 && nd < 8) { digs[nd++] = v % 10; v /= 10; }
+                while (nd > 0) buf[bl++] = (char)('0' + digs[--nd]);
+            }
+            const char *m2 = " from_pid=";
+            for (int i = 0; m2[i]; i++) buf[bl++] = m2[i];
+            {
+                long v = (long)info->si_pid; char digs[16]; int nd = 0;
+                if (v == 0) digs[nd++] = 0;
+                while (v > 0 && nd < 16) { digs[nd++] = (char)(v % 10); v /= 10; }
+                while (nd > 0) buf[bl++] = (char)('0' + digs[--nd]);
+            }
+            buf[bl++] = '\n';
+            ssize_t wr = write(fd, buf, (size_t)bl); (void)wr;
+            close(fd);
+        }
+    }
+}
 static void handle_shutdown_signal(int sig) {
     (void)sig;
     g_shutdown_requested = 1;
@@ -13439,14 +13550,27 @@ static int tp_main(int argc, char **argv) {
         fprintf(stderr, "Usage: tp_desktop_window.+x <package_dir>\n");
         return 1;
     }
-    signal(SIGTERM, handle_shutdown_signal);
-    signal(SIGINT, handle_shutdown_signal);
     char package_buf[TP_PATH_BUF];
     snprintf(package_buf, sizeof(package_buf), "%s", argv[1]);
 #ifdef _WIN32
     win_package_rel(package_buf);
 #endif
     const char *package_dir = package_buf;
+    /* REAL, NEW 2026-09-13 - g_package_dir used to be set ONLY on the
+     * default/HQ-window main() path, never here in tp_main() (entity/
+     * tile mode) - handle_shutdown_signal_info()'s own real forensic
+     * write (see its header comment) needs a real path to write to
+     * for THIS mode too, so it's set here, as early as possible,
+     * before the signal handlers below can possibly fire. */
+    snprintf(g_package_dir, sizeof(g_package_dir), "%s", package_dir);
+    {
+        struct sigaction sa;
+        memset(&sa, 0, sizeof(sa));
+        sa.sa_sigaction = handle_shutdown_signal_info;
+        sa.sa_flags = SA_SIGINFO;
+        sigaction(SIGTERM, &sa, NULL);
+        sigaction(SIGINT, &sa, NULL);
+    }
     /* REAL FIX 2026-09-04 (RENDERER-MODULARITY-AND-PERF-AUDIT.md §1.1) -
      * data-driven now (see read_log_mode()'s own header comment) -
      * was a hardcoded `strcmp(basename(pkgcopy), "cursword")` identity
@@ -13966,37 +14090,31 @@ static int tp_main(int argc, char **argv) {
          * other two modes exactly), then read+clear g_frame_dirty
          * locally to drive tp_main's own real need_redraw. */
         hq_ui_pdl_reload_if_changed(g_house_root);
-        /* REAL FIX 2026-09-12 (bug_bounty.md: "entities dropping from
-         * the bottom toolbar after a while, but staying on screen").
-         * Root cause found: livedesk_registry_add() (this entity's own
-         * bottom-bar ledger line) is called EXACTLY ONCE, at process
-         * start (a few hundred lines up) - unlike the HQ-window
-         * registry (livedesk_hq_windows_<pid>.txt), which every generic
-         * HQ window rewrites on EVERY redraw tick and is therefore
-         * self-healing. The taskbar manager's own reader
-         * (khtpm_taskbar_manager.c, the registry read-prune-write
-         * cycle) drops any entry whose PID fails a single
-         * ktb_pid_alive() check on that one read - if that check is
-         * EVER wrong just once, for any real transient reason, a
-         * one-time-registered entity's line is gone from the ledger
-         * forever, even though the entity process itself never crashed
-         * and keeps rendering (exactly "staying on screen"). Real fix:
-         * make entity registration self-healing the same way HQ
-         * windows already are - periodically re-add this entity's own
-         * line, so even a spurious prune corrects itself on the next
-         * refresh instead of being permanent. Gated cheap (once per
-         * ~10s) - re-appending is the same cheap lock+read+prune+append
-         * livedesk_registry_add() already does for the FIRST
-         * registration, just repeated. */
-        {
-            static struct timespec s_last_registry_refresh;
-            struct timespec now_ts;
-            clock_gettime(CLOCK_MONOTONIC, &now_ts);
-            if (now_ts.tv_sec - s_last_registry_refresh.tv_sec >= 10) {
-                s_last_registry_refresh = now_ts;
-                livedesk_registry_add(g_house_root, package_dir, g_livedesk_index, getpid());
-            }
-        }
+        /* REMOVED 2026-09-13 (direct live report: "this needs 2 stop
+         * happening... research house standards, and a real
+         * solution"). This used to be a periodic (~10s) re-add of this
+         * entity's own line into #.desktop/livedesk_open.txt - a real
+         * fix, 2026-09-12, for a real bug (a one-time-registered
+         * entity's line silently, permanently pruned by one transient
+         * ktb_pid_alive() misread). But with EVERY entity doing this on
+         * its own unsynchronized timer, that file became exactly the
+         * "one hot shared file, many writers" shape
+         * PROC-LIFECYCLE-CONSOLIDATE-REGISTRIES.md (this house's own
+         * design doc, §1) explicitly names as the pattern the house's
+         * one-writer rule exists to avoid - and was the real, shared
+         * root cause behind three separate symptoms fixed piecemeal
+         * this same week (tab reordering, entities missing after a
+         * restart, a blank taskbar with otherwise-valid process data).
+         * Real, structural fix this time, not another patch on this
+         * same timer: entities register ONCE, at their own startup
+         * (still done, a few hundred lines up) and never write this
+         * file again. The manager is now the sole writer - see
+         * ktb_self_heal_active_desk_registry() (khtpm_taskbar_
+         * manager.c) for its real replacement: the SAME ~10s cadence,
+         * self-healing the SAME class of spurious-prune bug, but from
+         * the one process that's supposed to own this file, reading
+         * real /proc liveness rather than trusting N independent
+         * writers to coordinate themselves. */
         int need_redraw = 0;
         if (g_frame_dirty) { need_redraw = 1; g_frame_dirty = 0; }
         /* REAL FIX 2026-09-01 (live report: after the @ always-on-top

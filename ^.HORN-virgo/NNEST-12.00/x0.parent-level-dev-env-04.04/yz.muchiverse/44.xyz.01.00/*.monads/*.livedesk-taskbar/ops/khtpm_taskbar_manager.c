@@ -23,6 +23,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <errno.h>
+#include <time.h> /* clock_gettime/CLOCK_MONOTONIC - ktb_self_heal_active_desk_registry()'s own ~10s gate */
 
 /* Orchestrator-owned PID-tracked teardown (TPMOS parity) —
  * PROC-LIFECYCLE-ORCHESTRATOR-TEARDOWN.md. This file is compiled exactly
@@ -52,6 +53,9 @@ static void livedesk_ensure_cursword(const char *house_root);
  * can drift) gets reliably relaunched. */
 static void livedesk_spawn_desk(const char *house_root, const char *sroot, const char *id, const char *desk);
 static void livedesk_spawn_active_desk(const char *house_root);
+#ifndef _WIN32
+static void ktb_self_heal_active_desk_registry(KtbState *s); /* real def + header comment further down (ktb_reload() calls this before its own real definition) */
+#endif
 
 /* REAL, NEW 2026-09-01 - forward decl: ktb_reload() (defined before this
  * helper's own definition) needs it to re-mirror the live always-on-top
@@ -376,6 +380,53 @@ static int ktb_pid_is_hq_renderer(int pid) {
     return 1;
 }
 
+/* REAL, NEW 2026-09-13 - same PID-reuse identity guard as
+ * ktb_pid_is_hq_renderer() above, for entity pals instead of HQ
+ * windows. Direct live report ("some entities didn't show up on
+ * restart. i had to manually click office to get them... is there a
+ * guard against that?"): livedesk_spawn_desk()'s own already_live
+ * check (a couple hundred lines below) only ever called plain
+ * ktb_pid_alive() against livedesk_open.txt's registered PIDs -
+ * exactly the PID-reuse hazard this file already root-caused and
+ * fixed ONCE for the HQ-window registry (ktb_pid_is_hq_renderer()'s
+ * own header comment - a closed process's stale registry entry
+ * survives, and if the OS later hands that exact PID to an unrelated
+ * process, kill(pid,0) reports it falsely "alive"), just never
+ * ported to this second, separate registry. A false-positive here is
+ * worse than the HQ-window case: it doesn't just leave a phantom
+ * taskbar cell, it SKIPS the real respawn entirely (already_live=1
+ * -> continue, never launches the pal at all) - matching the exact
+ * report precisely: a manual desk-switch (livedesk_switch_desk())
+ * fixed it because THAT path unconditionally closes-then-respawns,
+ * bypassing this flawed check altogether, while the passive startup
+ * spawn (livedesk_spawn_active_desk(), called once from ktb_init())
+ * trusted it and silently skipped whatever it false-positived on.
+ * comm alone (ktb_pid_is_hq_renderer()'s own check) isn't enough
+ * here - every pal shares the identical binary/comm - so this also
+ * verifies the live PID's own real /proc/<pid>/cmdline references
+ * THIS specific pal's path, same real technique
+ * livedesk_kill_strip_renderers()/livedesk_kill_stray_entities()
+ * already use elsewhere in this exact file, not invented here. */
+static int ktb_pid_is_this_pal(int pid, const char *pal_path) {
+    if (!ktb_pid_alive(pid)) return 0;
+#ifdef __linux__
+    char cpath[64];
+    snprintf(cpath, sizeof(cpath), "/proc/%d/cmdline", pid);
+    FILE *cf = fopen(cpath, "r");
+    if (!cf) return 1; /* unreadable /proc - fail open, matches every sibling check's own posture */
+    char cmdbuf[KTB_PATH_BUF * 2];
+    size_t nb = fread(cmdbuf, 1, sizeof(cmdbuf) - 1, cf);
+    fclose(cf);
+    if (nb == 0) return 0; /* a real process always has a non-empty cmdline; empty here means the read raced a just-exited pid */
+    cmdbuf[nb] = '\0';
+    for (size_t i = 0; i < nb; i++) if (cmdbuf[i] == '\0') cmdbuf[i] = ' ';
+    return strstr(cmdbuf, pal_path) != NULL;
+#else
+    (void)pal_path;
+    return 1;
+#endif
+}
+
 void ktb_init(KtbState *s, const char *house_root) {
     memset(s, 0, sizeof(*s));
     snprintf(s->house_root, sizeof(s->house_root), "%s",
@@ -581,7 +632,28 @@ static int load_tabs(KtbState *s) {
             snprintf(t.path, sizeof(t.path), "%s", p + 5);
             t.path[strcspn(t.path, "\r\n")] = 0;
         }
-        if (!t.entity[0] || !ktb_pid_alive(t.pid)) continue;
+        /* REAL FIX 2026-09-13, direct live report ("bookstack is
+         * missing... it appeared later... but thats buggy, janky"):
+         * this is the THIRD site sharing the same PID-reuse false-
+         * positive class already root-caused twice this same pass
+         * (ktb_pid_is_this_pal()'s own header comment) - and the most
+         * consequential one, since it's what builds s->tabs[] every
+         * single tick, feeding every other consumer including the new
+         * self-heal. Live-traced: book-stack's spawn was correctly,
+         * repeatedly retried (confirmed via direct debug logging - a
+         * real spawn attempt fired on every ~10s self-heal tick) but
+         * the process never survived past this very read - a genuinely
+         * fresh, alive PID for book-stack, read alongside a STALE
+         * line whose OWN pid number had been reused by some unrelated
+         * process, both passed plain ktb_pid_alive() as "alive," and
+         * the dup-kill below (real, correct logic for an ACTUAL
+         * zorder-respawn leftover) SIGTERMed one of the two - a
+         * plausible/likely explanation for exactly "spawns, dies
+         * almost immediately, every time." Same fix as the other two
+         * sites: verify real process IDENTITY (cmdline references
+         * this exact pal path), not just that the PID number is
+         * occupied. */
+        if (!t.entity[0] || !ktb_pid_is_this_pal(t.pid, t.path)) continue;
         {
             int dup = 0, j;
             for (j = 0; j < s->n_tabs; j++) {
@@ -716,6 +788,9 @@ static void load_strip_user_cmd(KtbState *s) {
 
 void ktb_reload(KtbState *s) {
     load_tabs(s);
+#ifndef _WIN32
+    ktb_self_heal_active_desk_registry(s); /* see its own header comment - the manager's real replacement for the removed per-entity self-heal timer */
+#endif
     sync_tab_claims(s);
     sync_strip_claims(s);
     load_shortcuts(s);
@@ -2230,7 +2305,12 @@ static void livedesk_ensure_cursword(const char *house_root) {
         for (int i = 0; i < n; i++) {
             char base[64];
             livedesk_base_name(paths[i], base, sizeof(base));
-            if (strcmp(base, "cursword") != 0 || !ktb_pid_alive(pids[i])) continue;
+            /* REAL FIX 2026-09-13 - see ktb_pid_is_this_pal()'s own
+             * header comment (PID-reuse guard, same class of bug as
+             * ktb_pid_is_hq_renderer()). cursword is "always open, the
+             * user's assistant" - a false-positive skip here is the
+             * worst version of this bug, not just a missing pal. */
+            if (strcmp(base, "cursword") != 0 || !ktb_pid_is_this_pal(pids[i], paths[i])) continue;
             if (!keep) keep = pids[i];
             else if (pids[i] > 1) kill((pid_t)pids[i], SIGTERM);
         }
@@ -2263,7 +2343,7 @@ static void livedesk_ensure_cursword(const char *house_root) {
     win_spawn_cwd(exe, pal);
 #else
     char cmd[KTB_PATH_BUF * 2];
-    snprintf(cmd, sizeof(cmd), KTB_SETSID "nohup '%s' '%s' >/dev/null 2>&1 < /dev/null &", exe, pal);
+    snprintf(cmd, sizeof(cmd), "ulimit -c unlimited; " KTB_SETSID "nohup '%s' '%s' >/dev/null 2>&1 < /dev/null &", exe, pal);
     int rc = ktb_system_recorded(house_root, cmd);
     (void)rc;
 #endif
@@ -2436,7 +2516,13 @@ static void livedesk_spawn_desk(const char *house_root, const char *sroot, const
         {
             int already_live = 0;
             for (int i = 0; i < n_live; i++)
-                if (strcmp(live_paths[i], pal) == 0 && ktb_pid_alive(live_pids[i])) { already_live = 1; break; }
+                /* REAL FIX 2026-09-13, direct live report ("some
+                 * entities didn't show up on restart... is there a
+                 * guard against that?") - see ktb_pid_is_this_pal()'s
+                 * own header comment for the full PID-reuse story;
+                 * plain ktb_pid_alive() alone let a reused PID falsely
+                 * skip a real respawn here. */
+                if (strcmp(live_paths[i], pal) == 0 && ktb_pid_is_this_pal(live_pids[i], pal)) { already_live = 1; break; }
             if (already_live) continue; /* real process already running for this pal - never double-spawn it */
         }
         /* REAL FIX 2026-08-31, direct live report ("asa/ava/book-stack/
@@ -2477,11 +2563,26 @@ static void livedesk_spawn_desk(const char *house_root, const char *sroot, const
             FILE *pw = fopen(posp, "w");
             if (pw) { fprintf(pw, "x=%d\ny=%d\n", x, y); fclose(pw); }
         }
+        /* REAL, NEW 2026-09-13, direct live report ("bookstack is
+         * missing... it appeared later... but thats buggy, janky...
+         * know fix?") - live-traced, not guessed: book-stack's own
+         * history.txt showed a real WINDOW_OPEN + ENTITY_PHYMOJI_LOADED
+         * (a genuinely successful launch), then nothing - it dies
+         * silently sometime after, no crash evidence anywhere (this
+         * system routes core dumps through apport, which needs
+         * RLIMIT_CORE raised per-process to even attempt one - the
+         * default here is 0, silently discarding every crash). Not
+         * yet root-caused (an intermittent crash needs a real capture
+         * to root-cause, not more guessing) - this is that capture:
+         * raise the core limit for every entity spawn, so the NEXT
+         * time this happens there's a real core file
+         * (/var/crash or the process's own cwd, apport-dependent) to
+         * read instead of silence. Harmless when nothing crashes. */
 #ifdef _WIN32
         win_spawn_cwd(exe, pal);
 #else
         char cmd[KTB_PATH_BUF * 2];
-        snprintf(cmd, sizeof(cmd), KTB_SETSID "nohup '%s' '%s' >/dev/null 2>&1 < /dev/null &", exe, pal);
+        snprintf(cmd, sizeof(cmd), "ulimit -c unlimited; " KTB_SETSID "nohup '%s' '%s' >/dev/null 2>&1 < /dev/null &", exe, pal);
         int rc = ktb_system_recorded(house_root, cmd);
         (void)rc;
 #endif
@@ -2494,6 +2595,194 @@ static void livedesk_spawn_desk(const char *house_root, const char *sroot, const
      * own explicit re-check every time this function runs. */
     livedesk_ensure_cursword(house_root);
 }
+
+#ifndef _WIN32
+/* REAL, NEW 2026-09-13 - the real architectural fix, not another
+ * patch. Direct live report ("this needs 2 stop happening... research
+ * house standards, and a real solution"): #.desktop/livedesk_open.txt
+ * (the file that decides the taskbar's own tab list) was being
+ * written by EVERY entity process independently, on its own
+ * unsynchronized ~10s self-heal timer - the exact "one hot shared
+ * file, many writers" shape PROC-LIFECYCLE-CONSOLIDATE-REGISTRIES.md
+ * (this house's own design doc, §1) explicitly names as the pattern
+ * the house's one-writer rule exists to avoid. That multi-writer
+ * churn was the real, shared root cause behind three separate
+ * symptoms fixed piecemeal this session (tab reordering, entities
+ * missing after a restart, a blank taskbar with valid process data) -
+ * every one of them a race between independent writers/readers on one
+ * shared file, not three unrelated bugs.
+ *
+ * The fix: entities stop writing this file except once, at their own
+ * startup (see tp_main()'s own header comment at the old periodic
+ * timer's former location for why the timer existed and why it's
+ * gone). The MANAGER becomes the sole writer - same one-writer
+ * pattern strip_ui.txt/livedesk_proc_list.txt/every db-hq-pal-style
+ * state file in this house already uses. This function is the
+ * manager's own replacement self-heal: once per ~10s (same cadence
+ * the removed per-entity timer used), read the active desk's real
+ * pal list, and for any pal genuinely alive (found via a real /proc
+ * cmdline identity scan - same technique ktb_pid_is_this_pal() uses
+ * for one candidate PID, here searching for one) but missing from the
+ * registry, the manager - and only the manager - writes it back in.
+ * Never spawns anything (that's livedesk_spawn_desk()'s job, called
+ * once at startup/switch) - this only restores a registry line for a
+ * process that already, verifiably, exists. */
+static int ktb_find_live_pid_for_pal(const char *pal_path) {
+    DIR *pd = opendir("/proc");
+    if (!pd) return 0;
+    struct dirent *ent;
+    int found = 0;
+    while ((ent = readdir(pd)) != NULL) {
+        if (ent->d_name[0] < '0' || ent->d_name[0] > '9') continue;
+        char cpath[64];
+        snprintf(cpath, sizeof(cpath), "/proc/%s/cmdline", ent->d_name);
+        FILE *cf = fopen(cpath, "r");
+        if (!cf) continue;
+        char cmdbuf[KTB_PATH_BUF * 2];
+        size_t nb = fread(cmdbuf, 1, sizeof(cmdbuf) - 1, cf);
+        fclose(cf);
+        if (nb == 0) continue;
+        cmdbuf[nb] = '\0';
+        for (size_t i = 0; i < nb; i++) if (cmdbuf[i] == '\0') cmdbuf[i] = ' ';
+        if (strstr(cmdbuf, "khtpm_core_render.+x") && strstr(cmdbuf, pal_path)) {
+            found = atoi(ent->d_name);
+            break;
+        }
+    }
+    closedir(pd);
+    return found;
+}
+
+static void ktb_self_heal_active_desk_registry(KtbState *s) {
+    static struct timespec s_last;
+    struct timespec now;
+    clock_gettime(CLOCK_MONOTONIC, &now);
+    if (s_last.tv_sec != 0 && now.tv_sec - s_last.tv_sec < 10) return;
+    s_last = now;
+
+    /* REAL, NEW 2026-09-13 - a real, separate gap found live testing
+     * this same pass: an entity can fail to spawn AT ALL (a real
+     * system()/fork hiccup under the launch burst a full desk-spawn
+     * creates - confirmed live, book-stack simply never became a
+     * process on one restart) - this function only ever restores a
+     * REGISTRY LINE for something already verifiably alive, by
+     * design, so it can never recover that case on its own. The fix
+     * isn't more logic here - it's reusing the one function that
+     * already spawns safely: livedesk_spawn_active_desk() (called
+     * once at manager startup) has its own already_live guard
+     * (identity-checked as of this same day's earlier fix), so
+     * calling it again here is a genuine no-op for every entity
+     * that's really running and a real, safe respawn attempt for
+     * anything that silently never launched - same real desk-
+     * consistency check, both halves, one process, one cadence. */
+    livedesk_spawn_active_desk(s->house_root);
+
+    char sroot[KTB_PATH_BUF];
+    if (!livedesk_sessions_root(s->house_root, sroot, sizeof(sroot))) return;
+    char active_session[64] = "";
+    livedesk_root_read(sroot, active_session, sizeof(active_session), NULL, 0);
+    if (!active_session[0]) return;
+    char active_desk[64] = "";
+    livedesk_active_desk(sroot, active_session, active_desk, sizeof(active_desk));
+    if (!active_desk[0]) return;
+
+    char sdir[KTB_PATH_BUF], dp[KTB_PATH_BUF];
+    livedesk_session_dir(sroot, active_session, sdir, sizeof(sdir));
+    snprintf(dp, sizeof(dp), "%s/desks/%s.pdl", sdir, active_desk);
+    FILE *f = fopen(dp, "r");
+    if (!f) return;
+    char line[KTB_PATH_BUF * 2];
+    while (fgets(line, sizeof(line), f)) {
+        if (strncmp(line, "DESK", 4) != 0) continue;
+        char *p = strchr(line, '|');
+        if (!p) continue;
+        p++;
+        char *path = NULL;
+        strtok(p, "|"); /* entity name field - unused, base is derived from path below */
+        path = strtok(NULL, "|");
+        if (!path) continue;
+        while (*path == ' ') path++;
+        path[strcspn(path, "\r\n")] = '\0';
+        char *pe = path + strlen(path);
+        while (pe > path && pe[-1] == ' ') *--pe = '\0';
+
+        char base[64];
+        livedesk_base_name(path, base, sizeof(base));
+        if (strcmp(base, "cursword") == 0) continue; /* own dedicated ensure path (livedesk_ensure_cursword) */
+
+        int already = 0;
+        for (int i = 0; i < s->n_tabs; i++)
+            if (strcmp(s->tabs[i].entity, base) == 0) { already = 1; break; }
+        if (already) continue;
+
+        char pr[KTB_PATH_BUF];
+        if (!livedesk_pals_root(s->house_root, pr, sizeof(pr))) continue;
+        char pal[KTB_PATH_BUF];
+        snprintf(pal, sizeof(pal), "%s/%s", pr, base);
+
+        int live_pid = ktb_find_live_pid_for_pal(pal);
+        if (live_pid <= 0) continue; /* genuinely not running - not this function's job to spawn it */
+
+        /* REAL FIX 2026-09-13, direct live report ("theres nothing
+         * external to house quiting booktstack it must be in house")
+         * - root-caused live via a real signal-sender capture
+         * (handle_shutdown_signal_info(), khtpm_core_render.c): the
+         * manager ITSELF was sending book-stack's own fresh process a
+         * real SIGTERM within ~1s of every launch. Traced to THIS
+         * exact site: `already` above only checks s->n_tabs, a
+         * snapshot from load_tabs() taken ONCE at the very top of
+         * this same tick - if book-stack's own process self-
+         * registered (its real, one-time startup write, a SEPARATE
+         * writer) in the narrow window between that snapshot and this
+         * point, this function had no way to see it and appended a
+         * SECOND, genuine duplicate line for the SAME real, single
+         * PID. load_tabs()'s own dup-kill (real, correct logic for an
+         * actual zorder-respawn leftover) then saw "book-stack" twice
+         * on its very next read and SIGTERMed the second occurrence -
+         * which, since both lines named the exact same live PID,
+         * meant killing the only real process there was.
+         *
+         * Real fix: a single pass, inside the one real registry lock
+         * (NOT livedesk_read_open() - that function acquires/releases
+         * the SAME shared, process-wide lock fd itself, so calling it
+         * from in here would drop this outer lock the instant it
+         * returns, leaving the write below unprotected again) - read
+         * once, copy every line while also checking, by real cmdline
+         * identity, whether this exact pal already has a live entry;
+         * only append the new line if it genuinely doesn't. */
+        char reg_path[KTB_PATH_BUF], tmp_path[KTB_PATH_BUF];
+        path_join(reg_path, sizeof(reg_path), s->house_root, "#.desktop/livedesk_open.txt");
+        path_join(tmp_path, sizeof(tmp_path), s->house_root, "#.desktop/livedesk_open.txt.tmp");
+        registry_lock_acquire(s->house_root);
+        FILE *rf = ktb_fopen(reg_path, "r");
+        FILE *w = ktb_fopen(tmp_path, "w");
+        int already_fresh = 0;
+        if (w) {
+            char rl[KTB_PATH_BUF];
+            while (rf && fgets(rl, sizeof(rl), rf)) {
+                fputs(rl, w);
+                char *pp = strstr(rl, "PID=");
+                char *php = strstr(rl, "PATH=");
+                if (pp && php) {
+                    int rpid = atoi(pp + 4);
+                    char rpath[KTB_PATH_BUF];
+                    snprintf(rpath, sizeof(rpath), "%s", php + 5);
+                    rpath[strcspn(rpath, "\r\n")] = '\0';
+                    if (strcmp(rpath, pal) == 0 && ktb_pid_is_this_pal(rpid, pal)) already_fresh = 1;
+                }
+            }
+            if (!already_fresh)
+                fprintf(w, "PID=%d|INDEX=0|ENTITY=%s|PATH=%s\n", live_pid, base, pal);
+            fclose(w);
+            remove(reg_path);
+            rename(tmp_path, reg_path);
+        }
+        if (rf) fclose(rf);
+        registry_lock_release();
+    }
+    fclose(f);
+}
+#endif
 
 static void livedesk_default_session(const char *house_root, const char *sroot, char *out, size_t sz) {
     char active[KTB_PATH_BUF] = "";
@@ -3236,7 +3525,7 @@ static void livedesk_place_pal(const char *house_root, const char *name) {
 #else
     if (access(exe, F_OK) == 0) {
         char cmd[KTB_PATH_BUF * 2];
-        snprintf(cmd, sizeof(cmd), KTB_SETSID "nohup '%s' '%s' >/dev/null 2>&1 < /dev/null &", exe, pal);
+        snprintf(cmd, sizeof(cmd), "ulimit -c unlimited; " KTB_SETSID "nohup '%s' '%s' >/dev/null 2>&1 < /dev/null &", exe, pal);
         int rc = ktb_system_recorded(house_root, cmd);
         (void)rc;
     }

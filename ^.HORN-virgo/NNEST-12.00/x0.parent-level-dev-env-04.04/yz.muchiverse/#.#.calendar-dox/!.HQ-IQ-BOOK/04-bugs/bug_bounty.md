@@ -9,7 +9,7 @@ re-open a NEW entry for the same symptom.
 
 ---
 
-## ✅ CLOSED 2026-09-12: entities drop off the bottom taskbar after a while, but stay on-screen
+## ⚠️ REOPENED 2026-09-13 (4th occurrence): entities drop off the bottom taskbar after a while, but stay on-screen
 
 **Reported:** 2026-09-11/12, direct live report: "why after a while
 entities are dropping from the bottom toolbard (but staying on
@@ -137,6 +137,288 @@ again with processes/registry confirmed alive, this is the file to
 re-open, not a new one - and dump the actual window pixels
 (`dump_frame_png_op`) before trusting any backing file's content, since
 this class of bug is specifically "data is fine, the render is stale."
+
+**4th occurrence, 2026-09-13** - direct live report: "bottom tb is
+missing entities again. no matter what this cant happen. how do we
+fix this once and for all?" Confirmed the SAME "data is fine, render
+is stale" class as `74debf38` above - not that fix's own specific
+ENOENT race (checked directly): `strip_ui.txt` held the correct real
+7-tab data the entire time, its content-hash was genuinely STABLE
+across 5+ full seconds (ruling out the two-poll debounce too), and
+`dump_frame_png_op` on the live dock window still showed it blank
+regardless - a fourth, distinct mechanism in this same fragile
+mtime/hash/debounce chain, not isolated this pass.
+
+**Real, structural answer this time (`af273699`)**, matching the
+direct "once and for all" ask: stopped trying to find and patch the
+Nth specific detection gap in this chain. The dock strip now
+unconditionally forces a full reparse+relayout+repaint every 3s,
+completely independent of mtime/hash/debounce ever agreeing again -
+gated to dock windows only (`window_is_dock()`) so every other window
+keeps its existing cheaper change-only behavior. A genuinely bounded
+worst case now exists: however this next fails, it self-heals within
+3 seconds, not "possibly never again until a manual restart." Verified
+live: a fully clean restart (every taskbar/entity process killed
+first, not a partial one) held all 7 real entities correctly
+rendered, with the tab order visibly reshuffling on each heartbeat
+tick, across a 35s watch.
+
+**A second, separate thing found the SAME session, worth recording so
+it isn't mistaken for this bug's own root cause later**: a test
+restart done WITHOUT first killing already-running entity processes
+(this session's own repeated manual `run_khtpm_strip.sh new` calls
+while testing unrelated code) caused a real entity die-off within
+~10s - traced to colliding with `livedesk_spawn_active_desk()`'s
+already-guarded (`ktb_pid_alive`-checked) respawn-on-startup logic:
+old entities registered under a stale/pruned prior registry snapshot,
+a fresh respawn creating a real second live PID per entity, and
+`load_tabs()`'s own existing one-entity-one-PID dedup (its real,
+intentional job) correctly SIGTERMing the duplicates - working as
+designed, just startling to watch happen. Not a bug in the sense this
+entry tracks (a normal user session never does a partial restart that
+way), but real enough to name: if a future partial-restart workflow
+becomes common, `livedesk_spawn_active_desk()` doing its own liveness
+check via a fresher registry read (not just relying on the dedup
+safety net downstream) would remove the visible flicker.
+
+**Superseded same day (`930fd9ba`)** - direct follow-up: "we dont use
+mtime or hash for render, ideally we use marker filesize change only,
+or stay with last render (mtime has edgecases); do u see this
+instruction in golden rules? thats the final fix." Yes -
+`CENTROID_GOLD_STD.md` rule 8 says exactly this ("not on mtime, not
+on a hash, not per input event"), and the 3s-timer band-aid above
+never actually followed it. The REAL final fix: this exact file
+already has a proven, already-wired instance of the real marker
+pattern one function away - `khtpm_taskbar_manager_main.c`'s
+`publish_state()` writes `strip_ui.txt`/`strip_state.txt` THEN
+appends one byte to `#.desktop/strip_frame_changed.txt`
+(`touch_frame_changed()`); `dock_poll_strip_state()` in this same
+render file already watches that marker's SIZE growth for its own
+narrower focus-sync job. `reparse_chtpm_if_changed()`'s vars-changed
+gate now watches that SAME marker directly for dock windows,
+replacing the hash/debounce chain AND the 3s timer entirely - no
+mtime, no hash, no polling interval, growth is the only signal, per
+rule 8 to the letter. Non-dock windows are unaffected (most have no
+single real "the" writer process the way the strip's manager is one,
+so the hash/debounce path stays correct for them). Verified live:
+render tracked real entity-count changes in `strip_ui.txt` exactly at
+every check across multiple restarts, no lag, no staleness, no timer.
+
+If the ORIGINAL symptom (blank dock, valid backing data) recurs even
+with the marker gate in place, re-open this entry again - check FIRST
+whether `strip_frame_changed.txt` itself is actually growing on every
+real `publish_state()` call (a marker that stops growing is a
+materially different, worse bug than this entry's own history: the
+manager's publish path itself broken, not a render-side detection
+gap).
+
+---
+
+## ✅ CLOSED 2026-09-13: tab reordering / entities missing after restart - the real architectural cause
+
+**Reported same day, multiple times, same underlying file:** "it just
+reshuffled again... how did old codebase accomplish functionality"
+and separately "some entities didn't show up on restart... was it
+related to restart somehow like before? is there a guard against
+that?" and again "bottom tb is missing entities again... this needs 2
+stop happening. no patches. research house standards, and a real
+solution."
+
+**Real root cause, researched not guessed:** `#.desktop/livedesk_
+open.txt` (the file that decides the taskbar's tab list) was written
+by EVERY entity process independently, on its own unsynchronized
+~10s self-heal timer - exactly the "one hot shared file, many
+writers" shape `PROC-LIFECYCLE-CONSOLIDATE-REGISTRIES.md` (this
+house's own design doc, §1) explicitly names as the pattern the
+house's one-writer rule exists to avoid. This one anti-pattern was
+the real, shared cause behind THREE separately-reported symptoms:
+tab reordering (each entity's periodic rewrite repositioned its own
+line), entities missing after a restart (races between the manager's
+one-time startup read and entities' own async writes), and a third,
+related PID-reuse class (see below).
+
+**Real, structural fix (`764944ea`, `ec77a18f`)** - not another patch
+on the same timer:
+1. Entities register ONCE, at their own startup; the periodic re-add
+   removed from `khtpm_core_render.c`'s `tp_main()` entirely.
+2. The manager is now the SOLE writer - `ktb_self_heal_active_desk_
+   registry()` (`khtpm_taskbar_manager.c`, called from `ktb_reload()`
+   every tick, internally gated to the same ~10s cadence) restores a
+   registry line for any active-desk pal found genuinely alive via a
+   real `/proc` cmdline identity scan but missing from the registry,
+   and separately re-calls the already-safe `livedesk_spawn_active_
+   desk()` so a pal that silently never launched gets a real retry -
+   never spawns duplicates (identity-guarded).
+3. A THIRD site sharing the same PID-reuse false-positive class
+   fixed twice earlier the same day (`ktb_pid_is_this_pal()`, for
+   `livedesk_spawn_desk`'s `already_live` check and `livedesk_ensure_
+   cursword`) was found and closed: `load_tabs()`'s own dup-kill
+   logic - the function that builds the tab list every single tick -
+   was still using bare `ktb_pid_alive()`. Live-traced via temporary
+   debug logging (added and fully removed same pass): a stale,
+   PID-reused registry line alongside a genuinely fresh spawn made
+   two "alive" entries look like a real zorder-respawn duplicate, and
+   the correct dup-kill logic SIGTERMed one of them - a real,
+   plausible explanation for repeated silent spawn failures for one
+   specific entity across several restarts.
+
+**Verified live** across multiple clean restarts (full process kill
+first, not partial): registry order stable, zero reordering, entities
+restored without any manual click, matching the exact "no patches,
+real solution" ask.
+
+**Real, honest caveat, not fully closed**: this fix explains and
+closes every registry/respawn-skip mechanism found - but one entity
+(`book-stack`) kept failing to survive across several of these same
+restarts for a DIFFERENT, still-open reason (see the new bounty entry
+below) - its own crash, not a registry bug. Don't mistake a future
+`book-stack`-specific absence for a regression of THIS fix without
+checking that entry first.
+
+---
+
+## ✅ CLOSED 2026-09-13: book-stack dies silently, sometime after a genuinely successful launch
+
+**Reported:** direct live report, same pass as the registry fix
+above: "bookstack is missing. it needs to be fault tolerant. (it
+appeared later) but thats bugy, janky. know fix?"
+
+**What's confirmed:**
+- ✅ NOT a registry/spawn-skip bug - ruled out directly. Temporary
+  debug logging (added and fully removed) proved the manager's spawn
+  retry correctly, repeatedly attempts to launch book-stack every
+  self-heal cycle, and on at least one clean-restart observation
+  `already_live=1` was reached almost immediately (a genuinely fast,
+  successful self-registration) - the registry/self-heal layer is
+  doing its real job.
+- ✅ A REAL, confirmed successful launch happens first: book-stack's
+  own `history.txt` shows `WINDOW_OPEN` then `ENTITY_PHYMOJI_LOADED`
+  (its sprite/voxel atlas load completing) on every attempt - then
+  nothing. The process is gone sometime after, silently, with no
+  further history entries, no stderr, no exit code ever observed
+  (spawned detached via `setsid nohup ... &`, not something this
+  investigation could directly `wait()` on).
+- ✅ NOT reliably reproducible on demand - inconsistent across
+  restarts in the same session (sometimes survives indefinitely,
+  sometimes dies within seconds), and a manual foreground/synchronous
+  relaunch (bypassing the manager entirely) also succeeded without
+  crashing at least once - genuinely intermittent, not a deterministic
+  parse/data bug (an earlier "failed to parse" finding this same
+  investigation turned out to be a false lead from an incorrect
+  manual repro command - argc mismatch - not a real bug in book-
+  stack's own package; ruled out and corrected in-session, worth
+  recording so a future reader doesn't chase it again).
+- ✅ This system routes core dumps through apport
+  (`/proc/sys/kernel/core_pattern`), which needs `RLIMIT_CORE` raised
+  per-process to even attempt a capture - the default here was 0,
+  silently discarding every crash with zero forensic trail. This is
+  why nothing could be found: there was never any evidence to read.
+
+**Real fix landed this pass (`7da1ae7b`)**: not a fix for the crash
+itself (not yet root-caused) but the fix that makes root-causing it
+possible - every entity spawn now does `ulimit -c unlimited` before
+the real launch (all 3 spawn sites in `khtpm_taskbar_manager.c`).
+Harmless when nothing crashes.
+
+**Major update, same day, live-traced with temporary checkpoint
+logging (added and fully removed)** - direct re-report after it kept
+recurring: "no bookstack still". Two real findings that change the
+shape of this bug:
+
+1. **`/var/crash` stayed empty even with `RLIMIT_CORE` raised**
+   (`7da1ae7b`) - `strace -p` also failed outright
+   (`ptrace(PTRACE_SEIZE)`: Operation not permitted - `yama.ptrace_
+   scope` blocks it in this environment). Neither forensic tool is
+   usable here; core-dump capture is a dead end in this environment
+   specifically, not a fix that needs more time to pay off.
+2. **The real, reproducible signal**: a temporary checkpoint
+   (`append_history("...ENTER_MAIN_LOOP")` immediately before the
+   main event loop, plus a per-iteration counter immediately inside
+   it) showed the loop-entry checkpoint fires on **every single
+   launch**, but the first-iteration checkpoint (one line later,
+   after nothing but a trivial `while` condition check and an
+   integer increment - code that cannot itself crash) **never once
+   fired**, across ~15+ consecutive observed launch/death cycles,
+   each dying within about one second of reaching the loop. Trivial
+   code between two checkpoints, one always logged and the other
+   never reached, is a real, strong signal this is an EXTERNAL
+   termination (a SIGTERM arriving in that same ~1s window) rather
+   than an internal crash - book-stack's own code was never actually
+   caught misbehaving.
+
+**Real next steps, not yet done** (superseding the core-dump-focused
+ones above - that path is closed off in this environment):
+1. Find what's sending book-stack SIGTERM within ~1s of every
+   launch. Real candidates, not yet individually ruled out: (a) the
+   shared, single-line `#.desktop/.livedesk_last_launch.pid` scratch
+   file `ktb_system_recorded()` uses to learn the PID it just spawned
+   (header comment, `khtpm_taskbar_manager.c` ~line 94) - if a
+   SECOND spawn (the manager launches several entities in a tight
+   loop) overwrites this shared file before the FIRST spawn's own
+   caller reads it back, a wrong PID could end up registered/reaped
+   against the wrong entity; (b) `load_tabs()`'s own dup-kill SIGTERM
+   (now identity-verified as of this same day's earlier fix, but not
+   re-examined AFTER this specific finding); (c) any other real
+   SIGTERM sender in `khtpm_taskbar_manager.c` (`kill_hq_windows.sh`,
+   `livedesk_kill_stray_entities()`, the proc-registry reaper) that
+   could be matching book-stack's fresh PID by an unintended pattern.
+2. Add a REAL (not temporary-debug) `signal(SIGTERM, ...)` log line
+   in `tp_main()`'s own handler (`handle_shutdown_signal()`) if it
+   doesn't already log which signal/when - the fastest way to
+   confirm (1) directly instead of narrowing by elimination.
+3. `book-stack`'s own `history.txt` was unusually large (~468KB)
+   compared to other entities' - still untested as a factor, lower
+   priority now that (1) points away from book-stack's own code
+   entirely.
+
+**A real, honest caveat about this investigation's own methodology**:
+reproducing this required repeated live restarts, which was directly
+disruptive to the user's own concurrent session ("i was on tb but
+dissapeared" - a live report of collateral disruption from this same
+debugging). Any future continuation of this investigation should
+prefer passive observation over forced restarts wherever possible.
+
+**Real root cause found and fixed (`b5443a67`)**, direct follow-up:
+"theres nothing external to house quiting booktstack it must be in
+house. it must be researched and fix. also i keep seeing weirdly
+that it redraws then quickly dissapears." Upgraded `tp_main()`'s
+signal handler to `SA_SIGINFO` (`handle_shutdown_signal_info()`,
+`khtpm_core_render.c`) - a real, permanent diagnostic, kept - so it
+writes the real sender PID via async-signal-safe `write(2)` before
+exiting. Caught live on the very next occurrence: the sender was
+`khtpm_taskbar_manager_main.+x` itself, confirming the user's own
+instinct - not anything external.
+
+Traced to the exact site: `ktb_self_heal_active_desk_registry()`'s
+registry-restore half (landed earlier the same day, `ec77a18f`) only
+checked the stale `s->tabs[]` snapshot from that same tick's earlier
+`load_tabs()` call before appending a "restore" line for a pal found
+alive via `/proc`. If book-stack's own process self-registered (its
+real, separate, one-time startup write) in the narrow window between
+that snapshot and this check, self-heal had no way to see it and
+appended a SECOND, genuine duplicate line naming the exact same live
+PID. `load_tabs()`'s own dup-kill (real, correct logic for an actual
+zorder-respawn leftover) then saw "book-stack" twice on its very next
+read and SIGTERMed the second occurrence - which, since both lines
+named the same PID, meant killing the only real process there was.
+This is exactly "it redraws then quickly disappears": the window
+opens and paints for real, then dies to a real signal about one
+manager tick later.
+
+Fix: the registry-restore write now happens as a single pass inside
+the one real registry lock, re-checking the LIVE file directly (by
+real cmdline identity, not just a name match) instead of trusting the
+stale snapshot. Also fixed a related correctness bug found while
+writing this: the original patch would have called
+`livedesk_read_open()` (which itself acquires/releases the same
+shared, process-wide lock fd) from inside an already-held lock,
+silently dropping protection the instant it returned.
+
+Verified live: book-stack alive and stable for 30+ seconds with zero
+forced restarts after the fix, all 7 entities present. If this exact
+symptom (opens, paints, dies within ~1s) recurs for ANY entity, the
+`SA_SIGINFO` handler left in place should immediately name the real
+sender via that entity's own `last_signal.txt` - check that first.
 
 ---
 
