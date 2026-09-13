@@ -8,15 +8,3 @@ egg_7
 egg_8
 egg_9
 egg_1
-egg_10
-egg_11
-egg_12
-egg_13
-egg_14
-egg_15
-egg_16
-egg_17
-egg_18
-egg_19
-egg_20
-egg_21

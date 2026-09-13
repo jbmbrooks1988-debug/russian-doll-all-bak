@@ -1,3 +1,0 @@
-hunger=0
-asleep=0
-poop_count=0

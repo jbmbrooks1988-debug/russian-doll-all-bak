@@ -1,5 +1,5 @@
 SECTION | KEY   | VALUE
-FILE    | file  | db_hq_skills.state.txt
-TAG     | tag   | SKILL
-TITLE   | title | Skills
-SEL     | sel   | 0
+FILE    | file  | db_hq_common_events.state.txt
+TAG     | tag   | CE
+TITLE   | title | Common Events
+SEL     | sel   | 3

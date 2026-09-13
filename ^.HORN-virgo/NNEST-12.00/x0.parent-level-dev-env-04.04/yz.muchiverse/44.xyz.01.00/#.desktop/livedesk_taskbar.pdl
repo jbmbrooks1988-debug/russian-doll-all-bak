@@ -27,14 +27,16 @@ SECTION      | hq_menu_10_label    | !kill hq
 SECTION      | hq_menu_10_cmd      | sh *.monads/*.livedesk-taskbar/ops/kill_hq_windows.sh .
 SECTION      | hq_menu_11_label    | debug
 SECTION      | hq_menu_11_cmd      | livedesk:open-palette:debug
-SECTION      | hq_menu_12_label    | piececraft-hq
-SECTION      | hq_menu_12_cmd      | livedesk:open-piececraft-hq
-# mon - "session monitor": lists every board/engine/hq process the house
-# spawned, classifies each (shell/pal/singleton/child/orphan/detached),
-# marks the stray ones, one-click KILL ALL STRAY. Wrapper lives under a
-# glob-safe ops/ path (the real app is &.hq-apps/mon-hq/, and a leading
-# '&' in an `sh -c` row is job-control).
-SECTION      | hq_menu_13_label    | mon
+# proc-mon - "session monitor": lists every board/engine/hq process the
+# house spawned, classifies each (shell/pal/singleton/child/orphan/
+# detached), marks the stray ones, one-click KILL ALL STRAY. Wrapper
+# lives under a glob-safe ops/ path (the real app is
+# &.hq-apps/proc-mon/, and a leading '&' in an `sh -c` row is
+# job-control). REAL FIX 2026-09-11, direct live report ("im wondering
+# why the button in dropdown doesn't say proc-mon?") - this label was
+# never tied to the mon-hq -> proc-mon rename (a separate, standalone
+# string), just never updated for consistency until now.
+SECTION      | hq_menu_13_label    | proc-mon
 SECTION      | hq_menu_13_cmd      | sh *.monads/*.livedesk-taskbar/ops/open_mon.sh
 SECTION      | hq_menu_14_label    | cancel
 
@@ -72,7 +74,10 @@ SECTION      | ai_menu_2_label       | Chat-h-ai
 SECTION      | ai_menu_2_cmd         | livedesk:open-chat-hai
 SECTION      | ai_menu_3_label       | Co-lab-h-ai
 SECTION      | ai_menu_3_cmd         | livedesk:open-colab-hai
-SECTION      | ai_menu_4_label       | Cancel
+# H-AI-LAB-DESIGN.md Part 3 - the real, first row for h-ai-lab.
+SECTION      | ai_menu_4_label       | h-ai-lab
+SECTION      | ai_menu_4_cmd         | livedesk:open-h-ai-lab
+SECTION      | ai_menu_5_label       | Cancel
 
 # db cell (9.db) - converted from C-hardcoded 2026-09-08. The builder
 # still gates on an active livedesk session (no session -> no menu).

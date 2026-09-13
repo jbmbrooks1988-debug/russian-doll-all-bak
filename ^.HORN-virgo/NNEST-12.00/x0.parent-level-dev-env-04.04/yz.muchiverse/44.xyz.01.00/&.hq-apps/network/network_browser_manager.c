@@ -692,6 +692,7 @@ static char g_curl_cookie_path[PATH_BUF];  /* per-house Netscape jar shared by p
 static int g_lock_fd = -1;                 /* single-instance flock fd (held for life) */
 static char g_js_worker_path[PATH_BUF];
 static char g_js_script_path[PATH_BUF];
+static char g_js_style_path[PATH_BUF];   /* rung 7: concatenated page CSS */
 static char g_media_op_path[PATH_BUF];
 static char g_media_root[PATH_BUF];
 
@@ -844,6 +845,97 @@ static void collect_scripts(const char *html, const char *page_url, FILE *js_out
     *n_scripts = n;
 }
 
+/* rung 7: concatenate the page's CSS into g_js_style_path — inline
+ * <style> bodies in document order, then up to 4 <link rel="stylesheet">
+ * resources resolved against the page URL (same cookie jar as page loads).
+ * nb_css.c in the worker parses this; an empty file just yields no rules. */
+static void collect_styles(const char *html, const char *page_url, FILE *css_out) {
+    const char *p = html;
+    while (p && *p) {
+        const char *tag = strcasestr_local(p, "<style");
+        if (!tag) break;
+        if (tag[6] != '>' && tag[6] != ' ' && tag[6] != '\t' &&
+            tag[6] != '\n' && tag[6] != '/') { p = tag + 6; continue; }
+        const char *gt = strchr(tag, '>');
+        if (!gt) break;
+        if (in_noscript_block(html, tag)) { p = gt + 1; continue; }
+        const char *close = strcasestr_local(gt, "</style>");
+        if (!close) break;
+        const char *body = gt + 1;
+        if (close > body) fwrite(body, 1, (size_t)(close - body), css_out);
+        fputc('\n', css_out);
+        p = close + 8;
+    }
+    int n_link = 0;
+    p = html;
+    while (p && *p && n_link < 4) {
+        const char *tag = strcasestr_local(p, "<link");
+        if (!tag) break;
+        if (tag[5] != '>' && tag[5] != ' ' && tag[5] != '\t' &&
+            tag[5] != '\n' && tag[5] != '/') { p = tag + 5; continue; }
+        const char *gt = strchr(tag, '>');
+        if (!gt) break;
+        const char *rel = strcasestr_local(tag, "rel=");
+        if (!(rel && rel < gt)) { p = gt + 1; continue; }
+        {
+            const char *v = rel + 4;
+            char q = 0;
+            if (*v == '"' || *v == '\'') { q = *v; v++; }
+            const char *vend = v;
+            if (q) { while (*vend && *vend != q) vend++; }
+            else { while (*vend && !isspace((unsigned char)*vend) && *vend != '>') vend++; }
+            char rv[64];
+            size_t rn = (size_t)(vend - v);
+            if (rn >= sizeof(rv)) rn = sizeof(rv) - 1;
+            memcpy(rv, v, rn);
+            rv[rn] = 0;
+            int is_sh = 0;
+            const char *w = rv;
+            while (*w && !is_sh) {
+                const char *ww = w;
+                while (*w && !isspace((unsigned char)*w)) w++;
+                if ((size_t)(w - ww) == 10 && strncasecmp(ww, "stylesheet", 10) == 0)
+                    is_sh = 1;
+                while (*w && isspace((unsigned char)*w)) w++;
+            }
+            if (!is_sh) { p = gt + 1; continue; }
+        }
+        const char *href = strcasestr_local(tag, "href=");
+        if (!(href && href < gt)) { p = gt + 1; continue; }
+        const char *v = href + 5;
+        char q = 0;
+        if (*v == '"' || *v == '\'') { q = *v; v++; }
+        const char *vend = v;
+        if (q) { while (*vend && *vend != q) vend++; }
+        else { while (*vend && !isspace((unsigned char)*vend) && *vend != '>') vend++; }
+        char hs[PATH_BUF];
+        size_t hn = (size_t)(vend - v);
+        if (hn >= sizeof(hs)) hn = sizeof(hs) - 1;
+        memcpy(hs, v, hn);
+        hs[hn] = 0;
+        html_decode_entities(hs);
+        if (hs[0] && strncasecmp(hs, "data:", 5) != 0) {
+            char resolved[PATH_BUF], ext[PATH_BUF];
+            resolve_url(page_url, hs, resolved, sizeof(resolved));
+            snprintf(ext, sizeof(ext), "%s.ext%d.css", g_js_style_path, n_link);
+            if (curl_url_to_file(resolved, ext)) {
+                FILE *ef = fopen(ext, "r");
+                if (ef) {
+                    char buf[4096];
+                    size_t r;
+                    fputc('\n', css_out);
+                    while ((r = fread(buf, 1, sizeof(buf), ef)) > 0)
+                        fwrite(buf, 1, r, css_out);
+                    fputc('\n', css_out);
+                    fclose(ef);
+                    n_link++;
+                }
+            }
+        }
+        p = gt + 1;
+    }
+}
+
 /* ---- NB-JS persistent worker lifecycle (worker plan §2B) ----
  * Step 2: the manager can spawn / LOAD / QUIT the resident worker, but
  * the page still renders through the existing one-shot eval + static
@@ -854,6 +946,7 @@ static int g_worker_fd = -1;
 static pid_t g_worker_pid = -1;
 static char g_worker_render[65536];   /* step 4: last RENDER rows, or "" */
 static char g_worker_err_path[PATH_BUF];  /* hygiene: worker stderr log */
+static char g_console_path[PATH_BUF];     /* devtools console capture (NBW_CONSOLE) */
 static long g_werr_tail = 0;              /* bytes of that log already surfaced */
 
 /* rung-6 slice 2: the worker's pending NAV request, captured from a NAV
@@ -1142,6 +1235,13 @@ static void worker_spawn(void) {
         setenv("NB_LOCALSTORAGE_FILE", jar, 1);
         snprintf(jar, sizeof(jar), "%s/#.desktop/nb_curl_cookies.txt", g_house);
         setenv("NB_CURL_COOKIES_FILE", jar, 1);
+        /* devtools console EVAL: the worker streams console.* lines (and
+         * the eval> result lines) into this capture file; the projection
+         * renders its tail into the [console] panel. Append-mode on the
+         * worker side keeps history across respawns. */
+        char con[PATH_BUF];
+        snprintf(con, sizeof(con), "%s/#.desktop/network_browser_console.txt", g_house);
+        setenv("NBW_CONSOLE", con, 1);
         execl(g_js_worker_path, g_js_worker_path, (char *)NULL);
         _exit(127);
     }
@@ -1154,13 +1254,15 @@ static void worker_spawn(void) {
 /* Ask the worker to run a page. Reads the optional RENDER frame (step 4)
  * into g_worker_render[] then the STATUS frame. Returns 1 on "STATUS ok". */
 static int worker_load(const char *js_path, const char *dom_path,
-                       const char *href, const char *title) {
+                       const char *href, const char *title,
+                       const char *css_path) {
     worker_spawn();
     if (g_worker_fd < 0) return 0;
     char payload[8192];
-    int n = snprintf(payload, sizeof(payload), "LOAD\n%s\n%s\n%s\n%s",
+    int n = snprintf(payload, sizeof(payload), "LOAD\n%s\n%s\n%s\n%s\n%s",
                      js_path ? js_path : "", dom_path ? dom_path : "",
-                     href ? href : "", title ? title : "");
+                     href ? href : "", title ? title : "",
+                     css_path ? css_path : "");
     if (!worker_send(payload, (size_t)n)) { worker_close(); return 0; }
 
     g_worker_render[0] = 0;
@@ -1214,6 +1316,62 @@ static int worker_load(const char *js_path, const char *dom_path,
     }
 }
 
+/* devtools console EVAL: run <js> against the resident page heap. The
+ * worker echoes source/result into the NBW_CONSOLE capture (the manager's
+ * write_ui_projection renders its tail into the [console] panel), re-emits
+ * RENDER rows (overlaid onto page.state.txt via merge_render_rows) and
+ * stashes any NAV the snippet triggered (consumed next main-loop tick,
+ * same as a page-triggered NAV). Returns 1 on "STATUS ok". */
+static int worker_eval(const char *js) {
+    worker_spawn();
+    if (g_worker_fd < 0) { publish_status("error: no worker"); return 0; }
+    char payload[8192];
+    int n = snprintf(payload, sizeof(payload), "EVAL\n%s", js ? js : "");
+    if (!worker_send(payload, (size_t)n)) { worker_close(); return 0; }
+
+    char resp[65536];
+    for (;;) {
+        if (!worker_recv_line(resp, sizeof(resp))) { worker_close(); return 0; }
+        if (strncmp(resp, "RENDER\n", 7) == 0) {
+            size_t rn = strlen(resp + 7);
+            if (rn + 1 < sizeof(g_worker_render))
+                memcpy(g_worker_render, resp + 7, rn + 1);
+            continue;   /* wait for STATUS next */
+        }
+        if (strncmp(resp, "NAV\n", 4) == 0) {
+            char *f1 = resp + 4;
+            char *n1 = strchr(f1, '\n');
+            if (n1) {
+                size_t l = (size_t)(n1 - f1);
+                if (l >= sizeof(g_pending_nav_kind)) l = sizeof(g_pending_nav_kind) - 1;
+                memcpy(g_pending_nav_kind, f1, l);
+                g_pending_nav_kind[l] = 0;
+                if (n1[1]) {
+                    char v[PATH_BUF];
+                    size_t vl = strlen(n1 + 1);
+                    if (vl >= sizeof(v)) vl = sizeof(v) - 1;
+                    memcpy(v, n1 + 1, vl);
+                    v[vl] = 0;
+                    char *nl = strchr(v, '\n');
+                    if (nl) *nl = 0;
+                    if (strcmp(g_pending_nav_kind, "BACK") == 0 ||
+                        strcmp(g_pending_nav_kind, "FORWARD") == 0) {
+                        g_pending_nav_count = atoi(v);
+                    } else {
+                        snprintf(g_pending_nav_url, sizeof(g_pending_nav_url), "%s", v);
+                    }
+                }
+            }
+            continue;
+        }
+        if (strncmp(resp, "ERROR|", 6) == 0) {
+            fprintf(stderr, "[worker] %s\n", resp);
+            continue;
+        }
+        return strncmp(resp, "STATUS ok", 9) == 0;
+    }
+}
+
 static void worker_quit(void) {
     if (g_worker_fd >= 0) {
         worker_send("QUIT", 4);
@@ -1234,12 +1392,20 @@ static void run_page_scripts(const char *html, const char *url, const char *titl
     fclose(js);
     if (n <= 0) return;
 
+    /* rung 7: ship the page's CSS to the worker (empty file = no rules,
+     * the worker's nb_css_parse degrades gracefully). */
+    FILE *sf = fopen(g_js_style_path, "w");
+    if (sf) {
+        collect_styles(html, url, sf);
+        fclose(sf);
+    }
+
     /* NB-JS worker authoritative: LOAD the page into the resident worker
      * and, when it reports RENDER rows, overlay them onto page.state.txt
      * (document.title=, el.textContent=, appendChild, ...). The legacy
      * one-shot nb_js_eval effects path is gone — the worker is the single
      * DOM writer. A worker that fails leaves the static DOM in place. */
-    worker_load(g_js_script_path, g_tmp_dom_path, url, title);
+    worker_load(g_js_script_path, g_tmp_dom_path, url, title, g_js_style_path);
     (void)merge_render_rows();
 }
 
@@ -1535,6 +1701,60 @@ static void tab_after_fetch_ok(const char *url) {
     }
 }
 
+/* REAL FIX 2026-09-13, direct live report: "making new tab in network
+ * populated search bar with same old address... cant we make sure it
+ * populates blank? or populates with the address of last page in
+ * event of loading history." Root cause, found live while testing
+ * h-ai-lab's own cli_io fix: write_ui_projection()'s addr_label
+ * always DOES carry the right value (blank on tab_new, the real
+ * stored URL on tab_switch/history) - the manager's own tab state was
+ * never wrong. But khtpm_core_render.c's kh_cli_io_reload() restores
+ * a cli_io's input_buffer from <package_dir>/cli_io_state.txt
+ * UNCONDITIONALLY on every reparse, keyed by target_id ("address"
+ * here) - overwriting content="${addr_label}"'s seed with whatever
+ * was last MANUALLY TYPED, forever, for the life of that file. Once
+ * a human ever types a URL by hand, every future tab_new()/
+ * tab_switch() keeps showing that same stale typed value, regardless
+ * of what addr_label says, since the renderer's own restore always
+ * runs after the seed and always wins. Real fix: the manager
+ * proactively keeps cli_io_state.txt's own "address" key in sync with
+ * g_current_url at the exact two real moments it changes for a
+ * reason OTHER than the user typing (new tab, tab switch) - same
+ * read-modify-write shape khtpm_core_render.c's own
+ * default_cli_io_save() already uses for this exact file, so this
+ * isn't a new convention, it's applying the existing one from the
+ * other real writer's side. Typing a URL in the SAME tab needs no
+ * sync call - the renderer's own per-keystroke save already keeps
+ * that path consistent. */
+static void sync_address_cli_io_state(const char *url) {
+    if (!g_package_dir[0]) return;
+    char path[PATH_BUF], tmp[PATH_BUF];
+    snprintf(path, sizeof(path), "%s/cli_io_state.txt", g_package_dir);
+    snprintf(tmp, sizeof(tmp), "%s.tmp", path);
+    char lines[64][PATH_BUF];
+    int n = 0;
+    FILE *f = fopen(path, "r");
+    if (f) {
+        char line[PATH_BUF];
+        while (n < 64 && fgets(line, sizeof(line), f)) {
+            line[strcspn(line, "\r\n")] = '\0';
+            char *eq = strchr(line, '=');
+            if (!eq) continue;
+            *eq = '\0';
+            if (strcmp(line, "address") == 0) continue; /* real value replaced below */
+            snprintf(lines[n], sizeof(lines[n]), "%s=%s", line, eq + 1);
+            n++;
+        }
+        fclose(f);
+    }
+    FILE *w = fopen(tmp, "w");
+    if (!w) return;
+    for (int i = 0; i < n; i++) fprintf(w, "%s\n", lines[i]);
+    fprintf(w, "address=%s\n", url ? url : "");
+    fclose(w);
+    rename(tmp, path);
+}
+
 static void tab_switch(int n) {
     if (n < 0 || n >= g_tab_count) {
         publish_status("error: no such tab");
@@ -1547,6 +1767,7 @@ static void tab_switch(int n) {
     if (!tab_load_snapshot(n)) {
         if (g_tabs[n].url[0]) {
             do_fetch(g_tabs[n].url, 0);
+            sync_address_cli_io_state(g_current_url);
             return;
         }
         write_blank_page_state();
@@ -1555,6 +1776,7 @@ static void tab_switch(int n) {
     } else {
         publish_status("ready");
     }
+    sync_address_cli_io_state(g_current_url);
     write_chtpm_projection();
 }
 
@@ -1572,6 +1794,7 @@ static void tab_new(void) {
     g_tab_current = n;
     write_blank_page_state();
     g_current_url[0] = 0;
+    sync_address_cli_io_state(g_current_url);
     tab_save_snapshot(n);
     tabs_write();
     publish_status("idle");
@@ -1598,6 +1821,7 @@ static void tab_close_current(void) {
     if (!tab_load_snapshot(g_tab_current)) {
         if (g_tabs[g_tab_current].url[0]) {
             do_fetch(g_tabs[g_tab_current].url, 0);
+            sync_address_cli_io_state(g_current_url);
             return;
         }
         write_blank_page_state();
@@ -1606,6 +1830,7 @@ static void tab_close_current(void) {
     } else {
         publish_status("ready");
     }
+    sync_address_cli_io_state(g_current_url);
     write_chtpm_projection();
 }
 
@@ -1719,6 +1944,45 @@ static void bookmark_add(const char *url, const char *title) {
     tbuf[j] = 0;
     fprintf(f, "BOOKMARK | %s | %s\n", tbuf[0] ? tbuf : url, url);
     fclose(f);
+}
+
+/* REAL, NEW 2026-09-11, direct live report ("history nav buttons were
+ * supposed to delete on backspace, and have delete all"). g_visit_log_
+ * path is a plain append-only, newest-LAST file; write_ui_projection()'s
+ * own history block (real header comment right where h_%d_del_action
+ * is published) walks it backwards to show newest-first at display
+ * index 0 - `display_idx` here is that SAME index, translated back to
+ * the real file line index the same way that loop does
+ * (`hi = hn - 1 - display_idx`), so the entry actually removed is
+ * exactly the one the user saw and backspaced. Read-all/skip-one/
+ * rewrite-all, same real shape every other small state file in this
+ * house uses for a delete (no temp-file atomicity here on purpose -
+ * this file is already rewritten wholesale on every real edit
+ * elsewhere in this codebase, e.g. default_cli_io_save()). */
+static void history_delete_at(int display_idx) {
+    if (display_idx < 0) return;
+    char lines[256][PATH_BUF];
+    int hn = 0;
+    FILE *f = fopen(g_visit_log_path, "r");
+    if (!f) return;
+    while (hn < 256 && fgets(lines[hn], PATH_BUF, f)) {
+        size_t L = strlen(lines[hn]);
+        while (L > 0 && (lines[hn][L-1] == '\n' || lines[hn][L-1] == '\r')) lines[hn][--L] = 0;
+        if (lines[hn][0]) hn++;
+    }
+    fclose(f);
+    int hi = hn - 1 - display_idx;
+    if (hi < 0 || hi >= hn) return; /* stale index (a concurrent visit shifted it) - safe no-op, not a crash */
+    FILE *w = fopen(g_visit_log_path, "w");
+    if (!w) return;
+    for (int i = 0; i < hn; i++) if (i != hi) fprintf(w, "%s\n", lines[i]);
+    fclose(w);
+}
+
+/* "delete all" - direct request, same turn as history_delete_at() above. */
+static void history_clear_all(void) {
+    FILE *w = fopen(g_visit_log_path, "w");
+    if (w) fclose(w);
 }
 
 static void load_page_title(char *out, size_t outsz) {
@@ -2059,7 +2323,16 @@ static void handle_request(void) {
     FILE *cf = fopen(g_request_path, "w");
     if (cf) fclose(cf);
 
-    if (strncmp(line, "go:", 3) == 0) {
+    /* devtools console EVAL: the address bar writes "go:<typed>", so a
+     * typed "eval:<js>" arrives as "go:eval:<js>" here (nb_write_go.sh
+     * keeps the go: prefix). Must be matched BEFORE the generic go: branch. */
+    if (strncmp(line, "go:eval:", 8) == 0) {
+        publish_status(worker_eval(line + 8) ? "ready" : "eval error");
+        (void)merge_render_rows();
+    } else if (strncmp(line, "eval:", 5) == 0) {
+        publish_status(worker_eval(line + 5) ? "ready" : "eval error");
+        (void)merge_render_rows();
+    } else if (strncmp(line, "go:", 3) == 0) {
         stack_clear(g_forward_path);
         do_fetch(line + 3, 1);
     } else if (strcmp(line, "back:") == 0 || strcmp(line, "back") == 0) {
@@ -2084,6 +2357,10 @@ static void handle_request(void) {
         load_page_title(title, sizeof(title));
         if (g_current_url[0]) { bookmark_add(g_current_url, title); publish_status("ready"); }
         else publish_status("error: nothing to bookmark");
+    } else if (strncmp(line, "delhist:", 8) == 0) {
+        history_delete_at(atoi(line + 8));
+    } else if (strcmp(line, "clearhist:") == 0 || strcmp(line, "clearhist") == 0) {
+        history_clear_all();
     } else if (strncmp(line, "tab:", 4) == 0) {
         tab_switch(atoi(line + 4));
     } else if (strcmp(line, "newtab:") == 0 || strcmp(line, "newtab") == 0) {
@@ -2483,6 +2760,30 @@ static void uisan(const char *in, char *out, size_t outsz) {
     }
     out[o] = '\0';
 }
+
+/* devtools console: keep the NBW_CONSOLE capture file bounded. Trims to the
+ * last <maxbytes> at a line boundary; called from write_ui_projection so the
+ * projection loop itself enforces the cap without the worker knowing. */
+static void trim_tail_file(const char *path, size_t maxbytes) {
+    struct stat st;
+    if (!path || stat(path, &st) != 0 || (size_t)st.st_size <= maxbytes) return;
+    FILE *in = fopen(path, "r");
+    if (!in) return;
+    long skip = (long)(st.st_size - (long)maxbytes);
+    if (fseek(in, skip, SEEK_SET) != 0) { fclose(in); return; }
+    int c;
+    while ((c = fgetc(in)) != EOF && c != '\n') {}   /* align to a line start */
+    char tmp[PATH_BUF];
+    snprintf(tmp, sizeof(tmp), "%s.trim", path);
+    FILE *out = fopen(tmp, "w");
+    if (!out) { fclose(in); return; }
+    char buf[8192];
+    size_t n;
+    while ((n = fread(buf, 1, sizeof(buf), in)) > 0) fwrite(buf, 1, n, out);
+    fclose(in); fclose(out);
+    rename(tmp, path);
+}
+
 static void write_ui_projection(void) {
     char *buf = malloc(262144);
     if (!buf) return;
@@ -2503,6 +2804,25 @@ static void write_ui_projection(void) {
     UI_PUT("act_newtab='%s/ops/nb_write_newtab.sh' 'newtab'\n", g_package_dir);
     UI_PUT("act_go='%s/ops/nb_write_go.sh' 'go' '%s'\n", g_package_dir, g_ui_output_path);
 
+    /* REVERTED 2026-09-11, direct instruction ("its echoing them twice
+     * ... just treat this pipeline same as the other cli-io's clear on
+     * new, 1 render only"). The 2026-09-11 fix just above this (now
+     * removed) echoed cli_io_state.txt's own live-typed address= back
+     * as addr_label, to fight the OLD destroy-and-rebuild reparse
+     * wiping input_buffer on every tick. That's now unnecessary AND
+     * actively harmful: khtpm_core_render.c's reparse_chtpm_if_changed()
+     * (CHTPM-INCREMENTAL-REPARSE-DESIGN.md, live for every window as of
+     * this same session) already preserves a cli_io's input_buffer
+     * across reparse by never destroying the Elem in the first place -
+     * no manager-side echo needed at all. Having BOTH the renderer's
+     * own live-typed input_buffer AND the manager re-injecting the same
+     * text via label= is two sources of truth for one field - the real
+     * cause of the reported double-echo. Every other cli_io in the
+     * house (open-hai's composer, chat-hai's, text-edit-hq's editor)
+     * has a STATIC label/content, never manager-projected once armed -
+     * this now matches that same one-source-of-truth shape: addr_label
+     * is purely the loaded page's URL, exactly like it was before any
+     * of this session's cli_io investigation started. */
     {
         char shown[PATH_BUF], s[PATH_BUF];
         snprintf(shown, sizeof(shown), "%s", g_current_url[0] ? g_current_url : "URL: ");
@@ -2573,10 +2893,25 @@ static void write_ui_projection(void) {
             shell_escape_squote(hlines[hi], url_sq, sizeof(url_sq));
             UI_PUT("h_%d_label=%s\n", shown, lab_s);
             UI_PUT("h_%d_action='%s/ops/nb_write_go.sh' 'go' '%s'\n", shown, g_package_dir, url_sq);
+            /* REAL, NEW 2026-09-11, direct live report ("history nav
+             * buttons were supposed to delete on backspace, and have
+             * delete all") - same real, generic backspace_action
+             * capability every other deletable list row in the house
+             * uses (open-hai's own session rows: "id like to add
+             * backspace to delete... instead of making all those
+             * delete spots"). Indexed by the DISPLAY position (shown,
+             * 0=newest) - history_delete_at() below does the newest-
+             * first-to-file-line-index translation, matching exactly
+             * how this same loop walks hlines[] backwards to build
+             * that same display order. */
+            UI_PUT("h_%d_del_action='%s/ops/nb_write_delhist.sh' 'delhist' '%d'\n", shown, g_package_dir, shown);
             shown++;
         }
         UI_PUT("n_hist=%d\n", shown);
         UI_PUT("no_hist=%d\n", shown == 0 ? 1 : 0);
+        /* "delete all" - direct request, same turn as backspace-to-
+         * delete above. */
+        UI_PUT("clear_hist_action='%s/ops/nb_write_clearhist.sh' 'clearhist'\n", g_package_dir);
     }
 
     /* tab strip */
@@ -2668,6 +3003,40 @@ static void write_ui_projection(void) {
         UI_PUT("empty_msg=Ready - enter a URL above\n");
     }
 
+    /* devtools console - the worker's NBW_CONSOLE capture tail (console.*
+     * lines + eval: source/result echoes). Ring of the last 200 lines. */
+    {
+        if (g_console_path[0]) trim_tail_file(g_console_path, 262144);
+        char *clines[200];
+        int ci = 0;
+        FILE *cf = g_console_path[0] ? fopen(g_console_path, "r") : NULL;
+        if (cf) {
+            char line[1400];
+            while (fgets(line, sizeof(line), cf)) {
+                size_t L = strlen(line);
+                while (L > 0 && (line[L-1] == '\n' || line[L-1] == '\r')) line[--L] = 0;
+                if (!line[0]) continue;
+                char *d = strdup(line);
+                if (!d) continue;
+                if (ci == 200) {           /* drop oldest, keep last 199 */
+                    free(clines[0]);
+                    memmove(clines, clines + 1, sizeof(char *) * 199);
+                    ci = 199;
+                }
+                clines[ci++] = d;
+            }
+            fclose(cf);
+        }
+        for (int i = 0; i < ci; i++) {
+            char s[1500];
+            uisan(clines[i], s, sizeof(s));
+            UI_PUT("con_%d_text=%s\n", i, s);
+            free(clines[i]);
+        }
+        UI_PUT("n_console=%d\n", ci);
+        UI_PUT("no_console=%d\n", ci == 0 ? 1 : 0);
+    }
+
 #undef UI_PUT
     static char *g_last_ui = NULL;
     if (g_last_ui && strcmp(g_last_ui, buf) == 0) { free(buf); return; }
@@ -2721,6 +3090,7 @@ int main(int argc, char **argv) {
     path_join(g_visit_log_path, sizeof(g_visit_log_path), desktop, "network_browser_history.log.txt");
     path_join(g_bookmark_path, sizeof(g_bookmark_path), desktop, "network_browser_bookmarks.txt");
     path_join(g_worker_err_path, sizeof(g_worker_err_path), desktop, "network_browser_worker.err.log");
+    path_join(g_console_path, sizeof(g_console_path), desktop, "network_browser_console.txt");
     {
         char lockpath[PATH_BUF];
         path_join(lockpath, sizeof(lockpath), desktop, "network_browser_manager.lock");
@@ -2752,6 +3122,7 @@ int main(int argc, char **argv) {
     path_join(g_curl_cookie_path, sizeof(g_curl_cookie_path), desktop, "nb_curl_cookies.txt");
     path_join(g_fetch_pid_path, sizeof(g_fetch_pid_path), tmpdir, "fetch.pid");
     path_join(g_js_script_path, sizeof(g_js_script_path), tmpdir, "page.js");
+    path_join(g_js_style_path, sizeof(g_js_style_path), tmpdir, "style.css");
     snprintf(g_js_worker_path, sizeof(g_js_worker_path), "%s/ops/+x/nb_js_worker.+x", g_package_dir);
     snprintf(g_media_op_path, sizeof(g_media_op_path), "%s/ops/+x/nb_media_to_sprite.+x", g_package_dir);
     path_join(g_media_root, sizeof(g_media_root), desktop, "nb_sprites");

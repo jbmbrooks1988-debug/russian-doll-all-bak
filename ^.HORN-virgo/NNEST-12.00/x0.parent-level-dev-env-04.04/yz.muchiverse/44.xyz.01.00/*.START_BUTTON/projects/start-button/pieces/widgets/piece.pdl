@@ -3,26 +3,5 @@ SECTION      | KEY                | VALUE
 META         | piece_id           | widgets
 META         | version            | 1.0
 
-METHOD       | _shared-lib | RUN:widgets:_shared-lib
-METHOD       | board-viewer | RUN:widgets:board-viewer
-METHOD       | bookmarks | RUN:widgets:bookmarks
-METHOD       | canvas-craft | RUN:widgets:canvas-craft
-METHOD       | context-menu | RUN:widgets:context-menu
-METHOD       | db-hq | RUN:widgets:db-hq
-METHOD       | db-hq-actors-pal | RUN:widgets:db-hq-actors-pal
-METHOD       | event-editor | RUN:widgets:event-editor
-METHOD       | event-ez | RUN:widgets:event-ez
-METHOD       | events-hq | RUN:widgets:events-hq
-METHOD       | file-explorer | RUN:widgets:file-explorer
-METHOD       | file-menu | RUN:widgets:file-menu
-METHOD       | livedesk-clock | RUN:widgets:livedesk-clock
-METHOD       | map-picker | RUN:widgets:map-picker
-METHOD       | open-hai | RUN:widgets:open-hai
-METHOD       | palettes | RUN:widgets:palettes
-METHOD       | proc-monitor | RUN:widgets:proc-monitor
-METHOD       | taskbar-settings | RUN:widgets:taskbar-settings
-METHOD       | tile-picker | RUN:widgets:tile-picker
-METHOD       | vvarware-report | RUN:widgets:vvarware-report
-METHOD       | yahoo-broker | RUN:widgets:yahoo-broker
-METHOD       | yahoo-chart | RUN:widgets:yahoo-chart
+METHOD       | (empty)                  | NOOP
 METHOD       | Refresh list             | REFRESH

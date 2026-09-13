@@ -36,7 +36,7 @@ window { background-color: #141414; font-family: Ubuntu; font-size: 10px; }
   border: 1px solid #3a3a3a; border-width: 1; }
 
 .pchq-menu-row { background-color: #1c1c1c; color: #cccccc; font-weight: bold;
-  width: 96px; height: 20px; font-size: 10px; padding: 2px;
+  width: 200px; height: 20px; font-size: 10px; padding: 2px;
   border: 1px solid #333333; border-width: 1; }
 .pchq-menu-active { background-color: #2f5f8f; color: #ffffff; }
 

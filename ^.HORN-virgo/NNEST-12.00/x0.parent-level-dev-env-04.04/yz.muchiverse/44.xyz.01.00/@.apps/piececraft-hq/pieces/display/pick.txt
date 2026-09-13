@@ -1,8 +1,8 @@
 sel_x=8
-sel_y=8
-sel_z=20
-kind=air
+sel_y=10
+sel_z=16
+kind=voxel
 id=
 template=
-glyph=
-asset_hex=
+glyph=,
+asset_hex=1F33F

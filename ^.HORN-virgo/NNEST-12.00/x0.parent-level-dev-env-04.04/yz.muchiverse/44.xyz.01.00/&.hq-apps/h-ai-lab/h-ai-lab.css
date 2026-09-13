@@ -1,0 +1,63 @@
+/* h-ai-lab.css - sibling .css for h-ai-lab.xhtpm, auto-merged by the
+   shared renderer (same stem). Colour/border only - the generic
+   layout engine owns geometry. Mirrors the house -hq look
+   (proc-mon.css/stats-hq-pal.css). */
+
+.settings-block {
+  background-color: #181818;
+  border: 1px solid #2a2a2a;
+}
+
+.block-title {
+  color: #e8e8e8;
+}
+
+.quiet {
+  color: #8a8a8a;
+}
+
+.btn {
+  background-color: #232323;
+  border: 1px solid #3a3a3a;
+  color: #dddddd;
+}
+
+.btn.active {
+  background-color: #2f5f8f;
+  color: #ffffff;
+}
+
+.inst-row {
+  background-color: #1e1e1e;
+  border: 1px solid #333333;
+  color: #dddddd;
+}
+
+.inst-row.selected1 {
+  background-color: #2f5f8f;
+  border-color: #4a7fb5;
+  color: #ffffff;
+}
+
+.detail-view {
+  background-color: #101010;
+  border: 1px solid #2a2a2a;
+  color: #cfcfcf;
+}
+
+/* H-AI-LAB-DESIGN.md Part 6: real "scratch block" per FSM state -
+   same visual family as events-hq's own real Scratch block view
+   (bordered, labeled), tinted the same amber as proc-mon's
+   other-session rows so it reads as "real data, distinct from a
+   plain list row" at a glance. */
+.fsm-block {
+  background-color: #23231a;
+  border: 1px solid #4a4a2a;
+  color: #d8d8b0;
+}
+
+.fsm-block.current1 {
+  background-color: #2f5f2f;
+  border-color: #5aa55a;
+  color: #eaffea;
+}

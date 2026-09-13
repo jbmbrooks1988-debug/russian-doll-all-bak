@@ -6,5 +6,3 @@ METHOD       | End Turn                            | END_TURN
 METHOD       | Eat (from inventory)                 | EAT
 METHOD       | Pick Up                             | PICKUP
 METHOD       | Drop                               | DROP
-METHOD       | View Board (opens separate GL window) | OPEN_BOARD_WIDGET
-METHOD       | View Editor (opens separate GL window) | OPEN_VIEW_EDITOR

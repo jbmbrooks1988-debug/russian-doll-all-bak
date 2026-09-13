@@ -1,6 +1,6 @@
 entity_type=xelector
-pos_x=13
-pos_y=11
+pos_x=5
+pos_y=8
 pos_z=17
 possessed_id=hero_01
 chunk_x=0

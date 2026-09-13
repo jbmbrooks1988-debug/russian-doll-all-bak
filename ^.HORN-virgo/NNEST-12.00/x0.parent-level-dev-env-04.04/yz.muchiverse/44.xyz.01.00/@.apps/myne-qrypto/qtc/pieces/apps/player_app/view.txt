@@ -1,10 +1,9 @@
 +============================================================+
-|  P A L - C H A I N   [login]                               |
+|  P A L - C H A I N   [signup]                              |
 +============================================================+
 |                                                            |
-|  Welcome to pal-chain.                                     |
-|  Log in with an existing wallet, or create a new one.      |
+|  Choose a wallet ID and password.                          |
 |                                                            |
-|  > harnesstest1785653975 balance: 0 millicones (0.000 cones|
+|  > Not yet available in this build.                        |
 |  (type digit(s), Enter to select, q to quit)               |
 +============================================================+

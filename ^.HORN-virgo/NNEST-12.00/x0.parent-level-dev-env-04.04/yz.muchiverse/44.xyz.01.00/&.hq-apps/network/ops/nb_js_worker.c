@@ -20,6 +20,7 @@
  * manager -> worker: QUIT            (shut down cleanly)
  */
 #include "nb_host.h"
+#include "../nb_css.h"
 #include "../nb_dom.h"
 
 #include <unistd.h>
@@ -43,6 +44,8 @@ static size_t g_rlen = 0;
 
 static char g_page_js[4096];
 static char g_fetch_dom[4096];
+static char g_style_css[4096];   /* rung 7: LOAD-delivered stylesheet file */
+static NbCss *g_css = NULL;      /* parsed rule cache, per LOAD */
 static char g_href[4096];
 static char g_title[512];
 
@@ -50,6 +53,13 @@ static int g_cli = 0;            /* argv mode: plain text out, no RPC framing */
 static int g_cli_status_ok = 0;  /* CLI exit-status latch set by send_status */
 static int g_nav_emit = 0;       /* rung-6 slice 2: daemon only (!g_cli, set */
                                  /* per run_page) - NAV frames go to manager */
+
+/* devtools console EVAL: the last LOAD's Duktape heap + DOM tree stay live
+ * (g_live_ctx / g_dom_root) between LOAD and EVAL, so an eval:<js> snippet
+ * runs against the real page context (document, window, globals, timer
+ * bindings) and can mutate the DOM. Tear down only at the next LOAD or on
+ * QUIT/error - see run_page() and live_teardown(). */
+static duk_context *g_live_ctx = NULL;
 
 static void send_payload(const char *payload, size_t n) {
     if (g_cli) {
@@ -484,6 +494,174 @@ static const char *const ONPROPS[] = {
     "mousedown", "mouseup", "mousemove", "focus", "blur", "load", "error",
     "resize", "scroll", "contextmenu", NULL
 };
+
+/* ---- rung 7 slice 1: CSS/layout-intent ---------------------------------
+ * The page's stylesheet text (inline <style> + linked CSS, manager-side)
+ * reaches the worker via the LOAD style file; g_css holds the parsed rule
+ * cache for this page. We model exactly: display: none, visibility:
+ * hidden/collapse, opacity, and px width/height — enough for
+ * getComputedStyle, display:none-driven hiding, and the offset/rect
+ * family to behave on real widgets. There is no real layout engine: x/y
+ * are always 0, sizes come from the CSS declaration or 0. */
+
+#define STYK "_nbsty"   /* per-wrapper style-snapshot cache key */
+
+static void push_node(duk_context *ctx, NbNode *n);
+static duk_ret_t nb_css_getprop(duk_context *ctx);
+static int css_hidden(const NbNode *n);
+
+static int css_hidden(const NbNode *n) {
+    return g_css && nb_css_hidden(g_css, n);
+}
+static duk_ret_t nb_css_getprop(duk_context *ctx);
+
+/* Push an object with the modeled computed style of `n` plus a
+ * getPropertyValue(). Missing display => "" (visible), opacity => "1". */
+static void push_computed_style(duk_context *ctx, NbNode *n) {
+    duk_push_object(ctx);
+    NbCssStyle st;
+    memset(&st, 0, sizeof(st));
+    if (n) nb_css_resolve(g_css, n, nb_attr_get(n, "style"), &st);
+    duk_push_string(ctx, st.display[0] ? st.display : "");
+    duk_put_prop_string(ctx, -2, "display");
+    duk_push_string(ctx, st.visibility);
+    duk_put_prop_string(ctx, -2, "visibility");
+    duk_push_string(ctx, st.opacity[0] ? st.opacity : "1");
+    duk_put_prop_string(ctx, -2, "opacity");
+    duk_push_number(ctx, st.width);
+    duk_put_prop_string(ctx, -2, "width");
+    duk_push_number(ctx, st.height);
+    duk_put_prop_string(ctx, -2, "height");
+    duk_push_c_function(ctx, nb_css_getprop, 1);
+    duk_put_prop_string(ctx, -2, "getPropertyValue");
+}
+
+static duk_ret_t nb_css_getprop(duk_context *ctx) {
+    const char *name = duk_get_string(ctx, 0);
+    if (!name) { duk_push_string(ctx, ""); return 1; }
+    duk_push_this(ctx);
+    if (!duk_is_object(ctx, -1) || !duk_has_prop_string(ctx, -1, name))
+        duk_get_prop_string(ctx, -1, name);          /* missing -> undefined */
+    else
+        duk_get_prop_string(ctx, -1, name);
+    duk_to_string(ctx, -1);
+    duk_remove(ctx, -2);
+    return 1;
+}
+
+/* window.getComputedStyle(el) — registered globally as `__nb_ges` by the
+ * resident worker (overriding install_host's minimal default); the host
+ * prelude's getComputedStyle delegates here. */
+static duk_ret_t nb_ges_rich(duk_context *ctx) {
+    NbNode *n = get_node(ctx, 0);
+    push_computed_style(ctx, n);
+    return 1;
+}
+
+/* el.style — identity-cached snapshot of the inline style attribute.
+ * Reads mirror the declared inline props; JS writes persist on the
+ * snapshot (browser-like authoring) but — no layout engine — do not feed
+ * the metrics below. Non-enumerable cache prop keeps it per-wrapper. */
+static duk_ret_t nb_el_style_get(duk_context *ctx) {
+    duk_push_this(ctx);
+    if (duk_has_prop_string(ctx, -1, STYK)) {
+        duk_get_prop_string(ctx, -1, STYK);
+        duk_remove(ctx, -2);
+        return 1;
+    }
+    duk_pop(ctx);
+    duk_push_object(ctx);                       /* style snapshot */
+    NbNode *n = get_this(ctx);
+    if (n) {
+        const char *attr = nb_attr_get(n, "style");
+        if (attr && *attr) {
+            const char *p = attr;
+            while (*p) {
+                while (*p && (*p == ';' || *p == ' ' || *p == '\t' || *p == '\n')) p++;
+                if (!*p) break;
+                const char *cs = p;
+                while (*p && *p != ';') p++;
+                const char *colon = memchr(cs, ':', (size_t)(p - cs));
+                if (colon && p > cs) {
+                    size_t kl = (size_t)(colon - cs);
+                    while (kl && (cs[kl - 1] == ' ' || cs[kl - 1] == '\t')) kl--;
+                    if (kl > 0 && kl < 48) {
+                        char kbuf[48];
+                        for (size_t i = 0; i < kl; i++)
+                            kbuf[i] = (char)tolower((unsigned char)cs[i]);
+                        kbuf[kl] = 0;
+                        const char *vs = colon + 1;
+                        size_t vn = (size_t)(p - vs);
+                        while (vn && (vs[vn - 1] == ' ' || vs[vn - 1] == '\t' ||
+                                      vs[vn - 1] == '\n')) vn--;
+                        char vbuf[96];
+                        size_t vv = vn < sizeof(vbuf) - 1 ? vn : sizeof(vbuf) - 1;
+                        memcpy(vbuf, vs, vv);
+                        vbuf[vv] = 0;
+                        duk_push_string(ctx, vbuf);
+                        duk_put_prop_string(ctx, -2, kbuf);
+                    }
+                }
+            }
+        }
+    }
+    duk_push_this(ctx);
+    duk_dup(ctx, -2);
+    duk_put_prop_string(ctx, -2, STYK);
+    duk_pop(ctx);
+    return 1;
+}
+
+/* offsetWidth/offsetHeight/clientWidth/clientHeight — magic 0=width,1=height.
+ * Hidden elements measure 0 (browser display:none semantics); visible
+ * elements report the modeled CSS px size, else 0 (no layout engine). */
+static duk_ret_t nb_el_offdim(duk_context *ctx) {
+    NbNode *n = get_this(ctx);
+    int which = (int)duk_get_current_magic(ctx);
+    double v = 0;
+    if (n && !css_hidden(n)) {
+        NbCssStyle st;
+        nb_css_resolve(g_css, n, nb_attr_get(n, "style"), &st);
+        v = which ? st.height : st.width;
+    }
+    duk_push_number(ctx, v);
+    return 1;
+}
+
+static duk_ret_t nb_el_offset_parent(duk_context *ctx) {
+    NbNode *n = get_this(ctx);
+    if (!n || css_hidden(n)) { duk_push_null(ctx); return 1; }
+    NbNode *p = n->parent;
+    while (p && !p->tag) p = p->parent;   /* climb past #document */
+    if (!p) { duk_push_null(ctx); return 1; }
+    push_node(ctx, p);
+    return 1;
+}
+
+static duk_ret_t nb_rect_tojson(duk_context *ctx) { return 1; } /* this is the rect */
+
+static duk_ret_t nb_el_getBoundingClientRect(duk_context *ctx) {
+    NbNode *n = get_this(ctx);
+    double w = 0, h = 0;
+    if (n && !css_hidden(n)) {
+        NbCssStyle st;
+        nb_css_resolve(g_css, n, nb_attr_get(n, "style"), &st);
+        w = st.width;
+        h = st.height;
+    }
+    duk_push_object(ctx);
+    duk_push_number(ctx, 0); duk_put_prop_string(ctx, -2, "x");
+    duk_push_number(ctx, 0); duk_put_prop_string(ctx, -2, "y");
+    duk_push_number(ctx, w); duk_put_prop_string(ctx, -2, "width");
+    duk_push_number(ctx, h); duk_put_prop_string(ctx, -2, "height");
+    duk_push_number(ctx, 0); duk_put_prop_string(ctx, -2, "top");
+    duk_push_number(ctx, w); duk_put_prop_string(ctx, -2, "right");
+    duk_push_number(ctx, h); duk_put_prop_string(ctx, -2, "bottom");
+    duk_push_number(ctx, 0); duk_put_prop_string(ctx, -2, "left");
+    duk_push_c_function(ctx, nb_rect_tojson, 0);
+    duk_put_prop_string(ctx, -2, "toJSON");
+    return 1;
+}
 
 static void push_node(duk_context *ctx, NbNode *n);
 static duk_ret_t nb_el_addEventListener(duk_context *ctx);
@@ -1090,11 +1268,36 @@ static void push_node(duk_context *ctx, NbNode *n) {
     duk_push_c_function(ctx, nb_el_innerHTML_set, 1);
     duk_def_prop(ctx, -4, DUK_DEFPROP_HAVE_GETTER | DUK_DEFPROP_HAVE_SETTER | DUK_DEFPROP_ENUMERABLE);
 
-    /* rung-2 remainder: el.style — a plain per-node object (wrappers are
-     * identity-cached, so mutations persist). Style never reaches the
-     * render path (roadmap §2: store on a per-node map; no layout). */
-    duk_push_object(ctx);
-    duk_put_prop_string(ctx, -2, "style");
+    /* rung-2 remainder + rung 7: el.style — identity-cached snapshot of
+     * the inline style attribute (reads mirror inline decls; JS writes
+     * persist on the snapshot; not fed back into layout metrics). */
+    duk_push_string(ctx, "style");
+    duk_push_c_function(ctx, nb_el_style_get, 0);
+    duk_def_prop(ctx, -3, DUK_DEFPROP_HAVE_GETTER | DUK_DEFPROP_ENUMERABLE);
+
+    /* rung 7: layout-intent metrics (display:none-aware, CSS px from the
+     * cascade, else 0 — see NB-JS-ENGINE-ROADMAP rung 7). */
+    duk_push_string(ctx, "offsetWidth");
+    duk_push_c_function(ctx, nb_el_offdim, 0);
+    duk_set_magic(ctx, -1, 0);
+    duk_def_prop(ctx, -3, DUK_DEFPROP_HAVE_GETTER | DUK_DEFPROP_ENUMERABLE);
+    duk_push_string(ctx, "offsetHeight");
+    duk_push_c_function(ctx, nb_el_offdim, 0);
+    duk_set_magic(ctx, -1, 1);
+    duk_def_prop(ctx, -3, DUK_DEFPROP_HAVE_GETTER | DUK_DEFPROP_ENUMERABLE);
+    duk_push_string(ctx, "clientWidth");
+    duk_push_c_function(ctx, nb_el_offdim, 0);
+    duk_set_magic(ctx, -1, 0);
+    duk_def_prop(ctx, -3, DUK_DEFPROP_HAVE_GETTER | DUK_DEFPROP_ENUMERABLE);
+    duk_push_string(ctx, "clientHeight");
+    duk_push_c_function(ctx, nb_el_offdim, 0);
+    duk_set_magic(ctx, -1, 1);
+    duk_def_prop(ctx, -3, DUK_DEFPROP_HAVE_GETTER | DUK_DEFPROP_ENUMERABLE);
+    duk_push_string(ctx, "offsetParent");
+    duk_push_c_function(ctx, nb_el_offset_parent, 0);
+    duk_def_prop(ctx, -3, DUK_DEFPROP_HAVE_GETTER | DUK_DEFPROP_ENUMERABLE);
+    duk_push_c_function(ctx, nb_el_getBoundingClientRect, 0);
+    duk_put_prop_string(ctx, -2, "getBoundingClientRect");
 
     /* rung-2 remainder: el.value get/set for form fields. */
     if (is_form_field(n->tag)) {
@@ -2476,6 +2679,20 @@ static void dom_teardown(void) {
     }
     nb_node_free(g_dom_root);
     g_dom_root = NULL;
+    nb_css_free(g_css);
+    g_css = NULL;
+}
+
+/* devtools console EVAL: tear down everything a previous LOAD left live
+ * (resident Duktape heap + its DOM tree). run_page() keeps those alive on
+ * the success path so an eval:<js> snippet can run against the page; this
+ * helper is the disciplined cleanup for the next LOAD, errors and QUIT. */
+static void live_teardown(void) {
+    if (g_live_ctx) {
+        duk_destroy_heap(g_live_ctx);
+        g_live_ctx = NULL;
+    }
+    dom_teardown();
 }
 
 /* phase-2 (2026-09-09): document-order script runs. The manager writes one
@@ -2545,8 +2762,13 @@ static void run_page(void) {
     /* rung-6: sessionStorage is per-LOAD — fresh session for this page. */
     g_ss_count = 0;
 
+    /* devtools console EVAL: a previous LOAD may still have its resident
+     * heap + DOM alive; tear it down before building this page. */
+    live_teardown();
+
     g_dom_root = NULL;
     g_orphans = NULL;
+    g_css = NULL;
     node_index_reset();
 
     /* build the DOM tree from the manager's fetch.dom (if present) */
@@ -2562,9 +2784,28 @@ static void run_page(void) {
         g_dom_root = nb_parse_html(empty_html, sizeof(empty_html) - 1);
     }
 
+    /* rung 7: parse the LOAD-delivered stylesheet into a rule cache.
+     * nb_css_parse accepts empty files (nr==0), so no special casing
+     * needed when there are no inline <style> blocks. */
+    if (g_style_css[0]) {
+        char *sc = NULL; size_t sn = 0;
+        if (read_file(g_style_css, &sc, &sn)) {
+            g_css = nb_css_parse(sc, sn);
+            free(sc);
+        }
+    }
+
     duk_context *ctx = duk_create_heap(NULL, NULL, NULL, NULL, fatal_handler);
-    if (!ctx) { dom_teardown(); send_status("STATUS err:heap"); return; }
+    if (!ctx) { live_teardown(); send_status("STATUS err:heap"); return; }
+    g_live_ctx = ctx;   /* resident from here on — kept alive for EVAL */
     install_host(ctx);
+
+    /* rung 7: the resident worker's CSS resolve wins over install_host's
+     * minimal __nb_ges default (the prelude reads __nb_ges at call time). */
+    duk_push_global_object(ctx);
+    duk_push_c_function(ctx, nb_ges_rich, 1);
+    duk_put_prop_string(ctx, -2, "__nb_ges");
+    duk_pop(ctx);
 
     /* rung-6 prelude: swallow its own failure, page continues */
     if (peval_budget(ctx, g_js_prelude) != 0) duk_pop(ctx);
@@ -2575,13 +2816,11 @@ static void run_page(void) {
     char *src = NULL;
     size_t src_n = 0;
     if (!read_file(g_page_js, &src, &src_n)) {
-        duk_destroy_heap(ctx);
-        free(src);
-        dom_teardown();
         send_status("STATUS err:cannot read page.js");
+        live_teardown();
         return;
     }
-    if (src_n == 0) { free(src); duk_destroy_heap(ctx); dom_teardown(); send_status("STATUS ok"); return; }
+    if (src_n == 0) { free(src); send_status("STATUS ok"); return; }
 
     run_scripts_slices(ctx, src, src_n);
     free(src);
@@ -2591,12 +2830,10 @@ static void run_page(void) {
         char msg[1100];
         snprintf(msg, sizeof(msg), "STATUS err:%s",
                  g_pending_errmsg[0] ? g_pending_errmsg : "event loop error");
-        duk_destroy_heap(ctx);
-        dom_teardown();
         send_status(msg);
+        live_teardown();
         return;
     }
-    duk_destroy_heap(ctx);
 
     /* step 4: emit RENDER rows from the post-JS DOM, then STATUS. The
      * manager merges these into page.state.txt so JS mutations show. */
@@ -2641,7 +2878,65 @@ static void run_page(void) {
         }
     }
 
-    dom_teardown();
+    /* devtools console EVAL: keep the heap + DOM tree resident so an
+     * eval:<js> snippet can run against this page context (see cmd_eval);
+     * live_teardown() reclaims it at the next LOAD / QUIT / error. */
+    send_status("STATUS ok");
+}
+
+/* devtools console EVAL: run a <js> snippet against the resident page heap
+ * (g_live_ctx). Source + result (+ any console.* noise) echo to the console
+ * capture (g_out / NBW_CONSOLE); post-eval DOM rows are re-emitted so JS
+ * mutations show in the browser; an eval-triggered navigation ships a NAV
+ * frame. Budget-guarded like page scripts (peval_budget / EVAL_BUDGET_SEC). */
+static void cmd_eval(const char *js) {
+    if (!g_live_ctx) { send_status("STATUS err:no page loaded"); return; }
+    if (g_out) { fprintf(g_out, ">%s\n", js); fflush(g_out); }
+    duk_push_lstring(g_live_ctx, js, strlen(js));
+    int rc = peval_budget(g_live_ctx, NULL);
+    if (rc != 0) {
+        const char *m = duk_safe_to_string(g_live_ctx, -1);
+        char msg[1100];
+        snprintf(msg, sizeof(msg), "STATUS err:%s", m ? m : "eval error");
+        if (g_out) { fprintf(g_out, "!>%s\n", m ? m : "eval error"); fflush(g_out); }
+        duk_pop(g_live_ctx);
+        send_status(msg);
+        return;
+    }
+    const char *r = duk_safe_to_string(g_live_ctx, -1);
+    if (g_out) { fprintf(g_out, "=>%s\n", r ? r : ""); fflush(g_out); }
+    duk_pop(g_live_ctx);
+
+    /* re-emit post-eval RENDER rows so mutated DOM is reflected */
+    SB rr = {0, 0, 0};
+    dom_render_rows(&rr);
+    if (rr.s && rr.s[0]) {
+        size_t rn = strlen(rr.s);
+        if (rn < RENDER_MAX) {
+            char *pay = malloc(7 + rn + 1);
+            if (pay) {
+                memcpy(pay, "RENDER\n", 7);
+                memcpy(pay + 7, rr.s, rn);
+                pay[7 + rn] = 0;
+                send_payload(pay, 7 + rn);
+                free(pay);
+            }
+        }
+    }
+    free(rr.s);
+
+    /* an eval can navigate too (e.g. location.href = "...") */
+    if (g_nav_emit && g_nav_kind[0]) {
+        char pay[4600];
+        int pn = 0;
+        if (g_nav_kind[0] == 'B' || g_nav_kind[0] == 'F')
+            pn = snprintf(pay, sizeof(pay), "NAV\n%s\n%d\n", g_nav_kind,
+                          g_nav_count > 0 ? g_nav_count : 1);
+        else
+            pn = snprintf(pay, sizeof(pay), "NAV\n%s\n%s\n", g_nav_kind, g_nav_url);
+        if (pn > 0 && pn < (int)sizeof(pay))
+            send_payload(pay, (size_t)pn);
+    }
     send_status("STATUS ok");
 }
 
@@ -3324,7 +3619,9 @@ int main(int argc, char **argv) {
     {
         const char *nbw_out = getenv("NBW_CONSOLE");
         if (nbw_out && nbw_out[0]) {
-            g_out = fopen(nbw_out, "w");
+            /* append ("ab") — the manager keeps a live console panel across
+             * worker respawns and trims the file itself (trim_tail_file) */
+            g_out = fopen(nbw_out, "ab");
             if (g_out) setvbuf(g_out, NULL, _IOLBF, 0);   /* console capture (debug/tests) */
         }
     }
@@ -3355,14 +3652,21 @@ int main(int argc, char **argv) {
         char *f[8];           split_lines(f);
         const char *cmd = f[0] ? f[0] : "";
         if (strcmp(cmd, "QUIT") == 0) {
+            live_teardown();
             break;
         } else if (strcmp(cmd, "LOAD") == 0) {
             g_title[0] = 0; g_href[0] = 0;
+            g_style_css[0] = 0;
             if (f[1]) snprintf(g_page_js, sizeof(g_page_js), "%s", f[1]);
             if (f[2]) snprintf(g_fetch_dom, sizeof(g_fetch_dom), "%s", f[2]);
             if (f[3]) snprintf(g_href, sizeof(g_href), "%s", f[3]);
             if (f[4]) snprintf(g_title, sizeof(g_title), "%s", f[4]);
+            if (f[5]) snprintf(g_style_css, sizeof(g_style_css), "%s", f[5]);
             run_page();
+        } else if (strcmp(cmd, "EVAL") == 0) {
+            /* devtools console: eval:<js> — js is field 1 (address-bar single
+             * line; embedded '\n' is split out by split_lines, fine for REPL) */
+            cmd_eval(f[1] ? f[1] : "");
         } else {
             send_status("STATUS err:unknown command");
         }

@@ -1,3 +1,2 @@
 project_id=pal-forum
 active_target_id=home
-logged_in=false

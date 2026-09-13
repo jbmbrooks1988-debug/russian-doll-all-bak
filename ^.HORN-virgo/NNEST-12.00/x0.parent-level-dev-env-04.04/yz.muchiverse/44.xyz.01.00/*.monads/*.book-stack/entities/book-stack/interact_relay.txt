@@ -1,1 +1,0 @@
-SHOW_TEXT_FILE:/tmp/claude-1000/-home-no-Desktop-github-work-NNEST-12-00-x0-parent-level-dev-env-04-04-yz-muchiverse/67b40695-9564-4cd5-9fdd-07e3808082c8/scratchpad/verse.txt
