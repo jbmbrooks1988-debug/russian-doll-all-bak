@@ -315,6 +315,78 @@ static void ledger_append(const char *proj_root, int turn, const char *actor, co
     fclose(f);
 }
 
+/* REAL, NEW 2026-09-14 (EVENT-TRIGGER-LAYER-PLAN.md §3 Step 1) - checks
+ * whether the player's own CURRENT position matches a registered
+ * `trigger=player-touch` EVENT row in the active map's own events.pdl,
+ * and if so appends a real `touched_npc` line to data/master_ledger.txt
+ * via the SAME ledger_append() every other real player action already
+ * uses above - no new file, no new write mechanism, per that plan's own
+ * §3 finding (superseded the original `board_events.txt` proposal).
+ * events.pdl's real, existing pipe-delimited row format
+ * (SECTION | KEY | VALUE) - KEY holds space-separated `x=N y=N
+ * glyph=C` tokens, VALUE holds space-separated `trigger=<name>
+ * cmds=...` tokens (real example: `EVENT | x=6 y=5 glyph=t |
+ * trigger=player-touch cmds=change_hp,change_state`,
+ * pieces/system/maps/cdda_sample/events.pdl - the exact fixture this
+ * was proven against). world_01/state.txt's own `map_id` (written by
+ * pc_generate_chunk.c's new map-load mode) is empty for procedural/flat
+ * worlds - that's the real, honest "no static map, nothing to check"
+ * signal, not a magic sentinel. */
+static void check_player_touch_trigger(const char *proj_root, int turn, int px, int py) {
+    char real_root_local[PATH_BUF];
+    resolve_real_root(proj_root, real_root_local, sizeof(real_root_local));
+
+    char world_state_path[PATH_BUF];
+    snprintf(world_state_path, sizeof(world_state_path), "%s/pieces/world_01/state.txt", real_root_local);
+    char map_id[128];
+    read_kv_str_local(world_state_path, "map_id", map_id, sizeof(map_id));
+    if (!map_id[0]) return;
+
+    char events_path[PATH_BUF];
+    snprintf(events_path, sizeof(events_path), "%s/pieces/system/maps/%s/events.pdl", real_root_local, map_id);
+    FILE *f = fopen(events_path, "r");
+    if (!f) return;
+
+    char line[MAX_LINE];
+    while (fgets(line, sizeof(line), f)) {
+        char *p = line;
+        while (*p == ' ' || *p == '\t') p++;
+        if (strncmp(p, "EVENT", 5) != 0) continue;
+
+        char *bar1 = strchr(p, '|');
+        if (!bar1) continue;
+        char *key_field = bar1 + 1;
+        char *bar2 = strchr(key_field, '|');
+        if (!bar2) continue;
+        *bar2 = '\0';
+        char *val_field = bar2 + 1;
+        val_field[strcspn(val_field, "\r\n")] = '\0';
+
+        int ex = -1, ey = -1;
+        char key_buf[256];
+        snprintf(key_buf, sizeof(key_buf), "%s", key_field);
+        for (char *t = strtok(key_buf, " \t"); t; t = strtok(NULL, " \t")) {
+            if (strncmp(t, "x=", 2) == 0) ex = atoi(t + 2);
+            else if (strncmp(t, "y=", 2) == 0) ey = atoi(t + 2);
+        }
+        if (ex != px || ey != py) continue;
+
+        char val_buf[512];
+        snprintf(val_buf, sizeof(val_buf), "%s", val_field);
+        char trigger_val[64] = "";
+        for (char *t = strtok(val_buf, " \t"); t; t = strtok(NULL, " \t")) {
+            if (strncmp(t, "trigger=", 8) == 0) { snprintf(trigger_val, sizeof(trigger_val), "%s", t + 8); break; }
+        }
+        if (strcmp(trigger_val, "player-touch") != 0) continue;
+
+        char details[128];
+        snprintf(details, sizeof(details), "x:%d,y:%d", px, py);
+        ledger_append(proj_root, turn, "player", "touched_npc", details);
+        break; /* one trigger per move - the real, smallest provable slice (plan §3 Step 3) */
+    }
+    fclose(f);
+}
+
 /* REAL, NEW 2026-08-04, direct instruction (real house precedent
  * found: #.ref/Mar$.$treetRace]Q]k32]4K/wsr_clock.c) - launches the
  * real PERSISTENT clock daemon (ops/pc_clock_daemon.c) once per world,
@@ -356,6 +428,49 @@ static void launch_clock_daemon_if_needed(const char *proj_root) {
     char cmd[PATH_BUF * 2];
     snprintf(cmd, sizeof(cmd),
              "PRISC_PROJECT_ROOT='%s' setsid '%s/ops/+x/pc_clock_daemon.+x' >/dev/null 2>&1 < /dev/null &",
+             proj_root, proj_root);
+    { int _rc = system(cmd); (void)_rc; }
+#endif
+}
+
+/* REAL, NEW 2026-09-14 (EVENT-TRIGGER-LAYER-PLAN.md §3 Step 2) - the
+ * persistent bridge-watcher daemon (pc_trigger_watcher.c) that tails
+ * data/master_ledger.txt for touched_npc lines and fires the matching
+ * Common Event via play_event.sh. Byte-for-byte the same real launch
+ * shape as launch_clock_daemon_if_needed() above (PID-file + kill(pid,0)
+ * liveness check, setsid-detached) - the second daemon in this project
+ * shaped exactly like the first, not a new pattern. */
+static void launch_trigger_watcher_if_needed(const char *proj_root) {
+    char real_root[PATH_BUF];
+    resolve_real_root(proj_root, real_root, sizeof(real_root));
+    char pid_path[PATH_BUF];
+    snprintf(pid_path, sizeof(pid_path), "%s/pieces/system/pc_trigger_watcher.pid", real_root);
+    FILE *pf = fopen(pid_path, "r");
+    if (pf) {
+        int pid = 0;
+        if (fscanf(pf, "%d", &pid) == 1 && pid > 0 && kill(pid, 0) == 0) {
+            fclose(pf);
+            return; /* already real, alive */
+        }
+        fclose(pf);
+    }
+#ifdef _WIN32
+    {
+        char env_kv[PATH_BUF + 32];
+        snprintf(env_kv, sizeof(env_kv), "PRISC_PROJECT_ROOT=%s", proj_root);
+        _putenv(env_kv);
+        char daemon_path[PATH_BUF];
+        snprintf(daemon_path, sizeof(daemon_path), "%s\\ops\\+x\\pc_trigger_watcher.+x", real_root);
+        for (char *p = daemon_path; *p; p++) if (*p == '/') *p = '\\';
+        if (!win_run_pe(daemon_path, NULL, proj_root, 0, 1))
+            win_run_pe("ops\\+x\\pc_trigger_watcher.+x", NULL, proj_root, 0, 1);
+        FILE *wf = fopen(pid_path, "w");
+        if (wf) { fprintf(wf, "1\n"); fclose(wf); }
+    }
+#else
+    char cmd[PATH_BUF * 2];
+    snprintf(cmd, sizeof(cmd),
+             "PRISC_PROJECT_ROOT='%s' setsid '%s/ops/+x/pc_trigger_watcher.+x' >/dev/null 2>&1 < /dev/null &",
              proj_root, proj_root);
     { int _rc = system(cmd); (void)_rc; }
 #endif
@@ -761,6 +876,22 @@ int main(int argc, char **argv) {
         char tickbuf[16];
         snprintf(tickbuf, sizeof(tickbuf), "tick %d", tick);
         write_kv(hud_path, "line1", tickbuf);
+        /* REAL, NEW 2026-09-15 (3), direct live request ("maybe u can
+         * add <filename>:<desk-name> to the hud debug display for
+         * sanity") - a real, live readback of exactly what this SAME
+         * session thinks is loaded (world_01/state.txt's own map_id/
+         * desk_id, the same two fields CONFIRM_START_MAP/CONFIRM_SET_
+         * DESK write) - lets a click be sanity-checked without
+         * guessing from the render alone whether a session picked up a
+         * desk switch at all. */
+        char map_id_hud[128] = "", desk_id_hud[64] = "";
+        read_kv_str_local(world_state_path, "map_id", map_id_hud, sizeof(map_id_hud));
+        read_kv_str_local(world_state_path, "desk_id", desk_id_hud, sizeof(desk_id_hud));
+        char mdbuf[192];
+        snprintf(mdbuf, sizeof(mdbuf), "%s:%s",
+                 map_id_hud[0] ? map_id_hud : "(none)",
+                 desk_id_hud[0] ? desk_id_hud : "(none)");
+        write_kv(hud_path, "line2", mdbuf);
     }
 
     char state_path[PATH_BUF], config_path[PATH_BUF];
@@ -878,6 +1009,7 @@ int main(int argc, char **argv) {
             }
 #endif
             launch_clock_daemon_if_needed(project_root);
+            launch_trigger_watcher_if_needed(project_root);
 
             snprintf(message, sizeof(message), "World generated (seed %u). Game started.", world_seed);
         } else if (strcmp(cmd, "CONFIRM_START_DEBUG") == 0) {
@@ -917,8 +1049,125 @@ int main(int argc, char **argv) {
             }
 #endif
             launch_clock_daemon_if_needed(project_root);
+            launch_trigger_watcher_if_needed(project_root);
 
             snprintf(message, sizeof(message), "Debug flat world generated. Game started.");
+        } else if (strncmp(cmd, "CONFIRM_START_MAP:", 18) == 0) {
+            /* REAL, NEW 2026-09-14 (EVENT-TRIGGER-LAYER-PLAN.md §3 Step
+             * 3's own "smallest provable proof" fixture) - loads a real,
+             * static, authored map (pieces/system/maps/<map_id>/) via
+             * pc_generate_chunk.c's new map-load mode, instead of
+             * procedural/flat generation. Same real dispatch shape as
+             * CONFIRM_START_DEBUG above, only the generation-op argv
+             * differs. Reachable today via the same inbox-relay
+             * mechanism every other real command already uses
+             * (`inbox_cmd_buf` above) - no menu button wired up yet,
+             * left as a real, separate, later UI increment; the trigger
+             * mechanism itself doesn't depend on one.
+             *
+             * REAL FIX 2026-09-15, direct live report ("would loading
+             * 'default' load the default map?") - this branch NEVER
+             * actually ran, for any map, ever, since it was first
+             * written 2026-09-14: "CONFIRM_START_MAP:" is 18 real
+             * characters (confirmed: `printf '%s' "CONFIRM_START_MAP:"
+             * | wc -c` -> 18), but both this strncmp's length AND the
+             * cmd+19 offset just below used 19 - a real off-by-one.
+             * strncmp(..., 19) compares one byte past the literal's own
+             * content into cmd's own next real character (e.g. 'd' of
+             * "default") against the literal's implicit '\0' - always a
+             * mismatch, so this branch was silently, permanently dead
+             * code. Found via a live strace-less debug trace (added
+             * fprintf right before this branch and one INSIDE it - the
+             * outer one fired with the exact right cmd string, the
+             * inner one never printed at all, proving the strncmp
+             * itself was the break). Fixed to the real, counted length
+             * (18) - cmd+18 (not +19) just below for the same reason. */
+            write_kv(config_path, "game_state", "playing");
+
+            char map_id_arg[128];
+            snprintf(map_id_arg, sizeof(map_id_arg), "%s", cmd + 18);
+            unsigned int world_seed = (unsigned int)time(NULL) ^ (unsigned int)getpid();
+
+#ifdef _WIN32
+            {
+                char env_kv[PATH_BUF + 32];
+                snprintf(env_kv, sizeof(env_kv), "PRISC_PROJECT_ROOT=%s", project_root);
+                _putenv(env_kv);
+                char args[192];
+                snprintf(args, sizeof(args), "%u 0 0 map:%s", world_seed, map_id_arg);
+                int ok = win_run_pe("ops\\+x\\pc_generate_chunk.+x", args, project_root, 120000, 0);
+                if (!ok) {
+                    snprintf(message, sizeof(message),
+                             "CONFIRM_START_MAP: pc_generate_chunk failed to launch.");
+                }
+            }
+#else
+            {
+                char gen_cmd[PATH_BUF + 192];
+                snprintf(gen_cmd, sizeof(gen_cmd),
+                         "PRISC_PROJECT_ROOT='%s' '%s/ops/+x/pc_generate_chunk.+x' %u 0 0 map:%s >/dev/null 2>&1",
+                         project_root, project_root, world_seed, map_id_arg);
+                { int _rc = system(gen_cmd); (void)_rc; }
+            }
+#endif
+            launch_clock_daemon_if_needed(project_root);
+            launch_trigger_watcher_if_needed(project_root);
+
+            snprintf(message, sizeof(message), "Map '%s' loaded. Game started.", map_id_arg);
+        } else if (strncmp(cmd, "CONFIRM_SET_DESK:", sizeof("CONFIRM_SET_DESK:") - 1) == 0) {
+            /* REAL, NEW 2026-09-15 (2), direct live request ("what if
+             * we made a default desk 2... so i could validate desk
+             * switching works") - real desk switching, wired the same
+             * way CONFIRM_START_MAP is, deliberately using
+             * sizeof(LITERAL)-1 instead of a hand-counted length
+             * constant (per this same session's own off-by-one bug in
+             * CONFIRM_START_MAP just above, and the harness-hardening
+             * TODO it produced) so this can never suffer that exact
+             * class of bug. Reloads the CURRENTLY loaded map
+             * (world_01/state.txt's own map_id, same live field
+             * CONFIRM_START_MAP/pc_generate_chunk.c write/read - NOT
+             * board_config.txt) with a different desk_id - a no-op if
+             * no map is loaded (empty map_id = procedural/flat world,
+             * no desk concept applies). */
+            char real_root_local[PATH_BUF];
+            resolve_real_root(project_root, real_root_local, sizeof(real_root_local));
+            char world_state_path[PATH_BUF];
+            snprintf(world_state_path, sizeof(world_state_path), "%s/pieces/world_01/state.txt", real_root_local);
+            char cur_map_id[128];
+            read_kv_str_local(world_state_path, "map_id", cur_map_id, sizeof(cur_map_id));
+            if (!cur_map_id[0]) {
+                snprintf(message, sizeof(message), "No map loaded - nothing to switch desks on.");
+            } else {
+                write_kv(config_path, "game_state", "playing");
+                char desk_id_arg[64];
+                snprintf(desk_id_arg, sizeof(desk_id_arg), "%s", cmd + (sizeof("CONFIRM_SET_DESK:") - 1));
+                unsigned int world_seed = (unsigned int)time(NULL) ^ (unsigned int)getpid();
+#ifdef _WIN32
+                {
+                    char env_kv[PATH_BUF + 32];
+                    snprintf(env_kv, sizeof(env_kv), "PRISC_PROJECT_ROOT=%s", project_root);
+                    _putenv(env_kv);
+                    char args[192];
+                    snprintf(args, sizeof(args), "%u 0 0 map:%s:%s", world_seed, cur_map_id, desk_id_arg);
+                    int ok = win_run_pe("ops\\+x\\pc_generate_chunk.+x", args, project_root, 120000, 0);
+                    if (!ok) {
+                        snprintf(message, sizeof(message),
+                                 "CONFIRM_SET_DESK: pc_generate_chunk failed to launch.");
+                    }
+                }
+#else
+                {
+                    char gen_cmd[PATH_BUF + 192];
+                    snprintf(gen_cmd, sizeof(gen_cmd),
+                             "PRISC_PROJECT_ROOT='%s' '%s/ops/+x/pc_generate_chunk.+x' %u 0 0 map:%s:%s >/dev/null 2>&1",
+                             project_root, project_root, world_seed, cur_map_id, desk_id_arg);
+                    { int _rc = system(gen_cmd); (void)_rc; }
+                }
+#endif
+                launch_clock_daemon_if_needed(project_root);
+                launch_trigger_watcher_if_needed(project_root);
+                snprintf(message, sizeof(message), "Desk '%s' loaded.", desk_id_arg);
+            }
         } else if (strcmp(cmd, "END_TURN") == 0) {
             /* Manual tick-advance fallback (design §5, phase2-plan.md
              * §6 step 1) - the SAME real world_01/state.txt tick
@@ -962,6 +1211,7 @@ int main(int argc, char **argv) {
                  * world-gen paths use; no-op if the daemon is already
                  * alive (pid-file + kill(pid,0) check). */
                 launch_clock_daemon_if_needed(project_root);
+                launch_trigger_watcher_if_needed(project_root);
             }
             snprintf(message, sizeof(message), "Autotick %s.", enabled ? "ON" : "off");
         } else if (strcmp(cmd, "CYCLE_TICK_SPEED") == 0) {
@@ -1000,6 +1250,22 @@ int main(int argc, char **argv) {
             snprintf(details, sizeof(details), "tick:%d", tick);
             ledger_append(project_root, tick, "player", "move", details);
             tick_animals(project_root, tick);
+
+            /* REAL, NEW 2026-09-14 (EVENT-TRIGGER-LAYER-PLAN.md §3 Step
+             * 1) - board-viewer already wrote the xelector's own new
+             * pos_x/pos_y before this MOVE ever arrived here (this
+             * handler's own header comment above), so it's real,
+             * current data to check against events.pdl right now. */
+            {
+                char real_root_for_touch[PATH_BUF];
+                resolve_real_root(project_root, real_root_for_touch, sizeof(real_root_for_touch));
+                char xelector_state_path[PATH_BUF];
+                snprintf(xelector_state_path, sizeof(xelector_state_path), "%s/pieces/xelector_01/state.txt", real_root_for_touch);
+                int px = read_kv_int(xelector_state_path, "pos_x", -9999);
+                int py = read_kv_int(xelector_state_path, "pos_y", -9999);
+                if (px != -9999 && py != -9999)
+                    check_player_touch_trigger(project_root, tick, px, py);
+            }
         } else if (strncmp(cmd, "JUMP", 4) == 0) {
             /* Real plumbing, honest stub mechanic (phase2-plan.md §6
              * step 1 - real jump PHYSICS is genuinely later work, this
@@ -1239,6 +1505,7 @@ int main(int argc, char **argv) {
             }
 #endif
             launch_clock_daemon_if_needed(project_root);
+            launch_trigger_watcher_if_needed(project_root);
 
         } else if (strcmp(cmd, "CREATE_WORLD_DEBUG") == 0) {
             /* REAL, NEW 2026-08-30: create a new debug flat world. Same as
@@ -1296,6 +1563,7 @@ int main(int argc, char **argv) {
             }
 #endif
             launch_clock_daemon_if_needed(project_root);
+            launch_trigger_watcher_if_needed(project_root);
         }
     }
 

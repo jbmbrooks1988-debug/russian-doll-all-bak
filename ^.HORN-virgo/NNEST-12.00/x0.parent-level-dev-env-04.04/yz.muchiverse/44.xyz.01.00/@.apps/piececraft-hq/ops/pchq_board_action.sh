@@ -102,48 +102,65 @@ case "$VERB" in
         append_key 13
         ;;
     file-hq)
-        # modal pick a map with the real File Explorer widget, then load
-        # whatever map.txt was chosen onto chunk_0_0_z0 (same steps as
-        # the load-map verb). 2026-09-08: this used to only open a
-        # browse-only window; now it actually loads the pick.
+        # REAL FIX 2026-09-15 (direct live report: "pc-hq opens files
+        # which currently suggest 2 different files that don't actually
+        # load 'maps+logic', that will need to be fixed" - confirmed by
+        # direct code read: the OLD version of this verb copied the
+        # picked map.txt to chunk_0_0_z0.txt and wrote board_config.txt,
+        # then injected key 54 - but pc_menu_input.c has NO handler for
+        # key 54 at all, and nothing anywhere reads chunk_0_0_z0.txt or
+        # board_config.txt back. Both files were pure dead writes.
+        #
+        # The one real, working map-load path is pc_menu_input.c's own
+        # CONFIRM_START_MAP:<map_id> inbox command (EVENT-TRIGGER-LAYER-
+        # PLAN.md §3 Step 3), which calls pc_generate_chunk.+x with a
+        # real `map:<id>` argv - confirmed by direct code read, and
+        # explicitly left "no menu button wired up yet" in its own
+        # comment. This verb is that wiring. Real, honest behavior
+        # difference from what the old dead code implied: this starts a
+        # genuinely NEW world generated from the picked map (same as
+        # the New Game map-select flow), not a live in-place swap of
+        # the current session's chunk data - no live-reload mechanism
+        # exists in the engine at all, so this doesn't pretend to have
+        # one. Drained on the very next tick regardless of a keypress -
+        # pc_menu_input.+x is polled every tick with key=0 when idle and
+        # always drains the inbox first (confirmed by direct code read),
+        # so no engage_if_needed/append_key/restore_interact dance is
+        # needed here at all.
         HOUSE="$(cd "$SELF_DIR/../../.." && pwd)"
         PCHQ="$(cd "$SELF_DIR/.." && pwd)"
         printf 'open=\n' > "$PKG_STATE/menu.txt"
         PICK="$(sh "$HOUSE/&.widgits/file-explorer/fe-pick.sh" LOAD "$PCHQ/pieces/system/maps")"
         [ -n "$PICK" ] || exit 0
+        # REAL FIX 2026-09-15, direct live instruction ("file = dir
+        # desk = map... without desk there is no map") - a project dir
+        # (what the user actually picks in File Explorer) no longer
+        # holds map.txt directly; the real map data now lives one level
+        # deeper, under a real desk subdir (v1: always desk1). Handle
+        # every real way a pick can land: the project dir itself, a
+        # desk subdir picked directly, or map.txt picked directly deep
+        # inside a desk - in every case, walk back up to the real
+        # PROJECT dir (the one with game.pdl) before deriving NAME, so
+        # this never accidentally names a desk ("desk1") as if it were
+        # the project.
         case "$PICK" in
-            */map.txt) MAPDIR="$(dirname "$PICK")" ;;
-            *)         MAPDIR="$PICK" ;;
+            */map.txt) PROJDIR="$(dirname "$(dirname "$PICK")")" ;;
+            */desk1)   PROJDIR="$(dirname "$PICK")" ;;
+            *)         PROJDIR="$PICK" ;;
         esac
-        SRC="$MAPDIR/map.txt"
-        [ -f "$SRC" ] || exit 0
-        NAME="$(basename "$MAPDIR")"
-        DST="$PCHQ/pieces/system/chunks/chunk_0_0/chunk_0_0_z0.txt"
-        mkdir -p "$(dirname "$DST")" "$PCHQ/pieces/system"
-        cp "$SRC" "$DST"
-        { echo "active_level=${NAME}"; echo "active_board=${NAME}"; } > "$PCHQ/pieces/system/board_config.txt"
-        engage_if_needed
-        append_key 54
-        sleep 0.15
-        restore_interact
+        [ -f "$PROJDIR/desk1/map.txt" ] || exit 0
+        NAME="$(basename "$PROJDIR")"
+        mkdir -p "$PCHQ/pieces/system/widget_cmds"
+        printf 'CONFIRM_START_MAP:%s\n' "$NAME" > "$PCHQ/pieces/system/widget_cmds/inbox.txt"
         ;;
     load-map)
-        HOUSE="$(cd "$SELF_DIR/../../.." && pwd)"
+        # Same real fix as file-hq above - see its own comment for the
+        # full story (dead chunk_0_0_z0.txt/board_config.txt writes and
+        # an unhandled key 54 replaced with the one real, working
+        # CONFIRM_START_MAP inbox command).
         PCHQ="$(cd "$SELF_DIR/.." && pwd)"
-        SRC="$PCHQ/pieces/system/maps/${ARG}/map.txt"
-        DST="$PCHQ/pieces/system/chunks/chunk_0_0/chunk_0_0_z0.txt"
-        if [ -f "$SRC" ]; then
-            cp "$SRC" "$DST"
-            mkdir -p "$PCHQ/pieces/system"
-            {
-                echo "active_level=${ARG}"
-                echo "active_board=${ARG}"
-            } > "$PCHQ/pieces/system/board_config.txt"
-        fi
-        engage_if_needed
-        append_key 54
-        sleep 0.15
-        restore_interact
+        mkdir -p "$PCHQ/pieces/system/widget_cmds"
+        printf 'CONFIRM_START_MAP:%s\n' "$ARG" > "$PCHQ/pieces/system/widget_cmds/inbox.txt"
         printf 'open=\n' > "$PKG_STATE/menu.txt"
         ;;
     open-events)
@@ -166,11 +183,96 @@ case "$VERB" in
         printf 'open=\n' > "$PKG_STATE/menu.txt"
         ;;
     desk)
-        engage_if_needed
-        append_key 54                                 # '6' - DESK_MENU reload
-        sleep 0.15
-        restore_interact
+        # REAL FIX 2026-09-15 (2), direct live follow-up ("what if we
+        # made a default desk 2... so i could validate desk switching
+        # works") - this used to send key 54 ('6' - DESK_MENU reload),
+        # which pc_menu_input.c has NO handler for at all (confirmed by
+        # direct code read, same as file-hq's own header comment found
+        # for key 54's OTHER dead caller) - real, permanently dead code,
+        # never worked. Real fix: same inbox-command mechanism
+        # file-hq/load-map already use, with a new CONFIRM_SET_DESK:
+        # command (pc_menu_input.c). ARG is the desk_id
+        # (pchq-board.xhtpm's repeat now passes ${d.id}, not a bare row
+        # index).
+        PCHQ="$(cd "$SELF_DIR/.." && pwd)"
+        [ -n "$ARG" ] || exit 0
+        mkdir -p "$PCHQ/pieces/system/widget_cmds"
+        printf 'CONFIRM_SET_DESK:%s\n' "$ARG" > "$PCHQ/pieces/system/widget_cmds/inbox.txt"
         printf 'open=\n' > "$PKG_STATE/menu.txt"
+        ;;
+    player)
+        # REAL FIX 2026-09-15, direct live correction ("i think it
+        # thinks player means 'player of entity' it actually is player
+        # control for game start stop... its the same yes, start stop
+        # for game mode... how player in tb should play all entities /
+        # events and common events in 'DESK'") - toggles the SAME real,
+        # house-wide Play Mode flag PLAY-MODE-ENTITY-HARNESS-DESIGN.md
+        # already defines and the desktop taskbar's own "8.player"
+        # menu already writes (khtpm_taskbar_manager.c's khtpm_save_
+        # play_mode() / khtpm_core_render.c's desktop_load_play_mode(),
+        # same file, same `mode=on|off` shape) - that doc's own §2
+        # explicitly says "pc-hq has no Play button yet... needs to be
+        # added as part of this work". This IS that button. NOT the
+        # clock/tick daemon (a separate, always-running thing per the
+        # same live correction) - purely the shared on/off flag; what
+        # pc-hq's own entities DO differently while it's on (real
+        # Play-Mode-only context menus, per that design doc's §4) is
+        # real, separate, not-yet-built follow-up work, out of scope
+        # for this toggle wiring itself.
+        HOUSE="$(cd "$SELF_DIR/../../.." && pwd)"
+        PCHQ="$(cd "$SELF_DIR/.." && pwd)"
+        PM="$HOUSE/#.desktop/khtpm_play_mode.state.txt"
+        mkdir -p "$(dirname "$PM")"
+        # REAL, NEW 2026-09-15, direct live report ("player should have
+        # dropdown that says play, reset, stop, notes-db, cancel") -
+        # ARG picks the sub-action; empty ARG (a bare click, no
+        # dropdown) keeps the original toggle behavior for backward
+        # compat with the hascanvas variant, which has no dropdown
+        # support at all (see that file's own header comment).
+        SUB="${ARG:-toggle}"
+        case "$SUB" in
+            toggle)
+                CUR=off
+                [ -f "$PM" ] && grep -q 'mode=on' "$PM" && CUR=on
+                NEXT=on
+                [ "$CUR" = on ] && NEXT=off
+                printf 'mode=%s\n' "$NEXT" > "$PM"
+                ;;
+            stop)
+                # Explicit force-off, distinct from toggle - "make sure
+                # it's definitely stopped" without needing to read the
+                # current label first.
+                printf 'mode=off\n' > "$PM"
+                ;;
+            reset)
+                # Real reuse of the one real, working map-load path
+                # (file-hq/load-map's own fix, same date) - re-issues
+                # CONFIRM_START_MAP for whatever map is CURRENTLY
+                # active (world_01/state.txt's own map_id, the real
+                # field pc_generate_chunk.c writes and reads - NOT
+                # board_config.txt, confirmed dead). A real "restart
+                # this same map fresh" action, not a guess.
+                WORLD_STATE="$PCHQ/pieces/world_01/state.txt"
+                MAP_ID=""
+                [ -f "$WORLD_STATE" ] && MAP_ID="$(sed -n 's/^map_id=//p' "$WORLD_STATE" | head -1)"
+                if [ -n "$MAP_ID" ]; then
+                    mkdir -p "$PCHQ/pieces/system/widget_cmds"
+                    printf 'CONFIRM_START_MAP:%s\n' "$MAP_ID" > "$PCHQ/pieces/system/widget_cmds/inbox.txt"
+                fi
+                ;;
+            notes)
+                # REAL, NEW 2026-09-15 - "it just opens a text file in
+                # dir of project that lets user take notes" (direct
+                # live answer). text-edit-hq has no file-argv (single-
+                # instance, always launches fresh - confirmed by
+                # reading its own button.sh) so this ensures the real
+                # notes file exists, then launches the editor; the user
+                # opens it themselves from there.
+                NOTES="$PCHQ/notes.txt"
+                [ -f "$NOTES" ] || : > "$NOTES"
+                setsid sh "$HOUSE/@.apps/text-edit-hq/button.sh" run >/tmp/pchq-notes-texted.log 2>&1 < /dev/null &
+                ;;
+        esac
         ;;
 esac
 exit 0

@@ -1,0 +1,130 @@
+/* dsr.css - DSR (Desk Street Raider). Sibling-.css, auto-merged by the
+   shared renderer (same stem as dsr.xhtpm).
+
+   GROUPED-BOX PASS, 2026-09-15 (see dsr.xhtpm's own matching comment) -
+   widened to fit the real WSR-style box grid; `.dsr-grid` is the real
+   flex-wrap container, `.dsr-box` is every titled status box's own
+   real, bordered region (same real border/padding properties
+   canvas-craft.css's own `.cc-panel`/`.cc-sidebar` already prove work
+   here). */
+
+/* REAL FIX, direct live report ("db search doesn't need its own
+   pane... also there is a blank frame around the bottom and right
+   side that makes no sense") - two real, separate causes:
+   (1) folding "Quick Search Functions" into Other dropped the grid
+   from 4 to 3 category boxes, and .dsr-toy's own width/height were
+   still sized for the old, taller 2-row-of-boxes shape - real dead
+   space below/right of the real content.
+   (2) flex-wrap packs in strict DOCUMENT order, not by matching
+   height - with 5 short status boxes then 3 tall category boxes, the
+   3rd status row's own 2 boxes (News/World) shared a row with the 1st
+   CATEGORY box (Research, 500px vs their own 130px) - real, visible
+   dead space where the short boxes' own row stopped far short of
+   Research's own height, not a bug in the engine, just document order
+   crossing a real visual group boundary. Fixed with `.dsr-break` - a
+   real, invisible spacer wider than the whole row, which forces
+   flex-wrap to start a fresh row after it (same real mechanism any
+   HTML flex-wrap layout uses for a manual row break, no special-case
+   engine support needed). All 3 category boxes now share their OWN
+   row together, same height, zero mismatched-row blank space. */
+.dsr-toy {
+  width: 820px;
+  height: 900px;
+}
+
+.dsr-grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.dsr-break {
+  width: 900px;
+  height: 0px;
+}
+
+/* REAL FIX, same pass, caught live ("it has no nav focus or anything
+   yet" -> then found empty when the box's own content overflowed past
+   the row below it): css_layout_pass() sizes every flex box from THIS
+   file's own explicit width/height BEFORE each box's own children are
+   laid out in a later, separate pass - it does not auto-grow a box's
+   height from its children's real content the way a browser would.
+   Without an explicit height, every .dsr-box came out of the flex pass
+   at a tiny default height, so a box's own 2nd/3rd text line painted
+   past its own box into whatever sat below it in the next flex row
+   (confirmed live via the real frame-file x/y dump, not guessed - My
+   Balance Sheet's own 3 lines were the tallest real content, its own
+   box height is sized for exactly that plus the title + padding).
+   Every other box shares the same height for visual grid alignment
+   (a real, deliberate simplification - box-specific heights would look
+   uneven/jagged in a wrapped grid; matches every real box's own tallest
+   sibling instead of computing each one separately). */
+.dsr-box {
+  width: 270px;
+  height: 130px;
+  background-color: #1c1f28;
+  border: 1px solid #3a3f52;
+  border-color: #3a3f52;
+  padding: 6px;
+}
+
+/* REAL, NEW 2026-09-15, direct instruction ("now lets fill in the op
+   buttons by category") - the 4 real action-category boxes (Research
+   Menus and Tools/Transactions/Other/Quick Search Functions), replacing
+   the old single flat Actions panel. Same .dsr-box base (width/bg/
+   border/padding); this rule, declared AFTER .dsr-box in this file, so
+   it wins on height only (css_compute_style_ex() merges same-tier class
+   rules in the sheet's own declaration order - confirmed by reading
+   the code, not guessed) - tall enough for the longest real category
+   list (Research, 15 rows) without needing per-box heights; a shorter
+   category's own scrolllist just has empty space below it, same real
+   trade-off the status boxes' own shared height already made.
+
+   REAL FIX, direct live report ("maybe research menu section wont
+   need thumb cause it can be longer") - 300px only fit ~9 of
+   Research's real 15 rows, forcing a scrollbar; grown to fit all 15
+   with no scroll needed (measured against the real per-row height a
+   live frame dump showed, not guessed). */
+.dsr-catbox {
+  height: 500px;
+}
+
+/* REAL FIX, direct live report ("the toolbar text is hard to read...
+   why isn't it secondary color purple?") - <tab> was never given its
+   own real color rule at all (this file had zero `.tab`/`.tab-bar`
+   rules before now), so it fell to whatever this window's own
+   unstyled-element default is - not this house's real theme secondary
+   accent (#8b5cf6, #.desktop/livedesk_theme.pdl's own real `fg` value,
+   read directly rather than guessed - the same real purple the window
+   title/chrome border already show). Explicit now, matching that real
+   theme color exactly.
+
+   REAL FIX, same pass, caught live ("the text in tabbar is still
+   white on white. it hasnt changed colors yet?") - this rule's own
+   leading "." made it a CLASS selector (matches class="tab"), not a
+   TAG selector - <tab> elements have no class attribute at all here
+   (confirmed live: the real serialized frame file's own classes field
+   was empty for every one), so it matched nothing. Bare tag selector,
+   same convention `item`/`text` below already use correctly. */
+tab {
+  color: #8b5cf6;
+}
+
+.block-title { color: #ffffff; font-weight: bold; }
+.quiet       { color: #8b93a7; }
+/* Plain, unclassed <text>/<item> rows (every real status value and
+   every category-box action label) - explicit, not left to whatever
+   default this window's own active house theme happens to pick, same
+   real reason .dsr-actions above needed one. Bare tag selectors only -
+   khtpm_css_parser.c takes bare tag / single compound class chain /
+   #id, no descendant combinators (canvas-craft.css's own header
+   comment already documents this constraint); css_compute_style()
+   applies tag rules before class rules, so .block-title/.quiet's own
+   more specific color still wins on the rows that set them. */
+item {
+  color: #d6d9e3;
+}
+
+text {
+  color: #d6d9e3;
+}

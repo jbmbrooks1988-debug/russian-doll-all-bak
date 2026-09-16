@@ -15,7 +15,7 @@
  *   menu_open=file|desk|      file_menu_open=1|""  desk_menu_open=1|""
  *   n_file_opts=2  f_0_label=default-pdl  f_0_active=pchq-menu-active|""
  *                  f_1_label=default-legacy f_1_active=...
- *   n_desk_opts=1  d_0_label=<board>  d_0_active=pchq-menu-active
+ *   n_desk_opts=N  d_0_id=  d_0_label=  d_0_active=pchq-menu-active|""  ...
  *
  * The menu-open state + active_level/active_board come from
  * <pkg>/state/menu.txt (pchq_board_action.sh writes it) and
@@ -123,6 +123,40 @@ static void read_kv(const char *path, const char *key, char *out, size_t outsz) 
             snprintf(out, outsz, "%s", v);
             break;
         }
+    }
+    fclose(f);
+}
+
+/* game.pdl uses "SECTION | KEY | VALUE" pipe columns, not KEY=VALUE -
+ * read_kv() above can't parse it (confirmed live: silently returned
+ * empty for every key). Matches pc_generate_chunk.c's own
+ * load_extrusion_table() column-split logic. */
+static void read_pdl_kv(const char *path, const char *key, char *out, size_t outsz) {
+    out[0] = '\0';
+    FILE *f = fopen(path, "r");
+    if (!f) return;
+    char line[256];
+    while (fgets(line, sizeof(line), f)) {
+        char *p1 = strchr(line, '|');
+        if (!p1) continue;
+        char *p2 = strchr(p1 + 1, '|');
+        if (!p2) continue;
+        char k[64]; int klen = (int)(p2 - (p1 + 1));
+        while (*(p1 + 1) == ' ') p1++;
+        klen = (int)(p2 - (p1 + 1));
+        if (klen <= 0 || klen >= (int)sizeof(k)) continue;
+        memcpy(k, p1 + 1, (size_t)klen);
+        k[klen] = '\0';
+        int kl = (int)strlen(k);
+        while (kl > 0 && k[kl - 1] == ' ') k[--kl] = '\0';
+        if (strcmp(k, key) != 0) continue;
+        char *v = p2 + 1;
+        while (*v == ' ') v++;
+        v[strcspn(v, "\r\n")] = '\0';
+        int vl = (int)strlen(v);
+        while (vl > 0 && v[vl - 1] == ' ') v[--vl] = '\0';
+        snprintf(out, outsz, "%s", v);
+        break;
     }
     fclose(f);
 }
@@ -277,9 +311,73 @@ int main(int argc, char **argv) {
          * via pchq_read_config_kv) - live under @.apps/<host>/ */
         char cfg[PATH_MAX], active_level[64] = "", active_board[64] = "";
         snprintf(cfg, sizeof(cfg), "%s/@.apps/%s/pieces/system/board_config.txt", house, host_id);
-        read_kv(cfg, "active_level", active_level, sizeof(active_level));
         read_kv(cfg, "active_board", active_board, sizeof(active_board));
-        if (!active_board[0]) snprintf(active_board, sizeof(active_board), "default");
+        /* REAL FIX 2026-09-15, direct live report ("where did the
+         * default game map go... it should be a 'default' folder
+         * available in File menu") - active_level used to read
+         * board_config.txt's own active_level key, which this same
+         * session's file-hq/load-map fix stopped writing (confirmed
+         * dead - nothing in the engine ever read it either). Left
+         * stale here, this row highlighting would silently drift from
+         * reality. The real, live-updated source is world_01/state.txt's
+         * own map_id (the same field CONFIRM_START_MAP/pc_generate_
+         * chunk.c actually write/read) - empty map_id means the flat/
+         * procedural "default" world, not a named map. */
+        char world_state_al[PATH_MAX];
+        snprintf(world_state_al, sizeof(world_state_al), "%s/@.apps/%s/pieces/world_01/state.txt", house, host_id);
+        read_kv(world_state_al, "map_id", active_level, sizeof(active_level));
+        /* REAL FIX 2026-09-15, direct live report ("Desk dropdown shows
+         * 'mineclonia sample' regardless of what's actually loaded") -
+         * active_board had the exact same staleness bug as active_level
+         * above (same dead board_config.txt key, never migrated when
+         * active_level was fixed). The real, live source is the
+         * currently-loaded project's own game.pdl (file=dir, desk=map
+         * hierarchy) - project = map_id if set, else the real "default"
+         * project (never a bare literal "default" string - that project
+         * has its own real game.pdl too).
+         *
+         * REAL, NEW 2026-09-15 (2), direct live follow-up ("what if we
+         * made a default desk 2... so i could validate desk switching
+         * works") - the Desk dropdown used to always publish exactly
+         * one fake row (n_desk_opts=1, hardcoded desk_1_label). Now
+         * reads game.pdl's own real n_desks and desk_N_id/desk_N_label
+         * rows and publishes all of them, with the CURRENTLY active one
+         * (world_01/state.txt's own live desk_id, same convention as
+         * map_id) marked pchq-menu-active - a real, clickable list
+         * instead of a static label. */
+        char active_desk_id[64] = "";
+        read_kv(world_state_al, "desk_id", active_desk_id, sizeof(active_desk_id));
+        if (!active_desk_id[0]) snprintf(active_desk_id, sizeof(active_desk_id), "desk1");
+        char proj_id[64];
+        snprintf(proj_id, sizeof(proj_id), "%s", active_level[0] ? active_level : "default");
+        char game_pdl[PATH_MAX];
+        snprintf(game_pdl, sizeof(game_pdl), "%s/pieces/system/maps/%s/game.pdl", pkg, proj_id);
+        char proj_label[64] = "";
+        read_pdl_kv(game_pdl, "label", proj_label, sizeof(proj_label));
+        char n_desks_s[8] = "";
+        read_pdl_kv(game_pdl, "n_desks", n_desks_s, sizeof(n_desks_s));
+        int n_desks = n_desks_s[0] ? atoi(n_desks_s) : 1;
+        if (n_desks < 1) n_desks = 1;
+        if (n_desks > 8) n_desks = 8;   /* real, generous v1 cap */
+        char cur_desk_label[64] = "";
+        for (int di = 1; di <= n_desks; di++) {
+            char k_id[32], k_lbl[32];
+            snprintf(k_id, sizeof(k_id), "desk_%d_id", di);
+            snprintf(k_lbl, sizeof(k_lbl), "desk_%d_label", di);
+            char d_id[64] = "", d_lbl[64] = "";
+            read_pdl_kv(game_pdl, k_id, d_id, sizeof(d_id));
+            read_pdl_kv(game_pdl, k_lbl, d_lbl, sizeof(d_lbl));
+            if (!d_id[0]) snprintf(d_id, sizeof(d_id), "desk%d", di);
+            if (!d_lbl[0]) snprintf(d_lbl, sizeof(d_lbl), "Desk %d", di);
+            if (strcmp(d_id, active_desk_id) == 0)
+                snprintf(cur_desk_label, sizeof(cur_desk_label), "%s", d_lbl);
+        }
+        if (proj_label[0] && cur_desk_label[0])
+            snprintf(active_board, sizeof(active_board), "%s - %s", proj_label, cur_desk_label);
+        else if (proj_label[0])
+            snprintf(active_board, sizeof(active_board), "%s", proj_label);
+        else
+            snprintf(active_board, sizeof(active_board), "default-map-1");
         int is_legacy = (strcmp(active_level, "default-legacy") == 0);
         sanitize(active_board);
 
@@ -303,32 +401,86 @@ int main(int argc, char **argv) {
                      tod / 3600, (tod % 3600) / 60);
         }
 
+        /* REAL FIX 2026-09-15, direct live correction ("i think it
+         * thinks player means 'player of entity' it actually is player
+         * control for game start stop... its the same yes [as PLAY-
+         * MODE-ENTITY-HARNESS-DESIGN.md's own Play Mode]") - the
+         * position-readback this comment used to describe was the
+         * WRONG read of the original 2026-09-04 stub note; replaced
+         * with the real thing: the same house-wide Play Mode flag the
+         * desktop taskbar's own "8.player" menu already toggles
+         * (#.desktop/khtpm_play_mode.state.txt, `mode=on|off`) -
+         * that design doc's own §2 says pc-hq needs exactly this
+         * button added. pchq_board_action.sh's own `player` verb
+         * flips this same file; this just reads it back for display. */
+        char pm_path[PATH_MAX];
+        snprintf(pm_path, sizeof(pm_path), "%s/#.desktop/khtpm_play_mode.state.txt", house);
+        char pm_mode[16] = "";
+        read_kv(pm_path, "mode", pm_mode, sizeof(pm_mode));
+        char player_label[32];
+        snprintf(player_label, sizeof(player_label), "Player: %s",
+                 strcmp(pm_mode, "on") == 0 ? "ON" : "OFF");
+
         size_t off = 0;
         off += (size_t)snprintf(ui + off, UIBUF - off,
             "bv_session=%s\ncanvas_raw=%s\nno_session=%s\n"
             "bv_h1=%s\nbv_h2=%s\ninteract_class=%s\ninteract_armed=%d\n"
-            "interact_label=%s\nclock=%s\n"
+            "interact_label=%s\nclock=%s\nplayer_label=%s\n"
             "menu_open=%s\nfile_menu_open=%s\ndesk_menu_open=%s\n",
             bv, raw, have ? "" : "1",
             h1, h2, interact ? "interact-active" : "", interact ? 1 : 0,
-            interact ? "ON" : "off", clock_s,
+            interact ? "ON" : "off", clock_s, player_label,
             menu_open,
             strcmp(menu_open, "file") == 0 ? "1" : "",
             strcmp(menu_open, "desk") == 0 ? "1" : "");
 
         off += (size_t)snprintf(ui + off, UIBUF - off,
-            "n_file_opts=4\n"
-            "f_0_label=Open File Explorer\nf_0_verb=file-hq\nf_0_arg=\nf_0_active=\n"
-            "f_1_label=mineclonia_sample\nf_1_verb=load-map\nf_1_arg=mineclonia_sample\nf_1_active=%s\n"
-            "f_2_label=cdda_sample\nf_2_verb=load-map\nf_2_arg=cdda_sample\nf_2_active=%s\n"
-            "f_3_label=default-legacy\nf_3_verb=file\nf_3_arg=1\nf_3_active=%s\n",
+            "n_file_opts=7\n"
+            /* REAL, NEW 2026-09-15, direct live report ("it should be a
+             * 'default' folder availiable in File menu till user makes
+             * new(palcraft) then can load palcraft from file menu") -
+             * a real, always-available way back to the flat/procedural
+             * starting world - now a real desk-backed project dir
+             * (pieces/system/maps/default/desk1/), same load-map path
+             * every other real project uses (see PALCRAFT-DESIGN.md's
+             * own "file = dir, desk = map" convention, same date). */
+            "f_0_label=\xF0\x9F\x95\xB9\xEF\xB8\x8F default\nf_0_verb=load-map\nf_0_arg=default\nf_0_active=%s\n"
+            "f_1_label=Open File Explorer\nf_1_verb=file-hq\nf_1_arg=\nf_1_active=\n"
+            "f_2_label=mineclonia_sample\nf_2_verb=load-map\nf_2_arg=mineclonia_sample\nf_2_active=%s\n"
+            "f_3_label=cdda_sample\nf_3_verb=load-map\nf_3_arg=cdda_sample\nf_3_active=%s\n"
+            /* REAL, NEW 2026-09-15 - two real test projects, same date,
+             * proving the desk-backed load path + the generalized
+             * multi-glyph extrusion table both work for genuinely new
+             * projects, not just the pre-existing three. */
+            "f_4_label=\xF0\x9F\x95\xB9\xEF\xB8\x8F test_walls\nf_4_verb=load-map\nf_4_arg=test_walls\nf_4_active=%s\n"
+            "f_5_label=\xF0\x9F\x95\xB9\xEF\xB8\x8F test_terraces\nf_5_verb=load-map\nf_5_arg=test_terraces\nf_5_active=%s\n"
+            "f_6_label=default-legacy\nf_6_verb=file\nf_6_arg=1\nf_6_active=%s\n",
+            active_level[0] ? "" : "pchq-menu-active",
             strcmp(active_level, "mineclonia_sample") == 0 ? "pchq-menu-active" : "",
             strcmp(active_level, "cdda_sample") == 0 ? "pchq-menu-active" : "",
+            strcmp(active_level, "test_walls") == 0 ? "pchq-menu-active" : "",
+            strcmp(active_level, "test_terraces") == 0 ? "pchq-menu-active" : "",
             is_legacy ? "pchq-menu-active" : "");
 
-        off += (size_t)snprintf(ui + off, UIBUF - off,
-            "n_desk_opts=1\nd_0_label=%s\nd_0_active=pchq-menu-active\n",
-            active_board);
+        /* REAL, NEW 2026-09-15 (2) - real, per-desk rows (was always
+         * exactly one fake row). Re-reads game.pdl's desk_N_id/
+         * desk_N_label rows (same n_desks computed above) so every
+         * declared desk shows up as its own clickable row. */
+        off += (size_t)snprintf(ui + off, UIBUF - off, "n_desk_opts=%d\n", n_desks);
+        for (int di = 1; di <= n_desks; di++) {
+            char k_id[32], k_lbl[32];
+            snprintf(k_id, sizeof(k_id), "desk_%d_id", di);
+            snprintf(k_lbl, sizeof(k_lbl), "desk_%d_label", di);
+            char d_id[64] = "", d_lbl[64] = "";
+            read_pdl_kv(game_pdl, k_id, d_id, sizeof(d_id));
+            read_pdl_kv(game_pdl, k_lbl, d_lbl, sizeof(d_lbl));
+            if (!d_id[0]) snprintf(d_id, sizeof(d_id), "desk%d", di);
+            if (!d_lbl[0]) snprintf(d_lbl, sizeof(d_lbl), "Desk %d", di);
+            off += (size_t)snprintf(ui + off, UIBUF - off,
+                "d_%d_id=%s\nd_%d_label=%s\nd_%d_active=%s\n",
+                di - 1, d_id, di - 1, d_lbl, di - 1,
+                strcmp(d_id, active_desk_id) == 0 ? "pchq-menu-active" : "");
+        }
 
         /* MILESTONE C - the <footer> entities bar */
         {

@@ -1,4 +1,4 @@
-scan_time=08:31:50
+scan_time=09:53:10
 view_is_viewer=0
 view_is_new=1
 last_result=added state 'LIVE_TEST2' (NEXT=OFFER) to cursword

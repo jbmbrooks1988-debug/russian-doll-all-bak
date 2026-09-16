@@ -4051,3 +4051,14 @@
 2026-08-20T20:44:23|1|chicken|wander|x:9,y:6
 2026-08-20T20:44:23|2|player|move|tick:2
 2026-08-20T20:44:23|2|chicken|wander|x:9,y:7
+2026-09-15T17:53:50|1|player|move|tick:1
+2026-09-15T17:53:50|1|chicken|wander|x:7,y:7
+2026-09-15T17:53:50|2|player|move|tick:2
+2026-09-15T17:53:50|2|chicken|wander|x:8,y:6
+2026-09-15T17:53:51|3|player|move|tick:3
+2026-09-15T17:53:51|3|chicken|wander|x:8,y:7
+2026-09-15T17:53:51|4|player|move|tick:4
+2026-09-15T17:53:51|5|player|move|tick:5
+2026-09-15T17:53:51|5|chicken|wander|x:9,y:6
+2026-09-15T17:53:53|6|player|move|tick:6
+2026-09-15T17:53:53|6|chicken|wander|x:8,y:7

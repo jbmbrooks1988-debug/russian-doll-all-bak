@@ -771,5 +771,335 @@ real signal, caught once, ended what static analysis alone could not.
 
 ---
 
+## 19. A "re-check on every reparse" path that never gates on its own already-computed change flag re-does full work on every unrelated tick — including a periodic, content-free one
+
+Direct live report (2026-09-13): "all options in tb and bottom bar
+disappear... top reappeared, but not bottom for a while... there was
+no change so why did this happen? even if it is idle or slow cpu, it
+shouldn't do that." The taskbar strip's `reparse_chtpm_if_changed()`
+computes `peer_changed` (a real mtime check on the bottom dock peer's
+own static `.xhtpm` template) up front, specifically so callers can
+skip peer work when the peer hasn't changed — then never checked it:
+both the incremental-diff-success branch and the full-rebuild fallback
+branch unconditionally called `parse_chtpm()` on the peer template
+every single time EITHER of the OTHER two trigger conditions fired
+(`vars_changed` or the header's own mtime), including a periodic,
+completely content-free tick that isn't even about the peer at all.
+
+The strip's own `kh_focus_debug.log` showed this tick firing exactly
+once a minute, driven by the taskbar's clock/date display's own
+`strftime()` update republishing state - hours of consecutive
+`INCREMENTAL_REPARSE ok removed=0` lines, a genuinely successful
+no-op diff every time. The peer re-parse riding along on every one of
+those was pure waste: a real disk read + parse of a file that (per
+this same file's own long-standing comment) never changes again after
+boot, repeated once a minute forever, and every one of those was a
+fresh, independent chance to hit the exact class of transient-read
+race ("bottom tb missing entities") this symptom has already been
+chased down and patched **four separate times** this same week, each
+time via a narrower, different specific mechanism (a dead pid, a
+double-registration kill, an ENOENT race, a content-hash instability
+window) - never by simply asking "does this really need to run again
+right now."
+
+**Why this is easy to miss:** the guard variable already exists,
+already has the right name, already gets computed at the top of the
+function for exactly this purpose - it's very easy to read the
+function as "of course it's gated" without checking that every call
+site downstream actually consults it, especially once the function has
+grown multiple branches (incremental success / diff failure / full
+rebuild) that each independently re-implement "now update the peer
+too."
+
+**Rules:**
+- When a function computes a `*_changed` flag specifically to gate
+  expensive work, grep every place that does the expensive work and
+  confirm each one actually reads the flag - a flag computed but not
+  consulted is worse than no flag at all, because it looks correct on
+  inspection.
+- A periodic, content-free re-publish (a clock tick, a heartbeat, any
+  "nothing really changed" republish) exercising a code path is not
+  free just because the path reports success - if that path does
+  real I/O (a fresh `parse_chtpm()`/disk read) for a sub-part that
+  didn't actually need re-checking, it's real, recurring, avoidable
+  cost AND an avoidable new roll of the dice against the same known
+  transient-failure class, running forever, once a minute, for no
+  reason.
+- Before adding a fifth patch to the same recurring symptom class,
+  check whether an earlier, unrelated-looking "unconditional" call in
+  the same function is simply doing more work than it needs to -
+  simplifying away needless repeated work can close a whole class of
+  timing-dependent bugs that patching the failure mode itself, one
+  occurrence at a time, never fully closes.
+- When a report says "there was no change, why did this happen" and
+  "even under idle/slow CPU it shouldn't do that," take both halves
+  literally: find the actual trigger (here, a once-a-minute clock
+  republish, confirmed via the existing debug log - not guessed), and
+  don't accept "it's just slow sometimes" as an explanation without
+  evidence a human can point to (a log line, a timing number).
+
+---
+
+## 20. "Only touch it when it actually changed" is a real fix for ONE flag but a real regression if a sibling window's data comes from the SAME source and was relying on the flag you just narrowed
+
+Direct live report (2026-09-14): "sword and castle aren't on bottom
+toolbar... they were there for last 15 minutes. then vanished. its the
+same bug we had before." 5th occurrence of the exact "vanishing bottom
+tb entities" bounty (`04-bugs/bug_bounty.md`) - but the mirror image of
+pitfall #19 above, not a repeat of it. #19 was the peer re-parsing TOO
+OFTEN (riding along on unrelated ticks). The fix for that narrowed the
+peer's own gate to `peer_changed` — a real mtime check on the peer's
+*template file* specifically, reasoning (correct, in isolation) that
+the template is static and never touches disk again after boot.
+
+What that reasoning missed: `khtpm_strip_bottom.xhtpm` (the peer) is
+almost entirely `<repeat count="${n_tabs}">` — its RENDERED content is
+100% driven by the same live vars data (`n_tabs`/`tab_N_*`) the
+HEADER's own `vars_changed` marker-gate (`930fd9ba`, the real fix for
+the ORIGINAL version of this bug) already tracks. Narrowing the peer's
+own gate to "only its template file" silently un-coupled it from that
+marker again — for the peer specifically, not the header — because
+"template" and "content" look like the same thing for a static window
+but are NOT for one built entirely out of `${var}` substitution. The
+header kept self-healing on every real data change; the peer quietly
+went back to "never, since the template never moves," and nobody
+noticed until an entity sat still long enough for the divergence to be
+visible (data correct, tab list frozen on whatever was last drawn).
+
+**Rules:**
+- When two sibling render targets (a header + a peer window, a main
+  view + a preview pane, etc.) are ever unified onto ONE real change
+  signal to fix a bug, treat that unification as a single fact about
+  BOTH of them — a later "let's only refresh X when X's own source
+  actually changes" optimization on just one of them needs to ask
+  "does X's own source fully capture every way X's rendered content
+  can go stale," not just "does X's template file's mtime move."
+- A `<repeat count="${var}">`-shaped template has NO static content of
+  its own to have an mtime-relevant "own source" — gating its refresh
+  on its template file's mtime is gating on a signal that structurally
+  cannot ever fire again after boot. If a window's total content is
+  synthesized from vars, its correct "own change" signal IS the vars
+  signal, full stop — there isn't a narrower, cheaper one to find.
+- Before narrowing a shared/unified change-gate for one specific
+  consumer "to avoid unnecessary work," grep every OTHER consumer of
+  that same broad flag and ask whether any of them structurally has no
+  independent staleness source of its own (i.e., are 100% var-driven)
+  — those consumers cannot be narrowed away from the broad flag without
+  silently losing all future self-healing.
+- This bounty's own history (5 occurrences, `04-bugs/bug_bounty.md`)
+  is itself evidence for a general rule: a narrow, targeted fix for
+  THIS specific detection gap is not the same as the symptom class
+  being closed — each fix has closed one real, distinct mechanism and
+  the next one found a different one. Don't declare "fixed once and
+  for all" language true just because the CURRENT known mechanism is
+  patched; verify the fix against the actual live data path (marker
+  growth, published vars, a PNG frame dump), not against "the code now
+  reads right."
+
+---
+
+## 21. "Self-heal the CONTENT of a window" and "self-heal the EXISTENCE of that window" are two separate bugs — fixing one says nothing about the other
+
+Direct live report (2026-09-14, ~1hr after pitfall #20 above, same
+session): "the bottom toolbar is completely gone. i think it died
+again. we have to prevent this bug." Looked exactly like another round
+of the same bounty (`04-bugs/bug_bounty.md`'s "vanishing bottom tb
+entities" entry) - it was not. A raw `xwininfo -root -tree` dump
+(real X server ground truth) showed the header window present, the
+bottom bar's own separate X Window entirely absent - while the process
+was alive, ticking normally, and its own data was 100% correct
+(`n_tabs=2`, right labels, `DOCK_TICK` logging every ~10s like
+nothing was wrong).
+
+The fixes earlier that same day (pitfall #20, marker-gate coupling)
+were all about `g_dock_peer` - the PARSED DATA/tree for the bottom
+bar's content. This bug was one layer lower: `g_dock_peer_win` - the
+actual X Window the content gets drawn INTO. Both are set exactly
+once at startup (`if (g_dock_peer) { XCreateWindow(...) }`, runs
+before the event loop, never revisited), and BOTH are the same real
+shape ("a one-time decision with no later recovery") - but they are
+two structurally independent single points of failure, not one. A
+fix that makes the content self-heal (re-parse on every real vars
+change) does nothing to protect the window that content gets drawn
+into if THAT was the thing that failed to get created.
+
+**Rules:**
+- When a resource is built in two layers - a container (window/
+  buffer/connection) and content that gets loaded/drawn/written into
+  it - a "does this need to be redone" self-heal check on the CONTENT
+  layer does not imply the CONTAINER layer is self-healing too. Ask
+  the question separately for each layer: "if the container itself
+  were missing right now, would anything notice and rebuild it, or
+  would content-refresh logic just keep quietly succeeding into a
+  handle that doesn't correspond to anything real?"
+- A raw ground-truth dump (here, `xwininfo -root -tree`; elsewhere a
+  `/proc` scan, a real DB query, a socket check) beats trusting a
+  process's own internal log/state when diagnosing "X is gone but the
+  process seems fine" - the process's own logs (`DOCK_TICK` firing
+  normally) can be entirely truthful about ITS OWN state while still
+  being wrong about whether the thing it's drawing into still exists.
+- The safe way to add a recovery check for a resource that's normally
+  built once at startup: factor the real creation code into one real,
+  reusable function (not copy it into a second "recovery" copy that
+  can drift from the original), call it once at startup AND on a
+  cheap per-tick liveness probe (here, `XGetWindowAttributes` - a
+  real existence+validity check, not a guess) from the main loop.
+  Keep it a genuine no-op on the common case (resource already exists
+  and is valid) so the check itself never becomes a new source of
+  per-tick cost or risk.
+
+---
+
+---
+
+## 22. A numeric IPC contract between two separate binaries is only as safe as its LEAST-updated copy of the constant it depends on
+
+Direct live report (2026-09-15): "it keeps jumping ahead when mouse
+clicks bottom tb, to next nav." Spent most of a session chasing this
+as a click-coordinate/race bug in the renderer (`khtpm_core_render.c`)
+- reordered the event loop, added debug logging at the actual
+hit-test - and proved, with a real log line, that the renderer's own
+click handling was matching the correct item on every single click.
+The bug was never there.
+
+Real root cause: the taskbar manager (`khtpm_taskbar_manager_main.c`,
+a SEPARATE binary/process from the renderer) decodes a focus-echo code
+the renderer sends it (`6000 + g_focus_nav`, `dock_relay_focus_code()`)
+using its own `KTB_STRIP_N_CELLS` constant to figure out which
+bottom-bar tab that nav number refers to. That constant was hardcoded
+to `15` and never updated when the header template
+(`khtpm_strip_header.xhtpm`) gained a 16th real cell at some earlier
+point - the renderer's own idea of "how many header cells" is always
+computed live from the actual template, so it was correct; only the
+manager's copy had drifted stale. Every focus-echo round trip was
+silently off by exactly one tab from that point on, and the manager's
+own (wrong) answer got applied BACK over the renderer's own (correct)
+click on the very next reparse - so from the outside it looked exactly
+like the click itself was wrong.
+
+**Rules:**
+- When two separate processes/binaries agree on a numeric protocol by
+  each hardcoding the SAME count/offset independently (not by one side
+  deriving it from the other, or both reading one shared source), that
+  number WILL drift the moment either side's real data changes and the
+  other isn't touched in the same commit - there is no mechanism
+  forcing them to move together, only discipline, and discipline
+  fails silently here (no crash, no error, just one-off-wrong output).
+- If a bug's symptom is "the position/value is wrong," check both ends
+  of every process boundary the affected data crosses BEFORE assuming
+  the bug lives in whichever process the user is looking at. The
+  renderer was the visible, clickable thing; the actual stale constant
+  was in a different binary the user never directly interacts with.
+- A real log/debug line placed exactly at the suspected fault point
+  (here, the click hit-test loop) that PROVES the suspected component
+  innocent is worth more than another round of static reading -
+  narrowing "which of the two processes" beats continuing to guess
+  inside the one you already suspect.
+- The actual fix: collapse the duplicated literal to ONE real macro,
+  defined once, that every consumer (including array sizes that used
+  to carry their own independent "matches the constant" comment)
+  derives from - not a second, better-commented hardcoded copy. A
+  comment saying "matches KTB_STRIP_N_CELLS" next to a literal is not
+  a guarantee, just a promise nothing enforces; the array literal
+  drifted anyway despite exactly that comment already being there
+  (see the old `cell_id_pos[15] /* matches KTB_STRIP_N_CELLS */`).
+- Longer-term architectural note (from the same conversation, not yet
+  acted on): this whole class of bug is a direct cost of an IPC
+  protocol built from bare integer code RANGES (`KSC_TAB_BASE 2000`,
+  `KSC_SHORTCUT_BASE 3000`, `KSC_SET_FOCUS_BASE 6000`, etc.) that both
+  sides must independently know the boundaries of, rather than a
+  self-describing contract (named events, or the receiver asking the
+  sender for the count instead of assuming it). The magic-range
+  convention is simple and debuggable (a human can read a bare number
+  in a relay file) but it is exactly this bug's own root cause,
+  structurally, and will recur again for any other range unless/until
+  it's replaced.
+
+---
+
+## 23. No custom X error handler means ANY X protocol error (a bad Visual/Drawable depth match, anywhere) silently exit(1)s the whole process — "it just disappears" is a real X error, not a crash you'll see
+
+Direct live report (2026-09-15): "clicking cursword now deletes it
+from screen !? it used to draw a yellow circle around it." Burned a
+huge amount of investigation before finding the real cause: a full
+wholesale swap of `tp_main()` (the entire tile/entity-mode function)
+against a known-good 09-04 snapshot did NOT fix it — proving the bug
+wasn't in that function at all, despite it owning 100% of cursword's
+own click-handling, arm/disarm, and shape-mask code. A taskbar-manager
+dedup-check revert (a real, separate, correct fix for a different
+concern) also didn't fix it. Neither swap/revert helped because the
+actual bug lived in neither of those places.
+
+**Real root cause, found only via a live `strace -f -tt -e trace=all`
+on the actual click**: no signal was ever delivered to the process.
+It called `exit_group(1)` on itself, and the syscall trace right
+before that showed the real reason printed to stderr:
+```
+X Error of failed request: BadMatch
+Major opcode: RENDER, Minor opcode: RenderCreatePicture
+```
+`khtpm_core_render.c` installs no custom `XSetErrorHandler()` — so
+Xlib's own DEFAULT error handler runs on any synchronous X protocol
+error, which prints the error and calls `exit(1)`. This is true for
+EVERY khtpm-family window, not just cursword — any BadMatch/BadValue/
+etc. anywhere in the codebase kills the whole process silently, with
+no crash dialog, no core dump (even with `ulimit -c unlimited` set, as
+cursword's own launcher already does — a clean `exit()` produces no
+core, only a real signal-death does), and no stack trace. From the
+outside this looks EXACTLY like "the window just disappeared," not
+like a crash — there is no visible difference between "closed
+cleanly" and "X error killed it" unless you strace it live.
+
+The actual BadMatch: `popup_draw_text()` (a shared helper used by
+every popup/context-menu/debug-text draw in the file) hardcoded
+`DefaultVisual(dpy, screen)`/`DefaultColormap(dpy, screen)` — correct
+for every normal-depth window, but cursword is the one entity in the
+house with a real 32-bit ARGB visual (`have_argb_visual`), and its
+own debug-log lines (drawn ONLY while armed — never reachable via
+right-click, which is why right-click always worked fine) pass its
+32-bit ARGB pixmap into this function. `XftDrawCreate()` on a 32-bit
+Drawable with a 24-bit Visual is a genuine, unconditional depth
+mismatch — BadMatch on RenderCreatePicture, every single time.
+
+**Rules:**
+- If a khtpm-family window "just disappears" with no error dialog, no
+  taskbar entry, nothing — do NOT assume it's a click-handling/logic
+  bug in whatever function visibly owns the feature. First rule it in
+  or out with a live `strace -f -tt -e trace=signal,exit_group,kill`
+  (cheap, fast) — a real `exit_group(N)` with NO preceding signal
+  means the process exited itself, which immediately rules out "some
+  other process killed it" AND directs you to look for a `return`/
+  `exit()` path, not a kill/SIGSEGV. If that's inconclusive, a full
+  `-e trace=all` on the next repro shows the real stderr output
+  (including any X error) in the syscalls right before the exit.
+- A full-function swap against a known-good reference version is a
+  valid, fast way to RULE OUT a function (if the bug survives an
+  identical swap, it's proven to live in something that function
+  calls, not the function itself) — but don't stop there assuming
+  it's disproven the whole file. This bug lived in a shared helper
+  defined OUTSIDE `tp_main()`, called both by `tp_main()` and by
+  completely unrelated default-mode code — the swap correctly proved
+  "not `tp_main()`'s own logic" while the real bug sat one call away.
+- Any function that creates an `XftDraw`/calls `XRenderCreatePicture`
+  against a caller-supplied `Drawable` must not assume that Drawable
+  matches the screen's default Visual/Colormap/depth — query the
+  Drawable's REAL depth (`XGetGeometry`) and pick a real matching
+  Visual (`XMatchVisualInfo`) when it differs, exactly the way
+  `draw_glyph_rgb()`'s own real vis/cm parameters already had to (see
+  that function's own header comment — the exact same lesson, learned
+  once already for a different function, and still missed here).
+  `popup_draw_text()` is now fixed generically (any depth mismatch,
+  any future ARGB caller), not just patched for cursword specifically.
+- Real, still-open house-wide follow-up (not done as part of this
+  fix, flagged here so it isn't lost): installing a real custom
+  `XSetErrorHandler()` across khtpm-family windows — even just one
+  that logs the error to a real file before calling exit — would have
+  cut this entire investigation from most of a session down to minutes,
+  and would apply to every future X protocol error, not just this one
+  call site. Xlib's default handler's exit-with-no-trace behavior is a
+  real, house-wide blind spot, not unique to cursword.
+
+---
+
 *Append new entries here as they're found — this file exists so the
 next session doesn't re-discover the same mistake from scratch.*

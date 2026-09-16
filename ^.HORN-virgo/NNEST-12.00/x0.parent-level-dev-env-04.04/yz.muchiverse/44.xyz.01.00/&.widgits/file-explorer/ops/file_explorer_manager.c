@@ -33,7 +33,14 @@ typedef struct {
     char name[MAX_NAME];
     char type[4];
     char size[16];
+    char icon[8];
 } Entry;
+
+#define MAX_CRUMBS 32
+typedef struct {
+    char label[MAX_NAME];
+    char path[MAX_PATH];
+} Crumb;
 
 typedef struct {
     Entry entries[MAX_ENTRIES];
@@ -42,12 +49,72 @@ typedef struct {
     char mode[10];
     char pending_filename[MAX_NAME];
     int last_seq;
+    Crumb crumbs[MAX_CRUMBS];
+    int n_crumbs;
+    int grid_view; /* 0=list (default), 1=grid - REAL, NEW 2026-09-15, direct live report ("we wanted list/grid toggle") */
+    int has_back; /* REAL, NEW 2026-09-15 - Back is its own toolbar button now, not a list entry; see list_directory()'s own comment. */
 } State;
+
+/* REAL, NEW 2026-09-15, direct live report ("show current file path,
+ * as button of each path that allows clicking and will jump to that
+ * dir") - splits current_dir into real, individually-clickable
+ * ancestor buttons ("Home" for the very root shown, then one per real
+ * path segment down to the current dir itself), each one's own real
+ * full absolute path stored so a click can jump straight there - no
+ * repeated parent-walking needed. */
+static void build_crumbs(State *state) {
+    state->n_crumbs = 0;
+    const char *p = state->current_dir;
+    if (*p != '/') return;
+    snprintf(state->crumbs[0].path, MAX_PATH, "/");
+    snprintf(state->crumbs[0].label, MAX_NAME, "/");
+    state->n_crumbs = 1;
+    p++;
+    char accum[MAX_PATH];
+    snprintf(accum, MAX_PATH, "/");
+    while (*p && state->n_crumbs < MAX_CRUMBS) {
+        const char *seg_end = strchr(p, '/');
+        size_t seg_len = seg_end ? (size_t)(seg_end - p) : strlen(p);
+        if (seg_len > 0) {
+            char seg[MAX_NAME];
+            size_t n = seg_len < MAX_NAME - 1 ? seg_len : MAX_NAME - 1;
+            memcpy(seg, p, n);
+            seg[n] = '\0';
+            size_t accum_len = strlen(accum);
+            if (accum_len > 1) snprintf(accum + accum_len, MAX_PATH - accum_len, "/");
+            accum_len = strlen(accum);
+            snprintf(accum + accum_len, MAX_PATH - accum_len, "%s", seg);
+            Crumb *c = &state->crumbs[state->n_crumbs];
+            snprintf(c->label, MAX_NAME, "%s", seg);
+            snprintf(c->path, MAX_PATH, "%s", accum);
+            state->n_crumbs++;
+        }
+        if (!seg_end) break;
+        p = seg_end + 1;
+    }
+}
 
 int is_readable_dir(const char *path) {
     struct stat st;
     if (stat(path, &st) != 0) return 0;
     return S_ISDIR(st.st_mode);
+}
+
+/* REAL, NEW 2026-09-15, direct live report ("the file-browser widgit
+ * is currently ugly and hard to use... a big DIR emoji for dirs, a
+ * file emoji for file types and a disk emoji for 'house project'
+ * type, that has a .pdl and is actually meant to be run from the
+ * picker"). A "house project" dir is one this house's own real launch
+ * convention already recognizes as a runnable app/game - `toy.pdl` is
+ * that exact real marker (the same file DSR/db-hq-pal/chat-hai/every
+ * other real HQ app uses, per khtpm-house-standards' own "toy.pdl
+ * convention" - confirmed against this session's own DSR work, not
+ * guessed). A plain directory with no toy.pdl is just a folder. */
+int has_toy_pdl(const char *dir_path) {
+    char toy_path[MAX_PATH];
+    snprintf(toy_path, MAX_PATH, "%s/toy.pdl", dir_path);
+    struct stat st;
+    return stat(toy_path, &st) == 0 && S_ISREG(st.st_mode);
 }
 
 void get_parent_dir(const char *path, char *parent) {
@@ -72,12 +139,21 @@ void format_size(off_t size, char *buf) {
     }
 }
 
+/* REAL, NEW 2026-09-15 - PRJ (a "house project" dir, see has_toy_pdl()
+ * above) is still folder-shaped for sorting purposes - it sorts with
+ * plain DIR entries, before any real file, not alphabetically mixed
+ * in with files just because its own type string isn't "DIR". */
+static int is_dir_like(const char *type) {
+    return strcmp(type, "DIR") == 0 || strcmp(type, "PRJ") == 0;
+}
+
 int entry_cmp(const void *a, const void *b) {
     const Entry *ea = (const Entry *)a;
     const Entry *eb = (const Entry *)b;
 
-    if (strcmp(ea->type, "DIR") == 0 && strcmp(eb->type, "FIL") == 0) return -1;
-    if (strcmp(ea->type, "FIL") == 0 && strcmp(eb->type, "DIR") == 0) return 1;
+    int a_dir = is_dir_like(ea->type), b_dir = is_dir_like(eb->type);
+    if (a_dir && !b_dir) return -1;
+    if (!a_dir && b_dir) return 1;
 
     return strcmp(ea->name, eb->name);
 }
@@ -104,10 +180,17 @@ void list_directory(const char *dir, State *state) {
         state->entries[state->count].name[MAX_NAME - 1] = '\0';
 
         if (S_ISDIR(st.st_mode)) {
-            strcpy(state->entries[state->count].type, "DIR");
+            if (has_toy_pdl(full_path)) {
+                strcpy(state->entries[state->count].type, "PRJ");
+                strcpy(state->entries[state->count].icon, "\xf0\x9f\x92\xbe"); /* 💾 */
+            } else {
+                strcpy(state->entries[state->count].type, "DIR");
+                strcpy(state->entries[state->count].icon, "\xf0\x9f\x93\x81"); /* 📁 */
+            }
             strcpy(state->entries[state->count].size, "");
         } else {
             strcpy(state->entries[state->count].type, "FIL");
+            strcpy(state->entries[state->count].icon, "\xf0\x9f\x93\x84"); /* 📄 */
             format_size(st.st_size, state->entries[state->count].size);
         }
 
@@ -118,15 +201,19 @@ void list_directory(const char *dir, State *state) {
 
     qsort(state->entries, state->count, sizeof(Entry), entry_cmp);
 
-    if (strcmp(dir, "/") != 0 && state->count < MAX_ENTRIES) {
-        for (int i = state->count; i > 0; i--) {
-            state->entries[i] = state->entries[i-1];
-        }
-        strcpy(state->entries[0].name, "..");
-        strcpy(state->entries[0].type, "DIR");
-        strcpy(state->entries[0].size, "");
-        state->count++;
-    }
+    /* REAL FIX 2026-09-15, direct live report ("can the back button and
+     * grid view be on same row, instead of back being tied to other
+     * files? get it?") - Back used to be a synthetic ".. Back" row
+     * INSIDE state->entries[], scrolling and sorting along with real
+     * files/dirs. Real fix: Back is no longer a list entry at all - it
+     * is state->has_back (dir != "/"), published as its own flag and
+     * rendered as a real, separate toolbar <item> next to the grid/list
+     * toggle (file-explorer-pal.xhtpm's own top row), dispatched via
+     * FE_BACK -> cmd "BACK" (handled directly, same get_parent_dir()
+     * call the old ".." row used to trigger through ENTRY:). */
+    state->has_back = strcmp(dir, "/") != 0;
+
+    build_crumbs(state);
 }
 
 void write_ui_file(const char *package_dir, State *state,
@@ -143,13 +230,38 @@ void write_ui_file(const char *package_dir, State *state,
      * save_row}" to stay hidden entirely in LOAD mode. */
     fprintf(f, "show_save_row=%d\n", strcmp(state->mode, "SAVE") == 0 ? 1 : 0);
     fprintf(f, "show_load_hint=%d\n", strcmp(state->mode, "SAVE") == 0 ? 0 : 1);
+    fprintf(f, "is_list_view=%d\n", state->grid_view ? 0 : 1);
+    fprintf(f, "is_grid_view=%d\n", state->grid_view ? 1 : 0);
+    fprintf(f, "view_toggle_label=%s\n", state->grid_view ? "List View" : "Grid View");
+    fprintf(f, "has_back=%d\n", state->has_back);
+    /* REAL, NEW 2026-09-15 - the renderer's own real swatch-grid layout
+     * path (khtpm_core_render.c, the SAME one palettes-emojis.xhtpm
+     * already uses) triggers for the WHOLE page the instant ANY real
+     * <item class="swatch"> exists anywhere in it - not per-region,
+     * not show=-gated (that check only cares whether the element is
+     * PRESENT in the tree at all). So list mode and grid mode can't be
+     * two show=-toggled sibling regions of the same page the way the
+     * status/action boxes elsewhere this session were - the grid
+     * repeat's own count must be genuinely 0 (producing zero real
+     * <item class="swatch"> elements) whenever grid mode is OFF, or
+     * every list-mode render would silently flip into the swatch-grid
+     * branch instead (which has no real <tabbar>/<scrolllist> handling
+     * of its own - breadcrumbs and the file list would both vanish).
+     * n_entries itself (the scrolllist's own count) stays the real
+     * full count always - only the grid repeat's own count is gated. */
+    fprintf(f, "n_grid_entries=%d\n", state->grid_view ? state->count : 0);
     fprintf(f, "dir=%s\n", state->current_dir);
+    fprintf(f, "n_crumbs=%d\n", state->n_crumbs);
+    for (int i = 0; i < state->n_crumbs; i++) {
+        fprintf(f, "crumb_%d_label=%s\n", i, state->crumbs[i].label);
+    }
     fprintf(f, "n_entries=%d\n", state->count);
 
     for (int i = 0; i < state->count; i++) {
         fprintf(f, "entry_%d_name=%s\n", i, state->entries[i].name);
         fprintf(f, "entry_%d_type=%s\n", i, state->entries[i].type);
         fprintf(f, "entry_%d_size=%s\n", i, state->entries[i].size);
+        fprintf(f, "entry_%d_icon=%s\n", i, state->entries[i].icon);
     }
 
     fprintf(f, "filename=%s\n", state->pending_filename);
@@ -322,11 +434,7 @@ int main(int argc, char *argv[]) {
 
             if (strcmp(e->type, "DIR") == 0) {
                 char new_dir[MAX_PATH];
-                if (strcmp(e->name, "..") == 0) {
-                    get_parent_dir(state.current_dir, new_dir);
-                } else {
-                    snprintf(new_dir, MAX_PATH, "%s/%s", state.current_dir, e->name);
-                }
+                snprintf(new_dir, MAX_PATH, "%s/%s", state.current_dir, e->name);
 
                 if (is_readable_dir(new_dir)) {
                     strncpy(state.current_dir, new_dir, MAX_PATH - 1);
@@ -346,6 +454,32 @@ int main(int argc, char *argv[]) {
                     state.pending_filename[MAX_NAME - 1] = '\0';
                     write_ui_file(package_dir, &state, "", "");
                 }
+            }
+        } else if (strcmp(cmd, "VIEWMODE") == 0) {
+            state.grid_view = !state.grid_view;
+            write_ui_file(package_dir, &state, "", "");
+        } else if (strcmp(cmd, "BACK") == 0) {
+            /* REAL, NEW 2026-09-15 - same get_parent_dir() call the old
+             * synthetic ".. Back" list entry used to trigger through
+             * ENTRY:0, now its own direct toolbar action. */
+            char new_dir[MAX_PATH];
+            get_parent_dir(state.current_dir, new_dir);
+            if (is_readable_dir(new_dir)) {
+                strncpy(state.current_dir, new_dir, MAX_PATH - 1);
+                state.current_dir[MAX_PATH - 1] = '\0';
+                list_directory(state.current_dir, &state);
+                write_ui_file(package_dir, &state, "", "");
+            }
+        } else if (strncmp(cmd, "CRUMB:", 6) == 0) {
+            /* REAL, NEW 2026-09-15 - jump straight to a real ancestor
+             * path a breadcrumb button carries (build_crumbs()'s own
+             * real per-segment path, not re-derived by walking "..").  */
+            int idx = atoi(cmd + 6);
+            if (idx >= 0 && idx < state.n_crumbs && is_readable_dir(state.crumbs[idx].path)) {
+                strncpy(state.current_dir, state.crumbs[idx].path, MAX_PATH - 1);
+                state.current_dir[MAX_PATH - 1] = '\0';
+                list_directory(state.current_dir, &state);
+                write_ui_file(package_dir, &state, "", "");
             }
         } else if (strncmp(cmd, "SAVEAS:", 7) == 0) {
             const char *name = cmd + 7;

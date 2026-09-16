@@ -656,6 +656,81 @@ static void kh_draw_canvas(Elem *e) {
     }
 }
 
+/* REAL, NEW 2026-09-05 (mouse drag-select for cli_io/text_area) -
+ * factored out of draw_elem()'s own inline nav-badge-width computation
+ * (kept as a real, small, deliberate duplicate against draw_elem()'s
+ * own copy rather than a bigger refactor, since draw_elem() needs the
+ * font handle again later for the actual badge draw). Used by
+ * kh_input_offset_at_click() (khtpm_core_render.c) to know where past
+ * the nav badge a click's real text-relative x actually starts.
+ *
+ * REAL, RESTORED 2026-09-14 - this function (and kh_text_offset_at_x
+ * below) were silently dropped from this file during a concurrent-
+ * agent commit collision (c9b0b7ff, "network bar V4") that overwrote
+ * this file from a copy predating this feature - reapplied verbatim
+ * from the original commit (13aba0a1) on top of that commit's own
+ * real <bar> draw work, not reverting it. */
+static int kh_elem_badge_label_x(Elem *e) {
+    int pad = e->style.has_padding ? e->style.padding : 4;
+    int label_x = e->x + pad;
+    int badge_label_x = label_x;
+    if (e->nav_index > 0) {
+        char prefix[8];
+        int is_scope = (g_dbhq_active_scope_root && e == g_dbhq_active_scope_root) ||
+                       (g_default_input_elem && e->id[0] && strcmp(e->id, g_default_input_elem->id) == 0) ||
+                       (g_default_active_scope_id[0] && e->id[0] &&
+                        strcmp(e->id, g_default_active_scope_id) == 0) ||
+                       (g_default_scope_confine && g_default_active_tab_id[0] && e->id[0] &&
+                        strcmp(e->id, g_default_active_tab_id) == 0) ||
+                       (g_interact_relay_on && e->relay[0]);
+        elem_cursor_prefix(e, g_focus_nav, is_scope, prefix, sizeof(prefix));
+        char nav_badge[16];
+        snprintf(nav_badge, sizeof(nav_badge), "%s%d.", prefix, e->nav_index);
+        static char badge_cached_spec2[48] = "";
+        static XftFont *badge_cached_font2 = NULL;
+        char numspec[48];
+        snprintf(numspec, sizeof(numspec), "DejaVu Sans Mono:pixelsize=%d", scaled(9));
+        XftFont *nav_badge_font;
+        if (badge_cached_font2 && strcmp(badge_cached_spec2, numspec) == 0) {
+            nav_badge_font = badge_cached_font2;
+        } else {
+            if (badge_cached_font2) XftFontClose(dpy, badge_cached_font2);
+            nav_badge_font = XftFontOpenName(dpy, screen, numspec);
+            if (!nav_badge_font) { snprintf(numspec, sizeof(numspec), "DejaVu Sans:pixelsize=%d", scaled(9)); nav_badge_font = XftFontOpenName(dpy, screen, numspec); }
+            badge_cached_font2 = nav_badge_font;
+            snprintf(badge_cached_spec2, sizeof(badge_cached_spec2), "%s", numspec);
+        }
+        if (nav_badge_font) {
+            XGlyphInfo nav_badge_ext;
+            XftTextExtentsUtf8(dpy, nav_badge_font, (const FcChar8 *)nav_badge, (int)strlen(nav_badge), &nav_badge_ext);
+            badge_label_x = label_x + nav_badge_ext.width + 5;
+        }
+    }
+    return badge_label_x;
+}
+
+/* REAL, NEW 2026-09-14 - same investigation as kh_elem_badge_label_x()
+ * above: the byte offset into a UTF-8 string whose glyph boundary is
+ * closest to target_x pixels in - a linear XftTextExtentsUtf8 scan,
+ * real but O(n) per call (n = string length), acceptable for a single
+ * click/drag-motion event, not a per-frame hot path. */
+static int kh_text_offset_at_x(XftFont *f, const char *text, int target_x) {
+    if (!f || !text) return 0;
+    if (target_x <= 0) return 0;
+    int len = (int)strlen(text);
+    XGlyphInfo ext;
+    XftTextExtentsUtf8(dpy, f, (const FcChar8 *)text, len, &ext);
+    if (target_x >= ext.width) return len;
+    int best = 0, best_d = target_x;
+    for (int i = 0; i <= len; i++) {
+        XGlyphInfo e2;
+        XftTextExtentsUtf8(dpy, f, (const FcChar8 *)text, i, &e2);
+        int d = target_x - (int)e2.width; if (d < 0) d = -d;
+        if (d <= best_d) { best_d = d; best = i; }
+    }
+    return best;
+}
+
 static void draw_elem(Elem *e, int hover_id_hash) {
     (void)hover_id_hash;
     /* REAL FIX 2026-08-29 (EVENTS-HQ-RENDER-UNIFICATION-PLAN.md's own
@@ -739,6 +814,50 @@ static void draw_elem(Elem *e, int hover_id_hash) {
         for (int i = 0; i < bw; i++)
             XDrawRectangle(dpy, buf, gc, e->x + i, e->y + i, e->w - 1 - 2 * i, e->h - 1 - 2 * i);
     }
+    /* REAL, NEW 2026-09-14 (network-browser video V4 "Nav row with
+     * play/pause + progress" request) - a real, generic `<bar>` element:
+     * progress/playhead strip (see Elem's own bar_value/bar_max comment
+     * in khtpm_render_core.c). The element's own bg (CSS or bg= override
+     * above) is the TRACK; the fill is value/max of the foreground width;
+     * a 1px bright playhead line marks the fill edge; an optional centered
+     * label (the v1 consumer publishes "0:07 / 0:18" time text) overlays
+     * the middle. max<=0 draws track-only (zero fill) - every existing
+     * element is untouched because nothing else ever sets bar_max. */
+    if (strcmp(e->tag, "bar") == 0) {
+        if (!e->style.has_bg_color) {
+            XSetForeground(dpy, gc, alloc_pixel("#222222"));
+            XFillRectangle(dpy, buf, gc, e->x, e->y, e->w, e->h);
+        }
+        if (e->bar_max > 0) {
+            int frac = e->bar_value;
+            if (frac < 0) frac = 0;
+            if (frac > e->bar_max) frac = e->bar_max;
+            int fill_px = (int)((long long)e->w * frac / e->bar_max);
+            if (fill_px > 0) {
+                XSetForeground(dpy, gc, alloc_pixel(e->style.has_fg_color ? e->style.fg_color : "#2f8f5f"));
+                XFillRectangle(dpy, buf, gc, e->x, e->y, (unsigned)fill_px, (unsigned)e->h);
+                /* 1px bright playhead at the fill edge (visible even when
+                 * value==max - the trailing edge of the last pixel). */
+                XSetForeground(dpy, gc, alloc_pixel("#ffcc00"));
+                int px = e->x + fill_px - 1;
+                if (px < e->x) px = e->x;
+                XDrawLine(dpy, buf, gc, px, e->y, px, e->y + e->h);
+            }
+        }
+        if (e->label[0]) {
+            XftFont *font = font_for(&e->style);
+            const char *def_fg = (window_is_dock() && kh_hex_luma(g_theme_bg) > 140) ? "#1c1c1c" : "#cccccc";
+            XftColor col = xft_color(e->style.has_fg_color ? e->style.fg_color : def_fg);
+            XGlyphInfo ext;
+            XftTextExtentsUtf8(dpy, font, (const FcChar8 *)e->label, (int)strlen(e->label), &ext);
+            int lx = e->x + (e->w - ext.width) / 2;
+            if (lx < e->x) lx = e->x;
+            int ly = e->y + (e->h + (font->ascent - font->descent)) / 2;
+            draw_text_emoji(font, &col, lx, ly, e->label);
+            XftColorFree(dpy, DefaultVisual(dpy, screen), cmap, &col);
+        }
+        return;
+    }
     if (strcmp(e->tag, "tab") == 0 && e->active && !e->style.has_bg_color) {
         XSetForeground(dpy, gc, alloc_pixel("#2a2a2a"));
         XFillRectangle(dpy, buf, gc, e->x, e->y, e->w, e->h);
@@ -748,7 +867,7 @@ static void draw_elem(Elem *e, int hover_id_hash) {
         XFillRectangle(dpy, buf, gc, e->x, e->y, e->w, e->h);
     }
     if (e->nav_index > 0 && e->nav_index == g_focus_nav) {
-        XSetForeground(dpy, gc, alloc_pixel("#ff8c00"));
+        XSetForeground(dpy, gc, alloc_pixel(g_theme_accent));
         /* The focus box is a 1px halo drawn just OUTSIDE the element
          * (x-1..x+w, y-1..y+h) - correct for every compact <item>,
          * dropdown row, strip cell, etc., and how it has always
@@ -839,8 +958,8 @@ static void draw_elem(Elem *e, int hover_id_hash) {
                 snprintf(status_line, sizeof(status_line), "%s%d. jump: %s_", prefix, e->nav_index, g_default_input_elem->grid_jump_buffer);
             else
                 snprintf(status_line, sizeof(status_line), "%s%d.", prefix, e->nav_index);
-            const char *badge_fg = armed ? (edit_mode ? "#ffcc00" : "#ff8c00") :
-                                    (e->nav_index == g_focus_nav ? "#ff8c00" : "#888888");
+            const char *badge_fg = armed ? (edit_mode ? "#ffcc00" : g_theme_accent) :
+                                    (e->nav_index == g_focus_nav ? g_theme_accent : "#888888");
             XftColor bcol = xft_color(badge_fg);
             draw_text_emoji(gfont, &bcol, e->x + 2, e->y + gfont->ascent + 1, status_line);
             XftColorFree(dpy, DefaultVisual(dpy, screen), cmap, &bcol);
@@ -915,7 +1034,7 @@ static void draw_elem(Elem *e, int hover_id_hash) {
              * badges, not one. The pending jump buffer (state 0) is
              * shown in the real status row above, not here - see that
              * row's own comment for why. */
-            XSetForeground(dpy, gc, alloc_pixel(edit_mode ? "#ffcc00" : "#ff8c00"));
+            XSetForeground(dpy, gc, alloc_pixel(edit_mode ? "#ffcc00" : g_theme_accent));
             XDrawRectangle(dpy, buf, gc, hx, hy, CELL_W_PX, CELL_H_PX);
             if (edit_mode) {
                 /* The one real cell being edited shows its own live
@@ -1299,8 +1418,24 @@ static void draw_elem(Elem *e, int hover_id_hash) {
          * needs to track it for readability, not stay hardcoded. Only
          * when the item has no explicit CSS fg_color of its own -
          * an explicit fg_color is a deliberate per-element choice,
-         * left alone. */
-        const char *default_fg = (window_is_dock() && kh_hex_luma(g_theme_bg) > 140) ? "#1c1c1c" : "#cccccc";
+         * left alone.
+         *
+         * REAL FIX 2026-09-15, direct live report ("the font should be
+         * using secondary color from user color settings picker, or
+         * they will never match, this should be a layout renderer
+         * standard") - g_theme_fg IS that user-picked color (loaded
+         * straight from #.desktop/livedesk_theme.pdl's own `fg` row,
+         * the same value the color picker writes); every unstyled
+         * item/text label house-wide now defaults to it instead of a
+         * flat "#cccccc" a per-widget CSS file had to override by hand
+         * to ever match. Dock's own light-bg readability override above
+         * still wins when it applies (a real, narrower exception, not
+         * touched here); off-dock this is now g_theme_fg, with
+         * "#cccccc" only as the literal fallback if the theme file
+         * hasn't loaded a fg value yet. */
+        const char *default_fg = (window_is_dock() && kh_hex_luma(g_theme_bg) > 140)
+                                      ? "#1c1c1c"
+                                      : (g_theme_fg[0] ? g_theme_fg : "#cccccc");
         XftColor col = xft_color(e->style.has_fg_color ? e->style.fg_color : default_fg);
         XGlyphInfo extents;
         XftTextExtentsUtf8(dpy, font, (const FcChar8 *)shown_label, (int)strlen(shown_label), &extents);
@@ -1553,9 +1688,38 @@ static void draw_elem(Elem *e, int hover_id_hash) {
             XSetForeground(dpy, gc, alloc_pixel("#141414"));
             XFillRectangle(dpy, buf, gc, chip_x0, chip_y0, (unsigned)chip_w, (unsigned)chip_h);
             chip_drawn = 1;
-        } else if ((e->sprite[0] || is_swatch_tile) && e->y >= 16) {
+        } else if ((e->sprite[0] || is_swatch_tile) && e->y >= 16 && !elem_has_class(e, "dock-cell")) {
             /* Sprite tiles and swatch-picker tiles: draw badge ABOVE the tile
-             * with a dark backing chip for contrast. */
+             * with a dark backing chip for contrast.
+             *
+             * REAL FIX 2026-09-15, direct live report ("navigating the
+             * bottom tb and pager, it jumps index after a while and
+             * also the pager elements disappeared... pc-hq's same
+             * bottom tb pager work fine"): reproduced live - opening
+             * the dock's second row (a real sprite-bearing dock-cell
+             * at y=45, e->y>=16) made THIS branch fire and draw its
+             * badge ABOVE the tile (numy_above = e->y - gap_margin -
+             * descent), landing back inside ROW 1's own box - the
+             * dock strip packs rows with ZERO vertical gap
+             * (DOCK_BAR_H per row, no margin), unlike the swatch/
+             * palette grids this branch was written for, which DO
+             * have real vertical spacing between rows for an
+             * above-tile badge to sit in. Every row-2+ dock-cell's
+             * own badge bled up into the row above it, visually
+             * "stealing" that space while row 2 itself looked
+             * unnumbered - not a nav-index bug at all (the underlying
+             * data, read straight from the frame file, was always
+             * correct: sequential 17..35, row 2 genuinely at y=45).
+             * The "+/- pager disappeared" half of the same report was
+             * this same misdraw pushing the badge chip (and the real
+             * separator line drawn right after) into row 1's paint
+             * pass, visually burying the pager off in the noise - the
+             * pager's own real Elem/frame-file entry was never
+             * actually missing (confirmed live: still present, still
+             * numbered, in every dump taken). dock-cell rows exclude
+             * themselves from this branch and fall through to the
+             * general inline chip below instead, matching row 1's own
+             * already-correct placement. */
             int chip_pad = 1;
             int gap_margin = 2;
             int numy_above = e->y - gap_margin - nav_badge_font->descent;
@@ -1615,8 +1779,8 @@ static void draw_elem(Elem *e, int hover_id_hash) {
              * element contrast calculation needed anywhere. */
             const char *badge_fg = "#cccccc";
             if (nav_badge[1] == '^') badge_fg = "#ffd24a";
-            else if (nav_badge[1] == '>') badge_fg = "#ff8c00";
-            else if (focused) badge_fg = "#ff8c00";
+            else if (nav_badge[1] == '>') badge_fg = g_theme_accent;
+            else if (focused) badge_fg = g_theme_accent;
             XftColor numcol = xft_color(badge_fg);
             XftDrawStringUtf8(xftdraw_buf, &numcol, nav_badge_font, draw_x, numy, (const FcChar8 *)nav_badge, (int)strlen(nav_badge));
             XftColorFree(dpy, DefaultVisual(dpy, screen), cmap, &numcol);

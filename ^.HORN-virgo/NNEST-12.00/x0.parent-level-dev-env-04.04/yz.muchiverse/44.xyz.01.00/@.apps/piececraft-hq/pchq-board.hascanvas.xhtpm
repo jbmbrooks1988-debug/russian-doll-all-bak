@@ -82,7 +82,16 @@
          same real stub slots (action="void", present for layout/nav
          parity only, no dispatch yet), NOT wired to anything new. -->
     <item id="tb-menu" class="pchq-tb quiet" label="Menu" action="void"/>
-    <item id="tb-player" class="pchq-tb quiet" label="Player" action="void"/>
+    <!-- REAL FIX 2026-09-15, direct live correction ("its actually
+         player control for game start stop... its the same yes [as
+         PLAY-MODE-ENTITY-HARNESS-DESIGN.md's Play Mode]") - a real,
+         clickable toggle now, same house-wide flag the desktop
+         taskbar's own "8.player" menu already writes
+         (#.desktop/khtpm_play_mode.state.txt). Not the clock/tick
+         daemon (a separate, always-running thing). No longer "quiet"
+         - this is a real button now, not a passive readback. -->
+    <item id="tb-player" class="pchq-tb" label="${player_label}"
+          action="'${HOUSE}/@.apps/piececraft-hq/ops/pchq_board_action.sh' '${bv_session}' 'player'"/>
     <item id="tb-clock" class="pchq-tb quiet" label="${clock}" action="void"/>
 
     <!-- (File dropdown removed 2026-09-09 - File goes straight to the

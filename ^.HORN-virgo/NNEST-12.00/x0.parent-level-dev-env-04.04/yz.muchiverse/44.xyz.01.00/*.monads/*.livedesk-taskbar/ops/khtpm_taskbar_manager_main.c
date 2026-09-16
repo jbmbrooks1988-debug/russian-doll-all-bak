@@ -813,10 +813,23 @@ static void dispatch_code(KtbState *s, int code) {
         }
         if (s->hq_quit_requested) {
             /* see the identical block above for why this no longer
-             * kill()s getppid() (2026-09-07 logout regression fix). */
+             * kill()s getppid() (2026-09-07 logout regression fix).
+             *
+             * REAL FIX 2026-09-15 (6), direct live report ("u need to
+             * quit cursword, its still not on 1.hq quit kill list") -
+             * this is a SECOND, separate X.quit trigger site (mouse
+             * click on the HQ header cell, vs. the keyboard-shortcut
+             * site above) that was missing ktb_reap_launched() - the
+             * one real call that actually kills cursword (and every
+             * other tb-launched HQ window/toy) on explicit quit
+             * (2026-09-09's own fix, see that function's header
+             * comment). The keyboard path got it, this mouse path
+             * never did - a real, silent gap between two code paths
+             * that are supposed to do the exact same thing on quit. */
             s->hq_quit_requested = 0;
             ktb_quit_and_save(s);
             ktb_stop_strip_renderers(s->house_root);
+            ktb_reap_launched(s->house_root);
             g_running = 0;
         }
         return;
@@ -846,7 +859,7 @@ static void dispatch_code(KtbState *s, int code) {
              * entity cells (n_tabs) FOLLOWED BY hq-window cells
              * (n_hq_wins) - both are positionally navigable, so clamp
              * against the combined count, not n_tabs alone. */
-            if (t >= 0 && t < s->n_tabs + s->n_hq_wins) { s->strip_focus_cell = -1; s->tab_focus_idx = t; }
+            if (t >= 0 && t < s->n_tabs + s->n_hq_wins + KTB_TAB_FOCUS_PAGER_MARGIN) { s->strip_focus_cell = -1; s->tab_focus_idx = t; }
         }
         return;
     }
