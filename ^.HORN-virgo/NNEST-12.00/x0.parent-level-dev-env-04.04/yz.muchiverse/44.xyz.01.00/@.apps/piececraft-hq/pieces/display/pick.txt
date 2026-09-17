@@ -1,5 +1,5 @@
-sel_x=6
-sel_y=11
+sel_x=8
+sel_y=8
 sel_z=16
 kind=voxel
 id=

@@ -1,0 +1,12 @@
+focused_project_id=piececraft-hq
+focused_project_root=/home/no/Desktop/github/work/NNEST-12.00/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz.01.00/@.apps/piececraft-hq
+emoji_mode=1
+cam_yaw=180
+cam_pitch=6
+cam_pan_x=0
+cam_pan_z=0
+cam_z_level=0
+render_mode=2
+selector_x=2
+selector_y=5
+current_z=17

@@ -168,3 +168,14 @@ short version.*
     the registry's first FSM-kind entry — full spec: `design-docs/
     H-AI-LAB-DESIGN.md`. Not started — full list + file pointers:
     `design-docs/HARNECIENT-NIGHT-TRACK-HORIZON-ITEMS.md`.
+21. ~~pc-hq camera_mode 5 (side-scroll/Mario)~~ **BUILT 2026-09-15**:
+    a real `render_mode==2` (not a 5th 3D camera_mode - flat/side-view,
+    kin to `render_mode==0`'s 2D philosophy, per direct confirmation).
+    `bv_render_2d.c`'s new `load_side_board()` slices the same
+    per-height chunk data by Z-layer at the xelector's own row;
+    `bv_dispatch.c`/`pchq_board_projector.c` route it same as mode 0.
+    Key: **Tab** (not `'5'` - already double-bound to reset_view_alt/
+    file_menu in `bv_menu_input.c`, found before picking a key).
+    Xelector highlight honestly skipped in v1 (no height of its own).
+    Live-tested against pc-hq's real chunk data, PNG-verified. See
+    `&.widgits/5-pov-widgit.md` §2g.

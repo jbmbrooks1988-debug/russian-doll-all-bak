@@ -1,2 +1,2 @@
-line1=tick 11
+line1=tick 301
 line2=test_walls:desk1
