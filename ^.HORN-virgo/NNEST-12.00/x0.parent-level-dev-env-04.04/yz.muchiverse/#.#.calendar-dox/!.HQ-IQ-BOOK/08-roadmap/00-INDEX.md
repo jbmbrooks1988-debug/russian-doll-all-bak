@@ -51,6 +51,75 @@
 - `au-31/` — 2026-08-31's live in-progress work directory (`00-todo.md`
   real todo list, `01-manager-design.md`/`02-network-browser-...md`
   design docs). Moved verbatim from `1.^V-hq/au-31/`.
+- `design-docs/LLMUD-INTEGRATION-DESIGN.md` — **2026-09-17 design**:
+  folds the external `XO/LLMUD_CODE` LLMUD/Bank-Systems architecture
+  proposals into this house's own AI-system plan; cross-references
+  `H-AI-LAB-DESIGN.md` Part 4/5 directly (independent convergence, not
+  new work there) and names a genuinely-new Synonym/Relation/Sentence
+  Bank layer, smallest-first-step = a Synonym Bank + lookup op wired
+  into Part 5's `ai_fsm_transition`.
+- `design-docs/AI-FUNCTION-CRAFTING-DB-HQ-DESIGN.md` — **2026-09-17
+  design**: a new db-hq tab that crafts events-hq AI command rows
+  (`H-AI-LAB-DESIGN.md` Part 5) the way `CANVAS-CRAFT-DESIGN.md`
+  crafts chemistry — bench/recipe/inventory UI reused, bounded
+  Gemma-suggests-never-auto-writes discipline from Part 4. Gated on
+  Part 5's own smallest-first-step landing first.
+- `design-docs/LLMUD-HACK.md` — **2026-09-18 design, technical-depth
+  pass for the ai-research/ML-PhD side**: the Harnecient Hack (see
+  `HARNECIENT-HACK.md`, kept simple on purpose) mutated to watch real
+  action sequences instead of generating text - 4 shapes (Original/
+  Watch/Behavior-Bank-Slotting/Meta-LLMUD), verifies + resolves every
+  real gap in `4.qwen-harnextend++.txt`'s proposal (DESCRIBE-not-
+  CLASSIFY ambiguity in Watch Mode, missing fallback, missing
+  artifact-visibility, undefined weight-update rule - now a real
+  Laplace-smoothed formula), names the real, already-existing watch
+  surfaces (`entity_menu_history/<pid>.txt`, Claude Code's own tool
+  transcript - no new capture infra needed), and draws a real, new
+  bridge to `IRL-BOOTSTRAP-RECURSION-SPEC.md`'s famous-llm work
+  (Behavior Banks as a second Layer-0 curriculum source). §7 lists 5
+  real open theory questions for the ai team, deliberately unresolved.
+- `design-docs/DUSTOPIA-HACK.md` — **2026-09-18 design**: sibling to
+  `LLMUD-HACK.md`, verifying `6-qwen-dustopia-hack.md`'s "self-building
+  world" proposal (DESCRIBE→SCORE→STORE→SCALE applied to fractal
+  world-CONTENT generation, not action-replay). §1 gives the mechanical
+  (not just cited) explanation of why DESCRIBE beats CLASSIFY, the gap
+  flagged as missing from `NIGHT_16`/`LLMUD-HACK.md`. §3 honestly
+  scores each of the 4 named bank layers against real house status
+  (Synonym Bank real, Behavior Bank reuses LLMUD-HACK's own schema
+  unchanged, Relation/Sentence Bank real ideas with zero house-side
+  design work). §4 flags the source doc's "λ spectral flow parameter"
+  as imported-but-unverified rather than inventing an explanation. §5
+  sets a real, stricter auto-execute policy than LLMUD-HACK's
+  (propose-and-confirm by default), since this hack can spawn new game
+  content, not just replay known-good actions. §6/§7 name PALCRAFT/
+  mineclonia as the real near-term testbed and argue for building one
+  shared watch/observe layer (not two) ahead of either hack's own
+  bank-scoring work. Companion audio: `1-1.HARNECIENT.SMOL/NIGHT_17_
+  NEW_GAME_PLUS.txt`/`.mp3` — "new game plus" framing, all three hacks
+  as one recursive describe-then-score system run three times on a
+  bigger object each loop. Follow-up: `1-1.HARNECIENT.SMOL/NIGHT_18_
+  THE_PRIMITIVE_AND_THE_PAGE.txt`/`.mp3` — dramatizes the live
+  `13.agent-coms/KILO/claude-2-kilo-9.17.md` handoff Q&A: the new
+  house-wide "never write C for what an event can do" rule with its one
+  exception (new `ai_*` event-command primitives), the DSR/WSR-CIV
+  parallel-track multi-copy event-reuse experiment, and the confirmed
+  zero-recompile context-menu-as-event scaffolding.
+- `design-docs/RELAY-WINDOW-TARGETING-DESIGN.md` — **2026-09-18
+  design, not started**: formalizes how a relay-driving agent picks
+  the right window/PID. Real current mechanism confirmed by direct
+  code read: `history_path()` keys purely on the process's own
+  `getpid()`, dispatch never checks X11 focus (deliberate, so
+  human+agent can share a display), and per-PID files (fixed
+  2026-08-29) already prevent cross-window bleed. The real gap: no
+  formal target-resolution/liveness-check step, and the taskbar's own
+  `focused=0/1` tracking (`livedesk_hq_windows_<pid>.txt`) doesn't gate
+  relay consumption at all — meaning a relay-only test can pass a step
+  a real human replay would need an extra focus-click for (ties
+  directly to the `relay-testing-may-mask-real-focus-bugs` house
+  rule). Proposes making that focus-raise step explicit/logged rather
+  than silently skipped, and extending the existing per-window registry
+  with a `purpose=`/`title=` field for a real purpose->PID lookup
+  instead of `ps aux` grepping. §5 lists 3 open questions for the user.
 - `design-docs/` — 63 design/plan/handoff/investigation docs moved in
   bulk (`git mv`, history preserved) from `1.^V-hq/`. **Not
   individually hand-condensed** in this pass (see note below) — still

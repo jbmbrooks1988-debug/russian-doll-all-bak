@@ -1,0 +1,113 @@
+window||file-explorer-pal,database-window,user-resizable|File Explorer - LOAD|||0|0|0|0|1184|722|||||0||0|0|0|||0
+page|main|||||0|0|0|0|0|0|||||0||0|0|0|||0
+item|chrome-close||X||CLOSE|1|0|14|38|58|30|||||0||0|0|0|||0
+tabbar||fe-crumbs-bar||||0|0|8|8|0|0|||||0||0|0|0|||0
+tab|crumb0||/||FE_CRUMB:0|0|0|8|8|0|0|||||0||0|0|0|||0
+tab|crumb1||home||FE_CRUMB:1|0|0|8|8|0|0|||||0||0|0|0|||0
+tab|crumb2||no||FE_CRUMB:2|0|0|8|8|0|0|||||0||0|0|0|||0
+tab|crumb3||Desktop||FE_CRUMB:3|0|0|8|8|0|0|||||0||0|0|0|||0
+tab|crumb4||github||FE_CRUMB:4|0|0|8|8|0|0|||||0||0|0|0|||0
+tab|crumb5||work||FE_CRUMB:5|0|0|8|8|0|0|||||0||0|0|0|||0
+tab|crumb6||NNEST-12.00||FE_CRUMB:6|0|0|8|8|0|0|||||0||0|0|0|||0
+tab|crumb7||x0.parent-level-dev-env-04.04||FE_CRUMB:7|0|0|8|8|0|0|||||0||0|0|0|||0
+tab|crumb8||yz.muchiverse||FE_CRUMB:8|0|0|8|8|0|0|||||0||0|0|0|||0
+tab|crumb9||44.xyz.01.00||FE_CRUMB:9|0|0|8|8|0|0|||||0||0|0|0|||0
+item|back|opacity-btn|⬅️ Back||FE_BACK|2|0|14|78|102|30|||||0||0|0|0|||0
+item|viewtoggle|opacity-btn|List View||FE_VIEWMODE|3|0|122|78|113|30|||||0||0|0|0|||0
+text||quiet|Pick a file to load.|||0|0|8|8|0|0|||||0||0|0|0|||0
+item|gentry0|swatch|📁  #.DOX ||FE_ENTRY:0|4|0|14|136|176|40|||||0||0|0|0|||0
+item|gentry1|swatch|📁  #.Z.HUMAN_LLM ||FE_ENTRY:1|5|0|198|136|176|40|||||0||0|0|0|||0
+item|gentry2|swatch|📁  #.a0]🪄️.🎩️(tson)]0000=ctrl+h ||FE_ENTRY:2|6|0|382|136|176|40|||||0||0|0|0|||0
+item|gentry3|swatch|📁  #.desktop ||FE_ENTRY:3|7|0|566|136|176|40|||||0||0|0|0|||0
+item|gentry4|swatch|📁  #.haiku+ ||FE_ENTRY:4|8|0|750|136|176|40|||||0||0|0|0|||0
+item|gentry5|swatch|📁  #.livedesk ||FE_ENTRY:5|9|0|934|136|176|40|||||0||0|0|0|||0
+item|gentry6|swatch|📁  #.notes ||FE_ENTRY:6|10|0|14|184|176|40|||||0||0|0|0|||0
+item|gentry7|swatch|📁  #.ref ||FE_ENTRY:7|11|0|198|184|176|40|||||0||0|0|0|||0
+item|gentry8|swatch|📁  #.resume ||FE_ENTRY:8|12|0|382|184|176|40|||||0||0|0|0|||0
+item|gentry9|swatch|📁  #.tmp ||FE_ENTRY:9|13|0|566|184|176|40|||||0||0|0|0|||0
+item|gentry10|swatch|📁  #.user-test-how2 ||FE_ENTRY:10|14|0|750|184|176|40|||||0||0|0|0|||0
+item|gentry11|swatch|📁  #.w8 ||FE_ENTRY:11|15|0|934|184|176|40|||||0||0|0|0|||0
+item|gentry12|swatch|📁  #.xer ||FE_ENTRY:12|16|0|14|232|176|40|||||0||0|0|0|||0
+item|gentry13|swatch|📁  #.z.mirror_llm]z5]IQABOD🪞️+4 ||FE_ENTRY:13|17|0|198|232|176|40|||||0||0|0|0|||0
+item|gentry14|swatch|📁  $.crypts ||FE_ENTRY:14|18|0|382|232|176|40|||||0||0|0|0|||0
+item|gentry15|swatch|📁  %.harnesses ||FE_ENTRY:15|19|0|566|232|176|40|||||0||0|0|0|||0
+item|gentry16|swatch|📁  &.hq-apps ||FE_ENTRY:16|20|0|750|232|176|40|||||0||0|0|0|||0
+item|gentry17|swatch|📁  &.widgits ||FE_ENTRY:17|21|0|934|232|176|40|||||0||0|0|0|||0
+item|gentry18|swatch|📁  *.START_BUTTON ||FE_ENTRY:18|22|0|14|280|176|40|||||0||0|0|0|||0
+item|gentry19|swatch|📁  *.monads ||FE_ENTRY:19|23|0|198|280|176|40|||||0||0|0|0|||0
+item|gentry20|swatch|📁  +.TSOTS-ALPHA-OMEGA ||FE_ENTRY:20|24|0|382|280|176|40|||||0||0|0|0|||0
+item|gentry21|swatch|📁  -1.metatree_👼️_⭐️_🎄️_🎁️ ||FE_ENTRY:21|25|0|566|280|176|40|||||0||0|0|0|||0
+item|gentry22|swatch|📁  0.a-z-pets-plan ||FE_ENTRY:22|26|0|750|280|176|40|||||0||0|0|0|||0
+item|gentry23|swatch|📁  0.user-pal👤️ ||FE_ENTRY:23|27|0|934|280|176|40|||||0||0|0|0|||0
+item|gentry24|swatch|📁  002.zoo__🦓️🐒️0000 ||FE_ENTRY:24|28|0|14|328|176|40|||||0||0|0|0|||0
+item|gentry25|swatch|📁  007-goldeye+01.00 ||FE_ENTRY:25|29|0|198|328|176|40|||||0||0|0|0|||0
+item|gentry26|swatch|📁  01.muchi-pals-🥚️-13.01 ||FE_ENTRY:26|30|0|382|328|176|40|||||0||0|0|0|||0
+item|gentry27|swatch|📁  014.wsr-pal💸️📌️+2 ||FE_ENTRY:27|31|0|566|328|176|40|||||0||0|0|0|||0
+item|gentry28|swatch|📁  040.net-health ||FE_ENTRY:28|32|0|750|328|176|40|||||0||0|0|0|||0
+item|gentry29|swatch|📁  041.pal-chain⛓️ ||FE_ENTRY:29|33|0|934|328|176|40|||||0||0|0|0|||0
+item|gentry30|swatch|📁  041.pal-forum👥️ ||FE_ENTRY:30|34|0|14|376|176|40|||||0||0|0|0|||0
+item|gentry31|swatch|📁  044.pal-chat-irc👥️+2 ||FE_ENTRY:31|35|0|198|376|176|40|||||0||0|0|0|||0
+item|gentry32|swatch|📁  045.muchi-pal-agent🤖️+1++ ||FE_ENTRY:32|36|0|382|376|176|40|||||0||0|0|0|||0
+item|gentry33|swatch|📁  046.open-gema🤖️+1 ||FE_ENTRY:33|37|0|566|376|176|40|||||0||0|0|0|||0
+item|gentry34|swatch|📁  047.scm🎓️+1 ||FE_ENTRY:34|38|0|750|376|176|40|||||0||0|0|0|||0
+item|gentry35|swatch|📁  101.drag-drop-test=ON🀄️ ||FE_ENTRY:35|39|0|934|376|176|40|||||0||0|0|0|||0
+item|gentry36|swatch|📁  101.ledger-player-npc-simple+3 ||FE_ENTRY:36|40|0|14|424|176|40|||||0||0|0|0|||0
+item|gentry37|swatch|📁  101.lpns+map+4 ||FE_ENTRY:37|41|0|198|424|176|40|||||0||0|0|0|||0
+item|gentry38|swatch|📁  101.mutaclsym🧟‍♂️️+18.0G ||FE_ENTRY:38|42|0|382|424|176|40|||||0||0|0|0|||0
+item|gentry39|swatch|💾  101.mutaclsym🧟‍♂️️19.00 ||FE_ENTRY:39|43|0|566|424|176|40|||||0||0|0|0|||0
+item|gentry40|swatch|📁  102.agy-txt ||FE_ENTRY:40|44|0|750|424|176|40|||||0||0|0|0|||0
+item|gentry41|swatch|📁  102.editor-📄️00.00 ||FE_ENTRY:41|45|0|934|424|176|40|||||0||0|0|0|||0
+item|gentry42|swatch|📁  103.media-studio ||FE_ENTRY:42|46|0|14|472|176|40|||||0||0|0|0|||0
+item|gentry43|swatch|📁  150.gl-canvas ||FE_ENTRY:43|47|0|198|472|176|40|||||0||0|0|0|||0
+item|gentry44|swatch|📁  151.screen-rec+01.02 ||FE_ENTRY:44|48|0|382|472|176|40|||||0||0|0|0|||0
+item|gentry45|swatch|📁  2.muchi-verse ||FE_ENTRY:45|49|0|566|472|176|40|||||0||0|0|0|||0
+item|gentry46|swatch|📁  200.glut-craft ||FE_ENTRY:46|50|0|750|472|176|40|||||0||0|0|0|||0
+item|gentry47|swatch|📁  201.dwarf-fortress ||FE_ENTRY:47|51|0|934|472|176|40|||||0||0|0|0|||0
+item|gentry48|swatch|📁  201.rpg-maker-clone ||FE_ENTRY:48|52|0|14|520|176|40|||||0||0|0|0|||0
+item|gentry49|swatch|📁  202.snes-civ ||FE_ENTRY:49|53|0|198|520|176|40|||||0||0|0|0|||0
+item|gentry50|swatch|📁  203.gb-pokemon ||FE_ENTRY:50|54|0|382|520|176|40|||||0||0|0|0|||0
+item|gentry51|swatch|📁  204.sw-battlefront ||FE_ENTRY:51|55|0|566|520|176|40|||||0||0|0|0|||0
+item|gentry52|swatch|📁  205.ttg-tactics ||FE_ENTRY:52|56|0|750|520|176|40|||||0||0|0|0|||0
+item|gentry53|swatch|📁  209.sp-irl ||FE_ENTRY:53|57|0|934|520|176|40|||||0||0|0|0|||0
+item|gentry54|swatch|📁  300.rpg-xyz ||FE_ENTRY:54|58|0|14|568|176|40|||||0||0|0|0|||0
+item|gentry55|swatch|📁  300.rtp-xyz ||FE_ENTRY:55|59|0|198|568|176|40|||||0||0|0|0|||0
+item|gentry56|swatch|📁  404.architecture-bible ||FE_ENTRY:56|60|0|382|568|176|40|||||0||0|0|0|||0
+item|gentry57|swatch|📁  @.app-store ||FE_ENTRY:57|61|0|566|568|176|40|||||0||0|0|0|||0
+item|gentry58|swatch|📁  @.apps ||FE_ENTRY:58|62|0|750|568|176|40|||||0||0|0|0|||0
+item|gentry59|swatch|📁  YAHOO_XYZ ||FE_ENTRY:59|63|0|934|568|176|40|||||0||0|0|0|||0
+item|gentry60|swatch|📁  ^.buttons ||FE_ENTRY:60|64|0|14|616|176|40|||||0||0|0|0|||0
+item|gentry61|swatch|📁  common_events ||FE_ENTRY:61|65|0|198|616|176|40|||||0||0|0|0|||0
+item|gentry62|swatch|📁  default ||FE_ENTRY:62|66|0|382|616|176|40|||||0||0|0|0|||0
+item|gentry63|swatch|📁  exchange ||FE_ENTRY:63|67|0|566|616|176|40|||||0||0|0|0|||0
+item|gentry64|swatch|📁  home ||FE_ENTRY:64|68|0|750|616|176|40|||||0||0|0|0|||0
+item|gentry65|swatch|📁  iqa-fork ||FE_ENTRY:65|69|0|934|616|176|40|||||0||0|0|0|||0
+item|gentry66|swatch|📁  net ||FE_ENTRY:66|70|0|14|664|176|40|||||0||0|0|0|||0
+item|gentry67|swatch|📁  shared ||FE_ENTRY:67|71|0|198|664|176|40|||||0||0|0|0|||0
+item|gentry68|swatch|📁  tmp ||FE_ENTRY:68|72|0|382|664|176|40|||||0||0|0|0|||0
+item|gentry69|swatch|📁  trash ||FE_ENTRY:69|73|0|566|664|176|40|||||0||0|0|0|||0
+item|gentry70|swatch|📁  xyzfs ||FE_ENTRY:70|74|0|750|664|176|40|||||0||0|0|0|||0
+item|gentry71|swatch|📁  📚️.docs ||FE_ENTRY:71|75|0|934|664|176|40|||||0||0|0|0|||0
+item|gentry72|swatch|📄  !.!.tpmos-first.txt 4KB||FE_ENTRY:72|76|0|2|-99998|0|0|||||0||0|0|0|||0
+item|gentry73|swatch|📄  #.wussup.4xyz.txt 13KB||FE_ENTRY:73|77|0|2|-99998|0|0|||||0||0|0|0|||0
+item|gentry74|swatch|📄  &a 55B||FE_ENTRY:74|78|0|2|-99998|0|0|||||0||0|0|0|||0
+item|gentry75|swatch|📄  +-picker.txt 10KB||FE_ENTRY:75|79|0|2|-99998|0|0|||||0||0|0|0|||0
+item|gentry76|swatch|📄  +3_ARCHITECTURE_SUMMARY.txt 8KB||FE_ENTRY:76|80|0|2|-99998|0|0|||||0||0|0|0|||0
+item|gentry77|swatch|📄  007-goldeye+01.00.7z 36KB||FE_ENTRY:77|81|0|2|-99998|0|0|||||0||0|0|0|||0
+item|gentry78|swatch|📄  18651.log 170B||FE_ENTRY:78|82|0|2|-99998|0|0|||||0||0|0|0|||0
+item|gentry79|swatch|📄  AUTO_DELEGATION.TXT 8KB||FE_ENTRY:79|83|0|2|-99998|0|0|||||0||0|0|0|||0
+item|gentry80|swatch|📄  EMERGENCY_CLEAN.sh 5KB||FE_ENTRY:80|84|0|2|-99998|0|0|||||0||0|0|0|||0
+item|gentry81|swatch|📄  EMERGENCY_CLOSE.ps1 2KB||FE_ENTRY:81|85|0|2|-99998|0|0|||||0||0|0|0|||0
+item|gentry82|swatch|📄  EMERGENCY_CLOSE.sh 2KB||FE_ENTRY:82|86|0|2|-99998|0|0|||||0||0|0|0|||0
+item|gentry83|swatch|📄  EMERGENCY_KILL.sh 6KB||FE_ENTRY:83|87|0|2|-99998|0|0|||||0||0|0|0|||0
+item|gentry84|swatch|📄  ^.START_BUTTON_4.sh 184B||FE_ENTRY:84|88|0|2|-99998|0|0|||||0||0|0|0|||0
+item|gentry85|swatch|📄  bookmarks_state.txt 0B||FE_ENTRY:85|89|0|2|-99998|0|0|||||0||0|0|0|||0
+item|gentry86|swatch|📄  bookstack-path-bug.txt 12KB||FE_ENTRY:86|90|0|2|-99998|0|0|||||0||0|0|0|||0
+item|gentry87|swatch|📄  check-symlinks.sh 3KB||FE_ENTRY:87|91|0|2|-99998|0|0|||||0||0|0|0|||0
+item|gentry88|swatch|📄  interact_relay.txt 295B||FE_ENTRY:88|92|0|2|-99998|0|0|||||0||0|0|0|||0
+item|gentry89|swatch|📄  khtpm-win-fix.txt 16KB||FE_ENTRY:89|93|0|2|-99998|0|0|||||0||0|0|0|||0
+item|gentry90|swatch|📄  khtpm_events_hq_manager.+x 21KB||FE_ENTRY:90|94|0|2|-99998|0|0|||||0||0|0|0|||0
+item|gentry91|swatch|📄  livedesk-win-fix-lvl2.txt 34KB||FE_ENTRY:91|95|0|2|-99998|0|0|||||0||0|0|0|||0
+item|gentry92|swatch|📄  local-2do-15.txt 444B||FE_ENTRY:92|96|0|2|-99998|0|0|||||0||0|0|0|||0
+item|gentry93|swatch|📄  run-khtpm-strip.sh 465B||FE_ENTRY:93|97|0|2|-99998|0|0|||||0||0|0|0|||0
+item|gentry94|swatch|📄  scrypts.sh 2KB||FE_ENTRY:94|98|0|2|-99998|0|0|||||0||0|0|0|||0
+item|gentry95|swatch|📄  simlink-fix.txt 1KB||FE_ENTRY:95|99|0|2|-99998|0|0|||||0||0|0|0|||0

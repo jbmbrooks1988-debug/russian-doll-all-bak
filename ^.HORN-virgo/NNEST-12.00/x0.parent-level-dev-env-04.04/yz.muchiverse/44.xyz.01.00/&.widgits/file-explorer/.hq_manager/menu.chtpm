@@ -1,0 +1,11 @@
+<window class="entity-menu" label="self">
+  <page name="main">
+    <item label="Cut" action="sh -c &apos;echo CUT &gt; &quot;$0/.hq_manager/cli_io_ctxmenu_action.txt&quot;&apos;"/>
+    <item label="Copy" action="sh -c &apos;echo COPY &gt; &quot;$0/.hq_manager/cli_io_ctxmenu_action.txt&quot;&apos;"/>
+    <item label="Paste" action="sh -c &apos;echo PASTE &gt; &quot;$0/.hq_manager/cli_io_ctxmenu_action.txt&quot;&apos;"/>
+    <item label="Delete" action="sh -c &apos;echo DELETE &gt; &quot;$0/.hq_manager/cli_io_ctxmenu_action.txt&quot;&apos;"/>
+    <item label="Place" action="sh -c &apos;echo PLACE &gt; &quot;$0/.hq_manager/cli_io_ctxmenu_action.txt&quot;&apos;"/>
+    <item label="Cli-io" action="CLI_IO"/>
+    <item label="Cancel" action="void"/>
+  </page>
+</window>
