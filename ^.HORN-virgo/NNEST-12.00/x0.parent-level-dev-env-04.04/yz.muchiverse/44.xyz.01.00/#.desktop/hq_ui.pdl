@@ -1,6 +1,16 @@
 # hq_ui.pdl - per-desktop UI options read by khtpm_core_render (every
 # HQ / x11-hq window). Plain key=value. Live-reloaded.
 
+# EVENT_OBJECTS_VISIBLE: EVENT-MODULARITY-AND-BUILD-SPEED.md §1's
+# 🎬️/⚙️/🧩 event objects (real pal-shaped, nested inside an entity's own
+# inventory/) - direct instruction: "they dont need to show up on pals,
+# neither do pages, but they can, lets .pdl toggle as optional." House-
+# wide default is 0 (hidden) - structural drag-drop backing exists on
+# disk regardless, this only controls whether file-explorer's directory
+# listing (file_explorer_manager.c's list_directory()) shows them.
+# 0 = hidden (default), 1 = visible.
+EVENT_OBJECTS_VISIBLE=0
+
 # close_combo: the ONLY keyboard gesture that closes a focused window
 # (Escape deliberately does NOT - too easy to hit by accident). The
 # window's [X] chrome button always works too. Format: ctrl+<key>,
@@ -16,6 +26,57 @@ win_top_y=96
 #   0 = one click activates.
 click_two_step=1
 font_scale=1.25
+
+# pager_btn_w / pager_btn_gap: dock taskbar's bottom-right "-"/"+" pager
+# button width and the gap between them (px, pre-scale). Direct live
+# report 2026-09-29 ("could we do from pdl, so we can stop restarting
+# entire house each time") - live-reloaded (both the marker-file path
+# and a plain save of this file itself now trigger a reload+relayout,
+# no rebuild or relaunch needed - see hq_ui_pdl_reload_if_changed()).
+pager_btn_w=64
+pager_btn_gap=-20
+# pager_cell_w: width of the reserved right-margin "cell" both pager
+# buttons sit inside (the solid rectangle around them) - was a fixed
+# 145px compile-time constant, now tunable too since button size/gap
+# no longer match it 1:1. Shrink this along with pager_btn_gap.
+pager_cell_w=145
+# 2026-09-29: 56/8 was still cut off; 64/8 verified clean via a direct
+# window frame dump. Tune here and save - no rebuild/relaunch needed.
+# Lowered gap 8->4 (direct live report "still not quite right, could be
+# closer together") - pager_btn_w is a FLOOR now (the real measured
+# nav-badge width wins if bigger), so it's safe to leave as-is; only
+# pager_btn_gap controls the space between "-" and "+" now.
+
+# Screen-relative UI scale (2026-09-19). On top of font_scale, taskbar size,
+# entity/grid size and the strip's left margin scale with the monitor:
+#   auto = min(screen_w / ui_ref_width, screen_h / ui_ref_height), 0.5-3.0
+# ui_ref_* is the screen the layouts were tuned on (auto = 1.0 there, so
+# that machine looks exactly as before). Defaults are built in; uncomment
+# to change. ui_scale = 0 means auto; a value like 0.8 forces that factor.
+# Saved entity positions (desktop_pos.txt x/y) are REFERENCE px: the screen the
+# layouts were tuned on. They are converted to this screen when an entity opens
+# and back when it is moved/placed (mapping uses the grid cell, so grid alignment
+# is exact). On the reference screen nothing changes. Changing ui_ref_* or
+# desk_grid.pdl cell_px moves every saved entity accordingly.
+# ui_scale=0
+# ui_ref_width=2496
+# ui_ref_height=1664
+
+# default_win_w / default_win_h: size for a window whose own PDL <window>
+# element declares no width/height, and which is not user-resizable and not
+# fullscreen - see kh_default_win_w()/kh_default_win_h() in
+# _.monads/_.livedesk-taskbar/ops/khtpm_core_render.c. Absent (0) means fall
+# back to a percentage of screen size (58% w / 67% h), i.e. 788x514 on this
+# 1360x768 desktop. Set explicitly to keep the verified 784x504 geometry,
+# which is exactly what the renderer used to hardcode for user-resizable
+# windows: kh_auto_px(1120) x kh_auto_px(720), with
+# kh_auto_px(v) = (v * 70 + 50) / 100  ->  784 and 504.
+# A window that declares its own CSS width/height overrides both of these
+# (network-browser-hq.css declares 784x504; proc-mon.css declares 620px).
+# This is the supported data-level knob, so the size stays editable per house
+# instead of being baked into a compiled constant.
+default_win_w=784
+default_win_h=504
 
 # font_family: house-wide DEFAULT font (fontconfig name, e.g. "DejaVu
 # Sans" / "Times New Roman" / "Comic Sans MS" / "Helvetica"). A window's

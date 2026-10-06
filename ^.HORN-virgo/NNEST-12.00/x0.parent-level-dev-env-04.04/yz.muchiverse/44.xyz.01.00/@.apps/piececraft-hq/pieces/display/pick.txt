@@ -1,6 +1,6 @@
 sel_x=8
 sel_y=8
-sel_z=16
+sel_z=0
 kind=voxel
 id=
 template=

@@ -1,0 +1,38 @@
+--- pchq-board.xhtpm  pid 1121197  2026-10-06 01:51:27 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3

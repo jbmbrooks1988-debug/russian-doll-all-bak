@@ -278,6 +278,7 @@ int main(int argc, char **argv) {
          * inventing new default behavior, porting the existing one.
          * More methods (Open Event Editor, etc.) get appended here
          * later without touching the renderer that reads them. */
+        fprintf(f, "METHOD       | Inventory          | sh -c 'H=\"$1\"; I=\"$H/&.widgits/file-explorer/instances/inv-$(basename \"$(dirname \"$0\")\")-$(basename \"$0\")\"; mkdir -p \"$0/inventory\" \"$I\"; printf \"mode=LOAD\\nstart_dir=%s/inventory\\n\" \"$0\" > \"$I/fe_request.txt\"; exec sh \"$H/&.widgits/file-explorer/button.sh\" run-instance \"$I\"'\n");
         fprintf(f, "METHOD       | Close                | CLOSE\n");
         /* REAL, NEW 2026-09-01, direct instruction ("the placed tiles
          * dont have cancel/copy/paste/delete or events... events should
@@ -309,7 +310,7 @@ int main(int argc, char **argv) {
      * every new entity gets one the same moment it's created. */
     {
         char conv_path[PATH_BUF], conv_cmd[PATH_BUF * 2];
-        snprintf(conv_path, sizeof(conv_path), "%s/*.monads/*.livedesk-taskbar/ops/meta_to_menu_chtpm.py", house_root);
+        snprintf(conv_path, sizeof(conv_path), "%s/_.monads/_.livedesk-taskbar/ops/meta_to_menu_chtpm.py", house_root);
         snprintf(conv_cmd, sizeof(conv_cmd), "python3 '%s' '%s' >/dev/null 2>&1", conv_path, dir);
         int rc = system(conv_cmd);
         (void)rc; /* real, honest no-op on failure - a missing menu.chtpm
@@ -390,7 +391,7 @@ int main(int argc, char **argv) {
      * behavior. */
     {
         char ent_ops[PATH_BUF];
-        snprintf(ent_ops, sizeof(ent_ops), "%s/*.monads/*.livedesk-taskbar/ops/+x", house_root);
+        snprintf(ent_ops, sizeof(ent_ops), "%s/_.monads/_.livedesk-taskbar/ops/+x", house_root);
         char png_path[PATH_BUF], csv_path[PATH_BUF], gen_cmd[PATH_BUF * 3];
         snprintf(png_path, sizeof(png_path), "%s/atlas.png", dir);
         snprintf(csv_path, sizeof(csv_path), "%s/sprite.csv", dir);
@@ -431,7 +432,7 @@ int main(int argc, char **argv) {
      * shelling-out style egg_window.c uses for self_tick_pet(). */
     {
         char exe_path[PATH_BUF], spawn_cmd[PATH_BUF * 2];
-        snprintf(exe_path, sizeof(exe_path), "%s/*.monads/*.livedesk-taskbar/ops/+x/khtpm_core_render.+x", house_root);
+        snprintf(exe_path, sizeof(exe_path), "%s/_.monads/_.livedesk-taskbar/ops/+x/khtpm_core_render.+x", house_root);
         snprintf(spawn_cmd, sizeof(spawn_cmd), "setsid '%s' '%s' >/dev/null 2>&1 < /dev/null &", exe_path, dir);
         int rc = system(spawn_cmd);
         (void)rc;

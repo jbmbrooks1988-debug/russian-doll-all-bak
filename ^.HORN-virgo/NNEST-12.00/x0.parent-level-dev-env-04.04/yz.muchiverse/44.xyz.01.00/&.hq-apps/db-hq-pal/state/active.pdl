@@ -1,5 +1,5 @@
 SECTION | KEY   | VALUE
-FILE    | file  | db_hq_common_events.state.txt
-TAG     | tag   | CE
-TITLE   | title | Common Events
-SEL     | sel   | 3
+FILE    | file  | db_hq_actors.state.txt
+TAG     | tag   | ACTOR
+TITLE   | title | Actors
+SEL     | sel   | 0

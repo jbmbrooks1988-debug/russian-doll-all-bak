@@ -1,0 +1,13 @@
+HASH | +x/livedesk_splash.+x | 0731412746769604b608da5924009c0b35053c6e89a1cfe884c562f56e69d09f
+HASH | +x/swatch_picker_manager.+x | 48155d0fb18760311b5583040e77e922827706c90771a785fbca38af5cd7553e
+HASH | +x/apply_theme_op.+x | 17221fbf8d6edf672c13a4007d19ed98f1e20654fc0d550ad14154b7c70120d6
+HASH | +x/ktb_zorder_op.+x | 702f7542733c36be77b860c0683da78347c6d791079f86f51a887f29f82001f3
+HASH | +x/khtpm_entity.+x | aa5b3077421cd4bf9313a600c177a4c8fe7ae2b1a44fa49aed49b6088e7d4864
+HASH | +x/tp_asset_to_sprite.+x | 16aafb65ae92fa701367059da1d27747265fa5bad05e173894095512239a3335
+HASH | +x/khtpm_strip_render_ascii.+x | 3a7f1781a80c390c84bbe334c4cf006549ca0983822275db4211f11ea6d57f37
+HASH | +x/khtpm_strip_keyboard_ascii.+x | 1f715e26bd8d2e4dc0fe7a09a88a4b0ba28fdb731d66324dcea5e05f0224dede
+HASH | +x/khtpm_render_ascii.+x | 26dc03b18492996a0526b7fb0c5f0622e0013a8f789d2f52fbee4e79e628dcb2
+HASH | +x/khtpm_kbd_ascii.+x | 5a2442418961b6705efabee2ff4383151b9057a614fac7d03f4da7b21d882910
+HASH | +x/khtpm_joystick_daemon.+x | e3893cf3349b63f1e07217053506d2c6f2438c345433ae52a8a0bbe88b71d6b4
+HASH | +x/khtpm_taskbar_manager_main.+x | 35254cbddbe2ed5cf70ce1a8a46a7fee527ee83c7a43471eacb2b44602fe9a5c
+HASH | +x/khtpm_core_render.+x | b17a71a8e9f5ff97feef561fc3bd682a35ac028717a95a13b51df6c0f0b39ada

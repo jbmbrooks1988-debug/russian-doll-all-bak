@@ -1,0 +1,1604 @@
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:28:44 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:28:44 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. item
+        [ ] 24. item
+        [ ] 25. item
+        [ ] 26. item
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+        No live board-viewer session - open 'View Board' from the game first.
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:28:45 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:28:45 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. item
+        [ ] 24. item
+        [ ] 25. item
+        [ ] 26. item
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+        No live board-viewer session - open 'View Board' from the game first.
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:28:45 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:28:45 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:28:46 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:28:46 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:28:47 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:28:47 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:28:48 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:28:48 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:28:49 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:28:49 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:28:50 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:28:50 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:28:51 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:28:51 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:28:52 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:28:52 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:28:53 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:28:53 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:28:54 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:28:54 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:28:55 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:28:55 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:28:56 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:28:56 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:28:57 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:28:57 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:28:58 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:28:58 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:28:59 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:28:59 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:29:00 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:29:00 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:29:01 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:29:01 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:29:02 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:29:02 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:29:03 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:29:03 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:29:04 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:29:04 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:29:05 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:29:05 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:29:06 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:29:06 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:29:07 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:29:07 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:29:08 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:29:08 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:29:09 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:29:09 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:29:10 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:29:10 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:29:10 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:29:10 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:29:11 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:29:11 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:29:12 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:29:12 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:29:13 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:29:13 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:29:14 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:29:14 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:29:15 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:29:15 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:29:16 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:29:16 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:29:17 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:29:17 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:29:18 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:29:18 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:29:19 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:29:19 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:29:20 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:29:20 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+        No live board-viewer session - open 'View Board' from the game first.
+
+=== pchq-board.xhtpm pid 1113155  2026-10-06 01:29:21 ===
+--- pchq-board.xhtpm  pid 1113155  2026-10-06 01:29:21 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            . xelector_01 - slot: a_castle
+        [ ] 19. _
+        [ ] 20. item
+        [ ] 21. item
+        [ ] 22. item
+        [ ] 23. 🍎
+        [ ] 24. 🗡️
+        [ ] 25. 🔥
+        [ ] 26. 💎
+        [ ] 27. .
+        [ ] 28. .
+        [ ] 29. > 
+            ^ xelector: xelector_01
+        [>] 32. Inspect
+        [ ] 33. Dir
+        [ ] 34. Cli-io: 
+        [ ] 30. _
+        [ ] 31. x
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+        No live board-viewer session - open 'View Board' from the game first.

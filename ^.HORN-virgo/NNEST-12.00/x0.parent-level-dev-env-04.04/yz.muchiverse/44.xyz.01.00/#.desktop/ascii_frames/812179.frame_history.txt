@@ -1,0 +1,4743 @@
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:35 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:35 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: 
+      [ ] 2.  ▾
+      [ ] 3.  ▾
+      [ ] 4. Menu ▾
+      [ ] 5.  ▾
+      [ ] 6. tab
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:36 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:36 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: 
+      [ ] 2.  ▾
+      [ ] 3.  ▾
+      [ ] 4. Menu ▾
+      [ ] 5.  ▾
+      [ ] 6. tab
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:36 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:36 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 16. .
+        [ ] 17. .
+        [ ] 18. .
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:37 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:37 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 16. .
+        [ ] 17. .
+        [ ] 18. .
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:38 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:38 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 16. .
+        [ ] 17. .
+        [ ] 18. .
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:39 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:39 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 16. .
+        [ ] 17. .
+        [ ] 18. .
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:40 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:40 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 16. .
+        [ ] 17. .
+        [ ] 18. .
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:41 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:41 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 16. .
+        [ ] 17. .
+        [ ] 18. .
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:41 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:41 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 17. .
+        [ ] 18. .
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:41 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:41 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 18. .
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:42 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:42 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:43 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:43 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:44 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:44 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:45 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:45 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:46 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:46 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:47 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:47 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:48 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:48 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:49 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:49 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:49 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:49 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:50 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:50 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:51 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:51 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:52 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:52 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:53 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:53 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:54 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:54 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:55 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:55 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:56 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:56 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:57 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:57 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:58 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:58 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:38:59 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:38:59 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:00 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:00 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:01 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:01 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:02 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:02 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:03 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:03 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:04 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:04 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:05 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:05 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:06 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:06 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:07 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:07 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:08 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:08 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:09 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:09 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:10 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:10 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:11 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:11 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:12 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:12 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:13 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:13 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:14 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:14 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:15 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:15 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:16 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:16 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:17 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:17 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:18 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:18 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:19 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:19 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:20 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:20 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:21 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:21 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:22 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:22 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:23 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:23 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:24 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:24 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:25 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:25 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:26 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:26 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:27 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:27 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:28 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:28 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:29 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:29 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:30 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:30 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:31 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:31 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:32 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:32 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:33 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:33 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:34 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:34 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:35 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:35 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:36 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:36 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:37 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:37 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:38 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:38 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:39 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:39 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:40 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:40 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:41 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:41 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:42 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:42 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:43 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:43 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:44 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:44 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:45 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:45 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:46 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:46 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:47 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:47 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:48 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:48 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:49 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:49 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:50 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:50 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:51 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:51 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:52 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:52 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:53 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:53 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:54 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:54 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:55 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:55 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:56 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:56 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:57 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:57 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:58 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:58 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:39:59 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:39:59 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:00 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:00 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:01 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:01 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:02 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:02 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:03 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:03 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:04 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:04 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:05 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:05 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:06 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:06 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:07 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:07 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:08 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:08 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:09 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:09 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:10 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:10 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:11 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:11 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:12 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:12 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:13 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:13 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:14 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:14 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:15 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:15 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:16 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:16 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:17 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:17 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:18 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:18 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:19 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:19 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:20 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:20 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:21 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:21 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:22 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:22 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:23 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:23 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:24 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:24 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:25 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:25 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:26 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:26 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:27 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:27 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:28 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:28 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:29 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:29 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:30 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:30 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:31 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:31 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:32 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:32 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:33 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:33 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:34 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:34 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:35 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:35 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:36 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:36 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:37 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:37 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:38 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:38 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:39 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:39 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:40 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:40 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:41 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:41 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:42 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:42 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:43 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:43 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:44 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:44 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:45 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:45 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:46 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:46 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:47 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:47 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:48 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:48 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:49 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:49 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:50 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:50 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:51 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:51 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:51 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:51 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+            Test menu
+        [ ] 29. Log a line
+        [ ] 30. Toggle hotbar
+        [ ] 31. Say hello
+        [ ] 32. _ hide menu
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:51 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:51 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+            Test menu
+        [ ] 29. Log a line
+        [ ] 30. Toggle hotbar
+        [ ] 31. Say hello
+        [ ] 32. _ hide menu
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+        No live board-viewer session - open 'View Board' from the game first.
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:52 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:52 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+            Test menu
+        [ ] 29. Log a line
+        [ ] 30. Toggle hotbar
+        [ ] 31. Say hello
+        [ ] 32. _ hide menu
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+        No live board-viewer session - open 'View Board' from the game first.
+
+=== pchq-board.xhtpm pid 812179  2026-10-06 00:40:53 ===
+--- pchq-board.xhtpm  pid 812179  2026-10-06 00:40:53 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+            xelector_01 - slot: (empty)
+        [ ] 19. .
+        [ ] 20. .
+        [ ] 21. .
+        [ ] 22. .
+        [ ] 23. .
+        [ ] 24. .
+        [ ] 25. .
+        [ ] 26. .
+        [ ] 27. .
+        [ ] 28. > 
+            Test menu
+        [ ] 29. Log a line
+        [ ] 30. Toggle hotbar
+        [ ] 31. Say hello
+        [ ] 32. _ hide menu
+        ents
+    [ ] 7. hotbar
+    [ ] 8. menu
+    [ ] 9. map
+    [ ] 10. xelector
+    [ ] 11. cursword
+    [ ] 12. dsr_castle_a
+    [ ] 13. dsr_bank_a1
+    [ ] 14. dsr_bank_a2
+    [ ] 15. dsr_store_a1
+    [ ] 16. dsr_store_a2
+        No live board-viewer session - open 'View Board' from the game first.

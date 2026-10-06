@@ -1,0 +1,75 @@
+
+=== hotbar-desk.xhtpm pid 106928  2026-10-05 22:47:08 ===
+--- hotbar-desk.xhtpm  pid 106928  2026-10-05 22:47:08 ---
+--- page: main ---
+Hotbar (desk)
+          1 🎬️ event_clacker_1
+          2 👺 m8_redhorned
+          3 🤖 self
+          4
+          5
+          6
+          7
+          8
+          9
+        cursword - slot: 
+
+=== hotbar-desk.xhtpm pid 106928  2026-10-05 22:47:09 ===
+--- hotbar-desk.xhtpm  pid 106928  2026-10-05 22:47:09 ---
+--- page: main ---
+Hotbar (desk)
+          1 🎬️ event_clacker_1
+          2 👺 m8_redhorned
+          3 🤖 self
+          4
+          5
+          6
+          7
+          8
+          9
+        cursword - slot: 
+
+=== hotbar-desk.xhtpm pid 106928  2026-10-05 22:47:09 ===
+--- hotbar-desk.xhtpm  pid 106928  2026-10-05 22:47:09 ---
+--- page: main ---
+Hotbar (desk)
+          🎬️
+          👺
+          🤖
+          .
+          .
+          .
+          .
+          .
+          .
+        cursword - slot: event_clacker_1
+
+=== hotbar-desk.xhtpm pid 106928  2026-10-05 22:47:10 ===
+--- hotbar-desk.xhtpm  pid 106928  2026-10-05 22:47:10 ---
+--- page: main ---
+Hotbar (desk)
+          🎬️
+          👺
+          🤖
+          .
+          .
+          .
+          .
+          .
+          .
+        cursword - slot: event_clacker_1
+
+=== hotbar-desk.xhtpm pid 106928  2026-10-05 22:51:51 ===
+--- hotbar-desk.xhtpm  pid 106928  2026-10-05 22:51:51 ---
+--- page: main ---
+Hotbar (desk)
+          🎬️
+          👺
+          🤖
+          .
+          .
+          .
+          .
+          .
+          .
+        cursword - slot: event_clacker_1

@@ -1,0 +1,112 @@
+
+=== hotbar-desk.xhtpm pid 352824  2026-10-05 23:24:38 ===
+--- hotbar-desk.xhtpm  pid 352824  2026-10-05 23:24:38 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: event_clacker_1
+        [>] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 352824  2026-10-05 23:24:39 ===
+--- hotbar-desk.xhtpm  pid 352824  2026-10-05 23:24:39 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: event_clacker_1
+        [>] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 352824  2026-10-05 23:24:45 ===
+--- hotbar-desk.xhtpm  pid 352824  2026-10-05 23:24:45 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: event_clacker_1
+        [ ] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 352824  2026-10-05 23:24:46 ===
+--- hotbar-desk.xhtpm  pid 352824  2026-10-05 23:24:46 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: event_clacker_1
+        [ ] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 352824  2026-10-05 23:24:47 ===
+--- hotbar-desk.xhtpm  pid 352824  2026-10-05 23:24:47 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: event_clacker_1
+        [ ] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 352824  2026-10-05 23:24:49 ===
+--- hotbar-desk.xhtpm  pid 352824  2026-10-05 23:24:49 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: event_clacker_1
+        [ ] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 352824  2026-10-05 23:24:51 ===
+--- hotbar-desk.xhtpm  pid 352824  2026-10-05 23:24:51 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: event_clacker_1
+        [ ] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 

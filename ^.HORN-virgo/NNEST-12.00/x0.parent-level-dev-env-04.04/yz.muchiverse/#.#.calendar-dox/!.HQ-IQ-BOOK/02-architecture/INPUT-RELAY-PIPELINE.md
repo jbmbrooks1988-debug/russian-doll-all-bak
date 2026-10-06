@@ -44,10 +44,10 @@ Full writeup: `04-bugs/BUG-LOG.md`'s "`nav.sh`'s primary test commands
 ... are silent no-ops" entry (2026-09-18). Corrected list below.
 
 - ~~`#.desktop/livedesk_agent_relay.txt` — parser-layer~~ **DEAD, do
-  not use.** `nav.sh`'s `nav`/`row`/`key`/`esc`/`type` commands still
-  write here and are currently silent no-ops as a result — do not
-  trust a past or future test that used those specific `nav.sh`
-  commands without confirming this got fixed first.
+  not use.** ✅ 2026-09-19: `nav.sh` no longer writes here — `nav`/`row`/
+  `key`/`esc`/`type` now target `strip_history.txt` (default) or
+  `entity_menu_history/<pid>.txt` (`NAV_PID=<pid>`), plus `click`/`string`.
+  See the FIXED note in `04-bugs/BUG-LOG.md`.
 - `#.desktop/strip_history.txt` — manager-layer, already-resolved
   decimal action codes (`KSC_HQ_HEADER_BASE`+n for a header cell,
   `KSC_HQ_ITEM_BASE`+n for a submenu row). **This is the real, live
@@ -77,6 +77,16 @@ on Tab); `>` stays the existing local cursor (moves on digit-jump
 inside whichever window has `^`) — one level above LayDoc's own
 `active_index`/`focus_index` split. Tab is agent-drivable for free
 through the same `KEY_PRESSED:` file mailbox as any other key.
+
+**Space (2026-09-20)**: the keyboard/relay equivalent of a right-click.
+In an HQ window with a focused nav item (and no text field armed), Space
+(`KEY_PRESSED: 32`) opens the same context menu a button-3 click on that
+item opens; the popup is its own process, driven by digits + Enter and
+closed with Esc through its own `entity_menu_history/<pid>.txt`. On the
+dock/strip Space is Enter: a focused pal cell opens that pal's menu, a
+header cell opens its dropdown (via `strip_history.txt` the manager maps
+code 32 to Enter too). In an armed text field (or a strip cli-io being
+typed into) Space stays a literal character.
 
 ## Two tree/render systems, not one
 

@@ -6,13 +6,15 @@
 # generic renderer draws it, zero new per-project C in the renderer).
 #   button.sh <house_root>
 set -e
-HOUSE_ROOT="${1:-}"
-[ -n "$HOUSE_ROOT" ] && [ -d "$HOUSE_ROOT" ] || { echo "dsr: need house_root as argv[1]" >&2; exit 1; }
-HOUSE_ROOT="$(cd "$HOUSE_ROOT" && pwd)"
-
 HERE="$(cd "$(dirname "$0")" && pwd)"
+# The taskbar toys menu runs `button.sh run` (argv[1]="run", not a path),
+# so fall back to the house root derived from this script's own location.
+HOUSE_ROOT="${1:-}"
+[ -n "$HOUSE_ROOT" ] && [ -d "$HOUSE_ROOT" ] || HOUSE_ROOT="$HERE/../.."
+[ -d "$HOUSE_ROOT" ] || { echo "dsr: cannot resolve house_root" >&2; exit 1; }
+HOUSE_ROOT="$(cd "$HOUSE_ROOT" && pwd)"
 XHTPM="$HERE/dsr.xhtpm"
-RENDER_OPS="$HOUSE_ROOT/*.monads/*.livedesk-taskbar/ops"
+RENDER_OPS="$HOUSE_ROOT/_.monads/_.livedesk-taskbar/ops"
 BIN="$RENDER_OPS/+x/khtpm_core_render.+x"
 MGR="$HERE/ops/+x/dsr_manager.+x"
 
@@ -60,7 +62,10 @@ if [ "$OPEN_DESK_MODE" = "on" ]; then
             SESS_ROOT="$HOUSE_ROOT/xyzfs/users/$USER_UUID/home/livedesk/sessions"
             SESSION_ID="$(awk -F'|' '/active_session/{gsub(/ /,"",$3); print $3}' "$SESS_ROOT/session.pdl" 2>/dev/null)"
             [ -n "$SESSION_ID" ] || SESSION_ID=s1
-            "$TRANSFER" "$HOUSE_ROOT" "$SESSION_ID" "dsr" >/dev/null 2>&1 &
+            # dsr desk renamed to dsr-dev 2026-09-22 (experimental
+            # physical-layout sandbox); toy's front door now opens
+            # that desk until a separate coded spawn-target desk exists.
+            "$TRANSFER" "$HOUSE_ROOT" "$SESSION_ID" "dsr-dev" >/dev/null 2>&1 &
         fi
     fi
 fi

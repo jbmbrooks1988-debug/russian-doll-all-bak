@@ -1,0 +1,28 @@
+
+=== ctx-menu.xhtpm pid 3323076  2026-10-05 21:02:50 ===
+--- ctx-menu.xhtpm  pid 3323076  2026-10-05 21:02:50 ---
+--- page: main ---
+        hero: hero_01
+    [>] 1. Inspect
+    [ ] 2. Possess
+    [ ] 3. Act
+    [ ] 4. Stop
+    [ ] 5. Events (hq)
+    [ ] 6. Inventory
+    [ ] 7. Dir
+    [ ] 8. Close
+    [ ] 9. Cli-io: 
+
+=== ctx-menu.xhtpm pid 3323076  2026-10-05 21:02:51 ===
+--- ctx-menu.xhtpm  pid 3323076  2026-10-05 21:02:51 ---
+--- page: main ---
+        hero: hero_01
+    [ ] 1. Inspect
+    [ ] 2. Possess
+    [ ] 3. Act
+    [ ] 4. Stop
+    [ ] 5. Events (hq)
+    [ ] 6. Inventory
+    [ ] 7. Dir
+    [ ] 8. Close
+    [ ] 9. Cli-io: 

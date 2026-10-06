@@ -1,0 +1,96 @@
+
+=== hotbar-desk.xhtpm pid 260151  2026-10-05 23:12:29 ===
+--- hotbar-desk.xhtpm  pid 260151  2026-10-05 23:12:29 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: event_clacker_1
+        [>] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 260151  2026-10-05 23:12:34 ===
+--- hotbar-desk.xhtpm  pid 260151  2026-10-05 23:12:34 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: event_clacker_1
+        [>] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 260151  2026-10-05 23:12:43 ===
+--- hotbar-desk.xhtpm  pid 260151  2026-10-05 23:12:43 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: event_clacker_1
+        [>] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 260151  2026-10-05 23:12:47 ===
+--- hotbar-desk.xhtpm  pid 260151  2026-10-05 23:12:47 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: event_clacker_1
+        [>] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 260151  2026-10-05 23:12:50 ===
+--- hotbar-desk.xhtpm  pid 260151  2026-10-05 23:12:50 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: event_clacker_1
+        [>] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 260151  2026-10-05 23:12:51 ===
+--- hotbar-desk.xhtpm  pid 260151  2026-10-05 23:12:51 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: event_clacker_1
+        [>] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 

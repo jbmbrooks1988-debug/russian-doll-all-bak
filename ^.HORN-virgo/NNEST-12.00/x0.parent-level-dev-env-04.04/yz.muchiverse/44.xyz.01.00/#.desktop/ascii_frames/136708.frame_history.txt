@@ -1,0 +1,21 @@
+
+=== hotbar-desk.xhtpm pid 136708  2026-10-05 22:52:04 ===
+--- hotbar-desk.xhtpm  pid 136708  2026-10-05 22:52:04 ---
+--- page: main ---
+Hotbar (desk)
+          🎬️
+          👺
+          🤖
+          .
+          .
+          .
+          .
+          .
+          .
+        cursword - slot: event_clacker_1
+
+=== hotbar-desk.xhtpm pid 136708  2026-10-05 22:56:40 ===
+--- hotbar-desk.xhtpm  pid 136708  2026-10-05 22:56:40 ---
+--- page: main ---
+Hotbar (desk)
+        cursword - slot: event_clacker_1

@@ -5,7 +5,7 @@
 # also have an 'on/off' option incase i want it to stop auto running."
 #
 # 2026-08-11: legacy tp_taskbar.c retired (archived to
-# *.monads/*.livedesk-taskbar/ops/LEGACY-ARCHIVE-20260811.zip, originals
+# _.monads/_.livedesk-taskbar/ops/LEGACY-ARCHIVE-20260811.zip, originals
 # deleted). `run` below is UNCHANGED — it still just triggers
 # crypt_autostart against autostart.pdl, whose tool-bar LAUNCH row now
 # points at the real khtpm binaries — so "button.sh run" already does the
@@ -23,7 +23,7 @@ PDL="$SCRIPT_DIR/autostart.pdl"
 BIN="$SCRIPT_DIR/ops/+x/crypt_autostart.+x"
 RESTORE="$SCRIPT_DIR/restore-list.txt"
 HOUSE="$(cd "$SCRIPT_DIR/.." && pwd)"
-TB_DIR="$HOUSE/*.monads/*.livedesk-taskbar/ops"
+TB_DIR="$HOUSE/_.monads/_.livedesk-taskbar/ops"
 # REAL FIX 2026-09-01 - khtpm_strip_parser.+x retired as a separate
 # binary (folded verbatim into khtpm_core_render.c as strip_main(),
 # phase 1) and this build-sanity check was never updated to match -
@@ -41,8 +41,40 @@ KHTPM_PARSER="$TB_DIR/+x/khtpm_core_render.+x"
 # house's own consolidation). khtpm_core_render added; the two retired
 # names kept, harmless, in case an old build is somehow still running
 # mid-transition.
-KHTPM_PAT="khtpm_core_render\.\+x|khtpm_strip_parser\.\+x|khtpm_taskbar_manager_main\.\+x|khtpm_hq_render\.\+x|tp_desktop_window_rgb\.\+x|tp_desktop_window\.\+x"
+# 2026-10-05: khtpm_entity.+x added - entity windows run that binary (split out of
+# khtpm_core_render 2026-09-27); without it quit/reset left every entity running.
+KHTPM_PAT="khtpm_core_render\.\+x|khtpm_strip_parser\.\+x|khtpm_taskbar_manager_main\.\+x|khtpm_hq_render\.\+x|khtpm_entity\.\+x|tp_desktop_window_rgb\.\+x|tp_desktop_window\.\+x"
 khtpm_pids() { pgrep -f "$KHTPM_PAT" 2>/dev/null; }
+
+# REAL FIX 2026-09-23, direct live report ("reset should be killing
+# x11-hq windows as well"): khtpm_pids() above already covers every
+# x11-hq window's own RENDERER (they all share khtpm_core_render.+x,
+# confirmed live - chat-hai/network-browser/co-lab-hai/etc. all launch
+# it, matching this pattern already). The real gap is each app's own
+# MANAGER child (colab_hai_manager.+x, network_browser_manager.+x, every
+# other &.hq-apps/*/+x/*_manager.+x) - a separate binary, tied to its
+# renderer's lifetime only through the renderer's own graceful
+# window-close path. quit/reset here bypass that (a raw external
+# kill -TERM/-KILL on the renderer, not a real window-close event), so
+# those managers were silently left running/orphaned - exactly what
+# happened to Cursword's own entity process earlier tonight, same real
+# shape. Scoped generically by PATH (any live process whose cmdline
+# runs a real +x/ binary from under this house's own &.hq-apps/), not a
+# hardcoded per-app binary-name list - matches this house's own stated
+# preference (see reset's own comment below: "no hardcoded entity list
+# duplicated here") and needs zero edits when a new HQ app is added.
+hq_app_manager_pids() {
+    for p in /proc/[0-9]*; do
+        pid="${p#/proc/}"
+        [ -r "$p/cmdline" ] || continue
+        args="$(tr '\0' ' ' < "$p/cmdline" 2>/dev/null)"
+        [ -z "$args" ] && continue
+        case "$args" in
+            *"$HOUSE/"*"&.hq-apps/"*"/+x/"*) echo "$pid" ;;
+        esac
+    done
+}
+all_khtpm_and_hq_pids() { { khtpm_pids; hq_app_manager_pids; } 2>/dev/null | sort -u; }
 
 read_restore_mode() {
     awk -F'|' '
@@ -68,10 +100,31 @@ case "$ACTION" in
         ;;
     quit|close)
         # Kill all running toolbars and entities (no relaunch)
-        khtpm_pids | xargs -r kill -TERM
+        all_khtpm_and_hq_pids | xargs -r kill -TERM
         sleep 1
-        khtpm_pids | xargs -r kill -KILL 2>/dev/null || true
-        echo "closed all toolbars and entities"
+        # REAL, MERGED 2026-09-28: all_khtpm_and_hq_pids() (ee6afba47,
+        # main) generically catches every HQ app manager compiled to
+        # .../ops/+x/*.+x (colab_hai_manager, network_browser_manager,
+        # etc.) by path pattern - but NOT world_manager's own persistent
+        # loop, since that's `prisc+x` interpreting world_manager.pal,
+        # and the binary is literally named "prisc+x" (no "/+x/"
+        # directory segment in its path for the generic pattern to
+        # match). Both kills are needed for full coverage; neither
+        # alone is a superset of the other.
+        all_khtpm_and_hq_pids | xargs -r kill -KILL 2>/dev/null || true
+        [ -x "$HOUSE/&.hq-apps/world-manager/button.sh" ] && \
+            "$HOUSE/&.hq-apps/world-manager/button.sh" kill 2>/dev/null || true
+        echo "closed all toolbars, entities, HQ app managers, and world_manager"
+        ;;
+    build|rebuild)
+        # Compile EVERY house program (compile-runner.sh: each project's own
+        # build script, with the +x output folders recreated first). Use after a
+        # wipe, a fresh clone or a branch switch - compiled programs are in no git
+        # branch, so windows come up empty until this has run. An optional 2nd
+        # argument limits it to scripts whose path contains that text, e.g.
+        #   sh button.sh build board-viewer
+        shift
+        DISPLAY="${DISPLAY:-:0}" nice -n 15 bash "$SCRIPT_DIR/compile-runner.sh" "$@"
         ;;
     reset)
         # Guaranteed-clean kill-everything-then-relaunch — for when the
@@ -82,10 +135,42 @@ case "$ACTION" in
         # autostart.pdl — same single source of truth as `run` (the pdl
         # LAUNCH rows own the tool-bar AND all entity paths, no hardcoded
         # entity list duplicated here).
-        khtpm_pids | xargs -r kill -TERM
+        all_khtpm_and_hq_pids | xargs -r kill -TERM
         sleep 1
-        khtpm_pids | xargs -r kill -KILL 2>/dev/null || true
-        [ -x "$TB_DIR/build_khtpm_strip.sh" ] && sh "$TB_DIR/build_khtpm_strip.sh"
+        all_khtpm_and_hq_pids | xargs -r kill -KILL 2>/dev/null || true
+        # world_manager's own prisc+x loop isn't caught by the generic
+        # scan above (see the `quit|close` case's own comment) - killed
+        # explicitly here too.
+        [ -x "$HOUSE/&.hq-apps/world-manager/button.sh" ] && \
+            "$HOUSE/&.hq-apps/world-manager/button.sh" kill 2>/dev/null || true
+        # REAL FIX 2026-09-21, direct instruction ("i dont want it to run
+        # the old binaries if theres a compile fail or it may mislead me
+        # into thinking things are ok, when they aren't"): this used to
+        # run build_khtpm_strip.sh and ignore its exit status, then only
+        # check the binary EXISTS - which a STALE binary from a prior
+        # successful build also satisfies, so a compile failure here
+        # silently relaunched old code with no sign anything was wrong.
+        # We already just killed every running process above, so on a
+        # build failure leave the desktop DOWN and say so, the same
+        # already-proven pattern run_khtpm_strip.sh's own `new` mode uses
+        # (`|| { echo "BUILD FAILED — not launching"; exit 1; }`) - never
+        # fall through to launching whatever binary happens to exist.
+        if [ -x "$TB_DIR/build_khtpm_strip.sh" ]; then
+            # REAL FIX 2026-09-21, direct follow-up ("yes, log it"): a
+            # reset triggered from the desktop runs with no visible
+            # terminal, so a plain "BUILD FAILED" message had nowhere
+            # real to point to. `tee` to a durable log next to the
+            # build's own +x/ output; exit code captured via a temp
+            # file since dash has no `set -o pipefail` (a pipeline's
+            # own $? would reflect `tee`, not the build).
+            _blog="$TB_DIR/+x/build_error.log"
+            _brc="$(mktemp 2>/dev/null || echo "/tmp/khtpm_build_rc.$$")"
+            mkdir -p "$TB_DIR/+x"
+            { sh "$TB_DIR/build_khtpm_strip.sh"; echo $? > "$_brc"; } 2>&1 | tee "$_blog"
+            _brc_val="$(cat "$_brc" 2>/dev/null || echo 1)"
+            rm -f "$_brc"
+            [ "$_brc_val" = 0 ] || { echo "BUILD FAILED — desktop left stopped, not relaunched with a stale binary (full output: $_blog)"; exit 1; }
+        fi
         [ -x "$KHTPM_PARSER" ] || { echo "MISSING $KHTPM_PARSER (build failed?)"; exit 1; }
         mkdir -p "$SCRIPT_DIR/ops/+x"
         [ -x "$BIN" ] || gcc -Wall -O2 -o "$BIN" "$SCRIPT_DIR/ops/crypt_autostart.c"
@@ -136,6 +221,7 @@ EOF
   sh button.sh run            # quit current livedesk, then mount+launch (autostart.pdl)
   sh button.sh restart        # same as run (clean restart for $ shortcut / focus tests)
   sh button.sh quit | close   # kill all running toolbars and entities (no relaunch)
+  sh button.sh build [text]   # compile every house program (after a wipe/clone/branch switch); text filters by path
   sh button.sh reset          # harder: guaranteed kill-everything + rebuild + relaunch via autostart.pdl
   sh button.sh on | off       # toggle STATE|enabled in autostart.pdl
   sh button.sh status         # show current enabled state + running processes

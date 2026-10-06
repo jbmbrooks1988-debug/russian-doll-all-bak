@@ -54,13 +54,15 @@ merge that killed the PARSER layer entirely.** `khtpm_strip_parser.c`
 (and its `poll_agent_relay()`, the only consumer of
 `livedesk_agent_relay.txt`) was folded into `khtpm_core_render.c` and
 did not survive — confirmed via `khtpm_strip_keyboard_ascii.c`'s own
-header comment. **`nav.sh nav <n>`/`row <n>`/`key`/`esc`/`type` are
-currently silent no-ops.** Only `nav.sh hqcell <n>`/`mgrcode <n>`
-(the MANAGER layer, writing straight to `strip_history.txt`) still
-work. Full writeup: `04-bugs/BUG-LOG.md` (2026-09-18 entry) and
-`02-architecture/INPUT-RELAY-PIPELINE.md`'s own correction. Read the
-diagram below as **historical**, not current, until `nav.sh` itself
-gets patched or this note is removed.
+header comment. **`nav.sh nav <n>`/`row <n>`/`key`/`esc`/`type` were
+silent no-ops until 2026-09-19 — now retargeted to `strip_history.txt` /
+`NAV_PID=<pid>` window relay files (FIXED note in `04-bugs/BUG-LOG.md`);
+the diagram below still shows the dead parser layer, read it as historical.**
+`nav.sh hqcell <n>`/`mgrcode <n>` were always live (they write straight to
+`strip_history.txt`). Full writeup: `04-bugs/BUG-LOG.md` and
+`02-architecture/INPUT-RELAY-PIPELINE.md`. The "Two harness layers" list and
+"Known nav.sh trap" below describe the old parser layer; `nav <n>`/`row <n>`
+still send digits then Enter, so the double-Enter trap still applies.
 
 ## 🗺️ The two-layer relay/dispatch system (read this before touching taskbar C)
 
@@ -151,7 +153,7 @@ some may genuinely be PDL-driven already.)
    indistinguishable from a real bug and wastes the most time of anything
    in this whole recipe:
    ```sh
-   cd "*.monads/*.livedesk-taskbar/ops"
+   cd "_.monads/_.livedesk-taskbar/ops"
    bash build_khtpm_strip.sh          # ~15s, warnings-only is a pass
    bash run_khtpm_strip.sh new        # kills old, rebuilds, launches, confirms PID
    ```

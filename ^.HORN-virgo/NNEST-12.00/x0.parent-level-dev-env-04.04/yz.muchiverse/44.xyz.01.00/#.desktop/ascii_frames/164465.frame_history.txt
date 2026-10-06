@@ -1,0 +1,112 @@
+
+=== hotbar-desk.xhtpm pid 164465  2026-10-05 22:56:41 ===
+--- hotbar-desk.xhtpm  pid 164465  2026-10-05 22:56:41 ---
+--- page: main ---
+Hotbar (desk)
+        cursword - slot: event_clacker_1
+
+=== hotbar-desk.xhtpm pid 164465  2026-10-05 22:56:41 ===
+--- hotbar-desk.xhtpm  pid 164465  2026-10-05 22:56:41 ---
+--- page: main ---
+Hotbar (desk)
+          🎬️
+          👺
+          🤖
+          .
+          .
+          .
+          .
+          .
+          .
+        cursword - slot: event_clacker_1
+
+=== hotbar-desk.xhtpm pid 164465  2026-10-05 22:56:44 ===
+--- hotbar-desk.xhtpm  pid 164465  2026-10-05 22:56:44 ---
+--- page: main ---
+Hotbar (desk)
+          🎬️
+          👺
+          🤖
+          .
+          .
+          .
+          .
+          .
+          .
+        cursword - slot: event_clacker_1
+
+=== hotbar-desk.xhtpm pid 164465  2026-10-05 22:56:55 ===
+--- hotbar-desk.xhtpm  pid 164465  2026-10-05 22:56:55 ---
+--- page: main ---
+Hotbar (desk)
+          🎬️
+          👺
+          🤖
+          .
+          .
+          .
+          .
+          .
+          .
+        cursword - slot: event_clacker_1
+
+=== hotbar-desk.xhtpm pid 164465  2026-10-05 22:56:56 ===
+--- hotbar-desk.xhtpm  pid 164465  2026-10-05 22:56:56 ---
+--- page: main ---
+Hotbar (desk)
+          🎬️
+          👺
+          🤖
+          .
+          .
+          .
+          .
+          .
+          .
+        cursword - slot: event_clacker_1
+
+=== hotbar-desk.xhtpm pid 164465  2026-10-05 22:56:57 ===
+--- hotbar-desk.xhtpm  pid 164465  2026-10-05 22:56:57 ---
+--- page: main ---
+Hotbar (desk)
+          🎬️
+          👺
+          🤖
+          .
+          .
+          .
+          .
+          .
+          .
+        cursword - slot: event_clacker_1
+
+=== hotbar-desk.xhtpm pid 164465  2026-10-05 22:56:58 ===
+--- hotbar-desk.xhtpm  pid 164465  2026-10-05 22:56:58 ---
+--- page: main ---
+Hotbar (desk)
+          🎬️
+          👺
+          🤖
+          .
+          .
+          .
+          .
+          .
+          .
+        cursword - slot: event_clacker_1
+
+=== hotbar-desk.xhtpm pid 164465  2026-10-05 22:57:08 ===
+--- hotbar-desk.xhtpm  pid 164465  2026-10-05 22:57:08 ---
+--- page: main ---
+Hotbar (desk)
+          TEST
+          🎬️
+          👺
+          🤖
+          .
+          .
+          .
+          .
+          .
+          .
+        cursword - slot: event_clacker_1

@@ -1,0 +1,30 @@
+
+=== hotbar-desk.xhtpm pid 102914  2026-10-05 22:46:29 ===
+--- hotbar-desk.xhtpm  pid 102914  2026-10-05 22:46:29 ---
+--- page: main ---
+Hotbar (desk)
+          1 🎬️ event_clacker_1
+          2 👺 m8_redhorned
+          3 🤖 self
+          4
+          5
+          6
+          7
+          8
+          9
+        cursword: 3 item(s)
+
+=== hotbar-desk.xhtpm pid 102914  2026-10-05 22:47:08 ===
+--- hotbar-desk.xhtpm  pid 102914  2026-10-05 22:47:08 ---
+--- page: main ---
+Hotbar (desk)
+          1 🎬️ event_clacker_1
+          2 👺 m8_redhorned
+          3 🤖 self
+          4
+          5
+          6
+          7
+          8
+          9
+        cursword - slot: 

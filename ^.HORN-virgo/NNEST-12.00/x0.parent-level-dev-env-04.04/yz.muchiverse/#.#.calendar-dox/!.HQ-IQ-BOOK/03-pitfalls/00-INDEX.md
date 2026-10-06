@@ -20,6 +20,12 @@
   and a human at once). Read this before touching cli_io/reparse code
   again.
 
+- `INCIDENT-2026-10-05-WORKING-TREE-WIPE.md` - the working tree was deleted
+  (cause not determined), what was and was not recoverable, the **recovery
+  runbook** (restore from git + snapshot, `button.sh build`, `git cherry`), and the
+  prevention that was added (tracked `+x` folders, safe full `rezip-house.sh`,
+  `button.sh build`). **Read first if `git status` shows thousands of ` D` files.**
+
 This is the live pitfalls tracker. When you hit a new landmine, add it
 to `HOUSE_CODE_PITFALLS.md` in the same shape as its existing entries
 (Symptom / Real cause / Real fix) rather than starting a new file.
@@ -44,7 +50,12 @@ forever — ~10 % of a core, per stack, indefinitely. Two of them survived
   window process.
 - `HOUSE_CODE_PITFALLS.md` #17 — the grey-frame flash (a *different*
   weak-box symptom: a producer/consumer file-handoff gap).
-- `44.xyz.01.00/*.monads/*.livedesk-taskbar/ops/kill_hq_windows.sh` —
+- `HOUSE_CODE_PITFALLS.md` #25 — a wait that does not sleep pegs the
+  CPU. No new `sleep`/`usleep` that the loop can skip. No second
+  render daemon. Open suggestion, not built: one shared wait in
+  `04-bugs/bug_bounty.md` ("one house wait") so a C poll loop cannot
+  put `usleep` in an idle-only else.
+- `44.xyz.01.00/_.monads/_.livedesk-taskbar/ops/kill_hq_windows.sh` —
   the ledger-pgid emergency reaper behind the `!kill hq` row; blind
   (kills by registry, shows nothing). `proc-mon` is the observable,
   engine-aware companion.

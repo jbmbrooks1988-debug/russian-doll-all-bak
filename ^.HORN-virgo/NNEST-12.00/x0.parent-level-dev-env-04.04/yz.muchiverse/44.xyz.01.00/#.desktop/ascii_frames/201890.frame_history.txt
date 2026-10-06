@@ -1,0 +1,64 @@
+
+=== hotbar-desk.xhtpm pid 201890  2026-10-05 23:02:53 ===
+--- hotbar-desk.xhtpm  pid 201890  2026-10-05 23:02:53 ---
+--- page: main ---
+Hotbar (desk)
+        [>] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+          cursword - slot: event_clacker_1
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 201890  2026-10-05 23:02:54 ===
+--- hotbar-desk.xhtpm  pid 201890  2026-10-05 23:02:54 ---
+--- page: main ---
+Hotbar (desk)
+        [>] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+          cursword - slot: event_clacker_1
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 201890  2026-10-05 23:02:59 ===
+--- hotbar-desk.xhtpm  pid 201890  2026-10-05 23:02:59 ---
+--- page: main ---
+Hotbar (desk)
+        [ ] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+          cursword - slot: event_clacker_1
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 201890  2026-10-05 23:03:02 ===
+--- hotbar-desk.xhtpm  pid 201890  2026-10-05 23:03:02 ---
+--- page: main ---
+Hotbar (desk)
+        [ ] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+          cursword - slot: event_clacker_1
+      [ ] 10. > 

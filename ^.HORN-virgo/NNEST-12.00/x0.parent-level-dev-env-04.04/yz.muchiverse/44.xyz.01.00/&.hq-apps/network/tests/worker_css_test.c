@@ -54,6 +54,7 @@ static int wreply(int fd, char *buf, size_t cap) {
     if (n < 0 || (size_t)n >= cap) return 0;
     if (!rread(fd, buf, (size_t)n)) return 0;
     char t; if (read(fd, &t, 1) != 1) return 0;   /* trailing '\n' */
+    if (strncmp(buf, "LIVE|", 5) == 0) return wreply(fd, buf, cap);  /* keepalive */
     return 1;
 }
 
@@ -173,8 +174,11 @@ int main(int argc, char **argv) {
         "if(b.clientHeight!==90)throw \"B4 ch\";\n"
         "var r=b.getBoundingClientRect();\n"
         "if(!r||r.width!==120||r.height!==90)throw \"B5 rect\";\n"
-        "if(r.x!==0||r.y!==0||r.top!==0||r.left!==0)throw \"B6 rect0\";\n"
-        "if(r.right!==120||r.bottom!==90)throw \"B7 rect2\";\n"
+        "if(r.x!==0||r.left!==0)throw \"B6 rect0\";\n"
+        /* B6b: #out precedes #box and has no declared height, so #box stacks
+         * below its one text line (14px baseline) instead of sitting at y=0. */
+        "if(r.y!==14||r.top!==14)throw \"B6b stack=\"+r.y;\n"
+        "if(r.right!==120||r.bottom!==90+14)throw \"B7 rect2\";\n"
         "var cs=getComputedStyle(b);\n"
         "if(cs.getPropertyValue(\"width\")!==\"120\")throw \"B8 gpw\";\n"
         "O.textContent=\"B-ok\";\n",
@@ -272,6 +276,50 @@ int main(int argc, char **argv) {
         "if(tb.offsetWidth!==70)throw \"I1 ow=\"+tb.offsetWidth;\n"
         "O.textContent=\"I-ok\";\n",
         "I-ok");
+
+    /* J: img src triggers fetch and onload (Step 1, no decode yet) */
+    rc |= run_case(worker, tmpdir,
+        "wcs[img] Image src triggers load",
+        "<html><body><div id=\"out\">o</div></body></html>",
+        "",
+        "var O=document.getElementById(\"out\");\n"
+        "var img=new Image();\n"
+        "var fired=false;\n"
+        "img.onload=function(){ fired=true; };\n"
+        "img.onerror=function(){ throw \"J err\"; };\n"
+        "img.src=\"data:text/plain,hello\";\n"
+        "if(!fired) throw \"J1 not fired\";\n"
+        "O.textContent=\"img-ok\";\n",
+        "img-ok");
+
+    /* K: img 1x1 PNG decode via stb_image — naturalWidth/Height */
+    rc |= run_case(worker, tmpdir,
+        "wcs[img-png] 1x1 PNG decode naturalWidth",
+        "<html><body><div id=\"out\">o</div></body></html>",
+        "",
+        "var O=document.getElementById(\"out\");\n"
+        "var img=new Image();\n"
+        "var fired=false;\n"
+        "img.onload=function(){ fired=true; };\n"
+        "img.src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=\";\n"
+        "if(!fired) throw \"K1 not fired\";\n"
+        "if(img.naturalWidth!==1) throw \"K2 nw=\"+img.naturalWidth;\n"
+        "if(img.naturalHeight!==1) throw \"K3 nh=\"+img.naturalHeight;\n"
+        "if(!img.complete) throw \"K4 not complete\";\n"
+        "O.textContent=\"img-png-ok\";\n",
+        "img-png-ok");
+
+    /* L: HTML <img src=data:> — RENDER emits IMG with w/h via decoded file */
+    rc |= run_case(worker, tmpdir,
+        "wcs[img-html] HTML img data: PNG in RENDER",
+        "<html><body><div id=\"out\">o</div><img id=\"im\" src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=\" alt=\"x\"></body></html>",
+        "",
+        "var O=document.getElementById(\"out\");\n"
+        "var im=document.getElementById(\"im\");\n"
+        "if(im.naturalWidth!==1) throw \"L1 nw=\"+im.naturalWidth;\n"
+        "if(im.naturalHeight!==1) throw \"L2 nh=\"+im.naturalHeight;\n"
+        "O.textContent=\"img-html-ok\";\n",
+        "img-html-ok");
 
     printf("%s\n", rc ? "FAIL: worker_css_test" : "PASS: worker_css_test");
     return rc ? 1 : 0;

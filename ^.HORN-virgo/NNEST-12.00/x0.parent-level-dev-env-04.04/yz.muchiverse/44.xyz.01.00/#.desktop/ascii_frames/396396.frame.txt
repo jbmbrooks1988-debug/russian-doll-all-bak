@@ -1,0 +1,14 @@
+--- hotbar-desk.xhtpm  pid 396396  2026-10-06 01:45:49 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: self
+        [ ] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 

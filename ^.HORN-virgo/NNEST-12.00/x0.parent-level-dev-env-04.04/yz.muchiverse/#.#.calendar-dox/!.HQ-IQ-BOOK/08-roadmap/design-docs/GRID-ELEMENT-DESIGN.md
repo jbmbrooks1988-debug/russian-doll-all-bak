@@ -1,6 +1,11 @@
 # `<grid>` element design — real in-place spreadsheet cell editing
 
-**Status: DESIGN ONLY, not implemented.** Direct request, 2026-09-05,
+**Status: IMPLEMENTED 2026-09-05 (csv-hq's `<grid>`; the "DESIGN ONLY"
+header this doc used to carry was stale). 2026-09-20: fixed the armed
+state being dropped on every full reparse (`kh_find_input_by_key()` never
+matched `<grid>`) plus a persistent keyboard-grab retry - see
+`04-bugs/bug_bounty.md` "FIXED 2026-09-20: csv-hq `<grid>`". The state
+machine below is accurate to the code.** Direct request, 2026-09-05,
 after csv-hq's own real grid rendering (formatted `<scrolllist>` rows,
 see `csv_hq_manager.c`'s own header) shipped but doesn't allow editing
 a cell in place — today's csv-hq requires typing a cell ref into a
@@ -233,3 +238,56 @@ while in state 3 the current cell shows its OWN live text-cursor bar
    a real cell edit commit, Escape-out-of-cell, Escape-out-of-grid, all
    independently confirmed via a text-state read (the published
    `cell_R_C` vars) before trusting a PNG dump alone.
+
+## Reuse by overlay pickers (2026-09-20)
+
+The pure part of the jump behaviour now lives in
+`44.xyz.01.00/&.widgits/_shared-lib/khtpm_grid_jump.c` (text-included canonical
+helper; plain C + `<string.h>/<ctype.h>/<stdlib.h>`, no Elem/X11/khtpm
+dependency; standalone test: `_shared-lib/tests/test_grid_jump.c`).
+`default_grid_handle_key()` (khtpm_core_render.c) already drives its
+navigating state through it, so behaviour is defined in exactly one place.
+
+API: `GjState {jump[16], row, col, rows, cols}` (rows/cols 0 = unbounded),
+`gj_step(&st, key, ch)` with `GjKey` = CHAR/UP/DOWN/LEFT/RIGHT/ENTER/ESC/
+BACKSPACE returning `GjAction` = NONE / MOVED / BUFFER / JUMPED / ENTER_CELL /
+DISARM; plus `gj_parse()` (a11 / 11a / AA5 -> 0-based row,col, bounds-checked),
+`gj_col_to_letters()` / `gj_letters_to_col()` (bijective base-26, A=0, AA=26),
+`gj_buf_append()` (only `[A-Za-z0-9]`, capped) and `gj_clamp()`.
+
+How the Place overlay (`tp_arm_placer_rmmv.c`, a standalone X process with a
+labelled wire grid) uses it - WIRED 2026-09-20, see "IMPLEMENTED in the Place overlay" below (this list was the plan):
+1. `#include "khtpm_grid_jump.c"` (add `-I ../../_shared-lib` to its build
+   line, same as build_core_render.sh does) and keep one `GjState` with
+   `rows`/`cols` = the number of grid cells on screen (pane size / cell px).
+2. Draw column letters (`gj_col_to_letters`) along the top and 1-based row
+   numbers down the side of the wire grid, and a highlight box on
+   `(st.col, st.row)`; show `st.jump` in a small status label so the user sees
+   what they typed.
+3. In the existing keyboard loop map `XK_Up/Down/Left/Right`, `XK_Return`,
+   `XK_Escape`, `XK_BackSpace` and printable characters to `GjKey`, call
+   `gj_step`, and react: `MOVED/BUFFER/JUMPED` -> redraw the highlight;
+   `ENTER_CELL` (Enter with an empty buffer = the second Enter) -> place at the
+   cell centre, i.e. the same result a click there produces (write the same
+   `RMMV_CLICK` ledger line with that pixel); `DISARM` -> cancel exactly like
+   today's Esc.
+4. Type `c7` (or `7c`) + Enter to jump, Enter again to place. Bounds come from
+   `rows/cols`, so an off-grid ref is a no-op instead of a stray placement.
+   Keep the existing click-to-place, Esc handling (`XQueryKeymap` poll) and
+   drop-zone hover untouched.
+
+### IMPLEMENTED in the Place overlay (2026-09-20) - `tp_arm_placer_rmmv.c`
+
+The palettes RPG-Maker placer and File Explorer's right-click Place (same binary) now draw a **labelled grid** and take the same keyboard behaviour as csv-hq via `gj_step()`:
+
+- Columns lettered A, B, ... along the top, rows numbered 1, 2, ... down the left, on a dark band so they read over any desktop. Labels and lines use the **real desk cell** (`desk_grid.pdl cell_px`, 80 reference px, scaled per screen by `khtpm_ui_scale.c`; edges = `kps_ref_to_screen(k*cell)`), so a labelled cell is exactly where placement snaps. (Before, the overlay drew fixed 64px screen cells.) Cells cut by the screen edge are labelled on their visible part.
+- Type a ref in either order (`c7` / `7c`), shown as `jump: c7_` in a status pill (moved off the picker hole if needed). **Enter** jumps a bright green frame to the cell, arrows move it one cell, **Enter again** (empty buffer) places at the cell centre, Backspace edits, **Esc** cancels, a mouse click places as before. Moving the mouse hands control back to the mouse.
+- The **first key of any kind only arms** the highlight (at the pointer's cell), and keys already held at launch (the Enter that opened Place) are ignored until released, so launching Place can never place by itself.
+- A cell whose centre is under the picker hole, or a ref that doesn't exist (`z99`), is **refused with a red cue** in the pill and places nothing. After a refused ref the cursor stays where it was, so Enter would place *that* cell.
+- Placement writes the same `RMMV_CLICK` ledger line / `FE_PLACE_CLICK` file / drop-zone result a mouse click at that cell centre produces (reference px). The green drop-zone hover follows the keyboard cursor too.
+- Keys arrive as `KeyPress` under the keyboard grab and as `XQueryKeymap` edges when another client holds it; a per-keycode "already acted on" table stops a press being handled twice, and autorepeat is filtered (held arrows/Backspace still repeat).
+- Env: `TP_PLACE_CELL_REF` (cell override), `TP_PLACE_NO_ARGB=1` (plain visual), `TP_PLACE_DEBUG=1` (stderr key trace).
+- **Differs from csv-hq:** no cell *editing* state (`^`) - placing replaces it; rows/cols are bounded by the screen; the jump helper is the only shared code (a documented TRANSITIONAL text include, `INMEM-DB-STATE-LAYER-PLAN.md` section 5).
+- **Not yet done:** the non-rmmv `tp_arm_placer.c` (emoji brush, board-viewer branch) is a different overlay and was left unchanged; File Explorer's script still snaps the click to 64 ref px after placement (`fe_place_on_desk.sh`), which is not the 80px labelled cell.
+- **Real hardware:** the private-Xephyr tests inject keys through the X server (xdotool/XTest), which bypasses the Wayland/Mutter key routing and any stale grab (HOUSE_CODE_PITFALLS #24). Only the user's session can prove typed keys arrive there.
+

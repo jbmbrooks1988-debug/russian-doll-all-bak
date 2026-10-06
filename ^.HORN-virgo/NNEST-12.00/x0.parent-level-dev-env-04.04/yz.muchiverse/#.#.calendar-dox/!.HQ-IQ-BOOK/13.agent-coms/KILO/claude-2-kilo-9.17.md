@@ -224,6 +224,19 @@ documenting them, which cost real time:
    you're resuming from), treat it as stale and use `strip_history.txt`
    (item 2) instead.
 
+✅ **2026-09-19: `nav.sh` is fixed** (`#.desktop/harnesses/khtpm-livedesk-taskbar/
+nav.sh`, `HOUSE=<house_root>` set). `bash nav.sh nav 12` / `esc` drive the
+taskbar strip through file 2; `NAV_PID=<pid> bash nav.sh nav 20|key Down|click
+x y [3=right-click]|string "mv 25 26"` drive one window through file 1. Digit
+codes are ASCII (`'5'` = 53; `nav`/`key` handle that for you). Read real nav
+numbers from a `dump_frame_png_op` frame first; numbers are per window.
+
+⌨️ **2026-09-20: Space opens the context menu without a mouse.** Focus an item
+(digits), then `NAV_PID=<pid> bash nav.sh key ' '` (or `KEY_PRESSED: 32`): the
+same menu as a right-click appears as its own window/pid; pick a row with
+digits + Enter on THAT pid, Esc closes. On the strip, code `32` = Enter (a
+focused pal cell opens its menu). Inside a typing field Space is a literal.
+
 ### 3c. 🔒 NEW RULE: a checkpoint is not "started"/"in progress" until relay-verified
 
 A real prior kilo session declared "WSR-CIV Step A: IN PROGRESS" after
@@ -530,7 +543,7 @@ Real, confirmed fact: **context menus in this house are ALREADY
 fully data-driven and zero-recompile** — `meta.pdl` has plain
 `METHOD | <label> | <action>` rows, mechanically converted to
 `menu.chtpm` by `meta_to_menu_chtpm.py`
-(`44.xyz.01.00/*.monads/*.livedesk-taskbar/ops/`). This means "remove
+(`44.xyz.01.00/_.monads/_.livedesk-taskbar/ops/`). This means "remove
 an option, add a new one" already costs nothing architecturally — the
 real, new work is making that ADDITION itself a **house-specific
 event** (per the user's own framing: "add option to context menu"

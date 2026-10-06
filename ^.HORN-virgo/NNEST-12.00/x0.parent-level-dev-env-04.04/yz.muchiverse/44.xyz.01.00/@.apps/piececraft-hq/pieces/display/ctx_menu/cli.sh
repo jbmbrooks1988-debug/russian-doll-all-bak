@@ -1,0 +1,2 @@
+#!/bin/sh
+exec sh "/home/no/Desktop/github/work/NNEST-12.00/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz.01.00/&.widgits/entity-cli/ops/entity_cli_commit.sh" "/home/no/Desktop/github/work/NNEST-12.00/x0.parent-level-dev-env-04.04/yz.muchiverse/44.xyz.01.00/@.apps/piececraft-hq/pieces/xelector_01" "$2" "$3"

@@ -7,7 +7,7 @@
 #
 # REAL FIX 2026-08-29 ("mr was just one project using events (probably
 # the first) but it doesn't own events"): these ops used to live under
-# *.monads/*.muchi-pet/ops/ - muchi-pet's own project dir - even though
+# _.monads/_.muchi-pet/ops/ - muchi-pet's own project dir - even though
 # every entity/project in the house (not just muchi-pet) compiles events
 # that call them, via #.ref/menu/event_commands.registry.pdl's TEMPLATE
 # exec lines. Moved here, events-hq's own shared ops dir, alongside
@@ -29,7 +29,7 @@ mkdir -p +x
 CC=${CC:-gcc}
 CFLAGS="-std=c11 -Wall -O2"
 
-for src in mr_change_gold mr_character mr_actor_string mr_input_number \
+for src in mr_change_gold mr_character mr_actor_string mr_input_number mr_read_receipt \
            mr_select_item mr_scrolling_text mr_show_choices mr_show_text mr_world \
            mr_move_to_entity mr_transfer_desk; do
   echo "-- $src.c -> +x/$src.+x"

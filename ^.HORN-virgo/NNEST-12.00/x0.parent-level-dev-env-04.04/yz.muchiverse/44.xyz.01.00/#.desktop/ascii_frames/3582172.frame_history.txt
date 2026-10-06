@@ -1,0 +1,130 @@
+
+=== menu.chtpm pid 3582172  2026-10-05 21:20:22 ===
+--- menu.chtpm  pid 3582172  2026-10-05 21:20:22 ---
+--- page: main ---
+    [>] 1. Dir
+    [ ] 2. Inventory
+    [ ] 3. Chat
+    [ ] 4. Bookmarks
+    [ ] 5. Play
+    [ ] 6. Act
+    [ ] 7. Cli-io: 
+    [ ] 8. Close
+    [ ] 9. Cancel
+
+=== menu.chtpm pid 3582172  2026-10-05 21:20:23 ===
+--- menu.chtpm  pid 3582172  2026-10-05 21:20:23 ---
+--- page: main ---
+    [>] 1. Dir
+    [ ] 2. Inventory
+    [ ] 3. Chat
+    [ ] 4. Bookmarks
+    [ ] 5. Play
+    [ ] 6. Act
+    [ ] 7. Cli-io: 
+    [ ] 8. Close
+    [ ] 9. Cancel
+
+=== menu.chtpm pid 3582172  2026-10-05 21:20:26 ===
+--- menu.chtpm  pid 3582172  2026-10-05 21:20:26 ---
+--- page: main ---
+    [ ] 1. Dir
+    [ ] 2. Inventory
+    [ ] 3. Chat
+    [ ] 4. Bookmarks
+    [ ] 5. Play
+    [ ] 6. Act
+    [ ] 7. Cli-io: 
+    [>] 8. Close
+    [ ] 9. Cancel
+
+=== menu.chtpm pid 3582172  2026-10-05 21:20:28 ===
+--- menu.chtpm  pid 3582172  2026-10-05 21:20:28 ---
+--- page: main ---
+    [ ] 1. Dir
+    [ ] 2. Inventory
+    [ ] 3. Chat
+    [ ] 4. Bookmarks
+    [ ] 5. Play
+    [ ] 6. Act
+    [>] 7. Cli-io: 
+    [ ] 8. Close
+    [ ] 9. Cancel
+
+=== menu.chtpm pid 3582172  2026-10-05 21:20:30 ===
+--- menu.chtpm  pid 3582172  2026-10-05 21:20:30 ---
+--- page: main ---
+    [ ] 1. Dir
+    [ ] 2. Inventory
+    [ ] 3. Chat
+    [ ] 4. Bookmarks
+    [ ] 5. Play
+    [ ] 6. Act
+    [>] 7. Cli-io: 
+    [ ] 8. Close
+    [ ] 9. Cancel
+
+=== menu.chtpm pid 3582172  2026-10-05 21:20:31 ===
+--- menu.chtpm  pid 3582172  2026-10-05 21:20:31 ---
+--- page: main ---
+    [ ] 1. Dir
+    [ ] 2. Inventory
+    [ ] 3. Chat
+    [ ] 4. Bookmarks
+    [ ] 5. Play
+    [ ] 6. Act
+    [>] 7. Cli-io: 
+    [ ] 8. Close
+    [ ] 9. Cancel
+
+=== menu.chtpm pid 3582172  2026-10-05 21:20:32 ===
+--- menu.chtpm  pid 3582172  2026-10-05 21:20:32 ---
+--- page: main ---
+    [ ] 1. Dir
+    [ ] 2. Inventory
+    [ ] 3. Chat
+    [ ] 4. Bookmarks
+    [ ] 5. Play
+    [ ] 6. Act
+    [>] 7. Cli-io: 
+    [ ] 8. Close
+    [ ] 9. Cancel
+
+=== menu.chtpm pid 3582172  2026-10-05 21:20:33 ===
+--- menu.chtpm  pid 3582172  2026-10-05 21:20:33 ---
+--- page: main ---
+    [ ] 1. Dir
+    [ ] 2. Inventory
+    [ ] 3. Chat
+    [ ] 4. Bookmarks
+    [ ] 5. Play
+    [ ] 6. Act
+    [>] 7. Cli-io: 
+    [ ] 8. Close
+    [ ] 9. Cancel
+
+=== menu.chtpm pid 3582172  2026-10-05 21:20:34 ===
+--- menu.chtpm  pid 3582172  2026-10-05 21:20:34 ---
+--- page: main ---
+    [ ] 1. Dir
+    [ ] 2. Inventory
+    [ ] 3. Chat
+    [ ] 4. Bookmarks
+    [ ] 5. Play
+    [ ] 6. Act
+    [>] 7. Cli-io: 
+    [ ] 8. Close
+    [ ] 9. Cancel
+
+=== menu.chtpm pid 3582172  2026-10-05 21:20:37 ===
+--- menu.chtpm  pid 3582172  2026-10-05 21:20:37 ---
+--- page: main ---
+    [ ] 1. Dir
+    [ ] 2. Inventory
+    [ ] 3. Chat
+    [ ] 4. Bookmarks
+    [ ] 5. Play
+    [ ] 6. Act
+    [ ] 7. Cli-io: 
+    [ ] 8. Close
+    [ ] 9. Cancel

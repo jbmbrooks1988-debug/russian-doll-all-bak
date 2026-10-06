@@ -16,7 +16,7 @@ seem to take effect, or an old bug you already fixed "comes back."
 
 **Real cause:** `pkill -f <pattern>` is not reliable against this
 house's own emoji-laden, star-globbed paths (`44.xyz.01.00/`,
-`*.monads/*.livedesk-taskbar/`, etc.) — it silently fails to match in
+`_.monads/_.livedesk-taskbar/`, etc.) — it silently fails to match in
 some shells/environments, confirmed live more than once this session.
 A `pkill` call that reports success (or reports nothing, which looks
 like success) can leave the old process running untouched. The next
@@ -371,6 +371,29 @@ this kind of one-time default inside the function that already
 re-detects real content on every tick / every live reparse
 (`layout_sidebar_panel()`'s own `g_default_has_sidebar_panel` latch,
 here), never inside the one-shot `main()` startup sequence.
+
+**Real follow-up #3 (2026-09-23, a different session, same root cause
+class):** co-lab-hai's own long agent messages cut off at ~255 chars
+no matter what - four separate, individually-correct-in-isolation
+fixes to the DIRECT draw path (`render_tree()`/`draw_elem()` in
+`khtpm_draw_core.c`: `Elem.label` size, wrap-width padding drift,
+`label_decoded[]` size, floor-vs-ceiling `max_lines`) each verified
+against real live data and each had ZERO visible effect. Real cause:
+co-lab-hai is default/popup mode, so none of that code was ever being
+exercised for its actual repaint - the real bug was two INDEPENDENT
+`char foo[256]` buffers inside `kh_serialize_frame_elem()`/
+`kh_paint_frame_line()`'s own frame-file round trip (the write-escape
+and read-unescape steps), completely separate from `Elem.label`'s own
+struct size. **Sharper lesson than step 1 above:** don't just check
+which path a window uses ONCE at the start of a debugging session and
+then trust that memory for every fix that follows - if a fix to the
+"identified" path has no visible effect after a live rebuild+retest,
+STOP and re-confirm which path is actually live for this specific
+window before writing fix #2 in the same file, rather than continuing
+to patch plausible-looking buffers in the same wrong place. A
+`fprintf` placed at the ACTUAL draw call site the window uses (proven
+by watching it fire, not assumed) would have caught this after fix #1,
+not fix #4.
 
 ## 13. A `${var}` value with a bare `"` hangs the xhtpm parser at 100% CPU — the window never maps, looks "WM-related"
 
@@ -1103,3 +1126,82 @@ mismatch — BadMatch on RenderCreatePicture, every single time.
 
 *Append new entries here as they're found — this file exists so the
 next session doesn't re-discover the same mistake from scratch.*
+
+## 24. One process's stuck `XGrabKeyboard` silently kills the keyboard for EVERY window — and looks like each window's own "focus bug" (2026-09-20)
+
+**Symptom (csv-hq, but any armed field/grid/nav could show it):** mouse
+clicks work; arrows, Enter, Esc and typing do nothing; the window shows `^`/`#`
+as if armed. Logs: `GRAB key=... rc=1` (`AlreadyGrabbed`), later `late-retry
+gave up`. A passive listener (`XSelectInput` KeyPress|FocusChange on the
+window, no grab) sees `FocusIn mode=NotifyWhileGrabbed(3)` and **zero
+`KeyPress`**. A throwaway third-party client also gets `AlreadyGrabbed`.
+
+**Real cause:** the Cursword pal (`khtpm_entity.+x`, running since 00:41)
+took a deliberate display-wide `XGrabKeyboard` when armed and never released
+it, because its `kh_ungrab_kbd()` tested a file-scope `dpy` that is **always
+NULL in the pal process** (tile/entity mode opens its own local Display - see
+the `khtpm tp_main globals footgun` note) - so every release was a silent
+no-op. Every key went to that pal. Fixed with `g_kbd_dpy` (`2c1301ab`). Restart
+the pal to drop an already-held grab.
+
+**What sent us the wrong way (about two hours):** `override_redirect`
+(`livedesk_override_redirect.pdl=true` really is a separate documented bug -
+still fix it), missing `WM_HINTS`, the dock's stale grab, `ding.js`, a
+"Mutter/XWayland lies" theory. A 5-variant window-property test on the real
+display proved window properties did not matter. **Relay/Xephyr tests all
+passed** because relay injection bypasses grabs - this is the
+`relay-testing-may-mask-real-focus-bugs` rule again, so a passing agent test
+proved nothing here.
+
+**Rules:**
+1. Any helper that ungrabs must use the SAME `Display*` that grabbed. A helper
+   reading a global that "tile mode never sets" is a no-op - grep every
+   `XUngrab*`/`XCloseDisplay`/`dpy` use in `khtpm_entity.c` for this.
+2. **Before touching window flags or focus code for a "keyboard is dead"
+   report, prove whether some client holds the keyboard:** a tiny probe that
+   calls `XGrabKeyboard(root)` and prints the return code (`Success` = nobody
+   holds it; `AlreadyGrabbed` while a real X window has focus = someone does).
+   Note a native Wayland window (your terminal) having focus also makes this
+   read HELD - test with an X window focused.
+3. Find the holder without ptrace (Xwayland isn't attachable): XRes lists
+   clients->PIDs; XRECORD with `delivered_events` KeyPress..KeyRelease plus one
+   XTest key tap prints the receiving client's `id_base`. Details in
+   `X11-AND-SESSION-PITFALLS.md` (2026-09-20 entry).
+4. `kh_focus_debug.log` now records `x_focus` and `_NET_ACTIVE_WINDOW` on every
+   HQ click and logs a failed dock grab - read it first next time.
+
+---
+
+## 25. A wait that does not sleep pegs the CPU, and this machine cannot take that (2026-09-30)
+
+**Symptom:** the desktop freezes or the session dies while a board or a
+daemon is running. It looks like a random crash. The box is a weak CPU.
+One core at 100% for long enough is a crash of the whole house. The
+codebase does not matter if the machine is down.
+
+**Real cause:** a poll loop with no sleep, a `sleep(0)` / `usleep(0)`, or
+a sleep that the loop skips because it treats its own write as new work.
+`bv_render_3d.+x --daemon` sleeps 30ms (`BV_IDLE_POLL_USEC`) only on the
+idle branch. If `pchq_board_view.txt` looks changed on every check, that
+branch never runs and the daemon renders as fast as it can. The same
+class of bug is pitfall 13 (a bare quote spinning the xhtpm parser) and
+the leaked engine stacks in this chapter's index.
+
+**Rules:**
+1. Every wait sleeps. Do not add a new `sleep` or `usleep` on a path that
+   can be skipped, and do not add one shorter than the sleeps already
+   next to it. This daemon's idle poll is 30ms. The dock canvas is 16.7ms
+   while active and 150ms while idle. `khtpm_entity.c` idles at 200ms.
+2. A loop must not treat a file it just wrote, or a file rewritten every
+   tick by the window, as a reason to skip the sleep.
+3. Do not start a second `bv_render_3d.+x --daemon`, projector, or
+   orchestrator to "see if it works." An old one keeps the CPU after the
+   window is closed. `proc-mon` (`mon` on the taskbar HQ menu, or
+   `sh 44.xyz.01.00/&.hq-apps/proc-mon/mon_scan.sh list`) shows strays.
+   Kill those by pid. Do not `pkill -f` a pattern that is also your shell.
+
+The 3D daemon's 30ms wait now runs at the bottom of every pass, including
+after a frame. A shared `house_wait_us` so the next loop cannot hide its
+sleep in an else is an open bounty, not a header yet
+(`04-bugs/bug_bounty.md`, "one house wait").
+

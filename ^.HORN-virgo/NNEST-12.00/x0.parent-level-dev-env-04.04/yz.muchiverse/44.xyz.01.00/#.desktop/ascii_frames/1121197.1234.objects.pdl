@@ -1,0 +1,35 @@
+OBJECT tag=tab id=tb-in class=pchq-tb x=8 y=33 w=108 h=30 nav=1 active=0 label=In: off
+OBJECT tag=tab id=tb-file class=pchq-tb x=120 y=33 w=208 h=30 nav=2 active=0 label=book:pre-design ▾
+OBJECT tag=tab id=tb-desk class=pchq-tb x=332 y=33 w=182 h=30 nav=3 active=0 label=page:dsr-dev ▾
+OBJECT tag=tab id=tb-menu class=pchq-tb x=518 y=33 w=127 h=30 nav=4 active=0 label=Menu ▾
+OBJECT tag=tab id=tb-player class=pchq-tb x=649 y=33 w=164 h=30 nav=5 active=0 label=Player: ON ▾
+OBJECT tag=tab id=tb-clock class=pchq-tb x=817 y=33 w=105 h=30 nav=6 active=0 label=12:00
+OBJECT tag=text id=- class=hb-quiet,ov-title,theme-3 x=563 y=941 w=695 h=30 nav=0 active=0 label=. xelector_01 - slot: a_castle
+OBJECT tag=item id=hb-min class=ov-min,hb-slot,theme-3 x=1266 y=941 w=83 h=30 nav=19 active=0 label=_
+OBJECT tag=item id=hbs0 class=hb-slot,sprite-inline,sprite-big,hb-sel x=558 y=971 w=84 h=56 nav=20 active=0 label=-
+OBJECT tag=item id=hbs1 class=hb-slot,sprite-inline,sprite-big,hb-full,theme-2 x=647 y=971 w=84 h=56 nav=21 active=0 label=-
+OBJECT tag=item id=hbs2 class=hb-slot,sprite-inline,sprite-big,hb-full,theme-2 x=736 y=971 w=84 h=56 nav=22 active=0 label=-
+OBJECT tag=item id=hbs3 class=hb-slot,sprite-inline,sprite-big,hb-full,theme-2 x=825 y=971 w=84 h=56 nav=23 active=0 label=🍎
+OBJECT tag=item id=hbs4 class=hb-slot,sprite-inline,sprite-big,hb-full,theme-2 x=914 y=971 w=84 h=56 nav=24 active=0 label=🗡️
+OBJECT tag=item id=hbs5 class=hb-slot,sprite-inline,sprite-big,hb-full,theme-2 x=1003 y=971 w=84 h=56 nav=25 active=0 label=🔥
+OBJECT tag=item id=hbs6 class=hb-slot,sprite-inline,sprite-big,hb-full,theme-2 x=1092 y=971 w=84 h=56 nav=26 active=0 label=💎
+OBJECT tag=item id=hbs7 class=hb-slot,sprite-inline,sprite-big,hb-empty,theme-2 x=1181 y=971 w=84 h=56 nav=27 active=0 label=.
+OBJECT tag=item id=hbs8 class=hb-slot,sprite-inline,sprite-big,hb-empty,theme-2 x=1270 y=971 w=84 h=56 nav=28 active=0 label=.
+OBJECT tag=cli_io id=hbcmd class=hb-cli x=563 y=1027 w=786 h=30 nav=29 active=0 label=> 
+OBJECT tag=text id=- class=ov-title,theme-3 x=761 y=501 w=213 h=30 nav=0 active=0 label=^ xelector: xelector_01
+OBJECT tag=item id=- class=ov-row,theme-2 x=761 y=531 w=390 h=40 nav=32 active=0 label=Inspect
+OBJECT tag=item id=- class=ov-row,theme-2 x=761 y=574 w=390 h=40 nav=33 active=0 label=Dir
+OBJECT tag=cli_io id=cmd class=- x=761 y=617 w=390 h=30 nav=34 active=0 label=Cli-io: 
+OBJECT tag=item id=ctx-min class=ov-min,theme-3 x=982 y=501 w=83 h=30 nav=30 active=0 label=_
+OBJECT tag=item id=ctx-x class=ov-close,theme-3 x=1068 y=501 w=83 h=30 nav=31 active=0 label=x
+OBJECT tag=text id=- class=quiet x=8 y=1084 w=48 h=39 nav=0 active=0 label=ents
+OBJECT tag=item id=hb-toggle class=pchq-ft x=61 y=1084 w=160 h=39 nav=7 active=0 label=hotbar
+OBJECT tag=item id=e0 class=pchq-ft,sprite-inline,sprite-big x=226 y=1084 w=160 h=39 nav=8 active=0 label=map
+OBJECT tag=item id=e1 class=pchq-ft,sprite-inline,sprite-big x=391 y=1084 w=160 h=39 nav=9 active=0 label=xelector
+OBJECT tag=item id=e2 class=pchq-ft,sprite-inline,sprite-big x=556 y=1084 w=160 h=39 nav=10 active=0 label=cursword
+OBJECT tag=item id=e3 class=pchq-ft,sprite-inline,sprite-big x=721 y=1084 w=160 h=39 nav=11 active=0 label=dsr_castle_a
+OBJECT tag=item id=e4 class=pchq-ft,sprite-inline,sprite-big x=886 y=1084 w=160 h=39 nav=12 active=0 label=dsr_bank_a1
+OBJECT tag=item id=e5 class=pchq-ft,sprite-inline,sprite-big x=1051 y=1084 w=160 h=39 nav=13 active=0 label=dsr_bank_a2
+OBJECT tag=item id=e6 class=pchq-ft,sprite-inline,sprite-big x=1216 y=1084 w=160 h=39 nav=14 active=0 label=dsr_store_a1
+OBJECT tag=item id=e7 class=pchq-ft,sprite-inline,sprite-big x=1381 y=1084 w=160 h=39 nav=15 active=0 label=dsr_store_a2
+OBJECT tag=item id=e8 class=pchq-ft,sprite-inline,sprite-big x=1546 y=1084 w=160 h=39 nav=16 active=0 label=dsr_store_a3

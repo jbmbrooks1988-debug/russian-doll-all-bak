@@ -1,0 +1,2 @@
+PASS	_.monads/_.livedesk-taskbar/ops/build_db_hq_manager.sh	$.crypts/build-reports/20261005-211059/_.monads__.livedesk-taskbar_ops_build_db_hq_manager.sh.log
+FAIL (exit 1)	_.monads/_.livedesk-taskbar/ops/build_db_hq.sh	$.crypts/build-reports/20261005-211059/_.monads__.livedesk-taskbar_ops_build_db_hq.sh.log

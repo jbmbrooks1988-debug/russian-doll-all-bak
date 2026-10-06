@@ -2,6 +2,739 @@
 
 ---
 
+## ✅ CLOSED 2026-09-30 (grok handoff, HANDOFF STEP 1 ONLY, real regression caught and fixed same session): taskbar's HQ-window discovery opendir/readdir'd 2616 entries every reload
+
+**Reported (as data, not live user report):** `/home/no/Desktop/github/xer/cpu_loop_analysis.txt`, a CPU-throttling investigation shared across agents this session. Live measurement: `ktb_merge_hq_windows()` (khtpm_taskbar_manager.c) scanned all of `#.desktop` (2616 entries live) every reload just to find the one `livedesk_hq_windows_<pid>.txt` line that actually changed - a real, confirmed ~18-19% CPU contributor on the board window's renderer PID, on top of a taskbar manager already correctly gated to a 250ms-1s reload cadence.
+
+**Fix (grok's own precise handoff, implemented by Claude):** same house-standard marker-file convention as `strip_frame_changed.txt`/`hq_ui_pdl_changed.txt`. `khtpm_core_render.c`'s `kh_hq_reg_bump_marker()`/`kh_hq_reg_mark_removed()` append one line (`"<pid> add|update|remove"`) to `#.desktop/hq_windows_changed.txt` only when a window's own registry line text actually changes - wired into the redraw-tick write, the separate MINIMIZE write site, and `cleanup_hq_window_registry()`'s exit-time unlink. `ktb_merge_hq_windows()` now stats the marker first: unchanged size returns a cached list (no scan at all); a grown marker reads only the new lines and touches only the named pids' own files; missing/first-seen still does one full scan to seed the cache.
+
+**Real regression caught live, same session, fixed before commit:** a SIGKILL'd (uncleanly killed) window never runs the `atexit` cleanup that appends a "remove" line - the marker legitimately never changes, but the pid is dead. The OLD code's full-scan path re-verified every entry's liveness (`ktb_pid_is_hq_renderer()`) on every single reload, self-healing a stale entry for free; the new fast path skipped that liveness check entirely. **Direct live report, caught in the act:** "it killed board, but its still on bottom tb, clicking it should re open it if its on bottom tb. why doesn't it... this happened before 2 and i thought it weird" - a `run_khtpm_strip.sh new` restart had killed the real pc-hq window, and its taskbar cell survived indefinitely, clicking it silently raising a dead X window id. This is very likely the same "weird" recurrence the user had already half-noticed before this session, now root-caused. Fixed: the SAME liveness check now also runs over the small cached list (≤32 entries, never the 2616-entry directory) on both the unchanged- and grown-marker paths - keeps the whole perf win, restores the self-healing.
+
+**Live-verified, both halves:** marker size stable across 5s of genuine idle (no phantom bumps); manager CPU ~3.5%→~1.1%, strip renderer ~18-19%→~1-3%; deliberately `kill -9`'d the real pc-hq window, confirmed its registry file survived (no remove line ever written, matching the bug's own mechanism), confirmed its cell dropped out of the published `strip_ui.txt` (`n_hqwins`) within one reload cycle instead of surviving forever.
+
+**Not in this pass** (explicitly out of scope per grok's own handoff note): `entities_changed.txt` for entity discovery, `load_tabs` self-heal, `house_wait.h`/the 30ms board wait, inotify, caching `/proc`, a shutdown relay, or tying the manager's process group to the renderer. Real, separate, listed follow-ups if CPU is still an issue after this lands.
+
+---
+
+## OPEN 2026-09-30: one house wait, so a poll loop cannot skip its sleep
+
+**Header is in.** `&.widgits/_shared-lib/house_wait.h` defines
+`house_wait_us`. A non-positive or too-short value sleeps 30ms, the
+board daemon's floor. `bv_render_3d.+x --daemon` calls it at the bottom
+of every pass. Other C poll loops should call it the same way, after
+the work, never inside an idle-only else. Pal loops keep the `sleep`
+they already have. Do not add a second, shorter wait beside one that
+is already there (dock canvas 16.7ms active / 150ms idle, entity idle
+200ms).
+
+---
+
+## ✅ CLOSED 2026-09-30 (real root causes found and fixed, not the merge): pc-hq board window resize didn't resize the 3D camera view; HUD/minimap got cut off small, black on big
+
+**Resolution, same day:**
+
+1. **"Bigger = black" was NOT a render failure - it was a deliberate,
+   undocumented-to-the-user hard pixel ceiling.** `bv_render_3d.c:61-64`
+   had `FRAME_MAX_W 1280`/`FRAME_MAX_H 960` - any canvas bigger than
+   that never grew `g_fw`/`g_fh` past the ceiling, so `kh_draw_canvas`
+   (khtpm_core_render.c) centered the smaller raw image inside the
+   bigger canvas and left the uncovered border unpainted (black). Direct
+   instruction on the real fix ("scale render to canvas, capped by cost
+   budget... is there a compromise, different step sizes?"): removed the
+   hard crop, raised the sanity ceiling to 3840x2160 (real monitors, not
+   a cost bound), and introduced `RAYMARCH_BUDGET_PX` - a real cost
+   budget enforced via `g_lod_step` (the SAME block-fill-then-upscale
+   mechanism a "moving" frame already used) instead of a crop. A canvas
+   past budget now raymarches at a coarser step (1/2/3/4, whichever the
+   larger of the size-driven step and the existing motion-driven step
+   needs) and covers the FULL requested canvas, never letterboxed.
+   Direct clarification honored ("it doesn't need to stretch image btw,
+   just have a bigger camera lens") - this is real coverage at native
+   resolution-minus-LOD, not a stretched/upscaled crop.
+2. **A real, separate crash-class bug found in the same code path,
+   fixed regardless of the ceiling above:** `bv_gpu_raymarch.c`'s LOD
+   downsample used a fixed `static unsigned char scratch[1280*960*4]`;
+   any request past that (which the ceiling above no longer prevents)
+   hit a guard that `goto done`'d with **zero frame written** - a real
+   black screen, not a letterbox. Fixed: `scratch` is now a
+   `realloc()`-grown persistent heap buffer, no cap.
+3. **HUD/minimap's "architecturally baked into the camera framebuffer"
+   finding (below, kept for the historical trail) turned out not to
+   need the bigger split-into-real-khtpm-elements redesign it first
+   looked like** - once (1) was fixed, they draw at the real, full
+   canvas resolution same as the camera view, so most of the original
+   "cut off" symptom was the same crop bug, not a separate architecture
+   problem. What WAS real and separate: `bv_draw_hud()`/
+   `bv_draw_minimap()`'s own pad/`minimap_px_per_col`/`minimap_max_px`
+   were flat `hud.pdl` constants with zero awareness of the real canvas
+   size, so a small window could still overlap or drop the minimap
+   outright (its own `mm_w > g_fw` guard). Fixed: a new
+   `bv_hud_canvas_scale()` (shrink-only, canvas-size-relative, floor
+   0.35x) scales `pad`/`max_px` so they shrink to fit instead of
+   vanishing. Known remaining limit, not fixed (documented honestly,
+   not silently claimed done): the bitmap HUD text font itself only
+   supports an integer `hud_scale` (1-4) from `hud.pdl` - true
+   sub-integer font shrinking on a very small window is a real,
+   separate, not-yet-built feature (would need a variable-scale glyph
+   renderer), not something this pass's canvas-scale multiplier can
+   reach.
+4. **A third, unrelated but real gap found while testing this live:**
+   the `bv_render_3d.c --daemon` process (the one that actually watches
+   `pchq_board_view.txt` for a live resize, independent of any
+   keypress) is only spawned by `bv_dispatch.c` the FIRST time a real
+   game key is drained from `interact_relay.txt` - a freshly-opened
+   board window that the user hasn't sent a movement key to yet has NO
+   daemon running at all, so resize (and therefore HUD/minimap) does
+   nothing until the first keypress. Worked around live this session
+   (manually started the daemon for the open test session) but **not
+   fixed at the root** - real fix belongs in `open_pchq_board.sh` or
+   `main_module.pal`'s own boot-time unconditional render block,
+   starting the daemon unconditionally at boot instead of waiting on
+   `bv_dispatch`'s any-key gate. Flagging as a new, separate, smaller
+   open item rather than silently folding it into this CLOSED entry.
+
+**Original report, false-alarm ruling-out, and the "architecturally not
+independent" framing kept verbatim below for the investigation trail:**
+
+## ⚠️ OPEN 2026-09-30 (superseded by the CLOSED entry directly above - kept for trail only): pc-hq board window resize doesn't resize the 3D camera view; HUD/minimap get cut off small, go black big
+
+**Reported:** direct live report, after ruling out a false alarm first
+(see below) - "if i resize the window smaller, it cuts off hud and mini
+map, also if i drag window bigger, it doesn't make 'camera lense wider'
+it just shows black. i thought we had fixed that specifically but maybe
+not? also the hud/mini map should size dynamically not be part of
+camera's view, right?"
+
+**False alarm ruled out first, for the record:** the SAME session
+originally reported "pc-hq view not filling frame, resize indicator
+gone" after the `grok`→`claude` merge, which looked alarming enough to
+consider reverting the merge. Full diff of every file the merge touched
+(`khtpm_core_render.c`, `khtpm_taskbar_manager.c`,
+`pchq_board_projector.c`, `pchq-board.xhtpm`, `pc_entity_ctx.sh`,
+`move_entity_on_desk.sh`, `bv_render_3d.c`) against pre-merge, PLUS a
+byte-level diff against a known-good local backup
+(`/home/no/Desktop/github/xdb/x0.parent-level-dev-env-04.04_20260929-033240/`),
+found **zero functional difference** in any canvas/resize/grip code -
+only cosmetic label renames (Book/Page, was File/Desk). Turned out to
+be a color-theme contrast issue (fixed by the user changing the theme),
+not a real regression, and NOT caused by the grok merge. Retracting
+that framing entirely - flagging here only as a lesson: don't assume
+"looks broken right after a merge" means "the merge broke it" without
+a real diff first.
+
+**The real, distinct bug, confirmed by direct code read:**
+
+1. **Camera view (the `<canvas id="view"/>` blit) genuinely IS supposed
+   to be dynamic.** `kh_layout_canvas_in_region()`
+   (`khtpm_core_render.c` ~line 5228) recomputes `cv->w`/`cv->h` to
+   fill its parent `<panel>` on every relayout and rewrites
+   `#.desktop/pchq_board_view.txt` with the new pixel size each time.
+   `bv_render_3d.c`'s `--daemon` loop (main(), ~line 3419) polls that
+   file and re-renders at the new resolution when it changes. This
+   mechanism is real, present, and byte-identical to the known-good
+   backup - not something this session broke. Live-reproduced symptom
+   ("bigger = black") is consistent with the daemon detecting
+   `view_changed` and re-requesting a frame, but the aspect/FOV math
+   (`build_camera()`/the `fov_rad`/`aspect` computation in
+   `bv_ray_click()`'s sibling raycasting code, ~line 2030) or the GPU
+   raymarch backend (`bv_gpu_raymarch.c`) not being told the new
+   width/height in time, producing a stale/blank buffer instead of a
+   properly re-projected wider view. **Not yet root-caused** - next
+   step is a live before/after frame-size dump (`cat
+   #.desktop/pchq_board_view.txt` immediately after a drag-resize) to
+   confirm whether the daemon side ever receives the new size at all,
+   vs. receives it but renders it wrong.
+
+2. **HUD/minimap are architecturally NOT independent of the camera
+   view - direct user intuition is correct, this is a real design
+   gap, not just a bug.** `bv_draw_hud()`/`bv_draw_minimap()`
+   (`bv_render_3d.c` ~line 1351/1643) draw text and the minimap
+   **directly onto the same raw pixel framebuffer** the 3D camera
+   render produces, at a fixed corner anchor + pixel padding
+   (`minimap_px_per_col`, `minimap_max_px`, from `hud.pdl`). There is
+   no separate khtpm `<panel>`/element for either - they are baked
+   into the one `<canvas>` blit the renderer treats as a single opaque
+   image. This means: shrinking the window shrinks the canvas region,
+   which crops the raw image (and whatever HUD/minimap pixels happen
+   to fall outside the new crop are just gone), and the HUD/minimap's
+   own on-screen size is entirely a function of the SAME resolution
+   the camera renders at, not a UI layer sized independently.
+
+**Real direction (not yet built):** HUD/minimap should not scale with
+canvas resize the same way the 3D view does - they need their own
+fixed real-screen-pixel size (or a house-standard scale factor,
+matching `g_ui_scale_pct`/font_scale convention elsewhere), computed
+in the SAME pass as the 3D camera resolution but independently, not as
+literal pixels burned into the one shared raw buffer. This likely means
+splitting `bv_render_3d.c`'s single "camera + HUD + minimap" framebuffer
+into either (a) two separate raw outputs blitted as two khtpm
+`<canvas>` elements, or (b) HUD/minimap becoming real generic khtpm
+elements (`<text>`/a dedicated `<minimap>` tag) drawn by the shared
+renderer on top of the camera canvas, not by the daemon at all - the
+second option is more consistent with this house's "no new per-project
+draw logic in the C daemon, let the generic renderer draw UI" standard
+(`CENTROID_GOLD_STD.md`) and is the one worth designing toward, not a
+quick pixel-math patch to the first.
+
+**Not yet done:** root-cause the resize-goes-black half (live frame-size
+dump before/after a drag-resize); decide (a) vs (b) above for HUD/
+minimap independence; neither started this session.
+
+---
+
+## 💡 PARKED 2026-09-28: no house-wide way to self-catch a rogue/runaway loop, without asking an agent to hand-measure it
+
+**Why this is here at all:** the SAME session that fixed
+`world_manager_tick.c` pegging a full CPU core (see `BUG-LOG.md`
+2026-09-28 - every tick forked a `system()`-shelled recursive `find`
+over the entire `xyzfs/users` tree, ~24x/second, ~90-100% of a core,
+plausibly a real contributor to several unplanned reboots) is direct,
+damning evidence that this house's own `proc-mon` - whose entire
+purpose is catching exactly this - did not catch it. Direct live
+framing: "that evaded the very usecase procmon exists to protect
+against, which is unprofessional." Real, fair criticism, worth fixing
+- but NOT rushed into proc-mon tonight (see below).
+
+**Real root cause of why it evaded detection, confirmed the same
+session - TWO separate, compounding gaps, not one:**
+
+1. **The accounting gap.** `ps`/`top`-style tools (and this agent's
+   own first measurement pass) report a process's OWN `utime+stime`
+   from `/proc/<pid>/stat` by default - CPU time THAT process itself
+   spent executing. `world_manager.pal`'s own PID was a flat ~1-2% the
+   whole time, honestly - that number just wasn't measuring the right
+   thing. The expensive work ran entirely inside a forked-and-waited-
+   for CHILD (`sync_entity_positions.+x` → `system()` → `bash` →
+   `find`/`sort`/`sed`/`grep`, one full recursive filesystem walk plus
+   several forks PER ENTITY, every ~40ms tick). A child's CPU time only
+   gets added to the PARENT's `cutime`/`cstime` fields, and only AFTER
+   the child exits and is reaped via `waitpid()` - `top`'s default
+   CPU% column doesn't read those fields at all. This is a real,
+   easy-to-miss blind spot for ANY simple "read this PID's CPU%"
+   monitor, not `proc-mon` specifically - it only became visible here
+   by deliberately summing `utime+stime+cutime+cstime` across a real
+   measured wall-clock window (`/proc/<pid>/stat` fields 14-17), which
+   is not what `top`, `ps`, or (presumably, NOT YET CONFIRMED BY
+   READING ITS OWN SOURCE - that investigation was explicitly paused,
+   see below) `proc-mon` do by default.
+2. **The attribution gap, distinct from the accounting one.** Even a
+   human actively watching `top` in the exact instant this was
+   happening would NOT see a process named "world_manager" spike -
+   each real chunk of expensive work ran under a fresh, separate,
+   extremely short-lived PID named `bash`, `find`, `sort`, `sed`, or
+   `grep` (a new shell script, written to `/tmp` and `system()`'d,
+   every single tick), each alive for single-digit milliseconds before
+   exiting. `top`'s refresh interval (1-3s typically) would have to
+   catch one of these in the exact moment it's running, and even then,
+   nothing about a process named `grep` says "this is world_manager's
+   doing" - the connection back to the real cost center requires
+   already knowing to look for it, not something a glance at `top`
+   would surface on its own.
+
+**Explicitly not yet done, flagged so it isn't silently assumed
+resolved:** whether `proc-mon` itself reads standard `ps`/
+`/proc/<pid>/stat` fields the normal way (and therefore inherits gap 1
+verbatim) was never actually confirmed by reading its own C source -
+that specific investigation was interrupted and explicitly parked by
+direct instruction ("maybe were over engineering proc mon... lets give
+the manager fix some time to breath"), not completed. Whoever revisits
+this should start by actually reading `proc-mon`'s real source, not by
+assuming this write-up's reasoning about `top`/`ps` in general also
+describes `proc-mon`'s own specific implementation.
+
+**Follow-up live check, same day, after the fix had a little time to
+breathe:** user reported hearing throttling again. Real re-investigation
+(cutime+cstime summed across every PID, full-system, twice) found no
+sustained house-side offender this time - `world_manager.pal` stayed
+at ~1-2%, confirming the earlier fix holds. Did catch
+`khtpm_taskbar_manager_main.+x` (the taskbar itself) and its strip
+renderer at 70-86%/31-36% in one measurement window - but three
+follow-up clean samples 2s apart, isolated to just those two PIDs,
+came back a stable ~4%/1.5% each time. Read as a real but TRANSIENT
+burst, not a hidden always-on loop like world_manager's was -
+plausibly correlated with the unusually high number of window launches/
+relaunches/kills this same session generated (events-hq x3, open-hai
+x4, proc-mon, sql-hq, two new pals, an entity relaunch...), which is
+real redraw/reparse work, not representative of normal desk usage.
+Not ruled out as a real pattern worth re-checking under NORMAL usage
+(not mid-heavy-agent-session) if the user keeps hearing it - flagging
+here rather than either calling it fixed or crying a new bug on
+one non-reproducing spike.
+
+**Direct question raised, NOT yet resolved - is proc-mon even the
+right place?** Alternative framing offered same session: rather than
+proc-mon trying to compute/interpret CPU% after the fact (which is
+exactly the blind-spot-prone approach above), what if any `.pal`
+polling loop had to **register its own declared tick speed** (e.g. a
+real line in `world_manager.pal` itself, or a small manifest each
+loop writes/touches on startup - "I intend to run at ~24 ticks/sec"),
+and a separate, simple watcher compared DECLARED speed against a real,
+measured tick cadence (like this session's own `page_manager.cursor`
+mtime-polling trick) - flagging any loop running hotter than its own
+declared rate, rather than proc-mon trying to guess what's normal for
+an arbitrary process it knows nothing about. This shifts the burden to
+"did this loop keep its own promise" instead of "is this CPU number
+suspicious," which is a real, different, possibly better-fitting
+design - genuinely undecided which approach (or a third one) is right.
+
+**Explicit direct instruction: let the world_manager fix "breathe"
+before building any of this.** Don't rush a monitoring feature into
+proc-mon (or anywhere else) under time pressure right after one real
+incident - confirm the fix holds first, then come back to whether/how
+a general self-service catch-mechanism gets built, and where it
+actually belongs.
+
+**Not yet decided:** proc-mon extension vs. a separate declared-speed
+registry+watcher vs. something else entirely; whether this belongs
+in `EVENT-MODULARITY-AND-BUILD-SPEED.md` (build-speed / house tooling
+territory) instead of here. Revisit once the world_manager fix has had
+real time to prove itself.
+
+---
+
+## ⚠️ OPEN 2026-09-28: with an entity's always-on-top OFF, its context menu doesn't reliably pop to top either
+
+**Reported:** direct live report - "when always on top is not on
+context windows aren't popping 2 top, that's the one thing that should
+defy being hidden." A context menu is inherently transient popup UI -
+it should always be able to raise above other windows regardless of
+the ENTITY's own always-on-top preference; those are two different
+concerns (does this pal's persistent desktop window float above
+everything, vs. can a menu just opened from it actually be seen).
+
+**Real evidence gathered, not yet traced to a confirmed root cause:**
+`khtpm_core_render.c:278/299-312` load `#.desktop/
+livedesk_override_redirect.pdl` into `g_override_redirect` (true =
+always-on-top / `override_redirect` window, bypasses the WM's normal
+stacking; false = WM-managed, normal stacking rules apply). Line
+`~6882`: `g_override_redirect = g_zorder_above ? 1 : 0` - this is the
+SAME flag driven by an entity's own always-on-top toggle
+(`ktb_zorder_op.+x`/`ZORDER_TOGGLE`, see the 2026-09-20 dock-unfactor
+entry below). Context menus are spawned as a SEPARATE process via
+`launch_khtpm_menu()` (line ~12114) - not yet confirmed whether that
+spawned process independently loads its own always-on-top state (and
+if so, from where - the calling entity's, or its own default), or
+whether it's supposed to be unconditionally `override_redirect`
+regardless of any entity's toggle and something is overriding that.
+
+**Why this isn't a quick same-night patch:** this exact file has
+several documented past incidents in this immediate area (below: the
+Wayland `xwayland-allow-grabs` restriction on `XGrabKeyboard`, WM-
+managed windows mapping asynchronously breaking a same-tick focus
+retry, `override_redirect` being a create-time-only property that
+stale processes don't re-evaluate) - guessing at a fix here without
+first tracing the exact spawn/argv path risks reintroducing one of
+those. Needs a dedicated session: trace what `launch_khtpm_menu()`
+actually passes to/reads in the spawned menu process, confirm whether
+it's the entity's `g_zorder_above` leaking in or the menu's own
+independent (and wrong-by-default) pdl read, then decide the real fix
+- almost certainly "a context menu window is unconditionally
+`override_redirect=true`, full stop, never inherits the opening
+entity's own toggle."
+
+---
+
+## ✅ CLOSED 2026-09-26 (all real parts fixed and pixel/state-verified, including a full real Move feature - NOT deferred, see Part 2's own final update below): Act menu opens in the wrong location; Move does nothing (no grid)
+
+Direct live report: "the act button opens new window in entirely
+wrong location. it should open in same position as last window.
+clicking move after does nothing (no grid)".
+
+**Part 1 - wrong window location.** Same architectural shape as the
+now-fixed Cli-io bug (`d1e630bf`/`f379e233`), NOT yet fixed: the "Act"
+menu row (`OBJECT | label=Act | action=GOTO:act` for the legacy
+`objects.pdl`-driven entities, or the `menu.chtpm` item wired to
+`open_entity_act.sh`) shells out to `&.widgits/entity-cli/
+open_entity_act.sh`, which builds `state/act.xhtpm` on the fly and
+launches it as a brand-new `khtpm_core_render.+x` process:
+```
+setsid nohup "$BIN" "$HOUSE" "$OUT" >/dev/null 2>&1 < /dev/null &
+```
+(`open_entity_act.sh`, near end of file). No `-x`/`-y`/geometry arg is
+passed at all, so the new window opens wherever `khtpm_core_render.c`'s
+own generic startup default places it (unrelated to the entity's own
+current on-screen position) - hence "entirely wrong location." Unlike
+Cli-io, Act's own content (a dynamic list built from `skills.pdl`) may
+be a real reason a *separate* window still makes sense here rather
+than inlining - needs a design call, not assumed to be the same
+"just inline it" fix. If a separate window stays, the real fix is
+passing the entity's own current `-x`/`-y` (or window id to position
+relative to) through to the launch, not silently defaulting.
+
+**UPDATE 2026-09-26, direct clarification of intent (superseded by
+Part 2's final update below - kept for the real investigation trail)**:
+Move is *supposed* to arm `PLACE_RANGE` and open the placing grid.
+Confirmed house-wide at the time: `PLACE_RANGE` had ZERO real UI
+trigger anywhere in the codebase (only `tp_arm_placer_rmmv.c`'s own
+`getenv()` read). The FIRST fix attempt (commit `6e2a58d7`) wired this
+via the palette stamp/brush path, which the same day's live testing
+showed was the wrong mechanism (creates a new tile, not a real move) -
+see Part 2's final update for the real, correct fix that replaced it.
+
+**Also found and fixed, same investigation (2026-09-26)**: Act itself
+was showing a real "⚠ malformed template" warning, root-caused to
+`open_entity_act.sh`'s awk-generated template using a literal
+backslash-quote instead of `&quot;` inside its `action="..."` XML
+attributes - pre-existing bug, not from the earlier position fix.
+Fixed, commit `b4315f0d`. This alone may explain part of "Move does
+nothing" (a malformed template can misparse which action string
+belongs to which row) independent of the real `PLACE_RANGE` gap above.
+
+**Part 2 - Move does nothing - FULLY RESOLVED 2026-09-26, real feature,
+not a stamp/workaround (commit `de2170eb`), superseding every earlier
+note above about this being open/deferred:**
+
+- Move now does a real, reliable, single-entity relocation, not a
+  brand-new-tile stamp: `move_entity_on_desk.sh` (new) reuses
+  `FE_PLACE_CLICK` - the exact same real short-circuit File Explorer's
+  own drag-and-drop already relies on - to get a target cell back with
+  no stamping, then rewrites the ENTITY'S OWN `desktop_pos.txt` and
+  relaunches it there. `move_entity_to.sh` (new) is the NO-UI
+  companion: an agent/automated caller that already knows the target
+  reference px moves an entity directly, no grid/mouse/keyboard at all
+  - this is the real path for AI-driven or scripted movement.
+- The grid itself is no longer full-screen: `tp_arm_placer_rmmv.c` now
+  accepts `TP_ORIGIN_X`/`TP_ORIGIN_Y` (an entity's own position) + a
+  real range, limiting the overlay to a small box of cells around that
+  origin (direct live report: full-screen "is inconvenient when using
+  the computer, clicking other things on screen").
+- A single click now MOVES the target (same highlight arrows control),
+  not places immediately - a second click on the same cell, or Enter,
+  confirms (direct instruction: "clicking anywhere should move the
+  target... not place unless double clicked").
+- Real, per-house config, not just an env var: `desk_grid.pdl`'s new
+  `move_view_range`/`place_confirm` keys (direct instruction: "make the
+  limits and features .pdl toggle/customizable").
+- Confirmed live: arrow-key movement needs no explicit focus/click at
+  all - `XQueryKeymap` polls raw hardware key state independent of
+  window focus by design, verified by direct test (no click, no window
+  targeting, arrow key moved the target) - satisfies the direct
+  requirement "pressing arrow keys should move a placer, taking focus
+  from wherever its pressed... or it wont matter that it exists."
+
+Pixel-verified end-to-end: a real 560x560 range-limited window (vs. the
+old 2496x1664 full screen), a click moving a green target indicator to
+a named cell without placing, a confirmed double-click writing the
+entity's real new `desktop_pos.txt` and relaunching it there, and an
+arrow-key press moving the target with zero focus/click first.
+
+`attack` (`apply_range.sh`, still its own separate hardcoded a1/b2/2/6
+demo, untouched by this fix) and `use` (still a plain "recorded"
+no-op) are real, separate, not-yet-built follow-ups - not folded into
+this fix.
+
+---
+
+## ⚠️ OPEN 2026-09-23: Co-lab-h-ai cuts off messages so the human cannot read them
+
+**Reported:** live, while approving agent posts in session `1790154594`. Long `@kilo` lines were queued. The window shows a cut-off sentence. The full text is only in `pending.txt` / `conversation.txt`.
+
+**Where:** `&.hq-apps/co-lab-hai/co-lab-hai.xhtpm` draws the pending line and each conversation row as a single `<text label="...">` (`PENDING (${pend_agent}): ${pend_msg}` and `${msg.text}`). Those labels do not wrap. `colab_hai_manager.c` also builds each session sidebar label in a 96-byte buffer (`session_label` → `char label[96]`). The manager keeps a longer `pend_msg` (escaped into 1200 bytes) and reads conversation lines up to 2048, so the files are whole and the window is not.
+
+**Note from `claude` branch's own history**: a DIFFERENT co-lab-hai long-message-clipping bug (the frame-file round trip's two independent 256-byte buffers in `khtpm_core_render.c`) was found and fixed 2026-09-23 - see this file's own "✅ CLOSED 2026-09-23: Co-lab-h-ai cuts off long messages" entry elsewhere in this doc if this looks like a duplicate; check whether that fix already resolves what's described here before doing more work on it.
+
+**Not fixed.** Direction: show `pend_msg` and `msg.text` in a wrapping `<text_area>` (or a row tall enough to wrap), and stop clipping session labels at 96 bytes. Do not shorten agent posts to fit the label.
+
+---
+
+## ✅ CLOSED 2026-09-23: Co-lab-h-ai cuts off long messages so the human cannot read them
+
+**Reported:** live, while approving agent posts in session `1790154594`. Long `@kilo`/`@sonnet` lines were queued/posted and the window showed a cut-off sentence, always around the same length regardless of message content.
+
+**Real root cause: co-lab-hai is a default/popup-mode window, and that mode never calls `render_tree()`/`draw_elem()` directly against the live Elem tree.** It serializes the tree to a text frame file (`kh_serialize_frame_elem()`/`kh_serialize_frame_subtree()`) and repaints ENTIRELY from that file (`kh_paint_frame_line()`, `khtpm_core_render.c`), rebuilding a fresh temporary `Elem` per line. This is `HOUSE_CODE_PITFALLS.md` #12's exact shape ("TWO draw paths exist, not one") - db-hq/events-hq mode uses the direct path, everything else (co-lab-hai/chat-hai/open-hai/entity-menu popups) uses this frame-file round trip.
+
+Two independent, hardcoded 256-byte buffers lived in that round trip, both unrelated to `Elem.label`'s own size:
+- `kh_serialize_frame_elem()`'s `label_esc[256*2]` (write side, escaping `e->label` into the frame file)
+- `kh_paint_frame_line()`'s `label_unesc[256]` (read side, unescaping the frame-file field back into the fresh `tmp.label` that actually gets drawn)
+
+Both bumped to `2048`/`2048*2` to match `Elem.label`. **Live-verified fixed** - a 649-char real message now renders complete, wrapped correctly, no truncation, no ellipsis, clean row spacing.
+
+**4 earlier fixes tonight, all in `khtpm_draw_core.c`, were real bugs worth keeping but were NOT this bug** (they operate on the direct `render_tree()`/`draw_elem()` path db-hq/events-hq mode uses - irrelevant to co-lab-hai's actual repaint path, which is why none of them changed anything when tested):
+1. `khtpm_render_core.c`'s `Elem.label` `256`→`2048` (matches the manager's own real per-line cap; still worth having for the direct-draw-path windows).
+2. `khtpm_draw_core.c`'s draw-time wrap `avail_w` didn't match `scroll_row_span()`'s layout-time `avail_w` (missing one side's padding) - fixed, matched.
+3. `khtpm_draw_core.c`'s `label_decoded[600]` → `2048`.
+4. `khtpm_draw_core.c`'s `max_lines = e->h/line_h` (floor) → ceiling division, matching `scroll_row_span()`'s own guarantee.
+
+**Lesson for next time, extending pitfall #12:** when a fix to the draw pipeline has zero visible effect on a window, check WHICH draw path that window actually uses before adding a 5th variation of the same fix - `grep` the window's redraw function for `kh_serialize_frame_subtree`/`kh_paint_frame_line` (frame-file round trip) vs a direct `render_tree()` call, per pitfall #12's own step 1. A `256`-byte cap surviving independently in BOTH the struct definition AND a completely separate serialization round-trip buffer is a real, repeatable shape in this codebase - grep for `\[256\]`/`\[256 \* 2\]` near any `label`-handling code, not just the one struct field, whenever this class of bug resurfaces on a different window.
+
+---
+
+## ⚠️ OPEN 2026-09-22: HQ dropdown/menu lists (pals, palettes, edit, etc.) have no scrollbar at all
+
+**Reported:** direct live report, discovered while investigating a real overlap bug in the "pals" dropdown (see the `khtpm_core_render.c` scroll-boundary entry below, same session) — "drop downs should have a scroll bar (which has navs) if they dont yet. this was an oversight."
+
+**Confirmed by direct code check**: grepped `khtpm_core_render.c` for any scrollbar wiring on the HQ dropdown/menu (`hq_menu`) rendering path — zero hits. The generic scroll-region machinery this house already uses elsewhere (`layout_scroll_region()`/`generic_sbar_register()`, proven in file-explorer/board-viewer/etc.) is real and working, but the HQ dropdown cells (pals, palettes, edit, and any other `which == N` cell using `HQMenuItem[]`) don't call into it at all — a long list (the "pals" dropdown has 140+ real entries) has no visible thumb/track, no click-to-scroll, and the user has no way to know there's more below the last visible row short of scrolling blind.
+
+**Not yet fixed on `claude`.** Real direction: wire the same `generic_sbar_register()`/`layout_scroll_region()` path every other scrollable list in this house already uses onto the HQ dropdown/menu rendering, rather than inventing a second scrollbar mechanism.
+
+**2026-09-28 evaluation: an attempt exists on `main` (commit `0b454145` on `codex`, "scoped feature: HQ dropdown/menu (pals/palettes) real scroll"), deliberately NOT cherry-picked here.** Direct live check on this same date (`run_khtpm_strip.sh new` against `main`, real click-through by the repo owner): no scrollbar is visible on the pals dropdown at all - matches this doc's own prior "Live-verified 2026-09-23" note below that the thumb/track never actually rendered even on `main`. Owner's own words: "i dont see scroll on dropdown of main and i see some problems... i think its safe to completely overwrite those things." `khtpm_core_render.c`/`khtpm_taskbar_manager.c`/`.h`'s real diff for this commit is preserved in `main`'s own history if it's ever worth revisiting, but `claude`'s own version of these files (this session's composer/toolbar-row and other layout work) is being kept instead of overwritten by it.
+
+**Corroborating finding from `main`'s own later investigation (merged in during the same 2026-09-28 push): live-verified AGAINST THE ACTUAL MERGED `main` BUILD, not just a stale checkout - the scroll attempt makes things WORSE, not just cosmetically incomplete.** `DOCK_DROPDOWN_MAX_VISIBLE_ROWS` is hardcoded to 12 in that commit, with no visible scrollbar thumb/track at all - anything past the first 12 rows, including Cancel (near/at the end of a 190+-pal list), became genuinely unreachable by a normal user. Worse than the pre-existing unclipped-but-unscrollable behavior. This independently confirms - from a real merged build, not just a visual check - that excluding this commit from `claude` was the right call, not just a conservative one.
+
+---
+
+## ✅ CLOSED 2026-09-23 (all four halves - Cancel row, duplicate row, missing solvent, tax_robot's missing nav badge): "pals" dropdown - real cap, stack_n collision, and a badge-position exclusion gap, all fixed and pixel-verified
+
+**Reported:** direct live screenshot (`/home/no/Pictures/Screenshots/Screenshot from 2026-09-22 17-08-22.png`, then re-confirmed 2026-09-23 against a fresh build via a second live screenshot) - the SECOND visible row (nav 18, right after `asa` at nav 17) renders with only a small icon and no label text, looking like `asa`'s content is bleeding/duplicating into the next row's slot ("still has double asa"). Also reported originally: no visible Cancel button in this same dropdown.
+
+**Cancel button — real root cause found, fixed, live-verified (commit `4584cc25`).** Not a scroll issue: `KTB_LIVEDESK_DYN_MAX` is 24 (`khtpm_taskbar_manager.h:71`), but the live house has 191 real pal directories — the alphabetical scan in `livedesk_build_pals_menu()` (`khtpm_taskbar_manager.c` ~line 3471) filled all 24 array slots before Cancel could ever be appended, with zero pdl-defined post rows to reserve room. Confirmed live before the fix: dumping `#.desktop/strip_var_hqitems.txt` with the dropdown genuinely open showed exactly 24 rows, the last a real pal (`tax_robot`), no Cancel. Fixed by dry-running the post-row count first and reserving at least 1 slot for Cancel up front; verified after rebuild+restart: 25 rows, last is `Cancel`.
+
+**Duplicate/blank second row — re-investigated 2026-09-23 with real live evidence, earlier "likely a testing artifact" conclusion was WRONG.** Confirmed real and reproducible with a fresh build + fresh live screenshot (not stale pixels this time). **Real progress: the data layer is confirmed 100% clean at BOTH levels**, ruling out an entire class of hypothesis:
+1. `livedesk_build_pals_menu()`'s own `HQMenuItem[]` array, dumped live via `strip_var_hqitems.txt` - `asa` and `ava` are two distinct, correctly-ordered, non-duplicate entries (`HQITEM:0`/`HQITEM:1`).
+2. The REAL authoritative template-var source, `#.desktop/strip_ui.txt`'s live `hi_N_label` values (published directly by `khtpm_taskbar_manager_main.c` from the same array, read with the dropdown genuinely open via the real relay) - also clean: `hi_0_label=asa`, `hi_1_label=ava`, correct and distinct.
+
+So this is a pure rendering bug, and **it's in a THIRD, different code path from tonight's other two render bugs** - not the co-lab-hai scrolllist path (`layout_scroll_region()`/`scroll_row_span()`), not the frame-file round trip (`kh_paint_frame_line()`). This dropdown renders through `layout_dock_bar()`'s own dedicated stacking loop (`khtpm_core_render.c` ~5245-5297, `dock_paint_menu()` for the actual paint) - a completely separate, FIXED-row-height loop (`c->h = DOCK_BAR_H` always, no per-row wrap/span logic at all, unlike the other two paths). Do not assume this shares a root cause with either of tonight's other two closed bugs just because the symptom looks similar (missing/duplicated text) - it's a different function entirely.
+
+**NOT yet checked - real next steps for whoever picks this up:**
+- Whether `kh_expand_repeats()`/`kh_emit_repeat_body()` (the `<repeat count="${n_hqitems}" bind="hi">` expansion in `khtpm_strip_header.xhtpm`) is producing a correct, non-duplicated set of `<item class="dropdown-child">` elements from the confirmed-clean `hi_N_*` vars - i.e. check the tree AFTER template expansion, not just the raw vars feeding it (a real, unchecked gap in tonight's investigation - dump the actual parsed `Elem` tree's `dropdown-child` count/labels, not just the input vars).
+- Whether `layout_dock_bar()`'s `stack_n` bookkeeping (~line 5279, resets to 0 on `target_id` change, increments unconditionally per matched child at ~5296) could double-count or skip a row under some real condition not yet identified - read this function fully, it was only partially reviewed tonight.
+- Whether the SPRITE draw specifically (not the label) has its own static/cached-path bug that makes row 2 draw row 1's icon - the visible symptom is "icon present, label missing," which points more at label-drawing/positioning specifically failing for row 2 than at the row being a true full duplicate.
+- A live debug `fprintf` at the actual `dock_paint_menu()` draw call, dumping each row's real index/label/y as it draws, is the fastest way to settle this - same technique used successfully to crack the co-lab-hai bug tonight (see that entry above for the exact pattern). **Real blocker hit trying this 2026-09-23, read before re-attempting:**
+
+**A real, un-closed relay gap, found while trying to reproduce this live for the debug-print attempt above:** `nav.sh`'s `nav <n>`/`hqcell <n>`/`mgrcode <code>` commands all write to `#.desktop/strip_history.txt`, which only the MANAGER (`khtpm_taskbar_manager_main.c`) reads - confirmed this genuinely does open the dropdown on the manager side (`strip_ui.txt`'s `n_hqitems` populates to the real count, 31, and stays there). But `layout_dock_bar()`'s own `open` check (the thing that actually gates whether a `dropdown-child` row gets laid out/drawn at all, ~line 5255-5257) reads `g_default_active_scope_root`/`g_default_active_scope_id` - RENDERER-local state, apparently driven by a real mouse click's own `onclick="ACTIVATE"` handling, not by anything the manager-relay path touches. Result: with a debug `fprintf` placed inside the `if (open && trigger)` branch and `fflush()`'d explicitly (ruled out stdio buffering as the cause), **zero debug lines fired despite the manager confirming the dropdown was "open"** - strong evidence the manager's `hq_open` and the renderer's `g_default_active_scope_*` are two genuinely separate state models for this window, and only a REAL mouse click drives the second one. No popped-up separate X11 window was ever observed either (`xwininfo -root -tree` showed no new window after any relay attempt), consistent with this reading.
+
+**Before spending more time on this:** either (a) get a human to physically click "pals" open while an agent has a debug build with `fflush()`'d prints already staged and watches the log in real time, or (b) find/build a real relay path that reaches the renderer's own click/ACTIVATE handling for header dock cells specifically (not just the manager's `strip_history.txt` digit dispatch) - check `dispatch_code()`/`hq_dispatch_xevent()` in `khtpm_core_render.c` for how a REAL X11 click event actually sets `g_default_active_scope_root`, and see if there's a synthetic-event or relay-token path into that same code that isn't `MOUSE_EVENT` via `entity_menu_history/<pid>.txt` (the strip's own PID may not even be the right target for that relay file - unconfirmed). Don't re-attempt the exact same `nav.sh` commands tried tonight (`nav 6`, `hqcell 6`, `mgrcode 4006`) expecting a different result - all three were tried, all three left `g_default_active_scope_root` unset.
+
+**2026-09-23, second pass, direct live screenshot evidence (`Screenshot from 2026-09-23 05-10-12.png`) - two real, DISTINCT symptoms, clearer than "double asa":**
+1. `terumon_004_solvent` (confirmed on disk as the alphabetically-last of 29 real pal dirs, `pal.pdl`+`glyph.txt` both present, structurally identical to its siblings) was completely ABSENT from the rendered nav sequence - jumped straight from `terumon_003_murmur` to a row labeled `notes-pals`, no directory or hardcoded string with that name anywhere in the codebase (grepped `khtpm_taskbar_manager.c`, the whole `44.xyz.01.00/` tree, and `livedesk_taskbar.pdl`'s pals/palettes sections - zero hits).
+2. `tax_robot` (real dir, `glyph.txt` only, NO `pal.pdl` - confirmed live) rendered with its label/icon but no `[ ]NN.` nav badge at all, i.e. `nav_index` stayed 0 for that row while it was still visually placed.
+
+**Real, confirmed root cause for `layout_dock_bar()`'s dropdown-child stacking loop (~5245-5297): `stack_n` used to reset only when `target_id` differed from the PREVIOUS sibling in `page->children[]`** - a silent assumption that every dropdown-child sharing a `target_id` sits contiguously. That assumption is provably false under this house's own incremental reparse (`khtpm_reparse_diff.c`, `kh_diff_match_children()`): dropdown-child elements carry `target_id` (no `id`), and `kh_diff_key()` returns `target_id` as the match key - but EVERY sibling row for the same open cell shares the identical `target_id` value, so the key is non-unique across the whole list, not per-row. A shrink/grow or reorder between two reparses of the same open dropdown (or a leftover row from a previously-open DIFFERENT cell sharing the parent) can leave stale/interleaved children in `page->children[]`, which broke the old adjacency-reset logic directly - two rows landing on the same `y` (the duplicate), later rows losing their slot to the collision (solvent).
+
+**Fix applied (commit pending, `khtpm_core_render.c` ~5245-5297):** replaced the adjacency-based `stack_n` reset with a real per-target running counter (a small fixed `stack_keys[16]`/`stack_counts[16]` table keyed by `target_id`, incremented per matched child regardless of position in `page->children[]`) - removes the contiguity assumption entirely. Built clean (`build_khtpm_strip.sh`, no new warnings), restarted live (`run_khtpm_strip.sh new`, confirmed via `strip_ui.txt`/`strip_var_hqitems.txt` mtimes that the restart landed at 05:12:00, after the 05:10:12 screenshot).
+
+**⚠️ STILL OPEN - fix did NOT resolve the live symptom.** Owner re-tested against the fresh binary and reported "its the same" (still shows the `notes-pals` ghost row before Cancel, still missing/broken the same way) - so the `stack_n` keying fix, while a real and correct hardening in its own right, is **not the actual root cause of the `notes-pals`/tax_robot-badge symptom**, or is not the only cause. Attempted live verification via `nav.sh nav 16` (the pals cell's current on-screen nav badge per the screenshot) to dump the authoritative `strip_var_hqitems.txt` while genuinely open - this opened the WRONG menu (`n_hqitems=6`, not pals' ~30), confirming nav badge numbers are NOT stable cell identifiers (they're global/dynamic per the K9 doc's own warning) and this agent does not yet have a reliable relay recipe for reopening this SPECIFIC cell by cid by digit-jump alone. `nav.sh hqcell 6` (the `which`-based 4000+n direct-dispatch form, bypassing digit-jump entirely) was NOT yet tried this pass and is the next real thing to attempt - untried, not ruled out.
+
+**2026-09-23, third pass - `notes-pals` is NOT a bug, real root-cause narrowing.** `nav.sh hqcell 6` (the `which`-based direct-dispatch form) is a reliable way to reopen a specific cell by identity, independent of the global nav-badge numbers drifting - confirmed live (`strip_ui.txt`'s `n_hqitems` went straight to `31`, matching the real expected count). Dumped `strip_var_hqitems.txt`/`strip_ui.txt`'s `hi_N_*` while genuinely open:
+
+- **`notes-pals` (`hi_29_label`) is real, intentional, WORKING AS DESIGNED** - `khtpm_taskbar_manager.c` ~line 4805 (2026-09-08, direct request): every real header-cell menu automatically gets a generic `notes-<cell>` row one slot above Cancel, opening a per-subsystem dev-note file via `#.desktop/scripts/notes.sh`. For the `pals` cell that genuinely renders as `notes-pals` - this was never a data-layer or render-layer bug, just an unfamiliar (but correct) row nobody had traced back to this feature yet. **Retracting the "ghost row" framing entirely.**
+- The full `hi_0..hi_30` list (31 rows: 29 real pals scanned in order, `asa`...`terumon_004_solvent` with `solvent` correctly present at `hi_28`, then `notes-pals` at `hi_29`, `Cancel` at `hi_30`) is clean, correctly ordered, no duplicates, no collisions - **the manager's own data layer has been clean this whole investigation; every real symptom tonight was in the render path.**
+- `tax_robot` (`hi_24_label=• tax_robot #`, `hi_24_sprite=.../pals/tax_robot`) is present and correctly labeled in the manager's array - its earlier "missing nav badge" symptom, if still real, is therefore render-side only (`layout_dock_bar()`'s `nav_index` assignment), not a manager/data problem. Confirmed live: `tax_robot` genuinely has no `pal.pdl` on disk (glyph.txt only), which is why its label shows a bare `•` glyph and an empty `#hash` - that part is correct/expected, not a bug; only the missing nav bracket (if it persists) would be one.
+- **New, real, distinct testing-methodology gap found this pass** (belongs in the K9 doc, not just here): `nav.sh hqcell <n>` reliably flips the MANAGER's `hq_open`/`n_hqitems` state and even the render's own header-cell marker (`[>]6.pals` visible in a live `dump_frame_png_op` capture of the strip window) - but the window itself never resized/repainted to show the dropdown's rows; `xwininfo -root -tree` showed no separate popup window either, and the strip window's own geometry stayed a flat 45px tall throughout. A REAL mouse click clearly does trigger a resize/overlay draw (every one of the owner's own screenshots proves this), so there is a genuine, distinct gap between "hq_open flips via relay" and "the resize/repaint that makes it visible" - possibly a missing `XResizeWindow`/expose-equivalent step that's only reached from the real X11 click handler, not from `dispatch_code()`'s digit path. This means **pixel-level verification of this specific dropdown still requires a real physical click** - relay can confirm/dump the DATA but not yet the RENDER, a sharper version of the K9 doc's existing relay-vs-real-input caution.
+
+**Net status after three passes:** the duplicate-row/collision part (today's `stack_n` keying fix, commit `5cf4aad5` on `claude`) is believed real and correct, and the manager's data layer is now confirmed clean end-to-end including `notes-pals` (intentional) and `solvent` (present, correctly ordered). What remains genuinely unverified is pixel-level: whether `tax_robot` still loses its nav badge in the actual rendered dropdown, and whether the fix visibly resolved the duplicate-row overlap - both need a real click + fresh screenshot to close out, not another relay pass.
+
+**2026-09-23, fourth pass - ✅ CLOSED (duplicate-row half) / ⚠️ OPEN, narrower (tax_robot nav-badge half) - real pixel-level confirmation, finally.** Direct owner correction ("i am able to navigate using arrows and open pals dropdown with one enter press... your not doing something right according to the K9 doc") pointed at the real gap in the THIRD pass above: `hqcell`/`nav`/`mgrcode` only ever drive the MANAGER's `hq_open` state, never the RENDERER's own `g_default_active_scope_id` that actually creates/paints the popup window - a real mouse click or a **keyboard arrow + Enter** does, and only those. Rebuilt a safe, isolated Xephyr test rig (scratch house root, `#.desktop` a real writable copy, everything else symlinked, bypassing `run_khtpm_strip.sh`'s system-wide kill pattern entirely) and drove it the RIGHT way this time: `KEY_PRESSED: 203` (Right arrow) x5 on the renderer's own `entity_menu_history/<pid>.txt` walked focus `[>]1.HQ` -> `[>]6.pals`, then one `KEY_PRESSED: 13` (Enter) created a real `219x744` popup window (`g_dock_menu_win`) and rendered the full 31-row list. Captured with `dump_frame_png_op` - genuine pixel proof, not a data dump. Full recipe and the earlier wrong "relay is broken" conclusion (retracted) are written up in `06-testing/AIGENT-TESTING-K9.txt`'s 2026-09-23 update.
+
+**Real result, read directly off the screenshot:**
+- **Duplicate row (`asa`/nav 18 blank-with-icon) - GONE.** `asa`(118)/`ava`(119) render clean and sequential, no overlap, no collision anywhere in the list.
+- **`terumon_004_solvent` - PRESENT**, correctly positioned right before `notes-pals`(146)/`Cancel`(147), matching the manager's own `hi_28_label`.
+- `notes-pals`(146) and `Cancel`(147) both render correctly with proper nav badges (confirming the earlier "ghost row" retraction was right - it's real, working, intentional content).
+- **`tax_robot` STILL has no nav badge** - renders as `• tax_robot #` with no `[ ]NN.` bracket at all, sitting between `m9_missingno`(141) and `terumon_001_ember`(143) with no number of its own. This is the ONE real symptom still open. `layout_dock_bar()`'s stacking loop (the code this session's `stack_n` fix touched) assigns `nav_index` unconditionally inside the same `if (open && trigger)` branch every other row goes through - since every dropdown-child in this list shares the identical `target_id`/`trigger`, there is no obvious reason this ONE row's `open`/`trigger` check would differ from its neighbors'. Not yet root-caused - a live debug `fprintf` in the loop's `else` branch (dumping `c->label` whenever `nav_index` gets zeroed) is the fastest next step, using the now-proven arrow+Enter Xephyr recipe to reproduce on demand.
+
+**Real, live-confirmed things to stop re-litigating:** the data layer (manager's `HQMenuItem[]`/`hi_N_*`) is clean; `notes-pals` is intentional; the duplicate-row collision this session's `stack_n` fix targeted is genuinely gone.
+
+**2026-09-23, fifth pass - ✅ CLOSED, `tax_robot`'s missing nav badge root-caused and fixed.** The earlier hypothesis ("this ONE row's `open`/`trigger` check must differ from its neighbors'") was wrong - live debug `fprintf`s added at every stage of the pipeline (`layout_dock_bar()`'s stacking loop, `kh_paint_frame_line()`'s frame-file-round-trip parse, `draw_elem()`'s own entry) proved `nav_index=41` survives completely intact end-to-end - layout, serialize, parse, and paint-entry all agree. The bug is neither layout nor parsing; it's in `draw_elem()`'s badge-POSITIONING logic (`&.widgits/_shared-lib/khtpm_draw_core.c` ~1723, the "sprite tile: badge drawn ABOVE the row" branch). That branch already excludes `dock-cell` rows for exactly this reason (2026-09-15 fix, same file, same block - "dock strip packs rows with ZERO vertical gap... every row's own badge bled up into the row above it") - but `dropdown-child` rows (this session's dock-MENU popup, a different, newer row class using the identical zero-gap packing) were never added to that exclusion list. Any dropdown row whose `e->sprite` field is populated (every real pal row, including `tax_robot` - its field points at a real directory even though that directory has no `sprite.csv`/`pal.pdl`, so the FIELD itself is non-empty) hit this branch and had its badge chip shifted up into the previous row's box, where for `tax_robot` specifically it rendered fully hidden/overwritten. Fix: added `!elem_has_class(e, "dropdown-child")` to the same exclusion condition, one line, same reasoning as the existing `dock-cell` exclusion right next to it. **Pixel-verified** via the same Xephyr+arrow-key+Enter recipe (K9 doc, 2026-09-23 update): `tax_robot` now shows `[ ]41.` correctly, matching every sibling row.
+
+**Final status: all four real symptoms this session chased in the pals dropdown are fixed and pixel-verified** - missing Cancel row (earlier session), duplicate/collided rows (`stack_n` keying fix, `khtpm_core_render.c`), and `tax_robot`'s missing nav badge (`dropdown-child` badge-position exclusion, `khtpm_draw_core.c`). `notes-pals` was never a bug. The scrollbar/12-row-cap entry above this one remains separately open.
+
+---
+
+## ✅ CLOSED 2026-09-22 (fixed same day as reported, verified via live `strip_ui.txt` receipts and real timing, commit `60fd7920`): taskbar takes a long time to appear on launch, even though desktop entities (which the user expected to be the slower/bigger thing) appear instantly
+
+**Reported:** direct live report - "it took a long time for tb to populate... doesn't make sense that it took so long when desktop entities, which are larger, were instant." Asked for a "loading" indicator as a possible mitigation, and to track this at minimum.
+
+**Real, evidenced root cause (found by direct code read):**
+`khtpm_taskbar_manager_main.c`'s `main()` calls `ktb_init()` synchronously, before the manager writes its pidfile or reaches the event loop that publishes `#.desktop/strip_ui.txt` — the file the renderer polls to draw the taskbar strip at all. `ktb_init()` (`khtpm_taskbar_manager.c` ~line 441) calls `livedesk_ensure_cursword()` then `livedesk_spawn_active_desk()` → `livedesk_spawn_desk()` (~line 2474), which loops over every `DESK` row in the active desk's `.pdl`. For **each entity**, before its (fire-and-forget, `setsid nohup ... &`) spawn, it runs `ktb_find_live_pid_for_pal()` (~line 2768) — a **full scan of `/proc`**, opening and `fread`ing `/proc/<pid>/cmdline` for every process on the machine, to check whether that one entity is already running.
+
+This explains the exact reported shape: each entity's own spawn is genuinely fast once its turn comes (X11 window mapping doesn't wait on anything else), so entities visibly "pop in" quickly one at a time. But the *next* entity's spawn doesn't start until the *current* entity's full `/proc` scan finishes, and the taskbar's own UI can't be published until the ENTIRE loop — one full-process-table scan per entity — completes. A desk with N entities does N full `/proc` scans, fully serialized, before the taskbar can draw anything, on a documented weak-CPU machine (`nice-heavy-background-work` house note).
+
+**Fixed (option 2 of the three considered):** the `/proc` scan is now done ONCE per pass (`ktb_proc_snapshot()`/`_find()`/`_free()`, `khtpm_taskbar_manager.c`), not once per entity, at both real call sites (`livedesk_spawn_desk()`'s startup loop and `ktb_self_heal_active_desk_registry()`'s reconcile pass). Most surgical of the three options considered — no ordering change, no new published state, just removes the redundant re-scanning. Options 1 (placeholder UI) and 3 (defer spawning off the sync path) remain real, not-yet-needed alternatives if this ever regresses at a larger scale.
+
+## ✅ CLOSED 2026-09-20 (verified on the user's hardware: "that actually fixed it"): csv-hq `<grid>` - Enter on the grid nav item doesn't activate it (needs a double click) and no typed input arrives afterward
+
+**FINAL ROOT CAUSE (confirmed on hardware): the Cursword pal's never-released display-wide keyboard grab (`2c1301ab`) - see `03-pitfalls/HOUSE_CODE_PITFALLS.md` #24. The grid re-arm fix (`3895ff77`) was also a real, separate bug. The `managed` class (`17f8da40`), the WM_HINTS/override_redirect theories and the dock were NOT the cause. Fix took effect after restarting the Cursword pal once.**
+
+**Reported:** direct live report, csv-hq (`@.apps/csv-hq/`): the grid is
+nav item **10**; pressing Enter on it does **not** arm it (user has to
+double click), and once it is in `#` mode nothing typed is taken as
+input. User's own note: the grid "wasn't tested very thoroughly, it may
+need a bugfix." Also: the user first asked how `#` mode is supposed to
+work - answer is in `08-roadmap/design-docs/GRID-ELEMENT-DESIGN.md`
+("Three real states") and csv-hq-pal.xhtpm's header: Enter arms (`#`,
+navigating), arrows move the cell cursor, letters/digits build a jump
+buffer (`a11` or `11a`) resolved by Enter, a second Enter with an empty
+buffer enters the cell (`^`, real text input), Esc commits (`SETCELL:`)
+and returns to `#`, Esc in `#` disarms. The design doc's own header still
+says "DESIGN ONLY", which is stale - csv-hq shows it shipped 2026-09-05.
+
+**Evidence so far (one lead, not confirmed):** `@.apps/csv-hq/
+kh_focus_debug.log` ends with repeated
+`GRAB key=cell_ attempts=6 rc=1(0=success) real_focus_is_us=1`
+(time-of-day 02:36). `rc=1` is `AlreadyGrabbed`: some other X client was
+holding the keyboard grab when the grid tried to take it, so cell
+editing never received keys. This is NOT the same signature as the
+2026-09-14 entry below (text-edit-hq logged `rc=0` success yet got no
+keys) - but it is the same *class* ("armed field gets no keyboard"),
+and it is the same failure mode the Place-overlay Esc bug had (its
+`XGrabKeyboard` result was ignored while another client held a grab).
+
+**Two separate symptoms, possibly two causes:**
+1. *Enter doesn't arm.* A double click works, so the mouse path reaches
+   the grid's activation but the Enter / `KEY_PRESSED: 13` path on a
+   focused `<grid>` nav item may not route to `activate_focused()` for
+   the grid tag (Enter path: `handle_key()` `XK_Return` branch in
+   `khtpm_core_render.c`; grid state machine: `default_grid_handle_key()`
+   ~line 7744).
+2. *Armed but no input.* Grab failure above, or keys reaching
+   `handle_key()` but the grid handler not consuming letters/digits/
+   arrows in `#` state, or the jump-buffer status line not updating.
+
+**Not yet done - next steps:** reproduce with a private Xephyr + house
+root via relay: focus the grid nav item, send `KEY_PRESSED: 13`, read
+the frame for the `#` badge; then arrows (200-203), `a`,`1`,`1`, `13`
+and check `jump: a11_` and the cursor; then a second `13` and typed
+text, Esc, and confirm `csv_hq_action.txt` gets `SETCELL:`. Then repeat
+with a REAL keyboard - relay injection bypasses X grabs (see
+`RELAY-WINDOW-TARGETING-DESIGN.md` and the house rule
+`relay-testing-may-mask-real-focus-bugs`), so a relay-only pass proves
+nothing about symptom 2. Check who else holds the grab (other armed
+cli_io, an open popup, the taskbar) by running csv-hq alone.
+
+**Related:** the OPEN 2026-09-14 entry below (physical keyboard never
+reaches an armed field despite rc=0), and the Place-overlay Esc fix
+(same ignored/failed `XGrabKeyboard` pattern).
+
+### 🎯 2026-09-20 ROOT CAUSE FOUND (supersedes the override_redirect theory below): a stuck display-wide keyboard grab held by the Cursword pal
+
+Measured on the user's real GNOME/Wayland session, no user action needed:
+- **Throwaway-window experiment** (5 windows on DISPLAY=:0: managed with/without
+  WM_HINTS, +WM_TAKE_FOCUS, DOCK-typed like the taskbar, override_redirect): Mutter
+  activated and X-focused ALL of them (`_NET_ACTIVE_WINDOW` == window) and
+  `XGrabKeyboard` returned `AlreadyGrabbed` for ALL of them, both owner_events values,
+  with `FocusIn mode=NotifyWhileGrabbed`. So window properties (WM_HINTS, window type,
+  override_redirect) are NOT what decides keyboard delivery; some client held the
+  keyboard grab the whole time.
+- **Who:** X RECORD with the `delivered_events` range (not `device_events`, which
+  reports client 0 = the server) while XTest injected one Shift tap: KeyPress/
+  KeyRelease were delivered to `id_base=0xc00000`; XRes maps that to PID 28935 =
+  `khtpm_entity.+x ...pals/cursword` (started 00:41, the only house process the 03:08
+  taskbar reset did not replace). Its history.txt ends `CURSWORD_ARMED ... CURSWORD_PLACED`.
+- **Bug:** `khtpm_entity.c` had a file-scope `static Display *dpy = NULL;` and
+  `kh_ungrab_kbd()` = `if (dpy) XUngrabKeyboard(dpy, ...)`, but `tp_main()` opens its
+  own LOCAL `Display *dpy` (the global stays NULL - see the khtpm tp_main globals
+  footgun). So every `kh_ungrab_kbd()` in the pal process (Cursword Esc / placed /
+  disarm / focus-lost, close_context_menu) was a silent no-op, while the matching
+  `XGrabKeyboard(dpy, ...)` (Cursword's deliberate "stingy focus" armed mode, ~line
+  5653) used the local one. Once armed, Cursword owned every keystroke on the desktop
+  until its process died: csv-hq's Enter/arrows/Esc, the grid arming, `AlreadyGrabbed` in
+  every log, and the placer Esc failure all follow. (The unfactor comment even said
+  "no-op ... same as before the split": pre-existing, not caused by the split.)
+- **Fix (khtpm_entity.c):** `g_kbd_dpy` set by tp_main; `kh_ungrab_kbd()` releases on
+  it (+XFlush). **Verified** in a private Xephyr with a Cursword-like pal (`log_mode=1`):
+  old binary - arm: grab held, Esc → `CURSWORD_DISARMED`, grab STILL held; new binary -
+  arm: held, Esc → released. Test scripts: /tmp/claude-1000/grabfix/t2.sh.
+- **The running Cursword (PID 28935) still holds the grab until it is restarted**;
+  a taskbar reset does not restart it. Restart Cursword (or log out) once; new
+  binaries release properly.
+- **Hardening added in khtpm_core_render.c:** any window whose page has a
+  cli_io/text_area/grid is now forced WM-managed regardless of livedesk_override_redirect.pdl
+  (`class="unmanaged"` opts out; verified: window comes up `Override Redirect State: no`
+  with the PDL set true); `dock_grab_keyboard()` logs a failed grab; every HQ click logs
+  `CLICK-FOCUS target x_focus wm_active` into kh_focus_debug.log (evidence next time).
+- **Diff table (dock vs generic managed HQ window) - measured NOT to matter for the
+  keyboard:** WM_HINTS input=True (dock: yes, HQ: none), _NET_WM_WINDOW_TYPE_DOCK (dock:
+  yes, HQ: none), WM_NORMAL_HINTS position (dock yes), click path (dock: XRaiseWindow +
+  XGrabKeyboard(owner_events=True) + XSetInputFocus; HQ: kh_raise_and_focus =
+  _NET_ACTIVE_WINDOW + XSetInputFocus with real timestamp). All five variants behaved
+  identically in the experiment.
+- **How to find a stuck grab next time:** `xres`(XRes) client list + XRECORD
+  delivered_events probe (sources in /tmp/claude-1000/focustest/rec.c, xres.c) - see
+  03-pitfalls/X11-AND-SESSION-PITFALLS.md.
+
+### 🔍 2026-09-20 (later, live on the user's real session): the keyboard never reaches csv-hq at all - override_redirect
+
+The fix below is real but is NOT why the user's csv-hq stayed dead. Live
+evidence from the user's real GNOME/Wayland session, with the fixed binary:
+- csv-hq log: `GRAB ... rc=1` x5 then `late-retry gave up (another client
+  still holds the keyboard)`; a grab probe from a third client also got
+  `AlreadyGrabbed` every time, even while a real X window had focus.
+- A passive listener (`XSelectInput` KeyPress|FocusChange on csv-hq's
+  window, no grab) recorded ZERO KeyPress events while the user clicked in,
+  pressed Enter, typed and pressed Esc - only `FocusIn/FocusOut mode=3`
+  (NotifyWhileGrabbed). Arrows, Enter and Esc all dead; mouse clicks work.
+- `#.desktop/livedesk_override_redirect.pdl` was `override_redirect=true`
+  (taskbar "@" always-on-top), and csv-hq's `<window>` had no `managed`
+  class, so its window was created override_redirect. This is the DOCUMENTED
+  cause: Mutter/XWayland never routes keyboard focus to override_redirect
+  windows (`09-appendix/pc-hq-leg-vs-nu-fix.md` §3-A/§4, `03-pitfalls/
+  X11-AND-SESSION-PITFALLS.md` 2026-09-05 "arrows control nav broke again",
+  and the 2026-09-14 text-edit-hq entry). XWayland also restricts
+  XGrabKeyboard for such clients (khtpm_entity.c ~3354 comment), which is
+  what the `AlreadyGrabbed` was.
+- Fix applied: `class="... managed"` on csv-hq's and text-edit-hq's
+  `<window>` (same mechanism pchq-board / export-hq already use; honored at
+  window creation, so the window must be closed and reopened). Cheap
+  diagnostic without any code: turn the taskbar "@" always-on-top OFF
+  (override_redirect=false) and reopen the window.
+- NOT verified on hardware yet. Wider follow-up: any HQ window with a
+  cli_io/text_area/grid should probably be forced managed regardless of the
+  PDL (like the dock windows, `dock_managed`); open-hai/chat-hai/network
+  browser share the risk.
+
+### 🛠️ 2026-09-20 root cause + fix (found by reproducing in a private Xephyr + private house)
+
+**What was NOT broken:** the grid state machine. Driven through the
+per-window relay it matches the spec end to end: Enter on nav 10 arms
+(`[#]10. jump: _`, A1 highlighted), arrows move the cursor, `a` `1` `1`
+shows `jump: a11_`, Enter jumps to A11, a second Enter enters the cell
+(`[^]`), typed text lands, Esc commits `SETCELL:A11` (csv_hq_ui.txt gets
+`cell_10_0=hi`). Nothing in `default_grid_handle_key()` needed changing.
+
+**Root cause 1 (confirmed, both symptoms): the grid was disarmed by every
+full reparse.** `reparse_chtpm_if_changed()`'s full-rebuild path re-arms the
+armed field by saved key via `kh_find_input_by_key()`, which only matched
+`cli_io` and `text_area` - never `<grid>`. So any reparse while the grid was
+armed logged `REPARSE key=cell_ NOT_FOUND - ungrabbed`, dropped
+`g_default_input_elem`, and released the keyboard grab. That path is taken
+on EVERY reparse because `incremental_reparse=0` has been house-wide since
+2026-09-15 (`#.desktop/hq_ui.pdl`, pool-leak revert). csv-hq's manager
+republishes `csv_hq_ui.txt` on every status/SETCELL change, so the grid lost
+`#`/`^` right after arming (or right after the first commit): "Enter doesn't
+activate, double click works" (each click re-arms; the log's five arm lines
+inside 3 seconds), and typed input "not taken" (armed state already gone).
+Reproduced: after the Esc-commit the badge fell back to `[>]10.` and the log
+showed the NOT_FOUND line.
+
+**Fix 1** (`khtpm_core_render.c`): `kh_find_input_by_key()` also matches
+`<grid>`; before the rebuild the armed grid's cell cursor, edit mode, jump
+buffer and cell buffer are captured and restored on the re-found element (the
+grab is never released). After the fix the same run ends in `[#]10. jump: _`
+with `REPARSE key=cell_ FOUND grid row=10 col=0 edit=0`, matching the spec
+(Esc commits and returns to `#`; a second Esc disarms).
+
+**Root cause 2 (reproduced on the log signature; who holds the grab on the
+real desktop is NOT confirmed): the grab burst was too short.**
+`kh_grab_keyboard_retry()` tried `XGrabKeyboard` 5 times over ~25ms and gave
+up, leaving the field armed but with no grab. The user's log
+(`GRAB key=cell_ attempts=6 rc=1`) is exactly what a foreign client holding
+the keyboard produces - reproduced here with a small holder program. Prime
+suspect for the holder: the dock's display-wide grab (`dock_grab_keyboard()`)
+whose release only fired on FocusOut/keypress/reparse, so a missed FocusOut
+left it stale (see the 2026-09-04 comment in `handle_key()`).
+
+**Fix 2** (`khtpm_core_render.c`): (a) a failed grab now keeps retrying from
+`hq_idle_tick()` every ~30ms for up to 3s (`kh_grab_retry_tick()`); with a
+holder that releases after ~2s the log shows `GRAB late-retry succeeded`
+(with a holder that never releases: `late-retry gave up`, by design);
+(b) the dock re-checks live focus every ~100ms and releases a stale grab
+itself instead of waiting for a key.
+
+**Verified:** relay end-to-end sequence above; grab contention with a
+foreign holder (both outcomes); build clean. **NOT verified on real
+hardware:** (1) that the dock (or which client) really holds the grab on the
+user's session - I did not probe the live display; (2) the dock's new
+proactive release (no taskbar in the private house); (3) real keystrokes
+(relay bypasses grabs). **What to check:** in csv-hq press Enter on nav 10
+once (badge should become `#` and stay), type `a1` Enter, Enter, text, Esc;
+then read `@.apps/csv-hq/kh_focus_debug.log` - expect `REPARSE ... FOUND grid`
+lines and no `NOT_FOUND`; `GRAB ... rc=1` followed by `late-retry succeeded`
+means a foreign holder was outlasted, `gave up` means something still holds
+the keyboard for 3s+ (then find it: run `xdotool`-free probe or close other
+armed windows).
+
+---
+
 ## ✅ CLOSED 2026-09-17: taskbar HQ header cells drifted after 5.menu's insertion - wrong labels, missing dropdowns, wrong reopen target
 
 **Reported:** direct live report - "i clicked h-ai, and i noticed it
@@ -146,6 +879,8 @@ matching the "how it used to look" reference screenshot.
 
 ## ⚠️ OPEN 2026-09-14: real physical keyboard input silently never arrives at an armed cli_io/text_area, despite grab+focus both reporting success
 
+🔄 **2026-09-20 LIKELY SAME CAUSE, NOT YET RE-TESTED:** the csv-hq keyboard-dead report was a stuck display-wide grab held by the Cursword pal (`03-pitfalls/HOUSE_CODE_PITFALLS.md` #24, fixed `2c1301ab`). This text-edit-hq entry matches (armed field, focus looks fine, zero keys). Re-test text-edit-hq with the fixed binaries and a restarted Cursword; if it types, close this entry.
+
 **Reported:** direct live report on `text-edit-hq` - "i tried selecting it
 didn't work" → (after two separate, real selection-preservation bugs were
 found and fixed, see `03-pitfalls/HOUSE_CODE_PITFALLS.md` and commit
@@ -275,7 +1010,7 @@ non-collapsed selection range would render zero visible highlight.
 **Fixed**: added the same sel_lo/sel_hi band draw to the single-line
 cli_io path, same `#2f5f8f` fill, same scoping as the existing cursor
 bar (armed + unclipped label only). Rebuilt clean via
-`build_core_render.sh` in `*.monads/*.livedesk-taskbar/ops/` (pre-
+`build_core_render.sh` in `_.monads/_.livedesk-taskbar/ops/` (pre-
 existing snprintf-truncation warnings only, no new warnings, no
 errors). **Not independently re-verified against real hardware input**
 because of the keyboard-delivery bug documented in this same entry -
@@ -1126,3 +1861,30 @@ Once the pool is exhausted, every subsequent `elem_new()` call for the dock eith
 **If this specific symptom (stale paint despite a genuinely running, correctly-ticking process) ever resurfaces**: root-cause it for real with the `kh_focus_debug_log` targeted-probe technique this session proved out repeatedly (the nav-jump and pager bugs above), not another blind timer.
 
 **Files**: `khtpm_core_render.c` (removed code only - net negative diff).
+
+---
+
+## ✅ CLOSED — world_manager sustained CPU throttling/crash-loop, survived an earlier fix (2026-09-28)
+
+**Report**: `cpu_loop_analysis.txt` (user-supplied live capture) - two `world_manager_tick.+x` instances observed, both being caught/restarted by Ubuntu's apport crash reporter, direct instruction "fixing this is #1 priority."
+
+**Root cause, TWO compounding bugs, both confirmed live (not guessed):**
+
+1. **`world_manager.pal`'s tick loop used `sleep 16`.** prisc+x's `sleep` opcode is ALWAYS `usleep()` (confirmed at `prisc+x.c`'s `OP_SLEEP` handler) - so this was 16 **microseconds**, not 16ms. The loop re-exec'd `world_manager_tick.+x` as fast as fork/exec/waitpid would allow (thousands/sec), not the ~24/sec an earlier same-week session's live measurement had assumed (that measurement's methodology wasn't wrong, it just happened under different conditions than this one). An earlier house-wide sleep/usleep audit this same week checked for obviously-wrong literals and missed this one specifically because 16 "reads" like a normal ms tick value - the exact unit-confusion gotcha, on a file that looked fine at a glance.
+2. **`world_manager_tick.+x`, `world_manager_init.+x`, and `sync_entity_positions.+x` all called `realpath()` into a buffer smaller than `PATH_MAX`** (2048/2048/1024 respectively, needs >=4096). glibc's `_FORTIFY_SOURCE` hardening aborts unconditionally on this - **regardless of the actual resolved path length** (confirmed: the real path here was 147 bytes, aborted anyway) - any build compiled with fortify hardening enabled crashed on literally every tick. Root-caused precisely via `gdb -batch -ex run -ex bt` (`__realpath_chk -> __chk_fail -> abort`) and reproduced deterministically with `gcc -O2 -D_FORTIFY_SOURCE=2`. Combined with bug #1's exec rate, this was a crash-and-apport-report storm at extremely high frequency - genuinely capable of the sustained throttling reported, and explains why the earlier sync-throttle fix (marker-file gating the expensive child fork, still correct and still in place) didn't make the reports stop: that fix addressed a real, separate, already-measured cost, but this pair was still there underneath it the whole time.
+
+**Fix**: `world_manager.pal` (+ its `page_manager.pal` template twin) sleep bumped to `33333` (30Hz, matching the existing "30fps cap" convention already used elsewhere in this house). All three binaries' path buffers bumped to 4096. Also added a singleton-instance guard to `button.sh` (PID-file based, same self-healing pattern already proven in `cpu_watch_daemon.sh`) - the report's own live capture showed two tick processes running with nothing preventing a second launch.
+
+**Verified live**: rebuilt all three binaries under the exact `-O2 -D_FORTIFY_SOURCE=2` flags that reproduced the abort - all three now exit 0. Launched via `button.sh run`, confirmed a second `run` correctly refuses ("already running as pid N"), confirmed zero apport processes after 3+ seconds of live running (previously constant), measured real CPU via `/proc/<pid>/stat` utime+stime+cutime+cstime delta over a 3s window: **~9.3%**, down from the previously-measured ~90-100% crash-looping baseline.
+
+**UPDATE 2026-09-28 (same night) - ledger trunking BUILT.** Direct instruction: "can we do the next step to fix using the trunking, and also hardened those undersized buffers." Both done:
+
+- **Push-model ledger**: `move_entity_tick.c` (entity-cli) now appends `entity_id | x=N | y=N | ts=N` to a new `entities_live.ledger` the instant it moves an entity (producer owns the write). `world_manager_tick.c` gained `apply_ledger_deltas()`, which reads forward from its own cursor (`.ledger_cursor`) and merges only the new deltas into `entities_live.txt` - O(moves since last tick), zero work (not even an `fopen`) on a tick where nothing moved. The old fork-based full resync (`sync_entity_positions.+x`) is kept as a slow (60s, not 1s) self-healing fallback for anything that bypasses the ledger, truncating the ledger and resetting its cursor after each run so it never grows unbounded. Verified live: a real simulated move produced a real ledger line, a real tick consumed it and correctly updated `entities_live.txt`, and a repeat tick with no new moves advanced nothing (confirmed via `.ledger_cursor` staying flat).
+- **Also found and fixed along the way**: entity position-change tracking (`prev_states[]`) was capped at `MAX_TRIGGERS` (16, a constant meant for trigger DEFINITIONS in `event_triggers.pdl`, wrongly reused for entity count) - already silently truncating past the 16th entity today, with 36 real entities live, not just "in the future." Split into its own `MAX_ENTITIES` (512).
+- **Malloc-based realpath hardening**, replacing the earlier same-night band-aid (fixed 4096-byte buffers): `realpath(path, NULL)` (a glibc extension) mallocs exactly the resolved length itself, so there is no buffer size to guess ever again, across all three world-manager binaries. Direct instruction raised a real risk to guard against: "we rather use malloc, and sizeof, but remember, linux automatically frees memory, so double free could occur." Avoided by reading each resolved pointer exactly once (a `snprintf` copy into an existing fixed downstream buffer) and freeing it immediately after, in the same scope, on every path - matching real TPMOS house precedent found via direct research (`1.TPMOS_c_+rmmp.0103.0001/.../PITFALLS_ACTIVE_2026-03-18.txt` #20: "never free path buffers before I/O operations complete," and the `cpu_safe_module_template.c` convention of one `asprintf`/malloc paired with exactly one `free()` per allocation, never per-branch). Verified clean under `gcc -fsanitize=address,undefined` (no leaks, no double-free, no use-after-free) and under `-D_FORTIFY_SOURCE=2` (the exact flag that caught the original crash).
+
+**Files**: `&.widgits/entity-cli/ops/move_entity_tick.c` (producer), `&.hq-apps/world-manager/ops/world_manager_tick.c` (consumer + `apply_ledger_deltas()` + `MAX_ENTITIES` split + malloc hardening), `ops/world_manager_init.c` + `ops/sync_entity_positions.c` (malloc hardening only).
+
+**Also found, real, house-wide, out of scope to fix tonight**: the undersized-realpath-buffer pattern in bug #2 above is NOT unique to world-manager - a house-wide grep found dozens of other files defining `MAX_PATH`/`PATH_BUF`-style macros well under 4096 (256/512/1024/2048, e.g. `101.ledger-player-npc-simple+3/ops/ledger_append.c` at 256, `014.wsr-pal.../system/chtpm_parser_pal.c` at 1024, `_.monads/_.livedesk-taskbar/ops/tile_registry.c` at 512) and passing them straight to `realpath()`. Every one of these is a latent, dormant crash that only manifests under a fortify-hardened build - exactly like this one did. Worth a dedicated house-wide sweep later; flagging here so it isn't lost, not fixing all of them under tonight's "#1 priority, we can't go forward" framing which was specifically about world_manager.
+
+**Files**: `&.hq-apps/world-manager/world_manager.pal`, `button.sh`, `ops/{world_manager_tick,world_manager_init,sync_entity_positions}.c`; `pages/test_page_001/manager/page_manager.pal` (twin). Design doc for the ledger-trunking recommendation: TBD, not yet written up separately - this entry is the design of record until it is.

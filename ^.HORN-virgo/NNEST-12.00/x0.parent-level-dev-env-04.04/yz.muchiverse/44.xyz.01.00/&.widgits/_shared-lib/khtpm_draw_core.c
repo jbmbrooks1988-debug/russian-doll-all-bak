@@ -22,6 +22,8 @@
  * hot-path logic that needs direct access to the caller's own live X11
  * connection/drawable every single frame — real ops/fork-exec doesn't
  * fit here, this isn't a discrete one-shot action. */
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 
 /* Colour caches. cmap never changes after startup (DefaultColormap), so a
  * pixel/XftColor allocated for a given spec stays valid for the process
@@ -123,6 +125,11 @@ static XftFont *font_for(const CssStyle *st) {
  * stateless, X11-drawing code with zero db-hq/palettes-specific
  * dependencies - any future mode gets it for free. */
 #define HQ_SPRITE_PX_MAX 64
+/* Display-only offset for the nav badge number (owner 2026-10-05, 18.pc-hq/CURSWORD-POSSESSION-
+ * DESIGN.md): a window of class "nav-after-top" (the hotbar) shows its cells numbered AFTER the top
+ * bar's, i.e. local index + base. Internal nav indexes (g_nav[], nav_index) stay local 1..N; only the
+ * drawn number and the typed-number lookup in handle_key add / subtract this base. 0 = unchanged. */
+static int g_nav_display_base = 0;
 typedef struct {
     char path[512];
     unsigned char *rgba;
@@ -222,7 +229,14 @@ static HqSprite *hq_sprite(const char *dir) {
     return &g_hq_sprite_cache[slot];
 }
 
-static void hq_blit_sprite(HqSprite *sp, int x0, int y0, int px, unsigned long bg_pixel) {
+/* sample_backdrop: when set, composite transparent pixels over the pixels
+ * ACTUALLY already painted in `buf` behind the sprite (read back with
+ * XGetImage), not over the flat bg_pixel. bg_pixel is only a guess at
+ * what is behind the tile (theme colour), and is wrong wherever a window
+ * body is deliberately tinted differently from the theme/header colour
+ * (File Explorer body vs header). Falls back to bg_pixel for any pixel
+ * outside the buffer or if the readback fails. */
+static void hq_blit_sprite(HqSprite *sp, int x0, int y0, int px, unsigned long bg_pixel, int sample_backdrop) {
     Visual *vis = DefaultVisual(dpy, DefaultScreen(dpy));
     int depth = DefaultDepth(dpy, DefaultScreen(dpy));
     unsigned long rmask = vis->red_mask, gmask = vis->green_mask, bmask = vis->blue_mask;
@@ -236,6 +250,20 @@ static void hq_blit_sprite(HqSprite *sp, int x0, int y0, int px, unsigned long b
     int res = sp->res;
     unsigned char *bufpx = calloc((size_t)px * px, 4);
     if (!bufpx) return;
+    XImage *back = NULL;
+    int back_x = 0, back_y = 0, back_w = 0, back_h = 0;
+    if (sample_backdrop) {
+        Window root_ret; int gx, gy; unsigned int gw, gh, gb, gd;
+        if (XGetGeometry(dpy, buf, &root_ret, &gx, &gy, &gw, &gh, &gb, &gd)) {
+            int bx0 = x0 < 0 ? 0 : x0, by0 = y0 < 0 ? 0 : y0;
+            int bx1 = x0 + px > (int)gw ? (int)gw : x0 + px;
+            int by1 = y0 + px > (int)gh ? (int)gh : y0 + px;
+            if (bx1 > bx0 && by1 > by0) {
+                back = XGetImage(dpy, buf, bx0, by0, (unsigned)(bx1 - bx0), (unsigned)(by1 - by0), AllPlanes, ZPixmap);
+                back_x = bx0; back_y = by0; back_w = bx1 - bx0; back_h = by1 - by0;
+            }
+        }
+    }
     for (int y = 0; y < px; y++) {
         int sy = (y * res) / px;
         if (sy >= res) sy = res - 1;
@@ -244,9 +272,19 @@ static void hq_blit_sprite(HqSprite *sp, int x0, int y0, int px, unsigned long b
             if (sx >= res) sx = res - 1;
             const unsigned char *pix = &sp->rgba[(sy * res + sx) * 4];
             int a = pix[3];
-            int r = (pix[0] * a + (int)br * (255 - a)) / 255;
-            int g = (pix[1] * a + (int)bg2 * (255 - a)) / 255;
-            int b = (pix[2] * a + (int)bb * (255 - a)) / 255;
+            int pr = (int)br, pg = (int)bg2, pb = (int)bb;
+            if (back) {
+                int ax = x0 + x - back_x, ay = y0 + y - back_y;
+                if (ax >= 0 && ay >= 0 && ax < back_w && ay < back_h) {
+                    unsigned long bp = XGetPixel(back, ax, ay);
+                    pr = (int)((bp >> rshift) & 0xff);
+                    pg = (int)((bp >> gshift) & 0xff);
+                    pb = (int)((bp >> bshift) & 0xff);
+                }
+            }
+            int r = (pix[0] * a + pr * (255 - a)) / 255;
+            int g = (pix[1] * a + pg * (255 - a)) / 255;
+            int b = (pix[2] * a + pb * (255 - a)) / 255;
             unsigned long word = ((unsigned long)r << rshift) | ((unsigned long)g << gshift) | ((unsigned long)b << bshift);
             bufpx[(y * px + x) * 4 + 0] = (unsigned char)(word & 0xff);
             bufpx[(y * px + x) * 4 + 1] = (unsigned char)((word >> 8) & 0xff);
@@ -262,6 +300,7 @@ static void hq_blit_sprite(HqSprite *sp, int x0, int y0, int px, unsigned long b
     } else {
         free(bufpx);
     }
+    if (back) XDestroyImage(back);
 }
 
 /* Real, generic, CSS-driven single-element draw: background fill,
@@ -685,7 +724,7 @@ static int kh_elem_badge_label_x(Elem *e) {
                        (g_interact_relay_on && e->relay[0]);
         elem_cursor_prefix(e, g_focus_nav, is_scope, prefix, sizeof(prefix));
         char nav_badge[16];
-        snprintf(nav_badge, sizeof(nav_badge), "%s%d.", prefix, e->nav_index);
+        snprintf(nav_badge, sizeof(nav_badge), "%s%d.", prefix, e->nav_index + g_nav_display_base);
         static char badge_cached_spec2[48] = "";
         static XftFont *badge_cached_font2 = NULL;
         char numspec[48];
@@ -731,8 +770,30 @@ static int kh_text_offset_at_x(XftFont *f, const char *text, int target_x) {
     return best;
 }
 
+/* Theme classes (owner 2026-10-06: the in-game menus/hotbar must take the livedesk theme, not hard-coded greys; a css
+ * rule cannot name a theme colour). class "theme" = the theme background, "theme-2" = 14% lighter (rows),
+ * "theme-3" = 28% lighter (title bars, chrome buttons); text = the theme foreground (dark on a light theme, as the dock
+ * does), border = 45% lighter. Applied at draw, so it is idempotent and follows a live theme change. */
+static void kh_theme_shade(const char *hex, int pct, char *out, size_t n) {
+    unsigned r = 0x1c, g = 0x1c, b = 0x1c;
+    if (hex && hex[0] == '#' && strlen(hex) >= 7) sscanf(hex + 1, "%2x%2x%2x", &r, &g, &b);
+    r += (255 - r) * pct / 100; g += (255 - g) * pct / 100; b += (255 - b) * pct / 100;
+    snprintf(out, n, "#%02x%02x%02x", r, g, b);
+}
+static void kh_theme_classes(Elem *e) {
+    int lv = elem_has_class(e, "theme-3") ? 28 : elem_has_class(e, "theme-2") ? 14 : elem_has_class(e, "theme") ? 0 : -1;
+    if (lv < 0) return;
+    kh_theme_shade(g_theme_bg, lv, e->style.bg_color, sizeof(e->style.bg_color));
+    e->style.has_bg_color = 1;
+    snprintf(e->style.fg_color, sizeof(e->style.fg_color), "%s", kh_hex_luma(g_theme_bg) > 140 ? "#1c1c1c" : g_theme_fg);
+    e->style.has_fg_color = 1;
+    kh_theme_shade(g_theme_bg, 45, e->style.border_color, sizeof(e->style.border_color));
+    e->style.has_border_color = 1;
+}
+
 static void draw_elem(Elem *e, int hover_id_hash) {
     (void)hover_id_hash;
+    kh_theme_classes(e);
     /* REAL FIX 2026-08-29 (EVENTS-HQ-RENDER-UNIFICATION-PLAN.md's own
      * open "ghosting" regression, root-caused: evhq_zero_subtree()
      * zeros an Elem's w/h to hide a whole subtree when a view mode
@@ -957,7 +1018,7 @@ static void draw_elem(Elem *e, int hover_id_hash) {
             if (armed && !edit_mode)
                 snprintf(status_line, sizeof(status_line), "%s%d. jump: %s_", prefix, e->nav_index, g_default_input_elem->grid_jump_buffer);
             else
-                snprintf(status_line, sizeof(status_line), "%s%d.", prefix, e->nav_index);
+                snprintf(status_line, sizeof(status_line), "%s%d.", prefix, e->nav_index + g_nav_display_base);
             const char *badge_fg = armed ? (edit_mode ? "#ffcc00" : g_theme_accent) :
                                     (e->nav_index == g_focus_nav ? g_theme_accent : "#888888");
             XftColor bcol = xft_color(badge_fg);
@@ -1116,7 +1177,7 @@ static void draw_elem(Elem *e, int hover_id_hash) {
                         * declaration comment in khtpm_core_render.c). */
                        (g_interact_relay_on && e->relay[0]);
         elem_cursor_prefix(e, g_focus_nav, is_scope, prefix, sizeof(prefix));
-        snprintf(nav_badge, sizeof(nav_badge), "%s%d.", prefix, e->nav_index);
+        snprintf(nav_badge, sizeof(nav_badge), "%s%d.", prefix, e->nav_index + g_nav_display_base);
         (void)focused;
         /* REAL FIX 2026-08-25 (live perf report: "nav is really slow" with
          * 113 palette tiles on screen) - this was opening a fresh XftFont
@@ -1152,7 +1213,25 @@ static void draw_elem(Elem *e, int hover_id_hash) {
      * matrix. Sprite draws BEFORE the badge (see above) so the badge is
      * never painted over. */
     int drew_sprite = 0;
-    if (e->sprite[0]) {
+    if (e->sprite[0] && strlen(e->sprite) > 4 && !strcmp(e->sprite + strlen(e->sprite) - 4, ".png")) {
+        int pw = 0, ph = 0, comp = 0;
+        unsigned char *rgba = stbi_load(e->sprite, &pw, &ph, &comp, 4);
+        if (rgba) {
+            int pad_s = e->style.has_padding ? e->style.padding : 4;
+            int box_w = e->w - 2 * pad_s, box_h = e->h - 2 * pad_s;
+            int dst_w = pw, dst_h = ph;
+            if (dst_w > box_w) dst_w = box_w;
+            if (dst_h > box_h) dst_h = box_h;
+            if (dst_w > 0 && dst_h > 0) {
+                int blit_x = e->x + (e->w - dst_w) / 2;
+                int blit_y = e->y + (e->h - dst_h) / 2;
+                XImage *xim = XCreateImage(dpy, DefaultVisual(dpy, screen), DefaultDepth(dpy, screen), ZPixmap, 0, (char *)rgba, dst_w, dst_h, 32, 0);
+                if (xim) { XPutImage(dpy, buf, gc, xim, 0, 0, blit_x, blit_y, dst_w, dst_h); XDestroyImage(xim); drew_sprite = 1; }
+                else free(rgba);
+            } else free(rgba);
+            if (!drew_sprite) free(rgba);
+        }
+    } else if (e->sprite[0]) {
         HqSprite *sp = hq_sprite(e->sprite);
         if (sp) {
             int pad_s = e->style.has_padding ? e->style.padding : 4;
@@ -1189,7 +1268,7 @@ static void draw_elem(Elem *e, int hover_id_hash) {
                 if (short_bar) {
                     /* Taskbar-height cells: sprite LEFT of the label,
                      * after the nav badge — not centered over it. */
-                    if (px > 24) px = 24;
+                    if (px > 24 && !elem_has_class(e, "sprite-big")) px = 24;   /* sprite-big: fill the cell height (owner 2026-10-06: entity images too small) */
                     blit_x = e->x + pad_s + (e->nav_index > 0 ? 36 : 0);
                     blit_y = e->y + (e->h - px) / 2;
                     badge_label_x = blit_x + px + 4;
@@ -1199,7 +1278,7 @@ static void draw_elem(Elem *e, int hover_id_hash) {
                         ? (e->y + pad_s)
                         : (e->y + (e->h - px) / 2);
                 }
-                hq_blit_sprite(sp, blit_x, blit_y, px, bg_pixel);
+                hq_blit_sprite(sp, blit_x, blit_y, px, bg_pixel, !e->style.has_bg_color);
                 drew_sprite = 1;
             }
         }
@@ -1212,7 +1291,18 @@ static void draw_elem(Elem *e, int hover_id_hash) {
      * draw path. */
     char cli_io_shown[256 + 300];
     static char text_area_shown[4096 + 300]; /* static: too big for this function's own stack budget alongside everything else already declared here */
-    char label_decoded[600];
+    /* REAL FIX 2026-09-23, direct live report (co-lab-hai long messages
+     * STILL cutting off after both the Elem.label[] cap and the
+     * wrap-loop's own local buf[] were already bumped to match) - this
+     * is the real, third choke point: EVERY plain <text> label (not
+     * text_area, per the branch below) gets silently re-truncated to
+     * 600 bytes here for entity-decoding, downstream of Elem.label but
+     * upstream of the wrap loop that draws it - so neither earlier fix
+     * could have shown any visible difference. Same exact reasoning the
+     * comment right below already applies to text_area_shown (~4400B) -
+     * never extended to this plain-<text> path. Sized to match
+     * Elem.label. */
+    char label_decoded[2048];
     const char *shown_label = e->label;
     int cli_io_armed = 0;
     if (strcmp(e->tag, "text_area") == 0) {
@@ -1439,7 +1529,24 @@ static void draw_elem(Elem *e, int hover_id_hash) {
         XftColor col = xft_color(e->style.has_fg_color ? e->style.fg_color : default_fg);
         XGlyphInfo extents;
         XftTextExtentsUtf8(dpy, font, (const FcChar8 *)shown_label, (int)strlen(shown_label), &extents);
-        int avail_w = e->w > 0 ? (e->x + e->w) - badge_label_x : -1;
+        /* REAL FIX 2026-09-23, direct live report (co-lab-hai long
+         * messages overlapping/leaving gaps once real long text stopped
+         * getting silently truncated at the old 256-byte label[] cap):
+         * this MUST match scroll_row_span()'s own avail_w exactly
+         * (w - pad*2, khtpm_core_render.c) - that function decides how
+         * many ROW_H units this row gets laid out with, this is what
+         * actually draws into that space. It was previously only
+         * subtracting pad ONCE (the left side, via badge_label_x),
+         * never the matching right-side pad - invisible at 1-2 lines,
+         * but a small width drift changes word-wrap decisions right at
+         * a line boundary, so a long multi-line label could compute a
+         * different line count here than the layout pass reserved
+         * height for: MORE lines overflowed into the next row's own
+         * space (the overlap in the live report); FEWER lines left a
+         * gap. int pad mirrors scroll_row_span()'s own default (4) when
+         * no explicit CSS padding is set. */
+        int pad = e->style.has_padding ? e->style.padding : 4;
+        int avail_w = e->w > 0 ? (e->x + e->w) - badge_label_x - pad : -1;
         int line_h = font->ascent - font->descent > 0 ? font->ascent - font->descent : 12;
         line_h += 4; /* real, small leading - matches this file's own general text-row spacing feel */
         /* REAL, NEW 2026-09-01 (direct instruction: "build word-wrap/
@@ -1478,10 +1585,45 @@ static void draw_elem(Elem *e, int hover_id_hash) {
              * line gets a real "..." ellipsis if there's more text than
              * fits, same real convention the single-line clip path
              * already uses). */
-            Pixmap wrap_target_buf = buf; /* captured BEFORE the local `char buf[600]` below shadows the outer Pixmap `buf` for the rest of this block */
-            char buf[600];
+            Pixmap wrap_target_buf = buf; /* captured BEFORE the local `char buf[]` below shadows the outer Pixmap `buf` for the rest of this block */
+            /* REAL FIX 2026-09-23, direct live report (co-lab-hai long
+             * messages still cutting off mid-sentence, no "..." shown,
+             * even after the Elem.label[] cap and the avail_w drift
+             * above were both fixed): this local copy was still only
+             * 600 bytes - shown_label itself can legitimately be up to
+             * ~2047 bytes now (matches Elem.label[2048]), so THIS
+             * snprintf was silently re-truncating before a single word
+             * got wrapped, independent of both earlier fixes. Sized to
+             * match Elem.label exactly, same reasoning as that bump.
+             *
+             * REAL FIX 2026-09-29, direct live report + real screenshot
+             * ("do u see how the message was cut off even tho there
+             * was plenty of space") - a THIRD occurrence of this exact
+             * bug class, missed by the fix just above: shown_label for
+             * a <text_area> comes from text_area_shown (4396 bytes, see
+             * its own declaration comment - "text_area's own shown_
+             * label (up to ~4400 bytes)"), not from the smaller
+             * Elem.label[2048] this buf was actually sized to match.
+             * A real ~2170-byte pending-approval message sailed straight
+             * past this 2048 cap - every fix so far (content= sourcing,
+             * text_area_buffer, text_area_shown, the layout-side wrap
+             * measurement) was already correct all the way up to this
+             * exact line, which then quietly cut it again right before
+             * drawing. Matched to text_area_shown's own real size. */
+            char buf[4096 + 300];
             snprintf(buf, sizeof(buf), "%s", shown_label);
-            int max_lines = e->h / line_h;
+            /* REAL FIX 2026-09-23 - scroll_row_span() (khtpm_core_render.c)
+             * sizes e->h via CEILING division (lines*line_h+ROW_H-1)/ROW_H
+             * so a real message never gets less height than it needs. This
+             * floor division (e->h/line_h) could under-report by exactly
+             * one line whenever e->h isn't a clean multiple of line_h -
+             * silently dropping the box's own last real line of content
+             * with no ellipsis (the ellipsis path only fires when max_lines
+             * itself is already the final line, never sees the dropped
+             * one). Matching ceiling division here removes that
+             * asymmetry - this box is guaranteed enough real pixel height
+             * for one extra partial line if rounding needs it. */
+            int max_lines = (e->h + line_h - 1) / line_h;
             if (max_lines < 1) max_lines = 1;
             int ty = e->y + font->ascent + 2;
             int line_no = 0;
@@ -1688,7 +1830,9 @@ static void draw_elem(Elem *e, int hover_id_hash) {
             XSetForeground(dpy, gc, alloc_pixel("#141414"));
             XFillRectangle(dpy, buf, gc, chip_x0, chip_y0, (unsigned)chip_w, (unsigned)chip_h);
             chip_drawn = 1;
-        } else if ((e->sprite[0] || is_swatch_tile) && e->y >= 16 && !elem_has_class(e, "dock-cell")) {
+        } else if ((e->sprite[0] || is_swatch_tile) && e->y >= 16 && !elem_has_class(e, "dock-cell") &&
+                   !elem_has_class(e, "dropdown-child") &&
+                   !elem_has_class(e, "sprite-inline")) { /* sprite-inline rows keep the inline chip; REAL FIX 2026-09-23 (bug_bounty.md "tax_robot nav badge missing") - dropdown-child rows (khtpm_core_render.c's dock-menu popup, layout_dock_bar()'s stacking loop) pack with ZERO vertical gap exactly like dock-cell rows already excluded above on 2026-09-15, but that exclusion never covered this newer row class - a dropdown-child WITH a real (even if unloadable, e.g. tax_robot's sprite path pointing at a pal dir with no sprite.csv) e->sprite path fell into this above-tile bleed branch, shifting its badge chip up into the PREVIOUS row's box where it visually vanished. Every dropdown row shares this zero-gap packing, so exclude the whole class the same way dock-cell already is. */
             /* Sprite tiles and swatch-picker tiles: draw badge ABOVE the tile
              * with a dark backing chip for contrast.
              *

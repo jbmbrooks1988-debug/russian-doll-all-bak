@@ -6,25 +6,186 @@ note under it — don't silently edit it away.*
 
 ## Open
 
-- **piececraft-hq board window renders only a thin ".main" tab, no
-  board content** (found 2026-09-18, kilo's first WSR-CIV session per
-  the `claude-2-kilo-9.17.md` handoff, `kilo-post-mortem-s17.md`).
-  Launched via toys menu → Piececraft-HQ (relay code `5018` on
-  `strip_history.txt`), PID 191387, window came up but only the page
-  name/tab rendered, no board/tile content ever appeared. Killed
-  without root-cause (not diagnosed further this session). NOT
-  confirmed pre-existing vs. a fresh regression — `pchq-board.xhtpm`
-  has real, actively-maintained fix comments dated as recently as
-  2026-09-15 (a related dead-UI-wiring bug, tb-file calling file-hq
-  directly instead of a dropdown, already fixed), so the file is
-  live-maintained, not abandoned. **Before assuming this needs a
-  C-level fix** (`§2` of the kilo handoff bans touching
-  `pchq_board_projector.c`/any renderer): check `git log`/`git blame`
-  on `pchq-board.xhtpm` and `pchq_board_projector.c` for anything more
-  recent than 2026-09-15, and rule out a stale-binary/launch-arg issue
-  first (`03-pitfalls/HOUSE_CODE_PITFALLS.md` #1 — the single most
-  common false "still broken" report in this house). Real blocker for
-  WSR-CIV Step B (file:desk creation) until resolved.
+- **FIXED 2026-09-20 (dock unfactor stage 2): the "@" always-on-top toggle stopped respawning desktop pals, and its process scan was not house-scoped.** Found by the DOCK-UNFACTOR-AUDIT. (1) Since the pal unfactor (`da57ae00`) pals run as `khtpm_entity.+x`, but `ktb_toggle_zorder_respawn()` in `khtpm_core_render.c` only matched `tp_desktop_window_rgb`/`khtpm_core_render`/`network_browser_render`, so pals kept their old `override_redirect` (a create-time-only property) after the toggle. (2) It matched by `strstr(argv0, needle)` across ALL of `/proc`, so any other house (a private/test one) could SIGTERM the live desktop's windows. Fix: the ~250 lines moved to a standalone op `ktb_zorder_op.+x` (`ktb_zorder_op.c`, built by `build_core_render.sh`), spawned detached by the renderer's `ZORDER_TOGGLE` handler; it matches only binaries under the given house root, includes `khtpm_entity`, and has `--dry-run`. Verified in a private Xephyr + private house: a relay click on a `ZORDER_TOGGLE` cell flips `khtpm_zorder_mode.state.txt`/`livedesk_override_redirect.pdl`, respawns the private pal (new PID, same argv), the dock stays up, and the pal window reads `Override Redirect State: yes` after "above" and `no` after "normal"; the live desktop's 6 pals were untouched. Dry-run against the live house matches exactly the 6 pals and not the strip. **Not verified on the user's real desktop** (needs one real click of "@" after restarting the taskbar/renderers on the new binary).
+
+- **FIXED 2026-09-21: piececraft-hq board window rendered only a thin
+  ".main" tab, no board content** (found 2026-09-18, blocked WSR-CIV
+  Step B). Two real, confirmed-by-direct-code-read causes, neither a
+  regression — both pre-date 2026-09-18:
+  1. `open_pchq_board.sh`'s "ensure a board-viewer engine session
+     exists" block waits up to ~8s for `engine_up()`, then **launches
+     the board window unconditionally either way** — no abort/guard if
+     the engine never came up in time (real risk on this documented
+     weak-CPU machine, see `nice-heavy-background-work` house note).
+  2. When that happens, `pchq-board.xhtpm`'s own fallback —
+     `<text label="No live board-viewer session..." show="${no_session}"/>`
+     as a bare child of `<page>` — was **silently never shown**:
+     `layout_sidebar_panel()` in `khtpm_core_render.c` only ever laid
+     out a `<footer>`'s own `<text>` children, never a loose `<text>`
+     sibling of `<page>` itself, so it kept its zero-initialized x/y/w/h
+     forever and `draw_elem()`'s own `if (w<=0||h<=0) return;` guard
+     (khtpm_draw_core.c) correctly, silently skipped painting it. Net
+     effect: the toolbar tab renders, the panel is empty, and the one
+     message that would explain why never appears — exactly "only a
+     thin tab, no content, no reason given."
+  Fix (`khtpm_core_render.c`, `layout_sidebar_panel()`): a small,
+  generic pass lays out any bare `<text>` direct child of `<page>`
+  inside the panel's own content area — not piececraft-specific, any
+  future template using this same fallback-hint pattern gets it too.
+  (`show=` false already drops the element from the tree entirely at
+  PARSE time, so nothing reaching this new code needed a visibility
+  check — only geometry.) The `open_pchq_board.sh` unconditional-
+  launch gap is real but NOT changed here — logged separately below.
+  **Verified with real A/B evidence, not just static reading**: built
+  a minimal isolated test template reproducing `pchq-board.xhtpm`'s
+  exact structure (tabbar/sidebar/panel/bare `<text>`), ran it in a
+  private Xephyr under the OLD binary (PNG: tab renders, panel fully
+  blank, no message — literally the bug) and the NEW binary (PNG: same
+  layout, but the fallback text now renders inside the panel) side by
+  side. Not tested against the user's real desktop/piececraft-hq
+  session — the isolated repro proves the renderer bug specifically,
+  not that a live piececraft-hq session now shows real board content
+  when the engine IS up in time.
+
+- **OPEN (found alongside the fix above, not itself fixed):
+  `open_pchq_board.sh` launches the board window even if the
+  board-viewer engine never came up within its ~8s wait.** With the
+  layout fix above, this now correctly shows "No live board-viewer
+  session..." instead of silently nothing — a real UX improvement —
+  but the underlying question (why doesn't the engine reliably come up
+  in time on this machine, and should the wait be longer / the launch
+  gated on success) is unresolved. Recommended, not implemented: either
+  retry longer before giving up, or abort with a visible error instead
+  of launching a window that (now, at least) explains itself.
+
+- **File Explorer Place overlay ignored Esc — FIXED 2026-09-20, NOT yet
+  verified on the real GNOME/Wayland desktop.** Palettes' RPG-Maker placer
+  cancels on Esc; the same `tp_arm_placer_rmmv.+x` launched from File
+  Explorer's right-click Place did not. Difference found: palettes passes
+  the picker window's rect, leaving that X window uncovered and focused, so
+  `XGrabKeyboard` works. Explorer passes no rect, so the overlay covers
+  everything and the right-click popup that had focus is already gone; on
+  Mutter/XWayland no X client is focused and Esc never reaches X. (Not
+  reproducible in a nested Xephyr, where the grab always succeeds, and a
+  headless GNOME Shell's XWayland would not answer connections in this
+  sandbox; so the focus explanation is inferred, not observed.)
+  Fix (`tp_arm_placer_rmmv.c`, `fe_place_on_desk.sh`): (1) `fe_place_on_desk.sh`
+  passes `FE_PLACE_FOCUS_PID` (explorer's renderer pid from
+  `module_parent.pid`); the placer activates that window via EWMH
+  `_NET_ACTIVE_WINDOW` before grabbing, the way palettes' focused picker
+  does implicitly; (2) the keyboard grab retries up to 1s instead of being
+  ignored; (3) Esc is also polled with `XQueryKeymap` (an Esc already held
+  at start is ignored), so it cancels even when another client holds the
+  grab. Verified in Xephyr: Esc cancels; Esc cancels with another client
+  holding `XGrabKeyboard` (the old logic fails this); desk click still
+  places; a click inside a published drop zone still moves the item; hover
+  file is cleared on every exit; palettes-style launch (rect args, no
+  explorer env) still cancels. If Esc still fails on the real desktop, the
+  next step is a focus-independent cancel (e.g. right-click on the overlay).
+
+- **DSR toy did nothing when clicked in the toys menu — FOUND+FIXED
+  2026-09-19.** Root cause: the toys menu launches every toy with
+  `sh <toy>/button.sh run` (`livedesk:open-toy:` in
+  `khtpm_taskbar_manager.c`, output to /dev/null), so `argv[1]` is the
+  literal string `run`; `&.hq-apps/dsr/button.sh` treated `argv[1]` as
+  the house root, failed `[ -d run ]`, printed "dsr: need house_root as
+  argv[1]" and exited 1 — invisibly. Reproduced by running the exact
+  command. Fix: `button.sh` now falls back to `HERE/../..` when argv[1]
+  is not a directory. Verified: launched as the taskbar does, manager +
+  renderer came up, window mapped (820x900, PNG captured, Desk Street
+  Raider UI drawn). **Same bug likely affects `&.hq-apps/db-hq-pal/
+  button.sh`** (same `HOUSE_ROOT="${1:-}"` guard, has a toy.pdl) —
+  not changed here, check its toys-menu entry.
+
+- **UI does not scale to the monitor: taskbar too big + cut off, entities
+  huge on a different computer** (user report 2026-09-19: same OS, second
+  machine with a different monitor size/resolution; TB overflows the
+  screen, entity/pal windows render far too large). Design goal stated
+  by the user: sizes should be "the right size in pixels relative to the
+  screen, no matter the screen size." **Not investigated yet** — leads
+  only: entity/pal size is a fixed `static int WIN_PX = 64` in
+  `khtpm_core_render.c` (~line 11781) with no screen-relative factor;
+  several files already call `DisplayWidth/Height` (taskbar strip
+  `khtpm_strip_x11_win.c`, `khtpm_core_render.c`, `livedesk_splash.c`),
+  so some screen-aware sizing exists but clearly doesn't cover strip
+  height/cell width or entity size. Suggested first step: compare the
+  two machines' `xdpyinfo | grep -E 'dimensions|resolution'`, then find
+  which sizes are absolute px vs derived from `DisplayWidth`; likely fix
+  = one shared `ui_scale` (screen-height-relative, overridable in
+  `hq_ui.pdl`) applied to strip height, cell width, `WIN_PX`, and font
+  sizes. Beware `assign_nav_and_layout` idempotency (see
+  `khtpm-shared-layout-caution`) if scale touches layout mutations.
+
+  🔄 **2026-09-19 FIXED (screen-relative scale; positions + real second
+  monitor still to confirm).** `khtpm_core_render.c` now has one
+  screen-relative factor: `auto = min(screen_w/ui_ref_width,
+  screen_h/ui_ref_height)`, clamped 50..300%, reference = this machine's
+  2496x1664 (so auto is 100 here and nothing changes). Keys in
+  `#.desktop/hq_ui.pdl`: `ui_scale` (0 = auto, or a forced factor),
+  `ui_ref_width`, `ui_ref_height`. Effective UI scale =
+  `font_scale` (the Settings Size -/+ value) x auto, recomputed from those
+  bases each time (`kh_ui_apply_scale()`), so layout passes stay
+  idempotent; Size -/+ now steps `font_scale` itself, not the combined
+  value. Applied to: strip/row/chrome heights and fonts (via `scaled()`),
+  the dock's sprite/gap/badge/focus-box/pager sizes, the strip's left
+  margin (`strip_x_offset`), entity grid cell + window size (`WIN_PX`,
+  from `desk_grid.pdl cell_px`), and the default user-resizable window
+  size. The dock row also now shrinks its cells proportionally if it would
+  run past the screen edge. Verified in a private Xephyr with a private
+  house root (never the live desktop): 2496x1664 gives the same dock
+  geometry as the live old-binary dock (2082x45+200+50 top,
+  2096x45+200+1619 bottom); 1366x768 fits with no wrapped labels
+  (1166x23); 1920x1080 and 3840x2160 also render at proportional sizes.
+  **Not done / unverified:** (1) `desktop_pos.txt` stays absolute screen
+  px (about ten tools write it: tp_place_desktop*.c, tp_arm_placer_rmmv.c,
+  fe_place_on_desk.sh, mr_move_to_entity.c, taskbar manager, pet
+  button.sh...), so an entity saved on a bigger screen is only clamped onto
+  the visible screen and re-snapped, not re-spaced; converting to
+  reference-space coordinates means updating all of those writers.
+  (2) The entity window itself was not observed on screen under Xephyr
+  (the process exited early there); only its clamp/snap of the saved
+  position and the grid math were checked. (3) `win_top_y` (96) and
+  `oy` (`strip_y_offset` 50) stay absolute on purpose: they clear the
+  desktop's own top panel. (4) Not tried on the user's real second
+  computer.
+
+  🔄 **2026-09-20 FIXED (saved positions + entity window observed; still
+  unverified on the user's real second computer).** (1) `desktop_pos.txt`
+  x/y are now REFERENCE px (`ui_ref_width/height`, default 2496x1664 - the
+  main machine, where every conversion is the identity, so its files and
+  behaviour are byte-identical). Shared pure math in
+  `_shared-lib/khtpm_ui_scale.c` (`kps_*`, test:
+  `_shared-lib/tests/test_ui_scale.c`); mapping is ref * scaled_cell /
+  base_cell (grid-cell based, so k*80 lands exactly on k*scaled_cell and
+  exact-equality touch triggers keep working). `khtpm_entity.c`:
+  `read_initial_pos()` ref->screen, `write_pos()` screen->ref, `MOVE_TO:` is
+  reference px, touch-trigger compares in screen space and logs reference
+  px. The placers that turn a screen click into a saved position convert at
+  the source: `tp_arm_placer_rmmv.c` (RMMV_CLICK ledger row + File Explorer
+  click file) and `tp_arm_placer.c` (TP_INITIAL_X/Y); `khtpm_show_choices.c`
+  converts ref->screen for the picker it spawns. Already reference-space and
+  untouched: launcher constants (GRID_X*80), `tp_paste_tile.sh` (+80),
+  `fe_place_on_desk.sh` (copies the click), `mr_move_to_entity.c` /
+  `mr_transfer_desk.c`, the taskbar manager (grid constants + DESK rows).
+  Idempotence: the startup grid-snap rewrite is skipped when this screen is
+  not the reference one AND the saved spot was only clamped onto the visible
+  grid, so a smaller monitor never rewrites where the entity lives for the
+  bigger one (on the reference screen it still always writes, as before).
+  (2) Entity window IS observed now (the earlier early exit was a test-house
+  artifact: an incomplete private house): private Xephyr + private house,
+  ninja pal saved at ref (1200,800): 2496x1664 -> 160x160 at (1200,800)
+  (identical to reference); 1920x1080 -> 102x102 at (765,510); 3840x2160 ->
+  206x206 at (1545,1030); 1366x768 -> 80x80 at (600,400), sprite crisp at all
+  sizes (PNGs in /tmp/claude-1000/scaletest/entity_*.png). A ref position off
+  the small grid (2400,1600 on 1366x768) is clamped on screen to (1200,720)
+  while the file stays 2400/1600; a mouse drag on that screen wrote
+  x=2000,y=1120 (multiples of 80). (3) Dock geometry: reference size bottom
+  dock 2096x45+200+1619 = the live one, top at +200+50 h45 (its width depends
+  on cells the manager publishes); 1366x768 1091/1166 wide x23, 1920x1080
+  x29, 3840x2160 x58 - all inside the screen, one row, no wrapped labels.
+  **Not done / unverified:** the real second computer; `tp_desktop_window_win.c`
+  (Windows entity twin) still treats the file as absolute px; the entity
+  under a real WM/Wayland session (only Xephyr, no WM).
 
 - **`nav.sh`'s primary test commands (`nav`/`row`/`key`/`esc`/`type`)
   are silent no-ops — they write to a dead relay file** (found
@@ -53,6 +214,21 @@ note under it — don't silently edit it away.*
   `nav.sh`, not a guessed fix. Until then: use `hqcell`/`mgrcode` only,
   and treat any past test result that used bare `nav`/`row` as
   UNVERIFIED, not passing.
+
+  ✅ **FIXED 2026-09-19:** `nav.sh` now writes to the LIVE paths. Default
+  (no env) = `#.desktop/strip_history.txt` as bare decimal codes (digits,
+  Enter 13, Esc 27, Backspace 8, printable — exactly what
+  `dispatch_code()` still handles); `NAV_PID=<pid>` = that window's
+  `entity_menu_history/<pid>.txt` as `KEY_PRESSED:` lines (arrows 200-203).
+  New: `click <x> <y> [b]` and `string <text>` (window mode). Verified:
+  strip mode `nav 12` opened the live toys menu (`strip_state.txt` gained the
+  HQITEM rows) and `esc` returned it to baseline; window mode `nav 20` toggled
+  File Explorer's Grid View, `click 300 300 3` opened its context menu,
+  `key Escape` (NAV_PID=popup pid) closed it, `string mv 1 2` reached the
+  Cli-io resolver. Not exercised: `row`/`type` against a live menu row/armed
+  field. Related: relayed right-click (`MOUSE_EVENT: 3`) now opens the
+  context menu (was deliberately unrouted). Earlier "unverified" test results
+  that used bare `nav`/`row` before this date are still unverified.
 
   🔄 **2026-09-18 follow-up (Grok, live probe):** `nav.sh nav 9` grew
   `livedesk_agent_relay.txt` with zero `lsof` readers; `strip_history.txt`

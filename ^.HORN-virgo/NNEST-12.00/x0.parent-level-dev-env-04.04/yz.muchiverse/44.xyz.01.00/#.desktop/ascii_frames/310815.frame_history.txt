@@ -1,0 +1,176 @@
+
+=== hotbar-desk.xhtpm pid 310815  2026-10-05 23:19:17 ===
+--- hotbar-desk.xhtpm  pid 310815  2026-10-05 23:19:17 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: event_clacker_1
+        [>] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 310815  2026-10-05 23:19:21 ===
+--- hotbar-desk.xhtpm  pid 310815  2026-10-05 23:19:21 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: event_clacker_1
+        [ ] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 310815  2026-10-05 23:19:22 ===
+--- hotbar-desk.xhtpm  pid 310815  2026-10-05 23:19:22 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: event_clacker_1
+        [ ] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 310815  2026-10-05 23:19:23 ===
+--- hotbar-desk.xhtpm  pid 310815  2026-10-05 23:19:23 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: event_clacker_1
+        [ ] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 310815  2026-10-05 23:19:24 ===
+--- hotbar-desk.xhtpm  pid 310815  2026-10-05 23:19:24 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: event_clacker_1
+        [ ] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 310815  2026-10-05 23:19:26 ===
+--- hotbar-desk.xhtpm  pid 310815  2026-10-05 23:19:26 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: event_clacker_1
+        [ ] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 310815  2026-10-05 23:19:27 ===
+--- hotbar-desk.xhtpm  pid 310815  2026-10-05 23:19:27 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: event_clacker_1
+        [ ] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 310815  2026-10-05 23:19:28 ===
+--- hotbar-desk.xhtpm  pid 310815  2026-10-05 23:19:28 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: event_clacker_1
+        [ ] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 310815  2026-10-05 23:19:29 ===
+--- hotbar-desk.xhtpm  pid 310815  2026-10-05 23:19:29 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: event_clacker_1
+        [ ] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 310815  2026-10-05 23:19:31 ===
+--- hotbar-desk.xhtpm  pid 310815  2026-10-05 23:19:31 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: event_clacker_1
+        [ ] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 310815  2026-10-05 23:19:32 ===
+--- hotbar-desk.xhtpm  pid 310815  2026-10-05 23:19:32 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: event_clacker_1
+        [ ] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 

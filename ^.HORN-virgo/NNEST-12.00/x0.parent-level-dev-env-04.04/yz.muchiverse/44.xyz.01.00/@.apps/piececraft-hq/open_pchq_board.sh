@@ -35,7 +35,7 @@ if [ ! -d "$HOUSE_ROOT/#.desktop" ]; then
 fi
 HOUSE_ROOT="$(cd "$HOUSE_ROOT" && pwd)"
 
-OPS_DIR="$HOUSE_ROOT/*.monads/*.livedesk-taskbar/ops"
+OPS_DIR="$HOUSE_ROOT/_.monads/_.livedesk-taskbar/ops"
 BIN="$OPS_DIR/+x/khtpm_core_render.+x"
 PROJECTOR="$PKG/ops/+x/pchq_board_projector.+x"
 # MILESTONE A: default is the sidebar+panel board window. Set
@@ -45,6 +45,20 @@ if [ -n "${PCHQ_BOARD_HASCANVAS:-}" ] && [ -f "$PKG/pchq-board.hascanvas.xhtpm" 
     BOARD_TPL="$PKG/pchq-board.hascanvas.xhtpm"
 else
     BOARD_TPL="$PKG/pchq-board.xhtpm"
+fi
+# PCHQ_BOARD_TPL=<path to a template named pchq-board.xhtpm> launches that template instead (the in-game layouts
+# sandbox, @.apps/layout-studio/sandbox/); the name must stay pchq-board.xhtpm so the kill/match patterns still hit.
+if [ -n "${PCHQ_BOARD_TPL:-}" ] && [ -f "$PCHQ_BOARD_TPL" ]; then BOARD_TPL="$PCHQ_BOARD_TPL"; fi
+# which folder the running board treats as its package dir (state/ lives there): pc_entity_ctx.sh publishes an
+# in-board context menu there when <dir>/state/ctx_overlay.on exists (IN-GAME-LAYOUTS-PLAN.md, context menus)
+dirname "$BOARD_TPL" > "$HOUSE_ROOT/#.desktop/pchq_ctx_dir.txt" 2>/dev/null || true
+# a template that carries the in-board menu row (id="ctx") needs its state files; <dir>/state/ is gitignored for the
+# live board, so create them when missing (the menu stays hidden until pc_entity_ctx.sh writes ctx_visible=1)
+if grep -q 'id="ctx"' "$BOARD_TPL" 2>/dev/null; then
+    _CD="$(dirname "$BOARD_TPL")/state"; mkdir -p "$_CD"
+    [ -f "$_CD/ctx.txt" ] || printf 'ctx_visible=0\n' > "$_CD/ctx.txt"
+    [ -f "$_CD/ctx_menu.chtpm" ] || printf '<window class="entity-menu"><page name="main"><text label="menu"/></page></window>\n' > "$_CD/ctx_menu.chtpm"
+    [ -f "$_CD/ctx_overlay.on" ] || echo 1 > "$_CD/ctx_overlay.on"
 fi
 
 # ── build-on-demand (same shape as open_stats_hq.sh) ─────────────────
@@ -57,10 +71,67 @@ if [ ! -x "$BIN" ]; then
 fi
 [ -x "$PROJECTOR" ] || \
     sh "$PKG/ops/build_pchq_board_projector.sh" >/dev/null 2>&1 || true
+
+# ── board-viewer build-on-demand (2026-10-01) ─────────────────────────
+# .gitignore:9 is `*.+x`, so EVERY compiled binary in the house is
+# untracked build output. A `git clean -xdf`, a branch switch, or a fresh
+# clone therefore empties board-viewer's ops/+x/ while git still reports
+# a perfectly clean tree - which is why this looked like it correlated
+# with merging two near-identical branches (the merge was innocent; it
+# just pruned ignored files).
+#
+# When ops/+x/ is empty, THREE separate guards fail SILENTLY and the
+# board opens blank with no error anywhere:
+#   1. board-viewer/button.sh's `if [ -x ./ops/+x/ledger_append.+x ]`
+#      skips ONLINE registration, so the live session never reaches the
+#      ledger and is undiscoverable;
+#   2. pchq_board_projector.c's `popen("...ledger_peers.+x... 2>/dev/null")`
+#      swallows the missing binary, yielding no_session=1;
+#   3. with no session, canvas_raw resolves empty, so the renderer's
+#      canvas blits nothing - the 2D/3D view simply never appears.
+#
+# So build board-viewer's ops the same way we already build BIN and
+# PROJECTOR above: if any binary it needs is missing, rebuild the lot.
+BV_OPS="$HOUSE_ROOT/&.widgits/board-viewer/ops"
+BV_MISSING=""
+for _bv in ledger_append ledger_peers bv_render_2d bv_render_3d bv_compose_frame; do
+    [ -x "$BV_OPS/+x/$_bv.+x" ] || BV_MISSING="$_bv "
+done
+if [ -n "$BV_MISSING" ]; then
+    echo "open_pchq_board: board-viewer ops missing ($BV_MISSING)- building" >&2
+    (cd "$HOUSE_ROOT/&.widgits/board-viewer" && sh scripts/build.sh) \
+        >/tmp/pchq_board_viewer_build.log 2>&1 || true
+    # Re-check and FAIL LOUDLY if still absent. Better a clear refusal to
+    # open than a silently blank board that looks like a rendering bug.
+    for _bv in $BV_MISSING; do
+        if [ ! -x "$BV_OPS/+x/$_bv.+x" ]; then
+            echo "open_pchq_board: board-viewer $_bv.+x STILL missing after build" >&2
+            echo "open_pchq_board: see /tmp/pchq_board_viewer_build.log" >&2
+            exit 1
+        fi
+    done
+    echo "open_pchq_board: board-viewer ops rebuilt ok" >&2
+fi
+
 if [ ! -f "$BOARD_TPL" ]; then
     echo "open_pchq_board: missing $BOARD_TPL" >&2
     exit 1
 fi
+
+# ── always load at level 1 ────────────────────────────────────────
+# Owner 2026-10-05: the floor is level 0 and a board always opens at level 1 (the layer the hero, xelector and
+# entities live on), never up in the sky where the last session left the xelector. The world publishes
+# floor_z in board_manifest.txt (pc_generate_chunk.c); reset the hero and xelector to floor_z + 1 before
+# the engine starts. A world without floor_z is left exactly as it was.
+_FZ="$(sed -n 's/^floor_z=//p' "$PKG/pieces/system/board_manifest.txt" 2>/dev/null | head -1)"
+case "$_FZ" in
+    ""|*[!0-9]*) ;;
+    *) _LV=$((_FZ + 1))
+       for _p in xelector_01 hero_01; do
+           _f="$PKG/pieces/$_p/state.txt"
+           [ -f "$_f" ] && sed -i "s/^pos_z=.*/pos_z=$_LV/" "$_f"
+       done ;;
+esac
 
 # ── reap stale/orphaned engine sessions ────────────────────────────
 # `button.sh run`'s own EXIT trap (rm -rf $SESSION_DIR + kill_own_*)

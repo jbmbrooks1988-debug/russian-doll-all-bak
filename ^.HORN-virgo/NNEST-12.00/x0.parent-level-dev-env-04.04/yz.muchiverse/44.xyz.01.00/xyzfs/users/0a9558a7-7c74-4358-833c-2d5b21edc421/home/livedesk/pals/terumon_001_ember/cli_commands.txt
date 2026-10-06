@@ -1,0 +1,5 @@
+range a1 c3 2 6
+range a1 b2 2 6
+move
+move
+move

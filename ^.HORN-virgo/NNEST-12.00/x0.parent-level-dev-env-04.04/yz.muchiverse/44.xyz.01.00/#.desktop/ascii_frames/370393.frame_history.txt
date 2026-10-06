@@ -1,0 +1,80 @@
+
+=== hotbar-desk.xhtpm pid 370393  2026-10-05 23:26:52 ===
+--- hotbar-desk.xhtpm  pid 370393  2026-10-05 23:26:52 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: self
+        [>] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 370393  2026-10-05 23:26:53 ===
+--- hotbar-desk.xhtpm  pid 370393  2026-10-05 23:26:53 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: self
+        [>] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 370393  2026-10-05 23:27:03 ===
+--- hotbar-desk.xhtpm  pid 370393  2026-10-05 23:27:03 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: self
+        [ ] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 370393  2026-10-05 23:27:07 ===
+--- hotbar-desk.xhtpm  pid 370393  2026-10-05 23:27:07 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: self
+        [ ] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 
+
+=== hotbar-desk.xhtpm pid 370393  2026-10-05 23:29:49 ===
+--- hotbar-desk.xhtpm  pid 370393  2026-10-05 23:29:49 ---
+--- page: main ---
+Hotbar (desk)
+          cursword - slot: self
+        [ ] 1. item
+        [ ] 2. item
+        [ ] 3. item
+        [ ] 4. .
+        [ ] 5. .
+        [ ] 6. .
+        [ ] 7. .
+        [ ] 8. .
+        [ ] 9. .
+      [ ] 10. > 

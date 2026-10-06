@@ -1,0 +1,51 @@
+# 2026-09-20 — what happened / what's next
+
+## What landed (2026-09-19 → 09-20, all on `claude` + `main`, pushed at `2c1301ab`)
+
+- Merged Grok's branch (File Explorer grid/drop/Place, DSR app, `khtpm_entity` split start) and opencode's QuickJS/kevlar browser work.
+- DSR + db-hq-pal toys did nothing when clicked (toys menu runs `button.sh run`; their scripts read `run` as the house root) — fixed.
+- File Explorer: PAL entries show the entity's real sprite (transparent pixels blend with the body colour, not the header); Search field above Back; right-click Cut/Copy/Paste/Delete/Place actually reach the explorer; global cross-window clipboard; Place can target an open Inventory (green highlight); entity's own METHODs in an Inventory right-click; Inventory row on every entity, several Inventory windows at once.
+- Cli-io `mv <nav#> <nav#>` handler (only verb so far); `nav.sh` retargeted to live relay files.
+- UI scales to the monitor (`ui_scale`/`ui_ref_*` in `hq_ui.pdl`); **not yet checked on the second computer.**
+- Unfactor: `tp_main` + pal code moved out of `khtpm_core_render.c` (19.1k → 12.5k lines) into `khtpm_entity.c` (6.3k) + shared `khtpm_ui_common.c`.
+- Space = open the context menu (HQ windows) / = Enter (dock).
+- Place overlay closes on Esc; csv-hq grid arms/keeps state; shared `khtpm_grid_jump.c` helper.
+- **The big one:** csv-hq (and every window) had a dead keyboard because the Cursword pal held a display-wide `XGrabKeyboard` it never released (`kh_ungrab_kbd()` tested a NULL global). Fixed `2c1301ab`; restarting Cursword once dropped the held grab; user confirmed. Written up as `03-pitfalls/HOUSE_CODE_PITFALLS.md` #24 + `X11-AND-SESSION-PITFALLS.md`.
+
+## Next — ordered
+
+**User's stated direction (2026-09-20):** the next push is (a) the labeled Place grid + other placing, (b) events working from inside an Inventory, (c) the IRL/AI track that wraps gameplay activity. Also: finish UI scaling, then push everything to the `opencode` branch.
+
+### Verify first (cheap, might close bugs)
+1. Restart the other pals (started 02:21 with older binaries) so nothing else holds a stale grab.
+2. Re-test **text-edit-hq** typing — the 2026-09-14 "keyboard never arrives" entry (`bug_bounty.md`) is very likely the same Cursword-grab cause; close it if it types.
+3. Real-hardware checks still owed: Space menu, Search field, Place Esc + Inventory drop, sprite/nav-chip overlap on 2-digit numbers in list view, UI scaling on the second computer.
+4. Audit `khtpm_entity.c` for other helpers that use the always-NULL `dpy` global (pitfall #24 rule 1).
+
+### Inventory / File Explorer (user's current thread)
+5. ~~Place-grid labels~~ **BUILT 2026-09-20** in `tp_arm_placer_rmmv.c` (A-Z/1-N labels on the real desk cell, type `c7`/`7c` + Enter to highlight, Enter again to place, arrows, refusal cues; verified in private Xephyr at 4 resolutions, typed == click coordinates). **Needs the user's real keyboard** (Wayland key delivery) - see `GRID-ELEMENT-DESIGN.md` "IMPLEMENTED in the Place overlay". Follow-ups: ~~`fe_place_on_desk.sh` snapped to 64 ref px~~ **fixed `c1ebf1b2`** (reads `desk_grid.pdl` `cell_px`, default 80); `tp_arm_placer.c` (emoji brush) not done.
+6. **Cli-io on all entity context menus** (experimental; more verbs than `mv`; re-add the Cli-io row to File Explorer's `meta.pdl` once a human-typable field exists).
+7. Place from the **desk** into an Inventory; drag between explorer windows; right-click methods for a pal with no `sprite.csv`.
+8. Robot/puzzle-piece entities carrying events, dropped into inventories, methods run from the Inventory right-click; slow migrate of `inventory.txt`/`qolq`; File METHOD stub + 📁 icon mode.
+
+  8b. **The host-context bridge — DONE 2026-09-21.** Real gap found: a robot's own METHOD row (e.g. the real "Play" → `play_event.sh` precedent, already proven on Cursword's own meta.pdl) run from another entity's Inventory right-click always resolved `$ENT` to the robot's OWN dir, never the host's — `khtpm_events_hq_manager.c`'s compiled `cmd_N.sh` derived `ENT` purely from its own on-disk path (3 dirs up from `event_pkg/pages/page_N/`), and `fe_entity_method.sh`/`kh_open_cli_io_context_menu()` never passed the host anywhere. Fixed with an opt-in, zero-behavior-change-when-unset override: `khtpm_events_hq_manager.c` now emits `ENT="${MUCHI_TARGET_ENT:-$PWD}"` instead of `ENT="$PWD"`; `khtpm_core_render.c` gets a new `kh_inventory_host_dir()` (pure string math: a robot at `<host>/inventory/<robot>` → host is two dirs up, no cross-process state needed) and exports `MUCHI_TARGET_ENT='<host>'` on the right-click command line only when that pattern matches. Verified with real, non-GUI tests (unit test of the path math incl. edge cases - all fail safely to "no override"; a shell test of the compiled template with/without the env var; a full chain test - the exact C-built command string, through `fe_entity_method.sh`'s real eval pattern, into a `cmd_1.sh`-shaped script - correctly resolving to the host). **Not yet tested**: a real robot entity + a real events-hq-authored event, end to end, on an actual X11 desktop.
+
+  8c. **Still needed for the full slice**: author one real event (e.g. a tax) on a real robot entity via events-hq itself (not a hand-written test fixture), drop it into an entity's Inventory, and confirm it runs correctly from the right-click on the real desktop.
+8a. ~~**Pal icons in the Linux dock (always-on-top OFF)**~~ **DONE 2026-09-20 (`set_net_wm_icon()` in `khtpm_entity.c`, called right after `load_sprite_csv`).** Each pal window with a `sprite.csv` now carries `_NET_WM_ICON` at 64x64 and 32x32 (nearest-neighbour from the sprite, non-premultiplied ARGB, alpha-0 pixels zeroed). Verified in a private Xephyr: a checker read the raw property and compared every pixel to `sprite.csv` (0/4096 and 0/1024 mismatches); a pal without `sprite.csv` gets no property (generic image stays - glyph-only rendering not attempted); frame PNGs are byte-identical to a build of the previous source. WM_CLASS is deliberately left exactly `MuchiverseLivedesk` (the Mutter xwayland-grab allowlist in `$.crypts/enable_xwayland_grabs.sh` matches by WM_CLASS and I could not prove res_name uniqueness is safe), so GNOME may still group all pals under one dash entry. **Needs the real session:** restart the pals, turn always-on-top OFF and look at the left dock (GNOME dash appearance is not testable in Xephyr). Sprites are loaded once per process, so there is no live refresh path. Test gotcha: reading `_NET_WM_ICON` with Xlib on 64-bit returns sign-extended `long`s - mask with `0xFFFFFFFF` before comparing (alpha >= 0x80 looks like a mismatch otherwise).
+
+### Engine / architecture
+9. ~~UI scaling~~ **done 2026-09-20** (`7b7474b7`,`3f78c94d`,`0a030d62`): `desktop_pos.txt` is reference-space px, entity/dock verified in private Xephyr at 4 sizes; **still unverified on the real second computer + real Wayland; Windows entity twin `tp_desktop_window_win.c` still absolute px.**
+10. ~~`.xhtpm` -> `.xhtm` rename~~ **CANCELLED by the user (2026-09-20) - never do it.**
+10a. **Dock unfactor - stages 1-2 DONE, stages 3-5 DEFERRED (user decision 2026-09-20; see `DOCK-UNFACTOR-AUDIT.md` §5c; unified nav is a hard requirement).** Original slate:  Move dock/strip layout+paint+behaviour (~1,350 lines: `layout_dock_bar`, `dock_paint_*`, `dock_*`, `ktb_*`) out of `khtpm_core_render.c` into manager + template data, NOT a new binary that `#include`s the engine. Details: `08-roadmap/design-docs/INMEM-DB-STATE-LAYER-PLAN.md` §6.
+10b. **In-memory DB state layer** (port of wraith-alpha's `tpmos_share_kvp`, which is itself POSIX-shm-backed with file mirror/dump; no raw per-feature shmem, SQL later) + removal of the transitional text includes (`khtpm_ui_common.c`, `khtpm_ui_scale.c`, `kh_proc_registry.h`, …): full phased plan and 4 open questions in `INMEM-DB-STATE-LAYER-PLAN.md`. Renderer stats: 12,550 lines = 5,010 comment + 7,196 code; input widgets stay in-process.
+11. Unfactor leftovers not re-verified: Cursword 3D/phymoji camera keys, z-layer changes, XDND drops from other apps.
+12. `livedesk_override_redirect.pdl=true` ("@" always-on-top) is still a separate documented cause of dead keys for override_redirect windows; text-field windows are now forced managed, but consider the wider policy.
+
+### Paused tracks (resume decision is the user's)
+13. **WSR-CIV + DSR** (kilo, `13.agent-coms/KILO/claude-2-kilo-9.17.md`): the pause trigger ("Inventory window shows `cursword/inventory/` as a grid and a human clicked it") is effectively met. Start at Step A with the fixed `nav.sh`; still open: piececraft-hq ".main tab only" board bug, DSR menu class (New/Load/Save/Save As), Human/Harness flag, `ai_*` event primitives.
+14. Cursword IRL/watch layer (LLMUD-HACK / DUSTOPIA-HACK): first slice = relay watcher + Synonym Bank fed by kilo's own event authoring.
+
+### Housekeeping
+15. ~~Uncommitted deletions~~ **committed 2026-09-20 (`b2cd08ad`, 743 files, recoverable from history).** Still dirty by design: ~248 modified runtime-state files and ~190 untracked (asset dirs, notes, the 638KB `kilo-post-mortem-s17.md`).
+16. Older open bugs: piececraft-hq board tab, network-browser address bar (recurring), pc-hq board focus vs taskbar, toys-launch PID tracking, `ktb_pid_alive()` zombie false-positive, `nav.sh` `row`/`type` not exercised on live rows.
+17. `db-hq-pal` toy fix was only syntax-checked, not launched.

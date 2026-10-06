@@ -1,0 +1,1365 @@
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:35:45 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:35:45 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+        No live board-viewer session - open 'View Board' from the game first.
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:35:45 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:35:45 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:35:46 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:35:46 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:35:47 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:35:47 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:35:48 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:35:48 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:35:49 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:35:49 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:35:50 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:35:50 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:35:51 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:35:51 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:35:52 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:35:52 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:35:53 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:35:53 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:35:54 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:35:54 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:35:55 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:35:55 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:35:56 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:35:56 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:35:57 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:35:57 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:35:57 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:35:57 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:35:58 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:35:58 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:35:59 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:35:59 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:00 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:00 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:01 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:01 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:02 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:02 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:03 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:03 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:04 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:04 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:05 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:05 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:06 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:06 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:07 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:07 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:08 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:08 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:09 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:09 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:10 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:10 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:11 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:11 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:12 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:12 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:13 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:13 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:14 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:14 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:15 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:15 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:16 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:16 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:17 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:17 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:18 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:18 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:19 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:19 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:20 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:20 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:21 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:21 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:22 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:22 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:23 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:23 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:24 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:24 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:25 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:25 ---
+--- page: main ---
+piececraft-hq board
+      [>] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:25 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:25 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:36:26 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:36:26 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. map
+    [ ] 8. xelector
+    [ ] 9. cursword
+    [ ] 10. dsr_castle_a
+    [ ] 11. dsr_bank_a1
+    [ ] 12. dsr_bank_a2
+    [ ] 13. dsr_store_a1
+    [ ] 14. dsr_store_a2
+    [ ] 15. dsr_store_a3
+    [ ] 16. dsr_store_a4
+    [ ] 17. dsr_population_a
+    [ ] 18. dsr_castle_b
+    [ ] 19. dsr_bank_b1
+    [ ] 20. dsr_bank_b2
+    [ ] 21. dsr_store_b3
+    [ ] 22. dsr_store_b2
+    [ ] 23. dsr_store_b1
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:44:22 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:44:22 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: ON
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+    [ ] 17. dsr_store_a4
+    [ ] 18. dsr_population_a
+    [ ] 19. dsr_castle_b
+    [ ] 20. dsr_bank_b1
+    [ ] 21. dsr_bank_b2
+    [ ] 22. dsr_store_b3
+    [ ] 23. dsr_store_b2
+
+=== pchq-board.xhtpm pid 434268  2026-10-05 23:44:23 ===
+--- pchq-board.xhtpm  pid 434268  2026-10-05 23:44:23 ---
+--- page: main ---
+piececraft-hq board
+      [ ] 1. In: off
+      [ ] 2. book:pre-design ▾
+      [ ] 3. page:dsr-dev ▾
+      [ ] 4. Menu ▾
+      [ ] 5. Player: ON ▾
+      [ ] 6. 12:00
+        ents
+    [ ] 7. hotbar
+    [ ] 8. map
+    [ ] 9. xelector
+    [ ] 10. cursword
+    [ ] 11. dsr_castle_a
+    [ ] 12. dsr_bank_a1
+    [ ] 13. dsr_bank_a2
+    [ ] 14. dsr_store_a1
+    [ ] 15. dsr_store_a2
+    [ ] 16. dsr_store_a3
+    [ ] 17. dsr_store_a4
+    [ ] 18. dsr_population_a
+    [ ] 19. dsr_castle_b
+    [ ] 20. dsr_bank_b1
+    [ ] 21. dsr_bank_b2
+    [ ] 22. dsr_store_b3
+    [ ] 23. dsr_store_b2
+        No live board-viewer session - open 'View Board' from the game first.

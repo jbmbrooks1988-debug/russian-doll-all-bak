@@ -1,0 +1,5 @@
+<window class="entity-menu" label="item">
+  <page name="main">
+    <item label="Cancel" action="void"/>
+  </page>
+</window>
